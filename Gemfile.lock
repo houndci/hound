@@ -30,6 +30,9 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.2)
     builder (3.0.4)
+    clearance (0.16.3)
+      diesel (~> 0.1.5)
+      rails (>= 3.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -37,6 +40,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    diesel (0.1.5)
+      railties
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -103,6 +108,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  clearance
   coffee-rails (~> 3.2.1)
   jquery-rails
   rails (= 3.2.8)
