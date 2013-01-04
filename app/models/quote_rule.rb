@@ -1,12 +1,4 @@
-class QuoteRule
-  def initialize(text)
-    @text = text
-  end
-
-  def violated?
-    !satisfied?
-  end
-
+class QuoteRule < Rule
   def satisfied?
     (@text =~ /"(?:(?!#\{).)*"/).nil?
   end

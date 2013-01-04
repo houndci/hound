@@ -1,4 +1,5 @@
 require 'fast_spec_helper'
+require 'app/models/rule'
 require 'app/models/quote_rule'
 
 describe QuoteRule, '.violates?' do
