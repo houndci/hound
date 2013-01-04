@@ -3,6 +3,6 @@ Houndapp::Application.routes.draw do
 
   get '/auth/github/callback', to: 'sessions#create'
 
-  match 'sign_in' => 'sessions#new', as: 'sign_in'
-  match 'sign_out' => 'sessions#destroy', as: 'sign_out', via: :delete
+  get '/sign_in', to: 'sessions#new'
+  delete '/sign_out', to: 'sessions#destroy'
 end
