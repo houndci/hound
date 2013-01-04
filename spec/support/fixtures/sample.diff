@@ -1,0 +1,283 @@
+diff --git a/app/assets/stylesheets/application.css.scss b/app/assets/stylesheets/application.css.scss
+index 7ff253a..8fb8061 100644
+--- a/app/assets/stylesheets/application.css.scss
++++ b/app/assets/stylesheets/application.css.scss
+@@ -90,3 +90,45 @@ div.modal {
+     right: 0;
+   }
+ }
++
++.group:after {
++  visibility: hidden;
++  display: block;
++  content: '';
++  clear: both;
++  height: 0;
++}
++
++.filter {
++  float: left;
++}
++
++.users {
++  a[href='/users'] {
++    border: 0;
++  }
++}
++
++.active_users {
++  a[href='/active_users'] {
++    border: 0;
++  }
++}
++
++.inactive_users {
++  a[href='/inactive_users'] {
++    border: 0;
++  }
++}
++
++.new-action {
++  float: right;
++}
++
++.edit-action {
++  text-align: right;
++}
++
++.list {
++  margin-top: 20px;
++}
+diff --git a/app/controllers/active_users_controller.rb b/app/controllers/active_users_controller.rb
+index 31013f3..4f4302e 100644
+--- a/app/controllers/active_users_controller.rb
++++ b/app/controllers/active_users_controller.rb
+@@ -1,2 +1,6 @@
+ class ActiveUsersController < ApplicationController
++  def index
++    @users = User.active.alphabetical
++    render 'users/index'
++  end
+ end
+diff --git a/app/controllers/inactive_users_controller.rb b/app/controllers/inactive_users_controller.rb
+new file mode 100644
+index 0000000..5adc6f6
+--- /dev/null
++++ b/app/controllers/inactive_users_controller.rb
+@@ -0,0 +1,6 @@
++class InactiveUsersController < ApplicationController
++  def index
++    @users = User.inactive.alphabetical
++    render 'users/index'
++  end
++end
+diff --git a/app/models/user.rb b/app/models/user.rb
+index b7eb6bb..d21b2b4 100644
+--- a/app/models/user.rb
++++ b/app/models/user.rb
+@@ -35,6 +35,10 @@ def self.active
+     where(active: true)
+   end
+ 
++  def self.inactive
++    where(active: false)
++  end
++
+   def self.current_employees
+     where(['end_date is null or end_date > ?', Time.now.utc])
+   end
+diff --git a/app/views/users/index.html.erb b/app/views/users/index.html.erb
+index 528dda7..5db1b18 100644
+--- a/app/views/users/index.html.erb
++++ b/app/views/users/index.html.erb
+@@ -1,14 +1,20 @@
+-<p>
+-  <%= link_to 'Add User', new_user_path %>
+-</p>
++<div class='group'>
++  <div class='filter <%= controller_name %>'>
++    <%= link_to 'all', users_path %> | <%= link_to 'active', active_users_path %> | <%= link_to 'inactive', inactive_users_path %>
++  </div>
+ 
+-<table>
++  <div class='new-action'>
++    <%= link_to 'Add User', new_user_path %>
++  </div>
++</div>
++
++<table class='list'>
+   <% @users.each do |user| %>
+     <tr>
+       <td><%= user.name %></td>
+       <td><%= user.location_name %></td>
+       <td><%= user.role %></td>
+-      <td><%= link_to 'Edit', edit_user_path(user) %></td>
++      <td class='edit-action'><%= link_to 'Edit', edit_user_path(user) %></td>
+     </tr>
+   <% end %>
+ </table>
+diff --git a/config/routes.rb b/config/routes.rb
+index 69d877f..e1fa475 100644
+--- a/config/routes.rb
++++ b/config/routes.rb
+@@ -14,4 +14,6 @@
+   end
+ 
+   resources :users, only: [:create, :edit, :index, :new, :update]
++  resources :active_users, only: [:index]
++  resources :inactive_users, only: [:index]
+ end
+diff --git a/spec/controllers/active_users_controller_spec.rb b/spec/controllers/active_users_controller_spec.rb
+new file mode 100644
+index 0000000..4b3ca36
+--- /dev/null
++++ b/spec/controllers/active_users_controller_spec.rb
+@@ -0,0 +1,28 @@
++require 'spec_helper'
++
++describe ActiveUsersController do
++  describe '#index' do
++    it 'assigns active users in alphabetical order' do
++      active_user_starting_with_c = create(
++        :user, {
++          name: 'Charlie Delta',
++          active: true
++        }
++      )
++      active_user_starting_with_a = create(
++        :user, {
++          name: 'Able Baker',
++          active: true
++        }
++      )
++      create(:user, active: false)
++      sign_in_as active_user_starting_with_a
++
++      get :index
++
++      expect(assigns[:users]).to eq(
++        [active_user_starting_with_a, active_user_starting_with_c]
++      )
++    end
++  end
++end
+diff --git a/spec/controllers/inactive_users_controller_spec.rb b/spec/controllers/inactive_users_controller_spec.rb
+new file mode 100644
+index 0000000..ca046be
+--- /dev/null
++++ b/spec/controllers/inactive_users_controller_spec.rb
+@@ -0,0 +1,28 @@
++require 'spec_helper'
++
++describe InactiveUsersController do
++  describe '#index' do
++    it 'assigns inactive users in alphabetical order' do
++      inactive_user_starting_with_c = create(
++        :user, {
++          name: 'Charlie Delta',
++          active: false
++        }
++      )
++      inactive_user_starting_with_a = create(
++        :user, {
++          name: 'Able Baker',
++          active: false
++        }
++      )
++      create(:user, active: true)
++      sign_in_as inactive_user_starting_with_a
++
++      get :index
++
++      expect(assigns[:users]).to eq(
++        [inactive_user_starting_with_a, inactive_user_starting_with_c]
++      )
++    end
++  end
++end
+diff --git a/spec/controllers/reports_controller_spec.rb b/spec/controllers/reports_controller_spec.rb
+index e236919..fb8fba1 100644
+--- a/spec/controllers/reports_controller_spec.rb
++++ b/spec/controllers/reports_controller_spec.rb
+@@ -1,5 +1,4 @@
+ require 'spec_helper'
+-require 'clearance/testing'
+ 
+ describe ReportsController do
+   describe '#accounting' do
+diff --git a/spec/controllers/users_controller_spec.rb b/spec/controllers/users_controller_spec.rb
+new file mode 100644
+index 0000000..4691277
+--- /dev/null
++++ b/spec/controllers/users_controller_spec.rb
+@@ -0,0 +1,27 @@
++require 'spec_helper'
++
++describe UsersController do
++  describe '#index' do
++    it 'assigns all users in alphabetical order' do
++      active_user_starting_with_c = create(
++        :user, {
++          name: 'Charlie Delta',
++          active: true
++        }
++      )
++      inactive_user_starting_with_a = create(
++        :user, {
++          name: 'Able Baker',
++          active: false
++        }
++      )
++      sign_in_as active_user_starting_with_c
++
++      get :index
++
++      expect(assigns[:users]).to eq(
++        [inactive_user_starting_with_a, active_user_starting_with_c]
++      )
++    end
++  end
++end
+diff --git a/spec/models/user_spec.rb b/spec/models/user_spec.rb
+index 4c6dc0a..ed33a2f 100644
+--- a/spec/models/user_spec.rb
++++ b/spec/models/user_spec.rb
+@@ -36,7 +36,7 @@
+ end
+ 
+ describe User, '.active' do
+-  it 'returns active employees in alpha order' do
++  it 'returns active users' do
+     active_user = create(:user, active: true)
+     inactive_user = create(:user, active: false)
+ 
+@@ -48,6 +48,17 @@
+   end
+ end
+ 
++describe User, '.inactive' do
++  it 'returns inactive users' do
++    create(:user, active: true)
++    inactive_user = create(:user, active: false)
++
++    inactive_users = User.inactive
++
++    expect(inactive_users).to eq [inactive_user]
++  end
++end
++
+ describe User, '.revenue_generators' do
+   it 'returns only revenue generating users' do
+     designer = create(:designer)
+diff --git a/spec/spec_helper.rb b/spec/spec_helper.rb
+index 797ba12..25fd33c 100644
+--- a/spec/spec_helper.rb
++++ b/spec/spec_helper.rb
+@@ -3,6 +3,7 @@
+ require 'rspec/rails'
+ require 'capybara/rspec'
+ require 'bourne'
++require 'clearance/testing'
+ 
+ Dir[Rails.root.join('spec/support/**/*.rb')].each { |file| require file }
+ 
