@@ -1,5 +1,5 @@
-require File.expand_path('../../support/matchers/violate_matcher', __FILE__)
-require File.expand_path('../../../app/models/quote_rule.rb', __FILE__)
+require 'fast_spec_helper'
+require "#{APP_ROOT}/app/models/quote_rule"
 
 describe QuoteRule, '.violates?' do
   context 'with single quoted sting' do
