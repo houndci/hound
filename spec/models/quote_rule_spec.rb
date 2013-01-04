@@ -1,5 +1,5 @@
 require 'fast_spec_helper'
-require "#{APP_ROOT}/app/models/quote_rule"
+require 'app/models/quote_rule'
 
 describe QuoteRule, '.violates?' do
   context 'with single quoted sting' do
