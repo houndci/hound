@@ -1,4 +1,5 @@
-require File.expand_path('../../../app/models/git_diff', __FILE__)
+require 'fast_spec_helper'
+require "#{APP_ROOT}/app/models/git_diff"
 
 describe GitDiff, '#additions' do
   it 'returns all of the lines that were added in a diff' do
