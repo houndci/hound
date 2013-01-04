@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:remember_token] = nil
-    redirect_to root_path, message: 'You have been signed out'
+    redirect_to root_path
   end
 
   private
