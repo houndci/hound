@@ -12,6 +12,6 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find_by_id(session[:current_user_id])
+    @current_user ||= User.find_by_id(session[:remember_token])
   end
 end
