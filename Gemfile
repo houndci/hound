@@ -14,11 +14,11 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'capybara', '~> 1.0'
   gem 'debugger'
   gem 'rspec-rails'
 end
 
 group :test do
+  gem 'capybara', '~> 1.0'
   gem 'capybara-webkit'
 end
