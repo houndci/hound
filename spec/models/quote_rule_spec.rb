@@ -2,7 +2,7 @@ require 'fast_spec_helper'
 require 'app/models/rule'
 require 'app/models/quote_rule'
 
-describe QuoteRule, '.violates?' do
+describe QuoteRule, '#violated?' do
   context 'with single quoted sting' do
     it 'is not violated for assignment' do
       expect(%(test = 'hello world')).not_to violate(QuoteRule)

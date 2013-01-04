@@ -2,7 +2,7 @@ require 'fast_spec_helper'
 require 'app/models/rule'
 require 'app/models/whitespace_rule'
 
-describe WhitespaceRule, '.violates?' do
+describe WhitespaceRule, '#violated?' do
   it 'is violated with trailing whitespace' do
     expect(%(def method_name  )).to violate(WhitespaceRule)
   end
