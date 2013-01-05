@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Houndapp</title>
+  <title>Hound</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -14,7 +14,7 @@
 
 <%= yield %>
 
-<% if current_user %>
+<% if signed_in? %>
   <%= link_to 'Sign out', sign_out_path, method: :delete %>
 <% end %>
 

@@ -1,16 +1,18 @@
 class ApplicationController < ActionController::Base
-  before_filter :authorize
-
-  helper_method :current_user
-
   protect_from_forgery
+  before_filter :authorize
+  helper_method :signed_in?
 
   private
 
   def authorize
-    unless current_user
+    unless signed_in?
       redirect_to sign_in_path
     end
+  end
+
+  def signed_in?
+    current_user.present?
   end
 
   def current_user

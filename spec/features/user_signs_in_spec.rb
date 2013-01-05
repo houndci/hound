@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-feature 'User authentication' do
-  scenario 'user signs in successfully', js: true do
+feature 'User authentication', js: true do
+  scenario 'user signs in' do
     sign_in
 
     expect(page).to have_link 'Sign out'
   end
 
-  scenario 'user signs out successfully', js: true do
+  scenario 'user signs out' do
     sign_in
 
     click_link 'Sign out'
