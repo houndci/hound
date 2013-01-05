@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  skip_before_filter :authorize, :only => [:new, :create]
+  skip_before_filter :authorize, only: [:new, :create]
 
   def new
   end
