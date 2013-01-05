@@ -14,7 +14,7 @@
 
 <%= yield %>
 
-<% if session[:remember_token] %>
+<% if current_user %>
   <%= link_to 'Sign out', sign_out_path, method: :delete %>
 <% end %>
 
