@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :authorize
+  before_filter :authenticate
   helper_method :signed_in?
 
   private
 
-  def authorize
+  def authenticate
     unless signed_in?
       redirect_to sign_in_path
     end
