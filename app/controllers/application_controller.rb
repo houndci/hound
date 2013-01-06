@@ -16,6 +16,6 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find_by_id(session[:remember_token])
+    @current_user ||= User.where(remember_token: session[:remember_token])
   end
 end
