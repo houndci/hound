@@ -3,11 +3,17 @@ require 'app/models/rule'
 require 'app/models/whitespace_rule'
 
 describe WhitespaceRule, '#violated?' do
-  it 'is violated with trailing whitespace' do
-    expect(%(def method_name  )).to violate(WhitespaceRule)
+  context 'with trailing whitespace' do
+    it 'returns true' do
+      string_with_trailing_spaces = 'def method_name  '
+      expect(string_with_trailing_spaces).to violate(WhitespaceRule)
+    end
   end
 
-  it 'is not violated without trailing whitespace' do
-    expect(%(hello = 'world  ')).not_to violate(WhitespaceRule)
+  context 'without trailing whitespace' do
+    it 'returns false' do
+      string_without_trailing_spaces = %(hello = 'world  ')
+      expect(string_without_trailing_spaces).not_to violate(WhitespaceRule)
+    end
   end
 end
