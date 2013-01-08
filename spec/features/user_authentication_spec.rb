@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'User authentication', js: true do
+feature 'User authentication' do
   scenario 'user signs in' do
     stub_oauth
     visit root_path

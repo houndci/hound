@@ -20,5 +20,4 @@ end
 
 group :test do
   gem 'capybara', '~> 1.0'
-  gem 'capybara-webkit'
 end
