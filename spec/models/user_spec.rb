@@ -11,4 +11,14 @@ describe User do
       expect(user.remember_token).to eq 'remembertoken'
     end
   end
+
+  describe '#to_s' do
+    it 'returns GitHub username' do
+      user = User.new(github_username: 'jimtom')
+
+      user_string = user.to_s
+
+      expect(user_string).to eq 'jimtom'
+    end
+  end
 end

@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
 
   before_create :generate_remember_token
 
+  def to_s
+    github_username
+  end
+
   private
 
   def generate_remember_token
