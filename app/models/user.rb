@@ -1,5 +1,3 @@
-require 'securerandom'
-
 class User < ActiveRecord::Base
   attr_accessible :github_username
 
