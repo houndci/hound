@@ -5,7 +5,7 @@ ruby '1.9.3'
 gem 'jquery-rails'
 gem 'omniauth-github'
 gem 'pg'
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
