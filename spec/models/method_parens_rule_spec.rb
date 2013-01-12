@@ -26,4 +26,18 @@ describe MethodParensRule, '#violated?' do
       expect(%(def valid ruby)).to violate(MethodParensRule)
     end
   end
+
+  context 'not a method definition' do
+    it 'is not violated for ranges' do
+      expect(%{(1..10)}).not_to violate(MethodParensRule)
+    end
+
+    it 'is not violated for method calls' do
+      expect(%{pass(message)}).not_to violate(MethodParensRule)
+    end
+
+    it 'is not violated for an unassuming line of ruby' do
+      expect(%(x == y)).not_to violate(MethodParensRule)
+    end
+  end
 end
