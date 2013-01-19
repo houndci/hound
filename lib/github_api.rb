@@ -1,13 +1,12 @@
 class GithubApi
-  attr_reader :username, :token
+  attr_reader :token
 
-  def initialize(username, token)
-    @username = username
+  def initialize(token)
     @token = token
   end
 
   def get_repos
-    client = Octokit::Client.new(login: username, oauth_token: token)
+    client = Octokit::Client.new(oauth_token: token)
     client.repos
   end
 end
