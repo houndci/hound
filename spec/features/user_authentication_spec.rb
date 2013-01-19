@@ -3,6 +3,7 @@ require 'spec_helper'
 feature 'User authentication' do
   scenario 'user signs in' do
     stub_oauth('salbertson')
+    stub_repos_request
 
     visit root_path
     click_link 'Sign in'
@@ -13,6 +14,7 @@ feature 'User authentication' do
 
   scenario 'user signs out' do
     stub_oauth
+    stub_repos_request
 
     visit root_path
     click_link 'Sign in'

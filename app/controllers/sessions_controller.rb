@@ -19,6 +19,7 @@ class SessionsController < ApplicationController
   def create_session
     user = User.find_or_create_by_github_username(github_username)
     session[:remember_token] = user.remember_token
+    session[:github_token] = github_token
   end
 
   def destroy_session
@@ -27,5 +28,9 @@ class SessionsController < ApplicationController
 
   def github_username
     env['omniauth.auth']['info']['nickname']
+  end
+
+  def github_token
+    env['omniauth.auth']['credentials']['token']
   end
 end

@@ -3,6 +3,7 @@ require 'fast_spec_helper'
 require 'config/environment'
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'webmock/rspec'
 
 
 RSpec.configure do |config|
@@ -10,6 +11,7 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   config.include OauthHelper
+  config.include GithubApiHelper
 end
 
 Capybara.configure do |config|
