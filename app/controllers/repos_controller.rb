@@ -1,9 +1,15 @@
 class ReposController < ApplicationController
   def index
-    client = Octokit::Client.new(
-      login: current_user.github_username,
-      oauth_token: session['github_token']
+    @repos = current_user_repos
+  end
+
+  private
+
+  def current_user_repos
+    api = GithubApi.new(
+      current_user.github_username,
+      session['github_token']
     )
-    @repos = client.repos
+    api.get_repos
   end
 end
