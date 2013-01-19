@@ -3,9 +3,11 @@ source 'https://rubygems.org'
 ruby '1.9.3'
 
 gem 'jquery-rails'
+gem 'octokit'
 gem 'omniauth-github'
 gem 'pg'
 gem 'rails', '3.2.11'
+gem 'thin'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
@@ -20,4 +22,5 @@ end
 
 group :test do
   gem 'capybara', '~> 1.0'
+  gem 'webmock'
 end

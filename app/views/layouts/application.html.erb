@@ -12,12 +12,12 @@
   <div class="flash <%= key %>"><%= value %></div>
 <% end -%>
 
-<%= yield %>
-
 <% if signed_in? %>
   Signed in as <%= current_user %> |
   <%= link_to 'Sign out', sign_out_path, method: :delete %>
 <% end %>
+
+<%= yield %>
 
 </body>
 </html>
