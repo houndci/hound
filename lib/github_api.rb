@@ -1,3 +1,5 @@
+require 'octokit'
+
 class GithubApi
   attr_reader :token
 
