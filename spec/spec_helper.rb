@@ -6,9 +6,15 @@ require 'rspec/rails'
 require 'rspec/autorun'
 
 RSpec.configure do |config|
-  config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
   config.include OauthHelper
+  config.include SigninHelper
+  WebMock.disable_net_connect!(allow_localhost: true)
+  DatabaseCleaner.strategy = :deletion
+
+  config.before do
+    DatabaseCleaner.clean
+  end
 end
 
 Capybara.configure do |config|

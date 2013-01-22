@@ -38,6 +38,9 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
+    capybara-webkit (0.13.0)
+      capybara (>= 1.0.0, < 1.2)
+      json
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
     coffee-rails (3.2.2)
@@ -50,6 +53,7 @@ GEM
     columnize (0.3.6)
     crack (0.3.2)
     daemons (1.1.9)
+    database_cleaner (0.9.1)
     debugger (1.2.3)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.1.1)
@@ -191,7 +195,9 @@ PLATFORMS
 
 DEPENDENCIES
   capybara (~> 1.0)
+  capybara-webkit
   coffee-rails (~> 3.2.1)
+  database_cleaner
   debugger
   jquery-rails
   octokit
