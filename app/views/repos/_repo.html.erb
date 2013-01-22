@@ -1,1 +1,3 @@
-<li><%= repo.name %></li>
+<li>
+<%= repo.name %> [<%= switch(repo, active_repo_ids.include?(repo.id)) %>]
+</li>
