@@ -14,10 +14,10 @@ class MethodParensRule < Rule
   private
 
   def not_missing_parens
-    @text !~ MISSING_PARENS
+    does_not_have?(MISSING_PARENS)
   end
 
   def not_empty_parens
-    @text !~ EMPTY_PARENS
+    does_not_have?(EMPTY_PARENS)
   end
 end

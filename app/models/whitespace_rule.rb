@@ -1,5 +1,7 @@
 class WhitespaceRule < Rule
   def satisfied?
-    (@text =~ /\s$/).nil?
+    trailing_whitespace = /\s$/
+
+    does_not_have?(trailing_whitespace)
   end
 end
