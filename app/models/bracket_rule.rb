@@ -1,8 +1,8 @@
 class BracketRule < Rule
-  WHITESPACE_BEFORE = '\[\s+'
-  WHITESPACE_AFTER = '\s+\]'
-
   def satisfied?
-    (@text =~ /(#{WHITESPACE_AFTER}|#{WHITESPACE_BEFORE})/).nil?
+    whitespace_before = /\[\s+/
+    whitespace_after = /\s+\]/
+
+    does_not_have?(whitespace_before) && does_not_have?(whitespace_after)
   end
 end
