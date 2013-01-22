@@ -1,11 +1,8 @@
 class ParenthesisRule < Rule
-  WHITESPACE_BEFORE = '\(\s+'
-  WHITESPACE_AFTER = '\s+\)'
-
-  def satisfied?
+  def violated?
     whitespace_before = /\(\s+/
     whitespace_after = /\s+\)/
 
-    does_not_have?(whitespace_before) && does_not_have?(whitespace_after)
+    has?(whitespace_before) || has?(whitespace_after)
   end
 end

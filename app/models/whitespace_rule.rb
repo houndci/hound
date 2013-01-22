@@ -1,7 +1,7 @@
 class WhitespaceRule < Rule
-  def satisfied?
+  def violated?
     trailing_whitespace = /\s$/
 
-    does_not_have?(trailing_whitespace)
+    has?(trailing_whitespace)
   end
 end

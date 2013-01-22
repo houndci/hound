@@ -4,12 +4,12 @@ class Rule
   end
 
   def violated?
-    !satisfied?
+    raise 'Must implement #violated? method'
   end
 
   private
 
-  def does_not_have?(pattern)
-    @text !~ pattern
+  def has?(pattern)
+    @text[pattern] != nil
   end
 end

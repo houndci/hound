@@ -3,21 +3,11 @@ class MethodParensRule < Rule
   MISSING_PARENS = /^def \w+ /
   METHOD_DEFINITION = /^def /
 
-  def satisfied?
+  def violated?
     if @text =~ METHOD_DEFINITION
-      not_missing_parens && not_empty_parens
+      has?(MISSING_PARENS) || has?(EMPTY_PARENS)
     else
-      true
+      false
     end
-  end
-
-  private
-
-  def not_missing_parens
-    does_not_have?(MISSING_PARENS)
-  end
-
-  def not_empty_parens
-    does_not_have?(EMPTY_PARENS)
   end
 end
