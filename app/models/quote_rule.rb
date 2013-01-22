@@ -1,7 +1,7 @@
 class QuoteRule < Rule
-  def satisfied?
+  def violated?
     non_interpolating_double_quotes = /"(?:(?!#\{).)*"/
 
-    does_not_have?(non_interpolating_double_quotes)
+    has?(non_interpolating_double_quotes)
   end
 end
