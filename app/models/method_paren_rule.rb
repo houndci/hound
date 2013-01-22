@@ -1,4 +1,4 @@
-class MethodParensRule < Rule
+class MethodParenRule < Rule
   EMPTY_PARENS = /\(\)/
   MISSING_PARENS = /^def \w+ /
   METHOD_DEFINITION = /^def /

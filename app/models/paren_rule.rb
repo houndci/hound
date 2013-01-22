@@ -1,4 +1,4 @@
-class ParenthesisRule < Rule
+class ParenRule < Rule
   def violated?
     whitespace_before = /\(\s+/
     whitespace_after = /\s+\)/
