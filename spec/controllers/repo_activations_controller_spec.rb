@@ -6,7 +6,7 @@ describe RepoActivationsController do
       it 'creates an active repo' do
         sign_in
 
-        post :create, 'github_id' => 123
+        post :create, github_id: 123
 
         expect(Repo.where(github_id: 123, active: true)).to have(1).item
       end
@@ -17,7 +17,7 @@ describe RepoActivationsController do
         sign_in
         repo = Repo.create(github_id: 123, active: false)
 
-        post :create, 'github_id' => 123
+        post :create, github_id: 123
 
         expect(repo.reload).to be_active
       end

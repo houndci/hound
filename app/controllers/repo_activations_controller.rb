@@ -3,9 +3,9 @@ class RepoActivationsController < ApplicationController
     repo = Repo.where(github_id: params[:github_id]).first
 
     if repo
-      repo.update_attribute(:active, true)
+      repo.update_attributes!(active: true)
     else
-      Repo.create(github_id: params[:github_id], active: true)
+      Repo.create!(github_id: params[:github_id], active: true)
     end
 
     render nothing: true

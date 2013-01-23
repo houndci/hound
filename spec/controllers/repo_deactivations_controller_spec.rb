@@ -6,7 +6,7 @@ describe RepoDeactivationsController do
       sign_in
       repo = Repo.create(github_id: 123, active: true)
 
-      post :create, 'github_id' => 123
+      post :create, github_id: 123
 
       expect(repo.reload).to_not be_active
     end
