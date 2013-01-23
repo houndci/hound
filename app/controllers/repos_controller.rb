@@ -1,13 +1,12 @@
 class ReposController < ApplicationController
   def index
-    @all_repos = current_user_repos
-    all_repo_ids = @all_repos.map(&:id)
-    @active_repo_ids = Repo.where(github_id: all_repo_ids, active: true).map(&:github_id)
+    @github_repos = github_repos
+    @active_repo_ids = Repo.active_repo_ids_in(@github_repos.map(&:id))
   end
 
   private
 
-  def current_user_repos
+  def github_repos
     api = GithubApi.new(session['github_token'])
     api.get_repos
   end

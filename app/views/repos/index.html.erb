@@ -3,5 +3,5 @@
 <% end %>
 
 <ul id="repo-list">
-  <%= render partial: 'repo', collection: @all_repos, locals: { active_repo_ids: @active_repo_ids } %>
+  <%= render partial: 'repo', collection: @github_repos, locals: { active_repo_ids: @active_repo_ids } %>
 </ul>
