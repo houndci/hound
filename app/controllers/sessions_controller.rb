@@ -18,8 +18,8 @@ class SessionsController < ApplicationController
 
   def create_session
     user = User.find_or_create_by_github_username(github_username)
+    user.update_attribute(:github_token, github_token)
     session[:remember_token] = user.remember_token
-    session[:github_token] = github_token
   end
 
   def destroy_session

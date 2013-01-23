@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20130121230036) do
     t.datetime "updated_at",      :null => false
     t.string   "github_username", :null => false
     t.string   "remember_token",  :null => false
+    t.string   "github_token"
   end
 
 end
