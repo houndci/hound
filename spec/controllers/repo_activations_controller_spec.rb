@@ -8,7 +8,7 @@ describe RepoActivationsController do
 
         post :create, 'github_id' => 123
 
-        expect(Repo.where(github_id: 123, active: true)).to be_present
+        expect(Repo.where(github_id: 123, active: true)).to have(1).item
       end
     end
 
