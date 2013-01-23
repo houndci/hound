@@ -1,9 +1,9 @@
 class RepoActivationsController < ApplicationController
   def create
-    relation = Repo.where(github_id: params[:github_id])
+    repo = Repo.where(github_id: params[:github_id]).first
 
-    if relation.count > 0
-      relation.update_all(active: true)
+    if repo
+      repo.update_attribute(:active, true)
     else
       Repo.create(github_id: params[:github_id], active: true)
     end
