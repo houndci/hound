@@ -1,6 +1,6 @@
 $('#repo-list').click(function(event) {
   var clickedLink = $(event.target);
-  var repoId = clickedLink.attr('data-id');
+  var repoId = clickedLink.data('id');
   var activate = clickedLink.text() == 'on' ? true : false;
 
   if (activate) {
