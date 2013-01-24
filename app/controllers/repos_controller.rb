@@ -7,7 +7,7 @@ class ReposController < ApplicationController
   private
 
   def github_repos
-    api = GithubApi.new(session['github_token'])
+    api = GithubApi.new(current_user.github_token)
     api.get_repos
   end
 end

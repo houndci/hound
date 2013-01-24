@@ -3,12 +3,14 @@ require 'spec_helper'
 describe RepoDeactivationsController do
   describe '#create' do
     it 'deactivates repo' do
-      sign_in
-      repo = Repo.create(github_id: 123, active: true)
+      user = FactoryGirl.create(:user)
+      stub_sign_in(user)
+      repo = stub(:deactivate)
+      Repo.stubs(find_by_github_id_and_user: repo)
 
       post :create, github_id: 123
 
-      expect(repo.reload).to_not be_active
+      expect(repo).to have_received(:deactivate)
     end
   end
 end

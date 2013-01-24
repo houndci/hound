@@ -7,19 +7,25 @@ class Repo < ActiveRecord::Base
     where(github_id: ids, active: true).pluck(:github_id)
   end
 
-  def self.find_by_github_id(github_id)
-    where(github_id: github_id).first || NullRepo.new(github_id: github_id)
+  def self.find_by_github_id_and_user(github_id, user)
+    where(user_id: user, github_id: github_id).first ||
+      NullRepo.new(user: user, github_id: github_id)
   end
 
   def activate
     update_attribute(:active, true)
   end
+
+  def deactivate
+    update_attribute(:active, false)
+  end
 end
 
 class NullRepo
-  attr_reader :github_id
+  attr_reader :user, :github_id
 
   def initialize(attributes)
+    @user = attributes[:user]
     @github_id = attributes[:github_id]
   end
 
@@ -28,6 +34,6 @@ class NullRepo
   end
 
   def activate
-    Repo.create(github_id: github_id, active: true)
+    user.repos.create(github_id: github_id, active: true)
   end
 end

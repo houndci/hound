@@ -25,6 +25,7 @@ group :test do
   gem 'capybara', '~> 1.0'
   gem 'capybara-webkit'
   gem 'database_cleaner'
+  gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'webmock'
 end

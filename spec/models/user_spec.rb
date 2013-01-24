@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
   describe '.create' do
     it 'generates a remember_token' do
-      user = User.new(github_username: 'jimtom')
+      user = FactoryGirl.build(:user)
       SecureRandom.stubs(hex: 'remembertoken')
 
       user.save
@@ -15,7 +15,7 @@ describe User do
 
   describe '#to_s' do
     it 'returns GitHub username' do
-      user = User.new(github_username: 'jimtom')
+      user = FactoryGirl.build(:user)
 
       user_string = user.to_s
 
