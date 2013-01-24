@@ -1,0 +1,15 @@
+require 'spec_helper'
+
+describe NullRepo do
+  describe '#activate' do
+    it 'creates an active repo' do
+      user = create(:user)
+      repo = NullRepo.new(user: user, github_id: 456)
+
+      repo.activate
+
+      active_repo = user.repos.where(github_id: 456, active: true)
+      expect(active_repo).not_to be_nil
+    end
+  end
+end
