@@ -8,8 +8,12 @@ $('#repo-list').click(function(event) {
       clickedLink.text('off')
     });
   } else {
-    $.post('/repo_deactivations', { github_id: repoId }, function(data) {
-      clickedLink.text('on')
+    $.ajax({
+      url: '/repo_activations/' + repoId,
+      type: 'delete',
+      success: function(data) {
+        clickedLink.text('on');
+      }
     });
   }
 });
