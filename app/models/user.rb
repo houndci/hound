@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   has_many :repos
 
+  validates :github_username, presence: true
+
   before_create :generate_remember_token
 
   def to_s
