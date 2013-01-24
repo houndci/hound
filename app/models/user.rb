@@ -9,11 +9,6 @@ class User < ActiveRecord::Base
     github_username
   end
 
-  def active_repo_ids_in(repo_ids)
-    active_repos = repos.where(github_id: repo_ids, active: true)
-    active_repos.map(&:github_id)
-  end
-
   private
 
   def generate_remember_token
