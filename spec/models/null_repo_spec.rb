@@ -9,7 +9,7 @@ describe NullRepo do
       repo.activate
 
       active_repo = user.repos.where(github_id: 456, active: true)
-      expect(active_repo).to_not be_nil
+      expect(active_repo).not_to be_nil
     end
   end
 end
