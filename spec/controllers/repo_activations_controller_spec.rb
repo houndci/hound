@@ -2,25 +2,15 @@ require 'spec_helper'
 
 describe RepoActivationsController do
   describe '#create' do
-    context 'without existing repo' do
-      it 'creates an active repo' do
-        sign_in
+    it 'activates repo' do
+      stub_sign_in
+      repo = mock(:activate)
+      Repo.stubs(find_by_github_id: repo)
 
-        post :create, github_id: 123
+      post :create, github_id: 123
 
-        expect(Repo.where(github_id: 123, active: true)).to have(1).item
-      end
-    end
-
-    context 'with existing repo' do
-      it 'activates repo' do
-        sign_in
-        repo = Repo.create(github_id: 123, active: false)
-
-        post :create, github_id: 123
-
-        expect(repo.reload).to be_active
-      end
+      expect(Repo).to have_received(:find_by_github_id).with('123')
+      expect(repo).to have_received(:activate)
     end
   end
 end
