@@ -8,13 +8,13 @@ class Repo < ActiveRecord::Base
     api = GithubApi.new(user.github_token)
     all_repos = api.get_repos
 
-    active_github_repo_ids = where(user_id: user.id, active: true).pluck(:github_id)
+    active_repo_github_ids = where(user_id: user, active: true).pluck(:github_id)
 
     all_repos.map do |repo|
       Repo.new(
         github_id: repo.id,
         name: repo.name,
-        active: active_github_repo_ids.include?(repo.id)
+        active: active_repo_github_ids.include?(repo.id)
       )
     end
   end
