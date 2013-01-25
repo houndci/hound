@@ -1,10 +1,22 @@
 class Repo < ActiveRecord::Base
-  attr_accessible :github_id, :active
+  attr_accessible :name, :github_id, :active
+  attr_accessor :name
 
   validates :github_id, uniqueness: true, presence: true
 
-  def self.active_repo_ids_in(ids)
-    where(github_id: ids, active: true).pluck(:github_id)
+  def self.find_all_by_user(user)
+    api = GithubApi.new(user.github_token)
+    all_repos = api.get_repos
+
+    active_github_repo_ids = where(user_id: user.id, active: true).pluck(:github_id)
+
+    all_repos.map do |repo|
+      Repo.new(
+        github_id: repo.id,
+        name: repo.name,
+        active: active_github_repo_ids.include?(repo.id)
+      )
+    end
   end
 
   def self.find_by_github_id_and_user(github_id, user)
