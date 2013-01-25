@@ -1,15 +1,20 @@
 $('#repo-list').click(function(event) {
   var clickedLink = $(event.target);
-  var repoId = clickedLink.data('id');
+  var githubId = clickedLink.data('github-id');
   var activate = clickedLink.text() == 'on' ? true : false;
 
   if (activate) {
-    $.post('/repo_activations', { github_id: repoId }, function(data) {
-      clickedLink.text('off')
-    });
+    $.post('/repo_activations', { github_id: githubId }, function(data) {
+        clickedLink.text('off')
+      }
+    );
   } else {
-    $.post('/repo_deactivations', { github_id: repoId }, function(data) {
-      clickedLink.text('on')
+    $.ajax({
+      url: '/repo_activations/' + githubId,
+      type: 'DELETE',
+      success: function(data) {
+        clickedLink.text('on');
+      }
     });
   }
 });

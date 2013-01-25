@@ -11,11 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121230036) do
+ActiveRecord::Schema.define(:version => 20130123030453) do
 
   create_table "repos", :force => true do |t|
     t.integer "github_id", :null => false
     t.boolean "active",    :null => false
+    t.integer "user_id",   :null => false
   end
 
   add_index "repos", ["github_id"], :name => "index_repos_on_github_id", :unique => true
@@ -25,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20130121230036) do
     t.datetime "updated_at",      :null => false
     t.string   "github_username", :null => false
     t.string   "remember_token",  :null => false
+    t.string   "github_token"
   end
 
 end
