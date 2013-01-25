@@ -4,7 +4,7 @@ class Repo < ActiveRecord::Base
 
   validates :github_id, uniqueness: true, presence: true
 
-  def self.find_all_by_user(user)
+  def self.all_by_user(user)
     api = GithubApi.new(user.github_token)
     all_repos = api.get_repos
 
