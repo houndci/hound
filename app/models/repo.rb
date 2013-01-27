@@ -7,11 +7,6 @@ class Repo < ActiveRecord::Base
 
   scope :active, where(active: true)
 
-  def self.find_by_github_id_and_user(github_id, user)
-    where(user_id: user, github_id: github_id).first ||
-      NullRepo.new(user: user, github_id: github_id)
-  end
-
   def activate
     update_attribute(:active, true)
   end
