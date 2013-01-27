@@ -1,6 +1,6 @@
 Houndapp::Application.routes.draw do
   root to: 'repos#index'
-  resources :repos, only: [:index]
+  resources :repos, only: [:index, :show]
   resources :repo_activations, only: [:create, :destroy]
 
   get '/auth/github/callback', to: 'sessions#create'

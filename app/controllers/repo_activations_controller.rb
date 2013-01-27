@@ -1,19 +1,20 @@
 class RepoActivationsController < ApplicationController
   def create
-    find_repo(params[:github_id]).activate
+    repo = current_user.repos.where(github_id: params[:github_id]).first
+
+    if repo
+      repo.activate
+    else
+      current_user.repos.create(github_id: params[:github_id], active: true)
+    end
 
     render nothing: true
   end
 
   def destroy
-    find_repo(params[:id]).deactivate
+    repo = current_user.repos.where(github_id: params[:id]).first
+    repo.deactivate
 
     render nothing: true
-  end
-
-  private
-
-  def find_repo(github_id)
-    Repo.find_by_github_id_and_user(github_id, current_user)
   end
 end
