@@ -5,7 +5,7 @@ class ReposController < ApplicationController
   end
 
   def show
-    repo = current_user.repos.where(github_id: params[:id]).first
+    repo = current_user.github_repo(params[:id])
 
     if repo
       render json: { active: repo.active }
