@@ -4,7 +4,7 @@ class RepoActivationsController < ApplicationController
     activator.activate(
       params[:github_id].to_i,
       params[:full_github_name],
-      current_user.repos,
+      current_user,
       github_api,
       "http://#{request.host_with_port}"
     )
@@ -13,7 +13,7 @@ class RepoActivationsController < ApplicationController
   end
 
   def destroy
-    repo = current_user.repos.where(github_id: params[:id]).first
+    repo = current_user.github_repo(params[:id])
     repo.deactivate
 
     render nothing: true

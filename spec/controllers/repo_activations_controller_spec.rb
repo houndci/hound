@@ -14,7 +14,7 @@ describe RepoActivationsController do
 
       expect(GithubApi).to have_received(:new).with(user.github_token)
       expect(activator).to have_received(:activate).
-        with(123, 'jimtom/repo', user.repos, api, 'http://test.host')
+        with(123, 'jimtom/repo', user, api, 'http://test.host')
     end
   end
 end

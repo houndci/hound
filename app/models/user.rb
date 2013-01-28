@@ -11,6 +11,14 @@ class User < ActiveRecord::Base
     github_username
   end
 
+  def github_repo(github_id)
+    repos.where(github_id: github_id).first
+  end
+
+  def create_github_repo(attributes)
+    repos.create(attributes)
+  end
+
   private
 
   def generate_remember_token
