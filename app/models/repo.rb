@@ -1,7 +1,5 @@
 class Repo < ActiveRecord::Base
-  attr_accessor :name
-
-  attr_accessible :name, :github_id, :active
+  attr_accessible :github_id, :active
 
   validates :github_id, uniqueness: true, presence: true
 
