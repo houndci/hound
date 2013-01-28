@@ -13,10 +13,14 @@ RepoList = function(repos) {
 
     activateLink.click(function(event) {
       event.preventDefault();
-      $.post('/repo_activations', { github_id: repo.id }, function() {
-        activateLink.hide();
-        deactivateLink.show();
-      });
+      $.post(
+        '/repo_activations',
+        { github_id: repo.id, full_github_name: repo.full_name },
+        function() {
+          activateLink.hide();
+          deactivateLink.show();
+        }
+      );
     });
 
     deactivateLink.click(function(event) {
