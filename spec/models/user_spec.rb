@@ -21,7 +21,7 @@ describe User do
 
       user_string = user.to_s
 
-      expect(user_string).to eq 'jimtom'
+      expect(user_string).to eq user.github_username
     end
   end
 end
