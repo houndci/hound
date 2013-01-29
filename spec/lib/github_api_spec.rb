@@ -41,7 +41,7 @@ describe GithubApi do
 
       response = api.create_status(full_repo_name, commit_hash, state, description)
 
-      expect(response).not_to be_nil
+      expect(response.id).not_to be_nil
     end
   end
 end

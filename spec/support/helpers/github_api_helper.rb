@@ -31,12 +31,12 @@ module GithubApiHelper
       :post,
       "https://api.github.com/repos/#{full_repo_name}/statuses/#{commit_hash}"
     ).with(
-      :body => %({"description":"#{description}","state":"#{state}"}),
-      :headers => { 'Authorization'=>'token authtoken', 'Content-Type'=>'application/json'}
+      body: %({"description":"#{description}","state":"#{state}"}),
+      headers: { 'Authorization'=>'token authtoken' }
     ).to_return(
-      :status => 200,
-      :body => File.read('spec/support/fixtures/github_status_creation_response.json'),
-      :headers => {}
+      status: 200,
+      body: File.read('spec/support/fixtures/github_status_creation_response.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
 end
