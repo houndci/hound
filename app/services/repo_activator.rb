@@ -8,6 +8,12 @@ class RepoActivator
       user.create_github_repo(github_id: github_id, active: true)
     end
 
-    api.create_pull_request_hook(full_github_name, URI.join(host, 'builds').to_s)
+    api.create_pull_request_hook(full_github_name, callback_url(host))
+  end
+
+  private
+
+  def callback_url(host)
+    URI.join(host, 'builds').to_s
   end
 end
