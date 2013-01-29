@@ -12,9 +12,7 @@ feature 'Repo list' do
 
     click_link 'on'
 
-    wait_until do
-      find_link('off').visible?
-    end
+    wait_for_off_link
   end
 
   scenario 'user deactivates repo', js: true do
@@ -23,7 +21,7 @@ feature 'Repo list' do
     click_link 'on'
     click_link 'off'
 
-    expect(page).to have_link 'on'
+    wait_for_on_link
   end
 
   scenario 'user activates repo then refreshes the page', js: true do
@@ -32,7 +30,7 @@ feature 'Repo list' do
     click_link 'on'
     reload
 
-    expect(page).to have_link 'off'
+    wait_for_off_link
   end
 
   def sign_in_and_stub_github_requests
@@ -63,5 +61,17 @@ feature 'Repo list' do
 
   def reload
     visit current_url
+  end
+
+  def wait_for_on_link
+    wait_until do
+      find_link('on').visible?
+    end
+  end
+
+  def wait_for_off_link
+    wait_until do
+      find_link('off').visible?
+    end
   end
 end
