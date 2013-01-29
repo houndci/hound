@@ -1,5 +1,3 @@
-require 'open-uri'
-
 class BuildsController < ApplicationController
   skip_before_filter :authenticate
 
