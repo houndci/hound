@@ -16,7 +16,7 @@ class BuildsController < ApplicationController
   private
 
   def user
-    User.where(github_username: pull_request.user_login).first
+    User.find_by_github_username(pull_request.user_login)
   end
 
   def pull_request
