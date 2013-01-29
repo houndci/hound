@@ -11,16 +11,20 @@ RepoList = function(repos) {
     var deactivateLink = repoListItem.find('a.deactivate');
     repoListItem.find('a').hide();
 
+    function showActivateLink() {
+      deactivateLink.hide();
+      activateLink.show();
+    }
+
+    function showDeactivateLink() {
+      activateLink.hide();
+      deactivateLink.show();
+    }
+
     activateLink.click(function(event) {
       event.preventDefault();
-      $.post(
-        '/repo_activations',
-        { github_id: repo.id, full_github_name: repo.full_name },
-        function() {
-          activateLink.hide();
-          deactivateLink.show();
-        }
-      );
+      var postData = { github_id: repo.id, full_github_name: repo.full_name };
+      $.post('/repo_activations', postData, showDeactivateLink);
     });
 
     deactivateLink.click(function(event) {
@@ -28,10 +32,7 @@ RepoList = function(repos) {
       $.ajax({
         url: '/repo_activations/' + repo.id,
         type: 'DELETE',
-        success: function() {
-          deactivateLink.hide();
-          activateLink.show();
-        }
+        success: showActivateLink
       });
     });
 
