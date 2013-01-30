@@ -11,9 +11,8 @@ describe BuildsController do
         )
         api = mock(:create_status)
         GithubApi.stubs(new: api)
-        request.env['HTTP_REFERER'] = BuildsController::GITHUB_IPS.first
 
-        post :create, { payload: pull_request_payload }
+        post :create, { token: user.github_token, payload: pull_request_payload }
 
         expect(GithubApi).to have_received(:new).with(user.github_token)
         expect(api).to have_received(:create_status).with(
@@ -27,11 +26,15 @@ describe BuildsController do
 
     context 'from a non-GitHub IP address' do
       it 'does not create GitHub status' do
+        user = create(
+          :user,
+          github_token: 'authtoken',
+          github_username: 'salbertson'
+        )
         api = mock
         GithubApi.stubs(new: api)
-        request.env['HTTP_REFERER'] = '123.45.678.910'
 
-        post :create, { payload: pull_request_payload }
+        post :create, { token: 'notauthorized', payload: pull_request_payload }
 
         expect(api).to have_received(:create_status).never
       end
