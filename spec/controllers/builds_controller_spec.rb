@@ -2,41 +2,42 @@ require 'spec_helper'
 
 describe BuildsController do
   describe '#create' do
-    context 'from a GitHub IP address' do
-      it 'creates GitHub status' do
+    context 'with valid token' do
+      it 'runs build' do
         user = create(
           :user,
           github_token: 'authtoken',
           github_username: 'salbertson'
         )
-        api = mock(:create_status)
+
+        pull_request = stub(github_login: user.github_username)
+        PullRequest.stubs(new: pull_request)
+        build_runner = mock(:run)
+        BuildRunner.stubs(new: build_runner)
+        api = mock
         GithubApi.stubs(new: api)
 
         post :create, { token: user.github_token, payload: pull_request_payload }
 
+        expect(PullRequest).to have_received(:new).with(pull_request_payload)
         expect(GithubApi).to have_received(:new).with(user.github_token)
-        expect(api).to have_received(:create_status).with(
-          'salbertson/life',
-          '498b81cd038f8a3ac02f035a8537b7ddcff38a81',
-          'success',
-          'Hound approves'
-        )
+        expect(build_runner).to have_received(:run).with(pull_request, api)
       end
     end
 
-    context 'from a non-GitHub IP address' do
-      it 'does not create GitHub status' do
+    context 'without valid token' do
+      it 'does not run build' do
         user = create(
           :user,
           github_token: 'authtoken',
           github_username: 'salbertson'
         )
-        api = mock
-        GithubApi.stubs(new: api)
+        build_runner = mock
+        BuildRunner.stubs(new: build_runner)
 
         post :create, { token: 'notauthorized', payload: pull_request_payload }
 
-        expect(api).to have_received(:create_status).never
+        expect(build_runner).to have_received(:run).never
       end
     end
   end

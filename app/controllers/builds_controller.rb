@@ -3,18 +3,17 @@ class BuildsController < ApplicationController
   before_filter :authorize_github
 
   def create
-    api = GithubApi.new(user.github_token)
-    api.create_status(
-      pull_request.full_repo_name,
-      pull_request.sha,
-      'success',
-      'Hound approves'
-    )
-
+    build_runner.run(pull_request, github_api)
     render nothing: true
   end
 
   private
+
+  def authorize_github
+    if params[:token] != user.github_token
+      render nothing: true, status: 401
+    end
+  end
 
   def user
     @user ||= User.find_by_github_username(pull_request.github_login)
@@ -24,9 +23,11 @@ class BuildsController < ApplicationController
     @pull_request ||= PullRequest.new(params[:payload])
   end
 
-  def authorize_github
-    if params[:token] != user.github_token
-      render nothing: true, status: 401
-    end
+  def build_runner
+    BuildRunner.new
+  end
+
+  def github_api
+    GithubApi.new(user.github_token)
   end
 end
