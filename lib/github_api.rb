@@ -20,11 +20,11 @@ class GithubApi
     )
   end
 
-  def create_status(full_repo_name, commit_hash, status, description)
+  def create_pending_status(pull_request, description)
     client.create_status(
-      full_repo_name,
-      commit_hash,
-      status,
+      pull_request.full_repo_name,
+      pull_request.sha,
+      'pending',
       description: description
     )
   end

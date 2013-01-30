@@ -28,18 +28,19 @@ describe GithubApi do
     end
   end
 
-  describe '#create_status' do
-    it 'creates status on GitHub' do
-      auth_token = 'authtoken'
-      api = GithubApi.new(auth_token)
-      full_repo_name = 'jimtom/repo'
-      commit_hash = 'abc123'
-      state = 'pending'
-      description = 'Hound approves'
-      api = GithubApi.new(auth_token)
-      stub_status_creation_request(auth_token, full_repo_name, commit_hash, state, description)
+  describe '#create_pending_status' do
+    it 'creates a pending GitHub status' do
+      pull_request = stub(full_repo_name: 'jimtom/repo', sha: 'abc123')
+      api = GithubApi.new('authtoken')
+      stub_status_creation_request(
+        'authtoken',
+        'jimtom/repo',
+        'abc123',
+        'pending',
+        'Working...'
+      )
 
-      response = api.create_status(full_repo_name, commit_hash, state, description)
+      response = api.create_pending_status(pull_request, 'Working...')
 
       expect(response.id).not_to be_nil
     end
