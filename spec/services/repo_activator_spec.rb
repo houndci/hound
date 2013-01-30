@@ -6,8 +6,8 @@ describe RepoActivator do
     context 'with existing repo' do
       it 'activates existing repo' do
         repo = mock(:activate)
-        user = stub(github_repo: repo, github_token: nil)
-        api = mock(:create_pull_request_hook)
+        user = mock(github_repo: repo, github_token: nil)
+        api = stub(:create_pull_request_hook)
         activator = RepoActivator.new
 
         activator.activate(123, 'jimtom/repo', user, api, 'http://example.com')
@@ -17,7 +17,7 @@ describe RepoActivator do
       end
 
       it 'creates GitHub hook' do
-        repo = mock(:activate)
+        repo = stub(:activate)
         user = stub(github_repo: repo, github_token: 'authtoken')
         api = mock(:create_pull_request_hook)
         activator = RepoActivator.new
@@ -31,17 +31,26 @@ describe RepoActivator do
 
     context 'without existing repo' do
       it 'creates new active repo' do
-        user = stub(github_repo: nil, create_github_repo: nil, github_token: nil)
-        api = mock(:create_pull_request_hook)
+        user = mock(
+          github_repo: nil,
+          create_github_repo: nil,
+          github_token: nil
+        )
+        api = stub(:create_pull_request_hook)
         activator = RepoActivator.new
 
         activator.activate(123, 'jimtom/repo', user, api, 'http://example.com')
 
-        expect(user).to have_received(:create_github_repo).with(github_id: 123, active: true)
+        expect(user).to have_received(:create_github_repo).
+          with(github_id: 123, active: true)
       end
 
       it 'creates GitHub hook' do
-        user = stub(github_repo: nil, create_github_repo: nil, github_token: 'authtoken')
+        user = stub(
+          github_repo: nil,
+          create_github_repo: nil,
+          github_token: 'authtoken'
+        )
         api = mock(:create_pull_request_hook)
         activator = RepoActivator.new
 
