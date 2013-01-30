@@ -12,7 +12,7 @@ class BuildsController < ApplicationController
   def create
     api = GithubApi.new(user.github_token)
     api.create_status(
-      pull_request.repo_name,
+      pull_request.full_repo_name,
       pull_request.sha,
       'success',
       'Hound approves'
@@ -24,15 +24,16 @@ class BuildsController < ApplicationController
   private
 
   def user
-    User.find_by_github_username(pull_request.user_login)
+    User.find_by_github_username(pull_request.github_login)
   end
 
   def pull_request
-    @pull_request ||= PullRequest.new(params[:pull_request])
+    @pull_request ||= PullRequest.new(params[:payload])
   end
 
   def authorize_github
     unless GITHUB_IPS.include? request.referer
+      Rails.logger.info "Referer is not GitHub (#{request.referer})"
       render nothing: true, status: 401
     end
   end

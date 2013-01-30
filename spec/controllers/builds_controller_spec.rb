@@ -7,18 +7,18 @@ describe BuildsController do
         user = create(
           :user,
           github_token: 'authtoken',
-          github_username: 'octocat'
+          github_username: 'salbertson'
         )
         api = mock(:create_status)
         GithubApi.stubs(new: api)
         request.env['HTTP_REFERER'] = BuildsController::GITHUB_IPS.first
 
-        post :create, { pull_request: pull_request_payload }
+        post :create, { payload: pull_request_payload }
 
         expect(GithubApi).to have_received(:new).with(user.github_token)
         expect(api).to have_received(:create_status).with(
-          'octocat/Hello-World',
-          '6dcb09b5b57875f334f61aebed695e2e4193db5e',
+          'salbertson/life',
+          '498b81cd038f8a3ac02f035a8537b7ddcff38a81',
           'success',
           'Hound approves'
         )
@@ -31,7 +31,7 @@ describe BuildsController do
         GithubApi.stubs(new: api)
         request.env['HTTP_REFERER'] = '123.45.678.910'
 
-        post :create, { pull_request: pull_request_payload }
+        post :create, { payload: pull_request_payload }
 
         expect(api).to have_received(:create_status).never
       end

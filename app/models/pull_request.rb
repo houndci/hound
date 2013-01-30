@@ -1,25 +1,19 @@
 class PullRequest
-  attr_reader :data
+  attr_reader :payload
 
-  def initialize(data)
-    @data = JSON.parse(data)
+  def initialize(payload)
+    @payload = JSON.parse(payload)
   end
 
-  def repo_name
-    head['repo']['full_name']
+  def full_repo_name
+    payload['pull_request']['head']['repo']['full_name']
   end
 
   def sha
-    head['sha']
+    payload['pull_request']['head']['sha']
   end
 
-  def user_login
-    head['user']['login']
-  end
-
-  private
-
-  def head
-    data['head']
+  def github_login
+    payload['pull_request']['head']['user']['login']
   end
 end
