@@ -1,7 +1,6 @@
 class WhitespaceRule < Rule
-  def violated?
+  def violated?(text)
     trailing_whitespace = /\s$/
-
-    has?(trailing_whitespace)
+    text =~ trailing_whitespace
   end
 end

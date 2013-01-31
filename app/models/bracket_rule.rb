@@ -1,8 +1,7 @@
 class BracketRule < Rule
-  def violated?
+  def violated?(text)
     whitespace_before = /\[\s+/
     whitespace_after = /\s+\]/
-
-    has?(whitespace_before) || has?(whitespace_after)
+    text =~ whitespace_before || text =~ whitespace_after
   end
 end
