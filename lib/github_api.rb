@@ -28,4 +28,22 @@ class GithubApi
       description: description
     )
   end
+
+  def create_successful_status(pull_request, description)
+    client.create_status(
+      pull_request.full_repo_name,
+      pull_request.sha,
+      'success',
+      description: description
+    )
+  end
+
+  def create_failure_status(pull_request, description)
+    client.create_status(
+      pull_request.full_repo_name,
+      pull_request.sha,
+      'failure',
+      description: description
+    )
+  end
 end
