@@ -3,7 +3,7 @@ class BuildsController < ApplicationController
   before_filter :authorize_github
 
   def create
-    checker.check(pull_request, user.github_token)
+    runner.run(pull_request, github_api)
     render nothing: true
   end
 
@@ -23,7 +23,11 @@ class BuildsController < ApplicationController
     @pull_request ||= PullRequest.new(params[:payload])
   end
 
-  def checker
-    StyleChecker.new
+  def runner
+    BuildRunner.new
+  end
+
+  def github_api
+    GithubApi.new(user.github_token)
   end
 end

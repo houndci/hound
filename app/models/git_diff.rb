@@ -1,10 +1,14 @@
+require 'open-uri'
+
 class GitDiff
-  def initialize(text)
-    @stream = StringIO.new(text)
+  attr_reader :stream
+
+  def initialize(url)
+    @stream = open(url)
   end
 
   def additions
-    @additions ||= @stream.lines.inject([]) do |result, line|
+    @additions ||= stream.lines.inject([]) do |result, line|
       if line_of_addition?(line)
         result << sanitize_line(line)
       end

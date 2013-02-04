@@ -3,22 +3,30 @@ require 'app/models/git_diff'
 
 describe GitDiff, '#additions' do
   it 'returns all of the lines that were added in a diff' do
-    diff = GitDiff.new(example_diff)
+    diff_url = 'http://example.com/1.diff'
+    stub_diff_request(diff_url, example_diff)
+    diff = GitDiff.new(diff_url)
 
     expect(diff.additions).to eq ['+ line 2', 'line 2+2']
   end
 
   it 'parses an actual github diff file' do
-    diff_path = File.expand_path('../../support/fixtures/sample.diff', __FILE__)
-    diff = GitDiff.new(File.read(diff_path))
+    diff_url = 'http://example.com/1.diff'
+    stub_diff_request(diff_url, real_diff)
+    diff = GitDiff.new(diff_url)
 
     expect(diff.additions).to have(165).items
   end
 
   private
 
+  def stub_diff_request(diff_url, diff_content)
+    stub_request(:get, diff_url).
+      to_return(:status => 200, :body => diff_content, :headers => {})
+  end
+
   def example_diff
-    @diff ||= <<-TEXT
+    <<-TEXT
 +++filename
    line 1
 ++ line 2
@@ -26,5 +34,9 @@ describe GitDiff, '#additions' do
 -  line 4
 +  line 2+2  
     TEXT
+  end
+
+  def real_diff
+    File.read('spec/support/fixtures/sample.diff')
   end
 end
