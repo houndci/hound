@@ -11,6 +11,12 @@ describe BraceRule, '#violated?' do
     end
   end
 
+  context 'with empty string' do
+    it 'is not violated' do
+      expect('').not_to violate(BraceRule)
+    end
+  end
+
   context 'with braces on separate lines' do
     it 'is not violated' do
       example = <<-TEXT
