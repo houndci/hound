@@ -1,15 +1,16 @@
 require 'spec_helper'
 
 describe BuildRunner do
+  it 'initializes style guide with all rules' do
+    StyleGuide.stubs(:new)
+    rules = stubbed_rules
+
+    BuildRunner.new
+
+    expect(StyleGuide).to have_received(:new).with(rules)
+  end
+
   describe '#run' do
-    it 'initializes style guide with all rules' do
-      StyleGuide.stubs(:new)
-      rules = stubbed_rules
-      BuildRunner.new
-
-      expect(StyleGuide).to have_received(:new).with(rules)
-    end
-
     context 'with violations' do
       it 'sets the GitHub status to pending' do
         guide = stub(check: nil, violations: ['violation'])
