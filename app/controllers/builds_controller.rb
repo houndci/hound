@@ -3,7 +3,7 @@ class BuildsController < ApplicationController
   before_filter :authorize_github
 
   def create
-    runner.run(pull_request, github_api)
+    build_runner.run(pull_request, github_api)
     render nothing: true
   end
 
@@ -23,7 +23,7 @@ class BuildsController < ApplicationController
     @pull_request ||= PullRequest.new(params[:payload])
   end
 
-  def runner
+  def build_runner
     BuildRunner.new
   end
 

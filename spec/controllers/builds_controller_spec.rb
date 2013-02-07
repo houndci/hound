@@ -12,8 +12,8 @@ describe BuildsController do
 
         pull_request = stub(github_login: user.github_username)
         PullRequest.stubs(new: pull_request)
-        runner = mock(:run)
-        BuildRunner.stubs(new: runner)
+        build_runner = mock(:run)
+        BuildRunner.stubs(new: build_runner)
         api = mock
         GithubApi.stubs(new: api)
 
@@ -21,7 +21,7 @@ describe BuildsController do
 
         expect(PullRequest).to have_received(:new).with(pull_request_payload)
         expect(GithubApi).to have_received(:new).with(user.github_token)
-        expect(runner).to have_received(:run).with(pull_request, api)
+        expect(build_runner).to have_received(:run).with(pull_request, api)
       end
     end
 
@@ -32,12 +32,12 @@ describe BuildsController do
           github_token: 'authtoken',
           github_username: 'salbertson'
         )
-        runner = mock
-        BuildRunner.stubs(new: runner)
+        build_runner = mock
+        BuildRunner.stubs(new: build_runner)
 
         post :create, { token: 'notauthorized', payload: pull_request_payload }
 
-        expect(runner).to have_received(:run).never
+        expect(build_runner).to have_received(:run).never
       end
     end
   end
