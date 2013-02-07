@@ -12,7 +12,7 @@ describe StyleGuide do
 
         guide.check(lines)
 
-        expect(guide.violations).not_to be_empty
+        expect(guide).to have(1).violations
       end
     end
 
@@ -25,7 +25,7 @@ describe StyleGuide do
 
         guide.check(lines)
 
-        expect(guide.violations).to be_empty
+        expect(guide).to have(0).violations
       end
     end
   end
