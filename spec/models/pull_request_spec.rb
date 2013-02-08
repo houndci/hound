@@ -11,7 +11,9 @@ describe PullRequest do
       payload = File.read('spec/support/fixtures/github_pull_request_payload.json')
       pull_request = PullRequest.new(payload)
 
-      expect(pull_request.additions).to eq ['one', 'two']
+      additions = pull_request.additions
+
+      expect(additions).to eq ['one', 'two']
       expect(GitDiff).to have_received(:new).with(pull_request.diff_url)
     end
   end
