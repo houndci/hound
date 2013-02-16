@@ -32,7 +32,7 @@ describe GitDiff, '#additions' do
 ++ line 2
    line 3+3
 -  line 4
-+  line 2+2  
++  line 2+2
     TEXT
   end
 
