@@ -10,11 +10,13 @@ class RepoActivationsController < ApplicationController
     )
 
     render nothing: true
-  end
+ end
 
   def destroy
+    activator = RepoActivator.new
     repo = current_user.github_repo(params[:id])
-    repo.deactivate
+
+    activator.deactivate(github_api, repo)
 
     render nothing: true
   end
