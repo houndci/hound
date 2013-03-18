@@ -12,16 +12,18 @@ feature 'Repo list' do
 
     click_link 'on'
 
-    expect(find_link('off')).to be_visible
+    expect(page).to have_link('off')
   end
 
   scenario 'user deactivates repo', js: true do
+    auth_token = 'authtoken'
+    stub_hook_removal_request(auth_token, 'jimtom/My-Private-Repo', 1)
     sign_in_and_stub_github_requests
 
     click_link 'on'
     click_link 'off'
 
-    expect(find_link('on')).to be_visible
+    expect(page).to have_link('on')
   end
 
   scenario 'user activates repo then refreshes the page', js: true do
@@ -30,7 +32,7 @@ feature 'Repo list' do
     click_link 'on'
     reload
 
-    expect(find_link('off')).to be_visible
+    expect(page).to have_link('off')
   end
 
   def sign_in_and_stub_github_requests

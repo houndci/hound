@@ -26,6 +26,17 @@ module GithubApiHelper
     )
   end
 
+  def stub_hook_removal_request(auth_token, full_repo_name, hook_id)
+    stub_request(
+      :delete,
+      "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 204
+    )
+  end
+
   def stub_status_creation_request(auth_token, full_repo_name, commit_hash, state, description)
     stub_request(
       :post,

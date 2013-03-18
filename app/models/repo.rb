@@ -1,6 +1,9 @@
 class Repo < ActiveRecord::Base
-  attr_accessible :github_id, :active
+  attr_accessible :github_id, :active, :full_github_name, :hook_id
 
+  belongs_to :user
+
+  validates :full_github_name, uniqueness: true, presence: true
   validates :github_id, uniqueness: true, presence: true
 
   scope :active, where(active: true)
@@ -10,6 +13,10 @@ class Repo < ActiveRecord::Base
   end
 
   def deactivate
-    update_attribute(:active, false)
+    update_attributes(active: false, hook_id: nil)
+  end
+
+  def update_hook_id(hook_id)
+    update_attribute(:hook_id, hook_id)
   end
 end
