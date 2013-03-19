@@ -7,6 +7,7 @@ gem 'octokit'
 gem 'omniauth-github'
 gem 'pg'
 gem 'rails', '3.2.11'
+gem 'strong_parameters'
 gem 'thin'
 
 group :assets do

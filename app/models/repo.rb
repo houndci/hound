@@ -1,4 +1,6 @@
 class Repo < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   attr_accessible :github_id, :active
 
   validates :github_id, uniqueness: true, presence: true
