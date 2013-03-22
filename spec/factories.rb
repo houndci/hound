@@ -1,8 +1,9 @@
 FactoryGirl.define do
   factory :repo do
     user
+    sequence(:name) { |n| "Repo #{n}" }
+    sequence(:full_github_name) { |n| "user/repo#{n}" }
     sequence(:github_id) { |n| n }
-    full_github_name 'user/repo'
     active false
   end
 

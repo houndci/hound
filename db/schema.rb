@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130228235811) do
+ActiveRecord::Schema.define(:version => 20130322220351) do
 
   create_table "repos", :force => true do |t|
-    t.integer "github_id",        :null => false
-    t.boolean "active",           :null => false
-    t.integer "user_id",          :null => false
-    t.string  "full_github_name", :null => false
+    t.integer "github_id",                           :null => false
+    t.boolean "active",           :default => false, :null => false
+    t.integer "user_id",                             :null => false
+    t.string  "name",                                :null => false
+    t.string  "full_github_name",                    :null => false
     t.integer "hook_id"
   end
 

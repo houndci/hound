@@ -1,5 +1,5 @@
-ENV['GITHUB_CLIENT_ID'] ||= '0b6d93f3a6125d34fa81'
-ENV['GITHUB_CLIENT_SECRET'] ||= 'ce3ff1ce29a028ca5018afc299b89f70e0e74dfe'
+ENV['GITHUB_CLIENT_ID'] ||= 'a7085cf1950d97a7cc6d'
+ENV['GITHUB_CLIENT_SECRET'] ||= 'b66556fe1048445cc7bf69879e49bbf2fa1a0d00'
 
 Houndapp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb

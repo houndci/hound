@@ -15,7 +15,7 @@ describe GitDiff, '#additions' do
     stub_diff_request(diff_url, real_diff)
     diff = GitDiff.new(diff_url)
 
-    expect(diff.additions).to have(165).items
+    expect(diff).to have(165).additions
   end
 
   private
