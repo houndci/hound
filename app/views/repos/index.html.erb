@@ -1,14 +1,3 @@
-<ul id="repo-list">
-</ul>
+<%= link_to 'Sync repos', sync_repos_path %>
 
-<script type="text/template" id="repo-list-item-template">
-<li>{{ name }} <%= link_to 'on', nil, class: 'activate' %><%= link_to 'off', nil, class: 'deactivate' %></li>
-</script>
-
-<% content_for :javascript do %>
-  <%= javascript_include_tag 'repos/index' %>
-  <%= javascript_tag do %>
-    var repoList = RepoList(<%= raw @repos.to_json %>);
-    repoList.render($('#repo-list'));
-  <% end %>
-<% end %>
+<%= render @repos %>

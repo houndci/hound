@@ -1,8 +1,12 @@
 class Repo < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
-  attr_accessible :github_id, :active
+  attr_accessible :name, :full_github_name, :github_id
 
+  belongs_to :user
+
+  validates :name, presence: true
+  validates :full_github_name, presence: true
   validates :github_id, uniqueness: true, presence: true
 
   scope :active, where(active: true)

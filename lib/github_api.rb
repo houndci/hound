@@ -8,7 +8,24 @@ class GithubApi
   end
 
   def get_repos
-    client.repos
+    repos = []
+    orgs = client.orgs
+
+    orgs.each do |org|
+      page = 1
+
+      while true
+        results = client.org_repos(org[:login], page: page)
+        if results.any?
+          repos = repos + results
+          page += 1
+        else
+          break
+        end
+      end
+    end
+
+    repos
   end
 
   def create_pull_request_hook(full_repo_name, callback_endpoint)

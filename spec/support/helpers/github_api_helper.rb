@@ -1,15 +1,7 @@
 module GithubApiHelper
-  def stub_repos_request(auth_token = 'authtoken')
-    stub_request(
-      :get,
-      'https://api.github.com/user/repos'
-    ).with(
-      headers: { 'Authorization' => "token #{auth_token}" }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
+  def stub_repo_requests(auth_token)
+    stub_orgs_request(auth_token)
+    stub_paginated_org_repo_requests(auth_token)
   end
 
   def stub_hook_creation_request(auth_token, full_repo_name, callback_endpoint)
@@ -36,6 +28,56 @@ module GithubApiHelper
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_status_creation_response.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  private
+
+  def stub_orgs_request(auth_token)
+    stub_request(
+      :get,
+      'https://api.github.com/user/orgs'
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/github_orgs_response.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_paginated_org_repo_requests(auth_token)
+    stub_request(
+      :get,
+      'https://api.github.com/orgs/thoughtbot/repos?page=1'
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+
+    stub_request(
+      :get,
+      'https://api.github.com/orgs/thoughtbot/repos?page=2'
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+
+    stub_request(
+      :get,
+      'https://api.github.com/orgs/thoughtbot/repos?page=3'
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: '[]',
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
