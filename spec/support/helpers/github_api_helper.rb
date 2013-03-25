@@ -1,5 +1,6 @@
 module GithubApiHelper
   def stub_repo_requests(auth_token)
+    stub_paginated_repo_requests(auth_token)
     stub_orgs_request(auth_token)
     stub_paginated_org_repo_requests(auth_token)
   end
@@ -43,6 +44,41 @@ module GithubApiHelper
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_orgs_response.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_paginated_repo_requests(auth_token)
+    stub_request(
+      :get,
+      'https://api.github.com/user/repos?page=1'
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+
+    stub_request(
+      :get,
+      'https://api.github.com/user/repos?page=2'
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+
+    stub_request(
+      :get,
+      'https://api.github.com/user/repos?page=3'
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: '[]',
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end

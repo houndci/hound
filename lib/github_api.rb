@@ -9,6 +9,18 @@ class GithubApi
 
   def get_repos
     repos = []
+    page = 1
+
+    while true
+      results = client.repos(nil, page: page)
+      if results.any?
+        repos = repos + results
+        page += 1
+      else
+        break
+      end
+    end
+
     orgs = client.orgs
 
     orgs.each do |org|
