@@ -9,7 +9,7 @@ class ReposController < ApplicationController
   end
 
   def update
-    if params[:repo][:active] == '1'
+    if activate?
       activator.activate(
         @repo.github_id,
         @repo.full_github_name,
@@ -45,5 +45,9 @@ class ReposController < ApplicationController
 
   def synchronization
     RepoSynchronization.new(current_user)
+  end
+
+  def activate?
+    params[:repo][:active] == '1'
   end
 end
