@@ -23,16 +23,18 @@ describe RepoActivationsController do
       user = create(:user, github_token: 'authtoken')
       stub_sign_in(user)
       api = stub
-      activator = mock(:deactivate)
-      repo = stub
       GithubApi.stubs(new: api)
+      activator = mock(:deactivate)
       RepoActivator.stubs(new: activator)
+      repo = build_stubbed(:repo, user_id: user.id)
       User.any_instance.stubs(github_repo: repo)
 
-      post :destroy, { id: 1 }
+      post :destroy, { id: repo.id }
 
       expect(GithubApi).to have_received(:new).with(user.github_token)
       expect(activator).to have_received(:deactivate).with(api, repo)
+      expect(repo.active?).to be_false
+      expect(repo.hook_id).to be_nil
     end
   end
 end

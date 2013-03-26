@@ -17,7 +17,7 @@ class RepoActivator
       callback_url(host, user.github_token)
     )
 
-    repo.update_hook_id(hook.id)
+    repo.update_attribute(:hook_id, hook.id)
   end
 
   def deactivate(github_api, repo)

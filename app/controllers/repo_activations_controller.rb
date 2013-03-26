@@ -16,10 +16,7 @@ class RepoActivationsController < ApplicationController
     activator = RepoActivator.new
     repo = current_user.github_repo(params[:id])
 
-    activator.deactivate(
-      github_api,
-      repo
-    )
+    activator.deactivate(github_api, repo)
 
     render nothing: true
   end

@@ -5,14 +5,14 @@ describe Repo do
     user = create(:user)
     user.repos.create(active: false, github_id: 123, full_github_name: 'repo')
 
-    should validate_uniqueness_of :github_id
+    expect(subject).to validate_uniqueness_of :github_id
   end
 
   it 'validates uniqueness of full_github_name' do
     user = create(:user)
     user.repos.create(active: false, github_id: 123, full_github_name: 'repo')
 
-    should validate_uniqueness_of :full_github_name
+    expect(subject).to validate_uniqueness_of :full_github_name
   end
 
   it { should belong_to :user }
