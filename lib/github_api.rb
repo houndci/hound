@@ -67,9 +67,8 @@ class GithubApi
 
   def get_org_repos
     repos = []
-    orgs = client.orgs
 
-    orgs.each do |org|
+    get_orgs.each do |org|
       page = 1
 
       loop do
@@ -81,5 +80,9 @@ class GithubApi
     end
 
     repos
+  end
+
+  def get_orgs
+    client.orgs
   end
 end
