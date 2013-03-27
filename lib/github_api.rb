@@ -9,35 +9,8 @@ class GithubApi
 
   def get_repos
     repos = []
-    page = 1
-
-    while true
-      results = client.repos(nil, page: page)
-      if results.any?
-        repos = repos + results
-        page += 1
-      else
-        break
-      end
-    end
-
-    orgs = client.orgs
-
-    orgs.each do |org|
-      page = 1
-
-      while true
-        results = client.org_repos(org[:login], page: page)
-        if results.any?
-          repos = repos + results
-          page += 1
-        else
-          break
-        end
-      end
-    end
-
-    repos
+    repos.concat get_user_repos
+    repos.concat get_org_repos
   end
 
   def create_pull_request_hook(full_repo_name, callback_endpoint)
@@ -74,5 +47,39 @@ class GithubApi
       'failure',
       description: description
     )
+  end
+
+  private
+
+  def get_user_repos
+    repos = []
+    page = 1
+
+    loop do
+      results = client.repos(nil, page: page)
+      repos.concat results
+      break unless results.any?
+      page += 1
+    end
+
+    repos
+  end
+
+  def get_org_repos
+    repos = []
+    orgs = client.orgs
+
+    orgs.each do |org|
+      page = 1
+
+      loop do
+        results = client.org_repos(org[:login], page: page)
+        repos.concat results
+        break unless results.any?
+        page += 1
+      end
+    end
+
+    repos
   end
 end
