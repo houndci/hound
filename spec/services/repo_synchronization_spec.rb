@@ -23,7 +23,7 @@ describe RepoSynchronization do
 
       synchronization.start
 
-      expect(user.repos).to have(1).item
+      expect(user).to have(1).repo
     end
   end
 end
