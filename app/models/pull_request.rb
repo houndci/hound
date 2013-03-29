@@ -14,7 +14,7 @@ class PullRequest
   end
 
   def github_login
-    payload['pull_request']['head']['user']['login']
+    payload['pull_request']['user']['login']
   end
 
   def diff_url
