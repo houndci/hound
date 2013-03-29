@@ -20,6 +20,7 @@ class BuildsController < ApplicationController
   end
 
   def pull_request
+    debugger
     @pull_request ||= PullRequest.new(params[:payload])
   end
 
