@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   validates :github_username, presence: true
 
-  before_create :generate_remember_token
+  before_create :generate_remember_token           
 
   def to_s
     github_username
