@@ -18,7 +18,7 @@ class PullRequest
   end
 
   def diff_url
-    payload['diff_url']
+    payload['pull_request']['diff_url']
   end
 
   def additions
