@@ -4,6 +4,7 @@ class GitDiff
   attr_reader :stream
 
   def initialize(url)
+    debugger
     @stream = open(url)
   end
 
