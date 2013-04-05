@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
     github_username
   end
 
-  def github_repo( github_id)
+  def github_repo( github_id )
     repos.where( github_id: github_id ).first                    
   end
 
