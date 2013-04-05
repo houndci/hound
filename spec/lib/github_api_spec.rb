@@ -1,5 +1,6 @@
 require 'fast_spec_helper'
 require 'lib/github_api'
+require 'json'
 
 describe GithubApi do
   describe '#repos' do
@@ -47,7 +48,7 @@ describe GithubApi do
 
   describe '#create_pending_status' do
     it 'creates a pending GitHub status' do
-      pull_request = stub(full_repo_name: 'jimtom/repo', sha: 'abc123')
+      commit = stub(full_repo_name: 'jimtom/repo', id: 'abc123')
       api = GithubApi.new('authtoken')
       stub_status_creation_request(
         'authtoken',
@@ -57,9 +58,22 @@ describe GithubApi do
         'Working...'
       )
 
-      response = api.create_pending_status(pull_request, 'Working...')
+      response = api.create_pending_status(commit, 'Working...')
 
       expect(response.id).not_to be_nil
+    end
+  end
+
+  describe '#patch' do
+    it 'returns diff patch' do
+      api = GithubApi.new('authtoken')
+      commit = stub(full_repo_name: 'jimtom/repo', previous_commit_id: '123', id: '456')
+      stub_patch_request('jimtom/repo', '123', '456')
+      json = JSON.parse(File.read('spec/support/fixtures/compare_payload.json'))
+
+      patch = api.patch(commit)
+
+      expect(patch).to eq json['files'][0]['patch']
     end
   end
 end

@@ -24,31 +24,40 @@ class GithubApi
     client.remove_hook(full_github_name, hook_id)
   end
 
-  def create_pending_status(pull_request, description)
+  def create_pending_status(commit, description)
     client.create_status(
-      pull_request.full_repo_name,
-      pull_request.sha,
+      commit.full_repo_name,
+      commit.id,
       'pending',
       description: description
     )
   end
 
-  def create_successful_status(pull_request, description)
+  def create_successful_status(commit, description)
     client.create_status(
-      pull_request.full_repo_name,
-      pull_request.sha,
+      commit.full_repo_name,
+      commit.id,
       'success',
       description: description
     )
   end
 
-  def create_failure_status(pull_request, description)
+  def create_failure_status(commit, description)
     client.create_status(
-      pull_request.full_repo_name,
-      pull_request.sha,
+      commit.full_repo_name,
+      commit.id,
       'failure',
       description: description
     )
+  end
+
+  def patch(commit)
+    response = client.compare(
+      commit.full_repo_name,
+      commit.previous_commit_id,
+      commit.id
+    )
+    response.files.first.patch
   end
 
   private
