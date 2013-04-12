@@ -18,6 +18,22 @@ describe Commit do
     end
   end
 
+  describe '#previous_commit_id' do
+    it 'returns previous commit sha' do
+      commit = Commit.new(payload)
+
+      expect(commit.previous_commit_id).to eq 'c6035b8c15056c1d3a6680213065455ba9b47ea6'
+    end
+  end
+
+  describe '#pusher' do
+    it 'returns pusher username' do
+      commit = Commit.new(payload)
+
+      expect(commit.pusher).to eq 'salbertson'
+    end
+  end
+
   def payload
     File.read('spec/support/fixtures/commit_payload.json')
   end

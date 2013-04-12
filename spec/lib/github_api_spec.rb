@@ -47,7 +47,7 @@ describe GithubApi do
 
   describe '#create_pending_status' do
     it 'creates a pending GitHub status' do
-      pull_request = stub(full_repo_name: 'jimtom/repo', sha: 'abc123')
+      commit = stub(full_repo_name: 'jimtom/repo', id: 'abc123')
       api = GithubApi.new('authtoken')
       stub_status_creation_request(
         'authtoken',
@@ -57,9 +57,15 @@ describe GithubApi do
         'Working...'
       )
 
-      response = api.create_pending_status(pull_request, 'Working...')
+      response = api.create_pending_status(commit, 'Working...')
 
       expect(response.id).not_to be_nil
+    end
+  end
+
+  describe '#patch' do
+    it 'returns diff patch' do
+      api = GithubApi.new('authtoken')
     end
   end
 end

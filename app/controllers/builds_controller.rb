@@ -1,9 +1,10 @@
 class BuildsController < ApplicationController
-  skip_before_filter :authenticate
   before_filter :authorize_github
 
+  skip_before_filter :authenticate
+
   def create
-    build_runner.run(pull_request, github_api)
+    build_runner.run(commit, github_api)
     render nothing: true
   end
 
@@ -16,11 +17,11 @@ class BuildsController < ApplicationController
   end
 
   def user
-    @user ||= User.find_by_github_username(pull_request.github_login)
+    @user ||= User.find_by_github_username(commit.pusher)
   end
 
-  def pull_request
-    @pull_request ||= PullRequest.new(params[:payload])
+  def commit
+    @commit ||= Commit.new(params[:payload])
   end
 
   def build_runner

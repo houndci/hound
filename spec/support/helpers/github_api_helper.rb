@@ -1,4 +1,8 @@
 module GithubApiHelper
+  def stub_github_requests
+    stub_request(:any, /.*api.github.com.*/)
+  end
+
   def stub_repo_requests(auth_token)
     stub_paginated_repo_requests(auth_token)
     stub_orgs_request(auth_token)
@@ -40,6 +44,19 @@ module GithubApiHelper
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_status_creation_response.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_compare_request(commit, auth_token, fixture)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{commit.full_repo_name}/compare/#{commit.previous_commit_id}...#{commit.id}").with(
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/#{fixture}"),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
