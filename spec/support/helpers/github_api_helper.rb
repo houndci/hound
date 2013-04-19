@@ -61,6 +61,21 @@ module GithubApiHelper
     )
   end
 
+  def stub_patch_request(repo, start, stop)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo}/compare/#{start}...#{stop}"
+    ).with(
+      headers: {
+        'Authorization' => 'token authtoken'
+      }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/compare_payload.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   private
 
   def stub_orgs_request(auth_token)
