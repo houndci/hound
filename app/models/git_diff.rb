@@ -1,14 +1,12 @@
 require 'open-uri'
 
 class GitDiff
-  attr_reader :patch
-
   def initialize(patch)
     @patch = patch
   end
 
   def additions
-    @additions ||= patch.lines.inject([]) do |result, line|
+    @additions ||= @patch.lines.inject([]) do |result, line|
       if line_of_addition?(line)
         result << sanitize_line(line)
       end

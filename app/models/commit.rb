@@ -1,8 +1,6 @@
 require 'json'
 
 class Commit
-  attr_reader :data
-
   def initialize(payload)
     @data = JSON.parse(payload)
   end
@@ -12,24 +10,24 @@ class Commit
   end
 
   def id
-    data['commits'][0]['id']
+    @data['commits'][0]['id']
   end
 
   def previous_commit_id
-    data['before']
+    @data['before']
   end
 
   def pusher
-    data['pusher']['name']
+    @data['pusher']['name']
   end
 
   private
 
   def repo_name
-    data['repository']['name']
+    @data['repository']['name']
   end
 
   def repo_owner
-    data['repository']['owner']['name']
+    @data['repository']['owner']['name']
   end
 end
