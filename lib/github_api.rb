@@ -52,7 +52,8 @@ class GithubApi
   end
 
   def patch(commit)
-    client.compare(commit.full_repo_name, commit.previous_commit_id, commit.id).files.first.patch
+    client.compare(commit.full_repo_name, commit.previous_commit_id, commit.id).
+      files.first.patch
   end
 
   private
