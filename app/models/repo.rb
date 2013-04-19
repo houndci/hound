@@ -18,4 +18,7 @@ class Repo < ActiveRecord::Base
   def deactivate
     update_attributes(active: false, hook_id: nil)
   end
+
+
+
 end
