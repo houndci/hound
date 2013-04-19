@@ -19,12 +19,11 @@ describe BuildRunner do
         GitDiff.stubs(new: diff)
         runner = BuildRunner.new
         commit = stub
-        patch = stub
         api = stub(
           create_pending_status: nil,
           create_successful_status: nil,
           create_failure_status: nil,
-          patch: patch
+          patch: stub
         )
 
         runner.run(commit, api)
@@ -45,12 +44,11 @@ describe BuildRunner do
         GitDiff.stubs(new: diff)
         runner = BuildRunner.new
         commit = stub
-        patch = stub
         api = stub(
           create_pending_status: nil,
           create_successful_status: nil,
           create_failure_status: nil,
-          patch: patch
+          patch: stub
         )
 
         runner.run(commit, api)
