@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(:version => 20130322220351) do
     t.integer "github_id",                           :null => false
     t.boolean "active",           :default => false, :null => false
     t.integer "user_id",                             :null => false
+    t.integer "hook_id"
     t.string  "name",                                :null => false
     t.string  "full_github_name",                    :null => false
-    t.integer "hook_id"
   end
 
   add_index "repos", ["github_id"], :name => "index_repos_on_github_id", :unique => true
