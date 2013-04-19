@@ -54,7 +54,8 @@ class GithubApi
   def patch(commit)
     response = client.compare(
       commit.full_repo_name,
-      commit.previous_commit_id, commit.id
+      commit.previous_commit_id,
+      commit.id
     )
     response.files.first.patch
   end
