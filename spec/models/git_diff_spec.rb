@@ -7,7 +7,7 @@ describe GitDiff do
       commit = stub(patch: patch)
       diff = GitDiff.new(commit.patch)
 
-      expect(diff.additions).to eq ['def github_repo( github_id )']
+      expect(diff.additions).to eq ['def github_repo( github_id )', '# Just a test']
     end
   end
 
