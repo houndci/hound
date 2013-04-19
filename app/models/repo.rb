@@ -9,7 +9,7 @@ class Repo < ActiveRecord::Base
   validates :full_github_name, uniqueness: true, presence: true
   validates :github_id, uniqueness: true, presence: true
 
-  scope :active, where( active: true )
+  scope :active, where(active: true)
 
   def activate
     update_attribute(:active, true)
