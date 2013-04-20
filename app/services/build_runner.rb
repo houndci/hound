@@ -2,16 +2,7 @@ class BuildRunner
   attr_reader :guide
 
   def initialize
-    @guide = StyleGuide.new(
-      [
-        BraceRule.new,
-        BracketRule.new,
-        MethodParenRule.new,
-        ParenRule.new,
-        QuoteRule.new,
-        WhitespaceRule.new
-      ]
-    )
+    @guide = StyleGuide.new
   end
 
   def run(commit, github_api)
