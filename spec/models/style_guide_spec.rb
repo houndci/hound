@@ -1,14 +1,13 @@
 require 'fast_spec_helper'
+require 'rubocop'
 require 'app/models/style_guide'
 
 describe StyleGuide do
   describe '#check' do
     context 'with invalid lines of code' do
       it 'has violations' do
-        rule = stub('violated?' => true)
-        rules = [rule]
-        guide = StyleGuide.new(rules)
-        lines = ['line of code']
+        guide = StyleGuide.new
+        lines = ['blah = "string"']
 
         guide.check(lines)
 
@@ -18,10 +17,8 @@ describe StyleGuide do
 
     context 'with valid lines of code' do
       it 'has no violations' do
-        rule = stub('violated?' => false)
-        rules = [rule]
-        guide = StyleGuide.new(rules)
-        lines = ['line of code']
+        guide = StyleGuide.new
+        lines = ["blah = 'string'"]
 
         guide.check(lines)
 

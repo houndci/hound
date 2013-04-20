@@ -1,13 +1,12 @@
 require 'spec_helper'
 
 describe BuildRunner do
-  it 'initializes style guide with all rules' do
+  it 'initializes style guide' do
     StyleGuide.stubs(:new)
-    rules = stubbed_rules
 
     BuildRunner.new
 
-    expect(StyleGuide).to have_received(:new).with(rules)
+    expect(StyleGuide).to have_received(:new)
   end
 
   describe '#run' do
@@ -59,23 +58,6 @@ describe BuildRunner do
         expect(api).to have_received(:create_successful_status).
           with(commit, 'Hound approves')
       end
-    end
-  end
-
-  def stubbed_rules
-    rules = [
-      BraceRule,
-      BracketRule,
-      MethodParenRule,
-      ParenRule,
-      QuoteRule,
-      WhitespaceRule
-    ]
-
-    stuff = rules.map do |rule|
-      rule_stub = stub
-      rule.stubs(new: rule_stub)
-      rule_stub
     end
   end
 end
