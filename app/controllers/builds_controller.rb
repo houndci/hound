@@ -21,6 +21,7 @@ class BuildsController < ApplicationController
   end
 
   def commit
+    p params
     @commit ||= Commit.new(params[:payload])
   end
 
