@@ -1,0 +1,24 @@
+[
+  {
+    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+    "filename": "file1.txt",
+    "status": "added",
+    "additions": 103,
+    "deletions": 21,
+    "changes": 124,
+    "blob_url": "https://github.com/octocat/Hello-World/blob/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "raw_url": "https://github.com/octocat/Hello-World/raw/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "patch": "@@ -13,7 +13,7 @@ def to_s\n     github_username\n   end\n \n-  def github_repo( github_id)\n+  def github_repo( github_id )\n     repos.where( github_id: github_id ).first                    \n   end\n "
+  },
+  {
+    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+    "filename": "file2.txt",
+    "status": "added",
+    "additions": 103,
+    "deletions": 21,
+    "changes": 124,
+    "blob_url": "https://github.com/octocat/Hello-World/blob/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "raw_url": "https://github.com/octocat/Hello-World/raw/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "patch": "@@ -0,0 +1,45 @@\n+describe HashSyntaxRule, '#violated?' do\n+  end\n"
+  }
+]

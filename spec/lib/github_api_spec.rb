@@ -32,15 +32,12 @@ describe GithubApi do
 
   describe '#remove_pull_request_hook' do
     it 'removes pull request web hook' do
-      auth_token = 'authtoken'
-      api = GithubApi.new(auth_token)
-      repo = build_stubbed(:repo, active: true)
-      stub_hook_removal_request(auth_token, repo.full_github_name, repo.hook_id)
+      repo_name = 'test-user/repo'
+      hook_id = '123'
+      stub_hook_removal_request(repo_name, hook_id)
+      api = GithubApi.new('sometoken')
 
-      response = api.remove_pull_request_hook(
-        repo.full_github_name,
-        repo.hook_id
-      )
+      response = api.remove_pull_request_hook(repo_name, hook_id)
 
       expect(response).to be_true
     end
@@ -48,32 +45,14 @@ describe GithubApi do
 
   describe '#create_pending_status' do
     it 'creates a pending GitHub status' do
-      commit = stub(full_repo_name: 'jimtom/repo', id: 'abc123')
       api = GithubApi.new('authtoken')
-      stub_status_creation_request(
-        'authtoken',
-        'jimtom/repo',
-        'abc123',
-        'pending',
-        'Working...'
-      )
+      repo_name = 'test-user/repo'
+      head_sha = 'abcdefg'
+      stub_status_creation_request(repo_name, head_sha, 'pending', 'Working...')
 
-      response = api.create_pending_status(commit, 'Working...')
+      response = api.create_pending_status(repo_name, head_sha, 'Working...')
 
       expect(response.id).not_to be_nil
-    end
-  end
-
-  describe '#patch' do
-    it 'returns diff patch' do
-      api = GithubApi.new('authtoken')
-      commit = stub(full_repo_name: 'jimtom/repo', previous_commit_id: '123', id: '456')
-      stub_patch_request('jimtom/repo', '123', '456')
-      json = JSON.parse(File.read('spec/support/fixtures/compare_payload.json'))
-
-      patch = api.patch(commit)
-
-      expect(patch).to eq json['files'][0]['patch']
     end
   end
 end

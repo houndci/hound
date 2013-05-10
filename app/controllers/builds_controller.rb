@@ -1,34 +1,16 @@
 class BuildsController < ApplicationController
-  before_filter :authorize_github
-
   skip_before_filter :authenticate
 
   def create
-    build_runner.run(commit, github_api)
-    render nothing: true
-  end
+    pull_request = PullRequest.new(params[:payload])
 
-  private
+    if pull_request.allowed?
+      build_runner = BuildRunner.new(pull_request)
+      build_runner.run
 
-  def authorize_github
-    if params[:token] != user.github_token
-      render nothing: true, status: 401
+      render nothing: true
+    else
+      render text: 'Invalid GitHub action', status: 404
     end
-  end
-
-  def user
-    @user ||= User.find_by_github_username(commit.pusher)
-  end
-
-  def commit
-    @commit ||= Commit.new(params[:payload])
-  end
-
-  def build_runner
-    BuildRunner.new
-  end
-
-  def github_api
-    GithubApi.new(user.github_token)
   end
 end
