@@ -1,0 +1,24 @@
+[
+  {
+    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+    "filename": "file1.txt",
+    "status": "added",
+    "additions": 103,
+    "deletions": 21,
+    "changes": 124,
+    "blob_url": "https://github.com/octocat/Hello-World/blob/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "raw_url": "https://github.com/octocat/Hello-World/raw/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "patch": "@@ -0,0 +1,13 @@\n+class HashSyntaxRule < Rule\n+  def violated?(text)\n+    uses_non_preferred_hash_syntax?(text)\n+  end\n"
+  },
+  {
+    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+    "filename": "file2.txt",
+    "status": "added",
+    "additions": 103,
+    "deletions": 21,
+    "changes": 124,
+    "blob_url": "https://github.com/octocat/Hello-World/blob/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "raw_url": "https://github.com/octocat/Hello-World/raw/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
+    "patch": "@@ -0,0 +1,45 @@\n+require 'fast_spec_helper'\n+require 'app/models/rule'\n+require 'app/models/hash_syntax_rule'\n+describe HashSyntaxRule, '#violated?' do\n+  end\n"
+  }
+]

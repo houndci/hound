@@ -1,16 +1,15 @@
 class StyleGuide
-  attr_reader :rules
   attr_accessor :violations
 
-  def initialize(rules)
-    @rules = rules
+  def initialize
     @violations = []
   end
 
   def check(lines)
     lines.each do |line|
       rules.each do |rule|
-        check_rule(rule, line)
+        rule_instance = rule.new
+        check_rule(rule_instance, line)
       end
     end
   end
@@ -21,5 +20,16 @@ class StyleGuide
     if rule.violated?(line)
       violations << rule
     end
+  end
+
+  def rules
+    [
+      BraceRule,
+      BracketRule,
+      MethodParenRule,
+      ParenRule,
+      QuoteRule,
+      WhitespaceRule
+    ]
   end
 end

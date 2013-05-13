@@ -23,24 +23,24 @@ module GithubApiHelper
     )
   end
 
-  def stub_hook_removal_request(auth_token, full_repo_name, hook_id)
+  def stub_hook_removal_request(full_repo_name, hook_id)
     stub_request(
       :delete,
       "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
     ).with(
-      headers: { 'Authorization' => "token #{auth_token}" }
+      headers: { 'Authorization' => /^token \w+$/ }
     ).to_return(
       status: 204
     )
   end
 
-  def stub_status_creation_request(auth_token, full_repo_name, commit_hash, state, description)
+  def stub_status_creation_request(full_repo_name, commit_sha, state, description)
     stub_request(
       :post,
-      "https://api.github.com/repos/#{full_repo_name}/statuses/#{commit_hash}"
+      "https://api.github.com/repos/#{full_repo_name}/statuses/#{commit_sha}"
     ).with(
       body: %({"description":"#{description}","state":"#{state}"}),
-      headers: { 'Authorization'=>'token authtoken' }
+      headers: { 'Authorization' => /^token \w+$/ }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_status_creation_response.json'),
@@ -48,30 +48,16 @@ module GithubApiHelper
     )
   end
 
-  def stub_compare_request(commit, auth_token, fixture)
+  def stub_pull_request_files_request(full_repo_name, fixture = nil)
+    fixture ||= 'pull_request_files.json'
     stub_request(
       :get,
-      "https://api.github.com/repos/#{commit.full_repo_name}/compare/#{commit.previous_commit_id}...#{commit.id}").with(
+      %r(https://api.github.com/repos/#{full_repo_name}/pulls/\d/files)
     ).with(
-      headers: { 'Authorization' => "token #{auth_token}" }
+      headers: { 'Authorization' => /token \w+/ }
     ).to_return(
       status: 200,
       body: File.read("spec/support/fixtures/#{fixture}"),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
-  end
-
-  def stub_patch_request(repo, start, stop)
-    stub_request(
-      :get,
-      "https://api.github.com/repos/#{repo}/compare/#{start}...#{stop}"
-    ).with(
-      headers: {
-        'Authorization' => 'token authtoken'
-      }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/compare_payload.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
