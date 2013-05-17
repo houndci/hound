@@ -18,4 +18,8 @@ class Repo < ActiveRecord::Base
   def deactivate
     update_attributes(active: false, hook_id: nil)
   end
+
+  def github_token
+    user.github_token
+  end
 end

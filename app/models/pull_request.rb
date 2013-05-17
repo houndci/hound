@@ -3,8 +3,8 @@ class PullRequest
     @payload = JSON.parse(payload)
   end
 
-  def allowed?
-    valid_payload? && allowed_action?
+  def valid?
+    @payload && @payload['pull_request'].present?
   end
 
   def full_repo_name
@@ -19,18 +19,11 @@ class PullRequest
     @payload['number']
   end
 
-  def repo_owner
-    @payload['repository']['owner']['login']
+  def github_repo_id
+    @payload['repository']['id']
   end
 
-  private
-
-  def valid_payload?
-    @payload && @payload['pull_request']
-  end
-
-  def allowed_action?
-    allowed_actions = %w(opened synchronize)
-    allowed_actions.include?(@payload['action'])
+  def action
+    @payload['action']
   end
 end
