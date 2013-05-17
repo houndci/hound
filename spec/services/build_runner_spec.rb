@@ -1,9 +1,18 @@
 require 'spec_helper'
 
 describe BuildRunner, '#run' do
+  let(:repo) { create(:repo) }
+  let(:pull_request) do
+    stub(
+      full_repo_name: 'test-user/repo',
+      head_sha: '123abc',
+      number: 4,
+      github_repo_id: repo.github_id
+    )
+  end
+
   context 'with violations' do
     it 'checks style guide and notifies github of the failed build' do
-      create(:user, github_username: pull_request.repo_owner, github_token: 'abcdef')
       api = mock(
         create_pending_status: nil,
         create_failure_status: nil,
@@ -25,7 +34,6 @@ describe BuildRunner, '#run' do
 
   context 'without violations' do
     it 'checks style guide and notifies github of the passing build' do
-      create(:user, github_username: pull_request.repo_owner, github_token: 'abcdef')
       api = mock(
         create_pending_status: nil,
         create_successful_status: nil,
@@ -46,8 +54,11 @@ end
 
 describe BuildRunner, '#pull_request_additions' do
   it 'returns additions of the pull request' do
-    create(:user, github_username: pull_request.repo_owner, github_token: 'abcdef')
-    stub_pull_request_files_request('test-user/repo')
+    repo_name = 'test-user/repo'
+    repo = stub(github_token: '123abc')
+    pull_request = stub(full_repo_name: repo_name, number: 1, github_repo_id: 1)
+    Repo.stubs(where: [repo])
+    stub_pull_request_files_request(repo_name)
 
     build_runner = BuildRunner.new(pull_request)
     additions = build_runner.pull_request_additions
@@ -66,23 +77,61 @@ describe BuildRunner, '#pull_request_additions' do
   end
 end
 
-describe BuildRunner, '#api' do
-  it 'initializes github api with valid github token' do
-    create(:user, github_username: pull_request.repo_owner, github_token: 'abcdef')
-    GithubApi.stubs(:new)
-
-    build_runner = BuildRunner.new(pull_request)
-    build_runner.send(:api)
-
-    expect(GithubApi).to have_received(:new).with('abcdef')
+describe BuildRunner, '#valid?' do
+  let(:repo) { stub(active?: true, id: 123) }
+  let(:pull_request) do
+    stub(valid?: true, action: 'opened', github_repo_id: repo.id)
   end
-end
 
-def pull_request
-  stub(
-    full_repo_name: 'test-user/repo',
-    head_sha: '123abc',
-    number: 4,
-    repo_owner: 'test-user'
-  )
+  before do
+    Repo.stubs(where: [repo])
+  end
+
+  context 'with syncronize action' do
+    it 'returns true' do
+      build_runner = BuildRunner.new(pull_request)
+
+      expect(build_runner).to be_valid
+    end
+  end
+
+  context 'with closed action' do
+    it 'returns false' do
+      pull_request.stubs(action: 'closed')
+
+      build_runner = BuildRunner.new(pull_request)
+
+      expect(build_runner).not_to be_valid
+    end
+  end
+
+  context 'with invalid pull_request' do
+    it 'returns false' do
+      pull_request.stubs(valid?: false)
+
+      build_runner = BuildRunner.new(pull_request)
+
+      expect(build_runner).not_to be_valid
+    end
+  end
+
+  context 'with deactivated repo' do
+    it 'returns false' do
+      repo.stubs(active?: false)
+
+      build_runner = BuildRunner.new(pull_request)
+
+      expect(build_runner).not_to be_valid
+    end
+  end
+
+  context 'with no repo' do
+    it 'returns false' do
+      Repo.stubs(where: [])
+
+      build_runner = BuildRunner.new(pull_request)
+
+      expect(build_runner).not_to be_valid
+    end
+  end
 end

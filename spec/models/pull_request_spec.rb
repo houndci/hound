@@ -1,25 +1,16 @@
 require 'fast_spec_helper'
 require 'app/models/pull_request'
 require 'json'
+require 'active_support/core_ext/object/blank'
 
 describe PullRequest do
   let(:payload) { File.read('spec/support/fixtures/pull_request_payload.json') }
   let(:pull_request) { PullRequest.new(payload) }
 
-  describe '#allowed?' do
-    context 'with closed action' do
-      it 'returns false' do
-        payload.gsub!('opened', 'closed')
-
-        expect(pull_request).not_to be_allowed
-      end
-    end
-
-    context 'with syncronize action' do
+  describe '#valid?' do
+    context 'with pull_request data' do
       it 'returns true' do
-        payload.gsub!('opened', 'synchronize')
-
-        expect(pull_request).to be_allowed
+        expect(pull_request).to be_valid
       end
     end
 
@@ -27,7 +18,7 @@ describe PullRequest do
       it 'returns false' do
         payload.gsub!('pull_request', '')
 
-        expect(pull_request).not_to be_allowed
+        expect(pull_request).not_to be_valid
       end
     end
   end
@@ -50,9 +41,9 @@ describe PullRequest do
     end
   end
 
-  describe '#repo_owner' do
-    it 'returns the username of the repository owner' do
-      expect(pull_request.repo_owner).to eq 'salbertson'
+  describe '#github_repo_id' do
+    it 'returns the github id of the repository' do
+      expect(pull_request.github_repo_id).to eq 2937493
     end
   end
 end
