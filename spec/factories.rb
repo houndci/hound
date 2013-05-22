@@ -5,6 +5,10 @@ FactoryGirl.define do
     sequence(:full_github_name) { |n| "user/repo#{n}" }
     sequence(:github_id) { |n| n }
     active false
+
+    factory :active_repo do
+      active true
+    end
   end
 
   factory :user do

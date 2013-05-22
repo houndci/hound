@@ -19,10 +19,6 @@ class PullRequest
     @payload['number']
   end
 
-  def github_token
-    repo.github_token
-  end
-
   def github_repo_id
     @payload['repository']['id']
   end

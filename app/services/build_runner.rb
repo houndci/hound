@@ -4,7 +4,7 @@ class BuildRunner
   end
 
   def valid?
-    @pull_request.valid? && allowed_pull_request_action? && repo.try(:active?)
+    @pull_request.valid? && valid_build_action? && repo.try(:active?)
   end
 
   def run
@@ -21,16 +21,16 @@ class BuildRunner
     end
   end
 
+  private
+
   def pull_request_additions
     diff = GitDiff.new(patch)
     diff.additions
   end
 
-  private
-
-  def allowed_pull_request_action?
-    allowed_actions = %w(opened synchronize)
-    allowed_actions.include?(@pull_request.action)
+  def valid_build_action?
+    valid_actions = %w(opened synchronize)
+    valid_actions.include?(@pull_request.action)
   end
 
   def repo

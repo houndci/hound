@@ -1,18 +1,9 @@
 require 'spec_helper'
 
 describe BuildRunner, '#run' do
-  let(:repo) { create(:repo) }
-  let(:pull_request) do
-    stub(
-      full_repo_name: 'test-user/repo',
-      head_sha: '123abc',
-      number: 4,
-      github_repo_id: repo.github_id
-    )
-  end
-
   context 'with violations' do
     it 'checks style guide and notifies github of the failed build' do
+      pull_request = pull_request_stub
       api = mock(
         create_pending_status: nil,
         create_failure_status: nil,
@@ -34,6 +25,7 @@ describe BuildRunner, '#run' do
 
   context 'without violations' do
     it 'checks style guide and notifies github of the passing build' do
+      pull_request = pull_request_stub
       api = mock(
         create_pending_status: nil,
         create_successful_status: nil,
@@ -55,13 +47,11 @@ end
 describe BuildRunner, '#pull_request_additions' do
   it 'returns additions of the pull request' do
     repo_name = 'test-user/repo'
-    repo = stub(github_token: '123abc')
-    pull_request = stub(full_repo_name: repo_name, number: 1, github_repo_id: 1)
-    Repo.stubs(where: [repo])
+    pull_request = pull_request_stub(full_repo_name: repo_name)
     stub_pull_request_files_request(repo_name)
 
     build_runner = BuildRunner.new(pull_request)
-    additions = build_runner.pull_request_additions
+    additions = build_runner.send(:pull_request_additions)
 
     expect(additions).to eq [
       'class HashSyntaxRule < Rule',
@@ -78,17 +68,10 @@ describe BuildRunner, '#pull_request_additions' do
 end
 
 describe BuildRunner, '#valid?' do
-  let(:repo) { stub(active?: true, id: 123) }
-  let(:pull_request) do
-    stub(valid?: true, action: 'opened', github_repo_id: repo.id)
-  end
-
-  before do
-    Repo.stubs(where: [repo])
-  end
-
-  context 'with syncronize action' do
+  context 'with synchronize action' do
     it 'returns true' do
+      pull_request = pull_request_stub(action: 'synchronize')
+
       build_runner = BuildRunner.new(pull_request)
 
       expect(build_runner).to be_valid
@@ -97,8 +80,7 @@ describe BuildRunner, '#valid?' do
 
   context 'with closed action' do
     it 'returns false' do
-      pull_request.stubs(action: 'closed')
-
+      pull_request = pull_request_stub(action: 'closed')
       build_runner = BuildRunner.new(pull_request)
 
       expect(build_runner).not_to be_valid
@@ -107,8 +89,7 @@ describe BuildRunner, '#valid?' do
 
   context 'with invalid pull_request' do
     it 'returns false' do
-      pull_request.stubs(valid?: false)
-
+      pull_request = pull_request_stub(valid?: false)
       build_runner = BuildRunner.new(pull_request)
 
       expect(build_runner).not_to be_valid
@@ -117,8 +98,8 @@ describe BuildRunner, '#valid?' do
 
   context 'with deactivated repo' do
     it 'returns false' do
-      repo.stubs(active?: false)
-
+      repo = create(:repo, active: false)
+      pull_request = pull_request_stub(github_repo_id: repo.github_id)
       build_runner = BuildRunner.new(pull_request)
 
       expect(build_runner).not_to be_valid
@@ -127,11 +108,24 @@ describe BuildRunner, '#valid?' do
 
   context 'with no repo' do
     it 'returns false' do
-      Repo.stubs(where: [])
-
+      pull_request = pull_request_stub(github_repo_id: nil)
       build_runner = BuildRunner.new(pull_request)
 
       expect(build_runner).not_to be_valid
     end
   end
+end
+
+def pull_request_stub(options = {})
+  repo = create(:active_repo)
+  attributes = {
+    action: 'opened',
+    full_repo_name: repo.full_github_name,
+    github_repo_id: repo.github_id,
+    head_sha: '123abc',
+    number: 4,
+    valid?: true
+  }.merge(options)
+
+  stub(attributes)
 end
