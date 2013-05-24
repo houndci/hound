@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.0.0'
 
 gem 'haml-rails'
+gem 'delayed_job_active_record'
 gem 'jquery-rails'
 gem 'octokit'
 gem 'omniauth-github'

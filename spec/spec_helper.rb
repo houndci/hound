@@ -11,6 +11,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   WebMock.disable_net_connect!(allow_localhost: true)
   DatabaseCleaner.strategy = :deletion
+  Delayed::Worker.delay_jobs = false
 
   config.before do
     DatabaseCleaner.clean
