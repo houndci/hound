@@ -6,8 +6,8 @@ class Repo < ActiveRecord::Base
   belongs_to :user
 
   validates :name, presence: true
-  validates :full_github_name, uniqueness: true, presence: true
-  validates :github_id, uniqueness: true, presence: true
+  validates :full_github_name, uniqueness: { scope: :user_id }, presence: true
+  validates :github_id, uniqueness: { scope: :user_id }, presence: true
 
   scope :active, where(active: true)
 
