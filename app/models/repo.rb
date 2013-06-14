@@ -12,7 +12,7 @@ class Repo < ActiveRecord::Base
   scope :active, where(active: true)
 
   def activate
-    update_attribute(:active, true)
+    update_attribute( :active, true )
   end
 
   def deactivate
