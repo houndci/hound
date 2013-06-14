@@ -3,10 +3,10 @@ class BuildsController < ApplicationController
 
   def create
     pull_request = PullRequest.new(params[:payload])
-    build_runner = BuildRunner.new(pull_request)
+    build = Build.new(pull_request)
 
-    if build_runner.valid?
-      build_runner.run
+    if build.valid?
+      build.run
 
       render nothing: true
     else

@@ -1,10 +1,10 @@
-class BuildRunner
+class Build
   def initialize(pull_request)
     @pull_request = pull_request
   end
 
   def valid?
-    @pull_request.valid? && valid_build_action? && repo.try(:active?)
+    @pull_request.valid? && valid_build_action? && repo
   end
 
   def run
@@ -34,7 +34,7 @@ class BuildRunner
   end
 
   def repo
-    @repo ||= Repo.where(github_id: @pull_request.github_repo_id).first
+    @repo ||= Repo.active.where(github_id: @pull_request.github_repo_id).first
   end
 
   def api
