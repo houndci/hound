@@ -1,4 +1,4 @@
-class BuildRunner
+class Build
   def initialize(pull_request)
     @pull_request = pull_request
   end

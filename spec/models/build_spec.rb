@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BuildRunner, '#run' do
+describe Build, '#run' do
   context 'with violations' do
     it 'checks style guide and notifies github of the failed build' do
       pull_request = pull_request_stub
@@ -13,8 +13,8 @@ describe BuildRunner, '#run' do
       GithubApi.stubs(new: api)
       StyleGuide.stubs(new: style_guide)
 
-      build_runner = BuildRunner.new(pull_request)
-      build_runner.run
+      build = Build.new(pull_request)
+      build.run
 
       expect(api).to have_received(:create_pending_status).
         with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
@@ -33,8 +33,8 @@ describe BuildRunner, '#run' do
       )
       GithubApi.stubs(new: api)
 
-      build_runner = BuildRunner.new(pull_request)
-      build_runner.run
+      build = Build.new(pull_request)
+      build.run
 
       expect(api).to have_received(:create_pending_status).
         with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
@@ -44,14 +44,14 @@ describe BuildRunner, '#run' do
   end
 end
 
-describe BuildRunner, '#pull_request_additions' do
+describe Build, '#pull_request_additions' do
   it 'returns additions of the pull request' do
     repo_name = 'test-user/repo'
     pull_request = pull_request_stub(full_repo_name: repo_name)
     stub_pull_request_files_request(repo_name)
 
-    build_runner = BuildRunner.new(pull_request)
-    additions = build_runner.send(:pull_request_additions)
+    build = Build.new(pull_request)
+    additions = build.send(:pull_request_additions)
 
     expect(additions).to eq [
       'class HashSyntaxRule < Rule',
@@ -67,32 +67,32 @@ describe BuildRunner, '#pull_request_additions' do
   end
 end
 
-describe BuildRunner, '#valid?' do
+describe Build, '#valid?' do
   context 'with synchronize action' do
     it 'returns true' do
       pull_request = pull_request_stub(action: 'synchronize')
 
-      build_runner = BuildRunner.new(pull_request)
+      build = Build.new(pull_request)
 
-      expect(build_runner).to be_valid
+      expect(build).to be_valid
     end
   end
 
   context 'with closed action' do
     it 'returns false' do
       pull_request = pull_request_stub(action: 'closed')
-      build_runner = BuildRunner.new(pull_request)
+      build = Build.new(pull_request)
 
-      expect(build_runner).not_to be_valid
+      expect(build).not_to be_valid
     end
   end
 
   context 'with invalid pull_request' do
     it 'returns false' do
       pull_request = pull_request_stub(valid?: false)
-      build_runner = BuildRunner.new(pull_request)
+      build = Build.new(pull_request)
 
-      expect(build_runner).not_to be_valid
+      expect(build).not_to be_valid
     end
   end
 
@@ -100,18 +100,18 @@ describe BuildRunner, '#valid?' do
     it 'returns false' do
       repo = create(:repo, active: false)
       pull_request = pull_request_stub(github_repo_id: repo.github_id)
-      build_runner = BuildRunner.new(pull_request)
+      build = Build.new(pull_request)
 
-      expect(build_runner).not_to be_valid
+      expect(build).not_to be_valid
     end
   end
 
   context 'with no repo' do
     it 'returns false' do
       pull_request = pull_request_stub(github_repo_id: nil)
-      build_runner = BuildRunner.new(pull_request)
+      build = Build.new(pull_request)
 
-      expect(build_runner).not_to be_valid
+      expect(build).not_to be_valid
     end
   end
 end
