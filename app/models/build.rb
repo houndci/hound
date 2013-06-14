@@ -4,7 +4,7 @@ class Build
   end
 
   def valid?
-    @pull_request.valid? && valid_build_action? && repo.try(:active?)
+    @pull_request.valid? && valid_build_action? && repo
   end
 
   def run
@@ -34,7 +34,7 @@ class Build
   end
 
   def repo
-    @repo ||= Repo.where(github_id: @pull_request.github_repo_id).first
+    @repo ||= Repo.active.where(github_id: @pull_request.github_repo_id).first
   end
 
   def api
