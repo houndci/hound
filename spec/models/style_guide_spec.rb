@@ -7,12 +7,16 @@ describe StyleGuide do
   describe '#check' do
     context 'with invalid lines of code' do
       it 'has violations' do
-        lines = ['"bad line of code"']
+        lines = ['"bad line of code"', 'Hello world ']
         style_guide = StyleGuide.new
 
         style_guide.check(lines)
 
-        expect(style_guide).to have(1).violations
+        expect(style_guide).to have(2).violations
+        expect(style_guide.violations).to eq([
+          ['QuoteRule', lines.first],
+          ['WhitespaceRule', lines.last]
+        ])
       end
     end
 

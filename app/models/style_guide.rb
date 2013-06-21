@@ -18,7 +18,7 @@ class StyleGuide
 
   def check_rule(rule, line)
     if rule.violated?(line)
-      violations << rule
+      violations << [rule.class.name, line]
     end
   end
 

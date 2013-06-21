@@ -4,6 +4,7 @@ class Repo < ActiveRecord::Base
   attr_accessible :active, :full_github_name, :github_id, :hook_id, :name
 
   belongs_to :user
+  has_many :builds
 
   validates :name, presence: true
   validates :full_github_name, presence: true
