@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130614194012) do
+ActiveRecord::Schema.define(:version => 20130621203400) do
+
+  create_table "builds", :force => true do |t|
+    t.text     "violations"
+    t.integer  "repo_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "builds", ["repo_id"], :name => "index_builds_on_repo_id"
 
   create_table "repos", :force => true do |t|
     t.integer "github_id",                           :null => false

@@ -1,4 +1,12 @@
 FactoryGirl.define do
+  factory :build do
+    repo
+
+    trait :failed_build do
+      violations ['WhitespaceRule on line 34 of app/models/user.rb']
+    end
+  end
+
   factory :repo do
     user
     sequence(:name) { |n| "Repo #{n}" }

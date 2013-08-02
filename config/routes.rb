@@ -1,7 +1,7 @@
 Houndapp::Application.routes.draw do
   root to: 'repos#index'
 
-  resources :builds, only: [:create]
+  resources :builds, only: [:create, :show]
   resources :repo_activations, only: [:create, :destroy]
   resources :repos, only: [:index, :edit, :update] do
     get 'sync', on: :collection
