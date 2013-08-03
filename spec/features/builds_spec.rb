@@ -83,7 +83,7 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => %({"description":"Hound does not approve","target_url":"http://houndapp.herokuapp.com/builds/#{Build.last.id}","state":"failure"}),
+        :body => %({"description":"Hound does not approve","target_url":"http://www.example.com#{build_path(Build.last.id)}","state":"failure"}),
         :headers => { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
