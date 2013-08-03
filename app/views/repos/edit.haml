@@ -1,0 +1,7 @@
+%h1
+  = @repo.name
+
+= form_for @repo do |form|
+  = form.label :active
+  = form.check_box :active
+  = form.submit

@@ -1,0 +1,22 @@
+!!!
+%html
+  %head
+    %title Hound
+    = stylesheet_link_tag    'application', :media => 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+  %body
+    - flash.each do |key, value|
+      .flash{ class: key }
+        = value
+
+    - if signed_in?
+      %p
+        Signed in as
+        = current_user
+        |
+        = link_to 'Sign out', sign_out_path, method: :delete
+
+    = yield
+
+    = yield :javascript
