@@ -1,7 +1,8 @@
 class BuildRunner
-  def initialize(pull_request)
+  def initialize(pull_request, builds_url = nil)
     @pull_request = pull_request
     @style_guide = StyleGuide.new
+    @builds_url = builds_url
   end
 
   def valid?
@@ -11,19 +12,22 @@ class BuildRunner
   def run
     api.create_pending_status(*api_params, 'Hound is working...')
     @style_guide.check(pull_request_additions)
-    update_api_status
-
-    repo.builds.create!(violations: @style_guide.violations)
+    build = repo.builds.create!(violations: @style_guide.violations)
+    update_api_status(build)
   end
 
   private
 
-  def update_api_status
+  def update_api_status(build = nil)
     if @style_guide.violations.any?
-      api.create_failure_status(*api_params, 'Hound does not approve')
+      api.create_error_status(*api_params, 'Hound does not approve', build_url(build))
     else
       api.create_successful_status(*api_params, 'Hound approves')
     end
+  end
+
+  def build_url(build)
+    "#{@builds_url}/#{build.id}"
   end
 
   def api_params

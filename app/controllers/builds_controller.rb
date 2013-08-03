@@ -7,7 +7,7 @@ class BuildsController < ApplicationController
 
   def create
     pull_request = PullRequest.new(params[:payload])
-    build_runner = BuildRunner.new(pull_request)
+    build_runner = BuildRunner.new(pull_request, builds_url)
 
     if build_runner.valid?
       build_runner.run

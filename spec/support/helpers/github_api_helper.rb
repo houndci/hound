@@ -48,6 +48,20 @@ module GithubApiHelper
     )
   end
 
+  def stub_error_status_creation_request(full_repo_name, commit_sha, state, description, target_url)
+    stub_request(
+      :post,
+      "https://api.github.com/repos/#{full_repo_name}/statuses/#{commit_sha}"
+    ).with(
+      body: %({"description":"#{description}","target_url":"#{target_url}","state":"#{state}"}),
+      headers: { 'Authorization' => /^token \w+$/ }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/github_status_creation_response.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   def stub_pull_request_files_request(full_repo_name, fixture = nil)
     fixture ||= 'pull_request_files.json'
     stub_request(

@@ -55,4 +55,18 @@ describe GithubApi do
       expect(response.id).not_to be_nil
     end
   end
+
+  describe '#create_error_status' do
+    it 'creates a error GitHub status' do
+      api = GithubApi.new('authtoken')
+      repo_name = 'test-user/repo'
+      head_sha = 'abcdefg'
+      target_url = 'http://example.com'
+      stub_error_status_creation_request(repo_name, head_sha, 'error', 'FAIL', target_url)
+
+      response = api.create_error_status(repo_name, head_sha, 'FAIL', target_url)
+
+      expect(response.id).not_to be_nil
+    end
+  end
 end
