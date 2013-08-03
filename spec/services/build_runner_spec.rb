@@ -5,7 +5,7 @@ describe BuildRunner, '#run' do
     it 'saves a build record' do
       api = stub(
         create_pending_status: nil,
-        create_error_status: nil,
+        create_failure_status: nil,
         pull_request_files: []
       )
       style_guide = stub(violations: ['something failed'], check: nil)
@@ -24,7 +24,7 @@ describe BuildRunner, '#run' do
       pull_request = pull_request_stub
       api = stub(
         create_pending_status: nil,
-        create_error_status: nil,
+        create_failure_status: nil,
         pull_request_files: []
       )
       style_guide = stub(violations: ['something failed'], check: nil)
@@ -37,7 +37,7 @@ describe BuildRunner, '#run' do
 
       expect(api).to have_received(:create_pending_status).
         with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
-      expect(api).to have_received(:create_error_status).
+      expect(api).to have_received(:create_failure_status).
         with(
           pull_request.full_repo_name,
           pull_request.head_sha,

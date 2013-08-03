@@ -48,7 +48,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_error_status_creation_request(full_repo_name, commit_sha, state, description, target_url)
+  def stub_failure_status_creation_request(full_repo_name, commit_sha, state, description, target_url)
     stub_request(
       :post,
       "https://api.github.com/repos/#{full_repo_name}/statuses/#{commit_sha}"

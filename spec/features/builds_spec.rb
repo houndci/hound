@@ -34,7 +34,7 @@ feature 'Builds' do
 
     expect_a_pending_status_request(repo_name, sha, repo.github_token)
     expect_a_pull_request_files_request(repo_name, number, repo.github_token)
-    expect_a_error_status_request(repo_name, sha, repo.github_token)
+    expect_a_failure_status_request(repo_name, sha, repo.github_token)
 
     visit build_path(Build.first)
 
@@ -77,13 +77,13 @@ feature 'Builds' do
     ).to have_been_made
   end
 
-  def expect_a_error_status_request(repo, sha, token)
+  def expect_a_failure_status_request(repo, sha, token)
     expect(
       a_request(
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => %({"description":"Hound does not approve","target_url":"http://www.example.com#{build_path(Build.last.id)}","state":"error"}),
+        :body => %({"description":"Hound does not approve","target_url":"http://www.example.com#{build_path(Build.last.id)}","state":"failure"}),
         :headers => { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made

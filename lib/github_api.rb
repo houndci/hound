@@ -32,8 +32,8 @@ class GithubApi
     client.create_status(full_repo_name, sha, 'success', description: description)
   end
 
-  def create_error_status(full_repo_name, sha, description, target_url)
-    client.create_status(full_repo_name, sha, 'error', description: description, target_url: target_url)
+  def create_failure_status(full_repo_name, sha, description, target_url)
+    client.create_status(full_repo_name, sha, 'failure', description: description, target_url: target_url)
   end
 
   def pull_request_files(full_repo_name, number)
