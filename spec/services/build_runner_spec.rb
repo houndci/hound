@@ -13,9 +13,9 @@ describe BuildRunner, '#run' do
       StyleGuide.stubs(new: style_guide)
       build_runner = BuildRunner.new(pull_request_stub)
 
-      build = build_runner.run
-      build.reload
+      build_runner.run
 
+      build = Build.last
       expect(build).to be_persisted
       expect(build.violations).to eq ['something failed']
     end
@@ -30,14 +30,20 @@ describe BuildRunner, '#run' do
       style_guide = stub(violations: ['something failed'], check: nil)
       GithubApi.stubs(new: api)
       StyleGuide.stubs(new: style_guide)
+      builds_url = 'http://example.com/builds'
 
-      build_runner = BuildRunner.new(pull_request)
+      build_runner = BuildRunner.new(pull_request, builds_url)
       build_runner.run
 
       expect(api).to have_received(:create_pending_status).
         with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
       expect(api).to have_received(:create_failure_status).
-        with(pull_request.full_repo_name, pull_request.head_sha, 'Hound does not approve')
+        with(
+          pull_request.full_repo_name,
+          pull_request.head_sha,
+          'Hound does not approve',
+          "#{builds_url}/#{Build.last.id}"
+        )
     end
   end
 
