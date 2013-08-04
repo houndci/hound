@@ -2,6 +2,7 @@
 %html
   %head
     %title Hound
+    %link{ href: 'http://fonts.googleapis.com/css?family=Lato:400,700,900', rel: 'stylesheet', type:'text/css' }
     = stylesheet_link_tag    'application', :media => 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
@@ -11,11 +12,11 @@
         = value
 
     - if signed_in?
-      %p
+      .signed-in
         Signed in as
-        = current_user
-        |
-        = link_to 'Sign out', sign_out_path, method: :delete
+        %span.current-user
+          = "#{current_user}, "
+          = link_to 'sign out &rarr;'.html_safe, sign_out_path, method: :delete
 
     = yield
 

@@ -1,1 +1,14 @@
-= link_to 'Sign in', '/auth/github'
+.image
+
+%h1.logo Hound
+
+.pitch
+  %hgroup
+    %h2
+      Take care of pesky code reviews with a trusty Hound.
+      %br
+      Hound reviews Github pull requests for styleguide violations.
+
+.auth
+  = link_to '/auth/github' do
+    %span Authenticate with Github to select repositories for Hound &rarr;
