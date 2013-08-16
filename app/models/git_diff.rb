@@ -17,7 +17,7 @@ class GitDiff
 
   private
 
-  def line_of_addition?( line )
+  def line_of_addition?(line)                
     !line.start_with?('+++') && line.start_with?('+')
   end
 
