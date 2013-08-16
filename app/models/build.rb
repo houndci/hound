@@ -7,7 +7,7 @@ class Build < ActiveRecord::Base
 
   serialize :violations, Array
 
-  def status
+  def status                
     if violations.any?
       'failed'
     else
