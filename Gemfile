@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 ruby '1.9.3'
 
+gem 'haml-rails'
 gem 'jquery-rails'
 gem 'octokit'
 gem 'omniauth-github'
@@ -16,7 +17,6 @@ group :assets do
   gem 'sass-rails', '~> 3.2.3'
   gem 'uglifier', '>= 1.0.3'
   gem 'bourbon'
-  gem 'haml-rails'
 end
 
 group :development, :test do
