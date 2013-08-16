@@ -19,6 +19,7 @@ class BuildRunner
   private
 
   def update_api_status(build = nil)
+    sleep 1
     if @style_guide.violations.any?
       api.create_failure_status(*api_params, 'Hound does not approve', build_url(build))
     else
