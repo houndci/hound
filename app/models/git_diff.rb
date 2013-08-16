@@ -17,11 +17,11 @@ class GitDiff
 
   private
 
-  def line_of_addition?(line)                
+  def line_of_addition?(line)
     !line.start_with?('+++') && line.start_with?('+')
   end
 
-  def sanitize_line( text )
+  def sanitize_line(text)
     text.sub(/^\+/, '').strip
   end
 end
