@@ -1,5 +1,5 @@
 !!!
-%html
+%html{'ng-app' => 'Hound'}
   %head
     %title Hound
     %link{ href: 'http://fonts.googleapis.com/css?family=Lato:400,700,900', rel: 'stylesheet', type:'text/css' }
@@ -19,5 +19,9 @@
           = link_to 'sign out &rarr;'.html_safe, sign_out_path, method: :delete
 
     = yield
+
+    %script{src: '//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js'}
+    %script{src: '//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.min.js'}
+    = javascript_include_tag 'application'
 
     = yield :javascript

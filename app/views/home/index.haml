@@ -1,0 +1,12 @@
+%div{'ng-controller' => 'ReposController'}
+  = link_to 'Sync repos', sync_repos_path
+  %ul
+    %li{'ng-repeat' => 'repo in repos'}
+      :plain
+        {{repo.name}}
+      %span{'ng-hide' => 'repo.active'}
+        %a{'href' => '#', 'ng-click' => 'activate(repo)'}
+          activate
+      %span{'ng-show' => 'repo.active'}
+        %a{'href' => '#', 'ng-click' => 'deactivate(repo)'}
+          deactivate

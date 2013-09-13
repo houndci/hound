@@ -1,39 +1,34 @@
 class ReposController < ApplicationController
-  before_filter :load_repo, only: [:edit, :update]
+  respond_to :json
 
   def index
-    @repos = current_user.repos.order(:name)
-  end
-
-  def edit
+    respond_with current_user.repos.order(:name)
   end
 
   def update
-    if activate?
+    repo = current_user.repos.find(params[:id])
+
+    if params[:active]
       activator.activate(
-        @repo.github_id,
-        @repo.full_github_name,
+        repo.github_id,
+        repo.full_github_name,
         current_user,
         github_api,
         "http://#{request.host_with_port}"
       )
     else
-      @repo.deactivate
+      repo.deactivate
     end
 
-    redirect_to repos_path, notice: 'Repo was updated'
+    respond_with repo
   end
 
   def sync
     synchronization.start
-    redirect_to repos_path
+    redirect_to root_path
   end
 
   private
-
-  def load_repo
-    @repo ||= current_user.repos.find(params[:id])
-  end
 
   def github_api
     GithubApi.new(current_user.github_token)
@@ -45,9 +40,5 @@ class ReposController < ApplicationController
 
   def synchronization
     RepoSynchronization.new(current_user)
-  end
-
-  def activate?
-    params[:repo][:active] == '1'
   end
 end
