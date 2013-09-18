@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate
     unless signed_in?
-      # redirect_to sign_in_path
+      redirect_to sign_in_path
     end
   end
 
@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    # @current_user ||= User.where(remember_token: session[:remember_token]).first
-    @current_user = User.last
+    @current_user ||= User.where(remember_token: session[:remember_token]).first
   end
 end
