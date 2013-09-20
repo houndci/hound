@@ -10,9 +10,7 @@ class ReposController < ApplicationController
 
     if params[:active]
       activator.activate(
-        repo.github_id,
-        repo.full_github_name,
-        current_user,
+        @repo,
         github_api,
         host
       )

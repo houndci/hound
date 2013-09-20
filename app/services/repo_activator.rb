@@ -1,20 +1,10 @@
 class RepoActivator
-  def activate(github_id, full_github_name, user, api, host)
-    repo = user.github_repo(github_id)
-
-    if repo
-      repo.activate
-    else
-      repo = user.create_github_repo(
-        github_id: github_id,
-        active: true,
-        full_github_name: full_github_name
-      )
-    end
+  def activate(repo, api, host)
+    repo.activate
 
     hook = api.create_pull_request_hook(
-      full_github_name,
-      callback_url(host, user.github_token)
+      repo.full_github_name,
+      callback_url(host, repo.user.github_token)
     )
 
     repo.update_attribute(:hook_id, hook.id)
