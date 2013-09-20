@@ -14,7 +14,7 @@ class ReposController < ApplicationController
         repo.full_github_name,
         current_user,
         github_api,
-        "http://#{request.host_with_port}"
+        host
       )
     else
       repo.deactivate
@@ -36,6 +36,10 @@ class ReposController < ApplicationController
 
   def activator
     RepoActivator.new
+  end
+
+  def host
+    "http://#{request.host_with_port}"
   end
 
   def synchronization
