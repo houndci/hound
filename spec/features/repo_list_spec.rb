@@ -2,9 +2,8 @@ require 'spec_helper'
 
 feature 'Repo list' do
   scenario 'user views list', js: true do
-    user = create(:user)
-    repo = create(:repo, user: user, name: 'My Repo')
-    sign_in_as(user)
+    repo = create(:repo, name: 'My Repo')
+    sign_in_as(repo.user)
 
     visit root_path
 
@@ -23,13 +22,12 @@ feature 'Repo list' do
   end
 
   scenario 'user activates repo', js: true do
-    user = create(:user, github_token: 'token')
-    repo = create(:repo, user: user, name: 'My Repo')
-    sign_in_as(user)
+    repo = create(:repo)
+    sign_in_as(repo.user)
     stub_hook_creation_request(
-      user.github_token,
+      repo.user.github_token,
       repo.full_github_name,
-      URI.join(current_url, "builds?token=#{user.github_token}").to_s
+      URI.join(current_url, "builds?token=#{repo.user.github_token}").to_s
     )
 
     visit root_path
@@ -43,9 +41,8 @@ feature 'Repo list' do
   end
 
   scenario 'user deactivates repo', js: true do
-    user = create(:user, github_token: 'token')
-    repo = create(:repo, user: user, name: 'My Repo', active: true)
-    sign_in_as(user)
+    repo = create(:repo, active: true)
+    sign_in_as(repo.user)
 
     visit root_path
     click_link 'deactivate'
