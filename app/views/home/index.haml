@@ -5,8 +5,8 @@
       :plain
         {{repo.name}}
       %span{'ng-hide' => 'repo.active'}
-        %a{'href' => '#', 'ng-click' => 'activate(repo)'}
+        %a{'href' => '', 'ng-click' => 'activate(repo)'}
           activate
       %span{'ng-show' => 'repo.active'}
-        %a{'href' => '#', 'ng-click' => 'deactivate(repo)'}
+        %a{'href' => '', 'ng-click' => 'deactivate(repo)'}
           deactivate
