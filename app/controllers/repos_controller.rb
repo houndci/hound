@@ -9,7 +9,7 @@ class ReposController < ApplicationController
     repo = current_user.repos.find(params[:id])
 
     if params[:active]
-      activator.activate(repo, github_api)
+      activator.activate(repo)
     else
       repo.deactivate
     end
@@ -23,10 +23,6 @@ class ReposController < ApplicationController
   end
 
   private
-
-  def github_api
-    GithubApi.new(current_user.github_token)
-  end
 
   def activator
     RepoActivator.new
