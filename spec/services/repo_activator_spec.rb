@@ -8,14 +8,9 @@ describe RepoActivator do
       api = stub(create_pull_request_hook: hook)
       activator = RepoActivator.new
 
-      activator.activate(
-        repo,
-        api,
-        'http://example.com'
-      )
+      activator.activate(repo, api)
 
       expect(repo.reload).to be_active
-      expect(api).to have_received(:create_pull_request_hook).with(repo.full_github_name, "http://example.com/builds?token=#{repo.user.github_token}")
     end
 
     it 'creates GitHub hook' do
@@ -24,15 +19,11 @@ describe RepoActivator do
       api = stub(create_pull_request_hook: hook)
       activator = RepoActivator.new
 
-      activator.activate(
-        repo,
-        api,
-        'http://example.com'
-      )
+      activator.activate(repo, api)
 
       expect(api).to have_received(:create_pull_request_hook).with(
         repo.full_github_name,
-        "http://example.com/builds?token=#{repo.user.github_token}"
+        "http://#{ENV['HOST']}/builds?token=#{repo.user.github_token}"
       )
       expect(repo.reload.hook_id).to eq 1
     end

@@ -1,10 +1,10 @@
 class RepoActivator
-  def activate(repo, api, host)
+  def activate(repo, api)
     repo.activate
 
     hook = api.create_pull_request_hook(
       repo.full_github_name,
-      callback_url(host, repo.user.github_token)
+      callback_url("http://#{ENV['HOST']}", repo.user.github_token)
     )
 
     repo.update_attribute(:hook_id, hook.id)

@@ -27,7 +27,7 @@ feature 'Repo list' do
     stub_hook_creation_request(
       repo.user.github_token,
       repo.full_github_name,
-      URI.join(current_url, "builds?token=#{repo.user.github_token}").to_s
+      URI.join("http://#{ENV['HOST']}", "builds?token=#{repo.user.github_token}").to_s
     )
 
     visit root_path
@@ -35,7 +35,7 @@ feature 'Repo list' do
 
     expect(page).to have_link('deactivate')
 
-    visit current_path
+    visit current_url
 
     expect(page).to have_link('deactivate')
   end

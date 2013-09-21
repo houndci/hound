@@ -9,11 +9,7 @@ class ReposController < ApplicationController
     repo = current_user.repos.find(params[:id])
 
     if params[:active]
-      activator.activate(
-        @repo,
-        github_api,
-        host
-      )
+      activator.activate(repo, github_api)
     else
       repo.deactivate
     end
@@ -34,10 +30,6 @@ class ReposController < ApplicationController
 
   def activator
     RepoActivator.new
-  end
-
-  def host
-    "http://#{request.host_with_port}"
   end
 
   def synchronization

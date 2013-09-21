@@ -1,3 +1,4 @@
+ENV['HOST'] ||= 'localhost:3000'
 ENV['GITHUB_CLIENT_ID'] ||= 'a7085cf1950d97a7cc6d'
 ENV['GITHUB_CLIENT_SECRET'] ||= 'b66556fe1048445cc7bf69879e49bbf2fa1a0d00'
 
@@ -18,7 +19,7 @@ Houndapp::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => ENV['HOST'] }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
