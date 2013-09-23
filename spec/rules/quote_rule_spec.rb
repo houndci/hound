@@ -1,6 +1,6 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
-require 'app/models/quote_rule'
+require 'app/rules/rule'
+require 'app/rules/quote_rule'
 
 describe QuoteRule, '#violated?' do
   context 'with single quoted sting' do

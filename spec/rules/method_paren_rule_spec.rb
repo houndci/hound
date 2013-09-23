@@ -1,6 +1,6 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
-require 'app/models/method_paren_rule'
+require 'app/rules/rule'
+require 'app/rules/method_paren_rule'
 
 describe MethodParenRule, '#violated?' do
   context 'a method with parens' do

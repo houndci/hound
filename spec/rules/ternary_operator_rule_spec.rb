@@ -1,4 +1,6 @@
-require 'spec_helper'
+require 'fast_spec_helper'
+require 'app/rules/rule'
+require 'app/rules/ternary_operator_rule'
 
 describe TernaryOperatorRule, '#violated?' do
  context 'without ternary operator' do

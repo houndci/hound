@@ -1,6 +1,6 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
-require 'app/models/bracket_rule'
+require 'app/rules/rule'
+require 'app/rules/bracket_rule'
 
 describe BracketRule, '#violated?' do
   context 'with proper syntax' do
