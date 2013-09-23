@@ -1,6 +1,6 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
-Dir['app/models/*rule.rb'].each {|f| require f}
+require 'app/rules/rule'
+Dir['app/rules/*rule.rb'].each {|f| require f}
 require 'app/models/style_guide'
 
 describe StyleGuide do

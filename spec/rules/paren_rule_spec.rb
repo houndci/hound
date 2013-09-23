@@ -1,6 +1,6 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
-require 'app/models/paren_rule'
+require 'app/rules/rule'
+require 'app/rules/paren_rule'
 
 describe ParenRule, '#violated?' do
   context 'with proper syntax' do

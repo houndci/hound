@@ -1,6 +1,6 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
-require 'app/models/whitespace_rule'
+require 'app/rules/rule'
+require 'app/rules/whitespace_rule'
 
 describe WhitespaceRule, '#violated?' do
   context 'with predicate methods' do

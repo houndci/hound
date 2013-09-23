@@ -1,6 +1,6 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
-require 'app/models/hash_syntax_rule'
+require 'app/rules/rule'
+require 'app/rules/hash_syntax_rule'
 
 describe HashSyntaxRule, '#violated?' do
   context 'with hashrocket hash syntax' do

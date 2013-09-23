@@ -1,5 +1,5 @@
 require 'fast_spec_helper'
-require 'app/models/rule'
+require 'app/rules/rule'
 
 describe Rule, '#violated?' do
   context 'when child class does not implement the method' do
