@@ -7,15 +7,15 @@ describe StyleGuide do
   describe '#check' do
     context 'with invalid lines of code' do
       it 'has violations' do
-        lines = ['"bad line of code"', 'Hello world ']
+        lines = ['trailing_whitespace = true ', "\tincorrect_indentation = true"]
         style_guide = StyleGuide.new
 
         style_guide.check(lines)
 
         expect(style_guide).to have(2).violations
         expect(style_guide.violations).to eq([
-          ['QuoteRule', lines.first],
-          ['WhitespaceRule', lines.last]
+          ['TrailingWhitespaceRule', lines.first],
+          ['IndentationRule', lines.last]
         ])
       end
     end

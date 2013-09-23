@@ -24,12 +24,14 @@ class StyleGuide
 
   def rules
     [
+      IndentationRule,
+      LineLengthRule,
+      TrailingWhitespaceRule,
+      CommaRule,
       BraceRule,
-      BracketRule,
-      MethodParenRule,
       ParenRule,
-      QuoteRule,
-      WhitespaceRule
+      BracketRule,
+      QuoteRule
     ]
   end
 end
