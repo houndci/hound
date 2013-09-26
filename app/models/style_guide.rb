@@ -31,7 +31,8 @@ class StyleGuide
       BraceRule,
       ParenRule,
       BracketRule,
-      QuoteRule
+      QuoteRule,
+      MethodParenRule
     ]
   end
 end
