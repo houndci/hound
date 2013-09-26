@@ -1,6 +1,6 @@
 # Hound
 
-Hound is a CI service for code style.
+Hound is a CI service for enforcing coding style guidelines.
 
 For more syntax information refer to [thoughbot's guides](https://github.com/thoughtbot/guides)
 
