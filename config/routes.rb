@@ -9,6 +9,7 @@ Houndapp::Application.routes.draw do
 
   get '/auth/github/callback', to: 'sessions#create'
   get '/sign_in', to: 'sessions#new'
+  get 'pages/home' => 'high_voltage/pages#show', id: 'home'
 
   delete '/sign_out', to: 'sessions#destroy'
 end

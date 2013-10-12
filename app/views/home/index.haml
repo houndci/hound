@@ -3,10 +3,11 @@
   %ul
     %li{'ng-repeat' => 'repo in repos'}
       :plain
+      %span.name
         {{repo.name}}
-      %span{'ng-hide' => 'repo.active'}
+      %span.toggle{'ng-hide' => 'repo.active'}
         %a{'href' => '', 'ng-click' => 'activate(repo)'}
           activate
-      %span{'ng-show' => 'repo.active'}
+      %span.toggle{'ng-show' => 'repo.active'}
         %a{'href' => '', 'ng-click' => 'deactivate(repo)'}
           deactivate

@@ -1,0 +1,25 @@
+.ng-scope {
+  ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    width: 320px;
+  }
+
+  li {
+    background: #eee;
+    display: block;
+    overflow: auto;
+    padding: 1rem;
+
+    .name {
+      float: left;
+      width: 300px;
+    }
+
+    .toggle {
+      float: right;
+      width: 20px;
+    }
+  }
+}

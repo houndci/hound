@@ -91,6 +91,7 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     hashie (1.2.0)
+    high_voltage (1.2.0)
     hike (1.2.1)
     httpauth (0.2.0)
     i18n (0.6.1)
@@ -236,6 +237,7 @@ DEPENDENCIES
   factory_girl_rails
   foreman
   haml-rails
+  high_voltage
   jquery-rails
   octokit
   omniauth-github

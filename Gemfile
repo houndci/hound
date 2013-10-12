@@ -11,6 +11,7 @@ gem 'rails', '3.2.11'
 gem 'rollbar'
 gem 'strong_parameters'
 gem 'thin'
+gem 'high_voltage'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
