@@ -81,8 +81,6 @@ GEM
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
     ffi (1.2.0)
-    foreman (0.61.0)
-      thor (>= 0.13.6)
     haml (4.0.3)
       tilt
     haml-rails (0.4)
@@ -234,7 +232,6 @@ DEPENDENCIES
   database_cleaner
   debugger
   factory_girl_rails
-  foreman
   haml-rails
   jquery-rails
   octokit
