@@ -2,7 +2,6 @@
   = link_to 'Sync repos', sync_repos_path
   %ul
     %li{'ng-repeat' => 'repo in repos'}
-      :plain
       %span.name
         {{repo.name}}
       %span.toggle{'ng-hide' => 'repo.active'}
