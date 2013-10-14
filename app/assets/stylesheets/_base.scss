@@ -4,17 +4,10 @@ body {
 
 .signed-in {
   display: inline-block;
-  font-size: .8rem;
-  letter-spacing: 1px;
-  padding: 1rem;
+  padding: .5rem;
   @include position(absolute, 0px 0px 0 0);
-  text-align: center;
-  text-transform: uppercase;
 
   a {
-    border-bottom: 1px solid #666;
-    color: #000;
-    padding-bottom: 1px;
     text-decoration: none;
   }
 }
