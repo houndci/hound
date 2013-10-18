@@ -15,7 +15,7 @@
       .signed-in
         %span.current-user
           = "#{current_user}"
-        = link_to '&rarr;'.html_safe, sign_out_path, method: :delete
+        = link_to '&rarr;'.html_safe, sign_out_path
 
     = yield
     = yield :javascript
