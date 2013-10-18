@@ -1,8 +1,8 @@
 %div.repo-listing{'ng-controller' => 'ReposController'}
   = link_to 'Sync repos', sync_repos_path, :class => 'sync-repos'
-  %input.search{'type' => 'text', 'placeholder' => 'search repo list'}
+  %input.search{'type' => 'text', 'placeholder' => 'search repo list', 'ng-model' => 'search.name'}
   %ul
-    %li.repo{'ng-repeat' => 'repo in repos'}
+    %li.repo{'ng-repeat' => 'repo in repos | filter:search'}
       %span.toggle.activate{'ng-hide' => 'repo.active'}
         %a{'href' => '', 'ng-click' => 'activate(repo)'}
           activate

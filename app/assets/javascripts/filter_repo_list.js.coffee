@@ -1,1 +1,0 @@
-$('.search').liveUpdate('.repo', '.name')
