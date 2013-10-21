@@ -11,3 +11,23 @@ body {
     text-decoration: none;
   }
 }
+
+.logo {
+  margin-top: 0;
+}
+
+.button {
+  border: 1px solid #999;
+  border-radius: 4px;
+  color: #222;
+  display: block;
+  padding: .5rem;
+  text-align: center;
+  text-decoration: none;
+  @include user-select(none);
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: .5;
+  }
+}

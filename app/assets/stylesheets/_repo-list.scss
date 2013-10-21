@@ -1,16 +1,7 @@
 .repo-listing {
   margin: 0 auto;
-  padding: 2rem 0;
-  width: 320px;
-
-  .sync-repos {
-    border: 1px solid #999;
-    color: #222;
-    display: block;
-    padding: .5rem;
-    text-align: center;
-    text-decoration: none;
-  }
+  max-width: 400px;
+  padding: 2rem 1rem;
 
   .search {
     box-sizing: border-box;
@@ -24,6 +15,7 @@
   ul {
     list-style-type: none;
     margin: 0;
+    overflow: auto;
     padding: 0;
   }
 
@@ -31,15 +23,16 @@
     border-bottom: 1px solid #ccc;
     display: block;
     overflow: auto;
-    padding: .5rem;
+    padding: .75rem 0;
     position: relative;
 
     .toggle a {
       display: block;
       overflow: hidden;
-      padding: 0 .5rem;
+      padding: 0 .5rem 0 0;
       @include position(absolute, 0px 0 0px 0px);
       text-indent: -300px;
+      @include user-select(none);
       width: $repo-list-toggle-size;
 
       &:after {
@@ -48,7 +41,7 @@
         content: '';
         display: block;
         height: $repo-list-toggle-size;
-        @include position(absolute, .5rem .5rem 0 0);
+        @include position(absolute, .75rem .5rem 0 0);
         width: $repo-list-toggle-size;
       }
     }
