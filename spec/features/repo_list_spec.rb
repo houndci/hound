@@ -2,12 +2,12 @@ require 'spec_helper'
 
 feature 'Repo list' do
   scenario 'user views list', js: true do
-    repo = create(:repo, name: 'My Repo')
+    repo = create(:repo, full_github_name: 'thoughtbot/my-repo')
     sign_in_as(repo.user)
 
     visit root_path
 
-    expect(page).to have_content 'My Repo'
+    expect(page).to have_content 'thoughtbot/my-repo'
   end
 
   scenario 'user syncs repos', js: true do
@@ -18,7 +18,7 @@ feature 'Repo list' do
     visit root_path
     click_link 'Sync repos'
 
-    expect(page).to have_content 'my_private_repo'
+    expect(page).to have_content 'jimtom/My-Private-Repo'
   end
 
   scenario 'user activates repo', js: true do
