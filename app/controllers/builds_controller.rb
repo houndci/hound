@@ -6,15 +6,26 @@ class BuildsController < ApplicationController
   end
 
   def create
-    pull_request = PullRequest.new(params[:payload])
-    build_runner = BuildRunner.new(pull_request, builds_url)
-
     if build_runner.valid?
-      build_runner.run
+      Delayed::Job.enqueue(build_job)
 
       render nothing: true
     else
       render text: 'Invalid GitHub action', status: 404
     end
+  end
+
+  private
+
+  def build_job
+    BuildJob.new(build_runner)
+  end
+
+  def build_runner
+    @build_runner ||= BuildRunner.new(pull_request, builds_url)
+  end
+
+  def pull_request
+    PullRequest.new(params[:payload])
   end
 end
