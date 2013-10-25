@@ -4,7 +4,7 @@ class RepoActivator
 
     hook = github_api(repo).create_pull_request_hook(
       repo.full_github_name,
-      callback_url("http://#{ENV['HOST']}", repo.user.github_token)
+      callback_url("http://#{ENV['HOST']}")
     )
 
     repo.update_attribute(:hook_id, hook.id)
@@ -17,8 +17,8 @@ class RepoActivator
 
   private
 
-  def callback_url(host, token)
-    URI.join(host, "builds?token=#{token}").to_s
+  def callback_url(host)
+    URI.join(host, 'builds').to_s
   end
 
   def github_api(repo)

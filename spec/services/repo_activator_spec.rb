@@ -22,7 +22,7 @@ describe RepoActivator do
       expect(GithubApi).to have_received(:new).with(repo.user.github_token)
       expect(github_api).to have_received(:create_pull_request_hook).with(
         repo.full_github_name,
-        "http://#{ENV['HOST']}/builds?token=#{repo.user.github_token}"
+        "http://#{ENV['HOST']}/builds"
       )
       expect(repo.reload.hook_id).to eq 1
     end
