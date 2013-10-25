@@ -11,7 +11,7 @@ class ReposController < ApplicationController
     if params[:active]
       activator.activate(repo)
     else
-      repo.deactivate
+      activator.deactivate(repo)
     end
 
     respond_with repo
