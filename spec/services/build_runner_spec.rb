@@ -3,14 +3,19 @@ require 'spec_helper'
 describe BuildRunner, '#run' do
   context 'with violations' do
     it 'saves a build record' do
-      api = stub(
+      api = double(
+        :github_api,
         create_pending_status: nil,
         create_failure_status: nil,
         pull_request_files: []
       )
-      style_guide = stub(violations: ['something failed'], check: nil)
-      GithubApi.stubs(new: api)
-      StyleGuide.stubs(new: style_guide)
+      style_guide = double(
+        :style_guide,
+        violations: ['something failed'],
+        check: nil
+      )
+      GithubApi.stub(new: api)
+      StyleGuide.stub(new: style_guide)
       build_runner = BuildRunner.new(pull_request_stub)
 
       build_runner.run
@@ -22,14 +27,19 @@ describe BuildRunner, '#run' do
 
     it 'checks style guide and notifies github of the failed build' do
       pull_request = pull_request_stub
-      api = stub(
+      api = double(
+        :github_api,
         create_pending_status: nil,
         create_failure_status: nil,
         pull_request_files: []
       )
-      style_guide = stub(violations: ['something failed'], check: nil)
-      GithubApi.stubs(new: api)
-      StyleGuide.stubs(new: style_guide)
+      style_guide = double(
+        :style_guide,
+        violations: ['something failed'],
+        check: nil
+      )
+      GithubApi.stub(new: api)
+      StyleGuide.stub(new: style_guide)
       builds_url = 'http://example.com/builds'
 
       build_runner = BuildRunner.new(pull_request, builds_url)
@@ -50,12 +60,13 @@ describe BuildRunner, '#run' do
   context 'without violations' do
     it 'checks style guide and notifies github of the passing build' do
       pull_request = pull_request_stub
-      api = mock(
+      api = double(
+        :github_api,
         create_pending_status: nil,
         create_successful_status: nil,
         pull_request_files: []
       )
-      GithubApi.stubs(new: api)
+      GithubApi.stub(new: api)
 
       build_runner = BuildRunner.new(pull_request)
       build_runner.run
@@ -151,5 +162,5 @@ def pull_request_stub(options = {})
     valid?: true
   }.merge(options)
 
-  stub(attributes)
+  double(attributes)
 end

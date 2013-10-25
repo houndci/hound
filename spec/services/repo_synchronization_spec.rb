@@ -4,8 +4,8 @@ describe RepoSynchronization do
   describe '#start' do
     it 'adds repos' do
       user = create(:user, github_token: 'token')
-      api = stub(repos: [{name: 'Repo'}])
-      GithubApi.stubs(new: api)
+      api = double(:github_api, repos: [{name: 'Repo'}])
+      GithubApi.stub(new: api)
       synchronization = RepoSynchronization.new(user)
 
       synchronization.start
@@ -17,8 +17,8 @@ describe RepoSynchronization do
     it 'updates repos' do
       user = create(:user, github_token: 'token')
       create(:repo, github_id: 123, user: user)
-      api = stub(repos: [{id: 123}])
-      GithubApi.stubs(new: api)
+      api = double(:github_api, repos: [{id: 123}])
+      GithubApi.stub(new: api)
       synchronization = RepoSynchronization.new(user)
 
       synchronization.start

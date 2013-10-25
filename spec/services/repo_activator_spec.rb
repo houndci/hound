@@ -52,9 +52,13 @@ describe RepoActivator do
   end
 
   def stub_github_api
-    hook = stub(id: 1)
-    api = stub(create_pull_request_hook: hook, remove_pull_request_hook: nil)
-    GithubApi.stubs(new: api)
+    hook = double(:hook, id: 1)
+    api = double(
+      :github_api,
+      create_pull_request_hook: hook,
+      remove_pull_request_hook: nil
+    )
+    GithubApi.stub(new: api)
     api
   end
 end

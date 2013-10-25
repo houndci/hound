@@ -6,7 +6,7 @@ describe User do
   describe '.create' do
     it 'generates a remember_token' do
       user = build(:user)
-      SecureRandom.stubs(hex: 'remembertoken')
+      SecureRandom.stub(hex: 'remembertoken')
 
       user.save
 
