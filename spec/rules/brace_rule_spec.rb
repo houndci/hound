@@ -30,6 +30,14 @@ describe BraceRule, '#violated?' do
     end
   end
 
+  context 'with braces used for string interpolation' do
+    it 'is not violated' do
+      example = 'callback_url("http://#{ENV[\'HOST\']}")'
+
+      expect(example).not_to violate(BraceRule)
+    end
+  end
+
   context 'without whitespace before opening brace' do
     it 'is violated' do
       example = 'users.map{ |user| user.name }'
