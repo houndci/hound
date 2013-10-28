@@ -2,24 +2,20 @@ source 'https://rubygems.org'
 
 ruby '2.0.0'
 
-gem 'haml-rails'
+gem 'angularjs-rails'
+gem 'bourbon'
+gem 'coffee-rails'
 gem 'delayed_job_active_record'
+gem 'haml-rails'
 gem 'jquery-rails'
 gem 'octokit'
 gem 'omniauth-github'
 gem 'pg'
-gem 'rails', '3.2.11'
+gem 'rails', '4.0.0'
 gem 'rollbar'
-gem 'strong_parameters'
+gem 'sass-rails'
 gem 'thin'
-
-group :assets do
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'sass-rails', '~> 3.2.3'
-  gem 'uglifier', '>= 1.0.3'
-  gem 'bourbon'
-  gem 'angularjs-rails'
-end
+gem 'uglifier', '>= 1.0.3'
 
 group :development, :test do
   gem 'debugger'
@@ -33,4 +29,8 @@ group :test do
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'webmock'
+end
+
+group :staging, :production do
+  gem 'rails_12factor'
 end
