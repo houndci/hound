@@ -1,14 +1,32 @@
-.image
-
-%h1.logo Hound
-
-.pitch
-  %hgroup
-    %h2
-      Take care of pesky code reviews with a trusty Hound.
-      %br
-      Hound reviews Github pull requests for styleguide violations.
-
-.auth
-  = link_to '/auth/github' do
-    %span Authenticate with Github to select repositories for Hound &rarr;
+%div.repo-listing
+  %h1.logo Hound
+  .pitch
+    %h2 Take care of pesky code reviews with a trusty Hound. Hound reviews Github pull requests for styleguide violations.
+    = link_to '#', :class => 'style-guide' do
+      View the style guide &rarr;
+    = link_to '/auth/github', :class => 'auth button' do
+      Authenticate with Github to use Hound
+  = link_to 'Sync repos', '#', :class => 'button disabled'
+  %input.search{'type' => 'text', 'placeholder' => 'search repo list', 'disabled' => 'disabled'}
+  %ul.disabled
+    - 1.times do
+      %li.repo
+        %span.toggle.activate
+          %a{'href' => '#'}
+            activate
+        %span.name
+          Repository name with Hound deactivated
+    - 4.times do
+      %li.repo
+        %span.toggle.deactivate
+          %a{'href' => '#'}
+            deactivate
+        %span.name
+          Repository name with Hound activated!
+    - 3.times do
+      %li.repo
+        %span.toggle.activate
+          %a{'href' => '#'}
+            activate
+        %span.name
+          Repository name with Hound deactivated

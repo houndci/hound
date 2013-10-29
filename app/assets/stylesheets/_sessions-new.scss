@@ -1,83 +1,22 @@
-.image {
-  background: url(/assets/madi.jpg) no-repeat center;
-  background-size: cover;
-  @include position(absolute, 0px 0px 0px 0px);
-  z-index: -1;
-}
-
-.logo {
-  color: white;
-  font-size: 16vw;
-  font-weight: 900;
-  letter-spacing: .15em;
-  margin: 10vh 0;
-  position: relative;
-  text-align: center;
-  text-transform: uppercase;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke-color: white;
-  -webkit-text-stroke-width: 6px;
-}
-
-.pitch, .auth {
-  border-style: solid;
-  border-width: 6px;
-  box-sizing: border-box;
-  height: 250px;
-  margin: 0 2rem 2rem;
-  @include position(fixed, 0 45% 0px 0px);
-}
-
 .pitch {
-  background-color: $purple;
-  border-color: $purple;
-  margin-right: 0;
-
-  hgroup {
-    display: table;
-    height: 100%;
-    @include position(absolute, 0px 0px 0px 0px);
-  }
+  margin-bottom: 2rem;
+  padding: 2rem 0;
 
   h2 {
-    color: #fff;
-    display: table-cell;
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin: 0;
-    padding: 1.5rem 2rem;
-    vertical-align: middle
+    margin: 0 0 1rem;
+  }
+
+  .style-guide {
+    display: inline-block;
+    margin: 0 0 1.5rem;
   }
 }
 
-.auth {
-  background-color: $teal;
-  border-color: $teal;
-  left: 55%;
-  right: 0px;
+ul.disabled {
+  cursor: not-allowed;
+  opacity: .5;
 
-  a {
-    color: #fff;
-    display: table;
-    font-size: 2.25rem;
-    font-weight: 700;
-    height: 100%;
-    padding: 1.5rem 2rem;
-    @include position(absolute, 0px 0px 0px 0px);
-    text-decoration: none;
-
-    &:hover {
-      background-color: lighten($teal, 8%);
-    }
-
-    &:active {
-      background-color: darken($teal, 8%);
-    }
-  }
-
-  span {
-    display: table-cell;
-    vertical-align: middle;
+  li .toggle a {
+    cursor: not-allowed;
   }
 }
-
