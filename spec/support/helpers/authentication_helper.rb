@@ -6,6 +6,6 @@ module AuthenticationHelper
   def sign_in_as(user)
     stub_oauth(user.github_username, user.github_token)
     visit root_path
-    click_link 'Authenticate with Github to select repositories for Hound'
+    click_link 'Authenticate with Github to use Hound'
   end
 end
