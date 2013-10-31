@@ -23,11 +23,10 @@ end
 
 group :development, :test do
   gem 'debugger'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 2.14'
 end
 
 group :test do
-  gem 'bourne', require: false
   gem 'capybara', '~> 1.0'
   gem 'capybara-webkit'
   gem 'database_cleaner'
