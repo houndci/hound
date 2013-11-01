@@ -3,12 +3,30 @@
   max-width: 400px;
   padding: 2rem 1rem;
 
+  .sync {
+    padding: .5rem 2rem .5rem 34px;
+    position: relative;
+    text-align: left;
+
+    .fa-refresh {
+      @include position(absolute, .75rem .75rem 0 0);
+    }
+  }
+
+  .search-container {
+    position: relative;
+  }
+
+  .fa-search {
+    @include position(absolute, .75rem .75rem 0 0);
+    @include user-select(none);
+  }
+
   .search {
     box-sizing: border-box;
     display: block;
     margin: 1rem 0;
-    padding: .5rem;
-    text-align: center;
+    padding: .5rem 2rem .5rem 34px;
     width: 100%;
   }
 

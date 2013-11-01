@@ -8,6 +8,9 @@ body {
   @include position(absolute, 0px 0px 0 0);
 
   a {
+    color: #000;
+    display: inline-block;
+    padding: .5rem;
     text-decoration: none;
   }
 }

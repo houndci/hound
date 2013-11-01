@@ -6,8 +6,12 @@
       View the style guide &rarr;
     = link_to '/auth/github', :class => 'auth button' do
       Authenticate with Github to use Hound
-  = link_to 'Sync repos', '#', :class => 'button disabled'
-  %input.search{'type' => 'text', 'placeholder' => 'search repo list', 'disabled' => 'disabled'}
+  = link_to '#', :class => 'button sync disabled' do
+    %i.fa.fa-refresh
+    Sync repos
+  .search-container
+    %i.fa.fa-search.disabled
+    %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'disabled' => 'disabled'}
   %ul.disabled
     - 1.times do
       %li.repo

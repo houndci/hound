@@ -1,7 +1,11 @@
 %div.repo-listing{'ng-controller' => 'ReposController'}
   %h1.logo Hound
-  = link_to 'Sync repos', sync_repos_path, :class => 'button'
-  %input.search{'type' => 'text', 'placeholder' => 'search repo list', 'ng-model' => 'search.name'}
+  = link_to sync_repos_path, :class => 'button sync' do
+    %i.fa.fa-refresh
+    Sync repos
+  .search-container
+    %i.fa.fa-search
+    %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'ng-model' => 'search.name'}
   %ul
     %li.repo{'ng-repeat' => 'repo in repos | filter:search'}
       %span.toggle.activate{'ng-hide' => 'repo.active'}

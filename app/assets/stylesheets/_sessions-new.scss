@@ -12,6 +12,10 @@
   }
 }
 
+.fa-search.disabled {
+  opacity: .5;
+}
+
 ul.disabled {
   cursor: not-allowed;
   opacity: .5;
