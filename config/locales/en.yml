@@ -2,4 +2,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  sync_repos: 'Sync repos'
+  activate_repo: 'activate'
+  deactivate_repo: 'deactivate'
+  authenticate: 'Authenticate with Github to use Hound'

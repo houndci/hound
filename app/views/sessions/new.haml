@@ -4,8 +4,8 @@
     %h2 Take care of pesky code reviews with a trusty Hound. Hound reviews Github pull requests for styleguide violations.
     = link_to 'https://github.com/thoughtbot/guides/tree/master/style', :class => 'style-guide', :target => '_blank' do
       View the style guide &rarr;
-    = link_to '/auth/github', :class => 'auth button' do
-      Authenticate with Github to use Hound
+    = link_to '/auth/github', class: 'auth button' do
+      = t('authenticate')
   = link_to '#', :class => 'button sync disabled' do
     %i.fa.fa-refresh
     Sync repos

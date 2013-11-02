@@ -2,7 +2,7 @@
   %h1.logo Hound
   = link_to sync_repos_path, :class => 'button sync' do
     %i.fa.fa-refresh
-    Sync repos
+    = t('sync_repos')
   .search-container
     %i.fa.fa-search
     %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'ng-model' => 'search.name'}
@@ -10,9 +10,9 @@
     %li.repo{'ng-repeat' => 'repo in repos | filter:search'}
       %span.toggle.activate{'ng-hide' => 'repo.active'}
         %a{'href' => '', 'ng-click' => 'activate(repo)'}
-          activate
+          = t('activate_repo')
       %span.toggle.deactivate{'ng-show' => 'repo.active'}
         %a{'href' => '', 'ng-click' => 'deactivate(repo)'}
-          deactivate
+          = t('deactivate_repo')
       %span.name
         {{repo.full_github_name}}
