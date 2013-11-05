@@ -69,4 +69,21 @@ describe GithubApi do
       expect(response.id).not_to be_nil
     end
   end
+
+  describe '#pull_request_files' do
+    it 'returns file content of changed files' do
+      api = GithubApi.new('authtoken')
+      pull_request = stub(full_repo_name: 'thoughtbot/hound', number: 69)
+      stub_pull_request_files_request(
+        pull_request.full_repo_name,
+        pull_request.number,
+        'authtoken'
+      )
+      stub_contents_request(pull_request.full_repo_name)
+
+      files = api.pull_request_files(pull_request)
+
+      expect(files).to eq ['some test code']
+    end
+  end
 end

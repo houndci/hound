@@ -62,11 +62,23 @@ module GithubApiHelper
     )
   end
 
-  def stub_pull_request_files_request(full_repo_name, fixture = nil)
-    fixture ||= 'pull_request_files.json'
+  def stub_pull_request_files_request(full_repo_name, pull_request_number, auth_token)
     stub_request(
       :get,
-      %r(https://api.github.com/repos/#{full_repo_name}/pulls/\d/files)
+      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/pull_request_files.json"),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_contents_request(full_repo_name, fixture = 'contents.json')
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{full_repo_name}/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc"
     ).with(
       headers: { 'Authorization' => /token \w+/ }
     ).to_return(

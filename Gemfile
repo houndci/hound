@@ -13,9 +13,10 @@ gem 'omniauth-github'
 gem 'pg'
 gem 'rails', '4.0.0'
 gem 'rollbar'
+gem 'rubocop'
 gem 'sass-rails'
-gem 'thin'
 gem 'uglifier', '>= 1.0.3'
+gem 'unicorn'
 
 group :development, :test do
   gem 'debugger'

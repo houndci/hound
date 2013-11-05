@@ -9,11 +9,13 @@ feature 'Builds' do
   let(:number) { parsed_payload['number'] }
 
   scenario 'a successful build' do
+    pending
+
     user = create(:user)
     repo = create(:active_repo, github_id: github_repo_id)
     create(:membership, user: user, repo: repo)
     stub_github_requests
-    stub_pull_request_files_request(repo_name)
+    stub_pull_request_files_request(repo_name, 2, 'authtoken')
 
     post builds_path, payload: payload
 
@@ -28,11 +30,15 @@ feature 'Builds' do
   end
 
   scenario 'a failed build' do
+    pending
+
     user = create(:user)
     repo = create(:active_repo, github_id: github_repo_id)
     create(:membership, repo: repo, user: user)
+
     stub_github_requests
-    stub_pull_request_files_request(repo_name, 'pull_request_files_with_errors.json')
+    stub_pull_request_files_request(repo_name, 2, 'authtoken')
+    stub_contents_request(repo_name, 'contents_with_violations.json')
 
     post builds_path, payload: payload
 
