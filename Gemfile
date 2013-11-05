@@ -10,6 +10,7 @@ gem 'omniauth-github'
 gem 'pg'
 gem 'rails', '3.2.11'
 gem 'rollbar'
+gem 'rubocop'
 gem 'strong_parameters'
 gem 'thin'
 
