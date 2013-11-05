@@ -1,24 +1,14 @@
 [
   {
-    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
-    "filename": "file1.txt",
-    "status": "added",
-    "additions": 103,
-    "deletions": 21,
-    "changes": 124,
-    "blob_url": "https://github.com/octocat/Hello-World/blob/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
-    "raw_url": "https://github.com/octocat/Hello-World/raw/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
-    "patch": "@@ -0,0 +1,13 @@\n+class HashSyntaxRule < Rule\n+  def violated?(text)\n+    uses_non_preferred_hash_syntax?(text)\n+  end\n"
-  },
-  {
-    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
-    "filename": "file2.txt",
-    "status": "added",
-    "additions": 103,
-    "deletions": 21,
-    "changes": 124,
-    "blob_url": "https://github.com/octocat/Hello-World/blob/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
-    "raw_url": "https://github.com/octocat/Hello-World/raw/6dcb09b5b57875f334f61aebed695e2e4193db5e/file1.txt",
-    "patch": "@@ -0,0 +1,45 @@\n+require 'fast_spec_helper'\n+require 'app/models/rule'\n+require 'app/models/hash_syntax_rule'\n+describe HashSyntaxRule, '#violated?' do\n+  end\n"
+    "additions": 22,
+    "blob_url": "https://github.com/thoughtbot/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
+    "changes": 22,
+    "contents_url": "https://api.github.com/repos/thoughtbot/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc",
+    "deletions": 0,
+    "filename": "config/unicorn.rb",
+    "patch": "@@ -0,0 +1,22 @@\n+worker_processes Integer(ENV[\"WEB_CONCURRENCY\"] || 3)\n+timeout 15\n+preload_app true\n+\n+before_fork do |server, worker|\n+  Signal.trap 'TERM' do\n+    puts 'Unicorn master intercepting TERM and sending myself QUIT instead'\n+    Process.kill 'QUIT', Process.pid\n+  end\n+\n+  defined?(ActiveRecord::Base) and\n+    ActiveRecord::Base.connection.disconnect!\n+end\n+\n+after_fork do |server, worker|\n+  Signal.trap 'TERM' do\n+    puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'\n+  end\n+\n+  defined?(ActiveRecord::Base) and\n+    ActiveRecord::Base.establish_connection\n+end",
+    "raw_url": "https://github.com/thoughtbot/hound/raw/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
+    "sha": "f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
+    "status": "added"
   }
 ]
