@@ -16,7 +16,7 @@ feature 'Repo list' do
     sign_in_as(user)
 
     visit root_path
-    click_link 'Sync repos'
+    click_link I18n.t('sync_repos')
 
     expect(page).to have_content 'jimtom/My-Private-Repo'
   end
@@ -31,7 +31,7 @@ feature 'Repo list' do
     )
 
     visit root_path
-    click_link 'activate'
+    click_link I18n.t('activate_repo')
 
     expect(page).to have_link('deactivate')
 
@@ -45,7 +45,7 @@ feature 'Repo list' do
     sign_in_as(repo.user)
 
     visit root_path
-    click_link 'deactivate'
+    click_link I18n.t('deactivate_repo')
 
     expect(page).to have_link('activate')
 
