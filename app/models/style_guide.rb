@@ -14,7 +14,7 @@ class StyleGuide
   #   end
   # end
 
-  check(files)
+  def check(files)
     files.each do |file|
       source = Rubocop::SourceParser.parse(file)
       cop = Rubocop::Cop::Style::TrailingWhitespace.new
