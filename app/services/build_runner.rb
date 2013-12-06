@@ -11,7 +11,18 @@ class BuildRunner
 
   def run
     api.create_pending_status(*api_params, 'Hound is working...')
-    @style_guide.check(pull_request_additions)
+    # spike
+    files = api.pull_request_files(@pull_request.full_repo_name, @pull_request.number)
+
+    sources = files.map do |file|
+      ref = file.contents_url[/ref=(.*)/, 1]
+      contents = api.client.contents(@pull_request.full_repo_name, path: file.filename, ref: ref)
+      Base64.decode64(contents.content)
+    end
+
+    # wip
+    @style_guide.check(sources)
+    # @style_guide.check(pull_request_additions)
     build = repo.builds.create!(violations: @style_guide.violations)
     update_api_status(build)
   end
@@ -19,6 +30,7 @@ class BuildRunner
   private
 
   def update_api_status(build = nil)
+    # might not need this after using Rubocop and fetching individual files.
     sleep 1
     if @style_guide.violations.any?
       api.create_failure_status(*api_params, 'Hound does not approve', build_url(build))

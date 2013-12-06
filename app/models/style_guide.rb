@@ -5,11 +5,23 @@ class StyleGuide
     @violations = []
   end
 
-  def check(lines)
-    lines.each do |line|
-      rules.each do |rule|
-        rule_instance = rule.new
-        check_rule(rule_instance, line)
+  # def check(lines)
+  #   lines.each do |line|
+  #     rules.each do |rule|
+  #       rule_instance = rule.new
+  #       check_rule(rule_instance, line)
+  #     end
+  #   end
+  # end
+
+  check(files)
+    files.each do |file|
+      source = Rubocop::SourceParser.parse(file)
+      cop = Rubocop::Cop::Style::TrailingWhitespace.new
+      cop.investigate(source)
+      # violations += cop.offences
+      cop.offences.each do |offence|
+        violations << ['TrailingWhitespace', offence.line]
       end
     end
   end
@@ -24,15 +36,15 @@ class StyleGuide
 
   def rules
     [
-      IndentationRule,
-      LineLengthRule,
-      TrailingWhitespaceRule,
-      CommaRule,
-      BraceRule,
-      ParenRule,
-      BracketRule,
-      QuoteRule,
-      MethodParenRule
+      # IndentationRule,
+      # LineLengthRule,
+      TrailingWhitespaceRule
+      # CommaRule,
+      # BraceRule,
+      # ParenRule,
+      # BracketRule,
+      # QuoteRule,
+      # MethodParenRule
     ]
   end
 end
