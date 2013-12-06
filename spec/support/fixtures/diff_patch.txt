@@ -1,0 +1,42 @@
+@@ -11,7 +11,7 @@ def valid?
+ 
+   def run
+     api.create_pending_status(*api_params, 'Hound is working...')
+-    @style_guide.check(pull_request_additions)
++    @style_guide.check(api.pull_request_files(@pull_request))
+     build = repo.builds.create!(violations: @style_guide.violations)
+     update_api_status(build)
+   end
+@@ -19,6 +19,7 @@ def run
+   private
+ 
+   def update_api_status(build = nil)
++    # might not need this after using Rubocop and fetching individual files.
+     sleep 1
+     if @style_guide.violations.any?
+       api.create_failure_status(*api_params, 'Hound does not approve', build_url(build))
+@@ -35,11 +36,6 @@ def api_params
+     [@pull_request.full_repo_name, @pull_request.head_sha]
+   end
+ 
+-  def pull_request_additions
+-    diff = GitDiff.new(patch)
+-    diff.additions
+-  end
+-
+   def valid_build_action?
+     valid_actions = %w(opened synchronize)
+     valid_actions.include?(@pull_request.action)
+@@ -52,13 +48,4 @@ def repo
+   def api
+     @api ||= GithubApi.new(repo.github_token)
+   end
+
+   def patch
+     files = api.pull_request_files(
+-      @pull_request.repo_name,
++      @pull_request.full_repo_name,
+       @pull_request.number
+     )
+
+ end

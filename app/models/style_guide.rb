@@ -4,15 +4,17 @@ class StyleGuide
   attr_reader :violations
 
   RULES = [
+    Rubocop::Cop::Style::Tab,
     Rubocop::Cop::Style::TrailingWhitespace
   ]
 
-  def initialize
+  def initialize(files)
+    @files = files
     @violations = []
   end
 
-  def check(files)
-    files.each do |file|
+  def check
+    @files.each do |file|
       RULES.each do |rule|
         check_for_violations(file, rule)
       end
@@ -23,11 +25,13 @@ class StyleGuide
 
   def check_for_violations(file, rule)
     cop = rule.new
-    source = Rubocop::SourceParser.parse(file)
+    source = Rubocop::SourceParser.parse(file.contents)
 
     cop.investigate(source)
     cop.offences.each do |offence|
-      report_violation(source, offence)
+      if file.modified_line_numbers.include?(offence.line)
+        report_violation(source, offence)
+      end
     end
   end
 

@@ -5,24 +5,28 @@ describe StyleGuide do
   describe '#check' do
     context 'with invalid lines of code' do
       it 'has violations' do
-        files = ['trailing_whitespace = true  ']
-        style_guide = StyleGuide.new
+        bad_code = "good line\n\tindentation = true "
+        file1 = double(modified_line_numbers: [1], contents: 'whitespace = true ')
+        file2 = double(modified_line_numbers: [2], contents: bad_code)
+        style_guide = StyleGuide.new([file1, file2])
 
-        style_guide.check(files)
+        style_guide.check
 
-        expect(style_guide).to have(1).violations
+        expect(style_guide).to have(3).violations
         expect(style_guide.violations).to eq([
-          [1, files.first, 'Trailing whitespace detected.']
+          [1, 'whitespace = true ', 'Trailing whitespace detected.'],
+          [2, "\tindentation = true ", 'Tab detected.'],
+          [2, "\tindentation = true ", 'Trailing whitespace detected.']
         ])
       end
     end
 
     context 'with valid lines of code' do
       it 'has no violations' do
-        files = ['good line of code']
-        style_guide = StyleGuide.new
+        file = double(modified_line_numbers: [7], contents: 'def all_good')
+        style_guide = StyleGuide.new([file])
 
-        style_guide.check(files)
+        style_guide.check
 
         expect(style_guide).to have(0).violations
       end

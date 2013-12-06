@@ -47,7 +47,6 @@
       display: block;
       padding: 0 .5rem 0 0;
       @include position(absolute, 0px 0 0px 0px);
-      text-indent: -100%;
       @include user-select(none);
       width: $repo-list-toggle-size;
 

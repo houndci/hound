@@ -35,13 +35,13 @@ feature 'Repo list' do
     )
 
     visit root_path
-    click_link I18n.t('activate_repo')
+    find('.activate').click
 
-    expect(page).to have_link('deactivate')
+    expect(page).to have_css('.deactivate')
 
     visit current_url
 
-    expect(page).to have_link('deactivate')
+    expect(page).to have_css('.deactivate')
   end
 
   scenario 'user deactivates repo', js: true do
@@ -51,12 +51,12 @@ feature 'Repo list' do
     sign_in_as(user)
 
     visit root_path
-    click_link I18n.t('deactivate_repo')
+    find('.deactivate').click
 
-    expect(page).to have_link('activate')
+    expect(page).to have_css('.activate')
 
     visit current_path
 
-    expect(page).to have_link('activate')
+    expect(page).to have_css('.activate')
   end
 end
