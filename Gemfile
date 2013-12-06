@@ -12,7 +12,7 @@ gem 'rails', '3.2.16'
 gem 'rollbar'
 gem 'rubocop'
 gem 'strong_parameters'
-gem 'thin'
+gem 'unicorn'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
