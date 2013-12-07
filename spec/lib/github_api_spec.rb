@@ -21,7 +21,7 @@ describe GithubApi do
       api = GithubApi.new(auth_token)
       full_repo_name = 'jimtom/repo'
       callback_endpoint = 'http://example.com'
-      api.stubs(:update_repo_hook_id).with(full_repo_name: true)
+      api.stub(:update_repo_hook_id).with(full_repo_name: true)
       stub_hook_creation_request(auth_token, full_repo_name, callback_endpoint)
 
       response = api.create_pull_request_hook(full_repo_name, callback_endpoint)
@@ -67,6 +67,23 @@ describe GithubApi do
       response = api.create_failure_status(repo_name, head_sha, 'FAIL', target_url)
 
       expect(response.id).not_to be_nil
+    end
+  end
+
+  describe '#pull_request_files' do
+    it 'returns file content of changed files' do
+      api = GithubApi.new('authtoken')
+      pull_request = stub(full_repo_name: 'thoughtbot/hound', number: 69)
+      stub_pull_request_files_request(
+        pull_request.full_repo_name,
+        pull_request.number,
+        'authtoken'
+      )
+      stub_contents_request(pull_request.full_repo_name)
+
+      files = api.pull_request_files(pull_request)
+
+      expect(files).to eq ['some test code']
     end
   end
 end

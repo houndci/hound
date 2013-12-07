@@ -11,18 +11,7 @@ class BuildRunner
 
   def run
     api.create_pending_status(*api_params, 'Hound is working...')
-    # spike
-    files = api.pull_request_files(@pull_request.full_repo_name, @pull_request.number)
-
-    sources = files.map do |file|
-      ref = file.contents_url[/ref=(.*)/, 1]
-      contents = api.client.contents(@pull_request.full_repo_name, path: file.filename, ref: ref)
-      Base64.decode64(contents.content)
-    end
-
-    # wip
-    @style_guide.check(sources)
-    # @style_guide.check(pull_request_additions)
+    @style_guide.check(api.pull_request_files(@pull_request))
     build = repo.builds.create!(violations: @style_guide.violations)
     update_api_status(build)
   end
@@ -47,11 +36,6 @@ class BuildRunner
     [@pull_request.full_repo_name, @pull_request.head_sha]
   end
 
-  def pull_request_additions
-    diff = GitDiff.new(patch)
-    diff.additions
-  end
-
   def valid_build_action?
     valid_actions = %w(opened synchronize)
     valid_actions.include?(@pull_request.action)
@@ -63,14 +47,5 @@ class BuildRunner
 
   def api
     @api ||= GithubApi.new(repo.github_token)
-  end
-
-  def patch
-    files = api.pull_request_files(
-      @pull_request.full_repo_name,
-      @pull_request.number
-    )
-
-    files.map(&:patch).join('\n')
   end
 end
