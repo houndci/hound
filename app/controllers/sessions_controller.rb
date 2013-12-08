@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
   private
 
   def create_session
-    user = User.find_or_create_by_github_username(github_username)
+    user = User.where(github_username: github_username).first_or_create
     user.update_attribute(:github_token, github_token)
     session[:remember_token] = user.remember_token
   end

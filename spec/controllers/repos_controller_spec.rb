@@ -9,7 +9,7 @@ describe ReposController, '#update' do
       repo = create(:repo, user: user)
       stub_sign_in(user)
 
-      put(:update, id: repo.id, active: true)
+      patch(:update, id: repo.id, active: true, format: :json)
 
       expect(activator).to have_received(:activate).with(repo)
     end
@@ -23,7 +23,7 @@ describe ReposController, '#update' do
       repo = create(:repo, user: user)
       stub_sign_in(user)
 
-      put(:update, id: repo.id, active: false)
+      patch(:update, id: repo.id, active: false, format: :json)
 
       expect(activator).to have_received(:deactivate).with(repo)
     end

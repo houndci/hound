@@ -1,8 +1,6 @@
 class Repo < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
-  attr_accessible :active, :full_github_name, :github_id, :hook_id, :name
-
   belongs_to :user
   has_many :builds
 
@@ -10,7 +8,7 @@ class Repo < ActiveRecord::Base
   validates :full_github_name, presence: true
   validates :github_id, uniqueness: { scope: :user_id }, presence: true
 
-  scope :active, where(active: true)
+  scope :active, -> { where(active: true) }
 
   def activate
     update_attribute(:active, true)
