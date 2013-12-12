@@ -1,8 +1,4 @@
 module GithubApiHelper
-  def stub_github_requests
-    stub_request(:any, /.*api.github.com.*/)
-  end
-
   def stub_repo_requests(auth_token)
     stub_paginated_repo_requests(auth_token)
     stub_orgs_request(auth_token)
@@ -34,11 +30,13 @@ module GithubApiHelper
     )
   end
 
+  def stub_status_request(full_repo_name, sha)
+    url = "https://api.github.com/repos/#{full_repo_name}/statuses/#{sha}"
+    stub_request(:post, url)
+  end
+
   def stub_status_creation_request(full_repo_name, commit_sha, state, description)
-    stub_request(
-      :post,
-      "https://api.github.com/repos/#{full_repo_name}/statuses/#{commit_sha}"
-    ).with(
+    stub_status_request(full_repo_name, commit_sha).with(
       body: %({"description":"#{description}","state":"#{state}"}),
       headers: { 'Authorization' => /^token \w+$/ }
     ).to_return(
@@ -49,10 +47,7 @@ module GithubApiHelper
   end
 
   def stub_failure_status_creation_request(full_repo_name, commit_sha, state, description, target_url)
-    stub_request(
-      :post,
-      "https://api.github.com/repos/#{full_repo_name}/statuses/#{commit_sha}"
-    ).with(
+    stub_status_request(full_repo_name, commit_sha).with(
       body: %({"description":"#{description}","target_url":"#{target_url}","state":"#{state}"}),
       headers: { 'Authorization' => /^token \w+$/ }
     ).to_return(
@@ -63,29 +58,25 @@ module GithubApiHelper
   end
 
   def stub_pull_request_files_request(full_repo_name, pull_request_number, auth_token)
-    stub_request(
-      :get,
-      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
-    ).with(
-      headers: { 'Authorization' => "token #{auth_token}" }
-    ).to_return(
-      status: 200,
-      body: File.read("spec/support/fixtures/pull_request_files.json"),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
+    url = "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
+    stub_request(:get, url).
+      with(headers: { 'Authorization' => "token #{auth_token}" }).
+      to_return(
+        status: 200,
+        body: File.read("spec/support/fixtures/pull_request_files.json"),
+        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      )
   end
 
-  def stub_contents_request(full_repo_name, fixture = 'contents.json')
-    stub_request(
-      :get,
-      "https://api.github.com/repos/#{full_repo_name}/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc"
-    ).with(
-      headers: { 'Authorization' => /token \w+/ }
-    ).to_return(
-      status: 200,
-      body: File.read("spec/support/fixtures/#{fixture}"),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
+  def stub_contents_request(full_repo_name, sha, fixture = 'contents.json')
+    url = "https://api.github.com/repos/#{full_repo_name}/contents/config/unicorn.rb?ref=#{sha}"
+    stub_request(:get, url).
+      with(headers: { 'Authorization' => /token \w+/ }).
+      to_return(
+        status: 200,
+        body: File.read("spec/support/fixtures/#{fixture}"),
+        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      )
   end
 
   private

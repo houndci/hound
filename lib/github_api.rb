@@ -40,8 +40,7 @@ class GithubApi
   def pull_request_files(pull_request)
     files = client.pull_request_files(pull_request.full_repo_name, pull_request.number)
     files.map do |file|
-      ref = file.contents_url[/ref=(.*)/, 1]
-      contents = client.contents(pull_request.full_repo_name, path: file.filename, ref: ref)
+      contents = client.contents(pull_request.full_repo_name, path: file.filename, ref: pull_request.head_sha)
       Base64.decode64(contents.content)
     end
   end
