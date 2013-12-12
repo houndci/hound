@@ -1,13 +1,12 @@
 class RemoveClearanceColumnsFromUser < ActiveRecord::Migration
   def up
     remove_columns(
-      :users, [
-        :email,
-        :encrypted_password,
-        :salt,
-        :confirmation_token,
-        :remember_token
-      ]
+      :users,
+      :email,
+      :encrypted_password,
+      :salt,
+      :confirmation_token,
+      :remember_token
     )
   end
 

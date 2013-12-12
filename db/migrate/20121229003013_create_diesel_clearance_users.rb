@@ -6,7 +6,7 @@ class CreateDieselClearanceUsers < ActiveRecord::Migration
       t.string   :salt,               :limit => 128
       t.string   :confirmation_token, :limit => 128
       t.string   :remember_token,     :limit => 128
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :users, :email
