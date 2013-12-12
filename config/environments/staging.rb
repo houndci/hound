@@ -2,6 +2,8 @@ ENV['HOST'] ||= 'hound-staging.herokuapp.com'
 
 Houndapp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
+  #
+  config.eager_load = true
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -49,6 +51,7 @@ Houndapp::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( repos/*.js )
+  config.assets.js_compressor = :uglifier
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

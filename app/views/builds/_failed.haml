@@ -1,8 +1,8 @@
 %h2 Violations
 
 %ul
-  - build.violations.each do |rule, line_of_code|
+  - build.violations.each do |line_number, code, message|
     %li
-      %span.rule
-        = rule
-      = line_of_code
+      = line_number
+      = code
+      = message

@@ -73,13 +73,17 @@ describe GithubApi do
   describe '#pull_request_files' do
     it 'returns file content of changed files' do
       api = GithubApi.new('authtoken')
-      pull_request = stub(full_repo_name: 'thoughtbot/hound', number: 69)
+      pull_request = double(
+        full_repo_name: 'thoughtbot/hound',
+        number: 69,
+        head_sha: '123abc'
+      )
       stub_pull_request_files_request(
         pull_request.full_repo_name,
         pull_request.number,
         'authtoken'
       )
-      stub_contents_request(pull_request.full_repo_name)
+      stub_contents_request(pull_request.full_repo_name, pull_request.head_sha)
 
       files = api.pull_request_files(pull_request)
 
