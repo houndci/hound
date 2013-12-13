@@ -1,5 +1,3 @@
-require 'rubocop'
-
 class StyleGuide
   attr_reader :violations
 

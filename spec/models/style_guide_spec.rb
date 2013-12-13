@@ -1,4 +1,5 @@
 require 'fast_spec_helper'
+require 'rubocop'
 require 'app/models/style_guide'
 
 describe StyleGuide do
