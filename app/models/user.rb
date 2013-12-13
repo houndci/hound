@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   def create_github_repo(attributes)
     repos.create(attributes)
-  end
+  end   
 
   private
 
