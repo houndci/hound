@@ -1,6 +1,82 @@
 require 'spec_helper'
 
 describe BuildRunner, '#run' do
+  context 'with violations' do
+    it 'saves a build record' do
+      api = double(
+        :github_api,
+        create_pending_status: nil,
+        create_failure_status: nil,
+        pull_request_files: []
+      )
+      style_guide = double(
+        :style_guide,
+        violations: ['something failed'],
+        check: nil
+      )
+      GithubApi.stub(new: api)
+      StyleGuide.stub(new: style_guide)
+      build_runner = BuildRunner.new(pull_request_stub)
+
+      build_runner.run
+
+      build = Build.last
+      expect(build).to be_persisted
+      expect(build.violations).to eq ['something failed']
+    end
+
+    it 'checks style guide and notifies github of the failed build' do
+      pull_request = pull_request_stub
+      api = double(
+        :github_api,
+        create_pending_status: nil,
+        create_failure_status: nil,
+        pull_request_files: []
+      )
+      style_guide = double(
+        :style_guide,
+        violations: ['something failed'],
+        check: nil
+      )
+      GithubApi.stub(new: api)
+      StyleGuide.stub(new: style_guide)
+      builds_url = 'http://example.com/builds'
+
+      build_runner = BuildRunner.new(pull_request, builds_url)
+      build_runner.run
+
+      expect(api).to have_received(:create_pending_status).
+        with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
+      expect(api).to have_received(:create_failure_status).
+        with(
+          pull_request.full_repo_name,
+          pull_request.head_sha,
+          'Hound does not approve',
+          "#{builds_url}/#{Build.last.id}"
+        )
+    end
+  end
+
+  context 'without violations' do
+    it 'checks style guide and notifies github of the passing build' do
+      pull_request = pull_request_stub
+      api = double(
+        :github_api,
+        create_pending_status: nil,
+        create_successful_status: nil,
+        pull_request_files: []
+      )
+      GithubApi.stub(new: api)
+
+      build_runner = BuildRunner.new(pull_request)
+      build_runner.run
+
+      expect(api).to have_received(:create_pending_status).
+        with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
+      expect(api).to have_received(:create_successful_status).
+        with(pull_request.full_repo_name, pull_request.head_sha, 'Hound approves')
+    end
+  end
 end
 
 describe BuildRunner, '#valid?' do

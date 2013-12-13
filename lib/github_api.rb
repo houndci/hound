@@ -37,12 +37,12 @@ class GithubApi
     client.create_status(full_repo_name, sha, 'failure', description: description, target_url: target_url)
   end
 
-  def pull_request_files(pull_request)
-    files = client.pull_request_files(pull_request.full_repo_name, pull_request.number)
-    files.map do |file|
-      contents = client.contents(pull_request.full_repo_name, path: file.filename, ref: pull_request.head_sha)
-      Base64.decode64(contents.content)
-    end
+  def pull_request_files(full_repo_name, number)
+    client.pull_request_files(full_repo_name, number)
+  end
+
+  def pull_request_file_contents(full_repo_name, filename, sha)
+    client.contents(full_repo_name, path: filename, ref: sha)
   end
 
   private

@@ -85,9 +85,12 @@ describe GithubApi do
       )
       stub_contents_request(pull_request.full_repo_name, pull_request.head_sha)
 
-      files = api.pull_request_files(pull_request)
+      files = api.pull_request_files(pull_request.full_repo_name, pull_request.number)
+      file = files.first
 
-      expect(files).to eq ['some test code']
+      expect(files).to have(1).item
+      expect(file.filename).to eq 'config/unicorn.rb'
+      expect(file.patch).to include 'preload_app true'
     end
   end
 end

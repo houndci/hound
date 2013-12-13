@@ -3,6 +3,4 @@
 
 en:
   sync_repos: 'Sync repos'
-  activate_repo: 'activate'
-  deactivate_repo: 'deactivate'
   authenticate: 'Authenticate with Github to use Hound'
