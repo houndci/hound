@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     repos.where(github_id: github_id).first
   end
 
-  def create_github_repo(attributes)
+  def create_github_repo(attributes)    
     repos.create(attributes)
   end   
 
