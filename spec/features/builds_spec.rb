@@ -4,22 +4,23 @@ feature 'Builds' do
   let(:payload) { File.read('spec/support/fixtures/pull_request_payload.json') }
   let(:parsed_payload) { JSON.parse(payload) }
   let(:repo_name) { parsed_payload['repository']['full_name'] }
-  let(:github_repo_id) { parsed_payload['repository']['id'] }
-  let(:sha) { parsed_payload['pull_request']['head']['sha'] }
-  let(:number) { parsed_payload['number'] }
+  let(:repo_id) { parsed_payload['repository']['id'] }
+  let(:pr_sha) { parsed_payload['pull_request']['head']['sha'] }
+  let(:pr_number) { parsed_payload['number'] }
 
   scenario 'a successful build' do
     user = create(:user)
-    repo = create(:active_repo, github_id: github_repo_id)
+    repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
     create(:membership, user: user, repo: repo)
-    stub_github_requests
-    stub_pull_request_files_request(repo_name)
+    stub_status_request(repo.full_github_name, pr_sha)
+    stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
+    stub_contents_request(repo.full_github_name, pr_sha)
 
     post builds_path, payload: payload
 
-    expect_a_pending_status_request(repo_name, sha, repo.github_token)
-    expect_a_pull_request_files_request(repo_name, number, repo.github_token)
-    expect_a_successful_status_request(repo_name, sha, repo.github_token)
+    expect_a_pending_status_request(repo.full_github_name, pr_sha, repo.github_token)
+    expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
+    expect_a_successful_status_request(repo.full_github_name, pr_sha, repo.github_token)
 
     visit build_path(Build.first)
 
@@ -29,21 +30,22 @@ feature 'Builds' do
 
   scenario 'a failed build' do
     user = create(:user)
-    repo = create(:active_repo, github_id: github_repo_id)
-    create(:membership, repo: repo, user: user)
-    stub_github_requests
-    stub_pull_request_files_request(repo_name, 'pull_request_files_with_errors.json')
+    repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
+    create(:membership, user: user, repo: repo)
+    stub_status_request(repo.full_github_name, pr_sha)
+    stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
+    stub_contents_request(repo.full_github_name, pr_sha, 'contents_with_violations.json')
 
     post builds_path, payload: payload
 
-    expect_a_pending_status_request(repo_name, sha, repo.github_token)
-    expect_a_pull_request_files_request(repo_name, number, repo.github_token)
-    expect_a_failure_status_request(repo_name, sha, repo.github_token)
+    expect_a_pending_status_request(repo_name, pr_sha, repo.github_token)
+    expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
+    expect_a_failure_status_request(repo.full_github_name, pr_sha, repo.github_token)
 
     visit build_path(Build.first)
 
     expect(page).to have_content 'Violations'
-    expect(page).to have_content 'ParenRule def github_repo( github_id )'
+    expect(page).to have_content '1 some test code Trailing whitespace detected'
   end
 
   def expect_a_pull_request_files_request(repo_name, number, token)
