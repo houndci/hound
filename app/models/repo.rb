@@ -22,4 +22,4 @@ class Repo < ActiveRecord::Base
   def github_token
     users.first.github_token
   end
-end
+end  
