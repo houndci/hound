@@ -16,7 +16,8 @@ describe RepoSynchronization do
 
     it 'updates repos' do
       user = create(:user, github_token: 'token')
-      create(:repo, github_id: 123, user: user)
+      repo = create(:repo, github_id: 123)
+      create(:membership, repo: repo, user: user)
       api = double(:github_api, repos: [{id: 123}])
       GithubApi.stub(new: api)
       synchronization = RepoSynchronization.new(user)

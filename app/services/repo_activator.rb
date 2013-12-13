@@ -22,6 +22,6 @@ class RepoActivator
   end
 
   def github_api(repo)
-    GithubApi.new(repo.user.github_token)
+    GithubApi.new(repo.github_token)
   end
 end

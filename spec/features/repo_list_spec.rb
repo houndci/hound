@@ -2,8 +2,10 @@ require 'spec_helper'
 
 feature 'Repo list' do
   scenario 'user views list', js: true do
+    user = create(:user)
     repo = create(:repo, full_github_name: 'thoughtbot/my-repo')
-    sign_in_as(repo.user)
+    create(:membership, user: user, repo: repo)
+    sign_in_as(user)
 
     visit root_path
 
@@ -22,12 +24,14 @@ feature 'Repo list' do
   end
 
   scenario 'user activates repo', js: true do
+    user = create(:user)
     repo = create(:repo)
-    sign_in_as(repo.user)
+    create(:membership, user: user, repo: repo)
+    sign_in_as(user)
     stub_hook_creation_request(
-      repo.user.github_token,
+      repo.github_token,
       repo.full_github_name,
-      URI.join("http://#{ENV['HOST']}", "builds?token=#{repo.user.github_token}").to_s
+      URI.join("http://#{ENV['HOST']}", "builds?token=#{repo.github_token}").to_s
     )
 
     visit root_path
@@ -41,8 +45,10 @@ feature 'Repo list' do
   end
 
   scenario 'user deactivates repo', js: true do
-    repo = create(:repo, active: true)
-    sign_in_as(repo.user)
+    user = create(:user)
+    repo = create(:active_repo)
+    create(:membership, user: user, repo: repo)
+    sign_in_as(user)
 
     visit root_path
     click_link I18n.t('deactivate_repo')

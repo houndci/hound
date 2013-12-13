@@ -9,7 +9,9 @@ feature 'Builds' do
   let(:number) { parsed_payload['number'] }
 
   scenario 'a successful build' do
-    repo = create(:repo, github_id: github_repo_id, active: true)
+    user = create(:user)
+    repo = create(:active_repo, github_id: github_repo_id)
+    create(:membership, user: user, repo: repo)
     stub_github_requests
     stub_pull_request_files_request(repo_name)
 
@@ -26,7 +28,9 @@ feature 'Builds' do
   end
 
   scenario 'a failed build' do
-    repo = create(:repo, github_id: github_repo_id, active: true)
+    user = create(:user)
+    repo = create(:active_repo, github_id: github_repo_id)
+    create(:membership, repo: repo, user: user)
     stub_github_requests
     stub_pull_request_files_request(repo_name, 'pull_request_files_with_errors.json')
 

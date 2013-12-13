@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130621203400) do
+ActiveRecord::Schema.define(version: 20131212192202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,20 +41,24 @@ ActiveRecord::Schema.define(version: 20130621203400) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "memberships", force: true do |t|
+    t.integer "user_id", null: false
+    t.integer "repo_id", null: false
+  end
+
+  add_index "memberships", ["repo_id", "user_id"], name: "index_memberships_on_repo_id_and_user_id", using: :btree
+
   create_table "repos", force: true do |t|
     t.integer "github_id",                        null: false
     t.boolean "active",           default: false, null: false
-    t.integer "user_id",                          null: false
     t.integer "hook_id"
     t.string  "name",                             null: false
     t.string  "full_github_name",                 null: false
   end
 
-  add_index "repos", ["user_id", "github_id"], name: "index_repos_on_user_id_and_github_id", unique: true, using: :btree
-
   create_table "users", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "github_username", null: false
     t.string   "remember_token",  null: false
     t.string   "github_token"
