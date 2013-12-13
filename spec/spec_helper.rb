@@ -9,7 +9,6 @@ RSpec.configure do |config|
   config.include OauthHelper
   config.include AuthenticationHelper
   config.include FactoryGirl::Syntax::Methods
-  WebMock.disable_net_connect!(allow_localhost: true)
   DatabaseCleaner.strategy = :deletion
   Delayed::Worker.delay_jobs = false
 

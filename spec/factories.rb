@@ -8,7 +8,6 @@ FactoryGirl.define do
   end
 
   factory :repo do
-    user
     sequence(:name) { |n| "Repo #{n}" }
     sequence(:full_github_name) { |n| "user/repo#{n}" }
     sequence(:github_id) { |n| n }
@@ -22,5 +21,10 @@ FactoryGirl.define do
   factory :user do
     sequence(:github_username) { |n| "github#{n}" }
     sequence(:github_token) { |n| "token#{n}" }
+  end
+
+  factory :membership do
+    user
+    repo
   end
 end

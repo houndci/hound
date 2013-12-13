@@ -1,7 +1,11 @@
 require 'rubocop'
 
 class StyleGuide
-  attr_accessor :violations
+  attr_reader :violations
+
+  RULES = [
+    Rubocop::Cop::Style::TrailingWhitespace
+  ]
 
   RULES = [
     Rubocop::Cop::Style::TrailingWhitespace
@@ -13,25 +17,26 @@ class StyleGuide
 
   def check(files)
     files.each do |file|
-      source = parse_file(file)
-
       RULES.each do |rule|
-        check_for_violations(source, rule)
+        check_for_violations(file, rule)
       end
     end
   end
 
   private
 
-  def parse_file(file)
-    Rubocop::SourceParser.parse(file)
-  end
-
-  def check_for_violations(source, rule)
+  def check_for_violations(file, rule)
     cop = rule.new
+    source = Rubocop::SourceParser.parse(file)
+
     cop.investigate(source)
     cop.offences.each do |offence|
-      violations << [offence.message, offence.line]
+      report_violation(source, offence)
     end
+  end
+
+  def report_violation(source, offence)
+    line_of_code = source.lines[offence.line - 1]
+    @violations << [offence.line, line_of_code, offence.message]
   end
 end

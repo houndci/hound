@@ -53,7 +53,9 @@ describe BuildRunner, '#valid?' do
 end
 
 def pull_request_stub(options = {})
+  user = create(:user)
   repo = create(:active_repo)
+  create(:membership, user: user, repo: repo)
   attributes = {
     action: 'opened',
     full_repo_name: repo.full_github_name,

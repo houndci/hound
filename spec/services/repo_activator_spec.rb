@@ -5,6 +5,7 @@ describe RepoActivator do
     it 'activates repo' do
       stub_github_api
       repo = create(:repo)
+      create(:membership, repo: repo)
       activator = RepoActivator.new
 
       activator.activate(repo)
@@ -15,11 +16,12 @@ describe RepoActivator do
     it 'creates GitHub hook' do
       github_api = stub_github_api
       repo = create(:repo)
+      create(:membership, repo: repo)
       activator = RepoActivator.new
 
       activator.activate(repo)
 
-      expect(GithubApi).to have_received(:new).with(repo.user.github_token)
+      expect(GithubApi).to have_received(:new).with(repo.github_token)
       expect(github_api).to have_received(:create_pull_request_hook).with(
         repo.full_github_name,
         "http://#{ENV['HOST']}/builds"
@@ -32,6 +34,7 @@ describe RepoActivator do
     it 'deactivates repo' do
       stub_github_api
       repo = create(:repo)
+      create(:membership, repo: repo)
       activator = RepoActivator.new
 
       activator.deactivate(repo)
@@ -42,6 +45,7 @@ describe RepoActivator do
     it 'removes GitHub hook' do
       github_api = stub_github_api
       repo = create(:repo)
+      create(:membership, repo: repo)
       activator = RepoActivator.new
 
       activator.deactivate(repo)

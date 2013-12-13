@@ -1,9 +1,8 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
-  attr_accessible :github_username
-
-  has_many :repos
+  has_many :memberships
+  has_many :repos, through: :memberships
 
   validates :github_username, presence: true
 

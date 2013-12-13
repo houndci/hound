@@ -12,7 +12,7 @@ describe StyleGuide do
 
         expect(style_guide).to have(1).violations
         expect(style_guide.violations).to eq([
-          ['Trailing whitespace detected.', 1]
+          [1, files.first, 'Trailing whitespace detected.']
         ])
       end
     end

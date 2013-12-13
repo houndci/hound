@@ -4,7 +4,7 @@ class CreateBuilds < ActiveRecord::Migration
       t.text :violations
       t.integer :repo_id
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :builds, :repo_id

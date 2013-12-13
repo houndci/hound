@@ -1,6 +1,4 @@
 class Build < ActiveRecord::Base
-  attr_accessible :repo, :violations
-
   belongs_to :repo
 
   validates :repo, presence: true

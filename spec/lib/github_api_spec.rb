@@ -21,7 +21,7 @@ describe GithubApi do
       api = GithubApi.new(auth_token)
       full_repo_name = 'jimtom/repo'
       callback_endpoint = 'http://example.com'
-      api.stub(:update_repo_hook_id).with(full_repo_name: true)
+      allow(api).to receive(:update_repo_hook_id).with(full_repo_name: true)
       stub_hook_creation_request(auth_token, full_repo_name, callback_endpoint)
 
       response = api.create_pull_request_hook(full_repo_name, callback_endpoint)
@@ -73,13 +73,17 @@ describe GithubApi do
   describe '#pull_request_files' do
     it 'returns file content of changed files' do
       api = GithubApi.new('authtoken')
-      pull_request = stub(full_repo_name: 'thoughtbot/hound', number: 69)
+      pull_request = double(
+        full_repo_name: 'thoughtbot/hound',
+        number: 69,
+        head_sha: '123abc'
+      )
       stub_pull_request_files_request(
         pull_request.full_repo_name,
         pull_request.number,
         'authtoken'
       )
-      stub_contents_request(pull_request.full_repo_name)
+      stub_contents_request(pull_request.full_repo_name, pull_request.head_sha)
 
       files = api.pull_request_files(pull_request)
 
