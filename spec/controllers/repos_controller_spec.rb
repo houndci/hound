@@ -6,7 +6,8 @@ describe ReposController, '#update' do
       activator = double(:repo_activator, activate: true)
       RepoActivator.stub(new: activator)
       user = create(:user)
-      repo = create(:repo, user: user)
+      repo = create(:repo)
+      create(:membership, user: user, repo: repo)
       stub_sign_in(user)
 
       patch(:update, id: repo.id, active: true, format: :json)
@@ -20,7 +21,8 @@ describe ReposController, '#update' do
       activator = double(:repo_activator, deactivate: true)
       RepoActivator.stub(new: activator)
       user = create(:user)
-      repo = create(:repo, user: user)
+      repo = create(:repo)
+      create(:membership, user: user, repo: repo)
       stub_sign_in(user)
 
       patch(:update, id: repo.id, active: false, format: :json)

@@ -1,27 +1,31 @@
 require 'spec_helper'
 
-describe User do
+describe User, 'associations' do
+  it { should have_many(:repos).through(:memberships) }
+end
+
+describe User, 'validations' do
   it { should validate_presence_of :github_username }
+end
 
-  describe '.create' do
-    it 'generates a remember_token' do
-      user = build(:user)
-      SecureRandom.stub(hex: 'remembertoken')
+describe User, '.create' do
+  it 'generates a remember_token' do
+    user = build(:user)
+    SecureRandom.stub(hex: 'remembertoken')
 
-      user.save
+    user.save
 
-      expect(SecureRandom).to have_received(:hex).with(20)
-      expect(user.remember_token).to eq 'remembertoken'
-    end
+    expect(SecureRandom).to have_received(:hex).with(20)
+    expect(user.remember_token).to eq 'remembertoken'
   end
+end
 
-  describe '#to_s' do
-    it 'returns GitHub username' do
-      user = build(:user)
+describe User, '#to_s' do
+  it 'returns GitHub username' do
+    user = build(:user)
 
-      user_string = user.to_s
+    user_string = user.to_s
 
-      expect(user_string).to eq user.github_username
-    end
+    expect(user_string).to eq user.github_username
   end
 end
