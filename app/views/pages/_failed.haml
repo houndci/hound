@@ -1,0 +1,64 @@
+.report
+  %h1.logo
+    Hound
+    %span Violations
+
+  %h4#git_diff
+    = link_to 'app/models/git_diff.rb', '#git_diff'
+  %ul
+    %li.violation
+      %span.line-number
+        9
+      %pre
+        %code
+          @additions ||= @patch.lines.inject([]) do |result, line|
+      .message
+        %p Trailing whitespace detected
+    %li.violation
+      %span.line-number
+        21
+      %pre
+        %code
+          !line.start_with?('+++') && line.start_with?('+')
+      .message
+        %p Tab characters detected
+    %li.violation
+      %span.line-number
+        21
+      %pre
+        %code
+          !line.start_with?('+++') && line.start_with?('+')
+      .message
+        %p Tab characters detected
+
+  %h4#repos_controller
+    = link_to 'app/controllers/repos_controller.rb', '#repos_controller'
+  %ul
+    %li.violation
+      %span.line-number
+        5
+      %pre
+        %code
+          respond_with current_user.repos.order(:full_github_name)
+      .message
+        %p Trailing whitespace detected
+    %li.violation
+      %span.line-number
+        32
+      %pre
+        %code
+          RepoSynchronization.new(current_user)
+      .message
+        %p Tab characters detected
+
+%footer.report-repo-list
+  .repo-listing
+    %ul
+      %li.repo
+        %span.toggle.deactivate
+          %a{'href' => ''}
+        %span.name
+          Repo name
+      %li.repo
+        %span.name
+          = link_to 'View all other repos', root_path
