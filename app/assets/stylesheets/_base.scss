@@ -11,8 +11,22 @@ body {
     color: #000;
     display: inline-block;
     padding: .5rem;
+    position: relative;
     text-decoration: none;
+    top: 1px;
+
+    &:visited {
+      color: #000;
+    }
   }
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: $purple;
 }
 
 .logo {
@@ -20,14 +34,18 @@ body {
 }
 
 .button {
-  border: 1px solid #999;
-  border-radius: 4px;
-  color: #222;
+  background: $purple;
+  border-radius: 3px;
+  color: #fff;
   display: block;
-  padding: .5rem;
+  padding: 1rem .5rem;
   text-align: center;
   text-decoration: none;
   @include user-select(none);
+
+  &:visited {
+    color: #fff;
+  }
 
   &.disabled {
     cursor: not-allowed;

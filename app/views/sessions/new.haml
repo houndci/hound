@@ -1,36 +1,39 @@
 %div.repo-listing
   %h1.logo Hound
   .pitch
-    %h2 Take care of pesky code reviews with a trusty Hound. Hound reviews Github pull requests for styleguide violations.
-    = link_to 'https://github.com/thoughtbot/guides/tree/master/style', :class => 'style-guide', :target => '_blank' do
-      View the style guide &rarr;
+    %h2
+      Take care of pesky code reviews with a trusty Hound. Hound reviews Github pull requests for styleguide violations.
+      = link_to 'https://github.com/thoughtbot/guides/tree/master/style', class: 'style-guide', target: '_blank' do
+        View the style guide &rarr;
     = link_to '/auth/github', class: 'auth button' do
       = t('authenticate')
-  = link_to '#', :class => 'button sync disabled' do
-    %i.fa.fa-refresh
-    Sync repos
   .search-container
     %i.fa.fa-search.disabled
     %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'disabled' => 'disabled'}
   %ul.disabled
     - 1.times do
       %li.repo
+        %span.toggle.deactivate
+          %a{'href' => '#'}
+        %span.name
+          thoughtbot/paperclip
+      %li.repo
         %span.toggle.activate
           %a{'href' => '#'}
-            activate
         %span.name
-          Repository name with Hound deactivated
-    - 4.times do
+          thoughtbot/bourbon
       %li.repo
         %span.toggle.deactivate
           %a{'href' => '#'}
-            deactivate
         %span.name
-          Repository name with Hound activated!
-    - 3.times do
+          thoughtbot/capybara-webkit
+      %li.repo
+        %span.toggle.deactivate
+          %a{'href' => '#'}
+        %span.name
+          thoughtbot/clearance
       %li.repo
         %span.toggle.activate
           %a{'href' => '#'}
-            activate
         %span.name
-          Repository name with Hound deactivated
+          thoughtbot/guides
