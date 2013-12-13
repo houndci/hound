@@ -19,6 +19,7 @@ gem 'rubocop'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.0.3'
 gem 'unicorn'
+gem 'workless'
 
 group :development, :test do
   gem 'debugger'
