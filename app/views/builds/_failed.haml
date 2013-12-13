@@ -1,8 +1,31 @@
-%h2 Violations
+.report
+  %h1.logo
+    Hound
+    %span Violations
 
-%ul
   - build.violations.each do |line_number, code, message|
-    %li
-      = line_number
-      = code
-      = message
+    %h4#git_diff
+      = link_to 'app/models/git_diff.rb', '#git_diff'
+
+    %ul
+      %li.violation
+        %span.line-number
+          = line_number
+        %pre
+          %code
+            = code
+        .message
+          %p
+            = message
+
+%footer.report-repo-list
+  .repo-listing
+    %ul
+      %li.repo
+        %span.toggle.deactivate
+          %a{'href' => ''}
+        %span.name
+          = build.repo.name
+      %li.repo
+        %span.name
+          = link_to 'View all other repos', root_path
