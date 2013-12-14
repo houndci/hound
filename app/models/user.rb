@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :repos, through: :memberships
 
-  validates :github_username, presence: true
+  validates :github_username, presence: true   
 
   before_create :generate_remember_token
 
@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 
   private
 
-  def generate_remember_token
+  def generate_remember_token   
     self.remember_token = SecureRandom.hex(20)
   end
 end
