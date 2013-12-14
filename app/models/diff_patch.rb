@@ -1,6 +1,7 @@
 class DiffPatch
-  RANGE_INFORMATION = /^@@ .+\+(?<line_number>\d+),/
-  MODIFIED_LINE = /^\+(?!\+|\+)(?<code>.*)/
+  RANGE_INFORMATION_LINE = /^@@ .+\+(?<line_number>\d+),/
+  MODIFIED_LINE = /^\+(?!\+|\+)/
+  NOT_REMOVED_LINE = /^[^-]/
 
   def initialize(patch)
     @patch = patch
@@ -9,12 +10,12 @@ class DiffPatch
   def modified_line_numbers
     @patch.lines.inject([]) do |line_numbers, line|
       case line
-      when RANGE_INFORMATION
+      when RANGE_INFORMATION_LINE
         @line_number = Regexp::last_match[:line_number].to_i
       when MODIFIED_LINE
         line_numbers << @line_number
         @line_number += 1
-      else
+      when NOT_REMOVED_LINE
         @line_number += 1
       end
 

@@ -6,7 +6,7 @@ describe DiffPatch do
     it 'returns modified line numbers' do
       diff = DiffPatch.new(example_diff)
 
-      expect(diff.modified_line_numbers).to eq [15, 22, 55]
+      expect(diff.modified_line_numbers).to eq [14, 22, 54]
     end
   end
 
