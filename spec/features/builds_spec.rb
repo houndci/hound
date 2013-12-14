@@ -45,6 +45,7 @@ feature 'Builds' do
     visit build_path(Build.first)
 
     expect(page).to have_content 'Violations'
+    expect(page).to have_content 'config/unicorn.rb'
     expect(page).to have_content '1 some test code Trailing whitespace detected'
   end
 

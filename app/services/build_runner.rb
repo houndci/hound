@@ -11,21 +11,18 @@ class BuildRunner
   def run
     api.create_pending_status(*api_params, 'Hound is working...')
 
-    style_guide = StyleGuide.new(pull_request_files)
-    style_guide.check
+    style_guide = StyleGuide.new(style_guide_files)
     build = repo.builds.create!(violations: style_guide.violations)
 
-    update_api_status(build, style_guide.violations)
+    update_api_status(build, fail: style_guide.violations.any?)
   end
 
   private
 
-  def update_api_status(build, violations)
-    if violations.any?
+  def update_api_status(build, options = {})
+    if options.fetch(:fail)
       api.create_failure_status(
-        *api_params,
-        'Hound does not approve',
-        build_url(build)
+        *api_params, 'Hound does not approve', build_url(build)
       )
     else
       api.create_successful_status(*api_params, 'Hound approves')
@@ -40,16 +37,21 @@ class BuildRunner
     [@pull_request.full_repo_name, @pull_request.head_sha]
   end
 
-  def pull_request_files
-    github_pull_request_files.map do |file|
+  def style_guide_files
+    pull_request_files.map do |file|
       contents = api.pull_request_file_contents(
         @pull_request.full_repo_name,
         file.filename,
         @pull_request.head_sha
       )
-      decoded_contents = Base64.decode64(contents.content)
-      PullRequestFile.new(file, decoded_contents)
+      style_guide_file(file, contents.content)
     end
+  end
+
+  def style_guide_file(file, contents)
+    decoded_contents = Base64.decode64(contents)
+    modified_line_numbers = DiffPatch.new(file.patch).modified_line_numbers
+    StyleGuideFile.new(file.filename, decoded_contents, modified_line_numbers)
   end
 
   def valid_build_action?
@@ -65,7 +67,7 @@ class BuildRunner
     @api ||= GithubApi.new(repo.github_token)
   end
 
-  def github_pull_request_files
+  def pull_request_files
     api.pull_request_files(@pull_request.full_repo_name, @pull_request.number)
   end
 end

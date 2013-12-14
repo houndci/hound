@@ -1,5 +1,4 @@
 %h1
-  Build
-  = @build.id
+  Build ##{@build.id} for #{@build.repo.full_repo_name}
 
 = render "#{@build.status}", build: @build
