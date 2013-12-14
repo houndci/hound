@@ -68,6 +68,7 @@ class BuildRunner
   end
 
   def pull_request_files
-    api.pull_request_files(@pull_request.full_repo_name, @pull_request.number)
+    files = api.pull_request_files(@pull_request.full_repo_name, @pull_request.number)
+    files.reject { |file| file.status == 'removed' }
   end
 end
