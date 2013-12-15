@@ -1,39 +1,17 @@
-%div.repo-listing
+%figure.approves-banner
+  = image_tag('hound-approves-banner.png')
+
+.repo-listing.pitch
   %h1.logo Hound
-  .pitch
-    %h2
-      Take care of pesky code reviews with a trusty Hound. Hound reviews Github pull requests for styleguide violations.
-      = link_to 'https://github.com/thoughtbot/guides/tree/master/style', class: 'style-guide', target: '_blank' do
-        View the style guide &rarr;
-    = link_to '/auth/github', class: 'auth button' do
-      = t('authenticate')
-  .search-container
-    %i.fa.fa-search.disabled
-    %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'disabled' => 'disabled'}
-  %ul.disabled
-    - 1.times do
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/paperclip
-      %li.repo
-        %span.toggle.activate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/bourbon
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/capybara-webkit
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/clearance
-      %li.repo
-        %span.toggle.activate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/guides
+  %h2
+    Take care of pesky code reviews with a trusty Hound. Hound reviews Github pull requests for styleguide violations.
+    = link_to 'https://github.com/thoughtbot/guides/tree/master/style', class: 'style-guide', target: '_blank' do
+      View the style guide &rarr;
+  = link_to '/auth/github', class: 'auth button' do
+    = t('authenticate')
+
+.images
+  %figure
+    = image_tag('hound-working.png')
+  %figure
+    = image_tag('hound-report.png')
