@@ -1,22 +1,22 @@
 require 'spec_helper'
 
 describe BuildRunner, '#run' do
+  let(:pull_request) do
+    double(
+      :pull_request,
+      set_pending_status: nil,
+      set_success_status: nil,
+      set_failure_status: nil,
+      repo: create(:active_repo),
+      files: []
+    )
+  end
+
   context 'with violations' do
     it 'saves a build record' do
-      api = double(
-        :github_api,
-        create_pending_status: nil,
-        create_failure_status: nil,
-        pull_request_files: []
-      )
-      style_guide = double(
-        :style_guide,
-        violations: ['something failed'],
-        check: nil
-      )
-      GithubApi.stub(new: api)
-      StyleGuide.stub(new: style_guide)
-      build_runner = BuildRunner.new(pull_request_stub)
+      build_runner = BuildRunner.new(pull_request)
+      style_checker = double(:style_checker, violations: ['something failed'])
+      StyleChecker.stub(new: style_checker)
 
       build_runner.run
 
@@ -26,120 +26,26 @@ describe BuildRunner, '#run' do
     end
 
     it 'checks style guide and notifies github of the failed build' do
-      pull_request = pull_request_stub
-      api = double(
-        :github_api,
-        create_pending_status: nil,
-        create_failure_status: nil,
-        pull_request_files: []
-      )
-      style_guide = double(
-        :style_guide,
-        violations: ['something failed'],
-        check: nil
-      )
-      GithubApi.stub(new: api)
-      StyleGuide.stub(new: style_guide)
-      builds_url = 'http://example.com/builds'
+      build_runner = BuildRunner.new(pull_request)
+      style_checker = double(:style_checker, violations: ['something failed'])
+      StyleChecker.stub(new: style_checker)
 
-      build_runner = BuildRunner.new(pull_request, builds_url)
       build_runner.run
 
-      expect(api).to have_received(:create_pending_status).
-        with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
-      expect(api).to have_received(:create_failure_status).
-        with(
-          pull_request.full_repo_name,
-          pull_request.head_sha,
-          'Hound does not approve',
-          "#{builds_url}/#{Build.last.id}"
-        )
+      expect(pull_request).to have_received(:set_pending_status)
+      expect(pull_request).to have_received(:set_failure_status).
+        with("http://#{ENV['HOST']}/builds/#{Build.last.id}")
     end
   end
 
   context 'without violations' do
     it 'checks style guide and notifies github of the passing build' do
-      pull_request = pull_request_stub
-      api = double(
-        :github_api,
-        create_pending_status: nil,
-        create_successful_status: nil,
-        pull_request_files: []
-      )
-      GithubApi.stub(new: api)
-
       build_runner = BuildRunner.new(pull_request)
+
       build_runner.run
 
-      expect(api).to have_received(:create_pending_status).
-        with(pull_request.full_repo_name, pull_request.head_sha, 'Hound is working...')
-      expect(api).to have_received(:create_successful_status).
-        with(pull_request.full_repo_name, pull_request.head_sha, 'Hound approves')
+      expect(pull_request).to have_received(:set_pending_status)
+      expect(pull_request).to have_received(:set_success_status)
     end
   end
-end
-
-describe BuildRunner, '#valid?' do
-  context 'with synchronize action' do
-    it 'returns true' do
-      pull_request = pull_request_stub(action: 'synchronize')
-
-      build_runner = BuildRunner.new(pull_request)
-
-      expect(build_runner).to be_valid
-    end
-  end
-
-  context 'with closed action' do
-    it 'returns false' do
-      pull_request = pull_request_stub(action: 'closed')
-      build_runner = BuildRunner.new(pull_request)
-
-      expect(build_runner).not_to be_valid
-    end
-  end
-
-  context 'with invalid pull_request' do
-    it 'returns false' do
-      pull_request = pull_request_stub(valid?: false)
-      build_runner = BuildRunner.new(pull_request)
-
-      expect(build_runner).not_to be_valid
-    end
-  end
-
-  context 'with deactivated repo' do
-    it 'returns false' do
-      repo = create(:repo, active: false)
-      pull_request = pull_request_stub(github_repo_id: repo.github_id)
-      build_runner = BuildRunner.new(pull_request)
-
-      expect(build_runner).not_to be_valid
-    end
-  end
-
-  context 'with no repo' do
-    it 'returns false' do
-      pull_request = pull_request_stub(github_repo_id: nil)
-      build_runner = BuildRunner.new(pull_request)
-
-      expect(build_runner).not_to be_valid
-    end
-  end
-end
-
-def pull_request_stub(options = {})
-  user = create(:user)
-  repo = create(:active_repo)
-  create(:membership, user: user, repo: repo)
-  attributes = {
-    action: 'opened',
-    full_repo_name: repo.full_github_name,
-    github_repo_id: repo.github_id,
-    head_sha: '123abc',
-    number: 4,
-    valid?: true
-  }.merge(options)
-
-  double(attributes)
 end

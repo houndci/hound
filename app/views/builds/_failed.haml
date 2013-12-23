@@ -5,19 +5,19 @@
 
   - build.violations.each do |violation|
     %h4#git_diff
-      = link_to violation[:filename], '#git_diff'
+      = link_to violation.filename, '#git_diff'
 
-    - violation[:violations].each do |violation|
+    - violation.lines.each do |line|
       %ul
         %li.violation
           %span.line-number
-            = violation[:line_number]
+            = line[:line_number]
           %pre
             %code
-              = violation[:code]
+              = line[:code]
           .message
             %p
-              = violation[:message]
+              = line[:messages].to_sentence
 
 %footer.report-repo-list
   .repo-listing

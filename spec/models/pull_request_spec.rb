@@ -1,49 +1,81 @@
-require 'fast_spec_helper'
-require 'app/models/pull_request'
-require 'json'
-require 'active_support/core_ext/object/blank'
+require 'spec_helper'
 
-describe PullRequest do
-  let(:payload) { File.read('spec/support/fixtures/pull_request_payload.json') }
+describe PullRequest, '#valid?' do
+  let(:github_id) { '12345' }
+  let(:payload) { { 'repository' => { 'id' => github_id } } }
   let(:pull_request) { PullRequest.new(payload) }
 
-  describe '#valid?' do
-    context 'with pull_request data' do
+  context 'with inactive repo' do
+    it 'returns false' do
+      create(:repo, github_id: github_id, active: false)
+
+      expect(pull_request).not_to be_valid
+    end
+  end
+
+  context 'with active repo' do
+    context 'with synchronize action' do
       it 'returns true' do
+        payload['action'] = 'synchronize'
+        create(:active_repo, github_id: github_id)
+
         expect(pull_request).to be_valid
       end
     end
 
-    context 'without pull_request data' do
+    context 'with opened action' do
+      it 'returns true' do
+        payload['action'] = 'opened'
+        create(:active_repo, github_id: github_id)
+
+        expect(pull_request).to be_valid
+      end
+    end
+
+    context 'with closed action' do
       it 'returns false' do
-        payload.gsub!('pull_request', '')
+        payload['action'] = 'closed'
+        create(:active_repo, github_id: github_id)
 
         expect(pull_request).not_to be_valid
       end
     end
   end
+end
 
-  describe '#full_repo_name' do
-    it 'returns the full repository name' do
-      expect(pull_request.full_repo_name).to eq 'salbertson/life'
-    end
+describe PullRequest, '#files' do
+  let(:fixture_file) { 'spec/support/fixtures/pull_request_payload.json' }
+  let(:payload) { JSON.parse(File.read(fixture_file)) }
+
+  it 'returns an array of modified files' do
+    pull_request_files = [OpenStruct.new, OpenStruct.new]
+    file_contents = OpenStruct.new(content: Base64.encode64('blah'))
+    api = double(
+      :github_api,
+       pull_request_files: pull_request_files,
+       file_contents: file_contents
+    )
+    GithubApi.stub(new: api)
+    pull_request = PullRequest.new(payload)
+    create(:active_repo, github_id: payload['repository']['id'])
+
+    expect(pull_request).to have(2).files
+    expect(api).to have_received(:pull_request_files).with('salbertson/life', 2)
   end
 
-  describe '#head_sha' do
-    it 'returns the sha hash of the latest commit' do
-      expect(pull_request.head_sha).to eq '498b81cd038f8a3ac02f035a8537b7ddcff38a81'
-    end
-  end
+  it 'excludes removed files' do
+    pull_request_files = [OpenStruct.new(status: 'removed'), OpenStruct.new]
+    file_contents = OpenStruct.new(content: Base64.encode64('blah'))
+    api = double(
+      :github_api,
+       pull_request_files: pull_request_files,
+       file_contents: file_contents
+    )
+    GithubApi.stub(new: api)
+    pull_request = PullRequest.new(payload)
+    create(:active_repo, github_id: payload['repository']['id'])
 
-  describe '#number' do
-    it 'returns the number of the pull request' do
-      expect(pull_request.number).to eq 2
-    end
-  end
-
-  describe '#github_repo_id' do
-    it 'returns the github id of the repository' do
-      expect(pull_request.github_repo_id).to eq 2937493
-    end
+    expect(pull_request).to have(1).files
+    expect(pull_request.files.first).to be_a ModifiedFile
   end
 end
