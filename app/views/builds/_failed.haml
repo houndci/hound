@@ -3,20 +3,21 @@
     Hound
     %span Violations
 
-  - build.violations.each do |line_number, code, message|
+  - build.violations.each do |violation|
     %h4#git_diff
-      = link_to 'app/models/git_diff.rb', '#git_diff'
+      = link_to violation[:filename], '#git_diff'
 
-    %ul
-      %li.violation
-        %span.line-number
-          = line_number
-        %pre
-          %code
-            = code
-        .message
-          %p
-            = message
+    - violation[:violations].each do |violation|
+      %ul
+        %li.violation
+          %span.line-number
+            = violation[:line_number]
+          %pre
+            %code
+              = violation[:code]
+          .message
+            %p
+              = violation[:message]
 
 %footer.report-repo-list
   .repo-listing
