@@ -23,6 +23,7 @@ gem 'workless'
 
 group :development, :test do
   gem 'debugger'
+  gem 'foreman'
   gem 'rspec-rails', '>= 2.14'
 end
 

@@ -1,7 +1,3 @@
-ENV['HOST'] ||= 'localhost:3000'
-ENV['GITHUB_CLIENT_ID'] ||= 'a7085cf1950d97a7cc6d'
-ENV['GITHUB_CLIENT_SECRET'] ||= 'b66556fe1048445cc7bf69879e49bbf2fa1a0d00'
-
 Houndapp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
   config.eager_load = false
