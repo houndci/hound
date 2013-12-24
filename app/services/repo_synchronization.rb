@@ -8,7 +8,7 @@ class RepoSynchronization
 
   def start
     api.repos.each do |repo_data|
-      repo = Repo.find_by(github_id: repo_data[:id])
+      repo = Repo.where(github_id: repo_data[:id]).first
 
       if repo
         unless user.repos.include? repo
