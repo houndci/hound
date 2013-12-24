@@ -4,7 +4,7 @@ describe RepoSynchronization do
   describe '#start' do
     it 'adds repos' do
       user = create(:user, github_token: 'token')
-      api = double(:github_api, repos: [{name: 'Repo'}])
+      api = double(:github_api, repos: [{name: 'Repo', full_name: 'org/repo', id: 123}])
       GithubApi.stub(new: api)
       synchronization = RepoSynchronization.new(user)
 
@@ -17,7 +17,7 @@ describe RepoSynchronization do
     it 'updates repos' do
       user = create(:user, github_token: 'token')
       repo = create(:repo, github_id: 123)
-      create(:membership, repo: repo, user: user)
+      user.repos << repo
       api = double(:github_api, repos: [{id: 123}])
       GithubApi.stub(new: api)
       synchronization = RepoSynchronization.new(user)
@@ -25,6 +25,25 @@ describe RepoSynchronization do
       synchronization.start
 
       expect(user).to have(1).repo
+    end
+
+    describe 'when a repo membership already exists' do
+      it 'creates another membership' do
+        repo = create(:repo)
+        first_user = create(:user, github_token: 'token')
+        second_user = create(:user, github_token: 'token')
+        first_user.repos << repo
+        api = double(
+          :github_api,
+          repos: [{id: repo.github_id, name: repo.name, full_name: repo.full_github_name}]
+        )
+        GithubApi.stub(new: api)
+        synchronization = RepoSynchronization.new(second_user)
+
+        synchronization.start
+
+        expect(second_user.reload).to have(1).repos
+      end
     end
   end
 end
