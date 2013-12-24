@@ -21,7 +21,6 @@ class StyleGuideFile
     Rubocop::Cop::Style::IndentationWidth,
     Rubocop::Cop::Style::LineLength,
     Rubocop::Cop::Style::MethodCallParentheses,
-    Rubocop::Cop::Style::MethodDefParentheses,
     Rubocop::Cop::Style::MethodName,
     Rubocop::Cop::Style::Not,
     Rubocop::Cop::Style::RedundantBegin,
@@ -52,27 +51,22 @@ class StyleGuideFile
   end
 
   def violations
-    @violations ||= RULES.map { |rule| violations_for_rule(rule) }.flatten
-  end
-
-  private
-
-  def violations_for_rule(rule)
-    cop = rule.new
-    cop.investigate(source)
-
-    offences = cop.offences.select do |offence|
-      modified_line_number?(offence.line)
+    cops = RULES.map {|rule| rule.new}
+    commissioner = Rubocop::Cop::Commissioner.new(cops)
+    offenses = commissioner.investigate(source).select do |offense|
+      modified_line_number?(offense.line)
     end
 
-    offences.map do |offence|
+    offenses.map do |offense|
       {
-        line_number: offence.line,
-        code: line_of_code(offence.line),
-        message: offence.message
+        line_number: offense.line,
+        code: line_of_code(offense.line),
+        message: offense.message
       }
     end
   end
+
+  private
 
   def line_of_code(line_number)
     source.lines[line_number - 1]

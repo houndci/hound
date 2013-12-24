@@ -6,7 +6,7 @@ describe StyleGuideFile do
   describe '#violations' do
     context 'with invalid lines of code' do
       it 'returns violations' do
-        contents = "good line\n\tindentation = true "
+        contents = "good line\n\tindentation = true \n"
 
         file = StyleGuideFile.new('file.txt', contents, [1, 2])
 
