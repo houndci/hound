@@ -108,6 +108,8 @@ GEM
     jwt (0.1.8)
       multi_json (>= 1.5)
     kgio (2.8.1)
+    launchy (2.3.0)
+      addressable (~> 2.3)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -258,6 +260,7 @@ DEPENDENCIES
   haml-rails
   high_voltage
   jquery-rails
+  launchy
   octokit
   omniauth-github
   pg

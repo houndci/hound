@@ -35,21 +35,14 @@ module GithubApiHelper
     stub_request(:post, url)
   end
 
-  def stub_status_creation_request(full_repo_name, commit_sha, state, description)
-    stub_status_request(full_repo_name, commit_sha).with(
-      body: %({"description":"#{description}","state":"#{state}"}),
-      headers: { 'Authorization' => /^token \w+$/ }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/github_status_creation_response.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
-  end
+  def stub_status_creation_request(full_repo_name, commit_sha, state, description, target_url = nil)
+    body = %({"description":"#{description}","state":"#{state}"})
+    if target_url
+      body.gsub!(',"state"', %{,"target_url":"#{target_url}","state"})
+    end
 
-  def stub_failure_status_creation_request(full_repo_name, commit_sha, state, description, target_url)
     stub_status_request(full_repo_name, commit_sha).with(
-      body: %({"description":"#{description}","target_url":"#{target_url}","state":"#{state}"}),
-      headers: { 'Authorization' => /^token \w+$/ }
+      body: body, headers: { 'Authorization' => /^token \w+$/ }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_status_creation_response.json'),

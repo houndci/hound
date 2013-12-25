@@ -9,9 +9,7 @@ feature 'Builds' do
   let(:pr_number) { parsed_payload['number'] }
 
   scenario 'a successful build' do
-    user = create(:user)
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
-    create(:membership, user: user, repo: repo)
     stub_status_request(repo.full_github_name, pr_sha)
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
     stub_contents_request(repo.full_github_name, pr_sha)
@@ -29,9 +27,7 @@ feature 'Builds' do
   end
 
   scenario 'a failed build' do
-    user = create(:user)
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
-    create(:membership, user: user, repo: repo)
     stub_status_request(repo.full_github_name, pr_sha)
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
     stub_contents_request(repo.full_github_name, pr_sha, 'contents_with_violations.json')
@@ -90,7 +86,7 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => %({"description":"Hound does not approve","target_url":"http://www.example.com#{build_path(Build.last.id)}","state":"failure"}),
+        :body => %({"description":"Hound does not approve","target_url":"http://#{ENV['HOST']}#{build_path(Build.last.id)}","state":"failure"}),
         :headers => { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made

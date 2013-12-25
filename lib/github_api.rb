@@ -2,6 +2,8 @@ require 'octokit'
 require 'base64'
 
 class GithubApi
+  STATUSES = [:success, :pending, :failure]
+
   attr_reader :client
 
   def initialize(token)
@@ -25,24 +27,20 @@ class GithubApi
     client.remove_hook(full_github_name, hook_id)
   end
 
-  def create_pending_status(full_repo_name, sha, description)
-    client.create_status(full_repo_name, sha, 'pending', description: description)
-  end
-
-  def create_successful_status(full_repo_name, sha, description)
-    client.create_status(full_repo_name, sha, 'success', description: description)
-  end
-
-  def create_failure_status(full_repo_name, sha, description, target_url)
-    client.create_status(full_repo_name, sha, 'failure', description: description, target_url: target_url)
-  end
-
   def pull_request_files(full_repo_name, number)
     client.pull_request_files(full_repo_name, number)
   end
 
-  def pull_request_file_contents(full_repo_name, filename, sha)
+  def file_contents(full_repo_name, filename, sha)
     client.contents(full_repo_name, path: filename, ref: sha)
+  end
+
+  def create_status(full_repo_name, sha, status, options)
+    if STATUSES.include?(status.to_sym)
+      client.create_status(full_repo_name, sha, status, options)
+    else
+      raise ArgumentError.new("Status must be one of these: #{STATUSES}")
+    end
   end
 
   private

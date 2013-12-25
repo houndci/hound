@@ -16,6 +16,12 @@ FactoryGirl.define do
     factory :active_repo do
       active true
     end
+
+    after(:create) do |repo|
+      if repo.users.empty?
+        repo.users << create(:user)
+      end
+    end
   end
 
   factory :user do

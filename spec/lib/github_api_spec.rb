@@ -43,33 +43,6 @@ describe GithubApi do
     end
   end
 
-  describe '#create_pending_status' do
-    it 'creates a pending GitHub status' do
-      api = GithubApi.new('authtoken')
-      repo_name = 'test-user/repo'
-      head_sha = 'abcdefg'
-      stub_status_creation_request(repo_name, head_sha, 'pending', 'Working...')
-
-      response = api.create_pending_status(repo_name, head_sha, 'Working...')
-
-      expect(response.id).not_to be_nil
-    end
-  end
-
-  describe '#create_failure_status' do
-    it 'creates a failure GitHub status' do
-      api = GithubApi.new('authtoken')
-      repo_name = 'test-user/repo'
-      head_sha = 'abcdefg'
-      target_url = 'http://example.com'
-      stub_failure_status_creation_request(repo_name, head_sha, 'failure', 'FAIL', target_url)
-
-      response = api.create_failure_status(repo_name, head_sha, 'FAIL', target_url)
-
-      expect(response.id).not_to be_nil
-    end
-  end
-
   describe '#pull_request_files' do
     it 'returns file content of changed files' do
       api = GithubApi.new('authtoken')
@@ -91,6 +64,23 @@ describe GithubApi do
       expect(files).to have(1).item
       expect(file.filename).to eq 'config/unicorn.rb'
       expect(file.patch).to include 'preload_app true'
+    end
+  end
+end
+
+describe GithubApi, '#create_status' do
+  describe '#create_status' do
+    it 'creates a failure GitHub status' do
+      api = GithubApi.new('authtoken')
+      repo_name = 'test-user/repo'
+      sha = 'abcdefg'
+      url = 'http://example.com'
+      options = { description: 'Failed!', target_url: url }
+      stub_status_creation_request(repo_name, sha, 'failure', 'Failed!', url)
+
+      response = api.create_status(repo_name, sha, :failure, options)
+
+      expect(response.id).not_to be_nil
     end
   end
 end
