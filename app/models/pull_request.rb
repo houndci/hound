@@ -12,9 +12,9 @@ class PullRequest
   def files
     available_files.map do |file|
       ModifiedFile.new(
-        filename: file.filename,
-        contents: file_contents(file),
-        patch: file.patch
+        file.filename,
+        file_contents(file),
+        patch(file).modified_line_numbers
       )
     end
   end
@@ -52,6 +52,10 @@ class PullRequest
   def file_contents(file)
     contents = api.file_contents(full_repo_name, file.filename, head_sha)
     Base64.decode64(contents.content)
+  end
+
+  def patch(file)
+    DiffPatch.new(file.patch)
   end
 
   def api

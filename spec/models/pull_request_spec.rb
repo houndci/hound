@@ -48,16 +48,17 @@ describe PullRequest, '#files' do
   let(:payload) { JSON.parse(File.read(fixture_file)) }
 
   it 'returns an array of modified files' do
-    pull_request_files = [
-      double(filename: 'first.rb').as_null_object,
-      double(filename: 'second.rb').as_null_object
-    ]
+    file_contents = OpenStruct.new(content: Base64.encode64('blah'))
     api = double(
       :github_api,
-       pull_request_files: pull_request_files,
-       file_contents: double(content: Base64.encode64('filler'))
+      file_contents: file_contents,
+      pull_request_files: [
+        double(filename: 'file1', status: 'modified', patch: 'patch 1'),
+        double(filename: 'file2', status: 'modified', patch: 'patch 2')
+      ]
     )
     GithubApi.stub(new: api)
+    DiffPatch.stub(new: double(modified_line_numbers: []))
     pull_request = PullRequest.new(payload)
     create(:active_repo, github_id: payload['repository']['id'])
 
@@ -66,16 +67,17 @@ describe PullRequest, '#files' do
   end
 
   it 'excludes removed files' do
-    pull_request_files = [
-      double(status: 'removed', filename: 'first.rb').as_null_object,
-      double(filename: 'second.rb').as_null_object
-    ]
+    file_contents = OpenStruct.new(content: Base64.encode64('blah'))
     api = double(
       :github_api,
-       pull_request_files: pull_request_files,
-       file_contents: double(content: Base64.encode64('filler'))
+      file_contents: file_contents,
+      pull_request_files: [
+        double(filename: 'file1', status: 'removed', patch: 'patch 1'),
+        double(filename: 'file2', status: 'modified', patch: 'patch 2')
+      ]
     )
     GithubApi.stub(new: api)
+    DiffPatch.stub(new: double(modified_line_numbers: []))
     pull_request = PullRequest.new(payload)
     create(:active_repo, github_id: payload['repository']['id'])
 

@@ -7,18 +7,17 @@
     %h4#git_diff
       = link_to violation.filename, '#git_diff'
 
-    - violation.lines.each do |line|
+    - violation.line_violations.each do |line_violation|
       %ul
         %li.violation
           %span.line-number
-            = line[:line_number]
+            = line_violation.line_number
           %pre
             %code
-              = line[:code]
+              = line_violation.code
           .message
-            - line[:messages].each do |message|
-              %p
-                = message
+            - line_violation.messages.each do |message|
+              %p= message
 
 %footer.report-repo-list
   .repo-listing
