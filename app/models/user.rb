@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 
   private
 
-  def generate_remember_token
-    self.remember_token = SecureRandom.hex(20)
+  def generate_remember_token   
+    self.remember_token = SecureRandom.hex(20)  
   end
 end
