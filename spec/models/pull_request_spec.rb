@@ -49,14 +49,13 @@ describe PullRequest, '#files' do
 
   it 'returns an array of modified files' do
     pull_request_files = [
-      OpenStruct.new(filename: 'first.rb'),
-      OpenStruct.new(filename: 'second.rb')
+      double(filename: 'first.rb').as_null_object,
+      double(filename: 'second.rb').as_null_object
     ]
-    file_contents = OpenStruct.new(content: Base64.encode64('blah'))
     api = double(
       :github_api,
        pull_request_files: pull_request_files,
-       file_contents: file_contents
+       file_contents: double(content: Base64.encode64('filler'))
     )
     GithubApi.stub(new: api)
     pull_request = PullRequest.new(payload)
@@ -68,14 +67,13 @@ describe PullRequest, '#files' do
 
   it 'excludes removed files' do
     pull_request_files = [
-      OpenStruct.new(status: 'removed', filename: 'first.rb'),
-      OpenStruct.new(filename: 'second.rb')
+      double(status: 'removed', filename: 'first.rb').as_null_object,
+      double(filename: 'second.rb').as_null_object
     ]
-    file_contents = OpenStruct.new(content: Base64.encode64('blah'))
     api = double(
       :github_api,
        pull_request_files: pull_request_files,
-       file_contents: file_contents
+       file_contents: double(content: Base64.encode64('filler'))
     )
     GithubApi.stub(new: api)
     pull_request = PullRequest.new(payload)
