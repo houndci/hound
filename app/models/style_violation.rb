@@ -1,10 +1,9 @@
 class StyleViolation
   attr_reader :filename
 
-  def initialize(filename, lines, line_numbers, violations)
+  def initialize(filename, source_lines, violations)
     @filename = filename
-    @lines = lines
-    @line_numbers = line_numbers
+    @source_lines = source_lines
     @violations = violations
   end
 
@@ -21,18 +20,10 @@ class StyleViolation
   private
 
   def grouped_violations
-    allowed_violations.group_by { |violation| violation.line }
-  end
-
-  def allowed_violations
-    @violations.select { |violation| modified_line_number?(violation.line) }
+    @violations.group_by { |violation| violation.line }
   end
 
   def line_of_code(line_number)
-    @lines[line_number - 1]
-  end
-
-  def modified_line_number?(line_number)
-    @line_numbers.include?(line_number)
+    @source_lines[line_number - 1]
   end
 end

@@ -16,8 +16,9 @@
             %code
               = line[:code]
           .message
-            %p
-              = line[:messages].to_sentence
+            - line[:messages].each do |message|
+              %p
+                = message
 
 %footer.report-repo-list
   .repo-listing

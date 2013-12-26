@@ -8,6 +8,6 @@ class ModifiedFile
   end
 
   def line_numbers
-    DiffPatch.new(@patch).modified_line_numbers
+    @line_numbers ||= DiffPatch.new(@patch).modified_line_numbers
   end
 end
