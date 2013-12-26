@@ -42,7 +42,9 @@ feature 'Builds' do
 
     expect(page).to have_content 'Violations'
     expect(page).to have_content 'config/unicorn.rb'
-    expect(page).to have_content '1 some test code Trailing whitespace detected'
+    expect(page).to have_content '1 def some_method()'
+    expect(page).to have_content 'Trailing whitespace detected'
+    expect(page).to have_content 'Omit the parentheses in defs'
   end
 
   def expect_a_pull_request_files_request(repo_name, number, token)
