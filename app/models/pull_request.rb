@@ -43,8 +43,10 @@ class PullRequest
   end
 
   def available_files
-    api.pull_request_files(full_repo_name, number).
-      reject { |file| file.status == 'removed' }
+    all_files = api.pull_request_files(full_repo_name, number)
+    all_files.reject do |file|
+      file.filename[/.*.rb$/] == nil || file.status == 'removed'
+    end
   end
 
   def file_contents(file)
