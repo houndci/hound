@@ -1,5 +1,5 @@
 ENV['HOST'] = 'test.host'
-ENV['RAILS_SECRET_TOKEN'] = '2a83e3ca30389f875107cbdade2a838fd3859cdec42f566fed69f555c94379dcb66bf38b414e2a8718e16547ea23163acbc9e6d7323aba9bc67dd2a49e0197fe'
+ENV['SECRET_KEY_BASE'] = 'test-key'
 
 Houndapp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
