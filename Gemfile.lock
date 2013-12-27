@@ -201,6 +201,10 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0.0)
       websocket (~> 1.0.4)
+    sentry-raven (0.7.1)
+      faraday (>= 0.7.6)
+      hashie (>= 1.1.0)
+      uuidtools
     session (3.1.0)
       fattr
     shoulda-matchers (2.4.0)
@@ -230,6 +234,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uuidtools (2.1.4)
     webmock (1.15.2)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
@@ -270,6 +275,7 @@ DEPENDENCIES
   rspec-rails (>= 2.14)
   rubocop
   sass-rails
+  sentry-raven
   shoulda-matchers
   uglifier (>= 1.0.3)
   unicorn
