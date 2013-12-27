@@ -1,21 +1,17 @@
 class PullRequest
   ALLOWED_PULL_REQUEST_ACTIONS = %w[opened synchronize]
 
-  def initialize(payload)
-    @payload = payload
+  def initialize(attributes)
+    @attributes = attributes
   end
 
   def valid?
-    @payload.present? && valid_action? && repo
+    @attributes.present? && valid_action? && repo
   end
 
   def files
-    available_files.map do |file|
-      ModifiedFile.new(
-        filename: file.filename,
-        contents: file_contents(file),
-        patch: file.patch
-      )
+    pull_request_files.map do |pull_request_file|
+      ModifiedFile.new(pull_request_file, self, api)
     end
   end
 
@@ -36,22 +32,22 @@ class PullRequest
     @repo ||= Repo.active.where(github_id: github_repo_id).first
   end
 
+  def head_sha
+    @attributes['pull_request']['head']['sha']
+  end
+
+  def full_repo_name
+    @attributes['repository']['full_name']
+  end
+
   private
 
   def set_status(status, options)
     api.create_status(full_repo_name, head_sha, status, options)
   end
 
-  def available_files
-    all_files = api.pull_request_files(full_repo_name, number)
-    all_files.reject do |file|
-      file.filename.match(/.*\.rb$/) == nil || file.status == 'removed'
-    end
-  end
-
-  def file_contents(file)
-    contents = api.file_contents(full_repo_name, file.filename, head_sha)
-    Base64.decode64(contents.content)
+  def pull_request_files
+    api.pull_request_files(full_repo_name, number)
   end
 
   def api
@@ -62,23 +58,15 @@ class PullRequest
     ALLOWED_PULL_REQUEST_ACTIONS.include?(action)
   end
 
-  def head_sha
-    @payload['pull_request']['head']['sha']
-  end
-
   def github_repo_id
-    @payload['repository']['id']
-  end
-
-  def full_repo_name
-    @payload['repository']['full_name']
+    @attributes['repository']['id']
   end
 
   def number
-    @payload['number']
+    @attributes['number']
   end
 
   def action
-    @payload['action']
+    @attributes['action']
   end
 end

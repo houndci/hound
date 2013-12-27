@@ -8,7 +8,7 @@ class BuildRunner
   def run
     @pull_request.set_pending_status
 
-    style_checker = StyleChecker.new(@pull_request.files)
+    style_checker = StyleChecker.new(checkable_files)
     build = repo.builds.create!(violations: style_checker.violations)
 
     if style_checker.violations.any?
@@ -22,5 +22,11 @@ class BuildRunner
 
   def repo
     @pull_request.repo
+  end
+
+  def checkable_files
+    @pull_request.files.reject do |file|
+      file.filename.match(/.*\.rb$/) == nil || file.status == 'removed'
+    end
   end
 end
