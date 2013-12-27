@@ -7,7 +7,7 @@ class BuildsController < ApplicationController
   end
 
   def create
-    if pull_request.valid?
+    if build_runner.valid?
       Delayed::Job.enqueue(build_job)
 
       render nothing: true
@@ -23,11 +23,10 @@ class BuildsController < ApplicationController
   end
 
   def build_runner
-    @build_runner ||= BuildRunner.new(pull_request)
+    @build_runner ||= BuildRunner.new(pull_request_payload)
   end
 
-  def pull_request
-    payload = JSON.parse(params[:payload])
-    PullRequest.new(payload)
+  def pull_request_payload
+    JSON.parse(params[:payload])
   end
 end

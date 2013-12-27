@@ -1,22 +1,12 @@
 class PullRequest
-  ALLOWED_PULL_REQUEST_ACTIONS = %w[opened synchronize]
-
-  def initialize(payload)
+  def initialize(payload, github_token)
     @payload = payload
-  end
-
-  def valid?
-    @payload.present? && valid_action? && repo
+    @github_token = github_token
   end
 
   def files
-    available_files.map do |file|
-      ModifiedFile.new(
-        file.filename,
-        file_contents(file),
-        patch(file).modified_line_numbers
-      )
-    end
+    api.pull_request_files(@payload.full_repo_name, @payload.number).
+      map { |file| ModifiedFile.new(file, self) }
   end
 
   def set_pending_status
@@ -32,57 +22,22 @@ class PullRequest
     set_status(:failure, description: message, target_url: target_url)
   end
 
-  def repo
-    @repo ||= Repo.active.where(github_id: github_repo_id).first
+  def file_contents(filename)
+    api.file_contents(@payload.full_repo_name, filename, @payload.head_sha)
   end
 
   private
 
   def set_status(status, options)
-    api.create_status(full_repo_name, head_sha, status, options)
-  end
-
-  def available_files
-    all_files = api.pull_request_files(full_repo_name, number)
-    all_files.reject do |file|
-      file.filename.match(/.*\.rb$/) == nil || file.status == 'removed'
-    end
-  end
-
-  def file_contents(file)
-    contents = api.file_contents(full_repo_name, file.filename, head_sha)
-    Base64.decode64(contents.content)
-  end
-
-  def patch(file)
-    DiffPatch.new(file.patch)
+    api.create_status(
+      @payload.full_repo_name,
+      @payload.head_sha,
+      status,
+      options
+    )
   end
 
   def api
-    @api ||= GithubApi.new(repo.github_token)
-  end
-
-  def valid_action?
-    ALLOWED_PULL_REQUEST_ACTIONS.include?(action)
-  end
-
-  def head_sha
-    @payload['pull_request']['head']['sha']
-  end
-
-  def github_repo_id
-    @payload['repository']['id']
-  end
-
-  def full_repo_name
-    @payload['repository']['full_name']
-  end
-
-  def number
-    @payload['number']
-  end
-
-  def action
-    @payload['action']
+    @api ||= GithubApi.new(@github_token)
   end
 end

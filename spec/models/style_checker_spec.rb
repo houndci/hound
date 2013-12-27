@@ -1,14 +1,13 @@
 require 'rubocop'
 require 'fast_spec_helper'
 require 'app/models/style_checker'
-require 'app/models/modified_file'
 
 describe StyleChecker, '#violations' do
   context 'when some files have violations' do
     it 'returns only the files with violations' do
-      file1 = ModifiedFile.new('file1', "first line \n\tactive = true ", [1, 2])
-      file2 = ModifiedFile.new('file2', "def hello\nend\n", [1, 2])
-      file3 = ModifiedFile.new('file3', "class User  \nend\n", [1, 2])
+      file1 = file_stub("def hi \n\tactive = true ")
+      file2 = file_stub("def hello\nend\n")
+      file3 = file_stub("class User  \nend\n")
 
       style_checker = StyleChecker.new([file1, file2, file3])
       violations = style_checker.violations
@@ -18,5 +17,9 @@ describe StyleChecker, '#violations' do
       expect(violations[0].line_violations[0]).to have(3).messages
       expect(violations[1]).to have(1).line_violations
     end
+  end
+
+  def file_stub(contents)
+    double(filename: 'test_pr_file', contents: contents, relevant_line?: true)
   end
 end

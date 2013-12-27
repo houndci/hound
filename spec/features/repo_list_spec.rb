@@ -4,7 +4,7 @@ feature 'Repo list' do
   scenario 'user views list', js: true do
     user = create(:user)
     repo = create(:repo, full_github_name: 'thoughtbot/my-repo')
-    create(:membership, user: user, repo: repo)
+    repo.users << user
     sign_in_as(user)
 
     visit root_path
@@ -26,13 +26,10 @@ feature 'Repo list' do
   scenario 'user activates repo', js: true do
     user = create(:user)
     repo = create(:repo)
-    create(:membership, user: user, repo: repo)
+    repo.users << user
+    hook_url = "http://#{ENV['HOST']}/builds"
     sign_in_as(user)
-    stub_hook_creation_request(
-      repo.github_token,
-      repo.full_github_name,
-      URI.join("http://#{ENV['HOST']}", "builds?token=#{repo.github_token}").to_s
-    )
+    stub_hook_creation_request(repo.github_token, repo.full_github_name, hook_url)
 
     visit root_path
     find('.activate').click
@@ -47,7 +44,7 @@ feature 'Repo list' do
   scenario 'user deactivates repo', js: true do
     user = create(:user)
     repo = create(:active_repo)
-    create(:membership, user: user, repo: repo)
+    repo.users << user
     sign_in_as(user)
 
     visit root_path
