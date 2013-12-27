@@ -51,7 +51,7 @@ class GithubApi
 
     loop do
       results = client.repos(nil, page: page)
-      repos.concat results
+      repos.concat(authorized_repos(results))
       break unless results.any?
       page += 1
     end
@@ -67,7 +67,7 @@ class GithubApi
 
       loop do
         results = client.org_repos(org[:login], page: page)
-        repos.concat results
+        repos.concat(authorized_repos(results))
         break unless results.any?
         page += 1
       end
@@ -78,5 +78,9 @@ class GithubApi
 
   def orgs
     client.orgs
+  end
+
+  def authorized_repos(repos)
+    repos.select {|repo| repo.permissions.admin }
   end
 end
