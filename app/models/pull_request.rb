@@ -1,5 +1,4 @@
 class PullRequest
-  # does this belong in build runner?
   ALLOWED_PULL_REQUEST_ACTIONS = %w[opened synchronize]
 
   def initialize(attributes)
