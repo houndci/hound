@@ -1,12 +1,13 @@
 class PullRequest
+  # does this belong in build runner?
   ALLOWED_PULL_REQUEST_ACTIONS = %w[opened synchronize]
 
-  def initialize(payload)
-    @payload = payload
+  def initialize(attributes)
+    @attributes = attributes
   end
 
   def valid?
-    @payload.present? && valid_action? && repo
+    @attributes.present? && valid_action? && repo
   end
 
   def files
@@ -63,22 +64,22 @@ class PullRequest
   end
 
   def head_sha
-    @payload['pull_request']['head']['sha']
+    @attributes['pull_request']['head']['sha']
   end
 
   def github_repo_id
-    @payload['repository']['id']
+    @attributes['repository']['id']
   end
 
   def full_repo_name
-    @payload['repository']['full_name']
+    @attributes['repository']['full_name']
   end
 
   def number
-    @payload['number']
+    @attributes['number']
   end
 
   def action
-    @payload['action']
+    @attributes['action']
   end
 end
