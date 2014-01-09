@@ -1,4 +1,6 @@
 class StyleChecker
+  FileViolation = Struct.new(:filename, :line_violations)
+  LineViolation = Struct.new(:line_number, :code, :messages)
   RULES = [
     Rubocop::Cop::Style::AlignArray,
     Rubocop::Cop::Style::AlignHash,
@@ -47,22 +49,27 @@ class StyleChecker
   end
 
   def violations
-    @violations ||= @files.map { |file| style_violations(file) }.
-      select { |style_violation| style_violation.lines.any? }
+    @violations ||= @files.map do |file|
+      FileViolation.new(file.filename, line_violations(file))
+    end.select { |file_violation| file_violation.line_violations.any? }
   end
 
   private
 
-  def style_violations(file)
+  def line_violations(file)
     source = Rubocop::SourceParser.parse(file.contents)
-    relevant_offenses = offenses(source).select do |offense|
-      file.line_numbers.include?(offense.line)
+
+    violations = violations_in_file(source).select do |violation|
+      file.relevant_line?(violation.line)
     end
 
-    StyleViolation.new(file.filename, source.lines, relevant_offenses)
+    violations.group_by(&:line).map do |line_number, violations|
+      code = source.lines[line_number - 1]
+      LineViolation.new(line_number, code, violations.map(&:message))
+    end
   end
 
-  def offenses(source)
+  def violations_in_file(source)
     cops = RULES.map { |rule| rule.new }
     commissioner = Rubocop::Cop::Commissioner.new(cops)
     commissioner.investigate(source)

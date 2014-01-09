@@ -1,26 +1,44 @@
 class BuildRunner
   include Rails.application.routes.url_helpers
 
-  def initialize(pull_request)
-    @pull_request = pull_request
+  def initialize(payload_data)
+    @payload_data = payload_data
   end
 
   def run
-    @pull_request.set_pending_status
+    pull_request.set_pending_status
 
-    style_checker = StyleChecker.new(@pull_request.files)
+    style_checker = StyleChecker.new(pull_request_files)
     build = repo.builds.create!(violations: style_checker.violations)
 
     if style_checker.violations.any?
-      @pull_request.set_failure_status(build_url(build, host: ENV['HOST']))
+      pull_request.set_failure_status(build_url(build, host: ENV['HOST']))
     else
-      @pull_request.set_success_status
+      pull_request.set_success_status
     end
+  end
+
+  def valid?
+    repo && payload.valid_action?
   end
 
   private
 
+  def pull_request_files
+    pull_request.files.reject do |file|
+      file.removed? || !file.ruby?
+    end
+  end
+
+  def pull_request
+    @pull_request ||= PullRequest.new(payload, repo.github_token)
+  end
+
+  def payload
+    @payload ||= Payload.new(@payload_data)
+  end
+
   def repo
-    @pull_request.repo
+    @repo ||= Repo.active.where(github_id: payload.github_repo_id).first
   end
 end
