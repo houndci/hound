@@ -29,6 +29,10 @@ class ModifiedFile
     end
   end
 
+  def source
+    Rubocop::SourceParser.parse(contents)
+  end
+
   private
 
   def modified_line_numbers

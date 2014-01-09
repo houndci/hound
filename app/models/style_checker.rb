@@ -57,15 +57,19 @@ class StyleChecker
   end
 
   def violations
-    @violations ||= @files.map do |file|
+    possible_violations = @files.map do |file|
       FileViolation.new(file.filename, line_violations(file))
-    end.select { |file_violation| file_violation.line_violations.any? }
+    end
+
+    possible_violations.select do |file_violation|
+      file_violation.line_violations.any?
+    end
   end
 
   private
 
   def line_violations(file)
-    source = Rubocop::SourceParser.parse(file.contents)
+    source = file.source
 
     violations = violations_in_file(source).select do |violation|
       file.relevant_line?(violation.line)
