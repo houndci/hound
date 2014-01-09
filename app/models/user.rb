@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   end
 
   def github_repo(github_id)
-    repos.where(github_id: github_id).first
+    repos.where(github_id: github_id).first 
   end
 
   def create_github_repo(attributes)
