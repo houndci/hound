@@ -69,15 +69,16 @@ class StyleChecker
   private
 
   def line_violations(file)
-    source = file.source
-
-    violations = violations_in_file(source).select do |violation|
+    violations = violations_in_file(file.source).select do |violation|
       file.relevant_line?(violation.line)
     end
 
     violations.group_by(&:line).map do |line_number, violations|
-      code = source.lines[line_number - 1]
-      LineViolation.new(line_number, code, violations.map(&:message))
+      LineViolation.new(
+        line_number,
+        file.line(line_number),
+        violations.map(&:message)
+      )
     end
   end
 

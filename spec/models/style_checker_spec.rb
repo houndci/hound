@@ -38,6 +38,7 @@ end
     double(
       filename: 'test_pr_file',
       source: Rubocop::SourceParser.parse(contents),
+      line: '',
       relevant_line?: true
     )
   end

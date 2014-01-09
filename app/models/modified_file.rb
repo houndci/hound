@@ -33,6 +33,10 @@ class ModifiedFile
     Rubocop::SourceParser.parse(contents)
   end
 
+  def line(line_number)
+    source.lines[line_number - 1]
+  end
+
   private
 
   def modified_line_numbers
