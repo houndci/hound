@@ -69,7 +69,7 @@ class StyleChecker
   private
 
   def line_violations(file)
-    violations = violations_in_file(file.source).select do |violation|
+    violations = violations_in_file(file).select do |violation|
       file.relevant_line?(violation.line)
     end
 
@@ -82,10 +82,10 @@ class StyleChecker
     end
   end
 
-  def violations_in_file(source)
+  def violations_in_file(file)
     team = Rubocop::Cop::Team.new(RULES, configuration)
     commissioner = Rubocop::Cop::Commissioner.new(team.cops)
-    commissioner.investigate(source)
+    commissioner.investigate(file.source)
   end
 
   def configuration

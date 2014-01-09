@@ -3,16 +3,16 @@ require 'base64'
 require 'app/models/modified_file'
 require 'app/models/diff_patch'
 
-describe ModifiedFile, '#contents' do
-  it 'returns file contents' do
+describe ModifiedFile, '#source' do
+  it 'returns parsed source' do
     file_contents = double(:file_contents, content: Base64.encode64('test'))
     pull_request_file = double(:pr_file, status: 'added', filename: 'test1.rb')
     pull_request = double(:pull_request, file_contents: file_contents)
     modified_file = ModifiedFile.new(pull_request_file, pull_request)
 
-    result = modified_file.contents
+    source = modified_file.source
 
-    expect(result).to eq 'test'
+    expect(source.lines).to eq Rubocop::SourceParser.parse('test').lines
   end
 end
 

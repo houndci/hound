@@ -20,15 +20,6 @@ class ModifiedFile
     filename.match(/.*\.rb$/)
   end
 
-  def contents
-    @contents ||= begin
-      unless removed?
-        contents = @pull_request.file_contents(filename)
-        Base64.decode64(contents.content)
-      end
-    end
-  end
-
   def source
     Rubocop::SourceParser.parse(contents)
   end
@@ -38,6 +29,15 @@ class ModifiedFile
   end
 
   private
+
+  def contents
+    @contents ||= begin
+      unless removed?
+        contents = @pull_request.file_contents(filename)
+        Base64.decode64(contents.content)
+      end
+    end
+  end
 
   def modified_line_numbers
     @modified_line_numbers ||= patch.modified_line_numbers
