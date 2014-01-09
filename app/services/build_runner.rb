@@ -11,7 +11,7 @@ class BuildRunner
     style_checker = StyleChecker.new(pull_request_files)
     build = repo.builds.create!(violations: style_checker.violations)
 
-    if style_checker.violations.any?
+    if build.violations.any?
       pull_request.set_failure_status(build_url(build, host: ENV['HOST']))
     else
       pull_request.set_success_status
