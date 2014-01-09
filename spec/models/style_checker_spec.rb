@@ -37,8 +37,7 @@ end
   def file_stub(contents)
     double(
       filename: 'test_pr_file',
-      source: Rubocop::SourceParser.parse(contents),
-      line: '',
+      contents: contents,
       relevant_line?: true
     )
   end

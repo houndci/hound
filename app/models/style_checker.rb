@@ -76,7 +76,7 @@ class StyleChecker
     violations.group_by(&:line).map do |line_number, violations|
       LineViolation.new(
         line_number,
-        file.line(line_number),
+        line_in_file(line_number, file),
         violations.map(&:message)
       )
     end
@@ -85,7 +85,15 @@ class StyleChecker
   def violations_in_file(file)
     team = Rubocop::Cop::Team.new(RULES, configuration)
     commissioner = Rubocop::Cop::Commissioner.new(team.cops)
-    commissioner.investigate(file.source)
+    commissioner.investigate(parse_file_content(file))
+  end
+
+  def parse_file_content(file)
+    Rubocop::SourceParser.parse(file.contents)
+  end
+
+  def line_in_file(line_number, file)
+    parse_file_content(file).lines[line_number - 1]
   end
 
   def configuration
