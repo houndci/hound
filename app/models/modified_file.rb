@@ -29,6 +29,15 @@ class ModifiedFile
     end
   end
 
+  def contents
+    @contents ||= begin
+      unless removed?
+        contents = @pull_request.file_contents(filename)
+        Base64.decode64(contents.content)
+      end
+    end
+  end
+
   private
 
   def modified_line_numbers

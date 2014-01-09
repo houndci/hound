@@ -10,9 +10,9 @@ describe ModifiedFile, '#contents' do
     pull_request = double(:pull_request, file_contents: file_contents)
     modified_file = ModifiedFile.new(pull_request_file, pull_request)
 
-    result = modified_file.contents
+    contents = modified_file.contents
 
-    expect(result).to eq 'test'
+    expect(contents).to eq 'test'
   end
 end
 

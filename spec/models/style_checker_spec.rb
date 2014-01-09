@@ -19,7 +19,26 @@ describe StyleChecker, '#violations' do
     end
   end
 
+  context 'when double quotes are used incorrectly' do
+    it 'finds violations' do
+      file = file_stub(<<-FILE)
+def blahh
+  "blahh"
+end
+      FILE
+      style_checker = StyleChecker.new([file])
+
+      violations = style_checker.violations
+
+      expect(violations).not_to be_empty
+    end
+  end
+
   def file_stub(contents)
-    double(filename: 'test_pr_file', contents: contents, relevant_line?: true)
+    double(
+      filename: 'test_pr_file',
+      contents: contents,
+      relevant_line?: true
+    )
   end
 end
