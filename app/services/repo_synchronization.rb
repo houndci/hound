@@ -7,13 +7,13 @@ class RepoSynchronization
   end
 
   def start
+    user.repos.clear
+
     api.repos.each do |repo_data|
       repo = Repo.where(github_id: repo_data[:id]).first
 
       if repo
-        unless user.repos.include? repo
-          user.repos << repo
-        end
+        user.repos << repo
       else
         user.repos.create!(
           name: repo_data[:name],
