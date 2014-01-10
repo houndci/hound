@@ -1,27 +1,5 @@
-@mixin small-screen {
-  @media screen and (max-width: 680px) {
-    @content
-  }
-}
-
-.approves-banner {
-  width: 100%;
-  overflow: hidden;
-
-  img {
-    max-width: 80%;
-    @include position(absolute, 12vh 0px 0 0);
-
-    @include small-screen {
-      max-width: 1000px;
-      right: -696px;
-    }
-  }
-}
-
 .pitch {
-  margin-bottom: 4vh;
-  margin-top: 28vh;
+  margin-bottom: 2rem;
 
   h2 {
     margin: 0 0 1rem;
@@ -33,32 +11,15 @@
   }
 }
 
-.images {
-  figure {
-    box-sizing: border-box;
-    float: right;
-    padding: 3% 3% 3% 1.5%;
-    width: 50%;
+.fa-search.disabled {
+  opacity: .5;
+}
 
-    @include small-screen {
-      float: none;
-      padding: 1rem;
-      width: 100%;
-    }
+ul.disabled {
+  cursor: not-allowed;
+  opacity: .5;
 
-    &:first-child {
-      float: left;
-      padding: 3% 1.5% 3% 3%;
-
-      @include small-screen {
-        float: none;
-        padding: 1rem;
-      }
-    }
-
-    img {
-      border: 2px solid $purple;
-      max-width: 100%;
-    }
+  li .toggle a {
+    cursor: not-allowed;
   }
 }
