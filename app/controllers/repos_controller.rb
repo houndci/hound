@@ -17,18 +17,9 @@ class ReposController < ApplicationController
     respond_with repo
   end
 
-  def sync
-    synchronization.start
-    redirect_to root_path
-  end
-
   private
 
   def activator
     RepoActivator.new
-  end
-
-  def synchronization
-    RepoSynchronization.new(current_user)
   end
 end

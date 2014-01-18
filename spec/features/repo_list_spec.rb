@@ -20,7 +20,8 @@ feature 'Repo list' do
     visit root_path
     click_link I18n.t('sync_repos')
 
-    expect(page).to have_content 'jimtom/My-Private-Repo'
+    expect(page).to have_content I18n.t('syncing_repos')
+    expect(page).not_to have_content 'jimtom/My-Private-Repo'
   end
 
   scenario 'user activates repo', js: true do

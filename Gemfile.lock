@@ -26,7 +26,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     addressable (2.3.5)
-    angularjs-rails (1.0.8)
+    angularjs-rails (1.2.9)
     arel (4.0.1)
     ast (1.1.0)
     atomic (1.1.14)
