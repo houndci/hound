@@ -5,6 +5,7 @@ Houndapp::Application.routes.draw do
   resources :repo_activations, only: [:create, :destroy]
   resources :repos, only: [:index, :update] do
     get 'sync', on: :collection
+    get 'events', on: :collection
   end
 
   get '/auth/github/callback', to: 'sessions#create'
