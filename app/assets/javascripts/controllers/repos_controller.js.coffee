@@ -1,4 +1,4 @@
-App.controller 'ReposController', ['$scope', 'Repo', '$http', ($scope, Repo, $http) ->
+App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync) ->
   disableButton = ->
     $scope.syncingRepos = true
     $scope.syncButtonText = 'Syncing repos...'
@@ -13,7 +13,7 @@ App.controller 'ReposController', ['$scope', 'Repo', '$http', ($scope, Repo, $ht
 
   pollForSyncToFinish = ->
     getSyncs = ->
-      $http.get('/repo_syncs').success (syncs) ->
+      Sync.query (syncs) ->
         if syncs.length > 0
           pollForSyncToFinish()
         else
@@ -31,7 +31,7 @@ App.controller 'ReposController', ['$scope', 'Repo', '$http', ($scope, Repo, $ht
 
   $scope.sync = ->
     disableButton()
-    $http.post('/repo_syncs').success ->
+    Sync.save ->
       pollForSyncToFinish()
 
   loadRepos()
