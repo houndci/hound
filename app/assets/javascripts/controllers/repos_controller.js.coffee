@@ -11,6 +11,16 @@ App.controller 'ReposController', ['$scope', 'Repo', '$http', ($scope, Repo, $ht
     enableButton()
     $scope.repos = Repo.query()
 
+  pollForSyncToFinish = ->
+    getSyncs = ->
+      $http.get('/repo_syncs').success (syncs) ->
+        if syncs.length > 0
+          pollForSyncToFinish()
+        else
+          loadRepos()
+
+    setTimeout getSyncs, 3000
+
   $scope.activate = (repo) ->
     repo.active = true
     repo.$update()
@@ -21,15 +31,8 @@ App.controller 'ReposController', ['$scope', 'Repo', '$http', ($scope, Repo, $ht
 
   $scope.sync = ->
     disableButton()
-
-    $http.get('/repos/sync').success ->
-      eventSource = new EventSource('/repos/events')
-      eventSource.addEventListener 'message', (event) ->
-        syncFinished = ->
-          $scope.syncingRepos && parseInt(event.data, 10) == 0
-
-        if syncFinished()
-          loadRepos()
+    $http.post('/repo_syncs').success ->
+      pollForSyncToFinish()
 
   loadRepos()
 ]
