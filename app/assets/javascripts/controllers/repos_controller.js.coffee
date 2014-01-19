@@ -11,11 +11,11 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
     enableButton()
     $scope.repos = Repo.query()
 
-  pollForSyncToFinish = ->
+  pollSyncStatus = ->
     getSyncs = ->
       Sync.query (syncs) ->
         if syncs.length > 0
-          pollForSyncToFinish()
+          pollSyncStatus()
         else
           loadRepos()
 
@@ -32,7 +32,7 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
   $scope.sync = ->
     disableButton()
     Sync.save ->
-      pollForSyncToFinish()
+      pollSyncStatus()
 
   loadRepos()
 ]
