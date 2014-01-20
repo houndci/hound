@@ -53,7 +53,7 @@ feature 'Builds' do
         :get,
         "https://api.github.com/repos/#{repo_name}/pulls/#{number}/files"
       ).with(
-        :headers => { 'Authorization' => "token #{token}" }
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
@@ -64,8 +64,8 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => '{"description":"Hound is working...","state":"pending"}',
-        :headers => { 'Authorization' => "token #{token}" }
+        body: '{"description":"Hound is working...","state":"pending"}',
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
@@ -76,8 +76,8 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => '{"description":"Hound approves","state":"success"}',
-        :headers => { 'Authorization' => "token #{token}" }
+        body: '{"description":"Hound approves","state":"success"}',
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
@@ -88,8 +88,8 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => %({"description":"Hound does not approve","target_url":"http://#{ENV['HOST']}#{build_path(Build.last.uuid)}","state":"failure"}),
-        :headers => { 'Authorization' => "token #{token}" }
+        body: %({"description":"Hound does not approve","target_url":"http://#{ENV['HOST']}#{build_path(Build.last.uuid)}","state":"failure"}),
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
