@@ -19,3 +19,21 @@ describe Build, '#status' do
     expect(build.status).to eq 'failed'
   end
 end
+
+describe Build, 'on create' do
+  it 'generates a UUID' do
+    build = create(:build)
+
+    expect(build.uuid).to be_present
+  end
+end
+
+describe Build, '.find_by_uuid' do
+  it 'finds Build by UUID' do
+    build = create(:build)
+
+    found_build = Build.find_by_uuid(build.uuid)
+
+    expect(found_build).to eq build
+  end
+end

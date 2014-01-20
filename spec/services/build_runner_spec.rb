@@ -81,7 +81,7 @@ describe BuildRunner, '#run' do
 
       expect(pull_request).to have_received(:set_pending_status)
       expect(pull_request).to have_received(:set_failure_status).
-        with("http://#{ENV['HOST']}/builds/#{Build.last.id}")
+        with("http://#{ENV['HOST']}/builds/#{Build.last.uuid}")
     end
   end
 
