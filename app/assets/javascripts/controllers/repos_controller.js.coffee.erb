@@ -13,16 +13,18 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
     loadRepos()
 
   pollSyncStatus = ->
+    successfulSync = (results) ->
+      if results.length > 0
+        pollSyncStatus()
+      else
+        loadRepos()
+
+    failedSync = ->
+      pollSyncStatus()
+
     getSyncs = ->
       syncs = Sync.query()
-      syncs.$promise.then((results) ->
-        if results.length > 0
-          pollSyncStatus()
-        else
-          loadRepos()
-      , ->
-        pollSyncStatus()
-      )
+      syncs.$promise.then(successfulSync, failedSync)
 
     setTimeout getSyncs, 3000
 
