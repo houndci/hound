@@ -8,7 +8,7 @@ class Build < ActiveRecord::Base
   serialize :violations, Array
 
   def self.find_by_uuid(uuid)
-    super
+    self.where('uuid = ?', uuid).first
   end
 
   def status
