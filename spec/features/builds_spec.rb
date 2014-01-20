@@ -88,7 +88,11 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        body: %({"description":"Hound does not approve","target_url":"http://#{ENV['HOST']}#{build_path(Build.last.uuid)}","state":"failure"}),
+        body: {
+          description: 'Hound does not approve',
+          target_url: "http://#{ENV['HOST']}#{build_path(Build.last.uuid)}",
+          state: 'failure'
+        }.to_json,
         headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
