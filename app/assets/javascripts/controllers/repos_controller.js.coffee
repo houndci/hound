@@ -9,17 +9,25 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
 
   loadRepos = ->
     enableButton()
-    $scope.repos = Repo.query()
+
+    repos = Repo.query()
+    repos.$promise.then((results) ->
+      $scope.repos = results
+    , ->
+      alert('Your repos failed to load.')
+    )
 
   pollSyncStatus = ->
     getSyncs = ->
       syncs = Sync.query()
-
-      syncs.$promise.then (results) ->
+      syncs.$promise.then((results) ->
         if results.length > 0
           pollSyncStatus()
         else
           loadRepos()
+      , ->
+        pollSyncStatus()
+      )
 
     setTimeout getSyncs, 3000
 
@@ -35,9 +43,12 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
     disableButton()
 
     sync = Sync.save()
-
-    sync.$promise.then ->
+    sync.$promise.then(->
       pollSyncStatus()
+    , ->
+      enableButton()
+      alert('Your repos failed to sync.')
+    )
 
   loadRepos()
 ]
