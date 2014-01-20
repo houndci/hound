@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120165453) do
+ActiveRecord::Schema.define(version: 20140120234919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,10 +21,11 @@ ActiveRecord::Schema.define(version: 20140120165453) do
     t.integer  "repo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "uuid"
+    t.string   "uuid",       null: false
   end
 
   add_index "builds", ["repo_id"], name: "index_builds_on_repo_id", using: :btree
+  add_index "builds", ["uuid"], name: "index_builds_on_uuid", unique: true, using: :btree
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0
