@@ -1,14 +1,6 @@
 App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync) ->
-  disableButton = ->
-    $scope.syncingRepos = true
-    $scope.syncButtonText = 'Syncing repos...'
-
-  enableButton = ->
-    $scope.syncButtonText = 'Sync repos'
-    $scope.syncingRepos = false
-
   loadRepos = ->
-    enableButton()
+    $scope.syncingRepos = false
 
     repos = Repo.query()
     repos.$promise.then((results) ->
@@ -16,6 +8,9 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
     , ->
       alert('Your repos failed to load.')
     )
+
+  initialize = ->
+    loadRepos()
 
   pollSyncStatus = ->
     getSyncs = ->
@@ -40,15 +35,21 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
     repo.$update()
 
   $scope.sync = ->
-    disableButton()
+    $scope.syncingRepos = true
 
     sync = Sync.save()
     sync.$promise.then(->
       pollSyncStatus()
     , ->
-      enableButton()
+      $scope.syncingRepos = false
       alert('Your repos failed to sync.')
     )
 
-  loadRepos()
+  $scope.$watch 'syncingRepos', (newValue, oldValue) ->
+    if newValue
+      $scope.syncButtonText = 'Syncing repos...'
+    else
+      $scope.syncButtonText = 'Sync repos'
+
+  initialize()
 ]
