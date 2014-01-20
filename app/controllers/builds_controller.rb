@@ -3,7 +3,7 @@ class BuildsController < ApplicationController
   skip_before_filter :authenticate
 
   def show
-    @build = Build.find(params[:id])
+    @build = Build.find_by_uuid(params[:id])
   end
 
   def create
