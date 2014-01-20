@@ -38,8 +38,11 @@ feature 'Builds' do
     expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
     expect_a_failure_status_request(repo.full_github_name, pr_sha, repo.github_token)
 
-    visit build_path(Build.first.uuid)
+    build = Build.first
+    visit build_path(build.uuid)
 
+    expect(page).not_to have_content build.id
+    expect(page).to have_content build.uuid
     expect(page).to have_content 'Violations'
     expect(page).to have_content 'config/unicorn.rb'
     expect(page).to have_content '1 def some_method()'
