@@ -13,8 +13,10 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
 
   pollSyncStatus = ->
     getSyncs = ->
-      Sync.query (syncs) ->
-        if syncs.length > 0
+      syncs = Sync.query()
+
+      syncs.$promise.then (results) ->
+        if results.length > 0
           pollSyncStatus()
         else
           loadRepos()
@@ -31,7 +33,10 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
 
   $scope.sync = ->
     disableButton()
-    Sync.save ->
+
+    sync = Sync.save()
+
+    sync.$promise.then ->
       pollSyncStatus()
 
   loadRepos()
