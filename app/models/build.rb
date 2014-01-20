@@ -7,7 +7,7 @@ class Build < ActiveRecord::Base
 
   def status
     if violations.any?
-      'failed'
+      'failed'   
     else
       'passed'
     end
