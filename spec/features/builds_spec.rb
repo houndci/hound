@@ -20,7 +20,7 @@ feature 'Builds' do
     expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
     expect_a_successful_status_request(repo.full_github_name, pr_sha, repo.github_token)
 
-    visit build_path(Build.first)
+    visit build_path(Build.first.uuid)
 
     expect(page).not_to have_content 'Violations'
     expect(page).to have_content 'No violations'
@@ -38,7 +38,7 @@ feature 'Builds' do
     expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
     expect_a_failure_status_request(repo.full_github_name, pr_sha, repo.github_token)
 
-    visit build_path(Build.first)
+    visit build_path(Build.first.uuid)
 
     expect(page).to have_content 'Violations'
     expect(page).to have_content 'config/unicorn.rb'
@@ -53,7 +53,7 @@ feature 'Builds' do
         :get,
         "https://api.github.com/repos/#{repo_name}/pulls/#{number}/files"
       ).with(
-        :headers => { 'Authorization' => "token #{token}" }
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
@@ -64,8 +64,8 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => '{"description":"Hound is working...","state":"pending"}',
-        :headers => { 'Authorization' => "token #{token}" }
+        body: '{"description":"Hound is working...","state":"pending"}',
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
@@ -76,8 +76,8 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => '{"description":"Hound approves","state":"success"}',
-        :headers => { 'Authorization' => "token #{token}" }
+        body: '{"description":"Hound approves","state":"success"}',
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
@@ -88,8 +88,12 @@ feature 'Builds' do
         :post,
         "https://api.github.com/repos/#{repo}/statuses/#{sha}"
       ).with(
-        :body => %({"description":"Hound does not approve","target_url":"http://#{ENV['HOST']}#{build_path(Build.last.id)}","state":"failure"}),
-        :headers => { 'Authorization' => "token #{token}" }
+        body: {
+          description: 'Hound does not approve',
+          target_url: "http://#{ENV['HOST']}#{build_path(Build.last.uuid)}",
+          state: 'failure'
+        }.to_json,
+        headers: { 'Authorization' => "token #{token}" }
       )
     ).to have_been_made
   end
