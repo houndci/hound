@@ -41,7 +41,6 @@ feature 'Builds' do
     build = Build.first
     visit build_path(build.uuid)
 
-    expect(page).to have_content build.uuid
     expect(page).to have_content 'Violations'
     expect(page).to have_content 'config/unicorn.rb'
     expect(page).to have_content '1 def some_method()'
