@@ -1,4 +1,6 @@
 class BuildRunner
+  IGNORED_FILES = ['db/schema.rb']
+
   include Rails.application.routes.url_helpers
 
   def initialize(payload_data)
@@ -26,7 +28,7 @@ class BuildRunner
 
   def pull_request_files
     pull_request.files.reject do |file|
-      file.removed? || !file.ruby?
+      file.removed? || !file.ruby? || IGNORED_FILES.include?(file.filename)
     end
   end
 

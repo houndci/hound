@@ -101,8 +101,18 @@ describe BuildRunner, '#run' do
   context 'with removed file' do
     it 'filters out removed files' do
       build_runner = BuildRunner.new(payload_data)
-      pull_request_file1 = double(:pr_file, removed?: true, ruby?: true)
-      pull_request_file2 = double(:pr_file, removed?: false, ruby?: true)
+      pull_request_file1 = double(
+        :pr_file,
+        removed?: true,
+        ruby?: true,
+        filename: 'game.rb'
+      )
+      pull_request_file2 = double(
+        :pr_file,
+        removed?: false,
+        ruby?: true,
+        filename: 'config.rb'
+      )
       pull_request = double(
         :pull_request,
         set_pending_status: nil,
@@ -121,8 +131,18 @@ describe BuildRunner, '#run' do
   context 'with non-ruby files' do
     it 'filters out non-ruby files' do
       build_runner = BuildRunner.new(payload_data)
-      pull_request_file1 = double(:pr_file, removed?: false, ruby?: false)
-      pull_request_file2 = double(:pr_file, removed?: false, ruby?: true)
+      pull_request_file1 = double(
+        :pr_file,
+        removed?: false,
+        ruby?: false,
+        filename: 'app/assets/javascript/application.js'
+      )
+      pull_request_file2 = double(
+        :pr_file,
+        removed?: false,
+        ruby?: true,
+        filename: 'app/models/user.rb'
+      )
       pull_request = double(
         :pull_request,
         set_pending_status: nil,
@@ -135,6 +155,36 @@ describe BuildRunner, '#run' do
       build_runner.run
 
       expect(StyleChecker).to have_received(:new).with([pull_request_file2])
+    end
+  end
+
+  context 'with ignored files' do
+    it 'filters out ignored' do
+      build_runner = BuildRunner.new(payload_data)
+      ignored_file = double(
+        :pr_file,
+        removed?: false,
+        ruby?: true,
+        filename: 'db/schema.rb'
+      )
+      allowed_file = double(
+        :pr_file,
+        removed?: false,
+        ruby?: true,
+        filename: 'app/models/user.rb'
+      )
+      pull_request = double(
+        :pull_request,
+        set_pending_status: nil,
+        set_success_status: nil,
+        set_failure_status: nil,
+        files: [ignored_file, allowed_file]
+      )
+      PullRequest.stub(new: pull_request)
+
+      build_runner.run
+
+      expect(StyleChecker).to have_received(:new).with([allowed_file])
     end
   end
 end
