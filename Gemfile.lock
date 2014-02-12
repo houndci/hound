@@ -71,7 +71,6 @@ GEM
     diff-lcs (1.2.4)
     dotenv (0.9.0)
     erubis (2.7.0)
-    excon (0.25.3)
     execjs (2.0.2)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
@@ -80,7 +79,6 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
-    fattr (2.2.1)
     ffi (1.9.3)
     font-awesome-rails (3.2.1.3)
       railties (>= 3.2, < 5.0)
@@ -95,8 +93,6 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     hashie (2.0.5)
-    heroku-api (0.3.15)
-      excon (~> 0.25.1)
     high_voltage (1.2.2)
     hike (1.2.3)
     httpauth (0.2.0)
@@ -185,8 +181,6 @@ GEM
       powerpack (~> 0.0.6)
       rainbow (>= 1.1.4)
     rubyzip (1.0.0)
-    rush (0.6.8)
-      session
     safe_yaml (0.9.7)
     sass (3.2.12)
     sass-rails (4.0.1)
@@ -205,8 +199,6 @@ GEM
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
       uuidtools
-    session (3.1.0)
-      fattr
     shoulda-matchers (2.4.0)
       activesupport (>= 3.0.0)
     slop (3.4.7)
@@ -239,11 +231,6 @@ GEM
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
     websocket (1.0.7)
-    workless (1.2.3)
-      delayed_job (>= 2.0.7)
-      heroku-api
-      rails
-      rush
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -280,4 +267,3 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   webmock
-  workless
