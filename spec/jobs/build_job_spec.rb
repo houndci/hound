@@ -1,4 +1,5 @@
-require 'spec_helper'
+require 'fast_spec_helper'
+require 'app/jobs/build_job'
 
 describe 'BuildJob', '#perform' do
   it 'runs the build' do
