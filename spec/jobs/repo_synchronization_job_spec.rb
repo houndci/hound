@@ -15,7 +15,7 @@ describe RepoSynchronizationJob, '#perform' do
 end
 
 describe RepoSynchronizationJob, '#error' do
-  it 'notifies exception service' do
+  it 'captures exception using the monitor' do
     monitor = double(capture_exception: nil)
     sync_job = RepoSynchronizationJob.new(123, monitor)
 
