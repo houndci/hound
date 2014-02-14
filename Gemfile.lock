@@ -163,8 +163,6 @@ GEM
     rainbow (1.1.4)
     raindrops (0.12.0)
     rake (10.1.0)
-    rollbar (0.11.7)
-      multi_json (~> 1.5)
     rspec-core (2.14.7)
     rspec-expectations (2.14.3)
       diff-lcs (>= 1.1.3, < 2.0)
@@ -258,7 +256,6 @@ DEPENDENCIES
   pg
   rails (= 4.0.0)
   rails_12factor
-  rollbar
   rspec-rails (>= 2.14)
   rubocop
   sass-rails
