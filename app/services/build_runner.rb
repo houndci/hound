@@ -14,7 +14,9 @@ class BuildRunner
     build = repo.builds.create!(violations: style_checker.violations)
 
     if build.violations.any?
-      pull_request.set_failure_status(build_url(build.uuid, host: ENV['HOST']))
+      build_url = build_url(build.uuid, host: ENV['HOST'])
+      pull_request.set_failure_status(build_url)
+      pull_request.add_failure_comment(build_url)
     else
       pull_request.set_success_status
     end

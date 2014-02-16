@@ -5,7 +5,7 @@ class PullRequest
   end
 
   def files
-    api.pull_request_files(@payload.full_repo_name, @payload.number).
+    api.pull_request_files(full_repo_name, number).
       map { |file| ModifiedFile.new(file, self) }
   end
 
@@ -23,15 +23,33 @@ class PullRequest
   end
 
   def file_contents(filename)
-    api.file_contents(@payload.full_repo_name, filename, @payload.head_sha)
+    api.file_contents(full_repo_name, filename, head_sha)
+  end
+
+  def full_repo_name
+    @payload.full_repo_name
+  end
+
+  def number
+    @payload.number
+  end
+
+  def head_sha
+    @payload.head_sha
+  end
+
+  def add_failure_comment(target_url)
+    hound_github_client = Octokit::Client.new(access_token: ENV['HOUND_GITHUB_TOKEN'])
+    failure_comment = "Hound does not approve - [details](#{target_url})"
+    hound_github_client.add_comment(full_repo_name, number, failure_comment)
   end
 
   private
 
   def set_status(status, options)
     api.create_status(
-      @payload.full_repo_name,
-      @payload.head_sha,
+      full_repo_name,
+      head_sha,
       status,
       options
     )
