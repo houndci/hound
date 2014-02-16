@@ -65,7 +65,7 @@ describe StyleChecker, '#violations' do
       filename: 'test_pr_file',
       contents: contents,
       relevant_line?: true
-    )
+    ).as_null_object
   end
 
   def violation_messages(violations)

@@ -30,26 +30,6 @@ module GithubApiHelper
     )
   end
 
-  def stub_status_request(full_repo_name, sha)
-    url = "https://api.github.com/repos/#{full_repo_name}/statuses/#{sha}"
-    stub_request(:post, url)
-  end
-
-  def stub_status_creation_request(full_repo_name, commit_sha, state, description, target_url = nil)
-    body = %({"description":"#{description}","state":"#{state}"})
-    if target_url
-      body.gsub!(',"state"', %{,"target_url":"#{target_url}","state"})
-    end
-
-    stub_status_request(full_repo_name, commit_sha).with(
-      body: body, headers: { 'Authorization' => /^token \w+$/ }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/github_status_creation_response.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
-  end
-
   def stub_pull_request_files_request(full_repo_name, pull_request_number, auth_token)
     url = "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
     stub_request(:get, url).
@@ -159,5 +139,17 @@ module GithubApiHelper
       body: '[]',
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
+  end
+
+  def stub_comment_request(full_repo_name, pull_request_number, comment, commit_sha, file, line_number)
+    url = "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
+    stub_request(:post, url).with(
+      body: {
+        body: comment,
+        commit_id: commit_sha,
+        path: file,
+        position: line_number
+      }.to_json
+    ).to_return(status: 200)
   end
 end

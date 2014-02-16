@@ -50,7 +50,19 @@ describe BuildRunner, '#run' do
 
   before :each do
     create(:active_repo, github_id: payload_data['repository']['id'])
-    style_checker = double(:style_checker, violations: ['something failed'])
+    line_violation = double(
+      :line_violation,
+      line_number: 123,
+      messages: ['A message', 'Another message']
+    )
+    modified_line = double(:modified_line, line_number: 123, diff_position: 22)
+    file_violation = double(
+      :file_violation,
+      filename: 'test.rb',
+      line_violations: [line_violation],
+      modified_lines: [modified_line]
+    )
+    style_checker = double(:style_checker, violations: [file_violation])
     StyleChecker.stub(new: style_checker)
     PullRequest.stub(new: pull_request)
   end
@@ -63,30 +75,15 @@ describe BuildRunner, '#run' do
 
       build = Build.last
       expect(build).to be_persisted
-      expect(build.violations).to eq ['something failed']
+      expect(build.violations).to have_at_least(1).item
     end
 
-    it 'checks style guide and notifies github of the failed build' do
+    it 'creates a comment on GitHub' do
       build_runner = BuildRunner.new(payload_data)
 
       build_runner.run
 
-      expect(pull_request).to have_received(:set_pending_status)
-      expect(pull_request).to have_received(:set_failure_status).
-        with("http://#{ENV['HOST']}/builds/#{Build.last.uuid}")
-    end
-  end
-
-  context 'without violations' do
-    it 'checks style guide and notifies github of the passing build' do
-      build_runner = BuildRunner.new(payload_data)
-      style_checker = double(:style_checker, violations: [])
-      StyleChecker.stub(new: style_checker)
-
-      build_runner.run
-
-      expect(pull_request).to have_received(:set_pending_status)
-      expect(pull_request).to have_received(:set_success_status)
+      expect(pull_request).to have_received(:add_comment).with('test.rb', 22, anything)
     end
   end
 
@@ -138,6 +135,7 @@ describe BuildRunner, '#run' do
       set_success_status: nil,
       set_failure_status: nil,
       config: nil,
+      add_comment: nil,
       files: []
     }
     pull_request = double(:pull_request, default_options.merge(options))

@@ -8,15 +8,12 @@ class BuildRunner
   end
 
   def run
-    pull_request.set_pending_status
-
     style_checker = StyleChecker.new(pull_request_files, pull_request.config)
-    build = repo.builds.create!(violations: style_checker.violations)
+    violations = style_checker.violations
+    build = repo.builds.create!(violations: violations)
 
-    if build.violations.any?
-      pull_request.set_failure_status(build_url(build.uuid, host: ENV['HOST']))
-    else
-      pull_request.set_success_status
+    if violations.any?
+      comment_on_failures(violations)
     end
   end
 
@@ -42,5 +39,21 @@ class BuildRunner
 
   def repo
     @repo ||= Repo.active.where(github_id: payload.github_repo_id).first
+  end
+
+  def comment_on_failures(violations)
+    violations.each do |file_violation|
+      file_violation.line_violations.each do |line_violation|
+        modified_line = file_violation.modified_lines.detect do |modified_line|
+          modified_line.line_number == line_violation.line_number
+        end
+
+        pull_request.add_comment(
+          file_violation.filename,
+          modified_line.diff_position,
+          line_violation.messages.join('<br>')
+        )
+      end
+    end
   end
 end

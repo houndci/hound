@@ -2,8 +2,6 @@ require 'octokit'
 require 'base64'
 
 class GithubApi
-  STATUSES = [:success, :pending, :failure]
-
   attr_reader :client
 
   def initialize(token)
@@ -26,6 +24,17 @@ class GithubApi
     end
   end
 
+  def add_comment(options)
+    client.create_pull_request_comment(
+      options[:repo_name],
+      options[:pull_request_number],
+      options[:comment],
+      options[:commit],
+      options[:filename],
+      options[:line_number]
+    )
+  end
+
   def create_pull_request_hook(full_repo_name, callback_endpoint)
     client.create_hook(
       full_repo_name,
@@ -45,14 +54,6 @@ class GithubApi
 
   def file_contents(full_repo_name, filename, sha)
     client.contents(full_repo_name, path: filename, ref: sha)
-  end
-
-  def create_status(full_repo_name, sha, status, options)
-    if STATUSES.include?(status.to_sym)
-      client.create_status(full_repo_name, sha, status, options)
-    else
-      raise ArgumentError.new("Status must be one of these: #{STATUSES}")
-    end
   end
 
   private

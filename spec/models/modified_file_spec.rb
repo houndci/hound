@@ -20,7 +20,8 @@ describe ModifiedFile, '#relevant_line?' do
     it 'returns true' do
       pull_request_file = double(:pull_request_file, patch: '')
       modified_file = ModifiedFile.new(pull_request_file, double)
-      diff_patch = double(:diff_patch, modified_line_numbers: [1])
+      modified_line = double(:modified_line, line_number: 1)
+      diff_patch = double(:diff_patch, modified_lines: [modified_line])
       DiffPatch.stub(new: diff_patch)
 
       result = modified_file.relevant_line?(1)
@@ -33,7 +34,8 @@ describe ModifiedFile, '#relevant_line?' do
     it 'returns true' do
       pull_request_file = double(:pull_request_file, patch: '')
       modified_file = ModifiedFile.new(pull_request_file, double)
-      diff_patch = double(:diff_patch, modified_line_numbers: [1])
+      modified_line = double(:modified_line, line_number: 1)
+      diff_patch = double(:diff_patch, modified_lines: [modified_line])
       DiffPatch.stub(new: diff_patch)
 
       result = modified_file.relevant_line?(2)

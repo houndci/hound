@@ -16,7 +16,6 @@ feature 'Builds' do
 
   scenario 'a successful build with custom config' do
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
-    stub_status_request(repo.full_github_name, pr_sha)
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
     stub_contents_request(repo_name: repo.full_github_name, sha: pr_sha)
     stub_contents_request(
@@ -28,9 +27,7 @@ feature 'Builds' do
 
     post builds_path, payload: payload
 
-    expect_a_pending_status_request(repo.full_github_name, pr_sha, repo.github_token)
     expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
-    expect_a_successful_status_request(repo.full_github_name, pr_sha, repo.github_token)
 
     visit build_path(Build.first.uuid)
 
@@ -40,7 +37,7 @@ feature 'Builds' do
 
   scenario 'a failed build' do
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
-    stub_status_request(repo.full_github_name, pr_sha)
+    stub_request(:post, 'https://api.github.com/repos/salbertson/life/pulls/2/comments')
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
     stub_contents_request(
       repo_name: repo.full_github_name,
@@ -56,9 +53,8 @@ feature 'Builds' do
 
     post builds_path, payload: payload
 
-    expect_a_pending_status_request(repo_name, pr_sha, repo.github_token)
     expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
-    expect_a_failure_status_request(repo.full_github_name, pr_sha, repo.github_token)
+    expect_a_comment_request(repo.full_github_name, pr_number)
 
     build = Build.first
     visit build_path(build.uuid)
@@ -81,43 +77,11 @@ feature 'Builds' do
     ).to have_been_made
   end
 
-  def expect_a_pending_status_request(repo, sha, token)
-    expect(
-      a_request(
-        :post,
-        "https://api.github.com/repos/#{repo}/statuses/#{sha}"
-      ).with(
-        body: '{"description":"Hound is working...","state":"pending"}',
-        headers: { 'Authorization' => "token #{token}" }
-      )
-    ).to have_been_made
-  end
+  def expect_a_comment_request(repo_name, pull_request_number)
+    url = "https://api.github.com/repos/#{repo_name}/pulls/#{pull_request_number}/comments"
 
-  def expect_a_successful_status_request(repo, sha, token)
     expect(
-      a_request(
-        :post,
-        "https://api.github.com/repos/#{repo}/statuses/#{sha}"
-      ).with(
-        body: '{"description":"Hound approves","state":"success"}',
-        headers: { 'Authorization' => "token #{token}" }
-      )
-    ).to have_been_made
-  end
-
-  def expect_a_failure_status_request(repo, sha, token)
-    expect(
-      a_request(
-        :post,
-        "https://api.github.com/repos/#{repo}/statuses/#{sha}"
-      ).with(
-        body: {
-          description: 'Hound does not approve',
-          target_url: "http://#{ENV['HOST']}#{build_path(Build.last.uuid)}",
-          state: 'failure'
-        }.to_json,
-        headers: { 'Authorization' => "token #{token}" }
-      )
+      a_request(:post, url)
     ).to have_been_made
   end
 end

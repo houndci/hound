@@ -7,21 +7,25 @@ class PullRequest
   end
 
   def files
-    api.pull_request_files(@payload.full_repo_name, @payload.number).
-      map { |file| ModifiedFile.new(file, self) }
+    api.pull_request_files(full_repo_name, number).map do |file|
+      ModifiedFile.new(file, self)
+    end
   end
 
-  def set_pending_status
-    set_status(:pending, description: 'Hound is working...')
+  def file_contents(filename)
+    api.file_contents(full_repo_name, filename, head_sha)
   end
 
-  def set_success_status
-    set_status(:success, description: 'Hound approves')
-  end
-
-  def set_failure_status(target_url)
-    message = 'Hound does not approve'
-    set_status(:failure, description: message, target_url: target_url)
+  def add_comment(filename, diff_position, message)
+    github = GithubApi.new(ENV['HOUND_GITHUB_TOKEN'])
+    github.add_comment(
+      repo_name: full_repo_name,
+      pull_request_number: number,
+      comment: message,
+      commit: head_sha,
+      filename: filename,
+      line_number: diff_position
+    )
   end
 
   def file_contents(filename)
@@ -38,16 +42,19 @@ class PullRequest
 
   private
 
-  def set_status(status, options)
-    api.create_status(
-      @payload.full_repo_name,
-      @payload.head_sha,
-      status,
-      options
-    )
-  end
-
   def api
     @api ||= GithubApi.new(@github_token)
+  end
+
+  def full_repo_name
+    @payload.full_repo_name
+  end
+
+  def number
+    @payload.number
+  end
+
+  def head_sha
+    @payload.head_sha
   end
 end

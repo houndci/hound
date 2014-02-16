@@ -46,22 +46,20 @@ describe GithubApi do
   describe '#pull_request_files' do
     it 'returns file content of changed files' do
       api = GithubApi.new('authtoken')
-      pull_request = double(
-        full_repo_name: 'thoughtbot/hound',
-        number: 69,
-        head_sha: '123abc'
-      )
+      pull_request = double(:pull_request, full_repo_name: 'thoughtbot/hound')
+      pull_request_number = 123
+      commit_sha = 'abc123'
       stub_pull_request_files_request(
         pull_request.full_repo_name,
-        pull_request.number,
+        pull_request_number,
         'authtoken'
       )
       stub_contents_request(
         repo_name: pull_request.full_repo_name,
-        sha: pull_request.head_sha
+        sha: commit_sha
       )
 
-      files = api.pull_request_files(pull_request.full_repo_name, pull_request.number)
+      files = api.pull_request_files(pull_request.full_repo_name, pull_request_number)
       file = files.first
 
       expect(files).to have(1).item
@@ -71,19 +69,33 @@ describe GithubApi do
   end
 end
 
-describe GithubApi, '#create_status' do
-  describe '#create_status' do
-    it 'creates a failure GitHub status' do
-      api = GithubApi.new('authtoken')
-      repo_name = 'test-user/repo'
-      sha = 'abcdefg'
-      url = 'http://example.com'
-      options = { description: 'Failed!', target_url: url }
-      stub_status_creation_request(repo_name, sha, 'failure', 'Failed!', url)
+describe GithubApi, '#add_comment' do
+  it 'adds comment to GitHub' do
+    api = GithubApi.new('authtoken')
+    repo_name = 'test/repo'
+    pull_request_number = 2
+    comment = 'test comment'
+    commit_sha = 'commitsha'
+    file = 'test.rb'
+    line_number = 123
+    request = stub_comment_request(
+      repo_name,
+      pull_request_number,
+      comment,
+      commit_sha,
+      file,
+      line_number
+    )
 
-      response = api.create_status(repo_name, sha, :failure, options)
+    api.add_comment(
+      repo_name: repo_name,
+      pull_request_number: pull_request_number,
+      comment: 'test comment',
+      commit: commit_sha,
+      filename: file,
+      line_number: line_number
+    )
 
-      expect(response.id).not_to be_nil
-    end
+    expect(request).to have_been_requested
   end
 end
