@@ -52,6 +52,7 @@ describe BuildRunner, '#run' do
       set_pending_status: nil,
       set_success_status: nil,
       set_failure_status: nil,
+      add_failure_comment: nil,
       files: []
     )
   }
@@ -74,13 +75,22 @@ describe BuildRunner, '#run' do
       expect(build.violations).to eq ['something failed']
     end
 
-    it 'checks style guide and notifies github of the failed build' do
+    it 'checks style guide and notifies GitHub of the failed build' do
       build_runner = BuildRunner.new(payload_data)
 
       build_runner.run
 
       expect(pull_request).to have_received(:set_pending_status)
       expect(pull_request).to have_received(:set_failure_status).
+        with("http://#{ENV['HOST']}/builds/#{Build.last.uuid}")
+    end
+
+    it 'creates a comment on GitHub' do
+      build_runner = BuildRunner.new(payload_data)
+
+      build_runner.run
+
+      expect(pull_request).to have_received(:add_failure_comment).
         with("http://#{ENV['HOST']}/builds/#{Build.last.uuid}")
     end
   end
@@ -118,6 +128,7 @@ describe BuildRunner, '#run' do
         set_pending_status: nil,
         set_success_status: nil,
         set_failure_status: nil,
+        add_failure_comment: nil,
         files: [pull_request_file1, pull_request_file2]
       )
       PullRequest.stub(new: pull_request)
@@ -148,6 +159,7 @@ describe BuildRunner, '#run' do
         set_pending_status: nil,
         set_success_status: nil,
         set_failure_status: nil,
+        add_failure_comment: nil,
         files: [pull_request_file1, pull_request_file2]
       )
       PullRequest.stub(new: pull_request)
@@ -178,6 +190,7 @@ describe BuildRunner, '#run' do
         set_pending_status: nil,
         set_success_status: nil,
         set_failure_status: nil,
+        add_failure_comment: nil,
         files: [ignored_file, allowed_file]
       )
       PullRequest.stub(new: pull_request)

@@ -29,6 +29,7 @@ feature 'Builds' do
   scenario 'a failed build' do
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
     stub_status_request(repo.full_github_name, pr_sha)
+    stub_comment_request(repo.full_github_name, 2, 'comment')
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
     stub_contents_request(repo.full_github_name, pr_sha, 'contents_with_violations.json')
 

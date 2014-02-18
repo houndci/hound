@@ -84,3 +84,17 @@ describe GithubApi, '#create_status' do
     end
   end
 end
+
+describe GithubApi, '#add_coment' do
+  it 'adds comment to GitHub' do
+    api = GithubApi.new('authtoken')
+    repo_name = 'test/repo'
+    pull_request_number = 2
+    comment = 'test comment'
+    request = stub_comment_request(repo_name, pull_request_number, comment)
+
+    api.add_comment(repo_name, pull_request_number, 'test comment')
+
+    expect(request).to have_been_requested
+  end
+end

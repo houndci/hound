@@ -156,4 +156,9 @@ module GithubApiHelper
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
+
+  def stub_comment_request(full_repo_name, pull_request_number, comment)
+    url = "https://api.github.com/repos/#{full_repo_name}/issues/#{pull_request_number}/comments"
+    stub_request(:post, url).to_return(:status => 200)
+  end
 end

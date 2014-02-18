@@ -39,9 +39,9 @@ class PullRequest
   end
 
   def add_failure_comment(target_url)
-    hound_github_client = Octokit::Client.new(access_token: ENV['HOUND_GITHUB_TOKEN'])
+    github = GithubApi.new(ENV['HOUND_GITHUB_TOKEN'])
     failure_comment = "Hound does not approve - [details](#{target_url})"
-    hound_github_client.add_comment(full_repo_name, number, failure_comment)
+    github.add_comment(full_repo_name, number, failure_comment)
   end
 
   private
