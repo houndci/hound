@@ -6,7 +6,10 @@ describe RepoActivator do
       user = build(:user)
       repo = create(:repo)
       hook = double(id: 'hookid')
-      github = double(:github_api, create_pull_request_hook: hook).as_null_object
+      github = double(
+        :github_api,
+        create_pull_request_hook: hook
+      ).as_null_object
       GithubApi.stub(:new).with(user.github_token).and_return(github)
       activator = RepoActivator.new
 
@@ -19,7 +22,10 @@ describe RepoActivator do
       user = build(:user)
       repo = create(:repo)
       hook = double(id: 'hookid')
-      github = double(:github_api, create_pull_request_hook: hook).as_null_object
+      github = double(
+        :github_api,
+        create_pull_request_hook: hook
+      ).as_null_object
       GithubApi.stub(new: github)
       activator = RepoActivator.new
 
@@ -36,7 +42,11 @@ describe RepoActivator do
       user = build(:user)
       repo = create(:repo)
       hook = double(id: 'hookid')
-      github = double(:github_api, create_pull_request_hook: hook, add_hound_to_repo: true)
+      github = double(
+        :github_api,
+        create_pull_request_hook: hook,
+        add_hound_to_repo: true
+      )
       GithubApi.stub(new: github)
       activator = RepoActivator.new
 
