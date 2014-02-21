@@ -14,6 +14,18 @@ class GithubApi
     user_repos + org_repos
   end
 
+  def add_hound_to_repo(full_repo_name)
+    repo = client.repository(full_repo_name)
+    organization = repo.organization
+
+    if organization
+      repo_teams = client.repository_teams(full_repo_name)
+      client.add_team_member(repo_teams.first.id, ENV['HOUND_GITHUB_USERNAME'])
+    else
+      client.add_collaborator(full_repo_name, ENV['HOUND_GITHUB_USERNAME'])
+    end
+  end
+
   def create_pull_request_hook(full_repo_name, callback_endpoint)
     client.create_hook(
       full_repo_name,

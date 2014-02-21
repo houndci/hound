@@ -11,10 +11,6 @@ class Repo < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
 
-  def activate
-    update_attribute(:active, true)
-  end
-
   def deactivate
     update_attributes(active: false, hook_id: nil)
   end

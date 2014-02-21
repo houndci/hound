@@ -12,7 +12,7 @@ describe ReposController, '#update' do
 
       patch(:update, id: repo.id, active: true, format: :json)
 
-      expect(activator).to have_received(:activate).with(repo)
+      expect(activator).to have_received(:activate).with(repo, user)
     end
   end
 
