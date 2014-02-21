@@ -52,13 +52,16 @@ describe BuildRunner, '#run' do
       set_pending_status: nil,
       set_success_status: nil,
       set_failure_status: nil,
+      add_comment: nil,
       files: []
     )
   }
 
   before :each do
     create(:active_repo, github_id: payload_data['repository']['id'])
-    style_checker = double(:style_checker, violations: ['something failed'])
+    line_violation = double(:line_violation, line_number: 123)
+    file_violation = double(:file_violation, filename: 'test.rb', line_violations: [line_violation])
+    style_checker = double(:style_checker, violations: [file_violation])
     StyleChecker.stub(new: style_checker)
     PullRequest.stub(new: pull_request)
   end
@@ -74,13 +77,22 @@ describe BuildRunner, '#run' do
       expect(build.violations).to eq ['something failed']
     end
 
-    it 'checks style guide and notifies github of the failed build' do
+    it 'checks style guide and notifies GitHub of the failed build' do
       build_runner = BuildRunner.new(payload_data)
 
       build_runner.run
 
       expect(pull_request).to have_received(:set_pending_status)
       expect(pull_request).to have_received(:set_failure_status).
+        with("http://#{ENV['HOST']}/builds/#{Build.last.uuid}")
+    end
+
+    it 'creates a comment on GitHub' do
+      build_runner = BuildRunner.new(payload_data)
+
+      build_runner.run
+
+      expect(pull_request).to have_received(:add_comment).
         with("http://#{ENV['HOST']}/builds/#{Build.last.uuid}")
     end
   end
@@ -118,6 +130,7 @@ describe BuildRunner, '#run' do
         set_pending_status: nil,
         set_success_status: nil,
         set_failure_status: nil,
+        add_comment: nil,
         files: [pull_request_file1, pull_request_file2]
       )
       PullRequest.stub(new: pull_request)
@@ -148,6 +161,7 @@ describe BuildRunner, '#run' do
         set_pending_status: nil,
         set_success_status: nil,
         set_failure_status: nil,
+        add_comment: nil,
         files: [pull_request_file1, pull_request_file2]
       )
       PullRequest.stub(new: pull_request)
@@ -178,6 +192,7 @@ describe BuildRunner, '#run' do
         set_pending_status: nil,
         set_success_status: nil,
         set_failure_status: nil,
+        add_comment: nil,
         files: [ignored_file, allowed_file]
       )
       PullRequest.stub(new: pull_request)

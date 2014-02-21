@@ -14,7 +14,9 @@ class BuildRunner
     build = repo.builds.create!(violations: style_checker.violations)
 
     if build.violations.any?
-      pull_request.set_failure_status(build_url(build.uuid, host: ENV['HOST']))
+      build_url = build_url(build.uuid, host: ENV['HOST'])
+      pull_request.set_failure_status(build_url)
+      comment_on_failures(build.violations)
     else
       pull_request.set_success_status
     end
@@ -42,5 +44,17 @@ class BuildRunner
 
   def repo
     @repo ||= Repo.active.where(github_id: payload.github_repo_id).first
+  end
+
+  def comment_on_failures(violations)
+    violations.each do |file_violation|
+      file_violation.line_violations.each do |line_violation|
+        pull_request.add_comment(
+          file_violation.filename,
+          line_violation.line_number,
+          build_url
+        )
+      end
+    end
   end
 end
