@@ -9,7 +9,7 @@ class ReposController < ApplicationController
     repo = current_user.repos.find(params[:id])
 
     if params[:active]
-      activator.activate(repo)
+      activator.activate(repo, current_user)
     else
       activator.deactivate(repo)
     end

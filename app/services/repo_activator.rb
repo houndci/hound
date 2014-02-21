@@ -1,17 +1,14 @@
 class RepoActivator
-  def activate(repo)
-    repo.activate
-
-    hook = github_api(repo).create_pull_request_hook(
-      repo.full_github_name,
-      callback_url("http://#{ENV['HOST']}")
-    )
-
-    repo.update_attribute(:hook_id, hook.id)
+  def activate(repo, user)
+    github = GithubApi.new(user.github_token)
+    hook = create_web_hook(github, repo)
+    github.add_hound_to_repo(repo.full_github_name)
+    repo.update_attributes(hook_id: hook.id, active: true)
   end
 
   def deactivate(repo)
-    github_api(repo).remove_pull_request_hook(repo.full_github_name, repo.hook_id)
+    github = GithubApi.new(repo.github_token)
+    github.remove_pull_request_hook(repo.full_github_name, repo.hook_id)
     repo.deactivate
   end
 
@@ -21,7 +18,10 @@ class RepoActivator
     URI.join(host, 'builds').to_s
   end
 
-  def github_api(repo)
-    GithubApi.new(repo.github_token)
+  def create_web_hook(github, repo)
+    github.create_pull_request_hook(
+      repo.full_github_name,
+      callback_url("http://#{ENV['HOST']}")
+    )
   end
 end
