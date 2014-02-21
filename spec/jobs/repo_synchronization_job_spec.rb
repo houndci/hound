@@ -1,5 +1,13 @@
 require 'spec_helper'
 
+describe RepoSynchronizationJob do
+  it 'is monitored' do
+    build_job = RepoSynchronizationJob.new(double)
+
+    expect(build_job).to be_a Monitorable
+  end
+end
+
 describe RepoSynchronizationJob, '#perform' do
   it 'syncs repos for a given user' do
     user = create(:user)
@@ -11,16 +19,5 @@ describe RepoSynchronizationJob, '#perform' do
 
     expect(RepoSynchronization).to have_received(:new).with(user)
     expect(sync).to have_received(:start)
-  end
-end
-
-describe RepoSynchronizationJob, '#error' do
-  it 'captures exception using the monitor' do
-    monitor = double(capture_exception: nil)
-    sync_job = RepoSynchronizationJob.new(123, monitor)
-
-    sync_job.error(double, StandardError)
-
-    expect(monitor).to have_received(:capture_exception).with(StandardError)
   end
 end
