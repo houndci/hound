@@ -20,9 +20,9 @@ class GithubApi
 
     if organization
       repo_teams = client.repository_teams(full_repo_name)
-      client.add_team_member(repo_teams.first.id, ENV['HOUND_GITHUB_USERNAME'])
+      client.add_team_member(repo_teams.first.id, hound_username)
     else
-      client.add_collaborator(full_repo_name, ENV['HOUND_GITHUB_USERNAME'])
+      client.add_collaborator(full_repo_name, hound_username)
     end
   end
 
@@ -94,5 +94,9 @@ class GithubApi
 
   def authorized_repos(repos)
     repos.select {|repo| repo.permissions.admin }
+  end
+
+  def hound_username
+    ENV['HOUND_GITHUB_USERNAME']
   end
 end
