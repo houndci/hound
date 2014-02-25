@@ -14,8 +14,15 @@ class GithubApi
     user_repos + org_repos
   end
 
-  def add_comment(full_repo_name, pull_request_number, comment)
-    client.add_comment(full_repo_name, pull_request_number, comment)
+  def add_comment(full_repo_name, pull_request_number, comment, commit_sha, file, line_number)
+    client.create_pull_request_comment(
+      full_repo_name,
+      pull_request_number,
+      comment,
+      commit_sha,
+      file,
+      line_number
+    )
   end
 
   def create_pull_request_hook(full_repo_name, callback_endpoint)

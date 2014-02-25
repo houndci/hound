@@ -91,9 +91,26 @@ describe GithubApi, '#add_coment' do
     repo_name = 'test/repo'
     pull_request_number = 2
     comment = 'test comment'
-    request = stub_comment_request(repo_name, pull_request_number, comment)
+    commit_sha = 'commitsha'
+    file = 'test.rb'
+    line_number = 123
+    request = stub_comment_request(
+      repo_name,
+      pull_request_number,
+      comment,
+      commit_sha,
+      file,
+      line_number
+    )
 
-    api.add_comment(repo_name, pull_request_number, 'test comment')
+    api.add_comment(
+      repo_name,
+      pull_request_number,
+      'test comment',
+      commit_sha,
+      file,
+      line_number
+    )
 
     expect(request).to have_been_requested
   end

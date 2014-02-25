@@ -33,27 +33,36 @@ describe PullRequest, '#file_contents' do
 
     files = pull_request.file_contents('test.rb')
 
-    expect(api).to have_received(:file_contents).
-      with(payload.full_repo_name, 'test.rb', payload.head_sha)
+    expect(api).to have_received(:file_contents).with(
+      payload.full_repo_name,
+      'test.rb',
+      payload.head_sha
+    )
   end
 end
 
-describe PullRequest, '#add_failure_comment' do
+describe PullRequest, '#add_comment' do
   it 'posts a comment to GitHub for the Hound user' do
-    payload = double(:payload, full_repo_name: 'org/repo', number: '123')
+    payload = double(
+      :payload,
+      full_repo_name: 'org/repo',
+      number: '123',
+      head_sha: '1234abcd'
+    )
     client = double(:github_client, add_comment: nil)
     GithubApi.stub(new: client)
     pull_request = PullRequest.new(payload, 'gh-token')
-    build_url = 'http://example.com'
 
-    pull_request.add_failure_comment(build_url)
+    pull_request.add_comment('test.rb', 123)
 
-    expect(GithubApi).to have_received(:new).
-      with(ENV['HOUND_GITHUB_TOKEN'])
+    expect(GithubApi).to have_received(:new).with(ENV['HOUND_GITHUB_TOKEN'])
     expect(client).to have_received(:add_comment).with(
       payload.full_repo_name,
       payload.number,
-      "Hound does not approve - [details](#{build_url})"
+      'Hound has an issue with this code',
+      payload.head_sha,
+      'test.rb',
+      123
     )
   end
 end

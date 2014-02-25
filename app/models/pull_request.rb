@@ -38,10 +38,10 @@ class PullRequest
     @payload.head_sha
   end
 
-  def add_failure_comment(target_url)
+  def add_comment(file, line_number)
     github = GithubApi.new(ENV['HOUND_GITHUB_TOKEN'])
-    failure_comment = "Hound does not approve - [details](#{target_url})"
-    github.add_comment(full_repo_name, number, failure_comment)
+    comment = 'Hound has an issue with this code'
+    github.add_comment(full_repo_name, number, comment, head_sha, file, line_number)
   end
 
   private

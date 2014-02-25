@@ -157,8 +157,15 @@ module GithubApiHelper
     )
   end
 
-  def stub_comment_request(full_repo_name, pull_request_number, comment)
-    url = "https://api.github.com/repos/#{full_repo_name}/issues/#{pull_request_number}/comments"
-    stub_request(:post, url).to_return(:status => 200)
+  def stub_comment_request(full_repo_name, pull_request_number, comment, commit_sha, file, line_number)
+    url = "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
+    stub_request(:post, url).with(
+      body: {
+        body: comment,
+        commit_id: commit_sha,
+        path: file,
+        position: line_number
+      }.to_json
+    ).to_return(:status => 200)
   end
 end
