@@ -1,0 +1,9 @@
+:javascript
+  analytics.identify("#{current_user.id}", {
+    created : "#{current_user.created_at}",
+    username : "#{current_user.github_username}"
+  }, {
+    Intercom : {
+      userHash : "#{OpenSSL::HMAC.hexdigest('sha256', ENV['INTERCOM_API_SECRET'], current_user.id.to_s)}"
+    }
+  });
