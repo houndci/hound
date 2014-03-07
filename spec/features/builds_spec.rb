@@ -2,11 +2,17 @@ require 'spec_helper'
 
 feature 'Builds' do
   let(:payload) { File.read('spec/support/fixtures/pull_request_payload.json') }
+  let(:zen_payload) { File.read('spec/support/fixtures/zen_payload.json') }
   let(:parsed_payload) { JSON.parse(payload) }
   let(:repo_name) { parsed_payload['repository']['full_name'] }
   let(:repo_id) { parsed_payload['repository']['id'] }
   let(:pr_sha) { parsed_payload['pull_request']['head']['sha'] }
   let(:pr_number) { parsed_payload['number'] }
+
+  scenario 'a successful signup' do
+    response = post builds_path, payload: zen_payload
+    expect(response).to eq 200
+  end
 
   scenario 'a successful build' do
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
