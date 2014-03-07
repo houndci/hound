@@ -1,4 +1,5 @@
 class BuildsController < ApplicationController
+  before_action :ignore_confirmation_pings, only: [:create]
   skip_before_filter :verify_authenticity_token, only: [:create]
   skip_before_filter :authenticate
 
@@ -27,6 +28,12 @@ class BuildsController < ApplicationController
   end
 
   def pull_request_payload
-    JSON.parse(params[:payload])
+    @pull_request_payload ||= JSON.parse(params[:payload])
+  end
+
+  def ignore_confirmation_pings
+    if pull_request_payload.key?('zen')
+      head :ok
+    end
   end
 end
