@@ -53,9 +53,9 @@ ActiveRecord::Schema.define(version: 20140120234919) do
   create_table "repos", force: true do |t|
     t.integer "github_id",                        null: false
     t.boolean "active",           default: false, null: false
+    t.integer "hook_id"
     t.string  "name",                             null: false
     t.string  "full_github_name",                 null: false
-    t.integer "hook_id"
   end
 
   create_table "users", force: true do |t|
