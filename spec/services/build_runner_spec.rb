@@ -46,15 +46,7 @@ end
 describe BuildRunner, '#run' do
   let(:fixture_file) { 'spec/support/fixtures/pull_request_payload.json' }
   let(:payload_data) { JSON.parse(File.read(fixture_file)) }
-  let(:pull_request) {
-    double(
-      :pull_request,
-      set_pending_status: nil,
-      set_success_status: nil,
-      set_failure_status: nil,
-      files: []
-    )
-  }
+  let(:pull_request) { stub_pull_request }
 
   before :each do
     create(:active_repo, github_id: payload_data['repository']['id'])
@@ -101,90 +93,56 @@ describe BuildRunner, '#run' do
   context 'with removed file' do
     it 'filters out removed files' do
       build_runner = BuildRunner.new(payload_data)
-      pull_request_file1 = double(
-        :pr_file,
-        removed?: true,
-        ruby?: true,
-        filename: 'game.rb'
-      )
-      pull_request_file2 = double(
-        :pr_file,
-        removed?: false,
-        ruby?: true,
-        filename: 'config.rb'
-      )
-      pull_request = double(
-        :pull_request,
-        set_pending_status: nil,
-        set_success_status: nil,
-        set_failure_status: nil,
-        files: [pull_request_file1, pull_request_file2]
-      )
-      PullRequest.stub(new: pull_request)
+      pr_file1 = double(removed?: true, ruby?: true, filename: 'game.rb')
+      pr_file2 = double(removed?: false, ruby?: true, filename: 'config.rb')
+      pull_request = stub_pull_request(files: [pr_file1, pr_file2])
 
       build_runner.run
 
-      expect(StyleChecker).to have_received(:new).with([pull_request_file2])
+      expect(StyleChecker).to have_received(:new)
+        .with([pr_file2], pull_request.config)
     end
   end
 
   context 'with non-ruby files' do
     it 'filters out non-ruby files' do
       build_runner = BuildRunner.new(payload_data)
-      pull_request_file1 = double(
-        :pr_file,
-        removed?: false,
-        ruby?: false,
-        filename: 'app/assets/javascript/application.js'
-      )
-      pull_request_file2 = double(
-        :pr_file,
-        removed?: false,
-        ruby?: true,
-        filename: 'app/models/user.rb'
-      )
-      pull_request = double(
-        :pull_request,
-        set_pending_status: nil,
-        set_success_status: nil,
-        set_failure_status: nil,
-        files: [pull_request_file1, pull_request_file2]
-      )
-      PullRequest.stub(new: pull_request)
+      pr_file1 = double(removed?: false, ruby?: false, filename: 'path/app.js')
+      pr_file2 = double(removed?: false, ruby?: true, filename: 'path/user.rb')
+      pull_request = stub_pull_request(files: [pr_file1, pr_file2])
 
       build_runner.run
 
-      expect(StyleChecker).to have_received(:new).with([pull_request_file2])
+      expect(StyleChecker).to have_received(:new)
+        .with([pr_file2], pull_request.config)
     end
   end
 
   context 'with ignored files' do
     it 'filters out ignored' do
       build_runner = BuildRunner.new(payload_data)
-      ignored_file = double(
-        :pr_file,
-        removed?: false,
-        ruby?: true,
-        filename: 'db/schema.rb'
-      )
-      allowed_file = double(
-        :pr_file,
-        removed?: false,
-        ruby?: true,
-        filename: 'app/models/user.rb'
-      )
-      pull_request = double(
-        :pull_request,
-        set_pending_status: nil,
-        set_success_status: nil,
-        set_failure_status: nil,
-        files: [ignored_file, allowed_file]
-      )
-      PullRequest.stub(new: pull_request)
+      schema = double(removed?: false, ruby?: true, filename: 'db/schema.rb')
+      ruby_file = double(removed?: false, ruby?: true, filename: 'path/user.rb')
+      pull_request = stub_pull_request(files: [schema, ruby_file])
 
       build_runner.run
 
-      expect(StyleChecker).to have_received(:new).with([allowed_file])
+      expect(StyleChecker).to have_received(:new)
+        .with([ruby_file], pull_request.config)
     end
+  end
+
+  def stub_pull_request(options = {})
+    default_options = {
+      set_pending_status: nil,
+      set_success_status: nil,
+      set_failure_status: nil,
+      config: nil,
+      files: []
+    }
+    pull_request = double(:pull_request, default_options.merge(options))
+    PullRequest.stub(new: pull_request)
+
+    pull_request
   end
 end

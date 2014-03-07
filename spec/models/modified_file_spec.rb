@@ -5,9 +5,8 @@ require 'app/models/diff_patch'
 
 describe ModifiedFile, '#contents' do
   it 'returns file contents' do
-    file_contents = double(:file_contents, content: Base64.encode64('test'))
     pull_request_file = double(:pr_file, status: 'added', filename: 'test1.rb')
-    pull_request = double(:pull_request, file_contents: file_contents)
+    pull_request = double(:pull_request, file_contents: 'test')
     modified_file = ModifiedFile.new(pull_request_file, pull_request)
 
     contents = modified_file.contents

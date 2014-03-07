@@ -10,7 +10,7 @@ class BuildRunner
   def run
     pull_request.set_pending_status
 
-    style_checker = StyleChecker.new(pull_request_files)
+    style_checker = StyleChecker.new(pull_request_files, pull_request.config)
     build = repo.builds.create!(violations: style_checker.violations)
 
     if build.violations.any?

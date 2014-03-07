@@ -56,7 +56,10 @@ describe GithubApi do
         pull_request.number,
         'authtoken'
       )
-      stub_contents_request(pull_request.full_repo_name, pull_request.head_sha)
+      stub_contents_request(
+        repo_name: pull_request.full_repo_name,
+        sha: pull_request.head_sha
+      )
 
       files = api.pull_request_files(pull_request.full_repo_name, pull_request.number)
       file = files.first
