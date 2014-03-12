@@ -23,17 +23,7 @@ class ModifiedFile
   def contents
     @contents ||= begin
       unless removed?
-        contents = @pull_request.file_contents(filename)
-        Base64.decode64(contents.content)
-      end
-    end
-  end
-
-  def contents
-    @contents ||= begin
-      unless removed?
-        contents = @pull_request.file_contents(filename)
-        Base64.decode64(contents.content)
+        @pull_request.file_contents(filename)
       end
     end
   end

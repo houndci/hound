@@ -1,4 +1,6 @@
 class PullRequest
+  CONFIG_FILE = '.hound.yml'
+
   def initialize(payload, github_token)
     @payload = payload
     @github_token = github_token
@@ -23,7 +25,15 @@ class PullRequest
   end
 
   def file_contents(filename)
-    api.file_contents(@payload.full_repo_name, filename, @payload.head_sha)
+    file_contents = api
+      .file_contents(@payload.full_repo_name, filename, @payload.head_sha)
+    Base64.decode64(file_contents.content)
+  end
+
+  def config
+    file_contents(CONFIG_FILE)
+  rescue Octokit::NotFound
+    nil
   end
 
   private

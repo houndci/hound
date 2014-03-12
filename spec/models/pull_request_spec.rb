@@ -28,7 +28,7 @@ describe PullRequest, '#file_contents' do
   it 'calls api method with arguments' do
     payload = double(:payload, full_repo_name: 'org/repo', head_sha: 'abc123')
     pull_request = PullRequest.new(payload, 'gh-token')
-    api = double(:github_api, file_contents: nil)
+    api = double(:github_api, file_contents: double(content: ''))
     GithubApi.stub(new: api)
 
     files = pull_request.file_contents('test.rb')
@@ -36,4 +36,36 @@ describe PullRequest, '#file_contents' do
     expect(api).to have_received(:file_contents).
       with(payload.full_repo_name, 'test.rb', payload.head_sha)
   end
+end
+
+describe PullRequest, '#config' do
+  context 'when config file is present' do
+    it 'returns the contents of custom config' do
+      file_contents = double(:file_contents, content: Base64.encode64('test'))
+      api = double(:github_api, file_contents: file_contents)
+      pull_request = pull_request(api, file_contents)
+
+      config = pull_request.config
+
+      expect(config).to eq('test')
+    end
+  end
+
+  context 'when config file is not present' do
+    it 'returns nil' do
+      api = double(:github_api)
+      api.stub(:file_contents).and_raise(Octokit::NotFound)
+      pull_request = pull_request(api)
+
+      config = pull_request.config
+
+      expect(config).to be_nil
+    end
+  end
+end
+
+def pull_request(api, file_contents = nil)
+  payload = double(:payload, full_repo_name: 'org/repo', head_sha: 'abc123')
+  GithubApi.stub(new: api)
+  PullRequest.new(payload, 'gh-token')
 end

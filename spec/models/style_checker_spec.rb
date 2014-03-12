@@ -19,18 +19,44 @@ describe StyleChecker, '#violations' do
     end
   end
 
-  context 'when double quotes are used incorrectly' do
-    it 'finds violations' do
-      file = file_stub(<<-FILE)
-def blahh
-  "blahh"
-end
-      FILE
+  context 'when rules are violated' do
+    it 'finds all violations' do
+      file = file_stub(content_with_violations)
       style_checker = StyleChecker.new([file])
 
       violations = style_checker.violations
 
-      expect(violations).not_to be_empty
+      violation_messages = violation_messages(violations)
+      expect(violation_messages).to have(2).items
+      expect(violation_messages[0]).to match(/parentheses/)
+      expect(violation_messages[1]).to match(/single-quoted strings/)
+    end
+
+    context 'when custom configuration overrides quote rule' do
+      it 'finds only one violation' do
+        file = file_stub(content_with_violations)
+        custom_config = <<-FILE
+          StringLiterals:
+            EnforcedStyle: double_quotes
+            Enabled: true
+        FILE
+        style_checker = StyleChecker.new([file], custom_config)
+
+        violations = style_checker.violations
+
+        violation_messages = violation_messages(violations)
+        expect(violation_messages).to have(1).items
+        expect(violation_messages[0]).to match(/parentheses/)
+        expect(violation_messages[0]).not_to match(/single-quoted strings/)
+      end
+    end
+
+    def content_with_violations
+      <<-EOL
+        def test_method()
+          "hello world"
+        end
+      EOL
     end
   end
 
@@ -40,5 +66,9 @@ end
       contents: contents,
       relevant_line?: true
     )
+  end
+
+  def violation_messages(violations)
+    violations.map(&:line_violations).flatten.map(&:messages).flatten
   end
 end

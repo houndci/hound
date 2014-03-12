@@ -14,11 +14,17 @@ feature 'Builds' do
     expect(response).to eq 200
   end
 
-  scenario 'a successful build' do
+  scenario 'a successful build with custom config' do
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
     stub_status_request(repo.full_github_name, pr_sha)
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
-    stub_contents_request(repo.full_github_name, pr_sha)
+    stub_contents_request(repo_name: repo.full_github_name, sha: pr_sha)
+    stub_contents_request(
+      repo_name: repo.full_github_name,
+      sha: pr_sha,
+      file: '.hound.yml',
+      fixture: 'config_contents.json'
+    )
 
     post builds_path, payload: payload
 
@@ -36,7 +42,17 @@ feature 'Builds' do
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
     stub_status_request(repo.full_github_name, pr_sha)
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
-    stub_contents_request(repo.full_github_name, pr_sha, 'contents_with_violations.json')
+    stub_contents_request(
+      repo_name: repo.full_github_name,
+      sha: pr_sha,
+      fixture: 'contents_with_violations.json'
+    )
+    stub_contents_request(
+      repo_name: repo.full_github_name,
+      sha: pr_sha,
+      file: '.hound.yml',
+      fixture: 'config_contents.json'
+    )
 
     post builds_path, payload: payload
 

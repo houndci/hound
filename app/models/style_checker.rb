@@ -52,8 +52,9 @@ class StyleChecker
     Rubocop::Cop::Style::VariableName
   ]
 
-  def initialize(files)
+  def initialize(files, custom_config = nil)
     @files = files
+    @custom_config = custom_config
   end
 
   def violations
@@ -97,6 +98,11 @@ class StyleChecker
   end
 
   def configuration
-    @config ||= Rubocop::ConfigLoader.load_file('config/rubocop.yml')
+    if @custom_config
+      config = YAML.load(@custom_config)
+      Rubocop::Config.new(config)
+    else
+      Rubocop::ConfigLoader.load_file('config/rubocop.yml')
+    end
   end
 end
