@@ -28,7 +28,7 @@ class BuildsController < ApplicationController
   end
 
   def pull_request_payload
-    @pull_request_payload ||= JSON.parse(params[:payload])
+    @pull_request_payload ||= JSON.parse(params[:payload] || request.raw_post)
   end
 
   def ignore_confirmation_pings
