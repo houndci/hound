@@ -33,8 +33,37 @@ describe PullRequest, '#file_contents' do
 
     files = pull_request.file_contents('test.rb')
 
-    expect(api).to have_received(:file_contents).
-      with(payload.full_repo_name, 'test.rb', payload.head_sha)
+    expect(api).to have_received(:file_contents).with(
+      payload.full_repo_name,
+      'test.rb',
+      payload.head_sha
+    )
+  end
+end
+
+describe PullRequest, '#add_comment' do
+  it 'posts a comment to GitHub for the Hound user' do
+    payload = double(
+      :payload,
+      full_repo_name: 'org/repo',
+      number: '123',
+      head_sha: '1234abcd'
+    )
+    client = double(:github_client, add_comment: nil)
+    GithubApi.stub(new: client)
+    pull_request = PullRequest.new(payload, 'gh-token')
+
+    pull_request.add_comment('test.rb', 123, 'A comment')
+
+    expect(GithubApi).to have_received(:new).with(ENV['HOUND_GITHUB_TOKEN'])
+    expect(client).to have_received(:add_comment).with(
+      repo_name: payload.full_repo_name,
+      pull_request_number: payload.number,
+      comment: 'A comment',
+      commit: payload.head_sha,
+      filename: 'test.rb',
+      line_number: 123
+    )
   end
 end
 

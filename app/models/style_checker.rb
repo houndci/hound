@@ -1,5 +1,5 @@
 class StyleChecker
-  FileViolation = Struct.new(:filename, :line_violations)
+  FileViolation = Struct.new(:filename, :line_violations, :modified_lines)
   LineViolation = Struct.new(:line_number, :code, :messages)
 
   RULES = [
@@ -59,7 +59,11 @@ class StyleChecker
 
   def violations
     possible_violations = @files.map do |file|
-      FileViolation.new(file.filename, line_violations(file))
+      FileViolation.new(
+        file.filename,
+        line_violations(file),
+        file.modified_lines
+      )
     end
 
     possible_violations.select do |file_violation|

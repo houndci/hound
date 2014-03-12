@@ -5,7 +5,9 @@ class ModifiedFile
   end
 
   def relevant_line?(line_number)
-    modified_line_numbers.include?(line_number)
+    modified_lines.detect do |modified_line|
+      modified_line.line_number == line_number
+    end
   end
 
   def filename
@@ -28,11 +30,11 @@ class ModifiedFile
     end
   end
 
-  private
-
-  def modified_line_numbers
-    @modified_line_numbers ||= patch.modified_line_numbers
+  def modified_lines
+    @modified_lines ||= patch.modified_lines
   end
+
+  private
 
   def patch
     DiffPatch.new(@file.patch)
