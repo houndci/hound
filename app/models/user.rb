@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   before_create :generate_remember_token
 
-  def to_s
+  def to_s()              
     github_username
   end
 
