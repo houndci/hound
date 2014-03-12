@@ -14,30 +14,82 @@ feature 'Builds' do
     expect(response).to eq 200
   end
 
-  scenario 'a successful build with custom config' do
-    repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
-    stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
-    stub_contents_request(repo_name: repo.full_github_name, sha: pr_sha)
-    stub_contents_request(
-      repo_name: repo.full_github_name,
-      sha: pr_sha,
-      file: '.hound.yml',
-      fixture: 'config_contents.json'
-    )
+  context 'with payload nesting' do
+    scenario 'a successful build with custom config' do
+      repo = create(
+        :active_repo,
+        github_id: repo_id,
+        full_github_name: repo_name
+      )
+      stub_pull_request_files_request(
+        repo.full_github_name,
+        2,
+        repo.github_token
+      )
+      stub_contents_request(repo_name: repo.full_github_name, sha: pr_sha)
+      stub_contents_request(
+        repo_name: repo.full_github_name,
+        sha: pr_sha,
+        file: '.hound.yml',
+        fixture: 'config_contents.json'
+      )
 
-    post builds_path, payload: payload
+      post builds_path, payload: payload
 
-    expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
+      expect_a_pull_request_files_request(
+        repo.full_github_name,
+        pr_number,
+        repo.github_token
+      )
 
-    visit build_path(Build.first.uuid)
+      visit build_path(Build.first.uuid)
 
-    expect(page).not_to have_content 'Violations'
-    expect(page).to have_content 'No violations'
+      expect(page).not_to have_content 'Violations'
+      expect(page).to have_content 'No violations'
+    end
+  end
+
+  context 'without payload nesting' do
+    scenario 'a successful build with custom config' do
+      repo = create(
+        :active_repo,
+        github_id: repo_id,
+        full_github_name: repo_name
+      )
+      stub_pull_request_files_request(
+        repo.full_github_name,
+        2,
+        repo.github_token
+      )
+      stub_contents_request(repo_name: repo.full_github_name, sha: pr_sha)
+      stub_contents_request(
+        repo_name: repo.full_github_name,
+        sha: pr_sha,
+        file: '.hound.yml',
+        fixture: 'config_contents.json'
+      )
+
+      post builds_path, payload
+
+      expect_a_pull_request_files_request(
+        repo.full_github_name,
+        pr_number,
+        repo.github_token
+      )
+
+      visit build_path(Build.first.uuid)
+
+      expect(page).not_to have_content 'Violations'
+      expect(page).to have_content 'No violations'
+    end
   end
 
   scenario 'a failed build' do
     repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
-    stub_request(:post, 'https://api.github.com/repos/salbertson/life/pulls/2/comments')
+    stub_request(
+      :post,
+      'https://api.github.com/repos/salbertson/life/pulls/2/comments'
+    )
     stub_pull_request_files_request(repo.full_github_name, 2, repo.github_token)
     stub_contents_request(
       repo_name: repo.full_github_name,
@@ -53,7 +105,11 @@ feature 'Builds' do
 
     post builds_path, payload: payload
 
-    expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
+    expect_a_pull_request_files_request(
+      repo.full_github_name,
+      pr_number,
+      repo.github_token
+    )
     expect_a_comment_request(repo.full_github_name, pr_number)
 
     build = Build.first
