@@ -28,7 +28,11 @@ feature 'Builds' do
 
       post builds_path, payload: payload
 
-      expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
+      expect_a_pull_request_files_request(
+        repo.full_github_name,
+        pr_number,
+        repo.github_token
+      )
 
       visit build_path(Build.first.uuid)
 
@@ -51,7 +55,11 @@ feature 'Builds' do
 
       post builds_path, payload
 
-      expect_a_pull_request_files_request(repo.full_github_name, pr_number, repo.github_token)
+      expect_a_pull_request_files_request(
+        repo.full_github_name,
+        pr_number,
+        repo.github_token
+      )
 
       visit build_path(Build.first.uuid)
 
