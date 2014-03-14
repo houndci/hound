@@ -30,13 +30,13 @@ module GithubApiHelper
     )
   end
 
-  def stub_pull_request_files_request(full_repo_name, pull_request_number, auth_token)
-    url = "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
+  def stub_commit_request(full_repo_name, commit_sha, auth_token = 'githubtoken')
+    url = "https://api.github.com/repos/#{full_repo_name}/commits/#{commit_sha}"
     stub_request(:get, url).
       with(headers: { 'Authorization' => "token #{auth_token}" }).
       to_return(
         status: 200,
-        body: File.read("spec/support/fixtures/pull_request_files.json"),
+        body: File.read("spec/support/fixtures/commit.json"),
         headers: { 'Content-Type' => 'application/json; charset=utf-8' }
       )
   end

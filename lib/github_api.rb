@@ -48,8 +48,9 @@ class GithubApi
     client.remove_hook(full_github_name, hook_id)
   end
 
-  def pull_request_files(full_repo_name, number)
-    client.pull_request_files(full_repo_name, number)
+  def commit_files(full_repo_name, commit_sha)
+    commit = client.commit(full_repo_name, commit_sha)
+    commit.files
   end
 
   def file_contents(full_repo_name, filename, sha)

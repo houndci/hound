@@ -6,8 +6,8 @@ class PullRequest
     @github_token = github_token
   end
 
-  def files
-    api.pull_request_files(full_repo_name, number).map do |file|
+  def head_commit_files
+    api.commit_files(full_repo_name, head_sha).map do |file|
       ModifiedFile.new(file, self)
     end
   end
@@ -30,7 +30,7 @@ class PullRequest
 
   def file_contents(filename)
     file_contents = api
-      .file_contents(@payload.full_repo_name, filename, @payload.head_sha)
+      .file_contents(full_repo_name, filename, head_sha)
     Base64.decode64(file_contents.content)
   end
 

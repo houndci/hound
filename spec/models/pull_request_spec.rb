@@ -1,26 +1,24 @@
 require 'spec_helper'
 
-describe PullRequest, '#files' do
-  let(:payload) {
-    double(:payload, full_repo_name: 'org/repo', number: 4, head_sha: 'abc123')
-  }
-
-  it 'returns an array of modified files' do
-    api = double(
-      :github_api,
-      pull_request_files: [
-        double(filename: 'file1', status: 'modified', patch: 'patch 1'),
-        double(filename: 'file2', status: 'modified', patch: 'patch 2')
-      ]
+describe PullRequest, '#head_commit_files' do
+  it 'returns modified files in the commit' do
+    github_api = double(:github_api, commit_files: [double, double])
+    GithubApi.stub(new: github_api)
+    payload = double(
+      :payload,
+      full_repo_name: 'org/repo',
+      number: 4,
+      head_sha: 'abc123'
     )
-    GithubApi.stub(new: api)
-    pull_request = PullRequest.new(payload, 'gh-token')
+    github_token = 'githubtoken'
 
-    files = pull_request.files
+    pull_request = PullRequest.new(payload, github_token)
 
-    expect(files).to have(2).items
-    expect(files.first).to be_a ModifiedFile
-    expect(api).to have_received(:pull_request_files).with('org/repo', 4)
+    expect(pull_request.head_commit_files).to have(2).ites
+    expect(github_api).to have_received(:commit_files).with(
+      payload.full_repo_name,
+      payload.head_sha
+    )
   end
 end
 
