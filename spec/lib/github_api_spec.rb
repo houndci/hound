@@ -43,8 +43,23 @@ describe GithubApi do
     end
   end
 
+  describe '#commit_files' do
+    it 'returns changed files in commit' do
+      github_token = 'githubtoken'
+      github_api = GithubApi.new(github_token)
+      full_repo_name = 'org/repo'
+      commit_sha = 'commitsha'
+      stub_commit_request(full_repo_name, commit_sha)
+
+      files = github_api.commit_files(full_repo_name, commit_sha)
+
+      expect(files).to have(1).item
+      expect(files.first.filename).to eq 'file1.rb'
+    end
+  end
+
   describe '#pull_request_files' do
-    it 'returns file content of changed files' do
+    it 'returns changed files in a pull request' do
       api = GithubApi.new('authtoken')
       pull_request = double(:pull_request, full_repo_name: 'thoughtbot/hound')
       pull_request_number = 123
@@ -58,13 +73,6 @@ describe GithubApi do
         repo_name: pull_request.full_repo_name,
         sha: commit_sha
       )
-
-      files = api.pull_request_files(pull_request.full_repo_name, pull_request_number)
-      file = files.first
-
-      expect(files).to have(1).item
-      expect(file.filename).to eq 'config/unicorn.rb'
-      expect(file.patch).to include 'preload_app true'
     end
   end
 end
