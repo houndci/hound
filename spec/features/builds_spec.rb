@@ -16,24 +16,8 @@ feature 'Builds' do
 
   context 'with payload nesting' do
     scenario 'a successful build with custom config' do
-      repo = create(
-        :active_repo,
-        github_id: repo_id,
-        full_github_name: repo_name
-      )
-      stub_commit_request(repo.full_github_name, pr_sha, repo.github_token)
-      stub_contents_request(
-        repo_name: repo.full_github_name,
-        sha: pr_sha,
-        file: 'file1.rb',
-        fixture: 'contents.json'
-      )
-      stub_contents_request(
-        repo_name: repo.full_github_name,
-        sha: pr_sha,
-        file: '.hound.yml',
-        fixture: 'config_contents.json'
-      )
+      repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
+      stub_github_requests(repo.full_github_name, pr_sha, repo.github_token)
 
       post builds_path, payload: payload
 
@@ -43,24 +27,8 @@ feature 'Builds' do
 
   context 'without payload nesting' do
     scenario 'a successful build with custom config' do
-      repo = create(
-        :active_repo,
-        github_id: repo_id,
-        full_github_name: repo_name
-      )
-      stub_commit_request(repo.full_github_name, pr_sha, repo.github_token)
-      stub_contents_request(
-        repo_name: repo.full_github_name,
-        sha: pr_sha,
-        file: 'file1.rb',
-        fixture: 'contents.json'
-      )
-      stub_contents_request(
-        repo_name: repo.full_github_name,
-        sha: pr_sha,
-        file: '.hound.yml',
-        fixture: 'config_contents.json'
-      )
+      repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
+      stub_github_requests(repo.full_github_name, pr_sha, repo.github_token)
 
       post builds_path, payload
 
@@ -91,6 +59,22 @@ feature 'Builds' do
     post builds_path, payload: payload
 
     expect_a_comment_request(repo.full_github_name, pr_number)
+  end
+
+  def stub_github_requests(full_github_name, pull_request_number, github_token)
+    stub_commit_request(full_github_name, pr_sha, github_token)
+    stub_contents_request(
+      repo_name: full_github_name,
+      sha: pr_sha,
+      file: 'file1.rb',
+      fixture: 'contents.json'
+    )
+    stub_contents_request(
+      repo_name: full_github_name,
+      sha: pr_sha,
+      file: '.hound.yml',
+      fixture: 'config_contents.json'
+    )
   end
 
   def expect_a_comment_request(repo_name, pull_request_number)
