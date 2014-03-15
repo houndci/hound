@@ -36,7 +36,7 @@ module GithubApiHelper
       with(headers: { 'Authorization' => "token #{auth_token}" }).
       to_return(
         status: 200,
-        body: File.read("spec/support/fixtures/commit.json"),
+        body: File.read('spec/support/fixtures/commit.json'),
         headers: { 'Content-Type' => 'application/json; charset=utf-8' }
       )
   end
