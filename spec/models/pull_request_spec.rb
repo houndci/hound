@@ -14,7 +14,7 @@ describe PullRequest, '#head_commit_files' do
 
     pull_request = PullRequest.new(payload, github_token)
 
-    expect(pull_request.head_commit_files).to have(2).ites
+    expect(pull_request.head_commit_files).to have(2).files
     expect(github_api).to have_received(:commit_files).with(
       payload.full_repo_name,
       payload.head_sha
