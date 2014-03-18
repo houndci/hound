@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Builds' do
-  let(:payload) { File.read('spec/support/fixtures/pull_request_payload.json') }
+  let(:payload) { File.read('spec/support/fixtures/pull_request_opened_event.json') }
   let(:zen_payload) { File.read('spec/support/fixtures/zen_payload.json') }
   let(:parsed_payload) { JSON.parse(payload) }
   let(:repo_name) { parsed_payload['repository']['full_name'] }

@@ -44,7 +44,7 @@ describe BuildRunner, '#valid?' do
 end
 
 describe BuildRunner, '#run' do
-  let(:fixture_file) { 'spec/support/fixtures/pull_request_payload.json' }
+  let(:fixture_file) { 'spec/support/fixtures/pull_request_opened_event.json' }
   let(:payload_data) { JSON.parse(File.read(fixture_file)) }
   let(:pull_request) { stub_pull_request }
 
