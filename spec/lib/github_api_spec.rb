@@ -57,6 +57,24 @@ describe GithubApi do
       expect(files.first.filename).to eq 'file1.rb'
     end
   end
+
+  describe '#pull_request_files' do
+    it 'returns changed files in a pull request' do
+      api = GithubApi.new('authtoken')
+      pull_request = double(:pull_request, full_repo_name: 'thoughtbot/hound')
+      pull_request_number = 123
+      commit_sha = 'abc123'
+      stub_pull_request_files_request(
+        pull_request.full_repo_name,
+        pull_request_number,
+        'authtoken'
+      )
+      stub_contents_request(
+        repo_name: pull_request.full_repo_name,
+        sha: commit_sha
+      )
+    end
+  end
 end
 
 describe GithubApi, '#add_comment' do

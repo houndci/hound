@@ -53,6 +53,10 @@ class GithubApi
     commit.files
   end
 
+  def pull_request_files(full_repo_name, number)
+    client.pull_request_files(full_repo_name, number)
+  end
+
   def file_contents(full_repo_name, filename, sha)
     client.contents(full_repo_name, path: filename, ref: sha)
   end

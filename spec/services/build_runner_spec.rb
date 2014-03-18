@@ -92,7 +92,7 @@ describe BuildRunner, '#run' do
       build_runner = BuildRunner.new(payload_data)
       pr_file1 = double(removed?: true, ruby?: true, filename: 'game.rb')
       pr_file2 = double(removed?: false, ruby?: true, filename: 'config.rb')
-      pull_request = stub_pull_request(head_commit_files: [pr_file1, pr_file2])
+      pull_request = stub_pull_request(pull_request_files: [pr_file1, pr_file2])
 
       build_runner.run
 
@@ -106,7 +106,7 @@ describe BuildRunner, '#run' do
       build_runner = BuildRunner.new(payload_data)
       pr_file1 = double(removed?: false, ruby?: false, filename: 'path/app.js')
       pr_file2 = double(removed?: false, ruby?: true, filename: 'path/user.rb')
-      pull_request = stub_pull_request(head_commit_files: [pr_file1, pr_file2])
+      pull_request = stub_pull_request(pull_request_files: [pr_file1, pr_file2])
 
       build_runner.run
 
@@ -120,7 +120,7 @@ describe BuildRunner, '#run' do
       build_runner = BuildRunner.new(payload_data)
       schema = double(removed?: false, ruby?: true, filename: 'db/schema.rb')
       ruby_file = double(removed?: false, ruby?: true, filename: 'path/user.rb')
-      pull_request = stub_pull_request(head_commit_files: [schema, ruby_file])
+      pull_request = stub_pull_request(pull_request_files: [schema, ruby_file])
 
       build_runner.run
 
@@ -136,7 +136,7 @@ describe BuildRunner, '#run' do
       set_failure_status: nil,
       config: nil,
       add_comment: nil,
-      head_commit_files: []
+      pull_request_files: []
     }
     pull_request = double(:pull_request, default_options.merge(options))
     PullRequest.stub(new: pull_request)

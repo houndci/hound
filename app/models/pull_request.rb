@@ -12,6 +12,12 @@ class PullRequest
     end
   end
 
+  def pull_request_files
+    api.pull_request_files(full_repo_name, number).map do |file|
+      ModifiedFile.new(file, self)
+    end
+  end
+
   def file_contents(filename)
     api.file_contents(full_repo_name, filename, head_sha)
   end

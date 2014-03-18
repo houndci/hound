@@ -8,7 +8,7 @@ class BuildRunner
   end
 
   def run
-    style_checker = StyleChecker.new(last_commit_files, pull_request.config)
+    style_checker = StyleChecker.new(relevant_files, pull_request.config)
     violations = style_checker.violations
     build = repo.builds.create!(violations: violations)
 
@@ -23,8 +23,24 @@ class BuildRunner
 
   private
 
-  def last_commit_files
-    pull_request.head_commit_files.reject do |file|
+  def relevant_files
+    if payload.synchronize?
+      head_commit_files
+    else
+      pull_request_files
+    end
+  end
+
+  def head_commit_files
+    filter_disallowed_files(pull_request.head_commit_files)
+  end
+
+  def pull_request_files
+    filter_disallowed_files(pull_request.pull_request_files)
+  end
+
+  def filter_disallowed_files(files)
+    files.reject do |file|
       file.removed? || !file.ruby? || IGNORED_FILES.include?(file.filename)
     end
   end
