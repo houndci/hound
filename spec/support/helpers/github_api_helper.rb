@@ -31,40 +31,45 @@ module GithubApiHelper
   end
 
   def stub_commit_request(full_repo_name, commit_sha, auth_token = 'githubtoken')
-    url = "https://api.github.com/repos/#{full_repo_name}/commits/#{commit_sha}"
-    stub_request(:get, url).
-      with(headers: { 'Authorization' => "token #{auth_token}" }).
-      to_return(
-        status: 200,
-        body: File.read('spec/support/fixtures/commit.json'),
-        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-      )
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{full_repo_name}/commits/#{commit_sha}"
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/commit.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
   end
 
   def stub_pull_request_files_request(full_repo_name, pull_request_number, auth_token = 'githubtoken')
-    url = "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
-    stub_request(:get, url).
-      with(headers: { 'Authorization' => "token #{auth_token}" }).
-      to_return(
-        status: 200,
-        body: File.read('spec/support/fixtures/pull_request_files.json'),
-        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-      )
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/pull_request_files.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
   end
 
   def stub_contents_request(options = {})
     fixture = options.fetch(:fixture, 'contents.json')
     file = options.fetch(:file, 'config/unicorn.rb')
-    base_url = "https://api.github.com/repos/#{options[:repo_name]}"
-    full_url = "#{base_url}/contents/#{file}?ref=#{options[:sha]}"
 
-    stub_request(:get, full_url)
-      .with(headers: { 'Authorization' => /token \w+/ })
-      .to_return(
-        status: 200,
-        body: File.read("spec/support/fixtures/#{fixture}"),
-        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-      )
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{options[:repo_name]}/contents/#{file}?ref=#{options[:sha]}"
+    ).with(
+      headers: { 'Authorization' => /token \w+/ }
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/#{fixture}"),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
   end
 
   private
@@ -153,8 +158,10 @@ module GithubApiHelper
   end
 
   def stub_comment_request(full_repo_name, pull_request_number, comment, commit_sha, file, line_number)
-    url = "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
-    stub_request(:post, url).with(
+    stub_request(
+      :post,
+      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
+    ).with(
       body: {
         body: comment,
         commit_id: commit_sha,
