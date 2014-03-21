@@ -4,11 +4,11 @@ class DeactivationsController < ApplicationController
   def create
     repo = current_user.repos.find(params[:repo_id])
 
-    unless activator.deactivate(repo)
-      render status: 404
+    if  activator.deactivate(repo)
+      render json: repo
+    else
+      head 404
     end
-
-    render json: repo
   end
 
   private

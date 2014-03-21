@@ -4,11 +4,11 @@ class ActivationsController < ApplicationController
   def create
     repo = current_user.repos.find(params[:repo_id])
 
-    unless activator.activate(repo, current_user)
-      render status: 404
+    if activator.activate(repo, current_user)
+      render json: repo
+    else
+      head 404
     end
-
-    render json: repo
   end
 
   private
