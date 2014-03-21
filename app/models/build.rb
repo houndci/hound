@@ -7,10 +7,6 @@ class Build < ActiveRecord::Base
 
   serialize :violations, Array
 
-  def self.find_by_uuid(uuid)
-    self.where('uuid = ?', uuid).first
-  end
-
   def status
     if violations.any?
       'failed'
