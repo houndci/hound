@@ -7,7 +7,7 @@ class DeactivationsController < ApplicationController
     if  activator.deactivate(repo)
       render json: repo
     else
-      head 404
+      head 502
     end
   end
 
