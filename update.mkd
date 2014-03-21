@@ -10,7 +10,7 @@ Hound uses RuboCop, Octokit, and Rails to do it's thing. After you authenticate 
 
 Who
 
-A (few of us)[https://github.com/thoughtbot/hound/graphs/contributors] have been working on Hound for a while. It's stable and is actively used in and out of thoughtbot, so please check it out, contribute, and turn it on for your current projects.
+A [few of us](https://github.com/thoughtbot/hound/graphs/contributors) have been working on Hound for a while. It's stable and is actively used in and out of thoughtbot, so please check it out, contribute, and turn it on for your current projects.
 
 Traction
 
