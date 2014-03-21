@@ -21,4 +21,4 @@ A [few of us](https://github.com/thoughtbot/hound/graphs/contributors) have been
 
 ## What's Next?
 
-We plan on doing some additional design work next, now that the service is functional and stable. The landing page will be updated and we will work on making it easier for users to get started. We also plan on formally releasing Hound free for open source projects and a paid plan for private.
+We plan on doing some additional design work next, now that the service is functional and stable. The landing page will be updated and we will work on making it easier for users to get started. We also plan on formally releasing Hound free for public projects and paid for private ones.
