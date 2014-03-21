@@ -12,13 +12,13 @@ describe ActivationsController, '#update' do
         with(membership.repo, membership.user)
     end
 
-    it '404s when there is an error activating the repo' do
+    it 'errors when there is an issue activating the repo' do
       activator = double(:repo_activator, activate: false)
       membership = setup_request(activator)
 
       response = post(:create, repo_id: membership.repo.id, format: :json)
 
-      expect(response.code).to eq '404'
+      expect(response.code).to eq '502'
     end
   end
 

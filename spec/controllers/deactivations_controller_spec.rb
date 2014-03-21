@@ -14,12 +14,12 @@ describe DeactivationsController, '#create' do
       expect(activator).to have_received(:deactivate).with(membership.repo)
     end
 
-    it '404s when there is an error deactivating a repo' do
+    it 'errors when there is an issue deactivating a repo' do
       membership = setup_request(false)
 
       response = post(:create, repo_id: membership.repo.id, format: :json)
 
-      expect(response.code).to eq '404'
+      expect(response.code).to eq '502'
     end
   end
 

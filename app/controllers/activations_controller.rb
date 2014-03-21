@@ -7,7 +7,7 @@ class ActivationsController < ApplicationController
     if activator.activate(repo, current_user)
       render json: repo
     else
-      head 404
+      head 502
     end
   end
 
