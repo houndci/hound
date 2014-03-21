@@ -2,7 +2,7 @@
 
 ## What
 
-First off, Hound is a development tool that helps project teams maintain consistent code style. It does this by reviewing pull requests and commenting on GitHub if style differs from the team's style guide. The goal is to help developers focus on more important aspects of the code when reviewing pull requests, not code style.
+First off, Hound is a development tool that helps project teams maintain consistent code style. It does this by reviewing pull requests and commenting on GitHub if style differs from the team's style guide. The goal is to help developers focus on others aspects of the code when reviewing pull requests, not code style.
 
 ## How
 
