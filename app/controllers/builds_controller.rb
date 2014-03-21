@@ -3,10 +3,6 @@ class BuildsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create]
   skip_before_filter :authenticate
 
-  def show
-    @build = Build.find_by_uuid(params[:id])
-  end
-
   def create
     if build_runner.valid?
       Delayed::Job.enqueue(build_job)

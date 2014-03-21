@@ -5,7 +5,7 @@ Houndapp::Application.routes.draw do
   get '/sign_in', to: 'sessions#new'
   get '/sign_out', to: 'sessions#destroy'
 
-  resources :builds, only: [:create, :show]
+  resources :builds, only: [:create]
   resources :repos, only: [:index, :update]
   resources :repo_activations, only: [:create, :destroy]
   resources :repo_syncs, only: [:index, :create]
