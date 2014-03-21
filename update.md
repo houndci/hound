@@ -14,10 +14,10 @@ A [few of us](https://github.com/thoughtbot/hound/graphs/contributors) have been
 
 ## Traction
 
-* Users: 165
-* Projects monitored by Hound: 314
-* Number of times Hound has checked code: 2433
-* Number of times Hound has found issues: 1132
+* 165 users
+* 314 projects monitored by Hound
+* 2433 times Hound has checked code
+* 1132 times Hound has found issues
 
 ## What's Next?
 
