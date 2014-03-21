@@ -21,9 +21,9 @@ class RepoActivator
   def change_repository_state_quietly
     yield
     true
-    rescue Octokit::Error => error
-      capture_exception(error)
-      false
+  rescue Octokit::Error => error
+    Raven.capture_exception(error)
+    false
   end
 
   def callback_url(host)

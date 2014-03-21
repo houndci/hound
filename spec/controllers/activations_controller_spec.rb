@@ -8,7 +8,7 @@ describe ActivationsController, '#update' do
       membership = create(:membership)
       stub_sign_in(membership.user)
 
-      patch(:create, id: membership.repo.id, format: :json)
+      post(:create, repo_id: membership.repo.id, format: :json)
 
       expect(activator).to have_received(:activate).
         with(membership.repo, membership.user)

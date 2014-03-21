@@ -8,7 +8,7 @@ describe DeactivationsController, '#create' do
       membership = create(:membership)
       stub_sign_in(membership.user)
 
-      post(:create, id: membership.repo.id, format: :json)
+      post(:create, repo_id: membership.repo.id, format: :json)
 
       expect(activator).to have_received(:deactivate).with(membership.repo)
     end
