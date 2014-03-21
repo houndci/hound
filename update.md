@@ -6,7 +6,7 @@ First off, Hound is a development tool that helps project teams maintain consist
 
 ## How
 
-Hound uses RuboCop, Octokit, and Rails to do its thing. After you authenticate with Hound, using GitHub, you can enable Hound for any of your repos. When you do that a web hook is created on GitHub so Hound will be notified when there is pull request activity. After Hound is notified of pull request activity it will fetch the files that were modified and run them through RuboCop. If there is a violation on any changed code, Hound will comment on the line with a description of the difference.
+Hound uses RuboCop, Octokit, and Rails to do its thing. After you authenticate with Hound, using GitHub, you can enable Hound for any of your repos. When you do that a web hook is created on GitHub so Hound will be notified when there is pull request activity. After Hound is notified of pull request activity it will fetch the files that were modified and run them through RuboCop. If there is a violation in any changed code, Hound will comment on the line with a description of the difference.
 
 ## Who
 
