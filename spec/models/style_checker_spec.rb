@@ -17,6 +17,17 @@ describe StyleChecker, '#violations' do
       expect(violations[0].line_violations[0]).to have(3).messages
       expect(violations[1]).to have(1).line_violations
     end
+
+    it 'returns only one of each violation type' do
+      file1 = file_stub("{ :first => 1, :second => 2 }\n")
+
+      style_checker = StyleChecker.new([file1])
+      violations = style_checker.violations
+
+      expect(violations).to have(1).item
+      expect(violations[0]).to have(1).line_violations
+      expect(violations[0].line_violations[0]).to have(1).messages
+    end
   end
 
   context 'when rules are violated' do

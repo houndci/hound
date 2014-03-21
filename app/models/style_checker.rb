@@ -82,7 +82,7 @@ class StyleChecker
       LineViolation.new(
         line_number,
         line_in_file(line_number, file),
-        violations.map(&:message)
+        violations.map(&:message).uniq
       )
     end
   end
