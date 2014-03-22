@@ -3,7 +3,7 @@
   %head
     %meta{ content: 'width=device-width,initial-scale=1', name: 'viewport' }
     %title Hound
-    %link{ href: '//fonts.googleapis.com/css?family=Lato:400,700,900', rel: 'stylesheet', type:'text/css' }
+    %link{ href: '//fonts.googleapis.com/css?family=Lato:300,400,700,900', rel: 'stylesheet', type:'text/css' }
     = stylesheet_link_tag    'application', :media => 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
@@ -12,14 +12,10 @@
       .flash{ class: key }
         = value
 
-    - if signed_in?
-      .signed-in
-        %span.current-user
-          = "#{current_user}"
-        = link_to sign_out_path do
-          %i.fa.fa-sign-out
+    .content
+      = yield
+      = render 'shared/footer'
 
-    = yield
     = yield :javascript
     - if Rails.env.production?
       = render 'shared/segment_io'

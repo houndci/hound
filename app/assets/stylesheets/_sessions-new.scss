@@ -1,25 +1,123 @@
-.pitch {
-  margin-bottom: 2rem;
+ol.getting-started {
+  padding: 0 0 8em 3em;
+  position: relative;
 
-  h2 {
-    margin: 0 0 1rem;
+  &:before {
+    @include position(absolute, 2em 0 0em 0em);
+    @include background-image(linear-gradient(top, $base-border-color 94%,
+                                                   rgba($base-border-color, 0) 100%));
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    background-size: 3px 100%;
+    content: "";
+    display: block;
+    width: 3px;
+    z-index: 1;
   }
 
-  .style-guide {
-    display: inline-block;
-    margin: 0 0 1.5rem;
-  }
-}
+  li.step {
+    margin-bottom: 8em;
+    position: relative;
+    z-index: 2;
 
-.fa-search.disabled {
-  opacity: .5;
-}
+    &:last-child {
+      margin-bottom: 0;
+    }
 
-ul.disabled {
-  cursor: not-allowed;
-  opacity: .5;
+    &:before {
+      @include position(absolute, -0.3em 0 0 -3em);
+      @include size(40px);
+      background: #fff;
+      border-radius: 50%;
+      border: 2px solid $base-border-color;
+      box-shadow: 0 0 0 3px #fff;
+      content: "";
+      display: block;
+      margin-left: -21px;
+    }
 
-  li .toggle a {
-    cursor: not-allowed;
+    &.step-activate:before {
+      background-image: asset-url('landing/icon-switch.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 80%;
+    }
+
+    &.step-comment:before {
+      background-image: asset-url('landing/icon-comment.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50%;
+    }
+
+    &.step-code:before {
+      background-image: asset-url('landing/icon-merge.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 58%;
+    }
+
+    &.cta:before {
+      color: #acacac;
+      content: '\f061';
+      font-family: $icon-font;
+      line-height: 40px;
+      left: -2em;
+      text-align: center;
+      top: 8px;
+      font-size: 1.5em;
+    }
+
+    &.pitch {
+      &:before {
+        background-image: asset-url('landing/the_hound.jpeg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        top: 1.1em;
+      }
+
+      .tagline {
+        margin: 0.4em 0 2em;
+      }
+
+      h2 {
+        margin: 0 0 0.4em;
+        font-weight: 300;
+        font-size: 1.8em;
+      }
+    }
+
+    h3 {
+      font-size: 1.6em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin: 0 0 0.4em;
+    }
+
+    p {
+      color: $medium-font-color;
+      font-size: 1.2em;
+      letter-spacing: 0.5px;
+      line-height: 1.4em;
+      margin: 0 0em;
+    }
+
+    figure {
+      border-radius: 3px;
+      border: 1px solid $base-border-color;
+      box-shadow: 0 1px 10px 0 rgba(0,0,0,0.05);
+      display: inline-block;
+      height: 300px;
+      margin-left: -0.8em;
+      margin-top: 1.6em;
+      overflow: hidden;
+      width: 100%;
+
+      img {
+        height: auto;
+        width: 100%;
+      }
+    }
   }
 }
