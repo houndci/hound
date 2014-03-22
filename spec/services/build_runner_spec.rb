@@ -55,7 +55,7 @@ describe BuildRunner, '#run' do
       line_number: 123,
       messages: ['A message', 'Another message']
     )
-    modified_line = double(:modified_line, line_number: 123, diff_position: 22)
+    modified_line = double(:modified_line, line_number: 123, patch_position: 22)
     file_violation = double(
       :file_violation,
       filename: 'test.rb',

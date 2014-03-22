@@ -58,7 +58,7 @@ class BuildRunner
 
         pull_request.add_comment(
           file_violation.filename,
-          modified_line.diff_position,
+          modified_line.patch_position,
           line_violation.messages.join('<br>')
         )
       end
