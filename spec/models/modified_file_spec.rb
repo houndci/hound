@@ -1,7 +1,7 @@
 require 'fast_spec_helper'
 require 'base64'
 require 'app/models/modified_file'
-require 'app/models/diff_patch'
+require 'app/models/patch'
 
 describe ModifiedFile, '#contents' do
   it 'returns file contents' do
@@ -21,8 +21,8 @@ describe ModifiedFile, '#relevant_line?' do
       pull_request_file = double(:pull_request_file, patch: '')
       modified_file = ModifiedFile.new(pull_request_file, double)
       modified_line = double(:modified_line, line_number: 1)
-      diff_patch = double(:diff_patch, modified_lines: [modified_line])
-      DiffPatch.stub(new: diff_patch)
+      patch = double(:patch, additions: [modified_line])
+      Patch.stub(new: patch)
 
       result = modified_file.relevant_line?(1)
 
@@ -35,8 +35,8 @@ describe ModifiedFile, '#relevant_line?' do
       pull_request_file = double(:pull_request_file, patch: '')
       modified_file = ModifiedFile.new(pull_request_file, double)
       modified_line = double(:modified_line, line_number: 1)
-      diff_patch = double(:diff_patch, modified_lines: [modified_line])
-      DiffPatch.stub(new: diff_patch)
+      patch = double(:patch, additions: [modified_line])
+      Patch.stub(new: patch)
 
       result = modified_file.relevant_line?(2)
 

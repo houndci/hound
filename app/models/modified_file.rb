@@ -31,12 +31,12 @@ class ModifiedFile
   end
 
   def modified_lines
-    @modified_lines ||= patch.modified_lines
+    @modified_lines ||= patch.additions
   end
 
   private
 
   def patch
-    DiffPatch.new(@file.patch)
+    Patch.new(@file.patch)
   end
 end
