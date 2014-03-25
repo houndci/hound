@@ -19,7 +19,7 @@ feature 'Builds' do
   context 'with payload nesting' do
     scenario 'a successful build with custom config' do
       repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
-      stub_github_requests(repo.full_github_name, pr_sha, repo.github_token)
+      stub_github_requests(repo.full_github_name, pr_sha)
 
       post builds_path, payload: payload
 
@@ -30,7 +30,7 @@ feature 'Builds' do
   context 'without payload nesting' do
     scenario 'a successful build with custom config' do
       repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
-      stub_github_requests(repo.full_github_name, pr_sha, repo.github_token)
+      stub_github_requests(repo.full_github_name, pr_sha)
 
       post builds_path, payload
 
@@ -44,14 +44,20 @@ feature 'Builds' do
       :post,
       'https://api.github.com/repos/salbertson/life/pulls/2/comments'
     )
-    stub_commit_request(repo.full_github_name, pr_sha, repo.github_token)
+    stub_commit_request(
+      repo.full_github_name,
+      pr_sha,
+      ENV['HOUND_GITHUB_TOKEN']
+    )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: repo.full_github_name,
       sha: pr_sha,
       file: 'file1.rb',
       fixture: 'contents_with_violations.json'
     )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: repo.full_github_name,
       sha: pr_sha,
       file: '.hound.yml',
@@ -63,15 +69,21 @@ feature 'Builds' do
     expect_a_comment_request(repo.full_github_name, pr_number)
   end
 
-  def stub_github_requests(full_github_name, pull_request_number, github_token)
-    stub_commit_request(full_github_name, pr_sha, github_token)
+  def stub_github_requests(full_github_name, pull_request_number)
+    stub_commit_request(
+      full_github_name,
+      pr_sha,
+      ENV['HOUND_GITHUB_TOKEN']
+    )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: full_github_name,
       sha: pr_sha,
       file: 'file1.rb',
       fixture: 'contents.json'
     )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: full_github_name,
       sha: pr_sha,
       file: '.hound.yml',

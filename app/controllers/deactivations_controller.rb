@@ -4,7 +4,7 @@ class DeactivationsController < ApplicationController
   def create
     repo = current_user.repos.find(params[:repo_id])
 
-    if  activator.deactivate(repo)
+    if  activator.deactivate(repo, session[:github_token])
       render json: repo
     else
       head 502

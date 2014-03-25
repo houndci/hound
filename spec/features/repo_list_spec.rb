@@ -13,8 +13,8 @@ feature 'Repo list' do
   end
 
   scenario 'user syncs repos', js: true do
-    user = create(:user, github_token: 'token')
-    stub_repo_requests(user.github_token)
+    user = create(:user)
+    stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
     sign_in_as(user)
 
     visit root_path
@@ -30,7 +30,11 @@ feature 'Repo list' do
     repo.users << user
     hook_url = "http://#{ENV['HOST']}/builds"
     sign_in_as(user)
-    stub_hook_creation_request(repo.github_token, repo.full_github_name, hook_url)
+    stub_hook_creation_request(
+      AuthenticationHelper::GITHUB_TOKEN,
+      repo.full_github_name,
+      hook_url
+    )
 
     visit root_path
     find('.activate').click

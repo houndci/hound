@@ -1,16 +1,16 @@
 class RepoActivator
-  def activate(repo, user)
+  def activate(repo, github_token)
     change_repository_state_quietly do
-      github = GithubApi.new(user.github_token)
+      github = GithubApi.new(github_token)
       hook = create_web_hook(github, repo)
       github.add_hound_to_repo(repo.full_github_name)
       repo.update_attributes(hook_id: hook.id, active: true)
     end
   end
 
-  def deactivate(repo)
+  def deactivate(repo, github_token)
     change_repository_state_quietly do
-      github = GithubApi.new(repo.github_token)
+      github = GithubApi.new(github_token)
       github.remove_pull_request_hook(repo.full_github_name, repo.hook_id)
       repo.deactivate
     end

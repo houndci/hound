@@ -64,12 +64,14 @@ describe GithubApi do
       pull_request = double(:pull_request, full_repo_name: 'thoughtbot/hound')
       pull_request_number = 123
       commit_sha = 'abc123'
+      github_token = 'authtoken'
       stub_pull_request_files_request(
         pull_request.full_repo_name,
         pull_request_number,
-        'authtoken'
+        github_token
       )
       stub_contents_request(
+        github_token,
         repo_name: pull_request.full_repo_name,
         sha: commit_sha
       )
