@@ -4,7 +4,7 @@ class ActivationsController < ApplicationController
   def create
     repo = current_user.repos.find(params[:repo_id])
 
-    if activator.activate(repo, current_user)
+    if activator.activate(repo, session[:github_token])
       render json: repo
     else
       head 502

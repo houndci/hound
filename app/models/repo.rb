@@ -15,7 +15,7 @@ class Repo < ActiveRecord::Base
     update_attributes(active: false, hook_id: nil)
   end
 
-  def github_token
-    users.first.github_token
-  end
+  # def github_token
+  #   users.first.github_token
+  # end
 end

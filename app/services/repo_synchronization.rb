@@ -1,9 +1,9 @@
 class RepoSynchronization
   attr_reader :user, :api
 
-  def initialize(user)
+  def initialize(user, github_token)
     @user = user
-    @api = GithubApi.new(user.github_token)
+    @api = GithubApi.new(github_token)
   end
 
   def start

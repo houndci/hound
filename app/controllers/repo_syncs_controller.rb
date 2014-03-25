@@ -14,7 +14,7 @@ and failed_at IS NULL
   end
 
   def create
-    sync_job = RepoSynchronizationJob.new(current_user.id)
+    sync_job = RepoSynchronizationJob.new(current_user.id, session[:github_token])
     Delayed::Job.enqueue(sync_job)
     head 201
   end
