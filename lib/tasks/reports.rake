@@ -1,4 +1,5 @@
 namespace :reports do
+  desc 'Prints out weekly activity, which is the number of repos that had builds during the week.'
   task activity: :environment do
     series_sql = <<-SQL
 select date_trunc('week', series)::date week
