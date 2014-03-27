@@ -50,12 +50,14 @@ feature 'Builds' do
       ENV['HOUND_GITHUB_TOKEN']
     )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: repo.full_github_name,
       sha: pr_sha,
       file: 'file1.rb',
       fixture: 'contents_with_violations.json'
     )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: repo.full_github_name,
       sha: pr_sha,
       file: '.hound.yml',
@@ -74,12 +76,14 @@ feature 'Builds' do
       ENV['HOUND_GITHUB_TOKEN']
     )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: full_github_name,
       sha: pr_sha,
       file: 'file1.rb',
       fixture: 'contents.json'
     )
     stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
       repo_name: full_github_name,
       sha: pr_sha,
       file: '.hound.yml',

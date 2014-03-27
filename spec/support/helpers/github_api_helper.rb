@@ -56,7 +56,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_contents_request(options = {})
+  def stub_contents_request(token, options = {})
     fixture = options.fetch(:fixture, 'contents.json')
     file = options.fetch(:file, 'config/unicorn.rb')
 
@@ -64,7 +64,7 @@ module GithubApiHelper
       :get,
       "https://api.github.com/repos/#{options[:repo_name]}/contents/#{file}?ref=#{options[:sha]}"
     ).with(
-      headers: { 'Authorization' => /token \w+/ }
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
       body: File.read("spec/support/fixtures/#{fixture}"),
