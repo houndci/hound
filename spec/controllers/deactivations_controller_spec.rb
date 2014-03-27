@@ -11,7 +11,8 @@ describe DeactivationsController, '#create' do
 
       post(:create, repo_id: membership.repo.id, format: :json)
 
-      expect(activator).to have_received(:deactivate).with(membership.repo)
+      expect(activator).to have_received(:deactivate).
+        with(membership.repo, AuthenticationHelper::GITHUB_TOKEN)
     end
 
     it 'errors when there is an issue deactivating a repo' do

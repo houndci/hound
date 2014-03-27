@@ -9,7 +9,7 @@ describe ActivationsController, '#update' do
       post(:create, repo_id: membership.repo.id, format: :json)
 
       expect(activator).to have_received(:activate).
-        with(membership.repo, membership.user)
+        with(membership.repo, AuthenticationHelper::GITHUB_TOKEN)
     end
 
     it 'errors when there is an issue activating the repo' do
