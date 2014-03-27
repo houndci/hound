@@ -26,7 +26,6 @@ FactoryGirl.define do
 
   factory :user do
     sequence(:github_username) { |n| "github#{n}" }
-    sequence(:github_token) { |n| "token#{n}" }
   end
 
   factory :membership do
