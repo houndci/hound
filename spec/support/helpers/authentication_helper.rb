@@ -7,7 +7,7 @@ module AuthenticationHelper
   end
 
   def sign_in_as(user)
-    stub_oauth(user.github_username, user.github_token)
+    stub_oauth(user.github_username, GITHUB_TOKEN)
     visit root_path
     click_link I18n.t('authenticate')
   end
