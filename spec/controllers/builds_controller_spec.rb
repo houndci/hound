@@ -8,4 +8,16 @@ describe BuildsController, '#create' do
 
     expect(response.status).to eq 200
   end
+
+  context 'when https is enabled' do
+    context 'and http is used' do
+      it 'does not redirect' do
+        ENV['ENABLE_HTTPS'] = 'yes'
+
+        post :create, payload: File.read('spec/support/fixtures/pull_request_opened_event.json')
+
+        expect(response).not_to be_redirect
+      end
+    end
+  end
 end
