@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-feature 'Repo list' do
-  scenario 'user views list', js: true do
+feature 'Repo list', js: true do
+  scenario 'user views list' do
     user = create(:user)
     repo = create(:repo, full_github_name: 'thoughtbot/my-repo')
     repo.users << user
@@ -12,19 +12,35 @@ feature 'Repo list' do
     expect(page).to have_content 'thoughtbot/my-repo'
   end
 
-  scenario 'user syncs repos', js: true do
+  scenario 'user syncs repos' do
     user = create(:user)
+    repo = create(:repo)
+    user.repos << repo
     stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
     sign_in_as(user)
 
     visit root_path
+
+    expect(page).to have_content(repo.full_github_name)
+
     click_link I18n.t('sync_repos')
 
     expect(page).to have_content I18n.t('syncing_repos')
     expect(page).not_to have_content 'jimtom/My-Private-Repo'
   end
 
-  scenario 'user activates repo', js: true do
+  scenario 'user signs up' do
+    pending
+
+    user = create(:user)
+
+    sign_in_as(user)
+    visit root_path
+
+    expect(page).to have_content I18n.t('syncing_repos')
+  end
+
+  scenario 'user activates repo' do
     pending
 
     user = create(:user)
@@ -46,7 +62,7 @@ feature 'Repo list' do
     expect(page).to have_css('.deactivate')
   end
 
-  scenario 'user deactivates repo', js: true do
+  scenario 'user deactivates repo' do
     user = create(:user)
     repo = create(:active_repo)
     repo.users << user

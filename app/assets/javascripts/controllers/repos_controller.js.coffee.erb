@@ -10,7 +10,9 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
     )
 
   initialize = ->
-    loadRepos()
+    loadRepos().then ->
+      if $scope.repos.length < 1
+        $scope.sync()
 
   pollSyncStatus = ->
     successfulSync = (results) ->
