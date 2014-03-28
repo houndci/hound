@@ -30,30 +30,6 @@ describe StyleChecker, '#violations' do
     end
   end
 
-  context 'when leading dots are used to break up method chains' do
-    it 'finds violations' do
-      file = file_stub(<<-CONTENT)
-person
-  .name
-      CONTENT
-      style_checker = StyleChecker.new([file])
-
-      expect(style_checker).to have_at_least(1).violations
-    end
-  end
-
-  context 'when trailing dots are used to break up method chains' do
-    it 'does not find violations' do
-      file = file_stub(<<-CONTENT)
-person.
-  name
-      CONTENT
-      style_checker = StyleChecker.new([file])
-
-      expect(style_checker).to have(0).violations
-    end
-  end
-
   context 'when rules are violated' do
     it 'finds all violations' do
       file = file_stub(content_with_violations)
