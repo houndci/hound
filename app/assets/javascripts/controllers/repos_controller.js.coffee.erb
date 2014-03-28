@@ -10,7 +10,7 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
     )
 
   initialize = ->
-    loadRepos().then(() ->
+    loadRepos().then( ->
       if $scope.repos.length < 1
         $scope.sync()
     )

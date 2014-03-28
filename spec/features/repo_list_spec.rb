@@ -20,6 +20,9 @@ feature 'Repo list', js: true do
     sign_in_as(user)
 
     visit root_path
+
+    expect(page).to have_content(repo.full_github_name)
+
     click_link I18n.t('sync_repos')
 
     expect(page).to have_content I18n.t('syncing_repos')
