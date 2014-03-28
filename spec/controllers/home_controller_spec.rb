@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HomeController do
   describe '#index' do
-    context 'when user has no repos' do
+    context 'when user does not have repos' do
       it 'enqueues a repo sync job' do
         user = create(:user)
         sync_job = double()
@@ -20,14 +20,15 @@ describe HomeController do
     context 'when user has repos' do
       it 'does not enqueue a repo sync job' do
         membership = create(:membership)
+        user = membership.user
         sync_job = double()
         RepoSynchronizationJob.stub(new: sync_job)
         Delayed::Job.stub(enqueue: true)
-        stub_sign_in(membership.user)
+        stub_sign_in(user)
 
         get :index
 
-        expect(RepoSynchronizationJob).not_to have_received(:new).with(membership.user.id)
+        expect(RepoSynchronizationJob).not_to have_received(:new).with(user.id)
         expect(Delayed::Job).not_to have_received(:enqueue).with(sync_job)
       end
     end
