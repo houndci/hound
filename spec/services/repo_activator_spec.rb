@@ -15,19 +15,6 @@ describe RepoActivator do
         expect(repo.reload).to be_active
       end
 
-      it 'creates GitHub hook' do
-        repo = create(:repo)
-        github = stub_github_api
-        activator = RepoActivator.new
-
-        activator.activate(repo, 'githubtoken')
-
-        expect(github).to have_received(:create_pull_request_hook).with(
-          repo.full_github_name,
-          URI.join("http://#{ENV['HOST']}", 'builds').to_s
-        )
-      end
-
       it 'makes Hound a collaborator' do
         repo = create(:repo)
         github = stub_github_api
@@ -46,6 +33,38 @@ describe RepoActivator do
         response = activator.activate(repo, 'githubtoken')
 
         expect(response).to be_true
+      end
+
+      context 'when https is enabled' do
+        it 'creates GitHub hook using secure build URL' do
+          with_https_enabled do
+            repo = create(:repo)
+            github = stub_github_api
+            activator = RepoActivator.new
+
+            activator.activate(repo, 'githubtoken')
+
+            expect(github).to have_received(:create_pull_request_hook).with(
+              repo.full_github_name,
+              URI.join("https://#{ENV['HOST']}", 'builds').to_s
+            )
+          end
+        end
+      end
+
+      context 'when https is disabled' do
+        it 'creates GitHub hook using insecure build URL' do
+          repo = create(:repo)
+          github = stub_github_api
+          activator = RepoActivator.new
+
+          activator.activate(repo, 'githubtoken')
+
+          expect(github).to have_received(:create_pull_request_hook).with(
+            repo.full_github_name,
+            URI.join("http://#{ENV['HOST']}", 'builds').to_s
+          )
+        end
       end
     end
 

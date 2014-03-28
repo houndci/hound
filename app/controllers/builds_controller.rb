@@ -15,6 +15,10 @@ class BuildsController < ApplicationController
 
   private
 
+  def force_https?
+    false
+  end
+
   def build_job
     BuildJob.new(build_runner)
   end
