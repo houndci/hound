@@ -1,10 +1,24 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :force_https
   before_filter :authenticate
   after_filter  :set_csrf_cookie_for_ng
   helper_method :current_user, :signed_in?
 
   private
+
+  def force_https
+    if ENV['ENABLE_HTTPS'] == 'yes'
+      if !request.ssl? && force_https?
+        protocol = 'https'
+        redirect_to protocol: "#{protocol}://", status: :moved_permanently
+      end
+    end
+  end
+
+  def force_https?
+    true
+  end
 
   def authenticate
     unless signed_in?
