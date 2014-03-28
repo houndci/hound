@@ -70,8 +70,13 @@
     }
 
     .deactivate a:after {
-      @include animation-fill-mode(both);
+      background: $active-color;
       box-shadow: inset 0 0 0 2px $active-color;
+      color: #fff;
+      content: '\f00c';
+      font-family: "FontAwesome";
+      text-align: center;
+      line-height: 1.6rem;
     }
 
     .name {
