@@ -24,6 +24,16 @@ feature 'Repo list' do
     expect(page).not_to have_content 'jimtom/My-Private-Repo'
   end
 
+  scenario 'user signs up', js: true do
+    user = create(:user, github_token: 'token')
+    stub_repo_requests(user.github_token)
+
+    sign_in_as(user)
+    visit root_path
+
+    expect(page).to have_content I18n.t('syncing_repos')
+  end
+
   scenario 'user activates repo', js: true do
     pending
 
