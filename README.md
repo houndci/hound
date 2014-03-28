@@ -8,6 +8,7 @@ reviews GitHub pull requests for style guide violations.
 
 To run your development environment:
 
+0. Add `export HOST=localhost:3000` to your `.env`
 1. Run `foreman start`
 2. Authenticate with the GitHub app
 
