@@ -29,14 +29,12 @@ class RepoActivator
     false
   end
 
-  def callback_url(host)
-    URI.join(host, 'builds').to_s
+  def create_web_hook(github, repo)
+    github.create_pull_request_hook(repo.full_github_name, builds_url)
   end
 
-  def create_web_hook(github, repo)
-    github.create_pull_request_hook(
-      repo.full_github_name,
-      callback_url("http://#{ENV['HOST']}")
-    )
+  def builds_url
+    protocol = ENV['ENABLE_HTTPS'] == 'yes' ? 'https' : 'http'
+    URI.join("#{protocol}://#{ENV['HOST']}", 'builds').to_s
   end
 end

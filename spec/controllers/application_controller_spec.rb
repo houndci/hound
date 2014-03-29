@@ -4,22 +4,23 @@ describe SessionsController, '#new' do
   context 'when https is enabled' do
     context 'and http is used' do
       it 'redirects to https' do
-        ENV['ENABLE_HTTPS'] = 'yes'
+        with_https_enabled do
+          get :new
 
-        get :new
-
-        expect(response).to redirect_to(sign_in_url(protocol: 'https'))
+          expect(response).to redirect_to(sign_in_url(protocol: 'https'))
+        end
       end
     end
 
     context 'and https is used' do
       it 'does not redirect' do
-        ENV['ENABLE_HTTPS'] = 'yes'
-        request.env['HTTPS'] = 'on'
+        with_https_enabled do
+          request.env['HTTPS'] = 'on'
 
-        get :new
+          get :new
 
-        expect(response).not_to be_redirect
+          expect(response).not_to be_redirect
+        end
       end
     end
   end
@@ -27,8 +28,6 @@ describe SessionsController, '#new' do
   context 'when https is disabled' do
     context 'and http is used' do
       it 'does not redirect' do
-        ENV['ENABLE_HTTPS'] = 'no'
-
         get :new
 
         expect(response).not_to be_redirect

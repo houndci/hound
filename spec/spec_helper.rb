@@ -6,8 +6,9 @@ require 'rspec/rails'
 
 RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
-  config.include OauthHelper
   config.include AuthenticationHelper
+  config.include HttpsHelper
+  config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
   DatabaseCleaner.strategy = :deletion
   Delayed::Worker.delay_jobs = false
