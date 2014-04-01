@@ -95,7 +95,7 @@ module GithubApiHelper
       "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
     ).with(
       body: '{}',
-      headers: { 'Authorization'=>"token #{token}" }
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
     )
