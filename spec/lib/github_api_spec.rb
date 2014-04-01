@@ -3,6 +3,73 @@ require 'lib/github_api'
 require 'json'
 
 describe GithubApi do
+  describe '#add_user_to_repo' do
+    context 'when repo is part of an organization' do
+      context 'when repo is part of a team' do
+        it 'adds user to first repo team' do
+          token = 'abc123'
+          username = 'testuser'
+          repo_name = 'testing/repo' # from fixture
+          team_id = 1234 # from fixture
+          api = GithubApi.new(token)
+          stub_repo_with_org_request(repo_name, token)
+          stub_repo_teams_request(repo_name, token)
+          add_user_request = stub_add_user_to_team_request(
+            username,
+            team_id,
+            token
+          )
+
+          api.add_user_to_repo(username, repo_name)
+
+          expect(add_user_request).to have_been_requested
+        end
+      end
+
+      context 'when repo is not part of a team' do
+        it 'creates a Services team and adds user to the new team' do
+          token = 'abc123'
+          username = 'testuser'
+          repo_name = 'testing/repo' # from fixture
+          team_id = 1234 # from fixture
+          api = GithubApi.new(token)
+          stub_repo_with_org_request(repo_name, token)
+          stub_empty_repo_teams_request(repo_name, token)
+          stub_team_creation_request('testing', repo_name, token)
+          add_user_request = stub_add_user_to_team_request(
+            username,
+            team_id,
+            token
+          )
+
+          api.add_user_to_repo(username, repo_name)
+
+          expect(add_user_request).to have_been_requested
+        end
+      end
+    end
+
+    context 'when repo is not part of an organization' do
+      it 'adds user as collaborator' do
+        token = 'abc123'
+        username = 'testuser'
+        repo_name = 'testing/repo'
+        team_id = 1234 # from fixture
+        api = GithubApi.new(token)
+        stub_repo_request(repo_name, token)
+        add_user_request = stub_add_user_to_repo_request(
+          username,
+          repo_name,
+          token
+        )
+
+        api.add_user_to_repo(username, repo_name)
+
+        expect(add_user_request).to have_been_requested
+      end
+    end
+  end
+
   describe '#repos' do
     it 'fetches all repos from Github' do
       auth_token = 'authtoken'

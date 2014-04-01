@@ -12,15 +12,13 @@ class GithubApi
     user_repos + org_repos
   end
 
-  def add_hound_to_repo(full_repo_name)
-    repo = client.repository(full_repo_name)
-    organization = repo.organization
+  def add_user_to_repo(username, repo_name)
+    repo = client.repository(repo_name)
 
-    if organization
-      repo_teams = client.repository_teams(full_repo_name)
-      client.add_team_member(repo_teams.first.id, hound_username)
+    if repo.organization
+      add_user_to_org(username, repo)
     else
-      client.add_collaborator(full_repo_name, hound_username)
+      client.add_collaborator(repo.full_name, username)
     end
   end
 
@@ -63,6 +61,35 @@ class GithubApi
 
   private
 
+  def add_user_to_org(username, repo)
+    repo_teams = client.repository_teams(repo.full_name)
+
+    if repo_teams.any?
+      add_user_to_team(username, repo_teams.first.id)
+    else
+      add_user_to_new_team(username, 'Services', repo)
+    end
+  end
+
+  def add_user_to_new_team(username, team_name, repo)
+    add_user_to_team(username, create_new_team(team_name, repo).id)
+  end
+
+  def add_user_to_team(username, team_id)
+    client.add_team_member(team_id, username)
+  end
+
+  def create_new_team(name, repo)
+    client.create_team(
+      repo.organization.login,
+      {
+        name: name,
+        repo_names: [repo.full_name],
+        permission: 'push'
+      }
+    )
+  end
+
   def user_repos
     repos = []
     page = 1
@@ -100,9 +127,5 @@ class GithubApi
 
   def authorized_repos(repos)
     repos.select {|repo| repo.permissions.admin }
-  end
-
-  def hound_username
-    ENV['HOUND_GITHUB_USERNAME']
   end
 end
