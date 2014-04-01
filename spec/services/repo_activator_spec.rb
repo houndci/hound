@@ -35,7 +35,7 @@ describe RepoActivator do
 
         activator.activate(repo, 'githubtoken')
 
-        expect(github).to have_received(:add_hound_to_repo)
+        expect(github).to have_received(:add_user_to_repo)
       end
 
       it 'returns true if the repo activates successfully' do

@@ -1,14 +1,4 @@
 module GithubApiHelper
-  def stub_repo_request(full_repo_name)
-    stub_request(:get, "https://api.github.com/repos/#{full_repo_name}").
-      with(headers: { 'Authorization' => "token #{auth_token}" }).
-      to_return(
-        status: 200,
-        body: {}.to_json,
-        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-      )
-  end
-
   def stub_add_collaborator_request(full_repo_name)
     url = "https://api.github.com/repos/#{full_repo_name}/collaborators/houndci"
     stub_request(:put, url).
@@ -20,6 +10,99 @@ module GithubApiHelper
     stub_paginated_repo_requests(auth_token)
     stub_orgs_request(auth_token)
     stub_paginated_org_repo_requests(auth_token)
+  end
+
+  def stub_repo_request(repo_name, token = AuthenticationHelper::GITHUB_TOKEN)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo_name}"
+    ).with(
+      :headers => { "Authorization" => "token #{token}" }
+    ).to_return(
+      :status => 200,
+      :body => File.read('spec/support/fixtures/repo.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_repo_with_org_request(repo_name, token)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo_name}"
+    ).with(
+      :headers => { "Authorization" => "token #{token}" }
+    ).to_return(
+      :status => 200,
+      :body => File.read('spec/support/fixtures/repo_with_org.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_repo_teams_request(repo_name, token)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo_name}/teams"
+    ).with(
+      :headers => { "Authorization" => "token #{token}" }
+    ).to_return(
+      :status => 200,
+      :body => File.read('spec/support/fixtures/repo_teams.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_empty_repo_teams_request(repo_name, token)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo_name}/teams"
+    ).with(
+      :headers => { "Authorization" => "token #{token}" }
+    ).to_return(
+      :status => 200,
+      :body => '[]',
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_org_teams_request(org_name, token)
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams"
+    ).with(
+      :headers => { "Authorization" => "token #{token}" }
+    ).to_return(
+      :status => 200,
+      :body => File.read('spec/support/fixtures/repo_teams.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_add_user_to_team_request(username, team_id, token)
+    stub_request(
+      :put,
+      "https://api.github.com/teams/#{team_id}/members/#{username}"
+    ).with(
+      :body => "{\"name\":\"#{username}\"}",
+      :headers => {"Authorization"=>"token #{token}"}
+    ).to_return(
+      :status => 200,
+      :body => "",
+      :headers => {}
+    )
+  end
+
+  def stub_add_user_to_repo_request(username, repo_name, token)
+    stub_request(
+      :put,
+      "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
+    ).with(
+      :body => '{}',
+      :headers => {"Authorization"=>"token #{token}"}
+    ).to_return(
+      :status => 200,
+      :body => "",
+      :headers => {}
+    )
   end
 
   def stub_hook_creation_request(full_repo_name, callback_endpoint)

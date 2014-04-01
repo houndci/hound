@@ -12,15 +12,20 @@ class GithubApi
     user_repos + org_repos
   end
 
-  def add_hound_to_repo(full_repo_name)
-    repo = client.repository(full_repo_name)
-    organization = repo.organization
+  def add_user_to_repo(username, repo_name)
+    repo = client.repository(repo_name)
 
-    if organization
-      repo_teams = client.repository_teams(full_repo_name)
-      client.add_team_member(repo_teams.first.id, hound_username)
+    if repo.organization
+      repo_teams = client.repository_teams(repo_name)
+
+      if repo_teams.any?
+        client.add_team_member(repo_teams.first.id, username)
+      else
+        org_teams = client.organization_teams(repo.organization.login)
+        client.add_team_member(org_teams.first.id, username)
+      end
     else
-      client.add_collaborator(full_repo_name, hound_username)
+      client.add_collaborator(repo_name, username)
     end
   end
 
@@ -100,9 +105,5 @@ class GithubApi
 
   def authorized_repos(repos)
     repos.select {|repo| repo.permissions.admin }
-  end
-
-  def hound_username
-    ENV['HOUND_GITHUB_USERNAME']
   end
 end
