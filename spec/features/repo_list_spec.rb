@@ -29,13 +29,11 @@ feature 'Repo list' do
     repo = create(:repo)
     repo.users << user
     hook_url = "http://#{ENV['HOST']}/builds"
-    sign_in_as(user)
-    stub_hook_creation_request(
-      AuthenticationHelper::GITHUB_TOKEN,
-      repo.full_github_name,
-      hook_url
-    )
+    stub_repo_request(repo.full_github_name)
+    stub_add_collaborator_request(repo.full_github_name)
+    stub_hook_creation_request(repo.full_github_name, hook_url)
 
+    sign_in_as(user)
     visit root_path
     find('.activate').click
 
@@ -50,8 +48,9 @@ feature 'Repo list' do
     user = create(:user)
     repo = create(:active_repo)
     repo.users << user
-    sign_in_as(user)
+    stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 
+    sign_in_as(user)
     visit root_path
     find('.deactivate').click
 

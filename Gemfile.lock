@@ -34,18 +34,15 @@ GEM
       sass (>= 3.2.0)
       thor
     builder (3.1.4)
-    capybara (1.1.4)
+    capybara (2.1.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
-      selenium-webdriver (~> 2.0)
-      xpath (~> 0.1.4)
-    capybara-webkit (0.13.1)
-      capybara (>= 1.0.0, < 1.2)
+      xpath (~> 2.0)
+    capybara-webkit (1.1.1)
+      capybara (>= 2.0.2, < 2.2.0)
       json
-    childprocess (0.3.9)
-      ffi (~> 1.0, >= 1.0.11)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -79,7 +76,6 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
-    ffi (1.9.3)
     font-awesome-rails (4.0.3.1)
       railties (>= 3.2, < 5.0)
     foreman (0.63.0)
@@ -110,11 +106,11 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
-    mini_portile (0.5.2)
+    mini_portile (0.5.3)
     minitest (4.7.5)
     multi_json (1.9.2)
     multipart-post (1.2.0)
-    nokogiri (1.6.0)
+    nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     oauth2 (0.8.1)
       faraday (~> 0.8)
@@ -178,7 +174,6 @@ GEM
       parser (~> 2.0)
       powerpack (~> 0.0.6)
       rainbow (>= 1.1.4)
-    rubyzip (1.0.0)
     safe_yaml (0.9.7)
     sass (3.2.17)
     sass-rails (4.0.2)
@@ -189,11 +184,6 @@ GEM
     sawyer (0.5.1)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
-    selenium-webdriver (2.37.0)
-      childprocess (>= 0.2.5)
-      multi_json (~> 1.0)
-      rubyzip (~> 1.0.0)
-      websocket (~> 1.0.4)
     sentry-raven (0.7.1)
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
@@ -229,8 +219,7 @@ GEM
     webmock (1.15.2)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
-    websocket (1.0.7)
-    xpath (0.1.4)
+    xpath (2.0.0)
       nokogiri (~> 1.3)
 
 PLATFORMS
@@ -239,8 +228,8 @@ PLATFORMS
 DEPENDENCIES
   angularjs-rails
   bourbon
-  capybara (~> 1.0)
-  capybara-webkit
+  capybara (~> 2.1.0)
+  capybara-webkit (~> 1.1.1)
   coffee-rails
   database_cleaner
   debugger

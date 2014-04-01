@@ -8,9 +8,9 @@
     %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'ng-model' => 'search.name'}
   %ul{'ng-hide' => 'syncingRepos'}
     %li.repo{'ng-repeat' => 'repo in repos | filter:search'}
-      %span.toggle.activate{'ng-hide' => 'repo.active'}
-        %a{'href' => '', 'ng-click' => 'activate(repo)'}
-      %span.toggle.deactivate{'ng-show' => 'repo.active'}
-        %a{'href' => '', 'ng-click' => 'deactivate(repo)'}
+      %a.toggle.activate{'href' => '', 'ng-click' => 'activate(repo)',
+        'ng-hide' => 'repo.active'}
+      %a.toggle.deactivate{'href' => '', 'ng-click' => 'deactivate(repo)',
+        'ng-show' => 'repo.active'}
       %span.name
         {{repo.full_github_name}}
