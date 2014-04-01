@@ -17,10 +17,10 @@ module GithubApiHelper
       :get,
       "https://api.github.com/repos/#{repo_name}"
     ).with(
-      :headers => { "Authorization" => "token #{token}" }
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      :status => 200,
-      :body => File.read('spec/support/fixtures/repo.json'),
+      status: 200,
+      body: File.read('spec/support/fixtures/repo.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -30,10 +30,10 @@ module GithubApiHelper
       :get,
       "https://api.github.com/repos/#{repo_name}"
     ).with(
-      :headers => { "Authorization" => "token #{token}" }
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      :status => 200,
-      :body => File.read('spec/support/fixtures/repo_with_org.json'),
+      status: 200,
+      body: File.read('spec/support/fixtures/repo_with_org.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -43,10 +43,10 @@ module GithubApiHelper
       :get,
       "https://api.github.com/repos/#{repo_name}/teams"
     ).with(
-      :headers => { "Authorization" => "token #{token}" }
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      :status => 200,
-      :body => File.read('spec/support/fixtures/repo_teams.json'),
+      status: 200,
+      body: File.read('spec/support/fixtures/repo_teams.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -56,10 +56,10 @@ module GithubApiHelper
       :get,
       "https://api.github.com/repos/#{repo_name}/teams"
     ).with(
-      :headers => { "Authorization" => "token #{token}" }
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      :status => 200,
-      :body => '[]',
+      status: 200,
+      body: '[]',
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -69,10 +69,10 @@ module GithubApiHelper
       :get,
       "https://api.github.com/orgs/#{org_name}/teams"
     ).with(
-      :headers => { "Authorization" => "token #{token}" }
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      :status => 200,
-      :body => File.read('spec/support/fixtures/repo_teams.json'),
+      status: 200,
+      body: File.read('spec/support/fixtures/repo_teams.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -82,12 +82,10 @@ module GithubApiHelper
       :put,
       "https://api.github.com/teams/#{team_id}/members/#{username}"
     ).with(
-      :body => "{\"name\":\"#{username}\"}",
-      :headers => {"Authorization"=>"token #{token}"}
+      body: { name: username }.to_json,
+      headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      :status => 200,
-      :body => "",
-      :headers => {}
+      status: 200
     )
   end
 
@@ -96,12 +94,10 @@ module GithubApiHelper
       :put,
       "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
     ).with(
-      :body => '{}',
-      :headers => {"Authorization"=>"token #{token}"}
+      body: '{}',
+      headers: { 'Authorization'=>"token #{token}" }
     ).to_return(
-      :status => 200,
-      :body => "",
-      :headers => {}
+      status: 200,
     )
   end
 
