@@ -24,16 +24,20 @@ class BuildsController < ApplicationController
   end
 
   def build_runner
-    @build_runner ||= BuildRunner.new(pull_request_payload)
+    @build_runner ||= BuildRunner.new(payload)
   end
 
-  def pull_request_payload
-    @pull_request_payload ||= JSON.parse(params[:payload] || request.raw_post)
+  def payload
+    Payload.new(event_data)
   end
 
   def ignore_confirmation_pings
-    if pull_request_payload.key?('zen')
+    if event_data.key?('zen')
       head :ok
     end
+  end
+
+  def event_data
+    JSON.parse(params[:payload] || request.raw_post)
   end
 end

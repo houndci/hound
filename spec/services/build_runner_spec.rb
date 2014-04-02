@@ -1,146 +1,151 @@
 require 'spec_helper'
 
 describe BuildRunner, '#valid?' do
-  let(:github_id) { '12345' }
-  let(:payload_data) { { 'repository' => { 'id' => github_id } } }
-  let(:build_runner) { BuildRunner.new(payload_data) }
+  context 'with active repo' do
+    context 'with valid payload action' do
+      it 'returns true' do
+        payload = double(:payload, github_repo_id: 123, valid_action?: true)
+        create(:repo, :active, github_id: payload.github_repo_id)
+        runner = BuildRunner.new(payload)
 
-  context 'with inactive repo' do
-    it 'returns false' do
-      create(:repo, github_id: github_id, active: false)
+        expect(runner).to be_valid
+      end
+    end
 
-      expect(build_runner).not_to be_valid
+    context 'with invalid payload action' do
+      it 'returns true' do
+        payload = double(:payload, github_repo_id: 123, valid_action?: false)
+        create(:repo, :active, github_id: payload.github_repo_id)
+        runner = BuildRunner.new(payload)
+
+        expect(runner).not_to be_valid
+      end
     end
   end
 
-  context 'with active repo' do
-    context 'with synchronize action' do
-      it 'returns true' do
-        payload_data['action'] = 'synchronize'
-        create(:active_repo, github_id: github_id)
+  context 'with inactive repo' do
+    it 'returns false' do
+      payload = double(:payload, github_repo_id: 123)
+      create(:repo, :inactive, github_id: payload.github_repo_id)
+      runner = BuildRunner.new(payload)
 
-        expect(build_runner).to be_valid
-      end
-    end
-
-    context 'with opened action' do
-      it 'returns true' do
-        payload_data['action'] = 'opened'
-        create(:active_repo, github_id: github_id)
-
-        expect(build_runner).to be_valid
-      end
-    end
-
-    context 'with closed action' do
-      it 'returns false' do
-        payload_data['action'] = 'closed'
-        create(:active_repo, github_id: github_id)
-
-        expect(build_runner).not_to be_valid
-      end
+      expect(runner).not_to be_valid
     end
   end
 end
 
 describe BuildRunner, '#run' do
-  let(:fixture_file) { 'spec/support/fixtures/pull_request_opened_event.json' }
-  let(:payload_data) { JSON.parse(File.read(fixture_file)) }
-  let(:pull_request) { stub_pull_request }
+  it 'creates a build record with violations' do
+    repo = create(:repo, :active, github_id: 123)
+    build_runner = BuildRunner.new(stubbed_payload(repo))
+    stubbed_style_checker_with_violations
+    stubbed_commenter
+    stubbed_pull_request
+    stubbed_file_collection
 
-  before :each do
-    create(:active_repo, github_id: payload_data['repository']['id'])
-    line_violation = double(
-      :line_violation,
-      line_number: 123,
-      messages: ['A message', 'Another message']
+    expect { build_runner.run }.to change { Build.count }.by(1)
+    expect(Build.last).to eq repo.builds.last
+    expect(Build.last.violations).to have_at_least(1).violation
+  end
+
+  it 'comments on violations' do
+    repo = create(:repo, :active, github_id: 123)
+    build_runner = BuildRunner.new(stubbed_payload(repo))
+    commenter = stubbed_commenter
+    style_checker = stubbed_style_checker_with_violations
+    pull_request = stubbed_pull_request
+    stubbed_file_collection
+
+    build_runner.run
+
+    expect(commenter).to have_received(:comment_on_violations).with(
+      style_checker.violations,
+      pull_request
     )
-    modified_line = double(:modified_line, line_number: 123, patch_position: 22)
-    file_violation = double(
-      :file_violation,
-      filename: 'test.rb',
-      line_violations: [line_violation],
-      modified_lines: [modified_line]
+  end
+
+  it 'initializes StyleChecker with modified files and config' do
+    repo = create(:repo, :active, github_id: 123)
+    build_runner = BuildRunner.new(stubbed_payload(repo))
+    pull_request = stubbed_pull_request
+    file_collection = stubbed_file_collection
+    stubbed_style_checker_with_violations
+    stubbed_commenter
+
+    build_runner.run
+
+    expect(StyleChecker).to have_received(:new).with(
+      file_collection.relevant_files,
+      pull_request.config
     )
-    style_checker = double(:style_checker, violations: [file_violation])
+  end
+
+  it 'initializes FileCollection with pull request files' do
+    repo = create(:repo, :active, github_id: 123)
+    build_runner = BuildRunner.new(stubbed_payload(repo))
+    pull_request = stubbed_pull_request
+    stubbed_file_collection
+    stubbed_style_checker_with_violations
+    stubbed_commenter
+
+    build_runner.run
+
+    expect(FileCollection).to have_received(:new).with(
+      pull_request.pull_request_files
+    )
+  end
+
+  it 'initializes PullRequest with payload and Hound token' do
+    repo = create(:repo, :active, github_id: 123)
+    payload = stubbed_payload(repo)
+    build_runner = BuildRunner.new(payload)
+    stubbed_pull_request
+    stubbed_file_collection
+    stubbed_style_checker_with_violations
+    stubbed_commenter
+
+    build_runner.run
+
+    expect(PullRequest).to have_received(:new).with(
+      payload,
+      ENV['HOUND_GITHUB_TOKEN']
+    )
+  end
+
+  def stubbed_payload(repo)
+    double(:payload, github_repo_id: repo.github_id)
+  end
+
+  def stubbed_style_checker_with_violations
+    violations = [double(:violation)]
+    style_checker = double(:style_checker, violations: violations)
     StyleChecker.stub(new: style_checker)
-    PullRequest.stub(new: pull_request)
+
+    style_checker
   end
 
-  context 'with violations' do
-    it 'saves a build record' do
-      build_runner = BuildRunner.new(payload_data)
+  def stubbed_commenter
+    commenter = double(:commenter).as_null_object
+    Commenter.stub(new: commenter)
 
-      build_runner.run
-
-      build = Build.last
-      expect(build).to be_persisted
-      expect(build.violations).to have_at_least(1).item
-    end
-
-    it 'creates a comment on GitHub' do
-      build_runner = BuildRunner.new(payload_data)
-
-      build_runner.run
-
-      expect(pull_request).to have_received(:add_comment).with('test.rb', 22, anything)
-    end
+    commenter
   end
 
-  context 'with removed file' do
-    it 'filters out removed files' do
-      build_runner = BuildRunner.new(payload_data)
-      pr_file1 = double(removed?: true, ruby?: true, filename: 'game.rb')
-      pr_file2 = double(removed?: false, ruby?: true, filename: 'config.rb')
-      pull_request = stub_pull_request(pull_request_files: [pr_file1, pr_file2])
-
-      build_runner.run
-
-      expect(StyleChecker).to have_received(:new)
-        .with([pr_file2], pull_request.config)
-    end
-  end
-
-  context 'with non-ruby files' do
-    it 'filters out non-ruby files' do
-      build_runner = BuildRunner.new(payload_data)
-      pr_file1 = double(removed?: false, ruby?: false, filename: 'path/app.js')
-      pr_file2 = double(removed?: false, ruby?: true, filename: 'path/user.rb')
-      pull_request = stub_pull_request(pull_request_files: [pr_file1, pr_file2])
-
-      build_runner.run
-
-      expect(StyleChecker).to have_received(:new)
-        .with([pr_file2], pull_request.config)
-    end
-  end
-
-  context 'with ignored files' do
-    it 'filters out ignored' do
-      build_runner = BuildRunner.new(payload_data)
-      schema = double(removed?: false, ruby?: true, filename: 'db/schema.rb')
-      ruby_file = double(removed?: false, ruby?: true, filename: 'path/user.rb')
-      pull_request = stub_pull_request(pull_request_files: [schema, ruby_file])
-
-      build_runner.run
-
-      expect(StyleChecker).to have_received(:new)
-        .with([ruby_file], pull_request.config)
-    end
-  end
-
-  def stub_pull_request(options = {})
-    default_options = {
-      set_pending_status: nil,
-      set_success_status: nil,
-      set_failure_status: nil,
-      config: nil,
-      add_comment: nil,
-      pull_request_files: []
-    }
-    pull_request = double(:pull_request, default_options.merge(options))
+  def stubbed_pull_request
+    pull_request = double(
+      :pull_request,
+      pull_request_files: [double(:file)],
+      config: double(:config)
+    )
     PullRequest.stub(new: pull_request)
 
     pull_request
+  end
+
+  def stubbed_file_collection
+    file_collection = double(:file_collection, relevant_files: [double(:file)])
+    FileCollection.stub(new: file_collection)
+
+    file_collection
   end
 end

@@ -1,7 +1,4 @@
 class StyleChecker
-  FileViolation = Struct.new(:filename, :line_violations, :modified_lines)
-  LineViolation = Struct.new(:line_number, :code, :messages)
-
   RULES = [
     Rubocop::Cop::Style::AndOr,
     Rubocop::Cop::Style::Blocks,

@@ -13,91 +13,84 @@ feature 'Builds' do
   context 'with payload nesting' do
     scenario 'a successful build with custom config' do
       repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
-      stub_github_requests(repo.full_github_name, pr_sha)
+      stub_github_requests_with_no_violations
+      comment_request = stubbed_comment_request
 
       page.driver.post builds_path, payload: payload
 
-      expect_no_comment_request(repo.full_github_name, pr_number)
+      expect(comment_request).not_to have_been_requested
     end
   end
 
   context 'without payload nesting' do
     scenario 'a successful build with custom config' do
       repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
-      stub_github_requests(repo.full_github_name, pr_sha)
+      stub_github_requests_with_no_violations
+      comment_request = stubbed_comment_request
 
       page.driver.post builds_path, payload
 
-      expect_no_comment_request(repo.full_github_name, pr_number)
+      expect(comment_request).not_to have_been_requested
     end
   end
 
   scenario 'a failed build' do
-    repo = create(:active_repo, github_id: repo_id, full_github_name: repo_name)
-    stub_request(
-      :post,
-      'https://api.github.com/repos/salbertson/life/pulls/2/comments'
-    )
-    stub_commit_request(
-      repo.full_github_name,
-      pr_sha,
-      ENV['HOUND_GITHUB_TOKEN']
-    )
-    stub_contents_request(
-      ENV['HOUND_GITHUB_TOKEN'],
-      repo_name: repo.full_github_name,
-      sha: pr_sha,
-      file: 'file1.rb',
-      fixture: 'contents_with_violations.json'
-    )
-    stub_contents_request(
-      ENV['HOUND_GITHUB_TOKEN'],
-      repo_name: repo.full_github_name,
-      sha: pr_sha,
-      file: '.hound.yml',
-      fixture: 'config_contents.json'
-    )
+    repo = create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
+    stub_github_requests_with_violations
+    comment_request = stubbed_comment_request
 
     page.driver.post builds_path, payload: payload
 
-    expect_a_comment_request(repo.full_github_name, pr_number)
+    expect(comment_request).to have_been_requested
   end
 
-  def stub_github_requests(full_github_name, pull_request_number)
-    stub_commit_request(
-      full_github_name,
-      pr_sha,
+  def stub_github_requests_with_no_violations
+    stub_pull_request_files_request(
+      repo_name,
+      pr_number,
       ENV['HOUND_GITHUB_TOKEN']
     )
     stub_contents_request(
       ENV['HOUND_GITHUB_TOKEN'],
-      repo_name: full_github_name,
+      repo_name: repo_name,
       sha: pr_sha,
       file: 'file1.rb',
       fixture: 'contents.json'
     )
     stub_contents_request(
       ENV['HOUND_GITHUB_TOKEN'],
-      repo_name: full_github_name,
+      repo_name: repo_name,
       sha: pr_sha,
       file: '.hound.yml',
       fixture: 'config_contents.json'
     )
   end
 
-  def expect_a_comment_request(repo_name, pull_request_number)
-    expect(
-      a_request(:post, comment_url(repo_name, pull_request_number))
-    ).to have_been_made
+  def stub_github_requests_with_violations
+    stub_pull_request_files_request(
+      repo_name,
+      pr_number,
+      ENV['HOUND_GITHUB_TOKEN']
+    )
+    stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
+      repo_name: repo_name,
+      sha: pr_sha,
+      file: '.hound.yml',
+      fixture: 'config_contents.json'
+    )
+    stub_contents_request(
+      ENV['HOUND_GITHUB_TOKEN'],
+      repo_name: repo_name,
+      sha: pr_sha,
+      fixture: 'contents_with_violations.json'
+    )
   end
 
-  def expect_no_comment_request(repo_name, pull_request_number)
-    expect(
-      a_request(:post, comment_url(repo_name, pull_request_number))
-    ).not_to have_been_made
-  end
-
-  def comment_url(full_repo_name, pull_request_number)
-    "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
+  def stubbed_comment_request
+    stub_request(
+      :post,
+      "https://api.github.com/repos/#{repo_name}/pulls/#{pr_number}/comments"
+    )
   end
 end
