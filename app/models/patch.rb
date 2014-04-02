@@ -3,8 +3,6 @@ class Patch
   MODIFIED_LINE = /^\+(?!\+|\+)/
   NOT_REMOVED_LINE = /^[^-]/
 
-  Line = Struct.new(:content, :line_number, :patch_position)
-
   def initialize(body)
     @body = body
   end

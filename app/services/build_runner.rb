@@ -1,67 +1,45 @@
 class BuildRunner
-  IGNORED_FILES = ['db/schema.rb']
+  attr_reader :payload
 
-  include Rails.application.routes.url_helpers
-
-  def initialize(payload_data)
-    @payload_data = payload_data
+  def initialize(payload)
+    @payload = payload
   end
 
   def run
-    style_checker = StyleChecker.new(modified_files, pull_request.config)
-    violations = style_checker.violations
-    build = repo.builds.create!(violations: violations)
-
-    if violations.any?
-      comment_on_failures(violations)
+    if repo && relevant_pull_request
+      repo.builds.create!(violations: violations)
+      commenter.comment_on_violations(violations, pull_request)
     end
-  end
-
-  def valid?
-    repo && payload.valid_action?
   end
 
   private
 
-  def modified_files
-    relevant_files.reject do |file|
-      file.removed? || !file.ruby? || IGNORED_FILES.include?(file.filename)
-    end
+  def relevant_pull_request
+    pull_request.opened? || pull_request.synchronize?
   end
 
-  def relevant_files
-    if payload.synchronize?
-      pull_request.head_commit_files
-    else
-      pull_request.pull_request_files
-    end
+  def violations
+    @violations ||= style_checker.violations
+  end
+
+  def style_checker
+    StyleChecker.new(modified_files, pull_request.config)
+  end
+
+  def modified_files
+    collection = FileCollection.new(pull_request.pull_request_files)
+    collection.relevant_files
+  end
+
+  def commenter
+    Commenter.new
   end
 
   def pull_request
     @pull_request ||= PullRequest.new(payload, ENV['HOUND_GITHUB_TOKEN'])
   end
 
-  def payload
-    @payload ||= Payload.new(@payload_data)
-  end
-
   def repo
     @repo ||= Repo.active.where(github_id: payload.github_repo_id).first
-  end
-
-  def comment_on_failures(violations)
-    violations.each do |file_violation|
-      file_violation.line_violations.each do |line_violation|
-        modified_line = file_violation.modified_lines.detect do |modified_line|
-          modified_line.line_number == line_violation.line_number
-        end
-
-        pull_request.add_comment(
-          file_violation.filename,
-          modified_line.patch_position,
-          line_violation.messages.join('<br>')
-        )
-      end
-    end
   end
 end

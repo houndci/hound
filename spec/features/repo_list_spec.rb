@@ -64,7 +64,7 @@ feature 'Repo list', js: true do
 
   scenario 'user deactivates repo' do
     user = create(:user)
-    repo = create(:active_repo)
+    repo = create(:repo, :active)
     repo.users << user
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 

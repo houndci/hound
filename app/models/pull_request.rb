@@ -6,6 +6,12 @@ class PullRequest
     @github_token = github_token
   end
 
+  def head_includes?(line)
+    head_commit_files.detect do |file|
+      file.modified_lines.include?(line)
+    end
+  end
+
   def head_commit_files
     api.commit_files(full_repo_name, head_sha).map do |file|
       ModifiedFile.new(file, self)
@@ -44,6 +50,14 @@ class PullRequest
     file_contents(CONFIG_FILE)
   rescue Octokit::NotFound
     nil
+  end
+
+  def opened?
+    @payload.action == 'opened'
+  end
+
+  def synchronize?
+    @payload.action == 'synchronize'
   end
 
   private

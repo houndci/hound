@@ -1,16 +1,11 @@
 class BuildsController < ApplicationController
   before_action :ignore_confirmation_pings, only: [:create]
   skip_before_filter :verify_authenticity_token, only: [:create]
-  skip_before_filter :authenticate
+  skip_before_filter :authenticate, only: [:create]
 
   def create
-    if build_runner.valid?
-      Delayed::Job.enqueue(build_job)
-
-      render nothing: true
-    else
-      render text: 'Invalid GitHub action', status: 404
-    end
+    Delayed::Job.enqueue(build_job)
+    head :ok
   end
 
   private
@@ -24,15 +19,27 @@ class BuildsController < ApplicationController
   end
 
   def build_runner
-    @build_runner ||= BuildRunner.new(pull_request_payload)
+    @build_runner ||= BuildRunner.new(payload)
   end
 
-  def pull_request_payload
-    @pull_request_payload ||= JSON.parse(params[:payload] || request.raw_post)
+  def build_job
+    BuildJob.new(build_runner)
+  end
+
+  def build_runner
+    BuildRunner.new(payload)
+  end
+
+  def payload
+    Payload.new(event_data)
+  end
+
+  def event_data
+    JSON.parse(params[:payload] || request.raw_post)
   end
 
   def ignore_confirmation_pings
-    if pull_request_payload.key?('zen')
+    if event_data.key?('zen')
       head :ok
     end
   end

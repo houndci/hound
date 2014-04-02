@@ -11,10 +11,13 @@ FactoryGirl.define do
     sequence(:name) { |n| "Repo #{n}" }
     sequence(:full_github_name) { |n| "user/repo#{n}" }
     sequence(:github_id) { |n| n }
-    active false
 
-    factory :active_repo do
+    trait :active do
       active true
+    end
+
+    trait :inactive do
+      active false
     end
 
     after(:create) do |repo|

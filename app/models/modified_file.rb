@@ -34,6 +34,12 @@ class ModifiedFile
     @modified_lines ||= patch.additions
   end
 
+  def modified_line_at(line_number)
+    modified_lines.detect do |modified_line|
+      modified_line.line_number == line_number
+    end
+  end
+
   private
 
   def patch

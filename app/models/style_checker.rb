@@ -1,7 +1,4 @@
 class StyleChecker
-  FileViolation = Struct.new(:filename, :line_violations, :modified_lines)
-  LineViolation = Struct.new(:line_number, :code, :messages)
-
   RULES = [
     Rubocop::Cop::Style::AndOr,
     Rubocop::Cop::Style::Blocks,
@@ -52,17 +49,16 @@ class StyleChecker
     Rubocop::Cop::Style::VariableName
   ]
 
-  def initialize(files, custom_config = nil)
-    @files = files
+  def initialize(modified_files, custom_config = nil)
+    @modified_files = modified_files
     @custom_config = custom_config
   end
 
   def violations
-    possible_violations = @files.map do |file|
+    possible_violations = @modified_files.map do |modified_file|
       FileViolation.new(
-        file.filename,
-        line_violations(file),
-        file.modified_lines
+        modified_file.filename,
+        line_violations(modified_file)
       )
     end
 
@@ -73,32 +69,27 @@ class StyleChecker
 
   private
 
-  def line_violations(file)
-    violations = violations_in_file(file).select do |violation|
-      file.relevant_line?(violation.line)
+  def line_violations(modified_file)
+    violations = violations_in_file(modified_file).select do |violation|
+      modified_file.relevant_line?(violation.line)
     end
 
     violations.group_by(&:line).map do |line_number, violations|
       LineViolation.new(
-        line_number,
-        line_in_file(line_number, file),
+        modified_file.modified_line_at(line_number),
         violations.map(&:message).uniq
       )
     end
   end
 
-  def violations_in_file(file)
+  def violations_in_file(modified_file)
     team = Rubocop::Cop::Team.new(RULES, configuration)
     commissioner = Rubocop::Cop::Commissioner.new(team.cops)
-    commissioner.investigate(parse_file_content(file))
+    commissioner.investigate(parse_file_content(modified_file))
   end
 
-  def parse_file_content(file)
-    Rubocop::SourceParser.parse(file.contents)
-  end
-
-  def line_in_file(line_number, file)
-    parse_file_content(file).lines[line_number - 1]
+  def parse_file_content(modified_file)
+    Rubocop::SourceParser.parse(modified_file.contents)
   end
 
   def configuration
