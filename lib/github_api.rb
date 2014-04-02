@@ -80,7 +80,7 @@ class GithubApi
       repo.organization.login,
       {
         name: name,
-        repo_names: [repo.name],
+        repo_names: [repo.full_name],
         permission: 'push'
       }
     )
