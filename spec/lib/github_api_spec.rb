@@ -27,7 +27,7 @@ describe GithubApi do
       end
 
       context 'when repo is not part of a team' do
-        it 'adds user to first organization team' do
+        it 'creates a Collaborators team and adds user to the new team' do
           token = 'abc123'
           username = 'testuser'
           repo_name = 'testing/repo'
@@ -35,7 +35,7 @@ describe GithubApi do
           api = GithubApi.new(token)
           stub_repo_with_org_request(repo_name, token)
           stub_empty_repo_teams_request(repo_name, token)
-          stub_org_teams_request('testing', token)
+          stub_team_creation_request('testing', 'repo', token)
           add_user_request = stub_add_user_to_team_request(
             username,
             team_id,

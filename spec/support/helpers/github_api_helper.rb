@@ -38,6 +38,24 @@ module GithubApiHelper
     )
   end
 
+  def stub_team_creation_request(org, repo_name, token)
+    stub_request(
+      :post,
+      "https://api.github.com/orgs/#{org}/teams"
+    ).with(
+      body: {
+        name: 'Collaborators',
+        repo_names: [repo_name],
+        permission: 'push'
+      }.to_json,
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/team_creation.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   def stub_repo_teams_request(repo_name, token)
     stub_request(
       :get,
