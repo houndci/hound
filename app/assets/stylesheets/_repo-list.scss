@@ -43,20 +43,21 @@
     padding: .75rem 0;
     position: relative;
 
-    .toggle a {
-      display: block;
-      padding: 0 .5rem 0 0;
-      @include position(absolute, 0px 0 0px 0px);
+    .toggle {
       @include user-select(none);
-      width: $repo-list-toggle-size;
+      display: inline-block;
+      padding: 0 .5rem 0 0;
 
       &:after {
         border-radius: 100%;
         box-shadow: inset 0 0 0 2px $inactive-color;
-        content: '';
+        color: #fff;
+        content: '\f00c';
         display: block;
+        font-family: "FontAwesome";
         height: $repo-list-toggle-size;
-        @include position(absolute, .75rem .5rem 0 0);
+        line-height: 1.6rem;
+        text-align: center;
         width: $repo-list-toggle-size;
       }
 
@@ -67,22 +68,15 @@
           box-shadow: inset 0 0 0 3px $inactive-color;
         }
       }
-    }
 
-    .deactivate a:after {
-      background: $active-color;
-      box-shadow: inset 0 0 0 2px $active-color;
-      color: #fff;
-      content: '\f00c';
-      font-family: "FontAwesome";
-      text-align: center;
-      line-height: 1.6rem;
+      &.deactivate:after {
+        background: $active-color;
+        box-shadow: inset 0 0 0 2px $active-color;
+      }
     }
 
     .name {
-      display: block;
       line-height: $repo-list-toggle-size;
-      padding-left: $repo-list-toggle-size * 1.5;
     }
   }
 }

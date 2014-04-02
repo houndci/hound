@@ -4,24 +4,18 @@ feature 'Builds' do
   let(:payload) do
     File.read('spec/support/fixtures/pull_request_synchronize_event.json')
   end
-  let(:zen_payload) { File.read('spec/support/fixtures/zen_payload.json') }
   let(:parsed_payload) { JSON.parse(payload) }
   let(:repo_name) { parsed_payload['repository']['full_name'] }
   let(:repo_id) { parsed_payload['repository']['id'] }
   let(:pr_sha) { parsed_payload['pull_request']['head']['sha'] }
   let(:pr_number) { parsed_payload['number'] }
 
-  scenario 'a successful event ping' do
-    response = post builds_path, payload: zen_payload
-    expect(response).to eq 200
-  end
-
   context 'with payload nesting' do
     scenario 'a successful build with custom config' do
       repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
       stub_github_requests(repo.full_github_name, pr_sha)
 
-      post builds_path, payload: payload
+      page.driver.post builds_path, payload: payload
 
       expect_no_comment_request(repo.full_github_name, pr_number)
     end
@@ -32,7 +26,7 @@ feature 'Builds' do
       repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
       stub_github_requests(repo.full_github_name, pr_sha)
 
-      post builds_path, payload
+      page.driver.post builds_path, payload
 
       expect_no_comment_request(repo.full_github_name, pr_number)
     end
@@ -64,7 +58,7 @@ feature 'Builds' do
       fixture: 'config_contents.json'
     )
 
-    post builds_path, payload: payload
+    page.driver.post builds_path, payload: payload
 
     expect_a_comment_request(repo.full_github_name, pr_number)
   end

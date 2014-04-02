@@ -17,12 +17,11 @@ describe GithubApi do
 
   describe '#create_pull_request_hook' do
     it 'creates pull request web hook' do
-      auth_token = 'authtoken'
-      api = GithubApi.new(auth_token)
+      api = GithubApi.new(AuthenticationHelper::GITHUB_TOKEN)
       full_repo_name = 'jimtom/repo'
       callback_endpoint = 'http://example.com'
       allow(api).to receive(:update_repo_hook_id).with(full_repo_name: true)
-      stub_hook_creation_request(auth_token, full_repo_name, callback_endpoint)
+      stub_hook_creation_request(full_repo_name, callback_endpoint)
 
       response = api.create_pull_request_hook(full_repo_name, callback_endpoint)
 

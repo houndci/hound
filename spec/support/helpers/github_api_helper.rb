@@ -1,11 +1,28 @@
 module GithubApiHelper
+  def stub_repo_request(full_repo_name)
+    stub_request(:get, "https://api.github.com/repos/#{full_repo_name}").
+      with(headers: { 'Authorization' => "token #{auth_token}" }).
+      to_return(
+        status: 200,
+        body: {}.to_json,
+        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      )
+  end
+
+  def stub_add_collaborator_request(full_repo_name)
+    url = "https://api.github.com/repos/#{full_repo_name}/collaborators/houndci"
+    stub_request(:put, url).
+      with(headers: { 'Authorization' => "token #{auth_token}" }).
+      to_return(status: 200)
+  end
+
   def stub_repo_requests(auth_token)
     stub_paginated_repo_requests(auth_token)
     stub_orgs_request(auth_token)
     stub_paginated_org_repo_requests(auth_token)
   end
 
-  def stub_hook_creation_request(auth_token, full_repo_name, callback_endpoint)
+  def stub_hook_creation_request(full_repo_name, callback_endpoint)
     stub_request(
       :post,
       "https://api.github.com/repos/#{full_repo_name}/hooks"
@@ -20,14 +37,10 @@ module GithubApiHelper
   end
 
   def stub_hook_removal_request(full_repo_name, hook_id)
-    stub_request(
-      :delete,
-      "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
-    ).with(
-      headers: { 'Authorization' => /^token \w+$/ }
-    ).to_return(
-      status: 204
-    )
+    url = "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
+    stub_request(:delete, url).
+      with(headers: { 'Authorization' => /^token \w+$/ }).
+      to_return(status: 204)
   end
 
   def stub_commit_request(full_repo_name, commit_sha, auth_token = 'githubtoken')
@@ -169,5 +182,11 @@ module GithubApiHelper
         position: line_number
       }.to_json
     ).to_return(status: 200)
+  end
+
+  private
+
+  def auth_token
+    AuthenticationHelper::GITHUB_TOKEN
   end
 end
