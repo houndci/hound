@@ -46,6 +46,14 @@ class PullRequest
     nil
   end
 
+  def opened?
+    @payload.action == 'opened'
+  end
+
+  def synchronized?
+    @payload.action == 'synchronized'
+  end
+
   private
 
   def api

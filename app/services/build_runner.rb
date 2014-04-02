@@ -6,17 +6,19 @@ class BuildRunner
   end
 
   def run
-    repo.builds.create!(violations: violations)
+    if repo && relevant_pull_request
+      repo.builds.create!(violations: violations)
 
-    commenter = Commenter.new
-    commenter.comment_on_violations(violations, pull_request)
-  end
-
-  def valid?
-    repo && payload.valid_action?
+      commenter = Commenter.new
+      commenter.comment_on_violations(violations, pull_request)
+    end
   end
 
   private
+
+  def relevant_pull_request
+    pull_request.opened? || pull_request.synchronized?
+  end
 
   def violations
     @violations ||= style_checker.violations

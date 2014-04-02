@@ -4,13 +4,10 @@ class BuildsController < ApplicationController
   skip_before_filter :authenticate
 
   def create
-    if build_runner.valid?
-      Delayed::Job.enqueue(build_job)
-
-      render nothing: true
-    else
-      render text: 'Invalid GitHub action', status: 404
-    end
+    build_runner = BuildRunner.new(payload)
+    # stop enqueuing entire object
+    Delayed::Job.enqueue(BuildJob.new(build_runner))
+    render nothing: true
   end
 
   private
@@ -31,13 +28,13 @@ class BuildsController < ApplicationController
     Payload.new(event_data)
   end
 
+  def event_data
+    JSON.parse(params[:payload] || request.raw_post)
+  end
+
   def ignore_confirmation_pings
     if event_data.key?('zen')
       head :ok
     end
-  end
-
-  def event_data
-    JSON.parse(params[:payload] || request.raw_post)
   end
 end

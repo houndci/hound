@@ -1,5 +1,45 @@
 require 'spec_helper'
 
+describe PullRequest, '#opened?' do
+  context 'when payload action is opened' do
+    it 'returns true' do
+      payload = double(:payload, action: 'opened')
+      pull_request = PullRequest.new(payload, 'token')
+
+      expect(pull_request).to be_opened
+    end
+  end
+
+  context 'when payload action is not opened' do
+    it 'returns false' do
+      payload = double(:payload, action: 'notopened')
+      pull_request = PullRequest.new(payload, 'token')
+
+      expect(pull_request).not_to be_opened
+    end
+  end
+end
+
+describe PullRequest, '#synchronized?' do
+  context 'when payload action is synchronized' do
+    it 'returns true' do
+      payload = double(:payload, action: 'synchronized')
+      pull_request = PullRequest.new(payload, 'token')
+
+      expect(pull_request).to be_synchronized
+    end
+  end
+
+  context 'when payload action is not synchronized' do
+    it 'returns false' do
+      payload = double(:payload, action: 'notsynchronized')
+      pull_request = PullRequest.new(payload, 'token')
+
+      expect(pull_request).not_to be_synchronized
+    end
+  end
+end
+
 describe PullRequest, '#head_commit_files' do
   it 'returns modified files in the commit' do
     github_api = double(:github_api, commit_files: [double, double])
