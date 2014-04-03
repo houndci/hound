@@ -44,7 +44,7 @@ module GithubApiHelper
       "https://api.github.com/orgs/#{org}/teams"
     ).with(
       body: {
-        name: 'Collaborators',
+        name: 'Services',
         repo_names: [repo_name],
         permission: 'push'
       }.to_json,
