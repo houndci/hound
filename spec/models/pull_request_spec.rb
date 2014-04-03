@@ -1,5 +1,52 @@
 require 'spec_helper'
 
+describe PullRequest, '#head_includes?' do
+  context 'when HEAD commit includes line' do
+    it 'returns true' do
+      code = 'A line of code'
+      line = Line.new(code)
+      same_line = Line.new(code)
+      modified_file = double(:modified_file, modified_lines: [line])
+      ModifiedFile.stub(new: modified_file)
+      commit_file = double(:commit_file)
+      github = double(:github, commit_files: [commit_file])
+      GithubApi.stub(new: github)
+      payload = double(
+        :payload,
+        head_sha: 'headsha',
+        full_repo_name: 'test/repo'
+      )
+      pull_request = PullRequest.new(payload, 'token')
+
+      includes_line = pull_request.head_includes?(double(:line, content: code))
+
+      expect(includes_line).to be_true
+    end
+  end
+
+  context 'when HEAD commit does not include line' do
+    it 'returns false' do
+      line = Line.new('A line of code')
+      different_line = Line.new('A different line of code')
+      modified_file = double(:modified_file, modified_lines: [line])
+      ModifiedFile.stub(new: modified_file)
+      commit_file = double(:commit_file)
+      github = double(:github, commit_files: [commit_file])
+      GithubApi.stub(new: github)
+      payload = double(
+        :payload,
+        head_sha: 'headsha',
+        full_repo_name: 'test/repo'
+      )
+      pull_request = PullRequest.new(payload, 'token')
+
+      includes_line = pull_request.head_includes?(different_line)
+
+      expect(includes_line).to be_false
+    end
+  end
+end
+
 describe PullRequest, '#opened?' do
   context 'when payload action is opened' do
     it 'returns true' do
