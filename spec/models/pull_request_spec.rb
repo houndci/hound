@@ -67,22 +67,22 @@ describe PullRequest, '#opened?' do
   end
 end
 
-describe PullRequest, '#synchronized?' do
-  context 'when payload action is synchronized' do
+describe PullRequest, '#synchronize?' do
+  context 'when payload action is synchronize' do
     it 'returns true' do
-      payload = double(:payload, action: 'synchronized')
+      payload = double(:payload, action: 'synchronize')
       pull_request = PullRequest.new(payload, 'token')
 
-      expect(pull_request).to be_synchronized
+      expect(pull_request).to be_synchronize
     end
   end
 
-  context 'when payload action is not synchronized' do
+  context 'when payload action is not synchronize' do
     it 'returns false' do
-      payload = double(:payload, action: 'notsynchronized')
+      payload = double(:payload, action: 'notsynchronize')
       pull_request = PullRequest.new(payload, 'token')
 
-      expect(pull_request).not_to be_synchronized
+      expect(pull_request).not_to be_synchronize
     end
   end
 end

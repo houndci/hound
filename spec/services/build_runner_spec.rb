@@ -92,12 +92,12 @@ describe BuildRunner, '#run' do
     end
   end
 
-  context 'without opened or synchronized pull request' do
+  context 'without opened or synchronize pull request' do
     it 'does not attempt to comment' do
       repo = create(:repo, :active)
       pull_request = stubbed_pull_request
       pull_request.stub(opened?: false)
-      pull_request.stub(synchronized?: false)
+      pull_request.stub(synchronize?: false)
       Commenter.stub(:new)
       runner = BuildRunner.new(double(:payload, github_repo_id: repo.github_id))
 

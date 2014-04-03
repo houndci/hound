@@ -44,12 +44,12 @@ describe Commenter do
         end
       end
 
-      context 'when pull request is synchronized' do
+      context 'when pull request is synchronize' do
         context 'when the violation is in the last commit' do
           it 'comments on the violations at the correct patch position' do
             pull_request = double(
               :pull_request,
-              synchronized?: true,
+              synchronize?: true,
               opened?: false,
               add_comment: true,
               head_includes?: true
@@ -83,7 +83,7 @@ describe Commenter do
           it 'does not comment' do
             pull_request = double(
               :pull_request,
-              synchronized?: true,
+              synchronize?: true,
               opened?: false,
               add_comment: true,
               head_includes?: false

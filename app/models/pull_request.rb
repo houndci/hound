@@ -56,8 +56,8 @@ class PullRequest
     @payload.action == 'opened'
   end
 
-  def synchronized?
-    @payload.action == 'synchronized'
+  def synchronize?
+    @payload.action == 'synchronize'
   end
 
   private
