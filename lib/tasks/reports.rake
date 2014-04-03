@@ -10,7 +10,7 @@ namespace :reports do
         and builds.created_at < '#{week + 7.days}'
       SQL
 
-      generate_output(weekly_activity_sql)
+      generate_output(weekly_activity_sql, week)
     end
   end
 
@@ -23,7 +23,7 @@ namespace :reports do
         and created_at < '#{week + 7.days}'
       SQL
 
-      generate_output(new_users_by_week_sql)
+      generate_output(new_users_by_week_sql, week)
     end
   end
 
@@ -36,7 +36,7 @@ namespace :reports do
         and created_at < '#{week + 7.days}'
       SQL
 
-      generate_output(builds_by_week_sql)
+      generate_output(builds_by_week_sql, week)
     end
   end
 
@@ -49,8 +49,8 @@ namespace :reports do
     Repo.connection.execute(series_sql).map {|result| Date.parse(result['week'])}
   end
 
-  def generate_output
-    weekly_activity = Repo.connection.execute(weekly_activity_sql).first
-    puts "#{week}: #{weekly_activity['count']}"
+  def generate_output(sql, week)
+    results = Repo.connection.execute(sql).first
+    puts "#{week}: #{results['count']}"
   end
 end
