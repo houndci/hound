@@ -16,15 +16,9 @@ class GithubApi
     repo = client.repository(repo_name)
 
     if repo.organization
-      repo_teams = client.repository_teams(repo_name)
-
-      if repo_teams.any?
-        add_user_to_team(username, repo_teams.first.id)
-      else
-        add_user_to_new_team(username, 'Collaborators', repo)
-      end
+      add_user_to_org(username, repo)
     else
-      client.add_collaborator(repo_name, username)
+      client.add_collaborator(repo.full_name, username)
     end
   end
 
@@ -66,6 +60,16 @@ class GithubApi
   end
 
   private
+
+  def add_user_to_org(username, repo)
+    repo_teams = client.repository_teams(repo.full_name)
+
+    if repo_teams.any?
+      add_user_to_team(username, repo_teams.first.id)
+    else
+      add_user_to_new_team(username, 'Services', repo)
+    end
+  end
 
   def add_user_to_new_team(username, team_name, repo)
     add_user_to_team(username, create_new_team(team_name, repo).id)

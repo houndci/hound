@@ -9,7 +9,7 @@ describe GithubApi do
         it 'adds user to first repo team' do
           token = 'abc123'
           username = 'testuser'
-          repo_name = 'org/repo'
+          repo_name = 'testing/repo' # from fixture
           team_id = 1234 # from fixture
           api = GithubApi.new(token)
           stub_repo_with_org_request(repo_name, token)
@@ -27,10 +27,10 @@ describe GithubApi do
       end
 
       context 'when repo is not part of a team' do
-        it 'creates a Collaborators team and adds user to the new team' do
+        it 'creates a Services team and adds user to the new team' do
           token = 'abc123'
           username = 'testuser'
-          repo_name = 'testing/repo'
+          repo_name = 'testing/repo' # from fixture
           team_id = 1234 # from fixture
           api = GithubApi.new(token)
           stub_repo_with_org_request(repo_name, token)
