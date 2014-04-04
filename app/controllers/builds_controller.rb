@@ -4,8 +4,7 @@ class BuildsController < ApplicationController
   skip_before_filter :authenticate, only: [:create]
 
   def create
-    build_runner = BuildRunner.new(payload)
-    Delayed::Job.enqueue(BuildJob.new(build_runner))
+    Delayed::Job.enqueue(build_job)
     head :ok
   end
 
@@ -21,6 +20,14 @@ class BuildsController < ApplicationController
 
   def build_runner
     @build_runner ||= BuildRunner.new(payload)
+  end
+
+  def build_job
+    BuildJob.new(build_runner)
+  end
+
+  def build_runner
+    BuildRunner.new(payload)
   end
 
   def payload
