@@ -6,7 +6,7 @@ class BuildsController < ApplicationController
   def create
     build_runner = BuildRunner.new(payload)
     Delayed::Job.enqueue(BuildJob.new(build_runner))
-    render nothing: true
+    head :ok
   end
 
   private
