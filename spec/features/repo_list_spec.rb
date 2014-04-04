@@ -18,6 +18,7 @@ feature 'Repo list' do
     sign_in_as(user)
 
     visit root_path
+    debugger
     click_link I18n.t('sync_repos')
 
     expect(page).to have_content I18n.t('syncing_repos')
