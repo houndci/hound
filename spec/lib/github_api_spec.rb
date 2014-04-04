@@ -83,16 +83,30 @@ describe GithubApi do
   end
 
   describe '#create_pull_request_hook' do
-    it 'creates pull request web hook' do
-      api = GithubApi.new(AuthenticationHelper::GITHUB_TOKEN)
-      full_repo_name = 'jimtom/repo'
-      callback_endpoint = 'http://example.com'
-      allow(api).to receive(:update_repo_hook_id).with(full_repo_name: true)
-      stub_hook_creation_request(full_repo_name, callback_endpoint)
+    context 'when hook does not exist' do
+      it 'creates pull request web hook' do
+        full_repo_name = 'jimtom/repo'
+        callback_endpoint = 'http://example.com'
+        request = stub_hook_creation_request(full_repo_name, callback_endpoint)
+        api = GithubApi.new(AuthenticationHelper::GITHUB_TOKEN)
 
-      response = api.create_pull_request_hook(full_repo_name, callback_endpoint)
+        api.create_pull_request_hook(full_repo_name, callback_endpoint)
 
-      expect(response.id).not_to be_nil
+        expect(request).to have_been_requested
+      end
+    end
+
+    context 'when hook already exists' do
+      it 'does not raise' do
+        full_repo_name = 'jimtom/repo'
+        callback_endpoint = 'http://example.com'
+        stub_failed_hook_creation_request(full_repo_name, callback_endpoint)
+        api = GithubApi.new(AuthenticationHelper::GITHUB_TOKEN)
+
+        expect do
+          api.create_pull_request_hook(full_repo_name, callback_endpoint)
+        end.not_to raise_error
+      end
     end
   end
 
