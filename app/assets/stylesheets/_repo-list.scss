@@ -1,52 +1,52 @@
 .repo-listing {
-  margin: 0 auto;
-  max-width: 400px;
-  padding: 2rem 1rem;
+  background: #fff;
+  border: 1px solid $base-border-color;
+  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.05);
+  margin-top: 3rem;
 
-  .sync {
-    padding-left: 34px;
-    padding-right: 2rem;
-    position: relative;
-    text-align: left;
+  nav {
+    border-bottom: 1px solid $base-border-color;
+    padding: 1em;
 
-    .fa-refresh {
-      @include position(absolute, 1.1rem .75rem 0 0);
+    .search-container {
+      position: relative;
+
+      i.fa-search {
+        @include position(absolute, 1.25rem 0 0 .75rem );
+        @include user-select(none);
+        color: $light-font-color;
+      }
+    }
+
+    .search {
+      box-sizing: border-box;
+      display: block;
+      margin: 1rem 0;
+      padding: 1rem 2rem 1rem 34px;
+      width: 100%;
     }
   }
 
-  .search-container {
-    position: relative;
+  ul.repos {
+    padding: 0 1em;
   }
 
-  .fa-search {
-    @include position(absolute, 1.25rem .75rem 0 0);
-    @include user-select(none);
-  }
-
-  .search {
-    box-sizing: border-box;
+  li.repo {
+    border-bottom: 1px solid $base-border-color;
     display: block;
-    margin: 1rem 0;
-    padding: 1rem 2rem 1rem 34px;
-    width: 100%;
-  }
-
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    border-bottom: 1px solid #ccc;
-    display: block;
-    padding: .75rem 0;
+    padding: 0.8em 0;
     position: relative;
+
+    &:last-child {
+      border-bottom: 0;
+    }
 
     .toggle {
       @include user-select(none);
+      border: none;
       display: inline-block;
-      padding: 0 .5rem 0 0;
+      padding: 0 0.5rem 0 0;
+      width: $repo-list-toggle-size;
 
       &:after {
         border-radius: 100%;

@@ -1,12 +1,12 @@
 .repo-listing{'ng-controller' => 'ReposController'}
-  %h1.logo Hound
-  %a.button.sync{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
-    %i.fa.fa-refresh
-    %span{'ng-bind' => 'syncButtonText'}
-  .search-container
-    %i.fa.fa-search
-    %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'ng-model' => 'search.name'}
-  %ul{'ng-hide' => 'syncingRepos'}
+  %nav
+    %a.button.sync{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
+      %i.fa.fa-refresh
+      %span{'ng-bind' => 'syncButtonText'}
+    .search-container
+      %i.fa.fa-search
+      %input.search{'type' => 'text', 'placeholder' => 'search by repo name', 'ng-model' => 'search.name'}
+  %ul.repos{'ng-hide' => 'syncingRepos'}
     %li.repo{'ng-repeat' => 'repo in repos | filter:search'}
       %a.toggle.activate{'href' => '', 'ng-click' => 'activate(repo)',
         'ng-hide' => 'repo.active'}

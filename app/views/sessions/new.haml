@@ -1,39 +1,9 @@
-%div.repo-listing
-  %h1.logo Hound
-  .pitch
-    %h2
-      Take care of pesky code reviews with a trusty Hound. Hound reviews GitHub pull requests for style guide violations in your Ruby code.
-      = link_to 'https://github.com/thoughtbot/guides/tree/master/style#ruby', class: 'style-guide', target: '_blank' do
-        View the style guide &rarr;
-    = link_to '/auth/github', class: 'auth button' do
-      = t('authenticate')
-  .search-container
-    %i.fa.fa-search.disabled
-    %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'disabled' => 'disabled'}
-  %ul.disabled
-    - 1.times do
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/paperclip
-      %li.repo
-        %span.toggle.activate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/bourbon
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/capybara-webkit
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/clearance
-      %li.repo
-        %span.toggle.activate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/guides
+.pitch
+  %h2 Review your Ruby code for style guide violations with a trusty hound.
+  = link_to 'https://github.com/thoughtbot/guides/tree/master/style#ruby', class: 'style-guide', target: '_blank' do
+    View the style guide
+
+.cta
+  = link_to '/auth/github', class: 'auth button' do
+    %i.fa.fa-github
+    %span= t('authenticate')
