@@ -10,17 +10,17 @@ body {
   padding: 4rem 1rem;
 }
 
-header {
-  text-align: center;
-  margin-bottom: 0.4rem;
+h1.logo {
+  letter-spacing: 6px;
+  font-weight: 900;
+  font-size: 3.8em;
+  margin: 0;
+  text-transform: uppercase;
+}
 
-  h1.logo {
-    letter-spacing: 6px;
-    font-weight: 900;
-    font-size: 3.8em;
-    margin: 0;
-    text-transform: uppercase;
-  }
+header {
+  margin-bottom: 0.4rem;
+  text-align: center;
 
   span {
     color: $light-font-color;

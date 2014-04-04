@@ -1,3 +1,9 @@
+%header
+  %h1.logo Hound
+  - if signed_in?
+    %span= "#{current_user}"
+    = link_to 'Sign Out', sign_out_path
+
 .repo-listing{'ng-controller' => 'ReposController'}
   %nav
     %a.button.sync{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}

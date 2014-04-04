@@ -1,28 +1,84 @@
-.pitch {
-  margin: 0 0 4rem;
-  padding: 0 2em;
-  text-align: center;
-
-  h2 {
-    margin: 0 0 0.6rem;
-    font-weight: 300;
-    font-size: 1.8em;
-  }
-}
-
-.cta {
-  margin-bottom: 3rem;
+ol.getting-started {
+  padding: 0 0 8em 3em;
   position: relative;
-  text-align: center;
 
   &:before {
-    border-top: 1px solid $base-border-color;
+    @include position(absolute, 2em 0 0em 0em);
+    @include background-image(linear-gradient(top, $base-border-color 94%,
+                                                   rgba($base-border-color, 0) 100%));
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    background-size: 3px 100%;
     content: "";
-    left: 0;
-    margin-top: -1px;
-    position: absolute;
-    top: 50%;
-    width: 100%;
+    display: block;
+    width: 3px;
     z-index: 1;
+  }
+
+  li.step {
+    margin-bottom: 8em;
+    position: relative;
+    z-index: 2;
+
+    &:before {
+      @include position(absolute, -0.3em 0 0 -3em);
+      @include size(40px);
+      background: #fff;
+      border-radius: 50%;
+      border: 2px solid $base-border-color;
+      box-shadow: 0 0 0 3px rgb(252,252,252);
+      content: "";
+      display: block;
+      margin-left: -21px;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.pitch {
+      &:before {
+        top: 1.1em;
+      }
+
+      .tagline {
+        margin: 0.4em 0 2em;
+      }
+
+      h2 {
+        margin: 0 0 0.4em;
+        font-weight: 300;
+        font-size: 1.8em;
+      }
+    }
+
+    &.cta:before {
+      top: 0.3em;
+    }
+
+    h3 {
+      font-size: 1.6em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin: 0 0 0.6em;
+    }
+
+    p {
+      color: $medium-font-color;
+      font-size: 1.2em;
+      letter-spacing: 0.5px;
+      line-height: 1.4em;
+      margin: 0 0em;
+    }
+
+    figure {
+      border-radius: 3px;
+      border: 1px solid $base-border-color;
+      box-shadow: 0 1px 10px 0 rgba(0,0,0,0.05);
+      display: inline-block;
+      height: 300px;
+      margin-top: 2em;
+      width: 100%;
+    }
   }
 }

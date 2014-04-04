@@ -13,12 +13,6 @@
         = value
 
     .content
-      %header
-        %h1.logo Hound
-        - if signed_in?
-          %span= "#{current_user}"
-          = link_to 'Sign Out', sign_out_path
-
       = yield
 
     = yield :javascript
