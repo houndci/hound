@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'User authentication' do
   scenario 'user signs in' do
     user = create(:user)
-    stub_repo_requests(user.github_token)
+    stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
 
     sign_in_as(user)
 
@@ -12,7 +12,7 @@ feature 'User authentication' do
 
   scenario 'user signs out' do
     user = create(:user)
-    stub_repo_requests(user.github_token)
+    stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
     sign_in_as(user)
 
     find('a[href="/sign_out"]').click
