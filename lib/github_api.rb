@@ -40,6 +40,10 @@ class GithubApi
       { url: callback_endpoint },
       { events: ['pull_request'], active: true }
     )
+  rescue Octokit::UnprocessableEntity => error
+    unless error.message.include? 'Hook already exists'
+      raise
+    end
   end
 
   def remove_pull_request_hook(full_github_name, hook_id)

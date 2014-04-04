@@ -133,6 +133,20 @@ module GithubApiHelper
     )
   end
 
+  def stub_failed_hook_creation_request(full_repo_name, callback_endpoint)
+    stub_request(
+      :post,
+      "https://api.github.com/repos/#{full_repo_name}/hooks"
+    ).with(
+      body: %({"name":"web","config":{"url":"#{callback_endpoint}"},"events":["pull_request"],"active":true}),
+      headers: { 'Authorization' => "token #{auth_token}" }
+    ).to_return(
+      status: 422,
+      body: File.read('spec/support/fixtures/failed_hook.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   def stub_hook_removal_request(full_repo_name, hook_id)
     url = "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
     stub_request(:delete, url).

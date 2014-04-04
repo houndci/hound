@@ -1,0 +1,11 @@
+{
+  "documentation_url": "http://developer.github.com/v3/repos/hooks/#create-a-hook",
+  "errors": [
+    {
+      "code": "custom",
+      "message": "Hook already exists on this repository",
+      "resource": "Hook"
+    }
+  ],
+  "message": "Validation Failed"
+}
