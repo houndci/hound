@@ -59,7 +59,8 @@ class StyleChecker
       FileViolation.new(
         file.filename,
         line_violations(file),
-        file.modified_lines
+        # could drop this if line violations hold everything
+        file.modified_lines # Line objects with patch positions
       )
     end
 
@@ -76,11 +77,11 @@ class StyleChecker
     end
 
     violations.group_by(&:line).map do |line_number, violations|
-      LineViolation.new(
-        line_number,
-        line_in_file(line_number, file),
-        violations.map(&:message).uniq
-      )
+      modified_line = file.modified_lines.detect do |modified_line|
+        modified_line.line_number = line_number
+      end
+
+      LineViolation.new(modified_line, violations.map(&:message).uniq)
     end
   end
 
@@ -92,10 +93,6 @@ class StyleChecker
 
   def parse_file_content(file)
     Rubocop::SourceParser.parse(file.contents)
-  end
-
-  def line_in_file(line_number, file)
-    parse_file_content(file).lines[line_number - 1]
   end
 
   def configuration

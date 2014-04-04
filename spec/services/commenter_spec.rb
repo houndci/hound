@@ -16,21 +16,21 @@ describe Commenter do
             head_includes?: false
           )
           line_number = 10
-          line_violation = double(
-            :line_violation,
-            line_number: line_number,
-            messages: ['Trailing whitespace']
-          )
-          modified_line = double(
-            :modified_line,
+          line = double(
+            :line,
             line_number: line_number,
             patch_position: 2
+          )
+          line_violation = double(
+            :line_violation,
+            line: line,
+            messages: ['Trailing whitespace']
           )
           file_violation = double(
             :file_violation,
             line_violations: [line_violation],
             filename: 'test.rb',
-            modified_lines: [modified_line]
+            modified_lines: [line]
           )
           commenter = Commenter.new
 
@@ -38,7 +38,7 @@ describe Commenter do
 
           expect(pull_request).to have_received(:add_comment).with(
             file_violation.filename,
-            modified_line.patch_position,
+            line.patch_position,
             line_violation.messages.first
           )
         end
@@ -55,21 +55,21 @@ describe Commenter do
               head_includes?: true
             )
             line_number = 10
-            line_violation = double(
-              :line_violation,
-              line_number: line_number,
-              messages: ['Trailing whitespace']
-            )
-            modified_line = double(
-              :modified_line,
+            line = double(
+              :line,
               line_number: line_number,
               patch_position: 2
+            )
+            line_violation = double(
+              :line_violation,
+              line: line,
+              messages: ['Trailing whitespace']
             )
             file_violation = double(
               :file_violation,
               line_violations: [line_violation],
               filename: 'test.rb',
-              modified_lines: [modified_line]
+              modified_lines: [line]
             )
             commenter = Commenter.new
 
@@ -89,21 +89,21 @@ describe Commenter do
               head_includes?: false
             )
             line_number = 10
-            line_violation = double(
-              :line_violation,
-              line_number: line_number,
-              messages: ['Trailing whitespace']
-            )
-            modified_line = double(
-              :modified_line,
+            line = double(
+              :line,
               line_number: line_number,
               patch_position: 2
+            )
+            line_violation = double(
+              :line_violation,
+              line: line,
+              messages: ['Trailing whitespace']
             )
             file_violation = double(
               :file_violation,
               line_violations: [line_violation],
               filename: 'test.rb',
-              modified_lines: [modified_line]
+              modified_lines: [line]
             )
             commenter = Commenter.new
 

@@ -1,6 +1,8 @@
 require 'rubocop'
 require 'fast_spec_helper'
 require 'app/models/style_checker'
+require 'app/models/file_violation'
+require 'app/models/line_violation'
 
 describe StyleChecker, '#violations' do
   context 'when some files have violations' do

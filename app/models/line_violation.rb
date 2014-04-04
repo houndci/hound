@@ -1,2 +1,2 @@
-class LineViolation < Struct.new(:line_number, :code, :messages)
+class LineViolation < Struct.new(:line, :messages)
 end
