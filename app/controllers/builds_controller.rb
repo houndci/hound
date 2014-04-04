@@ -5,7 +5,6 @@ class BuildsController < ApplicationController
 
   def create
     build_runner = BuildRunner.new(payload)
-    # stop enqueuing entire object
     Delayed::Job.enqueue(BuildJob.new(build_runner))
     render nothing: true
   end
