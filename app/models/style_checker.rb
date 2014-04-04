@@ -49,13 +49,13 @@ class StyleChecker
     Rubocop::Cop::Style::VariableName
   ]
 
-  def initialize(files, custom_config = nil)
-    @files = files
+  def initialize(modified_files, custom_config = nil)
+    @modified_files = modified_files
     @custom_config = custom_config
   end
 
   def violations
-    possible_violations = @files.map do |file|
+    possible_violations = @modified_files.map do |file|
       FileViolation.new(
         file.filename,
         line_violations(file),
