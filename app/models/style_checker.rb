@@ -55,10 +55,10 @@ class StyleChecker
   end
 
   def violations
-    possible_violations = @modified_files.map do |file|
+    possible_violations = @modified_files.map do |modified_file|
       FileViolation.new(
-        file.filename,
-        line_violations(file)
+        modified_file.filename,
+        line_violations(modified_file)
       )
     end
 
@@ -69,13 +69,13 @@ class StyleChecker
 
   private
 
-  def line_violations(file)
-    violations = violations_in_file(file).select do |violation|
-      file.relevant_line?(violation.line)
+  def line_violations(modified_file)
+    violations = violations_in_file(modified_file).select do |violation|
+      modified_file.relevant_line?(violation.line)
     end
 
     violations.group_by(&:line).map do |line_number, violations|
-      modified_line = file.modified_lines.detect do |modified_line|
+      modified_line = modified_file.modified_lines.detect do |modified_line|
         modified_line.line_number = line_number
       end
 
@@ -83,14 +83,14 @@ class StyleChecker
     end
   end
 
-  def violations_in_file(file)
+  def violations_in_file(modified_file)
     team = Rubocop::Cop::Team.new(RULES, configuration)
     commissioner = Rubocop::Cop::Commissioner.new(team.cops)
-    commissioner.investigate(parse_file_content(file))
+    commissioner.investigate(parse_file_content(modified_file))
   end
 
-  def parse_file_content(file)
-    Rubocop::SourceParser.parse(file.contents)
+  def parse_file_content(modified_file)
+    Rubocop::SourceParser.parse(modified_file.contents)
   end
 
   def configuration
