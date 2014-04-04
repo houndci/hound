@@ -75,11 +75,10 @@ class StyleChecker
     end
 
     violations.group_by(&:line).map do |line_number, violations|
-      modified_line = modified_file.modified_lines.detect do |modified_line|
-        modified_line.line_number = line_number
-      end
-
-      LineViolation.new(modified_line, violations.map(&:message).uniq)
+      LineViolation.new(
+        modified_file.modified_line_at(line_number),
+        violations.map(&:message).uniq
+      )
     end
   end
 

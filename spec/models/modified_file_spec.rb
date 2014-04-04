@@ -80,10 +80,36 @@ describe ModifiedFile, '#ruby?' do
 
   context 'when file is ruby' do
     it 'returns true' do
-      ruby_file = double(:pr_file, filename: 'app/models/user.rb')
+      ruby_file = double(:file, filename: 'app/models/user.rb')
       modified_file = ModifiedFile.new(ruby_file, double)
 
       expect(modified_file).to be_ruby
+    end
+  end
+end
+
+describe ModifiedFile, '#modified_line_at' do
+  context 'with a modified line' do
+    it 'returns modified line at the given line number' do
+      modified_line = double(:modified_line, line_number: 1)
+      patch = double(:patch, additions: [modified_line])
+      Patch.stub(new: patch)
+      file = double(:file).as_null_object
+      modified_file = ModifiedFile.new(file, double)
+
+      expect(modified_file.modified_line_at(1)).to eq modified_line
+    end
+  end
+
+  context 'without a modified line' do
+    it 'returns nil' do
+      modified_line = double(:modified_line, line_number: 1)
+      patch = double(:patch, additions: [modified_line])
+      Patch.stub(new: patch)
+      file = double(:file).as_null_object
+      modified_file = ModifiedFile.new(file, double)
+
+      expect(modified_file.modified_line_at(2)).to be_nil
     end
   end
 end

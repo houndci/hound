@@ -3,36 +3,27 @@ require 'fast_spec_helper'
 require 'app/models/style_checker'
 require 'app/models/file_violation'
 require 'app/models/line_violation'
+require 'debugger'
 
 describe StyleChecker, '#violations' do
-  context 'when some files have violations' do
-    it 'returns only the files with violations' do
-      file1 = file_stub("def hi \n\tactive = true ")
-      file2 = file_stub("def hello\nend\n")
-      file3 = file_stub("class User  \nend\n")
+  context 'with violations' do
+    it 'returns file violations' do
+      modified_line = double(:modified_line, line_number: 1)
+      modified_file = double(
+        :modified_file,
+        filename: 'foo.rb',
+        contents: '1 + 1',
+        relevant_line?: true,
+        modified_lines: [modified_line],
+        modified_line_at: modified_line
+      )
+      style_checker = StyleChecker.new([modified_file])
 
-      style_checker = StyleChecker.new([file1, file2, file3])
-      violations = style_checker.violations
-
-      expect(violations).to have(2).items
-      expect(violations[0]).to have(2).line_violations
-      expect(violations[0].line_violations[0]).to have(3).messages
-      expect(violations[1]).to have(1).line_violations
+      expect(style_checker).to have(1).violations
+      file_violation = style_checker.violations.first
+      expect(file_violation.line_violations.first.line).to eq modified_line
     end
 
-    it 'returns only one of each violation type' do
-      file1 = file_stub("{ :first => 1, :second => 2 }\n")
-
-      style_checker = StyleChecker.new([file1])
-      violations = style_checker.violations
-
-      expect(violations).to have(1).item
-      expect(violations[0]).to have(1).line_violations
-      expect(violations[0].line_violations[0]).to have(1).messages
-    end
-  end
-
-  context 'when rules are violated' do
     it 'finds all violations' do
       file = file_stub(content_with_violations)
       style_checker = StyleChecker.new([file])
@@ -70,6 +61,33 @@ describe StyleChecker, '#violations' do
           "hello world"
         end
       EOL
+    end
+  end
+
+  context 'when some files have violations' do
+    it 'returns only the files with violations' do
+      file1 = file_stub("def hi \n\tactive = true ")
+      file2 = file_stub("def hello\nend\n")
+      file3 = file_stub("class User  \nend\n")
+
+      style_checker = StyleChecker.new([file1, file2, file3])
+      violations = style_checker.violations
+
+      expect(violations).to have(2).items
+      expect(violations[0]).to have(2).line_violations
+      expect(violations[0].line_violations[0]).to have(3).messages
+      expect(violations[1]).to have(1).line_violations
+    end
+
+    it 'returns only one of each violation type' do
+      file1 = file_stub("{ :first => 1, :second => 2 }\n")
+
+      style_checker = StyleChecker.new([file1])
+      violations = style_checker.violations
+
+      expect(violations).to have(1).item
+      expect(violations[0]).to have(1).line_violations
+      expect(violations[0].line_violations[0]).to have(1).messages
     end
   end
 
