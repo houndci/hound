@@ -58,9 +58,7 @@ class StyleChecker
     possible_violations = @modified_files.map do |file|
       FileViolation.new(
         file.filename,
-        line_violations(file),
-        # could drop this if line violations hold everything
-        file.modified_lines # Line objects with patch positions
+        line_violations(file)
       )
     end
 

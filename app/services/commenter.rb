@@ -1,5 +1,4 @@
 class Commenter
-  # violations are FileViolation objects with modified_lines with patch position
   def comment_on_violations(file_violations, pull_request)
     file_violations.each do |file_violation|
       file_violation.line_violations.each do |line_violation|

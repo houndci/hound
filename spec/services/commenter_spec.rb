@@ -28,9 +28,8 @@ describe Commenter do
           )
           file_violation = double(
             :file_violation,
-            line_violations: [line_violation],
             filename: 'test.rb',
-            modified_lines: [line]
+            line_violations: [line_violation]
           )
           commenter = Commenter.new
 
@@ -67,9 +66,8 @@ describe Commenter do
             )
             file_violation = double(
               :file_violation,
-              line_violations: [line_violation],
               filename: 'test.rb',
-              modified_lines: [line]
+              line_violations: [line_violation]
             )
             commenter = Commenter.new
 
@@ -101,9 +99,8 @@ describe Commenter do
             )
             file_violation = double(
               :file_violation,
-              line_violations: [line_violation],
               filename: 'test.rb',
-              modified_lines: [line]
+              line_violations: [line_violation]
             )
             commenter = Commenter.new
 
