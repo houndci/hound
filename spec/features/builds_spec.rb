@@ -35,7 +35,12 @@ feature 'Builds' do
   end
 
   scenario 'a failed build' do
-    repo = create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
+    repo = create(
+      :repo,
+      :active,
+      github_id: repo_id,
+      full_github_name: repo_name
+    )
     stub_github_requests_with_violations
     comment_request = stubbed_comment_request
 
