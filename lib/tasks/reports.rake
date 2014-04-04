@@ -46,7 +46,9 @@ namespace :reports do
       from generate_series('2013-12-23', CURRENT_DATE, '1 week'::interval) series
     SQL
 
-    Repo.connection.execute(series_sql).map {|result| Date.parse(result['week'])}
+    Repo.connection.execute(series_sql).map do |result|
+      Date.parse(result['week'])
+    end
   end
 
   def generate_output(sql, week)
