@@ -11,7 +11,6 @@ FactoryGirl.define do
     sequence(:name) { |n| "Repo #{n}" }
     sequence(:full_github_name) { |n| "user/repo#{n}" }
     sequence(:github_id) { |n| n }
-    active false
 
     trait :active do
       active true
