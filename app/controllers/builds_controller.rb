@@ -1,7 +1,7 @@
 class BuildsController < ApplicationController
   before_action :ignore_confirmation_pings, only: [:create]
   skip_before_filter :verify_authenticity_token, only: [:create]
-  skip_before_filter :authenticate
+  skip_before_filter :authenticate, only: [:create]
 
   def create
     build_runner = BuildRunner.new(payload)
