@@ -30,8 +30,9 @@ feature 'Repo list', js: true do
   end
 
   scenario 'user signs up' do
+    pending
+
     user = create(:user)
-    stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
 
     sign_in_as(user)
     visit root_path
