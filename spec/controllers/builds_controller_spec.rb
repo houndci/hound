@@ -13,7 +13,10 @@ describe BuildsController, '#create' do
     context 'and http is used' do
       it 'does not redirect' do
         with_https_enabled do
-          post :create, payload: File.read('spec/support/fixtures/pull_request_opened_event.json')
+          payload_data = File.read(
+            'spec/support/fixtures/pull_request_opened_event.json'
+          )
+          post(:create, payload: payload_data)
 
           expect(response).not_to be_redirect
         end
