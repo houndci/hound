@@ -7,14 +7,15 @@
     border-bottom: 1px solid $base-border-color;
     background: #fff;
 
-    > ul {
+    ul {
       @include clearfix;
       padding: 0.8em 1.2em 0.6em;
 
       span.active-count {
         color: $light-font-color;
         font-size: 0.9em;
-        letter-spacing: 1px;
+        font-weight: bold;
+        letter-spacing: 2px;
         text-transform: uppercase;
       }
 
@@ -26,10 +27,6 @@
         &:hover {
           color: darken($purple, 5%);
         }
-      }
-
-      span, a {
-        font-weight: 300;
       }
     }
 
@@ -102,7 +99,7 @@
 
     span.name {
       @include transition(all 0.25s linear);
-      color: $light-font-color;
+      color: rgb(160,160,160);
       display: block;
       font-size: 1.4em;
       font-weight: 300;
