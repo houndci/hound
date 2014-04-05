@@ -82,7 +82,7 @@ describe GithubApi do
     end
   end
 
-  describe '#create_pull_request_hook' do
+  describe '#create_hook' do
     context 'when hook does not exist' do
       it 'creates pull request web hook' do
         full_repo_name = 'jimtom/repo'
@@ -90,9 +90,24 @@ describe GithubApi do
         request = stub_hook_creation_request(full_repo_name, callback_endpoint)
         api = GithubApi.new(AuthenticationHelper::GITHUB_TOKEN)
 
-        api.create_pull_request_hook(full_repo_name, callback_endpoint)
+        api.create_hook(full_repo_name, callback_endpoint)
 
         expect(request).to have_been_requested
+      end
+
+      it 'yields hook' do
+        full_repo_name = 'jimtom/repo'
+        callback_endpoint = 'http://example.com'
+        request = stub_hook_creation_request(full_repo_name, callback_endpoint)
+        api = GithubApi.new(AuthenticationHelper::GITHUB_TOKEN)
+        yielded = false
+
+        api.create_hook(full_repo_name, callback_endpoint) do |hook|
+          yielded = true
+        end
+
+        expect(request).to have_been_requested
+        expect(yielded).to be_true
       end
     end
 
@@ -104,20 +119,20 @@ describe GithubApi do
         api = GithubApi.new(AuthenticationHelper::GITHUB_TOKEN)
 
         expect do
-          api.create_pull_request_hook(full_repo_name, callback_endpoint)
+          api.create_hook(full_repo_name, callback_endpoint)
         end.not_to raise_error
       end
     end
   end
 
-  describe '#remove_pull_request_hook' do
+  describe '#remove_hook' do
     it 'removes pull request web hook' do
       repo_name = 'test-user/repo'
       hook_id = '123'
       stub_hook_removal_request(repo_name, hook_id)
       api = GithubApi.new('sometoken')
 
-      response = api.remove_pull_request_hook(repo_name, hook_id)
+      response = api.remove_hook(repo_name, hook_id)
 
       expect(response).to be_true
     end

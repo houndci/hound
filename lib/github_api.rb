@@ -33,20 +33,22 @@ class GithubApi
     )
   end
 
-  def create_pull_request_hook(full_repo_name, callback_endpoint)
-    client.create_hook(
+  def create_hook(full_repo_name, callback_endpoint)
+    hook = client.create_hook(
       full_repo_name,
       'web',
       { url: callback_endpoint },
       { events: ['pull_request'], active: true }
     )
+
+    yield hook if block_given?
   rescue Octokit::UnprocessableEntity => error
     unless error.message.include? 'Hook already exists'
       raise
     end
   end
 
-  def remove_pull_request_hook(full_github_name, hook_id)
+  def remove_hook(full_github_name, hook_id)
     client.remove_hook(full_github_name, hook_id)
   end
 
