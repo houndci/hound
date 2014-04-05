@@ -20,7 +20,8 @@ module GithubApiHelper
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/repo.json'),
+      body: File.read('spec/support/fixtures/repo.json').
+        gsub('testing/repo', repo_name),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end

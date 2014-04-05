@@ -1,4 +1,4 @@
-App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync) ->
+App.controller 'ReposController', ['$scope', '$timeout', 'Repo', 'Sync', ($scope, $timeout, Repo, Sync) ->
   loadRepos = ->
     $scope.syncingRepos = false
 
@@ -28,11 +28,12 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
       syncs = Sync.query()
       syncs.$promise.then(successfulSync, failedSync)
 
-    setTimeout getSyncs, 3000
+    $timeout getSyncs, 3000
 
   $scope.activate = (repo) ->
-    activate = repo.$activate()
-    activate.then().catch(-> alert('Your repo failed to activate.'))
+    repo.$activate()
+      .then()
+      .catch(-> alert('Your repo failed to activate.'))
 
   $scope.deactivate = (repo) ->
     deactivate = repo.$deactivate()
