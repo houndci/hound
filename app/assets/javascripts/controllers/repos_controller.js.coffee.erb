@@ -28,13 +28,24 @@ App.controller 'ReposController', ['$scope', 'Repo', 'Sync', ($scope, Repo, Sync
 
     setTimeout getSyncs, 3000
 
+  $scope.toggle = (repo) ->
+    repo.processing = true
+    if repo.active
+      $scope.deactivate(repo)
+    else
+      $scope.activate(repo)
+
   $scope.activate = (repo) ->
     activate = repo.$activate()
-    activate.then().catch(-> alert('Your repo failed to activate.'))
+    activate
+      .then(-> repo.processing = false)
+      .catch(-> alert('Your repo failed to activate.'))
 
   $scope.deactivate = (repo) ->
     deactivate = repo.$deactivate()
-    deactivate.then().catch(-> alert('Your repo failed to deactivate.'))
+    deactivate
+      .then(-> repo.processing = false)
+      .catch(-> alert('Your repo failed to deactivate.'))
 
   $scope.sync = ->
     $scope.syncingRepos = true

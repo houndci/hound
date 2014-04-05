@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(252,252,252);
+  background-color: rgb(255,255,255);
   color: $base-font-color;
   font: 400 1em/1.3 'Lato';
 }
@@ -23,23 +23,23 @@ header {
   text-align: center;
 
   span {
+    border-right: 1px solid $base-border-color;
     color: $light-font-color;
     font-size: 0.9em;
+    font-weight: 300;
     letter-spacing: 2px;
+    margin-right: 0.6em;
+    padding-right: 1em;
     text-transform: uppercase;
   }
 
   span + a {
-    border-left: 1px solid $base-border-color;
-    border-bottom: 0;
+    border: none;
     color: $light-font-color;
     display: inline-block;
-    margin-left: 0.6em;
-    padding-left: 0.8em;
 
     &:hover {
-      border-color: $base-border-color;
-      color: $purple;
+      color: darken($purple, 5%);
     }
   }
 }
@@ -73,13 +73,6 @@ header {
     z-index: 2;
   }
 
-  &.sync {
-    padding-left: 34px;
-    padding-right: 2rem;
-    position: relative;
-    text-align: left;
-  }
-
   span {
     vertical-align: middle;
   }
@@ -95,16 +88,17 @@ header {
 a {
   @include transition(all 0.15s linear);
   border-bottom: 1px solid transparent;
-  color: $purple;
+  color: darken($purple, 5%);
   display: inline-block;
   letter-spacing: 2px;
   font-size: 0.9em;
+  font-weight: 300;
   padding: 0.2em;
   text-decoration: none;
   text-transform: uppercase;
 
   &:hover {
-    border-color: $purple;
+    border-color: lighten($purple, 5%);
   }
 }
 
