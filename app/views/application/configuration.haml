@@ -1,0 +1,33 @@
+%h1 Hound configuration
+
+%p
+  Hound uses #{link_to 'RuboCop', 'https://github.com/bbatsov/rubocop'} gem to
+  handle the style checking. Thus, all of the RuboCop configuration is supported
+  in Hound as well.
+
+%p
+  Hound will look for
+  %em .hound.yml
+  file in the root of the repo, and apply the custom configuration on top of the
+  default configuration.
+
+%p
+  Adding custom config:
+  %ol
+    %li
+      Add a file named
+      %em .hound.yml
+      to the root of your repo.
+    %li
+      Add custom configuration to
+      %em .hound.yml
+      file, like:
+      %pre
+        StringLiterals:
+        EnforcedStyle: double_quotes
+        Enabled: true
+
+      See #{link_to 'more config options', 'https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml'} in the RuboCop project.
+    %li
+      Commit the changes to your repo, and the following pull requests will use
+      your custom configuration.
