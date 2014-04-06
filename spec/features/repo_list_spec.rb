@@ -30,19 +30,16 @@ feature 'Repo list', js: true do
   end
 
   scenario 'user signs up' do
-    pending
+    with_job_delay do
+      user = create(:user)
 
-    user = create(:user)
+      sign_in_as(user)
 
-    sign_in_as(user)
-    visit root_path
-
-    expect(page).to have_content I18n.t('syncing_repos')
+      expect(page).to have_content I18n.t('syncing_repos')
+    end
   end
 
   scenario 'user activates repo' do
-    pending
-
     user = create(:user)
     repo = create(:repo)
     repo.users << user
@@ -52,12 +49,11 @@ feature 'Repo list', js: true do
     stub_hook_creation_request(repo.full_github_name, hook_url)
 
     sign_in_as(user)
-    visit root_path
     find('.activate').click
 
     expect(page).to have_css('.deactivate')
 
-    visit current_url
+    visit root_path
 
     expect(page).to have_css('.deactivate')
   end
@@ -77,5 +73,14 @@ feature 'Repo list', js: true do
     visit current_path
 
     expect(page).to have_css('.activate')
+  end
+
+  private
+
+  def with_job_delay
+    Delayed::Worker.delay_jobs = true
+    yield
+  ensure
+    Delayed::Worker.delay_jobs = false
   end
 end
