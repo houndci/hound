@@ -44,7 +44,7 @@ describe RepoActivator do
 
             activator.activate(repo, 'githubtoken')
 
-            expect(github).to have_received(:create_pull_request_hook).with(
+            expect(github).to have_received(:create_hook).with(
               repo.full_github_name,
               URI.join("https://#{ENV['HOST']}", 'builds').to_s
             )
@@ -60,7 +60,7 @@ describe RepoActivator do
 
           activator.activate(repo, 'githubtoken')
 
-          expect(github).to have_received(:create_pull_request_hook).with(
+          expect(github).to have_received(:create_hook).with(
             repo.full_github_name,
             URI.join("http://#{ENV['HOST']}", 'builds').to_s
           )
@@ -89,6 +89,24 @@ describe RepoActivator do
         expect { activator.activate(repo, github_token) }.to raise_error(Exception)
       end
     end
+
+    context 'hook already exists' do
+      it 'does not raise' do
+        token = 'token'
+        repo = create(:repo)
+        github = double(
+          :github,
+          create_hook: nil,
+          add_user_to_repo: true
+        )
+        GithubApi.stub(new: github)
+        activator = RepoActivator.new
+
+        expect { activator.activate(repo, token) }.not_to raise_error
+
+        expect(GithubApi).to have_received(:new).with(token)
+      end
+    end
   end
 
   describe '#deactivate' do
@@ -114,7 +132,7 @@ describe RepoActivator do
 
         activator.deactivate(repo, 'githubtoken')
 
-        expect(github_api).to have_received(:remove_pull_request_hook)
+        expect(github_api).to have_received(:remove_hook)
         expect(repo.hook_id).to be_nil
       end
 
@@ -155,7 +173,8 @@ describe RepoActivator do
 
   def stub_github_api
     hook = double(:hook, id: 1)
-    api = double(:github_api, create_pull_request_hook: hook).as_null_object
+    api = double(:github_api, add_user_to_repo: true, remove_hook: true)
+    api.stub(:create_hook).and_yield(hook)
     GithubApi.stub(new: api)
     api
   end
