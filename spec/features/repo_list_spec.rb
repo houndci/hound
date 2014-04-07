@@ -25,7 +25,7 @@ feature 'Repo list', js: true do
 
     click_link I18n.t('sync_repos')
 
-    expect(page).to have_content I18n.t('syncing_repos')
+    expect(page).to have_content I18n.t('syncing_repos').upcase
     expect(page).not_to have_content 'jimtom/My-Private-Repo'
   end
 
@@ -35,7 +35,7 @@ feature 'Repo list', js: true do
 
       sign_in_as(user)
 
-      expect(page).to have_content I18n.t('syncing_repos')
+      expect(page).to have_content I18n.t('syncing_repos').upcase
     end
   end
 
@@ -49,13 +49,15 @@ feature 'Repo list', js: true do
     stub_hook_creation_request(repo.full_github_name, hook_url)
 
     sign_in_as(user)
-    find('.activate').click
+    find('.toggle').click
 
-    expect(page).to have_css('.deactivate')
+    expect(page).to have_css('.active')
+    expect(page).to have_content '1 OF 1'
 
     visit root_path
 
-    expect(page).to have_css('.deactivate')
+    expect(page).to have_css('.active')
+    expect(page).to have_content '1 OF 1'
   end
 
   scenario 'user deactivates repo' do
@@ -66,13 +68,15 @@ feature 'Repo list', js: true do
 
     sign_in_as(user)
     visit root_path
-    find('.deactivate').click
+    find('.toggle').click
 
-    expect(page).to have_css('.activate')
+    expect(page).not_to have_css('.active')
+    expect(page).to have_content '0 OF 1'
 
     visit current_path
 
-    expect(page).to have_css('.activate')
+    expect(page).not_to have_css('.active')
+    expect(page).to have_content '0 OF 1'
   end
 
   private

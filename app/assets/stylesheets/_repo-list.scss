@@ -1,82 +1,165 @@
 .repo-listing {
-  margin: 0 auto;
-  max-width: 400px;
-  padding: 2rem 1rem;
+  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
+  border: 1px solid $base-border-color;
+  margin-top: 2em;
 
-  .sync {
-    padding-left: 34px;
-    padding-right: 2rem;
-    position: relative;
-    text-align: left;
+  nav {
+    border-bottom: 1px solid $base-border-color;
+    background: #fff;
 
-    .fa-refresh {
-      @include position(absolute, 1.1rem .75rem 0 0);
+    ul {
+      @include clearfix;
+      padding: 0.8em 1.2em 0.6em;
+
+      span.active-count {
+        color: $light-font-color;
+        font-size: 0.9em;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      a {
+        border: none;
+        color: $light-font-color;
+        padding: 0;
+
+        &:hover {
+          color: darken($purple, 5%);
+        }
+      }
+    }
+
+    .search-wrapper {
+      padding: 0 1em 1.2em;
+      position: relative;
+
+      i.fa-search {
+        @include position(absolute, 0.9em 1.8em 0 0 );
+        @include user-select(none);
+        color: #fff;
+        font-size: 1.2em;
+      }
+
+      input.search {
+        @include transition(all 0.25s ease-out);
+        background-color: lighten($purple, 10%);
+        border: none;
+        border-radius: 3px;
+        box-sizing: border-box;
+        color: #fff;
+        display: block;
+        display: block;
+        font-size: 1.2em;
+        margin: 0;
+        padding: 0.7em 0.8em 0.8em;
+        width: 100%;
+
+        &:focus {
+          background-color: $purple;
+          border-color: $purple;
+          outline: none;
+        }
+
+        @include placeholder {
+          color: rgba(255,255,255,0.8);
+        }
+      }
     }
   }
 
-  .search-container {
-    position: relative;
+  ul.repos {
+    background-color: rgb(250,250,250);
   }
 
-  .fa-search {
-    @include position(absolute, 1.25rem .75rem 0 0);
-    @include user-select(none);
-  }
-
-  .search {
-    box-sizing: border-box;
+  li.repo {
+    @include clearfix;
+    border-top: 1px solid $base-border-color;
     display: block;
-    margin: 1rem 0;
-    padding: 1rem 2rem 1rem 34px;
-    width: 100%;
-  }
-
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    border-bottom: 1px solid #ccc;
-    display: block;
-    padding: .75rem 0;
+    padding: 1.1em 1.9em 1em;
     position: relative;
+
+    &:before {
+      @include position(absolute, 0.6em 0 0 0.6em);
+      @include transition(all 0.25s linear);
+      @extend .fa-spin;
+      border-radius: 50%;
+      color: rgb(210,210,210);
+      content: '\f013';
+      display: inline-block;
+      font-size: 1.6em;
+      font-family: $icon-font;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    &:first-child {
+      border: none;
+    }
+
+    span.name {
+      @include transition(all 0.25s linear);
+      color: rgb(160,160,160);
+      display: block;
+      font-size: 1.4em;
+      font-weight: 300;
+      text-overflow: ellipsis;
+      margin-right: 3em;
+      overflow: hidden;
+      position: relative;
+    }
 
     .toggle {
       @include user-select(none);
-      display: inline-block;
-      padding: 0 .5rem 0 0;
+      border-radius: 24px;
+      border: 1px solid darken($base-border-color, 5%);
+      display: block;
+      float: right;
+      height: 24px;
+      padding: 1px;
+      position: relative;
+      width: 50px;
 
-      &:after {
+      &:before {
+        @include size(20px);
+        @include position(absolute, 2px 0 0 2px);
+        @include transition(all 0.25s linear);
+        background-color: rgb(255,255,255);
+        border: 1px solid $base-border-color;
         border-radius: 100%;
-        box-shadow: inset 0 0 0 2px $inactive-color;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
         color: #fff;
-        content: '\f00c';
+        content: '';
         display: block;
-        font-family: "FontAwesome";
-        height: $repo-list-toggle-size;
-        line-height: 1.6rem;
-        text-align: center;
-        width: $repo-list-toggle-size;
-      }
-
-      &:active {
-        @include transform(scale(.9));
-
-        &:after {
-          box-shadow: inset 0 0 0 3px $inactive-color;
-        }
-      }
-
-      &.deactivate:after {
-        background: $active-color;
-        box-shadow: inset 0 0 0 2px $active-color;
+        z-index: 2;
       }
     }
 
-    .name {
-      line-height: $repo-list-toggle-size;
+    &.processing {
+      &:before {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      span.name {
+        padding-left: 0.9em;
+      }
+    }
+
+    &.active {
+      background-color: rgb(255,255,255);
+
+      .toggle {
+        background-color: $green;
+        border-color: #fff;
+        border-color: $green;
+
+        &:before {
+          @include position(absolute, 2px 0 0 27px);
+          border-color: $green;
+          border-color: #fff;
+        }
+      }
     }
   }
 }

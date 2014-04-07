@@ -1,39 +1,39 @@
-%div.repo-listing
-  %h1.logo Hound
-  .pitch
-    %h2
-      Take care of pesky code reviews with a trusty Hound. Hound reviews GitHub pull requests for style guide violations in your Ruby code.
+%ol.getting-started
+
+  %li.step.pitch
+    %h1.logo Hound
+    .tagline
+      %h2 Review your Ruby code for style guide violations with a trusty hound.
       = link_to 'https://github.com/thoughtbot/guides/tree/master/style#ruby', class: 'style-guide', target: '_blank' do
-        View the style guide &rarr;
+        View the style guide
+        %i.fa.fa-arrow-right
     = link_to '/auth/github', class: 'auth button' do
-      = t('authenticate')
-  .search-container
-    %i.fa.fa-search.disabled
-    %input.search{'type' => 'text', 'placeholder' => 'Search repo list', 'disabled' => 'disabled'}
-  %ul.disabled
-    - 1.times do
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/paperclip
-      %li.repo
-        %span.toggle.activate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/bourbon
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/capybara-webkit
-      %li.repo
-        %span.toggle.deactivate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/clearance
-      %li.repo
-        %span.toggle.activate
-          %a{'href' => '#'}
-        %span.name
-          thoughtbot/guides
+      %i.fa.fa-github
+      %span= t('authenticate')
+
+  %li.step.step-activate
+    %h3 Activate Repos
+    %p Tell Hound which GitHub repos to watch.
+    %figure
+      = image_tag('landing/step-activate.png')
+
+  %li.step.step-code
+    %h3 Commit &amp; Pull Request Code
+    %p
+      Write and commit code as you normally would then
+      open a pull request to get review by Hound.
+    %figure
+      = image_tag('landing/step-code.png')
+
+  %li.step.step-comment
+    %h3 View Hound Comments
+    %p
+      Hound will review your pull request and make inline comments on
+      any style guide violations.
+    %figure
+      = image_tag('landing/step-comment.png')
+
+  %li.step.cta
+    = link_to '/auth/github', class: 'auth button' do
+      %i.fa.fa-github
+      %span= t('authenticate')
