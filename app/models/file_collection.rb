@@ -9,7 +9,8 @@ class FileCollection
 
   def relevant_files
     files.reject do |file|
-      file.removed? || !file.ruby? || IGNORED_FILES.include?(file.filename)
+      file.removed? || file.renamed? || !file.ruby? ||
+        IGNORED_FILES.include?(file.filename)
     end
   end
 end
