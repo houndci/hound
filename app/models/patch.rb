@@ -4,7 +4,7 @@ class Patch
   NOT_REMOVED_LINE = /^[^-]/
 
   def initialize(body)
-    @body = body
+    @body = body || ''
   end
 
   def additions
