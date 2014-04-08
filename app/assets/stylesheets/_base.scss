@@ -10,6 +10,31 @@ body {
   padding: 4rem 1rem;
 }
 
+.content-doc {
+  border-bottom: 1px solid $base-border-color;
+  margin-top: 3em;
+  padding-bottom: 3em;
+}
+
+.code {
+  background: rgba(#99abc0, .25);
+  display: inline-block;
+  font-family: monospace;
+  font-style: normal;
+}
+
+em.code {
+  padding: .15em;
+}
+
+.code-block {
+  @extend .code;
+  display: block;
+  padding: 1em;
+  margin: .5em 0;
+  white-space: pre-wrap;
+}
+
 h1.logo {
   letter-spacing: 6px;
   font-weight: 900;
@@ -22,24 +47,29 @@ header {
   margin-bottom: 0.4rem;
   text-align: center;
 
-  span {
+  li {
     border-right: 1px solid $base-border-color;
     color: $light-font-color;
+    display: inline-block;
     font-size: 0.9em;
     font-weight: bold;
     letter-spacing: 2px;
     margin-right: 0.6em;
     padding-right: 1em;
     text-transform: uppercase;
-  }
 
-  span + a {
-    border: none;
-    color: $light-font-color;
-    display: inline-block;
+    &:last-child {
+      border: none;
+    }
 
-    &:hover {
-      color: darken($purple, 5%);
+    & + a {
+      border: none;
+      color: $light-font-color;
+      display: inline-block;
+
+      &:hover {
+        color: darken($purple, 5%);
+      }
     }
   }
 }
@@ -106,4 +136,11 @@ ul, ol {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+ol.numbered {
+  list-style: decimal;
+  li {
+    margin: 0.5em 0;
+  }
 }

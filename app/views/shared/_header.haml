@@ -1,0 +1,18 @@
+%header
+  %h1.logo Hound
+  - if signed_in?
+    %ul
+      %li
+        %span
+          = current_user
+
+      - unless current_page?(configuration_path)
+        %li
+          = link_to 'Configuration', configuration_path
+
+      - unless current_page?(root_path)
+        %li
+          = link_to 'Your Repos', root_path
+
+      %li
+        = link_to 'Sign Out', sign_out_path
