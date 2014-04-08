@@ -65,17 +65,6 @@ describe ModifiedFile, '#removed?' do
   end
 end
 
-describe ModifiedFile, '#renamed?' do
-  context 'when status is renamed' do
-    it 'returns true' do
-      file = double(:file, status: 'renamed')
-      modified_file = ModifiedFile.new(file, double)
-
-      expect(modified_file).to be_renamed
-    end
-  end
-end
-
 describe ModifiedFile, '#ruby?' do
   context 'when file is non-ruby' do
     it 'returns false for json' do

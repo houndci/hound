@@ -18,10 +18,6 @@ class ModifiedFile
     @file.status == 'removed'
   end
 
-  def renamed?
-    @file.status == 'renamed'
-  end
-
   def ruby?
     filename.match(/.*\.rb$/)
   end
