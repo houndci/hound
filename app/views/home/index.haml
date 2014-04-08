@@ -10,7 +10,7 @@
       %li.pull-right
         %a{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
           %i.fa.fa-refresh
-          %span{'ng-bind' => 'syncButtonText'}
+          %span {{ syncButtonText }}
     .search-wrapper
       %i.fa.fa-search
       %input.search{'type' => 'text', 'placeholder' => 'search by repo name', 'ng-model' => 'search.name'}
