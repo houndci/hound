@@ -3,7 +3,7 @@ module GithubApiHelper
     url = "https://api.github.com/repos/#{full_repo_name}/collaborators/houndci"
     stub_request(:put, url).
       with(headers: { 'Authorization' => "token #{auth_token}" }).
-      to_return(status: 200)
+      to_return(status: 204)
   end
 
   def stub_repo_requests(auth_token)
@@ -104,7 +104,19 @@ module GithubApiHelper
       body: { name: username }.to_json,
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      status: 200
+      status: 204
+    )
+  end
+
+  def stub_failed_add_user_to_team_request(username, team_id, token)
+    stub_request(
+      :put,
+      "https://api.github.com/teams/#{team_id}/members/#{username}"
+    ).with(
+      body: { name: username }.to_json,
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 404
     )
   end
 
@@ -116,7 +128,7 @@ module GithubApiHelper
       body: '{}',
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
-      status: 200,
+      status: 204,
     )
   end
 

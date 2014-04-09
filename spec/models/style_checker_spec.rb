@@ -3,7 +3,6 @@ require 'fast_spec_helper'
 require 'app/models/style_checker'
 require 'app/models/file_violation'
 require 'app/models/line_violation'
-require 'debugger'
 
 describe StyleChecker, '#violations' do
   context 'with violations' do

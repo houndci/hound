@@ -2,8 +2,7 @@ class RepoActivator
   def activate(repo, github_token)
     change_repository_state_quietly do
       github = GithubApi.new(github_token)
-      add_hound_to_repo(github, repo)
-      create_web_hook(github, repo)
+      add_hound_to_repo(github, repo) && create_web_hook(github, repo)
     end
   end
 
@@ -19,7 +18,6 @@ class RepoActivator
 
   def change_repository_state_quietly
     yield
-    true
   rescue Octokit::Error => error
     Raven.capture_exception(error)
     false
