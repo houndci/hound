@@ -9,8 +9,7 @@ describe RepoActivator do
         stub_github_api
         activator = RepoActivator.new
 
-        activator.activate(repo, github_token)
-
+        expect(activator.activate(repo, github_token)).to be_true
         expect(GithubApi).to have_received(:new).with(github_token)
         expect(repo.reload).to be_active
       end
@@ -69,7 +68,7 @@ describe RepoActivator do
     end
 
     context 'when repo activation fails' do
-      it 'returns false if the repo does not activate successfully' do
+      it 'returns false if API request raises' do
         github_token = nil
         repo = double('repo')
         expect(GithubApi).to receive(:new).and_raise(Octokit::Error.new)
@@ -87,6 +86,18 @@ describe RepoActivator do
         activator = RepoActivator.new
 
         expect { activator.activate(repo, github_token) }.to raise_error(Exception)
+      end
+
+      context 'when Hound cannot be added to repo' do
+        it 'returns false' do
+          repo = double(:repo, full_github_name: 'test/repo')
+          token = 'githubtoken'
+          github = double(:github, add_user_to_repo: false)
+          GithubApi.stub(new: github)
+          activator = RepoActivator.new
+
+          expect(activator.activate(repo, github)).to be_false
+        end
       end
     end
 

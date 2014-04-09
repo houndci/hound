@@ -6,23 +6,44 @@ describe GithubApi do
   describe '#add_user_to_repo' do
     context 'when repo is part of an organization' do
       context 'when repo is part of a team' do
-        it 'adds user to first repo team' do
-          token = 'abc123'
-          username = 'testuser'
-          repo_name = 'testing/repo' # from fixture
-          team_id = 1234 # from fixture
-          api = GithubApi.new(token)
-          stub_repo_with_org_request(repo_name, token)
-          stub_repo_teams_request(repo_name, token)
-          add_user_request = stub_add_user_to_team_request(
-            username,
-            team_id,
-            token
-          )
+        context 'when request succeeds' do
+          it 'adds user to first repo team and return true' do
+            token = 'abc123'
+            username = 'testuser'
+            repo_name = 'testing/repo' # from fixture
+            team_id = 1234 # from fixture
+            api = GithubApi.new(token)
+            stub_repo_with_org_request(repo_name, token)
+            stub_repo_teams_request(repo_name, token)
+            add_user_request = stub_add_user_to_team_request(
+              username,
+              team_id,
+              token
+            )
 
-          api.add_user_to_repo(username, repo_name)
+            expect(api.add_user_to_repo(username, repo_name)).to be_true
+            expect(add_user_request).to have_been_requested
+          end
+        end
 
-          expect(add_user_request).to have_been_requested
+        context 'when request fails' do
+          it 'tries to add user to first repo team and returns false' do
+            token = 'abc123'
+            username = 'testuser'
+            repo_name = 'testing/repo' # from fixture
+            team_id = 1234 # from fixture
+            api = GithubApi.new(token)
+            stub_repo_with_org_request(repo_name, token)
+            stub_repo_teams_request(repo_name, token)
+            add_user_request = stub_failed_add_user_to_team_request(
+              username,
+              team_id,
+              token
+            )
+
+            expect(api.add_user_to_repo(username, repo_name)).to be_false
+            expect(add_user_request).to have_been_requested
+          end
         end
       end
 
@@ -42,8 +63,7 @@ describe GithubApi do
             token
           )
 
-          api.add_user_to_repo(username, repo_name)
-
+          expect(api.add_user_to_repo(username, repo_name)).to be_true
           expect(add_user_request).to have_been_requested
         end
       end
@@ -63,8 +83,7 @@ describe GithubApi do
           token
         )
 
-        api.add_user_to_repo(username, repo_name)
-
+        expect(api.add_user_to_repo(username, repo_name)).to be_true
         expect(add_user_request).to have_been_requested
       end
     end
