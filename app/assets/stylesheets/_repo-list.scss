@@ -43,10 +43,10 @@
 
       input.search {
         @include transition(all 0.25s ease-out);
+        @include box-sizing(border-box);
         background-color: lighten($purple, 10%);
         border: none;
         border-radius: 3px;
-        box-sizing: border-box;
         color: #fff;
         display: block;
         display: block;
