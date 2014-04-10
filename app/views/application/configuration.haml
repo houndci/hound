@@ -1,12 +1,21 @@
 = render 'shared/header'
 
 %main.content-doc
-  %h2 Hound configuration
+  %h2 Hound configuration (optional)
 
   %p
+    By default, Hound uses #{link_to "thoughtbot's style guide", 'https://github.com/thoughtbot/guides/tree/master/style#ruby'}
+    with no additional setup.
+
+  %p
+    Custom configuration of the style guide is entirely optional and is
+    achieved by specifying rules in
+    %em.code .hound.yml
+    file.
+  %p
     Hound uses #{link_to 'RuboCop', 'https://github.com/bbatsov/rubocop'} gem to
-    handle the style checking. Thus, all of the RuboCop configuration is supported
-    in Hound as well.
+    handle the style checking. Thus, most of the RuboCop configuration, except
+    inheritance, is supported in Hound as well.
 
   %p
     Hound will look for
@@ -21,14 +30,24 @@
       %em.code .hound.yml
       to the root of your repo.
     %li
-      Add custom configuration to
+      Add your custom configuration to
       %em.code .hound.yml
-      file, like:
+      file.
+      %p For example:
       %code.code-block
         :preserve
+          LineLength:
+            Description: 'Limit lines to 130 characters.'
+            Max: 130
+
           StringLiterals:
             EnforcedStyle: double_quotes
-            Enabled: true
+
+          HashSyntax
+            EnforcedStyle: hash_rockets
+
+          RedundantBegin
+            Enabled: false
 
       See #{link_to 'more config options', 'https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml'} in the RuboCop project.
     %li
