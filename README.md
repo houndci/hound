@@ -1,9 +1,10 @@
 Hound
 =====
 
-Take care of pesky code reviews with a trusty [Hound](http://houndci.com). Hound
-reviews GitHub pull requests for style guide violations.
-[View the style guide &rarr;](https://github.com/thoughtbot/guides)
+Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
+
+Hound reviews GitHub pull requests for style guide violations. [View the style
+guide &rarr;](https://github.com/thoughtbot/guides)
 
 Development
 -----------
