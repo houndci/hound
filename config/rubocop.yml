@@ -45,9 +45,8 @@ DefWithoutParentheses:
   Enabled: true
 
 DotPosition:
-  Description: 'Checks the position of the dot in multi-line method calls.'
   Style: 'leading'
-  Enabled: true
+  Enabled: false
 
 EmptyLineBetweenDefs:
   Description: 'Use empty lines between defs.'
