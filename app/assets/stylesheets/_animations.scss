@@ -27,6 +27,8 @@
   }
 }
 
+/////////////////////////////////////////////////////////////////////
+
 @include keyframes(activate-text) {
   0% {
     background: -webkit-linear-gradient(0deg, #000 -100%, #00FF00 -50%, #000 0%);
@@ -38,5 +40,22 @@
     background: -webkit-linear-gradient(0deg, #000 100%, #00FF00 150%, #000 200%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+}
+
+/////////////////////////////////////////////////////////////////////
+
+@include keyframes(loading) {
+  0% {
+    opacity: 0.15;
+    @include transform(scale(0.95));
+  }
+  50% {
+    opacity: 1;
+    @include transform(scale(1));
+  }
+  100% {
+    opacity: 0.15;
+    @include transform(scale(0.95));
   }
 }

@@ -68,6 +68,32 @@
     }
   }
 
+  .loading {
+    background-color: #fff;
+    padding: 1.1em 1.9em 1em;
+    text-align: center;
+
+    .dot {
+      @include size(20px);
+      @include animation(loading 1.3s ease-out);
+      @include animation-iteration-count(infinite);
+      background-color: rgba($green, 0.1);
+      border-radius: 100%;
+      border: 1px solid $green;
+      display: inline-block;
+      opacity: 0.15;
+      margin: 0 1.2em;
+
+      &:nth-child(2) {
+        @include animation-delay(0.2s);
+      }
+
+      &:nth-child(3) {
+        @include animation-delay(0.4s);
+      }
+    }
+  }
+
   ul.repos {
     background-color: rgb(250,250,250);
   }
@@ -75,7 +101,6 @@
   li.repo {
     @include clearfix;
     border-top: 1px solid $base-border-color;
-    display: block;
     padding: 1.1em 1.9em 1em;
     position: relative;
 

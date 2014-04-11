@@ -14,6 +14,10 @@
     .search-wrapper
       %i.fa.fa-search
       %input.search{'type' => 'text', 'placeholder' => 'search by repo name', 'ng-model' => 'search.name'}
+  .loading{'ng-show' => 'syncingRepos'}
+    .dot
+    .dot
+    .dot
   %ul.repos{'ng-hide' => 'syncingRepos'}
     %li.repo{'ng-repeat' => 'repo in repos | filter:search', 'ng-class' => '{active: repo.active, processing: repo.processing}'}
       %a.toggle{'href' => '', 'ng-click' => 'toggle(repo)'}
