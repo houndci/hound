@@ -3,6 +3,7 @@ ENV['SECRET_KEY_BASE'] = 'test-key'
 ENV['HOUND_GITHUB_USERNAME'] = 'houndci'
 ENV['HOUND_GITHUB_TOKEN'] = 'houndgithubtoken'
 ENV['ENABLE_HTTPS'] = 'no'
+ENV['CHANGED_FILES_THRESHOLD'] = '300'
 
 Houndapp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb

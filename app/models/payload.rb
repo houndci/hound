@@ -1,3 +1,5 @@
+require 'json'
+
 class Payload
   def initialize(payload_data)
     if payload_data.is_a? String
@@ -25,5 +27,9 @@ class Payload
 
   def action
     @payload_data['action']
+  end
+
+  def changed_files
+    @payload_data['pull_request']['changed_files']
   end
 end
