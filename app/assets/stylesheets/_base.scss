@@ -48,28 +48,17 @@ header {
   text-align: center;
 
   li {
-    border-right: 1px solid $base-border-color;
     color: $light-font-color;
     display: inline-block;
     font-size: 0.9em;
     font-weight: bold;
     letter-spacing: 2px;
-    margin-right: 0.6em;
-    padding-right: 1em;
     text-transform: uppercase;
 
-    &:last-child {
-      border: none;
-    }
-
-    & + a {
-      border: none;
-      color: $light-font-color;
-      display: inline-block;
-
-      &:hover {
-        color: darken($purple, 5%);
-      }
+    & + li {
+      border-left: 1px solid $base-border-color;
+      margin-left: 0.6em;
+      padding-left: 1em;
     }
   }
 }
