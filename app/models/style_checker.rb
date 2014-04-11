@@ -10,6 +10,7 @@ class StyleChecker
     Rubocop::Cop::Style::ConstantName,
     Rubocop::Cop::Style::DefWithParentheses,
     Rubocop::Cop::Style::DefWithoutParentheses,
+    Rubocop::Cop::Style::DotPosition,
     Rubocop::Cop::Style::EmptyLineBetweenDefs,
     Rubocop::Cop::Style::EmptyLines,
     Rubocop::Cop::Style::EndOfLine,
