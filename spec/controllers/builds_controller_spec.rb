@@ -23,4 +23,30 @@ describe BuildsController, '#create' do
       end
     end
   end
+
+  context 'when number of changed files is below the threshold' do
+    it 'enqueues job with high priority' do
+      Delayed::Job.stub(:enqueue)
+      payload_data = File.read(
+        'spec/support/fixtures/pull_request_opened_event.json'
+      )
+      post(:create, payload: payload_data)
+
+      expect(Delayed::Job).to have_received(:enqueue).
+        with(anything, priority: BuildsController::HIGH_PRIORITY)
+    end
+  end
+
+  context 'when number of changed files is at the threshold or above' do
+    it 'enqueues job with low priority' do
+      Delayed::Job.stub(:enqueue)
+      payload_data = File.read(
+        'spec/support/fixtures/pull_request_event_with_many_files.json'
+      )
+      post(:create, payload: payload_data)
+
+      expect(Delayed::Job).to have_received(:enqueue).
+        with(anything, priority: BuildsController::LOW_PRIORITY)
+    end
+  end
 end

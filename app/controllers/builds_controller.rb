@@ -3,8 +3,11 @@ class BuildsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create]
   skip_before_filter :authenticate, only: [:create]
 
+  HIGH_PRIORITY = 1
+  LOW_PRIORITY = 2
+
   def create
-    Delayed::Job.enqueue(build_job)
+    Delayed::Job.enqueue(build_job, priority: priority)
     head :ok
   end
 
@@ -41,6 +44,14 @@ class BuildsController < ApplicationController
   def ignore_confirmation_pings
     if event_data.key?('zen')
       head :ok
+    end
+  end
+
+  def priority
+    if payload.changed_files < ENV['CHANGED_FILES_THRESHOLD'].to_i
+      HIGH_PRIORITY
+    else
+      LOW_PRIORITY
     end
   end
 end
