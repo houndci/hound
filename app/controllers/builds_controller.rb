@@ -22,14 +22,6 @@ class BuildsController < ApplicationController
   end
 
   def build_runner
-    @build_runner ||= BuildRunner.new(payload)
-  end
-
-  def build_job
-    BuildJob.new(build_runner)
-  end
-
-  def build_runner
     BuildRunner.new(payload)
   end
 
