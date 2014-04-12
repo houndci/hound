@@ -36,6 +36,7 @@ describe GithubApi do
             api = GithubApi.new(token)
             stub_repo_with_org_request(repo_name, token)
             stub_repo_teams_request(repo_name, token)
+            stub_user_teams_request(token)
             add_user_request = stub_failed_add_user_to_team_request(
               username,
               team_id,

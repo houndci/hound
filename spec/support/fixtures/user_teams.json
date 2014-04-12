@@ -14,7 +14,7 @@
     }
   },
   {
-    "url": "https://api.github.com/teams/1234",
+    "url": "https://api.github.com/teams/4567",
     "name": "test team",
     "id": 4567,
     "permission": "admin",

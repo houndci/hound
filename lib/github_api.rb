@@ -74,7 +74,6 @@ class GithubApi
       user_teams = client.user_teams
       user_admin_team_ids = user_teams.keep_if { |team| team.permission == 'admin' }.map { |team| team.id }
       repo_team_ids = repo_teams.map { |team| team.id }
-
       repo_team_id = (user_admin_team_ids & repo_team_ids).first
 
       add_user_to_team(username, repo_team_id)
