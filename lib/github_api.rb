@@ -69,17 +69,22 @@ class GithubApi
 
   def add_user_to_org(username, repo)
     repo_teams = client.repository_teams(repo.full_name)
+    admin_team_ids = admin_team_ids(repo_teams)
 
-    if repo_teams.any?
-      token_bearer_admin_teams = GithubUser.new(client).admin_access_teams
-      admin_team_ids = token_bearer_admin_teams.map { |team| team.id }
-      repo_team_ids = repo_teams.map { |team| team.id }
-      team_id = (admin_team_ids & repo_team_ids).first
-
-      add_user_to_team(username, team_id)
+    if admin_team_ids.any?
+      admin_team_id = admin_team_ids.first
+      add_user_to_team(username, admin_team_id)
     else
       add_user_to_new_team(username, 'Services', repo)
     end
+  end
+
+  def admin_team_ids(repo_teams)
+    teams = @client.user_teams
+    teams.keep_if { |team| team.permission == 'admin' }
+    admin_team_ids = teams.map { |team| team.id }
+    repo_team_ids = repo_teams.map { |team| team.id }
+    admin_team_ids & repo_team_ids
   end
 
   def add_user_to_new_team(username, team_name, repo)
