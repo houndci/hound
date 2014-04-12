@@ -7,14 +7,15 @@ describe GithubApi do
     context 'when repo is part of an organization' do
       context 'when repo is part of a team' do
         context 'when request succeeds' do
-          it 'adds user to first repo team and return true' do
+          it "adds Hound user to activator's first admin repo team and return true" do
             token = 'abc123'
             username = 'testuser'
             repo_name = 'testing/repo' # from fixture
-            team_id = 1234 # from fixture
+            team_id = 4567 # from fixture
             api = GithubApi.new(token)
             stub_repo_with_org_request(repo_name, token)
             stub_repo_teams_request(repo_name, token)
+            stub_user_teams_request(token)
             add_user_request = stub_add_user_to_team_request(
               username,
               team_id,

@@ -70,6 +70,19 @@ module GithubApiHelper
     )
   end
 
+  def stub_user_teams_request(token)
+    stub_request(
+      :get,
+      "https://api.github.com/user/teams"
+    ).with(
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/user_teams.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   def stub_empty_repo_teams_request(repo_name, token)
     stub_request(
       :get,
