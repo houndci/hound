@@ -53,6 +53,7 @@ GEM
     columnize (0.3.6)
     crack (0.4.1)
       safe_yaml (~> 0.9.0)
+    dalli (2.7.0)
     database_cleaner (1.2.0)
     debugger (1.6.5)
       columnize (>= 0.3.1)
@@ -76,6 +77,8 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    faraday-http-cache (0.4.0)
+      faraday (~> 0.8)
     font-awesome-rails (4.0.3.1)
       railties (>= 3.2, < 5.0)
     foreman (0.63.0)
@@ -105,6 +108,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcachier (0.0.2)
     mime-types (1.25.1)
     mini_portile (0.5.3)
     minitest (4.7.5)
@@ -231,16 +235,19 @@ DEPENDENCIES
   capybara (~> 2.1.0)
   capybara-webkit (~> 1.1.1)
   coffee-rails
+  dalli
   database_cleaner
   debugger
   delayed_job_active_record
   factory_girl_rails
+  faraday-http-cache
   font-awesome-rails
   foreman
   haml-rails
   high_voltage
   jquery-rails
   launchy
+  memcachier
   octokit
   omniauth-github
   pg
