@@ -71,12 +71,12 @@ class GithubApi
     repo_teams = client.repository_teams(repo.full_name)
 
     if repo_teams.any?
-      user_teams = client.user_teams
-      user_admin_team_ids = user_teams.keep_if { |team| team.permission == 'admin' }.map { |team| team.id }
+      token_bearer_admin_teams = GithubUser.new(client).admin_access_teams
+      admin_team_ids = token_bearer_admin_teams.map { |team| team.id }
       repo_team_ids = repo_teams.map { |team| team.id }
-      repo_team_id = (user_admin_team_ids & repo_team_ids).first
+      team_id = (admin_team_ids & repo_team_ids).first
 
-      add_user_to_team(username, repo_team_id)
+      add_user_to_team(username, team_id)
     else
       add_user_to_new_team(username, 'Services', repo)
     end
