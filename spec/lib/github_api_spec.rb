@@ -7,7 +7,7 @@ describe GithubApi do
     context 'when repo is part of an organization' do
       context 'when repo is part of a team' do
         context 'when request succeeds' do
-          it "adds Hound user to activator's first admin repo team and return true" do
+          it "adds Hound user to first repo team with admin access and return true" do
             token = 'abc123'
             username = 'testuser'
             repo_name = 'testing/repo' # from fixture
@@ -28,7 +28,7 @@ describe GithubApi do
         end
 
         context 'when request fails' do
-          it 'tries to add user to first repo team and returns false' do
+          it 'tries to add Hound user to first repo team with admin access and returns false' do
             token = 'abc123'
             username = 'testuser'
             repo_name = 'testing/repo' # from fixture
