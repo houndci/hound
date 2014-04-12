@@ -81,9 +81,9 @@ class GithubApi
 
   def admin_team_ids(repo_teams)
     teams = client.user_teams
-    admin_teams = teams.keep_if { |team| team.permission == 'admin' }
-    admin_team_ids = admin_teams.map { |team| team.id }
-    repo_team_ids = repo_teams.map { |team| team.id }
+    admin_teams = teams.select { |team| team.permission == 'admin' }
+    admin_team_ids = admin_teams.map(&:id)
+    repo_team_ids = repo_teams.map(&:id)
     admin_team_ids & repo_team_ids
   end
 
