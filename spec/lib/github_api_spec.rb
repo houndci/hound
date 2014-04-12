@@ -32,7 +32,7 @@ describe GithubApi do
             token = 'abc123'
             username = 'testuser'
             repo_name = 'testing/repo' # from fixture
-            team_id = 1234 # from fixture
+            team_id = 4567 # from fixture
             api = GithubApi.new(token)
             stub_repo_with_org_request(repo_name, token)
             stub_repo_teams_request(repo_name, token)

@@ -96,7 +96,7 @@ class GithubApi
       {
         name: name,
         repo_names: [repo.full_name],
-        permission: 'push'
+        permission: 'pull'
       }
     )
   end
