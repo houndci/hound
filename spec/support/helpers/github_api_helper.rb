@@ -73,7 +73,7 @@ module GithubApiHelper
   def stub_user_teams_request(token)
     stub_request(
       :get,
-      "https://api.github.com/user/teams"
+      'https://api.github.com/user/teams'
     ).with(
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
