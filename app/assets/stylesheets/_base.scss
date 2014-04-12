@@ -5,9 +5,13 @@ body {
 }
 
 .content {
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 4rem 1rem;
+  padding: 4em 1em;
+
+  @include media($small-screen) {
+    padding: 2em 1em;
+  }
 }
 
 .content-doc {
@@ -41,10 +45,17 @@ h1.logo {
   font-size: 3.8em;
   margin: 0;
   text-transform: uppercase;
+
+  @include media($small-screen) {
+    display: inline-block;
+    font-size: 3.2em;
+    line-height: normal;
+    margin-bottom: 0.1em;
+  }
 }
 
 header {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.4em;
   text-align: center;
 
   li {
@@ -59,6 +70,15 @@ header {
       border-left: 1px solid $base-border-color;
       margin-left: 0.6em;
       padding-left: 1em;
+
+      @include media($small-screen) {
+        border-left: none;
+        padding-left: 0;
+      }
+    }
+
+    a {
+      color: $light-font-color;
     }
   }
 }
@@ -75,7 +95,7 @@ header {
   font-weight: 700;
   letter-spacing: 3px;
   overflow: hidden;
-  padding: 1rem 2rem;
+  padding: 1em 0.8em;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -118,6 +138,7 @@ a {
 
   &:hover {
     border-color: lighten($purple, 5%);
+    color: darken($purple, 5%);
   }
 }
 

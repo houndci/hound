@@ -114,6 +114,9 @@ GEM
     minitest (4.7.5)
     multi_json (1.9.2)
     multipart-post (2.0.0)
+    neat (1.5.0)
+      bourbon (>= 2.1)
+      sass (>= 3.2)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     oauth2 (0.8.1)
@@ -248,6 +251,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   memcachier
+  neat
   octokit
   omniauth-github
   pg
