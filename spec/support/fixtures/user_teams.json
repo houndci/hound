@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://api.github.com/teams/4567",
+    "name": "Learn Subscribers",
+    "id": 1234,
+    "permission": "pull",
+    "members_count": 3,
+    "repos_count": 10,
+    "organization": {
+      "login": "thoughtbot",
+      "id": 1,
+      "url": "https://api.github.com/orgs/thoughtbot",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif"
+    }
+  },
+  {
+    "url": "https://api.github.com/teams/4567",
+    "name": "test team",
+    "id": 4567,
+    "permission": "admin",
+    "members_count": 3,
+    "repos_count": 10,
+    "organization": {
+      "login": "thoughtbot",
+      "id": 1,
+      "url": "https://api.github.com/orgs/thoughtbot",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif"
+    }
+  },
+  {
+    "url": "https://api.github.com/teams/1234",
+    "name": "thoughtbot",
+    "id": 9012,
+    "permission": "admin",
+    "members_count": 3,
+    "repos_count": 10,
+    "organization": {
+      "login": "thoughtbot",
+      "id": 1,
+      "url": "https://api.github.com/orgs/thoughtbot",
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif"
+    }
+  }
+]

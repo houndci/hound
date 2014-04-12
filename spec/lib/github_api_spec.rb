@@ -7,14 +7,15 @@ describe GithubApi do
     context 'when repo is part of an organization' do
       context 'when repo is part of a team' do
         context 'when request succeeds' do
-          it 'adds user to first repo team and return true' do
+          it 'adds Hound user to first repo team with admin access and return true' do
             token = 'abc123'
             username = 'testuser'
             repo_name = 'testing/repo' # from fixture
-            team_id = 1234 # from fixture
+            team_id = 4567 # from fixture
             api = GithubApi.new(token)
             stub_repo_with_org_request(repo_name, token)
             stub_repo_teams_request(repo_name, token)
+            stub_user_teams_request(token)
             add_user_request = stub_add_user_to_team_request(
               username,
               team_id,
@@ -27,14 +28,15 @@ describe GithubApi do
         end
 
         context 'when request fails' do
-          it 'tries to add user to first repo team and returns false' do
+          it 'tries to add Hound user to first repo team with admin access and returns false' do
             token = 'abc123'
             username = 'testuser'
             repo_name = 'testing/repo' # from fixture
-            team_id = 1234 # from fixture
+            team_id = 4567 # from fixture
             api = GithubApi.new(token)
             stub_repo_with_org_request(repo_name, token)
             stub_repo_teams_request(repo_name, token)
+            stub_user_teams_request(token)
             add_user_request = stub_failed_add_user_to_team_request(
               username,
               team_id,
@@ -56,6 +58,7 @@ describe GithubApi do
           api = GithubApi.new(token)
           stub_repo_with_org_request(repo_name, token)
           stub_empty_repo_teams_request(repo_name, token)
+          stub_user_teams_request(token)
           stub_team_creation_request('testing', repo_name, token)
           add_user_request = stub_add_user_to_team_request(
             username,
@@ -221,5 +224,19 @@ describe GithubApi, '#add_comment' do
     )
 
     expect(request).to have_been_requested
+  end
+end
+
+describe GithubApi, '#user_teams' do
+  it "returns user's teams" do
+    token = 'abc123'
+    teams = ['thoughtbot']
+    client = double(user_teams: teams)
+    Octokit::Client.stub(new: client)
+    api = GithubApi.new(token)
+
+    user_teams = api.user_teams
+
+    expect(user_teams).to eq teams
   end
 end

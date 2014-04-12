@@ -12,7 +12,7 @@ module GithubApiHelper
     stub_paginated_org_repo_requests(auth_token)
   end
 
-  def stub_repo_request(repo_name, token = AuthenticationHelper::GITHUB_TOKEN)
+  def stub_repo_request(repo_name, token = auth_token)
     stub_request(
       :get,
       "https://api.github.com/repos/#{repo_name}"
@@ -26,7 +26,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_repo_with_org_request(repo_name, token)
+  def stub_repo_with_org_request(repo_name, token = auth_token)
     stub_request(
       :get,
       "https://api.github.com/repos/#{repo_name}"
@@ -57,7 +57,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_repo_teams_request(repo_name, token)
+  def stub_repo_teams_request(repo_name, token = auth_token)
     stub_request(
       :get,
       "https://api.github.com/repos/#{repo_name}/teams"
@@ -66,6 +66,19 @@ module GithubApiHelper
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/repo_teams.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_user_teams_request(token = auth_token)
+    stub_request(
+      :get,
+      'https://api.github.com/user/teams'
+    ).with(
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/user_teams.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -96,7 +109,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_add_user_to_team_request(username, team_id, token)
+  def stub_add_user_to_team_request(username, team_id, token = auth_token)
     stub_request(
       :put,
       "https://api.github.com/teams/#{team_id}/members/#{username}"

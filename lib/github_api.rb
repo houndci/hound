@@ -1,5 +1,6 @@
 require 'octokit'
 require 'base64'
+require 'app/models/github_user'
 
 class GithubApi
   attr_reader :client
@@ -65,15 +66,28 @@ class GithubApi
     client.contents(full_repo_name, path: filename, ref: sha)
   end
 
+  def user_teams
+    client.user_teams
+  end
+
   private
 
   def add_user_to_org(username, repo)
     repo_teams = client.repository_teams(repo.full_name)
+    admin_team = admin_access_team(repo_teams)
 
-    if repo_teams.any?
-      add_user_to_team(username, repo_teams.first.id)
+    if admin_team
+      add_user_to_team(username, admin_team.id)
     else
       add_user_to_new_team(username, 'Services', repo)
+    end
+  end
+
+  def admin_access_team(repo_teams)
+    token_bearer = GithubUser.new(self)
+
+    repo_teams.detect do |repo_team|
+      token_bearer.has_admin_access_through_team?(repo_team.id)
     end
   end
 
