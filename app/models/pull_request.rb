@@ -1,5 +1,6 @@
 class PullRequest
   CONFIG_FILE = '.hound.yml'
+  SUCCESS_MESSAGE = 'No style issues found! :+1:'
 
   def initialize(payload, github_token)
     @payload = payload

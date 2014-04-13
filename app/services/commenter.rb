@@ -13,5 +13,12 @@ class Commenter
         end
       end
     end
+
+    if pull_request.opened? && file_violations.empty?
+      config = pull_request.config_hash
+      if config && (success = config['SuccessMessage']) && success['Enabled']
+        pull_request.add_comment(nil, nil, PullRequest::SUCCESS_MESSAGE)
+      end
+    end
   end
 end
