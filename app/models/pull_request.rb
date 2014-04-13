@@ -52,6 +52,10 @@ class PullRequest
     nil
   end
 
+  def config_hash
+    config ? YAML.load(config) : nil
+  end
+
   def opened?
     @payload.action == 'opened'
   end

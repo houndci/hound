@@ -178,6 +178,38 @@ describe PullRequest, '#config' do
   end
 end
 
+describe PullRequest, '#config_hash' do
+  context 'when config file is present' do
+    it 'returns the contents of custom config' do
+      contents = "StringLiterals:\n  Enabled: false"
+      file_contents = double(:file_contents, content: Base64.encode64(contents))
+      api = double(:github_api, file_contents: file_contents)
+      pull_request = pull_request(api, file_contents)
+
+      config = pull_request.config_hash
+      expected_config = {
+        "StringLiterals" => {
+          "Enabled" => false,
+        },
+      }
+
+      expect(config).to eq(expected_config)
+    end
+  end
+
+  context 'when config file is not present' do
+    it 'returns nil' do
+      api = double(:github_api)
+      api.stub(:file_contents).and_raise(Octokit::NotFound)
+      pull_request = pull_request(api)
+
+      config_hash = pull_request.config_hash
+
+      expect(config_hash).to be_nil
+    end
+  end
+end
+
 def pull_request(api, file_contents = nil)
   payload = double(:payload, full_repo_name: 'org/repo', head_sha: 'abc123')
   GithubApi.stub(new: api)
