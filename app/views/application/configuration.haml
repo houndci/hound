@@ -49,6 +49,11 @@
           RedundantBegin
             Enabled: false
 
+          # Enable SuccessMessage if you want Hound to comment when there
+          # are no style violations.
+          SuccessMessage
+            Enabled: true
+
       See #{link_to 'more config options', 'https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml'} in the RuboCop project.
     %li
       Commit the changes to your repo, and the following pull requests will use
