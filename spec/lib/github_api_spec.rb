@@ -226,3 +226,15 @@ describe GithubApi, '#add_comment' do
     expect(request).to have_been_requested
   end
 end
+
+describe GithubApi, '#user_teams' do
+  it "returns user's teams" do
+    token = 'abc123'
+    api = GithubApi.new(token)
+    stub_user_teams_request(token)
+
+    teams = api.user_teams
+
+    expect(teams.length).to eq 3
+  end
+end
