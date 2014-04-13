@@ -138,7 +138,7 @@ describe Commenter do
           end
         end
         context 'when the pull request is not open' do
-          it "does not comment on the pull request" do
+          it 'does not comment on the pull request' do
             commenter = Commenter.new
             pull_request = double(:pull_request, opened?: false).as_null_object
 
