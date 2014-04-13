@@ -188,8 +188,8 @@ describe PullRequest, '#config_hash' do
 
       config = pull_request.config_hash
       expected_config = {
-        "StringLiterals" => {
-          "Enabled" => false,
+        'StringLiterals' => {
+          'Enabled' => false,
         },
       }
 
