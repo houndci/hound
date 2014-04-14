@@ -205,7 +205,7 @@ describe PullRequest, '#config_hash' do
 
       config_hash = pull_request.config_hash
 
-      expect(config_hash).to be_nil
+      expect(config_hash).to eq({})
     end
   end
 end

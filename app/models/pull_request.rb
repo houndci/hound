@@ -54,7 +54,7 @@ class PullRequest
   end
 
   def config_hash
-    config ? YAML.load(config) : nil
+    config ? YAML.load(config) : {}
   end
 
   def opened?
