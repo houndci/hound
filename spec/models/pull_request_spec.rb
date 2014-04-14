@@ -181,7 +181,7 @@ end
 describe PullRequest, '#config_hash' do
   context 'when config file is present' do
     it 'returns the contents of custom config' do
-      contents = "StringLiterals:\n  Enabled: false"
+      contents = 'StringLiterals:\n  Enabled: false'
       file_contents = double(:file_contents, content: Base64.encode64(contents))
       api = double(:github_api, file_contents: file_contents)
       pull_request = pull_request(api, file_contents)
@@ -215,7 +215,7 @@ describe PullRequest, '#no_violations_comment_enabled' do
     context 'with configuration' do
       context 'when enabled' do
         it 'returns true' do
-          contents = "SuccessMessage:\n  Enabled: true"
+          contents = 'SuccessMessage:\n  Enabled: true'
           file_contents = double(:file_contents, content: Base64.encode64(contents))
           api = double(:github_api, file_contents: file_contents)
           pull_request = pull_request(api, file_contents)
@@ -228,7 +228,7 @@ describe PullRequest, '#no_violations_comment_enabled' do
       end
       context 'when disabled' do
         it 'returns false' do
-          contents = "SuccessMessage:\n  Enabled: false"
+          contents = 'SuccessMessage:\n  Enabled: false'
           file_contents = double(:file_contents, content: Base64.encode64(contents))
           api = double(:github_api, file_contents: file_contents)
           pull_request = pull_request(api, file_contents)
@@ -255,7 +255,7 @@ describe PullRequest, '#no_violations_comment_enabled' do
   end
   context 'when not opened' do
     it 'returns false' do
-      contents = "SuccessMessage:\n  Enabled: true"
+      contents = 'SuccessMessage:\n  Enabled: true'
       file_contents = double(:file_contents, content: Base64.encode64(contents))
       api = double(:github_api, file_contents: file_contents)
       pull_request = pull_request(api, file_contents)
