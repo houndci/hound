@@ -36,9 +36,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         api = GithubApi.new(token)
         user = GithubUser.new(api)
         team_id = 4567
-        teams = [
-          double(permission: 'pull', id: 4567)
-        ]
+        teams = [double(permission: 'pull', id: 4567)]
         api.stub(user_teams: teams)
 
         expect(user.has_admin_access_through_team?(team_id)).to be_false
