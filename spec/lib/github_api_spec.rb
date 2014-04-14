@@ -233,8 +233,8 @@ describe GithubApi, '#user_teams' do
     teams = ['thoughtbot']
     client = double(user_teams: teams)
     Octokit::Client.stub(new: client)
-
     api = GithubApi.new(token)
+
     user_teams = api.user_teams
 
     expect(user_teams).to eq teams
