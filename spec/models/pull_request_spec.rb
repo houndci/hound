@@ -185,13 +185,13 @@ describe PullRequest, '#config_hash' do
       file_contents = double(:file_contents, content: Base64.encode64(contents))
       api = double(:github_api, file_contents: file_contents)
       pull_request = pull_request(api, file_contents)
-
-      config = pull_request.config_hash
       expected_config = {
         'StringLiterals' => {
-          'Enabled' => false,
-        },
+          'Enabled' => false
+        }
       }
+
+      config = pull_request.config_hash
 
       expect(config).to eq(expected_config)
     end
