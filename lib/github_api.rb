@@ -74,7 +74,7 @@ class GithubApi
 
   def add_user_to_org(username, repo)
     repo_teams = client.repository_teams(repo.full_name)
-    admin_team = admin_access_teams(repo_teams).first
+    admin_team = admin_access_team(repo_teams)
 
     if admin_team
       add_user_to_team(username, admin_team.id)
@@ -83,17 +83,12 @@ class GithubApi
     end
   end
 
-  def admin_access_teams(repo_teams)
+  def admin_access_team(repo_teams)
     token_bearer = GithubUser.new(self)
-    teams = []
 
-    repo_teams.each do |team|
-      if token_bearer.has_admin_access_through_team?(team.id)
-        teams << team
-      end
+    repo_teams.detect do |repo_team|
+      token_bearer.has_admin_access_through_team?(repo_team.id)
     end
-
-    teams
   end
 
   def add_user_to_new_team(username, team_name, repo)

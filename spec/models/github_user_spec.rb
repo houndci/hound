@@ -5,10 +5,11 @@ describe GithubUser, '#has_admin_access_through_team?' do
     context 'when user belongs team' do
       it 'returns true' do
         token = 'abc123'
+        team_id = 4567 # from fixture
         api = GithubApi.new(token)
         user = GithubUser.new(api)
-        team_id = 4567 # from fixture
-        stub_user_teams_request(token)
+        teams = [double(permission: 'admin', id: team_id)]
+        api.stub(user_teams: teams)
 
         expect(user.has_admin_access_through_team?(team_id)).to be_true
       end
@@ -20,7 +21,8 @@ describe GithubUser, '#has_admin_access_through_team?' do
         api = GithubApi.new(token)
         user = GithubUser.new(api)
         team_id = 1111
-        stub_user_teams_request(token)
+        teams = [double(permission: 'admin', id: 4567)]
+        api.stub(user_teams: teams)
 
         expect(user.has_admin_access_through_team?(team_id)).to be_false
       end
@@ -33,8 +35,11 @@ describe GithubUser, '#has_admin_access_through_team?' do
         token = 'abc123'
         api = GithubApi.new(token)
         user = GithubUser.new(api)
-        team_id = 1234 # from fixture
-        stub_user_teams_request(token)
+        team_id = 4567
+        teams = [
+          double(permission: 'pull', id: 4567)
+        ]
+        api.stub(user_teams: teams)
 
         expect(user.has_admin_access_through_team?(team_id)).to be_false
       end

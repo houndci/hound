@@ -230,11 +230,13 @@ end
 describe GithubApi, '#user_teams' do
   it "returns user's teams" do
     token = 'abc123'
+    teams = ['thoughtbot']
+    client = double(user_teams: teams)
+    Octokit::Client.stub(new: client)
+
     api = GithubApi.new(token)
-    stub_user_teams_request(token)
+    user_teams = api.user_teams
 
-    teams = api.user_teams
-
-    expect(teams.length).to eq 3
+    expect(user_teams).to eq teams
   end
 end
