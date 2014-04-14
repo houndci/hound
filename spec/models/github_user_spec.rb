@@ -11,7 +11,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         teams = [double(permission: 'admin', id: team_id)]
         api.stub(user_teams: teams)
 
-        expect(user.has_admin_access_through_team?(team_id)).to be_true
+        expect(user).to have_admin_access_through_team(team_id)
       end
     end
 
@@ -24,7 +24,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         teams = [double(permission: 'admin', id: 4567)]
         api.stub(user_teams: teams)
 
-        expect(user.has_admin_access_through_team?(team_id)).to be_false
+        expect(user).not_to have_admin_access_through_team(team_id)
       end
     end
   end
@@ -39,7 +39,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         teams = [double(permission: 'pull', id: 4567)]
         api.stub(user_teams: teams)
 
-        expect(user.has_admin_access_through_team?(team_id)).to be_false
+        expect(user).not_to have_admin_access_through_team(team_id)
       end
     end
   end
