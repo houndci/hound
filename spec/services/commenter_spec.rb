@@ -116,7 +116,7 @@ describe Commenter do
 
     context 'with no violations' do
       context 'with SuccessComment configuration' do
-        let(:config_hash) { { 'SuccessMessage' => { 'Enabled' => true } } }
+        let(:config_hash) { { 'SuccessNotification' => { 'Enabled' => true } } }
 
         context 'when the pull request is open' do
           it 'adds a comment to the pull request' do
@@ -124,9 +124,8 @@ describe Commenter do
             pull_request = double(
               :pull_request,
               synchronize?: true,
-              opened?: true,
               add_comment: true,
-              config_hash: config_hash,
+              success_notification_enabled: true,
             )
             commenter = Commenter.new
 
@@ -140,7 +139,9 @@ describe Commenter do
         context 'when the pull request is not open' do
           it 'does not comment on the pull request' do
             commenter = Commenter.new
-            pull_request = double(:pull_request, opened?: false).as_null_object
+            pull_request = double(:pull_request,
+              success_notification_enabled: false,
+            ).as_null_object
 
             commenter.comment_on_violations([], pull_request)
 
@@ -152,7 +153,9 @@ describe Commenter do
       context 'without SuccessComment configuration' do
         it 'does not comment' do
           commenter = Commenter.new
-          pull_request = double(:pull_request, config_hash: nil).as_null_object
+          pull_request = double(:pull_request,
+            success_notification_enabled: false,
+          ).as_null_object
 
           commenter.comment_on_violations([], pull_request)
 

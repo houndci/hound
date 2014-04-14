@@ -65,9 +65,9 @@ class PullRequest
     @payload.action == 'synchronize'
   end
 
-  def no_violations_comment_enabled
+  def success_notification_enabled
     return false unless opened?
-    if success = config_hash['SuccessMessage']
+    if success = config_hash['SuccessNotification']
       success['Enabled']
     else
       false
