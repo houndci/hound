@@ -65,6 +65,15 @@ class PullRequest
     @payload.action == 'synchronize'
   end
 
+  def no_violations_comment_enabled
+    return false unless opened?
+    if success = config_hash['SuccessMessage']
+      success['Enabled']
+    else
+      false
+    end
+  end
+
   private
 
   def api

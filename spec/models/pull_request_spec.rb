@@ -210,6 +210,64 @@ describe PullRequest, '#config_hash' do
   end
 end
 
+describe PullRequest, '#no_violations_comment_enabled' do
+  context 'when opened' do
+    context 'with configuration' do
+      context 'when enabled' do
+        it 'returns true' do
+          contents = "SuccessMessage:\n  Enabled: true"
+          file_contents = double(:file_contents, content: Base64.encode64(contents))
+          api = double(:github_api, file_contents: file_contents)
+          pull_request = pull_request(api, file_contents)
+          pull_request.stub(:opened?).and_return(true)
+
+          enabled = pull_request.no_violations_comment_enabled
+
+          expect(enabled).to be_true
+        end
+      end
+      context 'when disabled' do
+        it 'returns false' do
+          contents = "SuccessMessage:\n  Enabled: false"
+          file_contents = double(:file_contents, content: Base64.encode64(contents))
+          api = double(:github_api, file_contents: file_contents)
+          pull_request = pull_request(api, file_contents)
+          pull_request.stub(:opened?).and_return(true)
+
+          enabled = pull_request.no_violations_comment_enabled
+
+          expect(enabled).to be_false
+        end
+      end
+    end
+    context 'without configuration' do
+      it 'returns false' do
+        api = double(:github_api)
+        api.stub(:file_contents).and_raise(Octokit::NotFound)
+        pull_request = pull_request(api)
+        pull_request.stub(:opened?).and_return(true)
+
+        enabled = pull_request.no_violations_comment_enabled
+
+        expect(enabled).to be_false
+      end
+    end
+  end
+  context 'when not opened' do
+    it 'returns false' do
+      contents = "SuccessMessage:\n  Enabled: true"
+      file_contents = double(:file_contents, content: Base64.encode64(contents))
+      api = double(:github_api, file_contents: file_contents)
+      pull_request = pull_request(api, file_contents)
+      pull_request.stub(:opened?).and_return(false)
+
+      enabled = pull_request.no_violations_comment_enabled
+
+      expect(enabled).to be_false
+    end
+  end
+end
+
 def pull_request(api, file_contents = nil)
   payload = double(:payload, full_repo_name: 'org/repo', head_sha: 'abc123')
   GithubApi.stub(new: api)
