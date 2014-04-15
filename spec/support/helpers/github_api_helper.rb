@@ -12,7 +12,7 @@ module GithubApiHelper
     stub_paginated_org_repo_requests(auth_token)
   end
 
-  def stub_repo_request(repo_name, token = AuthenticationHelper::GITHUB_TOKEN)
+  def stub_repo_request(repo_name, token = auth_token)
     stub_request(
       :get,
       "https://api.github.com/repos/#{repo_name}"
@@ -26,7 +26,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_repo_with_org_request(repo_name, token = AuthenticationHelper::GITHUB_TOKEN)
+  def stub_repo_with_org_request(repo_name, token = auth_token)
     stub_request(
       :get,
       "https://api.github.com/repos/#{repo_name}"
@@ -57,7 +57,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_repo_teams_request(repo_name, token = AuthenticationHelper::GITHUB_TOKEN)
+  def stub_repo_teams_request(repo_name, token = auth_token)
     stub_request(
       :get,
       "https://api.github.com/repos/#{repo_name}/teams"
@@ -70,7 +70,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_user_teams_request(token = AuthenticationHelper::GITHUB_TOKEN)
+  def stub_user_teams_request(token = auth_token)
     stub_request(
       :get,
       'https://api.github.com/user/teams'
