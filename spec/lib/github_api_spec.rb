@@ -1,6 +1,7 @@
 require 'fast_spec_helper'
 require 'lib/github_api'
 require 'json'
+require 'app/models/github_user'
 
 describe GithubApi do
   describe '#add_user_to_repo' do
