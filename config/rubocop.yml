@@ -68,7 +68,7 @@ HashSyntax:
   Description: >
                  Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax
                  { :a => 1, :b => 2 }.
-  EnforcedStyle: ruby19
+  EnforcedStyle: ruby18
   Enabled: true
 
 IfWithSemicolon:
@@ -80,8 +80,8 @@ IndentationWidth:
   Enabled: true
 
 LineLength:
-  Description: 'Limit lines to 80 characters.'
-  Max: 80
+  Description: 'Limit lines to 100 characters.'
+  Max: 100
   Enabled: true
 
 MethodCallParentheses:
