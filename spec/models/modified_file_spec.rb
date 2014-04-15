@@ -31,7 +31,7 @@ describe ModifiedFile, '#relevant_line?' do
   end
 
   context 'when line is not modified' do
-    it 'returns true' do
+    it 'returns false' do
       file = double(:file, patch: '')
       modified_file = ModifiedFile.new(file, double)
       modified_line = double(:modified_line, line_number: 1)
