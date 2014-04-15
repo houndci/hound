@@ -1,6 +1,5 @@
 require 'octokit'
 require 'base64'
-require 'app/models/github_user'
 
 class GithubApi
   attr_reader :client
