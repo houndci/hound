@@ -1,0 +1,11 @@
+{
+  "documentation_url": "https://developer.github.com/v3/orgs/teams/#create-team",
+  "errors": [
+    {
+      "code": "already_exists",
+      "field": "name",
+      "resource": "Team"
+    }
+  ],
+  "message": "Validation Failed"
+}

@@ -2,6 +2,8 @@ require 'octokit'
 require 'base64'
 
 class GithubApi
+  SERVICES_TEAM_NAME = 'Services'
+
   attr_reader :client
 
   def initialize(token)
@@ -78,7 +80,7 @@ class GithubApi
     if admin_team
       add_user_to_team(username, admin_team.id)
     else
-      add_user_to_new_team(username, 'Services', repo)
+      add_user_and_repo_to_services_team(username, repo)
     end
   end
 
@@ -90,15 +92,29 @@ class GithubApi
     end
   end
 
-  def add_user_to_new_team(username, team_name, repo)
-    add_user_to_team(username, create_new_team(team_name, repo).id)
+  def add_user_and_repo_to_services_team(username, repo)
+    team = find_team(SERVICES_TEAM_NAME, repo)
+
+    if team
+      client.add_team_repository(team.id, repo.full_name)
+    else
+      team = create_team(SERVICES_TEAM_NAME, repo)
+    end
+
+    add_user_to_team(username, team.id)
   end
 
   def add_user_to_team(username, team_id)
     client.add_team_member(team_id, username)
   end
 
-  def create_new_team(name, repo)
+  def find_team(name, repo)
+    client.org_teams(repo.organization.login).detect do |team|
+      team.name == name
+    end
+  end
+
+  def create_team(name, repo)
     client.create_team(
       repo.organization.login,
       {
