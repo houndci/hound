@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def report_exception(exception, metadata)
+    Raven.capture_exception(exception, extra: metadata)
+  end
+
   protected
 
   def verified_request?
