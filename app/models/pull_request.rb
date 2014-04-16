@@ -24,10 +24,6 @@ class PullRequest
     end
   end
 
-  def file_contents(filename)
-    api.file_contents(full_repo_name, filename, head_sha)
-  end
-
   def add_comment(filename, patch_position, message)
     github = GithubApi.new(ENV['HOUND_GITHUB_TOKEN'])
     github.add_comment(
