@@ -24,12 +24,24 @@ end
 
 describe BuildJob, '#error' do
   context 'with Octokit::NotFound exception' do
-    it 'sets failed_at to current time' do
+    it 'sets job to failed' do
       build_runner = double(:build_runner, run: true)
       build_job = BuildJob.new(build_runner)
       job = double(fail!: true, id: 1)
 
       build_job.error(job, Octokit::NotFound.new)
+
+      expect(job).to have_received(:fail!)
+    end
+  end
+
+  context 'with Octokit::Unauthorized exception' do
+    it 'sets job to failed' do
+      build_runner = double(:build_runner, run: true)
+      build_job = BuildJob.new(build_runner)
+      job = double(fail!: true, id: 1)
+
+      build_job.error(job, Octokit::Unauthorized.new)
 
       expect(job).to have_received(:fail!)
     end
