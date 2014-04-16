@@ -57,6 +57,24 @@ module GithubApiHelper
     )
   end
 
+  def stub_failed_team_creation_request(org, repo_name, token)
+    stub_request(
+      :post,
+      "https://api.github.com/orgs/#{org}/teams"
+    ).with(
+      body: {
+        name: 'Services',
+        repo_names: [repo_name],
+        permission: 'pull'
+      }.to_json,
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 422,
+      body: File.read('spec/support/fixtures/failed_team_creation.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   def stub_repo_teams_request(repo_name, token = auth_token)
     stub_request(
       :get,
@@ -105,6 +123,33 @@ module GithubApiHelper
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/repo_teams.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_add_repo_to_team_request(repo_name, team_id, token = auth_token)
+    stub_request(
+      :put,
+      "https://api.github.com/teams/#{team_id}/repos/#{repo_name}"
+    ).with(
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 204
+    )
+  end
+
+  def stub_org_teams_with_services_request(org_name, token)
+    json_response = File.read(
+      'spec/support/fixtures/org_teams_with_services_team.json'
+    )
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams"
+    ).with(
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: json_response,
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end

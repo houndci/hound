@@ -51,24 +51,75 @@ describe GithubApi do
       end
 
       context 'when repo is not part of a team' do
-        it 'creates a Services team and adds user to the new team' do
-          token = 'abc123'
-          username = 'testuser'
-          repo_name = 'testing/repo' # from fixture
-          team_id = 1234 # from fixture
-          api = GithubApi.new(token)
-          stub_repo_with_org_request(repo_name, token)
-          stub_empty_repo_teams_request(repo_name, token)
-          stub_user_teams_request(token)
-          stub_team_creation_request('testing', repo_name, token)
-          add_user_request = stub_add_user_to_team_request(
-            username,
-            team_id,
-            token
-          )
+        context 'when Services team does not exist' do
+          it 'creates a Services team and adds user to the new team' do
+            token = 'abc123'
+            username = 'testuser'
+            repo_name = 'testing/repo' # from fixture
+            team_id = 1234 # from fixture
+            api = GithubApi.new(token)
+            stub_repo_with_org_request(repo_name, token)
+            stub_empty_repo_teams_request(repo_name, token)
+            stub_user_teams_request(token)
+            stub_team_creation_request('testing', repo_name, token)
+            stub_org_teams_request('testing', token)
+            add_user_request = stub_add_user_to_team_request(
+              username,
+              team_id,
+              token
+            )
 
-          expect(api.add_user_to_repo(username, repo_name)).to be_true
-          expect(add_user_request).to have_been_requested
+            expect(api.add_user_to_repo(username, repo_name)).to be_true
+            expect(add_user_request).to have_been_requested
+          end
+        end
+
+        context 'when Services team exists' do
+          it 'adds user to Services team' do
+            token = 'abc123'
+            username = 'testuser'
+            repo_name = 'testing/repo' # from fixture
+            services_team_id = 4567 # from fixture
+            api = GithubApi.new(token)
+            stub_repo_with_org_request(repo_name, token)
+            stub_empty_repo_teams_request(repo_name, token)
+            stub_user_teams_request(token)
+            stub_failed_team_creation_request('testing', repo_name, token)
+            stub_org_teams_with_services_request('testing', token)
+            stub_add_repo_to_team_request(repo_name, services_team_id, token)
+            add_user_request = stub_add_user_to_team_request(
+              username,
+              services_team_id,
+              token
+            )
+
+            api.add_user_to_repo(username, repo_name)
+
+            expect(add_user_request).to have_been_requested
+          end
+
+          it 'adds repo to Services team' do
+            token = 'abc123'
+            username = 'testuser'
+            repo_name = 'testing/repo' # from fixture
+            services_team_id = 4567 # from fixture
+            api = GithubApi.new(token)
+            stub_repo_with_org_request(repo_name, token)
+            stub_empty_repo_teams_request(repo_name, token)
+            stub_user_teams_request(token)
+            stub_failed_team_creation_request('testing', repo_name, token)
+            stub_org_teams_with_services_request('testing', token)
+            stub_add_user_to_team_request(username, services_team_id, token)
+            add_repo_request = stub_add_repo_to_team_request(
+              repo_name,
+              services_team_id,
+              token
+            )
+
+            api.add_user_to_repo(username, repo_name)
+
+            expect(add_repo_request).to have_been_requested
+          end
         end
       end
     end
