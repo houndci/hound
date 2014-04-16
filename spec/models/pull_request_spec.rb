@@ -178,6 +178,96 @@ describe PullRequest, '#config' do
   end
 end
 
+describe PullRequest, '#config_hash' do
+  context 'when config file is present' do
+    it 'returns the contents of custom config' do
+      contents = "StringLiterals:\n  Enabled: false"
+      file_contents = double(:file_contents, content: Base64.encode64(contents))
+      api = double(:github_api, file_contents: file_contents)
+      pull_request = pull_request(api, file_contents)
+      expected_config = {
+        'StringLiterals' => {
+          'Enabled' => false
+        }
+      }
+
+      config = pull_request.config_hash
+
+      expect(config).to eq(expected_config)
+    end
+  end
+
+  context 'when config file is not present' do
+    it 'returns nil' do
+      api = double(:github_api)
+      api.stub(:file_contents).and_raise(Octokit::NotFound)
+      pull_request = pull_request(api)
+
+      config_hash = pull_request.config_hash
+
+      expect(config_hash).to eq({})
+    end
+  end
+end
+
+describe PullRequest, '#success_notification_enabled' do
+  context 'when opened' do
+    context 'with configuration' do
+      context 'when enabled' do
+        it 'returns true' do
+          contents = "SuccessNotification:\n  Enabled: true"
+          file_contents = double(:file_contents, content: Base64.encode64(contents))
+          api = double(:github_api, file_contents: file_contents)
+          pull_request = pull_request(api, file_contents)
+          pull_request.stub(:opened?).and_return(true)
+
+          enabled = pull_request.success_notification_enabled
+
+          expect(enabled).to be_true
+        end
+      end
+      context 'when disabled' do
+        it 'returns false' do
+          contents = "SuccessNotification:\n  Enabled: false"
+          file_contents = double(:file_contents, content: Base64.encode64(contents))
+          api = double(:github_api, file_contents: file_contents)
+          pull_request = pull_request(api, file_contents)
+          pull_request.stub(:opened?).and_return(true)
+
+          enabled = pull_request.success_notification_enabled
+
+          expect(enabled).to be_false
+        end
+      end
+    end
+    context 'without configuration' do
+      it 'returns false' do
+        api = double(:github_api)
+        api.stub(:file_contents).and_raise(Octokit::NotFound)
+        pull_request = pull_request(api)
+        pull_request.stub(:opened?).and_return(true)
+
+        enabled = pull_request.success_notification_enabled
+
+        expect(enabled).to be_false
+      end
+    end
+  end
+  context 'when not opened' do
+    it 'returns false' do
+      contents = "SuccessNotification:\n  Enabled: true"
+      file_contents = double(:file_contents, content: Base64.encode64(contents))
+      api = double(:github_api, file_contents: file_contents)
+      pull_request = pull_request(api, file_contents)
+      pull_request.stub(:opened?).and_return(false)
+
+      enabled = pull_request.success_notification_enabled
+
+      expect(enabled).to be_false
+    end
+  end
+end
+
 def pull_request(api, file_contents = nil)
   payload = double(:payload, full_repo_name: 'org/repo', head_sha: 'abc123')
   GithubApi.stub(new: api)

@@ -1,5 +1,6 @@
 class PullRequest
   CONFIG_FILE = '.hound.yml'
+  SUCCESS_MESSAGE = 'No style violations found.'
 
   def initialize(payload, github_token)
     @payload = payload
@@ -48,12 +49,25 @@ class PullRequest
     nil
   end
 
+  def config_hash
+    config ? YAML.load(config) : {}
+  end
+
   def opened?
     @payload.action == 'opened'
   end
 
   def synchronize?
     @payload.action == 'synchronize'
+  end
+
+  def success_notification_enabled
+    return false unless opened?
+    if success = config_hash['SuccessNotification']
+      success['Enabled']
+    else
+      false
+    end
   end
 
   private

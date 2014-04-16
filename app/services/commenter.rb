@@ -13,5 +13,9 @@ class Commenter
         end
       end
     end
+
+    if file_violations.empty? && pull_request.success_notification_enabled
+      pull_request.add_comment(nil, nil, PullRequest::SUCCESS_MESSAGE)
+    end
   end
 end

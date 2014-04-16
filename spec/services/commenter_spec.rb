@@ -3,6 +3,7 @@ require 'app/services/commenter'
 require 'app/models/file_violation'
 require 'app/models/line_violation'
 require 'app/models/line'
+require 'app/models/pull_request'
 
 describe Commenter do
   describe '#comment_on_violations' do
@@ -13,7 +14,7 @@ describe Commenter do
             :pull_request,
             opened?: true,
             add_comment: true,
-            head_includes?: false
+            head_includes?: false,
           )
           line_number = 10
           line = double(
@@ -51,7 +52,8 @@ describe Commenter do
               synchronize?: true,
               opened?: false,
               add_comment: true,
-              head_includes?: true
+              head_includes?: true,
+              config_hash: false,
             )
             line_number = 10
             line = double(
@@ -113,13 +115,52 @@ describe Commenter do
     end
 
     context 'with no violations' do
-      it 'does not comment' do
-        commenter = Commenter.new
-        pull_request = double(:pull_request).as_null_object
+      context 'with SuccessComment configuration' do
+        let(:config_hash) { { 'SuccessNotification' => { 'Enabled' => true } } }
 
-        commenter.comment_on_violations([], pull_request)
+        context 'when the pull request is open' do
+          it 'adds a comment to the pull request' do
 
-        expect(pull_request).not_to have_received(:add_comment)
+            pull_request = double(
+              :pull_request,
+              synchronize?: true,
+              add_comment: true,
+              success_notification_enabled: true,
+            )
+            commenter = Commenter.new
+
+            commenter.comment_on_violations([], pull_request)
+
+            expect(pull_request).to have_received(:add_comment).with(
+              nil, nil, PullRequest::SUCCESS_MESSAGE
+            )
+          end
+        end
+        context 'when the pull request is not open' do
+          it 'does not comment on the pull request' do
+            commenter = Commenter.new
+            pull_request = double(:pull_request,
+              success_notification_enabled: false,
+            ).as_null_object
+
+            commenter.comment_on_violations([], pull_request)
+
+            expect(pull_request).not_to have_received(:add_comment)
+          end
+        end
+      end
+
+      context 'without SuccessComment configuration' do
+        it 'does not comment' do
+          commenter = Commenter.new
+          pull_request = double(:pull_request,
+            success_notification_enabled: false,
+          ).as_null_object
+
+          commenter.comment_on_violations([], pull_request)
+
+          expect(pull_request).not_to have_received(:add_comment)
+        end
       end
     end
   end
