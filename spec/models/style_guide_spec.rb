@@ -1,7 +1,7 @@
 require 'fast_spec_helper'
 require 'rubocop'
 require 'active_support/core_ext/string/strip'
-require 'lib/hound/style_guide'
+require 'app/models/style_guide'
 
 describe StyleGuide, '#violations' do
   context 'with custom configuration' do

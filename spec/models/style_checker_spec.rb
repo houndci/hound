@@ -1,6 +1,6 @@
 require 'rubocop'
 require 'fast_spec_helper'
-require 'lib/hound/style_guide'
+require 'app/models/style_guide'
 require 'app/models/style_checker'
 require 'app/models/file_violation'
 require 'app/models/line_violation'
