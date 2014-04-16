@@ -7,8 +7,14 @@ class BuildJob < Struct.new(:build_runner)
 
   def error(job, exception)
     super
-    if exception.is_a? Octokit::NotFound
+    if do_not_retry_exceptions.include?(exception.class)
       job.fail!
     end
+  end
+
+  private
+
+  def do_not_retry_exceptions
+    [Octokit::NotFound, Octokit::Unauthorized]
   end
 end
