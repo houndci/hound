@@ -244,6 +244,14 @@ describe GithubApi do
         repo_name: pull_request.full_repo_name,
         sha: commit_sha
       )
+
+      files = api.pull_request_files(
+        pull_request.full_repo_name,
+        pull_request_number
+      )
+
+      expect(files).to have(1).item
+      expect(files.first.filename).to eq 'config/unicorn.rb'
     end
   end
 end
