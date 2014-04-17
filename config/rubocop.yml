@@ -45,7 +45,7 @@ MethodDefParentheses:
 
 DotPosition:
   EnforcedStyle: trailing
-  Enabled: false
+  Enabled: true
   SupportedStyles:
     - leading
     - trailing
