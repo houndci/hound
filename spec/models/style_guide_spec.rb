@@ -95,15 +95,6 @@ describe StyleGuide, '#violations' do
       end
     end
 
-    describe 'inline comments' do
-      it 'does not have a violation' do
-        pending
-        expect(violations_in('def foo # bad method')).to eq [
-          'Avoid inline comments'
-        ]
-      end
-    end
-
     describe 'comma white space' do
       it 'does not have violation' do
         expect(violations_in('def foobar(a, b, c)')).to be_empty
@@ -151,13 +142,10 @@ describe StyleGuide, '#violations' do
       end
 
       it 'has violation' do
-        pending
-        violation = 'For multiline method invocations, '\
-                      'place the . at the end of each line'
+        violation = 'Place the . on the previous line, together with the method call receiver.'
         content = <<-TEXT.strip_heredoc
           foo
             .bar
-            .baz
         TEXT
         expect(violations_in(content)).to eq [
           violation
@@ -203,54 +191,23 @@ describe StyleGuide, '#violations' do
         TEXT
         expect(violations_in(content)).to be_empty
       end
-
-      it 'has violation' do
-        pending
-        content = <<-TEXT.strip_heredoc
-          things.each do
-            stuff
-          end
-          more code
-        TEXT
-        expect(violations_in(content)).to eq [
-          'Use newlines around multi-line blocks'
-        ]
-      end
     end
 
     describe 'case for SQL statements' do
       it 'does not have violation' do
         expect(violations_in("SELECT * FROM 'users'")).to be_empty
       end
-
-      it 'has violation' do
-        pending
-        expect(violations_in("select * FROM 'users'")).to eq [
-          'Use uppercase for SQL key words and lowercase for SQL identifiers.'
-        ]
-      end
     end
 
     describe 'broken up argument list' do
       it 'does not have violation' do
         content = <<-TEXT.strip_heredoc
-          foo(bar,
-              baz
-              biz
-            )
+          foo(
+            bar,
+            biz
+          )
         TEXT
         expect(violations_in(content)).to be_empty
-      end
-
-      it 'has violation' do
-        pending
-        violation = 'Put closing parenthese on its own line'
-        content = <<-TEXT.strip_heredoc
-          foo(bar,
-              baz
-              biz)
-        TEXT
-        expect(violations_in(content)).to eq [violation]
       end
     end
   end
@@ -264,16 +221,6 @@ describe StyleGuide, '#violations' do
       expect(violations_in(content)).to be_empty
     end
 
-    it 'has violation' do
-      pending
-      violation = 'Do not vertically align tokens on consecutive lines'
-      content = <<-TEXT.strip_heredoc
-        resources :user,         only: [:index]
-        resources :applications, only: [:create]
-      TEXT
-      expect(violations_in(content)).to eq [violation]
-    end
-
     describe 'broken up hash' do
       it 'does not have violation' do
         content = <<-TEXT.strip_heredoc
@@ -285,20 +232,6 @@ describe StyleGuide, '#violations' do
         TEXT
         expect(violations_in(content)).to be_empty
       end
-
-      it 'has violation' do
-        pending
-        violation = 'Keep elements on their own lines and '\
-                      'closing curly brace on its own line'
-        content = <<-TEXT.strip_heredoc
-          foo = {
-                  bar: value,
-                  baz: another_value,
-                  biz: final_value
-                }
-        TEXT
-        expect(violations_in(content)).to eq [violation]
-      end
     end
 
     describe 'indent continued line' do
@@ -306,14 +239,6 @@ describe StyleGuide, '#violations' do
         content = 'Here is a very long string that is broken up '\
                     'across multiple lines to keep it'
         expect(violations_in(content)).to be_empty
-      end
-
-      it 'has violation' do
-        pending
-        violation = 'Indent continued lines two spaces'
-        content = 'Here is a very long string that is broken up '\
-                  'across multiple lines to keep it'
-        expect(violations_in(content)).to eq [violation]
       end
     end
 
@@ -334,8 +259,7 @@ describe StyleGuide, '#violations' do
       end
 
       it 'has violation' do
-        pending
-        violation = 'Indent private methods equal to public methods'
+        violation = 'Inconsistent indentation detected.'
         content = <<-TEXT
           def foo
             code

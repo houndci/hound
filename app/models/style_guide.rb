@@ -16,6 +16,7 @@ class StyleGuide
     Rubocop::Cop::Style::FinalNewline,
     Rubocop::Cop::Style::HashSyntax,
     Rubocop::Cop::Style::IfWithSemicolon,
+    Rubocop::Cop::Style::IndentationConsistency,
     Rubocop::Cop::Style::IndentationWidth,
     Rubocop::Cop::Style::LineLength,
     Rubocop::Cop::Style::MethodCallParentheses,
