@@ -113,10 +113,11 @@ GEM
     mini_portile (0.5.3)
     minitest (4.7.5)
     multi_json (1.9.2)
-    multipart-post (2.0.0)
+    multipart-post (1.2.0)
     neat (1.5.0)
       bourbon (>= 2.1)
       sass (>= 3.2)
+    newrelic_rpm (3.7.3.204)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     oauth2 (0.8.1)
@@ -255,6 +256,7 @@ DEPENDENCIES
   launchy
   memcachier
   neat
+  newrelic_rpm
   octokit
   omniauth-github
   pg
