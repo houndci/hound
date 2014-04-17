@@ -1,6 +1,10 @@
 .app-footer {
   margin-top: 3em;
 
+  @include media($small-screen) {
+    text-align: center;
+  }
+
   .button {
     display: inline-block;
     font-size: .75em;

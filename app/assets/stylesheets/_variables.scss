@@ -22,3 +22,7 @@ $light-font-color: rgb(160,160,160);
 $light-font-color: rgb(153, 171, 192);
 
 $icon-font: "FontAwesome";
+
+$small-screen: new-breakpoint(max-width em(540) 2);
+$medium-screen: new-breakpoint(max-width em(760) 4);
+$large-screen: new-breakpoint(max-width em(920) 8);

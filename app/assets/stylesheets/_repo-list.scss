@@ -3,6 +3,11 @@
   border: 1px solid $base-border-color;
   margin-top: 2em;
 
+  @include media($small-screen) {
+    box-shadow: none;
+    margin: 2em -1em;
+  }
+
   nav {
     border-bottom: 1px solid $base-border-color;
     background: #fff;
@@ -10,6 +15,14 @@
     ul {
       @include clearfix;
       padding: 0.8em 1.2em 0.6em;
+
+      @include media($small-screen) {
+        > li {
+          float: none;
+          text-align: center;
+          margin-bottom: 0.4em;
+        }
+      }
 
       span.active-count {
         color: $light-font-color;
@@ -103,6 +116,10 @@
     border-top: 1px solid $base-border-color;
     padding: 1.1em 1.9em 1em;
     position: relative;
+
+    @include media($small-screen) {
+      padding: 1.1em 1em 1em;
+    }
 
     &:before {
       @include position(absolute, 0.6em 0 0 0.6em);
