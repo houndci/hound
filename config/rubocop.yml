@@ -14,9 +14,11 @@ BlockComments:
   Enabled: true
 
 BracesAroundHashParameters:
-  # Valid values are: braces, no_braces
   EnforcedStyle: no_braces
   Enabled: true
+  SupportedStyles:
+    - braces
+    - no_braces
 
 ClassAndModuleCamelCase:
   Description: 'Use CamelCase for classes and modules.'
@@ -34,22 +36,23 @@ ConstantName:
   Description: 'Constants should use SCREAMING_SNAKE_CASE.'
   Enabled: true
 
-DefWithParentheses:
-  Description: 'Use def with parentheses when there are arguments.'
+MethodDefParentheses:
+  EnforcedStyle: require_parentheses
   Enabled: true
-
-DefWithoutParentheses:
-  Description: >
-                 Omit the parentheses when the method doesn't accept
-                 any arguments.
-  Enabled: true
+  SupportedStyles:
+    - require_parentheses
+    - require_no_parentheses
 
 DotPosition:
-  Style: 'leading'
+  EnforcedStyle: trailing
   Enabled: false
+  SupportedStyles:
+    - leading
+    - trailing
 
 EmptyLineBetweenDefs:
   Description: 'Use empty lines between defs.'
+  AllowAdjacentOneLineDefs: false
   Enabled: true
 
 EmptyLines:
@@ -68,8 +71,11 @@ HashSyntax:
   Description: >
                  Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax
                  { :a => 1, :b => 2 }.
-  EnforcedStyle: ruby19
   Enabled: true
+  EnforcedStyle: ruby19
+  SupportedStyles:
+    - ruby19
+    - hash_rockets
 
 IfWithSemicolon:
   Description: 'Never use if x; .... Use the ternary operator instead.'
@@ -89,10 +95,12 @@ MethodCallParentheses:
   Enabled: true
 
 MethodName:
-  # Valid values are: snake_case, camelCase
   Description: 'Use the configured style when naming methods.'
-  EnforcedStyle: snake_case
   Enabled: true
+  EnforcedStyle: snake_case
+  SupportedStyles:
+    - snake_case
+    - camelCase
 
 Not:
   Description: 'Use ! instead of not.'
@@ -103,10 +111,7 @@ ParenthesesAroundCondition:
                  Don't use parentheses around the condition of an
                  if/unless/while.
   Enabled: true
-
-ReduceArguments:
-  Description: 'Name reduce arguments |a, e| (accumulator, element)'
-  Enabled: true
+  AllowSafeAssignment: true
 
 RedundantBegin:
   Description: "Don't use begin blocks when they are not needed."
@@ -119,23 +124,28 @@ RedundantSelf:
 RedundantReturn:
   Description: "Don't use return where it's not required."
   Enabled: true
+  AllowMultipleReturnValues: false
 
 SpaceAroundOperators:
   Description: 'Use spaces around operators.'
   Enabled: true
 
-SpaceAroundBlockBraces:
-  Description: >
-                 Checks that block braces have or don't have surrounding space.
-                 For blocks taking parameters, checks that the left brace has
-                 or doesn't have trailing space.
-  # Valid values are: space_inside_braces, no_space_inside_braces
-  EnforcedStyle: space_inside_braces
-  # Valid values are: space, no_space
+SpaceBeforeBlockBraces:
+  Enabled: true
+  EnforcedStyle: space
+  SupportedStyles:
+    - space
+    - no_space
+
+SpaceInsideBlockBraces:
+  Enabled: true
+  EnforcedStyle: space
+  SupportedStyles:
+    - space
+    - no_space
   EnforcedStyleForEmptyBraces: no_space
   # Space between { and |. Overrides EnforcedStyle if there is a conflict.
   SpaceBeforeBlockParameters: true
-  Enabled: true
 
 SpaceInsideParens:
   Description: 'No spaces after ( or before ).'
@@ -176,6 +186,10 @@ SpaceAroundEqualsInParameterDefault:
                  Use spaces around the = operator when assigning default
                  values in def params.
   Enabled: true
+  EnforcedStyle: space
+  SupportedStyles:
+    - space
+    - no_space
 
 SpaceBeforeModifierKeyword:
   Description: 'Put a space before the modifier keyword.'
@@ -183,20 +197,19 @@ SpaceBeforeModifierKeyword:
 
 SpaceInsideHashLiteralBraces:
   Description: "Use spaces inside hash literal braces - or don't."
-  # Valid values (for both parameters) are: space, no_space
+  Enabled: true
   EnforcedStyle: space
   EnforcedStyleForEmptyBraces: no_space
-  Enabled: true
+  SupportedStyles:
+    - space
+    - no_space
 
 StringLiterals:
-  # Valid values (denoting the preferred quote delimiters) are:
-  # single_quotes, double_quotes
+  Enabled: true
   EnforcedStyle: single_quotes
-  Enabled: true
-
-SymbolName:
-  Description: 'Symbol literals should use snake_case.'
-  Enabled: true
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
 
 Tab:
   Description: 'No hard tabs.'
@@ -218,6 +231,8 @@ UnlessElse:
 
 VariableName:
   Description: 'Use the configured style when naming variables.'
-  # Valid values are: snake_case, camelCase
-  EnforcedStyle: snake_case
   Enabled: true
+  EnforcedStyle: snake_case
+  SupportedStyles:
+    - snake_case
+    - camelCase
