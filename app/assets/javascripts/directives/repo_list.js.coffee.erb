@@ -1,0 +1,52 @@
+App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User, $timeout) ->
+  scope: {}
+  templateUrl: '/templates/repo_list'
+
+  link: (scope, element, attrs) ->
+    loadRepos = ->
+      scope.syncingRepos = false
+
+      repos = Repo.query()
+      repos.$promise.then((results) ->
+        scope.repos = results
+      , ->
+        alert('Your repos failed to load.')
+      )
+
+    pollSyncStatus = ->
+      successfulSync = (user) ->
+        if user.refreshing_repos
+          pollSyncStatus()
+        else
+          loadRepos()
+
+      failedSync = ->
+        pollSyncStatus()
+
+      getSyncs = ->
+        user = User.get()
+        user.$promise.then(successfulSync, failedSync)
+
+      $timeout getSyncs, 3000
+
+    scope.sync = ->
+      scope.syncingRepos = true
+
+      sync = Sync.save()
+      sync.$promise.then(->
+        pollSyncStatus()
+      , ->
+        scope.syncingRepos = false
+        alert('Your repos failed to sync.')
+      )
+
+    scope.$watch 'syncingRepos', (newValue, oldValue) ->
+      if newValue
+        scope.syncButtonText = '<%= I18n.t('syncing_repos') %>'
+      else
+        scope.syncButtonText = '<%= I18n.t('sync_repos') %>'
+
+    loadRepos().then ->
+      if scope.repos.length < 1
+        scope.sync()
+]

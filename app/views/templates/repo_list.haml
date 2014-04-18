@@ -1,0 +1,23 @@
+%nav
+  %ul
+    %li.pull-left
+      %span.active-count
+        #{t('active_repos')}:
+        {{(repos | filter:{active: true}).length}} of {{repos.length}}
+    %li.pull-right
+      %a{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
+        %i.fa.fa-refresh
+        %span {{ syncButtonText }}
+  .search-wrapper
+    %i.fa.fa-search
+    %input.search{'type' => 'text', 'placeholder' => 'search by repo name', 'ng-model' => 'search.name'}
+
+.loading{'ng-show' => 'syncingRepos'}
+  .dot
+  .dot
+  .dot
+
+%ul.repos{'ng-hide' => 'syncingRepos'}
+  %li.repo{'repo' => 'repo', 'ng-repeat' => 'repo in repos | filter:search', 'ng-class' => '{active: repo.active, processing: repo.processing}'}
+
+= render 'preload_template', template: 'repo'
