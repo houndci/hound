@@ -1,35 +1,41 @@
 require 'json'
 
 class Payload
-  def initialize(payload_data)
-    if payload_data.is_a? String
-      @payload_data = JSON.parse(payload_data)
+  attr_reader :data
+
+  def initialize(data)
+    if data.is_a? String
+      @data = JSON.parse(data)
     else
-      @payload_data = payload_data
+      @data = data
     end
   end
 
   def head_sha
-    @payload_data['pull_request']['head']['sha']
+    data['pull_request']['head']['sha']
   end
 
   def github_repo_id
-    @payload_data['repository']['id']
+    data['repository']['id']
   end
 
   def full_repo_name
-    @payload_data['repository']['full_name']
+    data['repository']['full_name']
   end
 
   def number
-    @payload_data['number']
+    data['number']
   end
 
   def action
-    @payload_data['action']
+    data['action']
   end
 
   def changed_files
-    @payload_data['pull_request']['changed_files']
+    data['pull_request']['changed_files']
+  end
+
+  def ping?
+    data['zen']
   end
 end

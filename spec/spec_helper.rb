@@ -12,7 +12,7 @@ RSpec.configure do |config|
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
   DatabaseCleaner.strategy = :deletion
-  Delayed::Worker.delay_jobs = false
+  Resque.inline = true
 
   config.before do
     DatabaseCleaner.clean

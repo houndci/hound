@@ -12,6 +12,8 @@ describe BuildsController, '#create' do
   context 'when https is enabled' do
     context 'and http is used' do
       it 'does not redirect' do
+        JobQueue.stub(:push)
+
         with_https_enabled do
           payload_data = File.read(
             'spec/support/fixtures/pull_request_opened_event.json'
@@ -25,28 +27,34 @@ describe BuildsController, '#create' do
   end
 
   context 'when number of changed files is below the threshold' do
-    it 'enqueues job with high priority' do
-      Delayed::Job.stub(:enqueue)
+    it 'enqueues small build job' do
+      JobQueue.stub(:push)
       payload_data = File.read(
         'spec/support/fixtures/pull_request_opened_event.json'
       )
-      post(:create, payload: payload_data)
 
-      expect(Delayed::Job).to have_received(:enqueue).
-        with(anything, priority: BuildsController::HIGH_PRIORITY)
+      post :create, payload: payload_data
+
+      expect(JobQueue).to have_received(:push).with(
+        SmallBuildJob,
+        JSON.parse(payload_data)
+      )
     end
   end
 
   context 'when number of changed files is at the threshold or above' do
-    it 'enqueues job with low priority' do
-      Delayed::Job.stub(:enqueue)
+    it 'enqueues large build job' do
+      JobQueue.stub(:push)
       payload_data = File.read(
         'spec/support/fixtures/pull_request_event_with_many_files.json'
       )
-      post(:create, payload: payload_data)
 
-      expect(Delayed::Job).to have_received(:enqueue).
-        with(anything, priority: BuildsController::LOW_PRIORITY)
+      post :create, payload: payload_data
+
+      expect(JobQueue).to have_received(:push).with(
+        LargeBuildJob,
+        JSON.parse(payload_data)
+      )
     end
   end
 end

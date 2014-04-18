@@ -107,9 +107,9 @@ feature 'Repo list', js: true do
   private
 
   def with_job_delay
-    Delayed::Worker.delay_jobs = true
+    Resque.inline = false
     yield
   ensure
-    Delayed::Worker.delay_jobs = false
+    Resque.inline = true
   end
 end

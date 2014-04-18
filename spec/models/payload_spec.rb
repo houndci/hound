@@ -12,4 +12,13 @@ describe Payload do
       expect(payload.changed_files).to eq 1
     end
   end
+
+  describe '#data' do
+    it 'returns data' do
+      data = {one: 1}
+      payload = Payload.new(data)
+
+      expect(payload.data).to eq data
+    end
+  end
 end

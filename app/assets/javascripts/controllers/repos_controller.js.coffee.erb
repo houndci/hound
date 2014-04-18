@@ -1,4 +1,4 @@
-App.controller 'ReposController', ['$scope', '$timeout', 'Repo', 'Sync', ($scope, $timeout, Repo, Sync) ->
+App.controller 'ReposController', ['$scope', '$timeout', 'Repo', 'Sync', 'User', ($scope, $timeout, Repo, Sync, User) ->
   loadRepos = ->
     $scope.syncingRepos = false
 
@@ -15,8 +15,8 @@ App.controller 'ReposController', ['$scope', '$timeout', 'Repo', 'Sync', ($scope
         $scope.sync()
 
   pollSyncStatus = ->
-    successfulSync = (results) ->
-      if results.length > 0
+    successfulSync = (user) ->
+      if user.refreshing_repos
         pollSyncStatus()
       else
         loadRepos()
@@ -25,8 +25,8 @@ App.controller 'ReposController', ['$scope', '$timeout', 'Repo', 'Sync', ($scope
       pollSyncStatus()
 
     getSyncs = ->
-      syncs = Sync.query()
-      syncs.$promise.then(successfulSync, failedSync)
+      user = User.get()
+      user.$promise.then(successfulSync, failedSync)
 
     $timeout getSyncs, 3000
 
