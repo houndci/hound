@@ -5,7 +5,6 @@ class Repo < ActiveRecord::Base
   has_many :users, through: :memberships
   has_many :builds
 
-  validates :name, presence: true
   validates :full_github_name, presence: true
   validates :github_id, uniqueness: true, presence: true
 

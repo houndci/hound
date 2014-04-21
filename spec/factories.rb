@@ -8,7 +8,6 @@ FactoryGirl.define do
   end
 
   factory :repo do
-    sequence(:name) { |n| "Repo #{n}" }
     sequence(:full_github_name) { |n| "user/repo#{n}" }
     sequence(:github_id) { |n| n }
 
