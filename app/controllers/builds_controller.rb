@@ -3,11 +3,8 @@ class BuildsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create]
   skip_before_filter :authenticate, only: [:create]
 
-  HIGH_PRIORITY = 1
-  LOW_PRIORITY = 2
-
   def create
-    Delayed::Job.enqueue(build_job, priority: priority)
+    JobQueue.push(build_job_class, payload.data)
     head :ok
   end
 
@@ -17,33 +14,21 @@ class BuildsController < ApplicationController
     false
   end
 
-  def build_job
-    BuildJob.new(build_runner)
-  end
-
-  def build_runner
-    BuildRunner.new(payload)
-  end
-
-  def payload
-    Payload.new(event_data)
-  end
-
-  def event_data
-    JSON.parse(params[:payload] || request.raw_post)
-  end
-
   def ignore_confirmation_pings
-    if event_data.key?('zen')
+    if payload.ping?
       head :ok
     end
   end
 
-  def priority
+  def build_job_class
     if payload.changed_files < ENV['CHANGED_FILES_THRESHOLD'].to_i
-      HIGH_PRIORITY
+      SmallBuildJob
     else
-      LOW_PRIORITY
+      LargeBuildJob
     end
+  end
+
+  def payload
+    @payload ||= Payload.new(params[:payload] || request.raw_post)
   end
 end
