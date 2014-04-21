@@ -5,6 +5,7 @@ feature 'Repo list', js: true do
     user = create(:user)
     repo = create(:repo, full_github_name: 'thoughtbot/my-repo')
     repo.users << user
+    stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
     sign_in_as(user)
 
     visit root_path
@@ -17,6 +18,7 @@ feature 'Repo list', js: true do
     repo = create(:repo)
     user.repos << repo
     stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
+    stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
     sign_in_as(user)
 
     visit root_path
@@ -47,6 +49,7 @@ feature 'Repo list', js: true do
     stub_repo_request(repo.full_github_name)
     stub_add_collaborator_request(repo.full_github_name)
     stub_hook_creation_request(repo.full_github_name, hook_url)
+    stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
 
     sign_in_as(user)
     find('.toggle').click
@@ -72,6 +75,7 @@ feature 'Repo list', js: true do
     stub_repo_teams_request(repo.full_github_name)
     stub_user_teams_request
     stub_add_user_to_team_request(hound_user, team_id)
+    stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
 
     sign_in_as(user)
     find('.toggle').click
@@ -90,6 +94,7 @@ feature 'Repo list', js: true do
     repo = create(:repo, :active)
     repo.users << user
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
+    stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
 
     sign_in_as(user)
     visit root_path

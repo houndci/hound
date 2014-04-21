@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(version: 20140421191318) do
   create_table "repos", force: true do |t|
     t.integer  "github_id",                        null: false
     t.boolean  "active",           default: false, null: false
-    t.string   "full_github_name",                 null: false
     t.integer  "hook_id"
+    t.string   "full_github_name",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20140421191318) do
     t.string   "github_username",                  null: false
     t.string   "remember_token",                   null: false
     t.boolean  "refreshing_repos", default: false
+    t.string   "email_address"
   end
 
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
