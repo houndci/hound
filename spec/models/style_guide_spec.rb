@@ -210,6 +210,17 @@ describe StyleGuide, '#violations' do
         expect(violations_in(content)).to be_empty
       end
     end
+
+    describe 'required named argument' do
+      it 'does not have violation' do
+        content = <<-CODE
+          def fill_in_coupon_form(attributes, course_name:, value:, type:)
+          end
+        CODE
+
+        expect(violations_in(content)).to be_empty
+      end
+    end
   end
 
   describe 'do not vertically align tokens on consective lines' do
