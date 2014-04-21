@@ -16,5 +16,5 @@
       = yield
 
     = yield :javascript
-    - if Rails.env.production?
-      = render 'shared/segment_io'
+    - if analytics?
+      = render 'segment_io'
