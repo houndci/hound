@@ -13,7 +13,7 @@
           %span {{ syncButtonText }}
     .search-wrapper
       %i.fa.fa-search
-      %input.search{'type' => 'text', 'placeholder' => 'search by organization or repo name', 'ng-model' => 'search.full_github_name'}
+      %input.search{'type' => 'text', 'placeholder' => t('search_placeholder'), 'ng-model' => 'search.full_github_name'}
   .loading{'ng-show' => 'syncingRepos'}
     .dot
     .dot
