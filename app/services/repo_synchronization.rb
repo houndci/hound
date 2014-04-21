@@ -16,7 +16,6 @@ class RepoSynchronization
         user.repos << repo
       else
         user.repos.create!(
-          name: repo_data[:name],
           full_github_name: repo_data[:full_name],
           github_id: repo_data[:id]
         )

@@ -10,7 +10,7 @@ describe RepoSynchronization do
       api = double(
         :github_api,
         repos: [
-          { name: 'New Repo', full_name: 'user/newrepo', id: 456 }
+          { full_name: 'user/newrepo', id: 456 }
         ]
       )
       GithubApi.stub(new: api)
@@ -32,7 +32,7 @@ describe RepoSynchronization do
         first_user.repos << repo
         api = double(
           :github_api,
-          repos: [{id: repo.github_id, name: repo.name, full_name: repo.full_github_name}]
+          repos: [{ id: repo.github_id, full_name: repo.full_github_name }]
         )
         GithubApi.stub(new: api)
         synchronization = RepoSynchronization.new(second_user, github_token)
