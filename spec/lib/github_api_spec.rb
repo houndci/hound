@@ -4,6 +4,18 @@ require 'json'
 require 'app/models/github_user'
 
 describe GithubApi do
+  describe '#email_address' do
+    it 'returns primary GitHub email address' do
+      token = 'token'
+      api = GithubApi.new(token)
+      stub_user_emails_request(token)
+
+      email_address = api.email_address
+
+      expect(email_address).to eq 'Primary@Example.com'
+    end
+  end
+
   describe '#add_user_to_repo' do
     context 'when repo is part of an organization' do
       context 'when repo is part of a team' do

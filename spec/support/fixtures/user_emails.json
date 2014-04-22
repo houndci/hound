@@ -1,0 +1,12 @@
+[
+  {
+    "email": "Primary@Example.com",
+    "primary": true,
+    "verified": true
+  },
+  {
+    "email": "secondary@example.com",
+    "primary": false,
+    "verified": true
+  }
+]

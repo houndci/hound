@@ -71,6 +71,11 @@ class GithubApi
     client.user_teams
   end
 
+  def email_address
+    primary_email = client.emails.detect { |email| email['primary'] }
+    primary_email['email']
+  end
+
   private
 
   def add_user_to_org(username, repo)
