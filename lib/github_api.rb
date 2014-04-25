@@ -15,13 +15,17 @@ class GithubApi
   end
 
   def add_user_to_repo(username, repo_name)
-    repo = client.repository(repo_name)
+    repo = repo(repo_name)
 
     if repo.organization
       add_user_to_org(username, repo)
     else
       client.add_collaborator(repo.full_name, username)
     end
+  end
+
+  def repo(repo_name)
+    client.repository(repo_name)
   end
 
   def add_comment(options)

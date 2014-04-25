@@ -9,19 +9,18 @@ class RepoSynchronization
   def start
     user.repos.clear
 
-    api.repos.each do |repo_data|
-      user.repos << find_or_create_repo_with(repo_data)
+    api.repos.each do |attributes|
+      user.repos << Repo.find_or_create_with(repo_attributes(attributes))
     end
   end
 
   private
 
-  def find_or_create_repo_with(repo_data)
-    repo = Repo.find_or_create_by!(github_id: repo_data[:id]) do |new_repo|
-      new_repo.full_github_name = repo_data[:full_name]
-    end
-
-    repo.update_changed_attributes(repo_data)
-    repo
+  def repo_attributes(attributes)
+    attributes.slice(:private).merge(
+      github_id: attributes[:id],
+      full_github_name: attributes[:full_name],
+      in_organization: attributes[:organization].present?
+    )
   end
 end

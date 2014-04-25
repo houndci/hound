@@ -16,16 +16,25 @@ describe Repo, 'validations' do
   it { should validate_presence_of :github_id }
 end
 
-describe Repo, '#update_changed_attributes' do
-  it 'updates full_github_name if changed in repo_data' do
-    repo = create(:repo)
-    repo_data = {
-      full_name: 'user/newname',
-      id: repo.github_id
-    }
+describe Repo, '.find_or_create_with' do
+  context 'with existing repo' do
+    it 'updates attributes' do
+      repo = create(:repo)
 
-    repo.update_changed_attributes(repo_data)
+      found_repo = Repo.find_or_create_with(github_id: repo.github_id)
 
-    expect(repo.full_github_name).to eq 'user/newname'
+      expect(Repo.count).to eq 1
+      expect(found_repo).to eq repo
+    end
+  end
+
+  context 'with new repo' do
+    it 'creates repo with attributes' do
+      attributes = build(:repo).attributes
+      repo = Repo.find_or_create_with(attributes)
+
+      expect(Repo.count).to eq 1
+      expect(repo).to be_present
+    end
   end
 end
