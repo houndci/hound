@@ -1,24 +1,4 @@
 = render 'shared/header'
 
-.repo-listing{'ng-controller' => 'ReposController'}
-  %nav
-    %ul
-      %li.pull-left
-        %span.active-count
-          #{t('active_repos')}:
-          {{(repos | filter:{active: true}).length}} of {{repos.length}}
-      %li.pull-right
-        %a{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
-          %i.fa.fa-refresh
-          %span {{ syncButtonText }}
-    .search-wrapper
-      %i.fa.fa-search
-      %input.search{'type' => 'text', 'placeholder' => t('search_placeholder'), 'ng-model' => 'search.full_github_name'}
-  .loading{'ng-show' => 'syncingRepos'}
-    .dot
-    .dot
-    .dot
-  %ul.repos{'ng-hide' => 'syncingRepos'}
-    %li.repo{'ng-repeat' => 'repo in repos | filter:search', 'ng-class' => '{active: repo.active, processing: repo.processing}'}
-      %a.toggle{'href' => '', 'ng-click' => 'toggle(repo)'}
-      %span.name {{repo.full_github_name}}
+.repo-listing{ 'repo-list' => '' }
+= render 'preload_template', template: 'repo_list'

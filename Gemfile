@@ -28,9 +28,15 @@ gem 'sentry-raven'
 gem 'uglifier', '>= 1.0.3'
 gem 'unicorn'
 
+group :staging, :production do
+  gem 'rails_12factor'
+end
+
 group :development, :test do
   gem 'debugger'
   gem 'foreman'
+  gem 'konacha'
+  gem 'poltergeist'
   gem 'rspec-rails', '>= 2.14'
 end
 
@@ -42,8 +48,4 @@ group :test do
   gem 'launchy'
   gem 'shoulda-matchers'
   gem 'webmock'
-end
-
-group :staging, :production do
-  gem 'rails_12factor'
 end
