@@ -12,11 +12,15 @@ class Repo < ActiveRecord::Base
     update_attributes(active: false, hook_id: nil)
   end
 
-  def update_changed_attributes(new_attributes)
-    new_full_github_name = new_attributes[:full_name]
+  def self.find_or_create_with(attributes)
+    repo = where(github_id: attributes[:github_id]).first
 
-    if full_github_name != new_full_github_name
-      update_attributes(full_github_name: new_full_github_name)
+    if repo
+      repo.update_attributes!(attributes)
+    else
+      repo = Repo.create!(attributes)
     end
+
+    repo
   end
 end

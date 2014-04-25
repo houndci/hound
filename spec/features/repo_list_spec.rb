@@ -10,7 +10,20 @@ feature 'Repo list', js: true do
 
     visit root_path
 
-    expect(page).to have_content 'thoughtbot/my-repo'
+    expect(page).to have_content repo.full_github_name
+  end
+
+  scenario 'user filters list' do
+    user = create(:user)
+    repo = create(:repo, full_github_name: 'thoughtbot/my-repo')
+    repo.users << user
+    stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
+    sign_in_as(user)
+
+    visit root_path
+    find('.search').set(repo.full_github_name)
+
+    expect(page).to have_content repo.full_github_name
   end
 
   scenario 'user syncs repos' do

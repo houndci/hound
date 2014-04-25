@@ -10,7 +10,7 @@
         %span {{ syncButtonText }}
   .search-wrapper
     %i.fa.fa-search
-    %input.search{'type' => 'text', 'placeholder' => 'search by repo name', 'ng-model' => 'search.name'}
+    %input.search{'type' => 'text', 'placeholder' => t('search_placeholder'), 'ng-model' => 'search.full_github_name'}
 
 .loading{'ng-show' => 'syncingRepos'}
   .dot
@@ -18,6 +18,6 @@
   .dot
 
 %ul.repos{'ng-hide' => 'syncingRepos'}
-  %li.repo{'repo' => 'repo', 'ng-repeat' => 'repo in repos | filter:search', 'ng-class' => '{active: repo.active, processing: repo.processing}'}
+  %li.repo{'repo' => '', 'ng-repeat' => 'repo in repos | filter:search', 'ng-class' => '{active: repo.active, processing: processing}'}
 
 = render 'preload_template', template: 'repo'

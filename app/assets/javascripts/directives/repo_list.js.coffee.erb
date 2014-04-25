@@ -2,7 +2,7 @@ App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User
   scope: {}
   templateUrl: '/templates/repo_list'
 
-  link: (scope, element, attrs) ->
+  link: (scope, element, attributes) ->
     loadRepos = ->
       scope.syncingRepos = false
 
