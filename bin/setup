@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# Set up Ruby
+bundle install
+
+# Add binstubs to PATH via export PATH=".git/safe/../../bin:$PATH" in ~/.zshenv
+mkdir -p .git/safe
+
+# Set up database
+bundle exec rake db:setup
+
+# Set up deploys
+git remote add staging git@heroku.com:hound-staging.git
+heroku join --app hound-staging
+
+git remote add production git@heroku.com:hound-production.git
+heroku join --app hound-production
+
+# Set up development environment config
+if [ ! -f .env ]; then
+  cp .sample.env .env
+fi
