@@ -32,6 +32,8 @@ group :development, :test do
   gem 'debugger'
   gem 'foreman'
   gem 'rspec-rails', '>= 2.14'
+  gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :test do
