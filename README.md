@@ -12,7 +12,7 @@ guide &rarr;](https://github.com/thoughtbot/guides)
 Development
 -----------
 
-1. Rename sample.env to .env
+1. Rename `.sample.env` to `.env`
 2. Log into GitHub and go to the Application Settings under Account settings:
    https://github.com/settings/applications
 3. Under the Developer Applications panel - Click on "Register new application"
