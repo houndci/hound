@@ -13,14 +13,8 @@ class Repo < ActiveRecord::Base
   end
 
   def self.find_or_create_with(attributes)
-    repo = where(github_id: attributes[:github_id]).first
-
-    if repo
-      repo.update_attributes!(attributes)
-    else
-      repo = Repo.create!(attributes)
-    end
-
+    repo = where(github_id: attributes[:github_id]).first_or_initialize
+    repo.update_attributes(attributes)
     repo
   end
 end
