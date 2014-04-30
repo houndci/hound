@@ -36,3 +36,11 @@ LineLength:
 
 DotPosition:
   EnforcedStyle: trailing
+
+CollectionMethods:
+  PreferredMethods:
+    collect: 'map'
+    collect!: 'map!'
+    inject: 'inject'
+    detect: 'detect'
+    find_all: 'select'

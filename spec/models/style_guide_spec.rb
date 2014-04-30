@@ -15,6 +15,16 @@ end
       end
     end
 
+    describe 'when using detect' do
+      it 'does not have violation' do
+        expect(violations_in(<<-CODE)).to eq []
+users.detect do |user|
+  user.active?
+end
+        CODE
+      end
+    end
+
     context 'for inline comment' do
       xit 'returns violation' do
         expect(violations_in(<<-CODE)).not_to be_empty
