@@ -6,10 +6,30 @@ require 'app/models/style_guide'
 describe StyleGuide, '#violations' do
   context 'with default configuration' do
     describe 'for private prefix' do
-      it 'does not have violation' do
+      it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []
 private def foo
   bar
+end
+        CODE
+      end
+    end
+
+    describe 'for has_* method name' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to eq []
+def has_something?
+  'something'
+end
+        CODE
+      end
+    end
+
+    describe 'for is_* method name' do
+      it 'returns violations' do
+        expect(violations_in(<<-CODE)).not_to be_empty
+def is_something?
+  'something'
 end
         CODE
       end
