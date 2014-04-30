@@ -1,6 +1,8 @@
 class RepoSynchronization
   attr_reader :api, :user
 
+  ORGANIZATION_TYPE = 'Organization'
+
   def initialize(user, github_token)
     @user = user
     @api = GithubApi.new(github_token)
@@ -9,8 +11,9 @@ class RepoSynchronization
   def start
     user.repos.clear
 
-    api.repos.each do |attributes|
-      user.repos << Repo.find_or_create_with(repo_attributes(attributes))
+    api.repos.each do |resource|
+      attributes = repo_attributes(resource.to_hash)
+      user.repos << Repo.find_or_create_with(attributes)
     end
   end
 
@@ -20,7 +23,7 @@ class RepoSynchronization
     attributes.slice(:private).merge(
       github_id: attributes[:id],
       full_github_name: attributes[:full_name],
-      in_organization: attributes[:organization].present?
+      in_organization: attributes[:owner][:type] == ORGANIZATION_TYPE
     )
   end
 end
