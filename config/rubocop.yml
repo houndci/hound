@@ -39,8 +39,7 @@ DotPosition:
 
 CollectionMethods:
   PreferredMethods:
-    collect: 'map'
-    collect!: 'map!'
-    inject: 'inject'
-    detect: 'detect'
-    find_all: 'select'
+    find: detect
+    reduce: inject
+    collect: map
+    find_all: select
