@@ -43,3 +43,7 @@ CollectionMethods:
     reduce: inject
     collect: map
     find_all: select
+
+PredicateName:
+  NamePrefixBlacklist:
+    - is_
