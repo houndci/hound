@@ -5,6 +5,16 @@ require 'app/models/style_guide'
 
 describe StyleGuide, '#violations' do
   context 'with default configuration' do
+    describe 'for private prefix' do
+      it 'does not have violation' do
+        expect(violations_in(<<-CODE)).to eq []
+private def foo
+  bar
+end
+        CODE
+      end
+    end
+
     context 'for inline comment' do
       xit 'returns violation' do
         expect(violations_in(<<-CODE)).not_to be_empty

@@ -11,7 +11,7 @@ class StyleGuide
 
   def investigate(parsed_file_content)
     team = Rubocop::Cop::Team.new(Rubocop::Cop::Cop.all, configuration)
-    commissioner = Rubocop::Cop::Commissioner.new(team.cops)
+    commissioner = Rubocop::Cop::Commissioner.new(team.cops, [])
     commissioner.investigate(parsed_file_content)
   end
 

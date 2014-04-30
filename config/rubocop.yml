@@ -1,6 +1,36 @@
 FileName:
   Enabled: false
 
+ClassLength:
+  Enabled: false
+
+CyclomaticComplexity:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+ModuleFunction:
+  Enabled: false
+
+ParameterLists:
+  Enabled: false
+
+Proc:
+  Enabled: false
+
+SingleLineBlockParams:
+  Enabled: false
+
+VariableInterpolation:
+  Enabled: false
+
 LineLength:
   Max: 80
 
