@@ -15,6 +15,86 @@ end
       end
     end
 
+    describe 'when using detect' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to eq []
+users.detect do |user|
+  user.active?
+end
+        CODE
+      end
+    end
+
+    describe 'when using find' do
+      it 'returns violations' do
+        expect(violations_in(<<-CODE)).not_to be_empty
+users.find do |user|
+  user.active?
+end
+        CODE
+      end
+    end
+
+    describe 'when using select' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to eq []
+users.select do |user|
+  user.active?
+end
+        CODE
+      end
+    end
+
+    describe 'when using find_all' do
+      it 'returns violations' do
+        expect(violations_in(<<-CODE)).not_to be_empty
+users.find_all do |user|
+  user.active?
+end
+        CODE
+      end
+    end
+
+    describe 'when using map' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to eq []
+users.map do |user|
+  user.name
+end
+        CODE
+      end
+    end
+
+    describe 'when using collect' do
+      it 'returns violations' do
+        expect(violations_in(<<-CODE)).not_to be_empty
+users.collect do |user|
+  user.name
+end
+        CODE
+      end
+    end
+
+    describe 'when using inject' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to eq []
+users.inject(0) do |result, user|
+  user.age
+end
+        CODE
+      end
+    end
+
+    describe 'when using reduce' do
+      it 'returns violations' do
+        expect(violations_in(<<-CODE)).not_to be_empty
+users.reduce(0) do |result, user|
+  user.age
+end
+        CODE
+      end
+    end
+
     context 'for inline comment' do
       xit 'returns violation' do
         expect(violations_in(<<-CODE)).not_to be_empty
