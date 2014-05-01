@@ -33,6 +33,16 @@ three = {
       end
     end
 
+    describe 'for single line conditional' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to eq []
+if signed_in? then redirect_to dashboard_path end
+
+while signed_in? do something end
+        CODE
+      end
+    end
+
     describe 'for has_* method name' do
       it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []

@@ -1,6 +1,3 @@
-FileName:
-  Enabled: false
-
 ClassLength:
   Enabled: false
 
@@ -13,10 +10,19 @@ Documentation:
 Encoding:
   Enabled: false
 
+FileName:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
 MethodLength:
   Enabled: false
 
 ModuleFunction:
+  Enabled: false
+
+OneLineConditional:
   Enabled: false
 
 ParameterLists:
@@ -32,6 +38,9 @@ VariableInterpolation:
   Enabled: false
 
 TrailingComma:
+  Enabled: false
+
+WhileUntilModifier:
   Enabled: false
 
 LineLength:
