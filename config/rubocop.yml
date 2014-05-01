@@ -31,6 +31,9 @@ SingleLineBlockParams:
 VariableInterpolation:
   Enabled: false
 
+TrailingComma:
+  Enabled: false
+
 LineLength:
   Max: 80
 
