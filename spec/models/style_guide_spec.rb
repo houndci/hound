@@ -15,6 +15,24 @@ end
       end
     end
 
+    describe 'for trailing commas' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to eq []
+one = [
+  1,
+]
+
+two(
+  1,
+)
+
+three = {
+  one: 1,
+}
+        CODE
+      end
+    end
+
     describe 'for has_* method name' do
       it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []
