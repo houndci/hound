@@ -5,6 +5,8 @@ class RepoInformationJob
 
   def self.perform(repo_id, github_token)
     repo = Repo.find(repo_id)
+    repo.touch
+
     github = GithubApi.new(github_token)
     github_data = github.repo(repo.full_github_name)
 
