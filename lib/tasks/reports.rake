@@ -14,6 +14,7 @@ namespace :reports do
     end
   end
 
+  desc 'Prints out new user counts by week.'
   task users: :environment do
     weeks.each do |week|
       new_users_by_week_sql = <<-SQL
@@ -27,6 +28,7 @@ namespace :reports do
     end
   end
 
+  desc 'Prints out build counts by week.'
   task builds: :environment do
     weeks.each do |week|
       builds_by_week_sql = <<-SQL
