@@ -1,5 +1,5 @@
 class PullRequest
-  CONFIG_FILES = %w{.hound.yml .rubocop.yml}
+  CONFIG_FILES = %w(.hound.yml .rubocop.yml)
 
   def initialize(payload, github_token)
     @payload = payload
@@ -44,9 +44,11 @@ class PullRequest
 
   def config
     CONFIG_FILES.map do |filename|
-      file_contents(filename)
-    rescue Octokit::NotFound
-      nil
+      begin
+        file_contents(filename)
+      rescue Octokit::NotFound
+        nil
+      end
     end.find
   end
 
