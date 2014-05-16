@@ -264,6 +264,19 @@ module GithubApiHelper
     )
   end
 
+  def stub_pull_request_comments_request(full_repo_name, pull_request_number, auth_token = 'githubotken')
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
+    ).with(
+      headers: { 'Authorization' => "token #{auth_token}"}
+    ).to_return(
+      status: 200,
+      body: File.read('spec/support/fixtures/pull_request_comments.json'),
+      headers:{ 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   def stub_contents_request(token, options = {})
     fixture = options.fetch(:fixture, 'contents.json')
     file = options.fetch(:file, 'config/unicorn.rb')
