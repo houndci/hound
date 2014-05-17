@@ -5,7 +5,6 @@ describe PullRequest, '#head_includes?' do
     it 'returns true' do
       code = 'A line of code'
       line = Line.new(code)
-      same_line = Line.new(code)
       modified_file = double(:modified_file, modified_lines: [line])
       ModifiedFile.stub(new: modified_file)
       commit_file = double(:commit_file)
