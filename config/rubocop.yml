@@ -160,6 +160,9 @@ SingleLineBlockParams:
 SingleLineMethods:
   Enabled: false
 
+SignalException:
+  Enabled: false
+
 SpecialGlobalVars:
   Enabled: false
 
