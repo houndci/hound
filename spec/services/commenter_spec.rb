@@ -38,6 +38,7 @@ describe Commenter do
           expect(pull_request).to have_received(:add_comment).with(
             file_violation.filename,
             line.patch_position,
+            "`#{file_violation.filename}:#{line.line_number}`<br>" +
             line_violation.messages.first
           )
         end
