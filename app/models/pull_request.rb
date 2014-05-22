@@ -43,13 +43,13 @@ class PullRequest
   end
 
   def config
-    CONFIG_FILES.map do |filename|
+    CONFIG_FILES.detect do |filename|
       begin
         file_contents(filename)
       rescue Octokit::NotFound
         nil
       end
-    end.find
+    end
   end
 
   def opened?
