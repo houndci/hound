@@ -369,6 +369,7 @@ a = { one: 1}
           "hello world"
         end
       TEXT
+      file = double(:file, contents: content, filename: 'test.rb')
       config = <<-TEXT.strip_heredoc
         StringLiterals:
           EnforcedStyle: double_quotes
@@ -376,7 +377,7 @@ a = { one: 1}
       TEXT
       style_guide = StyleGuide.new(config)
 
-      violations = style_guide.violations(content)
+      violations = style_guide.violations(file)
 
       expect(violations.map(&:message)).to eq [
         "Omit the parentheses in defs when the method doesn't accept any arguments."
@@ -390,6 +391,8 @@ a = { one: 1}
     unless content.end_with?("\n")
       content += "\n"
     end
-    StyleGuide.new.violations(content).map(&:message)
+
+    file = double(:file, contents: content, filename: 'test.rb')
+    StyleGuide.new.violations(file).map(&:message)
   end
 end

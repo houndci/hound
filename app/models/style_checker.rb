@@ -17,7 +17,7 @@ class StyleChecker
   private
 
   def line_violations(modified_file)
-    violations = style_guide.violations(modified_file.contents)
+    violations = style_guide.violations(modified_file)
     violations = violations_on_changed_lines(modified_file, violations)
 
     violations.group_by(&:line).map do |line_number, violations|

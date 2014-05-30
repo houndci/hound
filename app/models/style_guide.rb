@@ -3,20 +3,17 @@ class StyleGuide
     @override_config_content = override_config_content
   end
 
-  def violations(file_content)
-    investigate(parse_file_content(file_content))
+  def violations(file)
+    parsed_source = parse_source(file)
+    team = Rubocop::Cop::Team.new(Rubocop::Cop::Cop.all, configuration)
+    commissioner = Rubocop::Cop::Commissioner.new(team.cops, [])
+    commissioner.investigate(parsed_source)
   end
 
   private
 
-  def investigate(parsed_file_content)
-    team = Rubocop::Cop::Team.new(Rubocop::Cop::Cop.all, configuration)
-    commissioner = Rubocop::Cop::Commissioner.new(team.cops, [])
-    commissioner.investigate(parsed_file_content)
-  end
-
-  def parse_file_content(file_content)
-    Rubocop::SourceParser.parse(file_content)
+  def parse_source(file)
+    Rubocop::SourceParser.parse(file.contents, file.filename)
   end
 
   def configuration
