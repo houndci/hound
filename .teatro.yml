@@ -1,0 +1,3 @@
+stage:
+  before:
+    - cp .teatro.env .env
