@@ -10,6 +10,10 @@ class PullRequest
     head_commit_files.detect { |file| file.modified_lines.include?(line) }
   end
 
+  def comments
+    api.pull_request_comments(full_repo_name, number)
+  end
+
   def pull_request_files
     api.pull_request_files(full_repo_name, number).map do |file|
       build_commit_file(file)

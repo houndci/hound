@@ -63,6 +63,10 @@ class GithubApi
     commit.files
   end
 
+  def pull_request_comments(full_repo_name, pull_request_number)
+    client.pull_request_comments(full_repo_name, pull_request_number)
+  end
+
   def pull_request_files(full_repo_name, number)
     client.pull_request_files(full_repo_name, number)
   end

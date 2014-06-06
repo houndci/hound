@@ -299,6 +299,37 @@ describe GithubApi, '#add_comment' do
   end
 end
 
+describe GithubApi do
+  describe '#pull_request_comments' do
+    it 'returns comments added to pull request' do
+      github_token = 'authtoken'
+      api = GithubApi.new(github_token)
+      pull_request = double(:pull_request, full_repo_name: 'thoughtbot/hound')
+      pull_request_id = 253
+      commit_sha = 'abc253'
+      stub_pull_request_comments_request(
+        pull_request.full_repo_name,
+        pull_request_id,
+        github_token
+      )
+      stub_contents_request(
+        github_token,
+        repo_name: pull_request.full_repo_name,
+        sha: commit_sha
+      )
+
+      comments = api.pull_request_comments(
+        pull_request.full_repo_name,
+        pull_request_id
+      )
+      expected_comment = "inline if's and while's are not violations?"
+
+      expect(comments).to have(4).items
+      expect(comments.first.body).to eq expected_comment
+    end
+  end
+end
+
 describe GithubApi, '#user_teams' do
   it "returns user's teams" do
     token = 'abc123'

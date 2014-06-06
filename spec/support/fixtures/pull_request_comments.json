@@ -1,0 +1,182 @@
+[
+  {
+    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195368",
+    "id": 12195368,
+    "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
+    "path": "spec/models/style_guide_spec.rb",
+    "position": 7,
+    "original_position": 7,
+    "commit_id": "81ee93414c230f71603265bd791bff5fbb8dba3e",
+    "original_commit_id": "be93980f14ac2960a3f8c2c222463b65dfb987b8",
+    "user": {
+      "login": "srt32",
+      "id": 2181356,
+      "avatar_url": "https://avatars.githubusercontent.com/u/2181356?",
+      "gravatar_id": "974bd8de357fc15f14cd8f85ccea6e05",
+      "url": "https://api.github.com/users/srt32",
+      "html_url": "https://github.com/srt32",
+      "followers_url": "https://api.github.com/users/srt32/followers",
+      "following_url": "https://api.github.com/users/srt32/following{/other_user}",
+      "gists_url": "https://api.github.com/users/srt32/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/srt32/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/srt32/subscriptions",
+      "organizations_url": "https://api.github.com/users/srt32/orgs",
+      "repos_url": "https://api.github.com/users/srt32/repos",
+      "events_url": "https://api.github.com/users/srt32/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/srt32/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "inline if's and while's are not violations?",
+    "created_at": "2014-05-01T16:57:49Z",
+    "updated_at": "2014-05-01T17:17:03Z",
+    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195368",
+    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195368"
+      },
+      "html": {
+        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195368"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195668",
+    "id": 12195668,
+    "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
+    "path": "spec/models/style_guide_spec.rb",
+    "position": 7,
+    "original_position": 7,
+    "commit_id": "81ee93414c230f71603265bd791bff5fbb8dba3e",
+    "original_commit_id": "be93980f14ac2960a3f8c2c222463b65dfb987b8",
+    "user": {
+      "login": "gylaz",
+      "id": 116327,
+      "avatar_url": "https://avatars.githubusercontent.com/u/116327?",
+      "gravatar_id": "054aeaa0b4f25d33c231baeae1e16123",
+      "url": "https://api.github.com/users/gylaz",
+      "html_url": "https://github.com/gylaz",
+      "followers_url": "https://api.github.com/users/gylaz/followers",
+      "following_url": "https://api.github.com/users/gylaz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gylaz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gylaz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gylaz/subscriptions",
+      "organizations_url": "https://api.github.com/users/gylaz/orgs",
+      "repos_url": "https://api.github.com/users/gylaz/repos",
+      "events_url": "https://api.github.com/users/gylaz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gylaz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "Can Rubocop detect `do_something if something`?",
+    "created_at": "2014-05-01T17:05:09Z",
+    "updated_at": "2014-05-01T17:17:03Z",
+    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195668",
+    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195668"
+      },
+      "html": {
+        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195668"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195672",
+    "id": 12195672,
+    "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
+    "path": "spec/models/style_guide_spec.rb",
+    "position": 7,
+    "original_position": 7,
+    "commit_id": "81ee93414c230f71603265bd791bff5fbb8dba3e",
+    "original_commit_id": "be93980f14ac2960a3f8c2c222463b65dfb987b8",
+    "user": {
+      "login": "salbertson",
+      "id": 154463,
+      "avatar_url": "https://avatars.githubusercontent.com/u/154463?",
+      "gravatar_id": "26d814c7fd3cce39b3e0f7969e1a8870",
+      "url": "https://api.github.com/users/salbertson",
+      "html_url": "https://github.com/salbertson",
+      "followers_url": "https://api.github.com/users/salbertson/followers",
+      "following_url": "https://api.github.com/users/salbertson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/salbertson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/salbertson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/salbertson/subscriptions",
+      "organizations_url": "https://api.github.com/users/salbertson/orgs",
+      "repos_url": "https://api.github.com/users/salbertson/repos",
+      "events_url": "https://api.github.com/users/salbertson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/salbertson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "They are, but this change is to avoid suggesting them. I will follow up with a rule that comments on them or overrides the description from RuboCop to suggest what we prefer.",
+    "created_at": "2014-05-01T17:05:22Z",
+    "updated_at": "2014-05-01T17:17:03Z",
+    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195672",
+    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195672"
+      },
+      "html": {
+        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195672"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+      }
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195842",
+    "id": 12195842,
+    "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
+    "path": "spec/models/style_guide_spec.rb",
+    "position": 7,
+    "original_position": 7,
+    "commit_id": "81ee93414c230f71603265bd791bff5fbb8dba3e",
+    "original_commit_id": "be93980f14ac2960a3f8c2c222463b65dfb987b8",
+    "user": {
+      "login": "salbertson",
+      "id": 154463,
+      "avatar_url": "https://avatars.githubusercontent.com/u/154463?",
+      "gravatar_id": "26d814c7fd3cce39b3e0f7969e1a8870",
+      "url": "https://api.github.com/users/salbertson",
+      "html_url": "https://github.com/salbertson",
+      "followers_url": "https://api.github.com/users/salbertson/followers",
+      "following_url": "https://api.github.com/users/salbertson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/salbertson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/salbertson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/salbertson/subscriptions",
+      "organizations_url": "https://api.github.com/users/salbertson/orgs",
+      "repos_url": "https://api.github.com/users/salbertson/repos",
+      "events_url": "https://api.github.com/users/salbertson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/salbertson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "body": "@gylaz, not sure yet. I think `IfUnlessModifier` will do it, but the description is way off and violates our guide. I'm planning on using that cop and changing the description, or creating our own, in a separate pull request.",
+    "created_at": "2014-05-01T17:09:52Z",
+    "updated_at": "2014-05-01T17:17:03Z",
+    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195842",
+    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195842"
+      },
+      "html": {
+        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195842"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+      }
+    }
+  }
+]

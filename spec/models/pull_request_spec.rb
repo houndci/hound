@@ -81,6 +81,30 @@ describe PullRequest, '#synchronize?' do
   end
 end
 
+describe PullRequest do
+  describe '#comments' do
+    it 'returns comments on pull request' do
+      payload = double(
+        :payload,
+        full_repo_name: 'org/repo',
+        number: 4,
+        head_sha: 'abc123'
+      )
+      line_number = 7
+      filename = 'spec/models/style_guide_spec.rb'
+      comment = double(:comment, position: line_number, path: filename)
+      github_api = double(:github_api, pull_request_comments: [comment])
+      GithubApi.stub(new: github_api)
+      pull_request = PullRequest.new(payload, 'githubtoken')
+
+      comments = pull_request.comments
+
+      expect(comments).to have(1).item
+      expect(comments).to match_array([comment])
+    end
+  end
+end
+
 describe PullRequest, '#add_comment' do
   it 'posts a comment to GitHub for the Hound user' do
     payload = double(

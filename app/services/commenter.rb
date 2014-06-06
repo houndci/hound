@@ -1,11 +1,21 @@
 class Commenter
   def comment_on_violations(file_violations, pull_request)
+    existing_comments = pull_request.comments
+
     file_violations.each do |file_violation|
       file_violation.line_violations.each do |line_violation|
         line = line_violation.line
-        comment = Comment.new(line)
+        previous_comments = previous_line_comments(
+          existing_comments,
+          line_violation.line_number,
+          file_violation.filename
+        )
 
-        if commenting_policy.comment_permitted?(pull_request, comment)
+        if commenting_policy.comment_permitted?(
+          pull_request,
+          previous_comments,
+          line_violation
+        )
           pull_request.add_comment(
             file_violation.filename,
             line.patch_position,
@@ -20,5 +30,11 @@ class Commenter
 
   def commenting_policy
     CommentingPolicy.new
+  end
+
+  def previous_line_comments(existing_comments, line_number, filename)
+    existing_comments.select do |comment|
+      comment.position == line_number && comment.path == filename
+    end
   end
 end
