@@ -19,7 +19,7 @@ class ModifiedFile
   end
 
   def ruby?
-    filename.match(/.*\.rb$/)
+    language == 'Ruby'
   end
 
   def contents
@@ -41,6 +41,10 @@ class ModifiedFile
   end
 
   private
+
+  def language
+    @language ||= Linguist::Language.detect(filename, contents).try(:name)
+  end
 
   def patch
     Patch.new(@file.patch)

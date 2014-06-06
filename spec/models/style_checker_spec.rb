@@ -29,6 +29,7 @@ describe StyleChecker, '#violations' do
       :modified_file,
       filename: filename,
       contents: formatted_contents,
+      language: 'Ruby',
       relevant_line?: true,
       modified_line_at: 1
     )
