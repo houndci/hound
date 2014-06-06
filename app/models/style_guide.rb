@@ -5,23 +5,23 @@ class StyleGuide
 
   def violations(file)
     parsed_source = parse_source(file)
-    team = Rubocop::Cop::Team.new(Rubocop::Cop::Cop.all, configuration)
-    commissioner = Rubocop::Cop::Commissioner.new(team.cops, [])
+    team = RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, configuration)
+    commissioner = RuboCop::Cop::Commissioner.new(team.cops, [])
     commissioner.investigate(parsed_source)
   end
 
   private
 
   def parse_source(file)
-    Rubocop::SourceParser.parse(file.contents, file.filename)
+    RuboCop::SourceParser.parse(file.contents, file.filename)
   end
 
   def configuration
-    config = Rubocop::ConfigLoader.configuration_from_file('config/rubocop.yml')
+    config = RuboCop::ConfigLoader.configuration_from_file('config/rubocop.yml')
 
     if override_config
-      config = Rubocop::Config.new(
-        Rubocop::ConfigLoader.merge(config, override_config),
+      config = RuboCop::Config.new(
+        RuboCop::ConfigLoader.merge(config, override_config),
         ''
       )
     end
@@ -31,7 +31,7 @@ class StyleGuide
 
   def override_config
     if @override_config_content
-      Rubocop::Config.new(YAML.load(@override_config_content))
+      RuboCop::Config.new(YAML.load(@override_config_content))
     end
   end
 end

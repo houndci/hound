@@ -1,235 +1,230 @@
-AccessorMethodName:
+Style/AccessorMethodName:
   Enabled: false
 
-Alias:
+Style/Alias:
   Enabled: false
 
-ArrayJoin:
+Style/ArrayJoin:
   Enabled: false
 
-AsciiComments:
+Style/AsciiComments:
   Enabled: false
 
-AsciiIdentifiers:
+Style/AsciiIdentifiers:
   Enabled: false
 
-Attr:
+Style/Attr:
   Enabled: false
 
-BlockNesting:
+Style/BlockNesting:
   Enabled: false
 
-CaseEquality:
+Style/CaseEquality:
   Enabled: false
 
-CharacterLiteral:
+Style/CharacterLiteral:
   Enabled: false
 
-ClassLength:
+Style/ClassLength:
   Enabled: false
 
-ClassVars:
+Style/ClassVars:
   Enabled: false
 
-CollectionMethods:
+Style/CollectionMethods:
   PreferredMethods:
     find: detect
     reduce: inject
     collect: map
     find_all: select
 
-ColonMethodCall:
+Style/ColonMethodCall:
   Enabled: false
 
-CommentAnnotation:
+Style/CommentAnnotation:
   Enabled: false
 
-CyclomaticComplexity:
+Style/CyclomaticComplexity:
   Enabled: false
 
-Delegate:
+Style/DeprecatedHashMethods:
   Enabled: false
 
-DeprecatedHashMethods:
+Style/Documentation:
   Enabled: false
 
-Documentation:
-  Enabled: false
-
-DotPosition:
+Style/DotPosition:
   EnforcedStyle: trailing
 
-DoubleNegation:
+Style/DoubleNegation:
   Enabled: false
 
-EmptyLiteral:
+Style/EmptyLiteral:
   Enabled: false
 
-Encoding:
+Style/Encoding:
   Enabled: false
 
-EvenOdd:
+Style/EvenOdd:
   Enabled: false
 
-FileName:
+Style/FileName:
   Enabled: false
 
-FlipFlop:
+Style/FlipFlop:
   Enabled: false
 
-FormatString:
+Style/FormatString:
   Enabled: false
 
-GlobalVars:
+Style/GlobalVars:
   Enabled: false
 
-IfUnlessModifier:
+Style/IfUnlessModifier:
   Enabled: false
 
-IfWithSemicolon:
+Style/IfWithSemicolon:
   Enabled: false
 
-Lambda:
+Style/Lambda:
   Enabled: false
 
-LambdaCall:
+Style/LambdaCall:
   Enabled: false
 
-LineEndConcatenation:
+Style/LineEndConcatenation:
   Enabled: false
 
-LineLength:
+Style/LineLength:
   Max: 80
 
-MethodLength:
+Style/MethodLength:
   Enabled: false
 
-ModuleFunction:
+Style/ModuleFunction:
   Enabled: false
 
-NegatedIf:
+Style/NegatedIf:
   Enabled: false
 
-NegatedWhile:
+Style/NegatedWhile:
   Enabled: false
 
-NilComparison:
+Style/NilComparison:
   Enabled: false
 
-Not:
+Style/Not:
   Enabled: false
 
-NumericLiterals:
+Style/NumericLiterals:
   Enabled: false
 
-OneLineConditional:
+Style/OneLineConditional:
   Enabled: false
 
-OpMethod:
+Style/OpMethod:
   Enabled: false
 
-ParameterLists:
+Style/ParameterLists:
   Enabled: false
 
-PercentLiteralDelimiters:
+Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%': '{}'
 
-PerlBackrefs:
+Style/PerlBackrefs:
   Enabled: false
 
-PredicateName:
+Style/PredicateName:
   NamePrefixBlacklist:
     - is_
 
-Proc:
+Style/Proc:
   Enabled: false
 
-RaiseArgs:
+Style/RaiseArgs:
   Enabled: false
 
-RegexpLiteral:
+Style/RegexpLiteral:
   Enabled: false
 
-SelfAssignment:
+Style/SelfAssignment:
   Enabled: false
 
-SingleLineBlockParams:
+Style/SingleLineBlockParams:
   Enabled: false
 
-SingleLineMethods:
+Style/SingleLineMethods:
   Enabled: false
 
-SignalException:
+Style/SignalException:
   Enabled: false
 
-SpecialGlobalVars:
+Style/SpecialGlobalVars:
   Enabled: false
 
-VariableInterpolation:
+Style/VariableInterpolation:
   Enabled: false
 
-TrailingComma:
+Style/TrailingComma:
   Enabled: false
 
-TrivialAccessors:
+Style/TrivialAccessors:
   Enabled: false
 
-VariableInterpolation:
+Style/WhenThen:
   Enabled: false
 
-WhenThen:
+Style/WhileUntilModifier:
   Enabled: false
 
-WhileUntilModifier:
+Style/WordArray:
   Enabled: false
 
-WordArray:
+Lint/AmbiguousOperator:
   Enabled: false
 
-# Lint
-
-AmbiguousOperator:
+Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
-AmbiguousRegexpLiteral:
+Lint/AssignmentInCondition:
   Enabled: false
 
-AssignmentInCondition:
+Lint/ConditionPosition:
   Enabled: false
 
-ConditionPosition:
+Lint/DeprecatedClassMethods:
   Enabled: false
 
-DeprecatedClassMethods:
+Lint/ElseLayout:
   Enabled: false
 
-ElseLayout:
+Lint/HandleExceptions:
   Enabled: false
 
-HandleExceptions:
+Lint/InvalidCharacterLiteral:
   Enabled: false
 
-InvalidCharacterLiteral:
+Lint/LiteralInCondition:
   Enabled: false
 
-LiteralInCondition:
+Lint/LiteralInInterpolation:
   Enabled: false
 
-LiteralInInterpolation:
+Lint/Loop:
   Enabled: false
 
-Loop:
+Lint/ParenthesesAsGroupedExpression:
   Enabled: false
 
-ParenthesesAsGroupedExpression:
+Lint/RequireParentheses:
   Enabled: false
 
-RequireParentheses:
+Lint/UnderscorePrefixedVariableName:
   Enabled: false
 
-UnderscorePrefixedVariableName:
+Lint/Void:
   Enabled: false
 
-Void:
+Rails/Delegate:
   Enabled: false

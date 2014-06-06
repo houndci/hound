@@ -371,7 +371,7 @@ a = { one: 1}
       TEXT
       file = double(:file, contents: content, filename: 'test.rb')
       config = <<-TEXT.strip_heredoc
-        StringLiterals:
+        Style/StringLiterals:
           EnforcedStyle: double_quotes
           Enabled: true
       TEXT

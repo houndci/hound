@@ -208,7 +208,7 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    rubocop (0.22.0)
+    rubocop (0.23.0)
       json (>= 1.7.7, < 2)
       parser (~> 2.1.9)
       powerpack (~> 0.0.6)
