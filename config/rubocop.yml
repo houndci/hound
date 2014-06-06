@@ -80,6 +80,9 @@ Style/FormatString:
 Style/GlobalVars:
   Enabled: false
 
+Style/InlineComment:
+  Enabled: true
+
 Style/IfUnlessModifier:
   Enabled: false
 
