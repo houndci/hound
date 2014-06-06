@@ -6,7 +6,7 @@ class BuildRunner
   end
 
   def run
-    if repo && relevant_pull_request
+    if repo && relevant_pull_request?
       repo.builds.create!(violations: violations)
       commenter.comment_on_violations(violations, pull_request)
     end
@@ -14,7 +14,7 @@ class BuildRunner
 
   private
 
-  def relevant_pull_request
+  def relevant_pull_request?
     pull_request.opened? || pull_request.synchronize?
   end
 

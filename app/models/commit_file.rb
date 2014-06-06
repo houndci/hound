@@ -1,7 +1,13 @@
-class ModifiedFile
-  def initialize(file, pull_request)
+class CommitFile
+  attr_reader :contents
+
+  def initialize(file, contents)
     @file = file
-    @pull_request = pull_request
+    @contents = contents
+  end
+
+  def filename
+    @file.filename
   end
 
   def relevant_line?(line_number)
@@ -10,24 +16,12 @@ class ModifiedFile
     end
   end
 
-  def filename
-    @file.filename
-  end
-
   def removed?
     @file.status == 'removed'
   end
 
   def ruby?
     filename.match(/.*\.rb$/)
-  end
-
-  def contents
-    @contents ||= begin
-      unless removed?
-        @pull_request.file_contents(filename)
-      end
-    end
   end
 
   def modified_lines

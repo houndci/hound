@@ -12,7 +12,7 @@ feature 'Builds' do
 
   context 'with payload nesting' do
     scenario 'a successful build with custom config' do
-      repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
+      create(:repo, github_id: repo_id, full_github_name: repo_name)
       stub_github_requests_with_no_violations
       comment_request = stubbed_comment_request
 
@@ -24,7 +24,7 @@ feature 'Builds' do
 
   context 'without payload nesting' do
     scenario 'a successful build with custom config' do
-      repo = create(:repo, github_id: repo_id, full_github_name: repo_name)
+      create(:repo, github_id: repo_id, full_github_name: repo_name)
       stub_github_requests_with_no_violations
       comment_request = stubbed_comment_request
 
@@ -35,12 +35,7 @@ feature 'Builds' do
   end
 
   scenario 'a failed build' do
-    repo = create(
-      :repo,
-      :active,
-      github_id: repo_id,
-      full_github_name: repo_name
-    )
+    create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
     stub_github_requests_with_violations
     comment_request = stubbed_comment_request
 

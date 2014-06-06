@@ -3,21 +3,10 @@ require 'spec_helper'
 describe PullRequest, '#head_includes?' do
   context 'when HEAD commit includes line' do
     it 'returns true' do
-      code = 'A line of code'
-      line = Line.new(code)
-      modified_file = double(:modified_file, modified_lines: [line])
-      ModifiedFile.stub(new: modified_file)
-      commit_file = double(:commit_file)
-      github = double(:github, commit_files: [commit_file])
-      GithubApi.stub(new: github)
-      payload = double(
-        :payload,
-        head_sha: 'headsha',
-        full_repo_name: 'test/repo'
-      )
-      pull_request = PullRequest.new(payload, 'token')
+      patch_line = '+ A line of code'
+      pull_request = build_pull_request(patch_line)
 
-      includes_line = pull_request.head_includes?(double(:line, content: code))
+      includes_line = pull_request.head_includes?(Line.new(patch_line))
 
       expect(includes_line).to be_true
     end
@@ -25,24 +14,30 @@ describe PullRequest, '#head_includes?' do
 
   context 'when HEAD commit does not include line' do
     it 'returns false' do
-      line = Line.new('A line of code')
-      different_line = Line.new('A different line of code')
-      modified_file = double(:modified_file, modified_lines: [line])
-      ModifiedFile.stub(new: modified_file)
-      commit_file = double(:commit_file)
-      github = double(:github, commit_files: [commit_file])
-      GithubApi.stub(new: github)
-      payload = double(
-        :payload,
-        head_sha: 'headsha',
-        full_repo_name: 'test/repo'
-      )
-      pull_request = PullRequest.new(payload, 'token')
+      patch_line1 = '+ A line of code'
+      patch_line2 = '+ Different line of code'
+      pull_request = build_pull_request(patch_line1)
 
-      includes_line = pull_request.head_includes?(different_line)
+      includes_line = pull_request.head_includes?(Line.new(patch_line2))
 
       expect(includes_line).to be_false
     end
+  end
+
+  def build_pull_request(patch_line)
+    file_response = double(
+      :file_response,
+      filename: 'test.rb',
+      status: 'added',
+      patch: "@@ -1,1 +1,1\n#{patch_line}",
+      contents: ''
+    )
+    content = double(content: '')
+    github = double(commit_files: [file_response], file_contents: content)
+    GithubApi.stub(new: github)
+    payload = double(:payload, head_sha: 'abc', full_repo_name: 'test/repo')
+
+    PullRequest.new(payload, 'token')
   end
 end
 
@@ -83,45 +78,6 @@ describe PullRequest, '#synchronize?' do
 
       expect(pull_request).not_to be_synchronize
     end
-  end
-end
-
-describe PullRequest, '#head_commit_files' do
-  it 'returns modified files in the commit' do
-    github_api = double(:github_api, commit_files: [double, double])
-    GithubApi.stub(new: github_api)
-    payload = double(
-      :payload,
-      full_repo_name: 'org/repo',
-      number: 4,
-      head_sha: 'abc123'
-    )
-    github_token = 'githubtoken'
-
-    pull_request = PullRequest.new(payload, github_token)
-
-    expect(pull_request.head_commit_files).to have(2).files
-    expect(github_api).to have_received(:commit_files).with(
-      payload.full_repo_name,
-      payload.head_sha
-    )
-  end
-end
-
-describe PullRequest, '#file_contents' do
-  it 'calls api method with arguments' do
-    payload = double(:payload, full_repo_name: 'org/repo', head_sha: 'abc123')
-    pull_request = PullRequest.new(payload, 'gh-token')
-    api = double(:github_api, file_contents: double(content: ''))
-    GithubApi.stub(new: api)
-
-    files = pull_request.file_contents('test.rb')
-
-    expect(api).to have_received(:file_contents).with(
-      payload.full_repo_name,
-      'test.rb',
-      payload.head_sha
-    )
   end
 end
 
