@@ -3,6 +3,8 @@ require 'app/services/commenter'
 require 'app/models/file_violation'
 require 'app/models/line_violation'
 require 'app/models/line'
+require 'app/models/comment'
+require 'app/policies/commenting_policy'
 
 describe Commenter do
   describe '#comment_on_violations' do
@@ -43,7 +45,7 @@ describe Commenter do
         end
       end
 
-      context 'when pull request is synchronize' do
+      context 'when pull request is synchronized' do
         context 'when the violation is in the last commit' do
           it 'comments on the violations at the correct patch position' do
             pull_request = double(
@@ -114,8 +116,8 @@ describe Commenter do
 
     context 'with no violations' do
       it 'does not comment' do
-        commenter = Commenter.new
         pull_request = double(:pull_request).as_null_object
+        commenter = Commenter.new
 
         commenter.comment_on_violations([], pull_request)
 
