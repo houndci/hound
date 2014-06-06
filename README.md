@@ -30,3 +30,21 @@ Development
  ```
 
 6. Run `foreman start`
+
+Contributing
+------------
+
+First, thank you for contributing!
+
+Here a few guidelines to follow:
+
+1. Write tests
+2. Make sure the entire test suite passes locally and on Travis CI
+3. Open a pull request on GitHub
+4. [Squash your commits](https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature) after receiving feedback
+
+There a couple areas we would like to concentrate on.
+
+1. Add support for JavaScript and CoffeeScript
+2. Add support for CSS and SCSS
+3. Write [RuboCop](https://github.com/bbatsov/rubocop) cops that don't currently exist and would enforce the [thoughtbot style guide](https://github.com/thoughtbot/guides)
