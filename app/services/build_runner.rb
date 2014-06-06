@@ -23,12 +23,7 @@ class BuildRunner
   end
 
   def style_checker
-    StyleChecker.new(modified_files, pull_request.config)
-  end
-
-  def modified_files
-    collection = FileCollection.new(pull_request.pull_request_files)
-    collection.relevant_files
+    StyleChecker.new(pull_request.pull_request_files, pull_request.config)
   end
 
   def commenter

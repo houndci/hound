@@ -364,24 +364,42 @@ a = { one: 1}
 
   context 'with custom configuration' do
     it 'finds only one violation' do
-      content = <<-TEXT.strip_heredoc
-        def test_method()
-          "hello world"
-        end
-      TEXT
-      file = double(:file, contents: content, filename: 'test.rb')
       config = <<-TEXT.strip_heredoc
         StringLiterals:
           EnforcedStyle: double_quotes
           Enabled: true
       TEXT
-      style_guide = StyleGuide.new(config)
 
-      violations = style_guide.violations(file)
+      violations = violations_in(config)
 
       expect(violations.map(&:message)).to eq [
         "Omit the parentheses in defs when the method doesn't accept any arguments."
       ]
+    end
+
+    context 'with excluded files' do
+      it 'has no violations' do
+        config = <<-TEXT.strip_heredoc
+          AllCops:
+            Exclude:
+              - lib/test.rb
+        TEXT
+
+        violations = violations_in(config)
+
+        expect(violations).to be_empty
+      end
+    end
+
+    def violations_in(config)
+      content = <<-TEXT.strip_heredoc
+        def test_method()
+          "hello world"
+        end
+      TEXT
+
+      style_guide = StyleGuide.new(config)
+      style_guide.violations(build_file(content))
     end
   end
 
@@ -392,7 +410,16 @@ a = { one: 1}
       content += "\n"
     end
 
-    file = double(:file, contents: content, filename: 'test.rb')
-    StyleGuide.new.violations(file).map(&:message)
+    StyleGuide.new.violations(build_file(content)).map(&:message)
+  end
+
+  def build_file(content)
+    double(
+      :file,
+      ruby?: true,
+      removed?: false,
+      contents: content,
+      filename: 'lib/test.rb'
+    )
   end
 end

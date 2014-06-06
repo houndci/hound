@@ -4,13 +4,23 @@ class StyleGuide
   end
 
   def violations(file)
-    parsed_source = parse_source(file)
-    team = Rubocop::Cop::Team.new(Rubocop::Cop::Cop.all, configuration)
-    commissioner = Rubocop::Cop::Commissioner.new(team.cops, [])
-    commissioner.investigate(parsed_source)
+    if ignored_file?(file)
+      []
+    else
+      parsed_source = parse_source(file)
+      team = Rubocop::Cop::Team.new(Rubocop::Cop::Cop.all, configuration)
+      commissioner = Rubocop::Cop::Commissioner.new(team.cops, [])
+      commissioner.investigate(parsed_source)
+    end
   end
 
   private
+
+  def ignored_file?(file)
+    !file.ruby? ||
+      file.removed? ||
+        configuration.file_to_exclude?(file.filename)
+  end
 
   def parse_source(file)
     Rubocop::SourceParser.parse(file.contents, file.filename)
@@ -24,6 +34,7 @@ class StyleGuide
         Rubocop::ConfigLoader.merge(config, override_config),
         ''
       )
+      config.make_excludes_absolute
     end
 
     config

@@ -8,7 +8,6 @@ describe BuildRunner, '#run' do
       stubbed_style_checker_with_violations
       stubbed_commenter
       stubbed_pull_request
-      stubbed_file_collection
 
       expect { build_runner.run }.to change { Build.count }.by(1)
       expect(Build.last).to eq repo.builds.last
@@ -21,7 +20,6 @@ describe BuildRunner, '#run' do
       commenter = stubbed_commenter
       style_checker = stubbed_style_checker_with_violations
       pull_request = stubbed_pull_request
-      stubbed_file_collection
 
       build_runner.run
 
@@ -35,31 +33,13 @@ describe BuildRunner, '#run' do
       repo = create(:repo, :active, github_id: 123)
       build_runner = BuildRunner.new(stubbed_payload(repo))
       pull_request = stubbed_pull_request
-      file_collection = stubbed_file_collection
       stubbed_style_checker_with_violations
       stubbed_commenter
 
       build_runner.run
 
-      expect(StyleChecker).to have_received(:new).with(
-        file_collection.relevant_files,
-        pull_request.config
-      )
-    end
-
-    it 'initializes FileCollection with pull request files' do
-      repo = create(:repo, :active, github_id: 123)
-      build_runner = BuildRunner.new(stubbed_payload(repo))
-      pull_request = stubbed_pull_request
-      stubbed_file_collection
-      stubbed_style_checker_with_violations
-      stubbed_commenter
-
-      build_runner.run
-
-      expect(FileCollection).to have_received(:new).with(
-        pull_request.pull_request_files
-      )
+      expect(StyleChecker).to have_received(:new).
+        with(pull_request.pull_request_files, pull_request.config)
     end
 
     it 'initializes PullRequest with payload and Hound token' do
@@ -67,7 +47,6 @@ describe BuildRunner, '#run' do
       payload = stubbed_payload(repo)
       build_runner = BuildRunner.new(payload)
       stubbed_pull_request
-      stubbed_file_collection
       stubbed_style_checker_with_violations
       stubbed_commenter
 
@@ -136,12 +115,5 @@ describe BuildRunner, '#run' do
     PullRequest.stub(new: pull_request)
 
     pull_request
-  end
-
-  def stubbed_file_collection
-    file_collection = double(:file_collection, relevant_files: [double(:file)])
-    FileCollection.stub(new: file_collection)
-
-    file_collection
   end
 end
