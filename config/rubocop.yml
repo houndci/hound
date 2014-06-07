@@ -96,7 +96,7 @@ Style/LineEndConcatenation:
   Enabled: false
 
 Style/LineLength:
-  Max: 80
+  Max: 120
 
 Style/MethodLength:
   Enabled: false
