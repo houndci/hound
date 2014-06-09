@@ -320,7 +320,7 @@ DEPENDENCIES
   resque-retry
   resque-sentry
   rspec-rails (>= 2.14)
-  rubocop
+  rubocop (= 0.22.0)
   sass-rails (~> 4.0.2)
   sentry-raven
   shoulda-matchers
