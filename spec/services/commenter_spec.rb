@@ -8,19 +8,15 @@ require 'app/policies/commenting_policy'
 
 describe Commenter do
   describe '#comment_on_violations' do
-    context 'with violations' do
-      context 'when pull request is opened' do
-        it 'comments on the violations at the correct patch position' do
+    context 'with a violation' do
+      context 'when commenting is permitted' do
+        it 'comments on the violation at the correct patch position' do
           pull_request = double(
             :pull_request,
-            opened?: true,
             add_comment: true,
-            head_includes?: false
           )
-          line_number = 10
           line = double(
             :line,
-            line_number: line_number,
             patch_position: 2
           )
           line_violation = double(
@@ -33,6 +29,8 @@ describe Commenter do
             filename: 'test.rb',
             line_violations: [line_violation]
           )
+          policy = double(:commenting_policy, comment_permitted?: true)
+          allow(CommentingPolicy).to receive(:new).and_return(policy)
           commenter = Commenter.new
 
           commenter.comment_on_violations([file_violation], pull_request)
@@ -45,71 +43,27 @@ describe Commenter do
         end
       end
 
-      context 'when pull request is synchronized' do
-        context 'when the violation is in the last commit' do
-          it 'comments on the violations at the correct patch position' do
-            pull_request = double(
-              :pull_request,
-              synchronize?: true,
-              opened?: false,
-              add_comment: true,
-              head_includes?: true
-            )
-            line_number = 10
-            line = double(
-              :line,
-              line_number: line_number,
-              patch_position: 2
-            )
-            line_violation = double(
-              :line_violation,
-              line: line,
-              messages: ['Trailing whitespace']
-            )
-            file_violation = double(
-              :file_violation,
-              filename: 'test.rb',
-              line_violations: [line_violation]
-            )
-            commenter = Commenter.new
+      context 'when commenting is not permitted' do
+        it 'does not comment' do
+          pull_request = double(
+            :pull_request,
+            add_comment: true
+          )
+          line_violation = double(
+            :line_violation,
+            line: double(:line)
+          )
+          file_violation = double(
+            :file_violation,
+            line_violations: [line_violation]
+          )
+          policy = double(:commenting_policy, comment_permitted?: false)
+          allow(CommentingPolicy).to receive(:new).and_return(policy)
+          commenter = Commenter.new
 
-            commenter.comment_on_violations([file_violation], pull_request)
+          commenter.comment_on_violations([file_violation], pull_request)
 
-            expect(pull_request).to have_received(:add_comment)
-          end
-        end
-
-        context 'when the violation is not in the last commit' do
-          it 'does not comment' do
-            pull_request = double(
-              :pull_request,
-              synchronize?: true,
-              opened?: false,
-              add_comment: true,
-              head_includes?: false
-            )
-            line_number = 10
-            line = double(
-              :line,
-              line_number: line_number,
-              patch_position: 2
-            )
-            line_violation = double(
-              :line_violation,
-              line: line,
-              messages: ['Trailing whitespace']
-            )
-            file_violation = double(
-              :file_violation,
-              filename: 'test.rb',
-              line_violations: [line_violation]
-            )
-            commenter = Commenter.new
-
-            commenter.comment_on_violations([file_violation], pull_request)
-
-            expect(pull_request).not_to have_received(:add_comment)
-          end
+          expect(pull_request).not_to have_received(:add_comment)
         end
       end
     end

@@ -8,17 +8,10 @@ describe CommentingPolicy, '#comment_permitted?' do
         :pull_request,
         opened?: true,
         head_includes?: false,
-        comments_on: []
       )
-      position = 1
-      line = double(:line, line_number: position)
       comment = double(
         :comment,
-        line: line,
-        position: 1,
-        messages: [],
-        violation_messages: [],
-        path: 'test.rb'
+        line: double(:line)
       )
       commenting_policy = CommentingPolicy.new
 
@@ -34,17 +27,10 @@ describe CommentingPolicy, '#comment_permitted?' do
         :pull_request,
         opened?: false,
         head_includes?: true,
-        comments_on: []
       )
-      position = 1
-      line = double(:line, line_number: position)
       comment = double(
         :comment,
-        line: line,
-        messages: [],
-        position: position,
-        violation_messages: [],
-        path: 'test.rb'
+        line: double(:line)
       )
       commenting_policy = CommentingPolicy.new
 
