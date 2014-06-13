@@ -1,12 +1,23 @@
+.logo {
+  @include size(auto 100px);
+  margin-left: -3em;
+
+  @include media($small-screen) {
+    @include size(auto 72px);
+    display: block;
+    margin: 0 auto;
+  }
+}
+
 ol.getting-started {
-  margin: 0 1.2em;
+  margin: 2.0em 1.2em;
   padding: 0 0 8em 3em;
   position: relative;
 
   &:before {
-    @include position(absolute, 2em 0 0em 0em);
-    @include background-image(linear-gradient(top, $base-border-color 94%,
-                                                   rgba($base-border-color, 0) 100%));
+    @include position(absolute, 0.5em 0 0em -1.4em);
+    @include background-image(linear-gradient(top, white 0, $base-border-color 5%,
+      $base-border-color 95%, white 100%));
     background-position: 0px 0px;
     background-repeat: no-repeat;
     background-size: 3px 100%;
@@ -42,7 +53,7 @@ ol.getting-started {
     }
 
     &:before {
-      @include position(absolute, -0.3em 0 0 -3em);
+      @include position(absolute, -0.3em 0 0 -4.4em);
       @include size(40px);
       background: #fff;
       border-radius: 50%;
@@ -54,6 +65,12 @@ ol.getting-started {
 
       @include media($small-screen) {
         @include position(absolute, -4.8em 0 0 50%);
+      }
+    }
+
+    &:first-child {
+      &:before {
+        display: none;
       }
     }
 
@@ -82,11 +99,11 @@ ol.getting-started {
       color: #acacac;
       content: '\f061';
       font-family: $icon-font;
+      font-size: 1.5em;
+      left: -2.9em;
       line-height: 40px;
-      left: -2em;
       text-align: center;
       top: 8px;
-      font-size: 1.5em;
 
       @include media($small-screen) {
         left: 50%;
@@ -95,51 +112,18 @@ ol.getting-started {
     }
 
     &.pitch {
-      &:before {
-        background-image: asset-url('landing/the_hound.jpeg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        border-color: $purple;
-        top: 1.1em;
-
-        @include media($small-screen) {
-          display: none;
-        }
-      }
-
-      @include media($small-screen) {
-        .logo {
-          &:before {
-            @include size(40px);
-            background-image: asset-url('landing/the_hound.jpeg');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            border-radius: 50%;
-            border: 2px solid $base-border-color;
-            border-color: $purple;
-            box-shadow: 0 0 0 3px #fff;
-            content: "";
-            display: inline-block;
-            margin-right: 0.1em;
-            position: relative;
-            top: 0.04em;
-          }
-        }
-      }
-
       .tagline {
         margin: 0.4em 0 2em;
       }
 
       h2 {
-        margin: 0 0 0.4em;
+        font-size: 1.6em;
         font-weight: 300;
-        font-size: 1.8em;
+        line-height: 1.6;
+        margin: 0 0 0.4em;
 
         @include media($small-screen) {
-          font-size: 1.6em;
+          font-size: 1.5em;
           margin: 0 0 0.6em;
         }
       }

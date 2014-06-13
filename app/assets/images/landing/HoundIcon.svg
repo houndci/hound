@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.2 (7799) - http://www.bohemiancoding.com/sketch -->
+    <title>HoundIcon</title>
+    <description>Created with Sketch.</description>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="HoundIcon" sketch:type="MSArtboardGroup" fill="#5943BD">
+            <path d="M34.2189396,44.108927 L2.99710781,44.108927 C1.34417682,44.108927 0,42.7670761 0,41.1118192 L0,2.99710781 C0,1.34417682 1.34185087,0 2.99710781,0 L41.1118192,0 C42.7647502,0 44.108927,1.34185087 44.108927,2.99710781 L44.108927,19.3234275 C43.941331,18.8049797 41.9783716,12.8734785 38.9451018,9.86108959 C35.7715648,6.70939914 30.0172269,4.13054116 30.8729273,6.20333685 C31.7286278,8.27613255 31.7286275,13.6754777 31.7286275,13.6754777 L23.1127193,17.0274727 L21.8204046,21.9029222 L11.2758218,24.7386147 C11.2758218,24.7386147 12.0272479,30.2244948 15.0581292,31.183276 C17.0022186,31.7982642 29.745193,33.2321315 29.745193,33.2321315 L27.3260601,44.108927 L34.2189396,44.108927 Z" id="Rectangle-36" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
