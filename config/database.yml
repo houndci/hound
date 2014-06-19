@@ -1,9 +1,13 @@
-development: &default
+default: &default
   adapter: postgresql
   encoding: unicode
-  database: hound_development
+  database: teatro
   pool: 5
+  min_messages: warning
+  username: postgres
 
-test:
+development:
   <<: *default
-  database: hound_test
+
+production:
+  <<: *default
