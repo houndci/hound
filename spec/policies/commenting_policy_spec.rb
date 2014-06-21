@@ -9,10 +9,7 @@ describe CommentingPolicy, '#comment_permitted?' do
         opened?: true,
         head_includes?: false,
       )
-      comment = double(
-        :comment,
-        line: double(:line)
-      )
+      comment = double(:comment, line: double(:line))
       commenting_policy = CommentingPolicy.new
 
       result = commenting_policy.comment_permitted?(pull_request, comment)
@@ -28,10 +25,7 @@ describe CommentingPolicy, '#comment_permitted?' do
         opened?: false,
         head_includes?: true,
       )
-      comment = double(
-        :comment,
-        line: double(:line)
-      )
+      comment = double(:comment, line: double(:line))
       commenting_policy = CommentingPolicy.new
 
       result = commenting_policy.comment_permitted?(pull_request, comment)
