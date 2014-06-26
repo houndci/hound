@@ -170,6 +170,9 @@ SignalException:
 SpecialGlobalVars:
   Enabled: false
 
+StringLiterals:
+  EnforcedStyle: double_quotes
+
 VariableInterpolation:
   Enabled: false
 

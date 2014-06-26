@@ -47,7 +47,7 @@ while signed_in? do something end
       it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []
 def has_something?
-  'something'
+  "something"
 end
         CODE
       end
