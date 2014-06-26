@@ -36,6 +36,9 @@ GEM
       sass (>= 3.2.0)
       thor
     builder (3.1.4)
+    byebug (3.1.2)
+      columnize (~> 0.8)
+      debugger-linecache (~> 1.2)
     capybara (2.1.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -55,17 +58,12 @@ GEM
       execjs
     coffee-script-source (1.6.3)
     colorize (0.7.2)
-    columnize (0.3.6)
+    columnize (0.8.9)
     crack (0.4.1)
       safe_yaml (~> 0.9.0)
     dalli (2.7.0)
     database_cleaner (1.2.0)
-    debugger (1.6.5)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.3.1)
     debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.3.4)
     diff-lcs (1.2.4)
     dotenv (0.9.0)
     erubis (2.7.0)
@@ -291,12 +289,12 @@ DEPENDENCIES
   active_model_serializers
   angularjs-rails
   bourbon
+  byebug
   capybara (~> 2.1.0)
   capybara-webkit (~> 1.1.1)
   coffee-rails
   dalli
   database_cleaner
-  debugger
   factory_girl_rails
   faraday-http-cache
   font-awesome-rails

@@ -34,7 +34,7 @@ group :staging, :production do
 end
 
 group :development, :test do
-  gem 'debugger'
+  gem 'byebug'
   gem 'foreman'
   gem 'konacha'
   gem 'poltergeist'
