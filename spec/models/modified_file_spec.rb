@@ -1,7 +1,5 @@
 require 'fast_spec_helper'
-require 'active_support/core_ext/object/try'
 require 'base64'
-require 'linguist'
 require 'app/models/modified_file'
 require 'app/models/patch'
 
@@ -68,22 +66,22 @@ describe ModifiedFile, '#removed?' do
 end
 
 describe ModifiedFile, '#ruby?' do
-  context 'when file language is non-ruby' do
+  context 'when file is non-ruby' do
     it 'returns false for json' do
-      json_file = double(:file, filename: 'foo.json', status: 'not-removed')
-      css_file = double(:file, filename: 'bar.css.scss', status: 'not-removed')
-      modified_file1 = ModifiedFile.new(json_file, double(file_contents: ''))
-      modified_file2 = ModifiedFile.new(css_file, double(file_contents: ''))
+      json_file = double(:file, filename: 'app/models/user.json')
+      css_file = double(:file, filename: 'public/main.css.scss')
+      modified_file1 = ModifiedFile.new(json_file, double)
+      modified_file2 = ModifiedFile.new(css_file, double)
 
       expect(modified_file1).not_to be_ruby
       expect(modified_file2).not_to be_ruby
     end
   end
 
-  context 'when file language is ruby' do
+  context 'when file is ruby' do
     it 'returns true' do
-      ruby_file = double(:file, filename: 'lib/foo.rb', status: 'not-removed')
-      modified_file = ModifiedFile.new(ruby_file, double(file_contents: ''))
+      ruby_file = double(:file, filename: 'app/models/user.rb')
+      modified_file = ModifiedFile.new(ruby_file, double)
 
       expect(modified_file).to be_ruby
     end
