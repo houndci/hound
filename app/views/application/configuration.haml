@@ -36,6 +36,10 @@
       %p For example:
       %code.code-block
         :preserve
+          AllCops:
+            Exclude:
+              - config/initializers/third_party.rb
+
           LineLength:
             Description: 'Limit lines to 130 characters.'
             Max: 130
