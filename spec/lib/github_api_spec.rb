@@ -266,6 +266,34 @@ describe GithubApi do
       expect(files.first.filename).to eq 'config/unicorn.rb'
     end
   end
+
+  describe '#pull_request_comments' do
+    it 'returns comments in a pull request' do
+      api = GithubApi.new('authtoken')
+      pull_request = double(:pull_request, full_repo_name: 'thoughtbot/hound')
+      pull_request_number = 253
+      commit_sha = 'abc253'
+      github_token = 'authtoken'
+      stub_pull_request_comments_request(
+        pull_request.full_repo_name,
+        pull_request_number,
+        github_token
+      )
+      stub_contents_request(
+        github_token,
+        repo_name: pull_request.full_repo_name,
+        sha: commit_sha
+      )
+
+      comments = api.pull_request_comments(
+        pull_request.full_repo_name,
+        pull_request_number
+      )
+
+      expect(comments).to have(4).item
+      expect(comments.first.body).to eq "inline if's and while's are not violations?"
+    end
+  end
 end
 
 describe GithubApi, '#add_comment' do
