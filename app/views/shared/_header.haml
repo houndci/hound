@@ -1,18 +1,12 @@
 %header
   %h1.logo Hound
   - if signed_in?
-    %ul
+    %ul.nav
       %li
-        %span
-          = current_user
-
-      - unless current_page?(configuration_path)
-        %li
-          = link_to 'Config', configuration_path
-
-      - unless current_page?(root_path)
-        %li
-          = link_to 'Your Repos', root_path
-
-      %li
-        = link_to 'Sign Out', sign_out_path
+        = link_to 'Repos', root_path
+      %li.dropdown
+        %input#account-menu-toggle{type: 'checkbox'}
+        %label.toggle{for: 'account-menu-toggle'} #{current_user}
+        .menu
+          = link_to 'Configure Hound', configuration_path
+          = link_to 'Sign Out', sign_out_path

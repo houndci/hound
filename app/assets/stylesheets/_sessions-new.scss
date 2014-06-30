@@ -1,4 +1,4 @@
-.logo {
+img.logo {
   @include size(auto 100px);
   margin-left: -3em;
 
@@ -34,6 +34,21 @@ ol.getting-started {
 
     &:before {
       @include position(absolute, 2em 0 0em 50%);
+    }
+  }
+
+  h1.logo {
+    letter-spacing: 6px;
+    font-weight: 900;
+    font-size: 3.8em;
+    margin: 0;
+    text-transform: uppercase;
+
+    @include media($small-screen) {
+      display: inline-block;
+      font-size: 3.2em;
+      line-height: normal;
+      margin-bottom: 0.1em;
     }
   }
 

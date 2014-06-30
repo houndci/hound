@@ -7,7 +7,7 @@ body {
 .content {
   max-width: 640px;
   margin: 0 auto;
-  padding: 4em 1em;
+  padding: 2em 1em;
 
   @include media($small-screen) {
     padding: 2em 1em;
@@ -37,50 +37,6 @@ em.code {
   padding: 1em;
   margin: .5em 0;
   white-space: pre-wrap;
-}
-
-h1.logo {
-  letter-spacing: 6px;
-  font-weight: 900;
-  font-size: 3.8em;
-  margin: 0;
-  text-transform: uppercase;
-
-  @include media($small-screen) {
-    display: inline-block;
-    font-size: 3.2em;
-    line-height: normal;
-    margin-bottom: 0.1em;
-  }
-}
-
-header {
-  margin-bottom: 0.4em;
-  text-align: center;
-
-  li {
-    color: $light-font-color;
-    display: inline-block;
-    font-size: 0.9em;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-
-    & + li {
-      border-left: 1px solid $base-border-color;
-      margin-left: 0.6em;
-      padding-left: 1em;
-
-      @include media($small-screen) {
-        border-left: none;
-        padding-left: 0;
-      }
-    }
-
-    a {
-      color: $light-font-color;
-    }
-  }
 }
 
 .button {
@@ -124,7 +80,7 @@ header {
   }
 }
 
-a {
+a, label.toggle {
   @include transition(all 0.15s linear);
   border-bottom: 1px solid transparent;
   color: darken($purple, 5%);

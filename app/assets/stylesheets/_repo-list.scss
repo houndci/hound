@@ -1,7 +1,6 @@
 .repo-listing {
   box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
   border: 1px solid $base-border-color;
-  margin-top: 2em;
 
   @include media($small-screen) {
     box-shadow: none;

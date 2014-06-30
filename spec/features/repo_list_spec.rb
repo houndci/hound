@@ -65,7 +65,7 @@ feature 'Repo list', js: true do
     stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
 
     sign_in_as(user)
-    find('.toggle').click
+    find(".repos .toggle").click
 
     expect(page).to have_css('.active')
     expect(page).to have_content '1 OF 1'
@@ -91,7 +91,7 @@ feature 'Repo list', js: true do
     stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
 
     sign_in_as(user)
-    find('.toggle').click
+    find(".repos .toggle").click
 
     expect(page).to have_css('.active')
     expect(page).to have_content '1 OF 1'
@@ -111,7 +111,7 @@ feature 'Repo list', js: true do
 
     sign_in_as(user)
     visit root_path
-    find('.toggle').click
+    find(".repos .toggle").click
 
     expect(page).not_to have_css('.active')
     expect(page).to have_content '0 OF 1'

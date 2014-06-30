@@ -22,6 +22,8 @@ $light-font-color: rgb(160,160,160);
 $light-font-color: rgb(153, 171, 192);
 
 $icon-font: "FontAwesome";
+$icon-dropdown: '\f0d7';
+$icon-dropup: '\f0d8';
 
 $small-screen: new-breakpoint(max-width em(540) 2);
 $medium-screen: new-breakpoint(max-width em(760) 4);
