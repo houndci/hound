@@ -87,6 +87,9 @@ FormatString:
 GlobalVars:
   Enabled: false
 
+GuardClause:
+  Enabled: false
+
 IfUnlessModifier:
   Enabled: false
 
