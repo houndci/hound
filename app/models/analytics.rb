@@ -47,7 +47,7 @@ class Analytics
       event: "Subscribed Private Repo",
       properties: {
         name: repo.full_github_name,
-        revenue: repo.price
+        revenue: repo.plan_price
       }
     )
   end
@@ -57,7 +57,7 @@ class Analytics
       event: "Unsubscribed Private Repo",
       properties: {
         name: repo.full_github_name,
-        revenue: -repo.price
+        revenue: -repo.plan_price
       }
     )
   end

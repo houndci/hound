@@ -23,7 +23,7 @@ describe SubscriptionsController, "#create" do
       with(repo, membership.user, "cardtoken")
     expect(analytics).to have_tracked("Subscribed Private Repo").
       for_user(membership.user).
-      with(properties: { name: repo.full_github_name, revenue: repo.price })
+      with(properties: { name: repo.name, revenue: repo.plan_price })
   end
 
   it "updates the current user's email address" do
@@ -85,6 +85,6 @@ describe SubscriptionsController, "#destroy" do
       with(repo, membership.user)
     expect(analytics).to have_tracked("Unsubscribed Private Repo").
       for_user(membership.user).
-      with(properties: { name: repo.full_github_name, revenue: -repo.price })
+      with(properties: { name: repo.name, revenue: -repo.plan_price })
   end
 end

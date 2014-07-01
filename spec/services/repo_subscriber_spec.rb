@@ -32,7 +32,7 @@ describe RepoSubscriber do
         RepoSubscriber.subscribe(repo, user, "cardtoken")
 
         expect(subscription_request).to have_been_requested
-        expect(repo.subscription.price).to(
+        expect(repo.subscription_price).to(
           eq(Subscription::PLANS[:organization])
         )
       end

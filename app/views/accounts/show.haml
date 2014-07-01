@@ -1,0 +1,40 @@
+= render 'shared/header'
+
+%section.account-section
+  %h2.label-text Your monthly cost
+
+  .account-content.account-breakdown
+    %table
+      %thead
+        %tr
+          %th.label-text Description
+          %th.label-text Base Cost
+          %th.label-text Quantity
+          %th.label-text Subtotal
+      %tr
+        %td Private Org Repos
+        %td $#{Subscription.org_price}/mo
+        %td x#{@org_repos.count}
+        %td #{repos_total(@org_repos)}
+      %tr
+        %td Private Personal Repos
+        %td $#{Subscription.personal_price}/mo
+        %td x#{@personal_repos.count}
+        %td #{repos_total(@personal_repos)}
+    %dl
+      %dt.label-text Total Monthly Cost
+      %dd #{repos_total(@org_repos + @personal_repos)}
+
+%section.account-section
+  %h2.label-text Active private repos billed to you
+
+  .account-content.repos-breakdown
+    - if @repos.count > 0
+      %ul.private-repos
+        - @repos.each do |repo|
+          %li.repo
+            %span.repo-name{ "ng-class" => "{private: #{repo.private}}" }
+              = repo.full_github_name
+    - else
+      %p.empty-state-message
+        You have no private repos billed to you

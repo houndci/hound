@@ -9,4 +9,12 @@ class Subscription < ActiveRecord::Base
 
   belongs_to :repo
   belongs_to :user
+
+  def self.org_price
+    PLANS[:organization]
+  end
+
+  def self.personal_price
+    PLANS[:personal]
+  end
 end

@@ -2,7 +2,21 @@ require 'spec_helper'
 
 describe User do
   it { should have_many(:repos).through(:memberships) }
+  it { should have_many(:subscribed_repos).through(:subscriptions) }
   it { should validate_presence_of :github_username }
+
+  describe ".subscribed_repos" do
+    it "returns subscribed repos" do
+      user = create(:user)
+      _unsubscribed_repo = create(:repo, users: [user])
+      _inactive_subscription = create(:subscription, :inactive, user: user)
+      active_subscription = create(:subscription, user: user)
+
+      repos = user.subscribed_repos
+
+      expect(repos).to eq [active_subscription.repo]
+    end
+  end
 
   describe '#create' do
     it 'generates a remember_token' do

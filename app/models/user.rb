@@ -3,7 +3,14 @@ class User < ActiveRecord::Base
 
   has_many :memberships
   has_many :repos, through: :memberships
+  has_many :subscribed_repos, through: :subscriptions, source: :repo
   has_many :subscriptions
+
+  delegate(
+    :card_last4,
+    :card_brand,
+    to: :payment_gateway_customer
+  )
 
   validates :github_username, presence: true
 
@@ -11,6 +18,10 @@ class User < ActiveRecord::Base
 
   def to_s
     github_username
+  end
+
+  def billable_email
+    payment_gateway_customer.email
   end
 
   def github_repo(github_id)
@@ -26,6 +37,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def payment_gateway_customer
+    @payment_gateway_customer ||= PaymentGatewayCustomer.new(self)
+  end
 
   def generate_remember_token
     self.remember_token = SecureRandom.hex(20)

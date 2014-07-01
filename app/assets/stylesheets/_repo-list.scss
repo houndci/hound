@@ -137,7 +137,7 @@
       border: none;
     }
 
-    span.name {
+    .repo-name {
       @include transition(all 0.25s linear);
       color: rgb(160,160,160);
       display: block;
@@ -189,7 +189,7 @@
         visibility: visible;
       }
 
-      span.name {
+      .repo-name {
         margin-left: 1em;
       }
     }
@@ -225,7 +225,7 @@
       }
     }
 
-    span.name {
+    .repo-name {
       font-size: 1.1em !important;
     }
 

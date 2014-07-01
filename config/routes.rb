@@ -6,6 +6,7 @@ Houndapp::Application.routes.draw do
   get '/sign_out', to: 'sessions#destroy'
   get '/configuration', to: 'application#configuration'
 
+  resource :account, only: [:show]
   resources :builds, only: [:create]
   resources :repos, only: [:index] do
     resource :activation, only: [:create]
