@@ -1,7 +1,7 @@
-require 'fast_spec_helper'
-require 'coffeelint'
-require 'active_support/core_ext/string/strip'
-require 'app/models/coffee_script_style_guide'
+require "fast_spec_helper"
+require "coffeelint"
+require "active_support/core_ext/string/strip"
+require "app/models/coffee_script_style_guide"
 
 describe CoffeeScriptStyleGuide, '#violations' do
   context 'with default configuration' do

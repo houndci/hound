@@ -20,7 +20,8 @@ class StyleChecker
   attr_reader :custom_ruby_config
 
   def line_violations(modified_file)
-    violations = style_guide_for(modified_file.language).violations(modified_file)
+    violations = style_guide_for(modified_file.language).
+      violations(modified_file)
     violations = violations_on_changed_lines(modified_file, violations)
 
     violations.group_by(&:line).map do |line_number, violations|
@@ -44,12 +45,13 @@ class StyleChecker
       rescue NameError
         style_guide_class = NullStyleGuide
       end
-      @style_guides[language] = style_guide_class.new(custom_config_for(language))
+      custom_config = custom_config_for(language)
+      @style_guides[language] = style_guide_class.new(custom_config)
     end
     @style_guides[language]
   end
 
   def custom_config_for(language)
-    self.try(:"custom_#{language.downcase}_config")
+    try(:"custom_#{language.downcase}_config")
   end
 end

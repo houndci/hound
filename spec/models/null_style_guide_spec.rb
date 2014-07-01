@@ -1,6 +1,6 @@
-require 'fast_spec_helper'
+require "fast_spec_helper"
 
-require 'app/models/null_style_guide'
+require "app/models/null_style_guide"
 
 describe NullStyleGuide do
   it "doesn't report any violations" do

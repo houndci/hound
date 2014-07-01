@@ -21,21 +21,21 @@ class CommitFile
   end
 
   def coffeescript?
-    language == 'CoffeeScript'
+    language == "CoffeeScript"
   end
 
   def ruby?
-    language == 'Ruby'
+    language == "Ruby"
   end
 
   def language
     case filename
     when /.*\.coffee$/
-      'CoffeeScript'
+      "CoffeeScript"
     when /.*\.rb$/
-      'Ruby'
+      "Ruby"
     else
-      'Unknown'
+      "Unknown"
     end
   end
 
