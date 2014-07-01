@@ -34,6 +34,8 @@ class CommitFile
       'CoffeeScript'
     when /.*\.rb$/
       'Ruby'
+    else
+      'Unknown'
     end
   end
 

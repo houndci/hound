@@ -1,5 +1,8 @@
+require 'coffeelint'
 require 'rubocop'
 require 'fast_spec_helper'
+require 'active_support/core_ext/object/try'
+require 'active_support/core_ext/string/inflections'
 require 'app/models/ruby_style_guide'
 require 'app/models/coffee_script_style_guide'
 require 'app/models/style_checker'
@@ -33,6 +36,13 @@ describe StyleChecker, '#violations' do
       FileViolation.new(modified_file2.filename, [expected_line_violation1]),
       FileViolation.new(modified_file4.filename, [expected_line_violation2])
     ]
+  end
+
+  it 'gracefully ignores files of an unknown language' do
+    modified_file = stub_modified_file('style.css', 'body { color: #000; }', 'CSS')
+    style_checker = StyleChecker.new([modified_file])
+
+    expect(style_checker.violations).to eq([])
   end
 
   private

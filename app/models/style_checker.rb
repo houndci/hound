@@ -17,11 +17,10 @@ class StyleChecker
 
   private
 
-  attr_reader :custom_coffeescript_config, :custom_ruby_config
+  attr_reader :custom_ruby_config
 
   def line_violations(modified_file)
-    violations = style_guide_for(modified_file.language).
-      violations(modified_file)
+    violations = style_guide_for(modified_file.language).violations(modified_file)
     violations = violations_on_changed_lines(modified_file, violations)
 
     violations.group_by(&:line).map do |line_number, violations|
@@ -40,10 +39,17 @@ class StyleChecker
 
   def style_guide_for(language)
     unless @style_guides[language]
-      style_guide_class = "#{language}StyleGuide".constantize
-      custom_config = send("custom_#{language.downcase}_config")
-      @style_guides[language] = style_guide_class.new(custom_config)
+      begin
+        style_guide_class = "#{language}StyleGuide".constantize
+      rescue NameError
+        style_guide_class = NullStyleGuide
+      end
+      @style_guides[language] = style_guide_class.new(custom_config_for(language))
     end
     @style_guides[language]
+  end
+
+  def custom_config_for(language)
+    self.try(:"custom_#{language.downcase}_config")
   end
 end
