@@ -276,14 +276,14 @@ describe GithubApi, '#add_comment' do
     comment = 'test comment'
     commit_sha = 'commitsha'
     file = 'test.rb'
-    line_number = 123
+    patch_position = 123
     request = stub_comment_request(
       repo_name,
       pull_request_number,
       comment,
       commit_sha,
       file,
-      line_number
+      patch_position
     )
 
     api.add_comment(
@@ -292,7 +292,7 @@ describe GithubApi, '#add_comment' do
       comment: 'test comment',
       commit: commit_sha,
       filename: file,
-      line_number: line_number
+      patch_position: patch_position
     )
 
     expect(request).to have_been_requested

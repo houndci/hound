@@ -90,9 +90,9 @@ describe PullRequest do
         number: 4,
         head_sha: 'abc123'
       )
-      line_number = 7
+      patch_position = 7
       filename = 'spec/models/style_guide_spec.rb'
-      comment = double(:comment, position: line_number, path: filename)
+      comment = double(:comment, position: patch_position, path: filename)
       github_api = double(:github_api, pull_request_comments: [comment])
       GithubApi.stub(new: github_api)
       pull_request = PullRequest.new(payload, 'githubtoken')
@@ -126,7 +126,7 @@ describe PullRequest, '#add_comment' do
       comment: 'A comment',
       commit: payload.head_sha,
       filename: 'test.rb',
-      line_number: 123
+      patch_position: 123
     )
   end
 end
