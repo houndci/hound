@@ -33,6 +33,13 @@ Development
 7. Run `foreman start`
 8. Run `redis-server`
 
+Testing
+-----------
+
+1. Set up your `development` environment as per above.
+2. Run `rake db:test:prepare`.
+3. Run `rake` to execute the full test suite.
+
 Contributing
 ------------
 
