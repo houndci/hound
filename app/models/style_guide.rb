@@ -8,7 +8,11 @@ class StyleGuide
       []
     else
       parsed_source = parse_source(file)
-      team = Rubocop::Cop::Team.new(Rubocop::Cop::Cop.all, configuration)
+      team = Rubocop::Cop::Team.new(
+        Rubocop::Cop::Cop.all,
+        configuration,
+        rubocop_options
+      )
       commissioner = Rubocop::Cop::Commissioner.new(team.cops, [])
       commissioner.investigate(parsed_source)
     end
@@ -38,6 +42,10 @@ class StyleGuide
     end
 
     config
+  end
+
+  def rubocop_options
+    { debug: true } if configuration["ShowCopNames"]
   end
 
   def override_config
