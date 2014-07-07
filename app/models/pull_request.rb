@@ -28,7 +28,7 @@ class PullRequest
       comment: message,
       commit: head_sha,
       filename: filename,
-      line_number: patch_position
+      patch_position: patch_position
     )
   end
 

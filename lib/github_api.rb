@@ -35,7 +35,7 @@ class GithubApi
       options[:comment],
       options[:commit],
       options[:filename],
-      options[:line_number]
+      options[:patch_position]
     )
   end
 
