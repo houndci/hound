@@ -57,3 +57,11 @@
     %li
       Commit the changes to your repo, and the following pull requests will use
       your custom configuration.
+    %li
+      If you set
+      %em.code ShowCopNames: true
+      in your
+      %em.code .hound.yml
+      file, Hound will prefix all of its pull request comments with the Rubocop config key
+      (cop name) of the corresponding style violation. You may find this useful when deciding
+      which style rules you would like to enable or disable.
