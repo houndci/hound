@@ -5,6 +5,9 @@ AllCops:
 AccessorMethodName:
   Enabled: false
 
+ActionFilter:
+  Enabled: false
+
 Alias:
   Enabled: false
 
