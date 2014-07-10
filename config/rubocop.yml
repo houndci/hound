@@ -32,6 +32,9 @@ CaseEquality:
 CharacterLiteral:
   Enabled: false
 
+ClassAndModuleChildren:
+  Enabled: false
+
 ClassLength:
   Enabled: false
 
