@@ -29,7 +29,9 @@ Development
   GITHUB_CLIENT_SECRET=#client_secret_token_here
  ```
 
-6. Run `foreman start`
+6. Run the setup script `./bin/setup`
+7. Run `foreman start`
+8. Run `redis-server`
 
 Contributing
 ------------
