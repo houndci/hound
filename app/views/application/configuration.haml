@@ -13,7 +13,7 @@
     %em.code .hound.yml
     file.
   %p
-    Hound uses #{link_to 'RuboCop v0.22.0', 'https://github.com/bbatsov/rubocop/tree/v0.22.0'} gem to
+    Hound uses #{link_to 'RuboCop', 'https://github.com/bbatsov/rubocop'} gem to
     handle the style checking. Thus, most of the RuboCop configuration, except
     inheritance, is supported in Hound as well.
 
@@ -40,20 +40,20 @@
             Exclude:
               - config/initializers/third_party.rb
 
-          LineLength:
+          Style/LineLength:
             Description: 'Limit lines to 130 characters.'
             Max: 130
 
-          StringLiterals:
+          Style/StringLiterals:
             EnforcedStyle: single_quotes
 
-          HashSyntax:
+          Style/HashSyntax:
             EnforcedStyle: hash_rockets
 
-          RedundantBegin:
+          Style/RedundantBegin:
             Enabled: false
 
-      See #{link_to 'more config options', 'https://github.com/bbatsov/rubocop/blob/v0.22.0/config/enabled.yml'} in the RuboCop project.
+      See #{link_to 'more config options', 'https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml'} in the RuboCop project.
     %li
       Commit the changes to your repo, and the following pull requests will use
       your custom configuration.

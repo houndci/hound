@@ -7,8 +7,8 @@ require 'app/models/line_violation'
 
 describe StyleChecker, '#violations' do
   it 'returns a collection of files with style violations' do
-    modified_file1 = stub_modified_file('good.rb', 'def good')
-    modified_file2 = stub_modified_file('bad.rb', 'def bad( 1 )  ')
+    modified_file1 = stub_modified_file("good.rb", "def good; end")
+    modified_file2 = stub_modified_file("bad.rb", "def bad( a ); a; end  ")
     expected_line_violation = LineViolation.new(
       modified_file2.modified_line_at,
       ['Space inside parentheses detected.', 'Trailing whitespace detected.']

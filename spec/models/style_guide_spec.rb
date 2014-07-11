@@ -8,9 +8,9 @@ describe StyleGuide, '#violations' do
     describe 'for private prefix' do
       it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []
-private def foo
-  bar
-end
+          private def foo
+            bar
+          end
         CODE
       end
     end
@@ -18,17 +18,15 @@ end
     describe 'for trailing commas' do
       it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []
-one = [
-  1,
-]
-
-two(
-  1,
-)
-
-three = {
-  one: 1,
-}
+          _one = [
+            1,
+          ]
+          _two(
+            1,
+          )
+          _three = {
+            one: 1,
+          }
         CODE
       end
     end
@@ -126,9 +124,9 @@ end
     describe 'when using inject' do
       it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []
-users.inject(0) do |result, user|
-  user.age
-end
+          users.inject(0) do |sum, user|
+            sum + user.age
+          end
         CODE
       end
     end
@@ -144,7 +142,7 @@ end
     end
 
     context 'for inline comment' do
-      xit 'returns violation' do
+      it 'returns violation' do
         expect(violations_in(<<-CODE)).not_to be_empty
 puts 'test' # inline comment
         CODE
@@ -372,7 +370,7 @@ a = { one: 1}
 
       violations = violations_in(config)
 
-      expect(violations.map(&:message)).to eq [
+      expect(violations).to eq [
         "Omit the parentheses in defs when the method doesn't accept any arguments."
       ]
     end
@@ -382,12 +380,31 @@ a = { one: 1}
         ShowCopNames: true
       TEXT
 
-      violations = violations_in(config)
+      violations = violations_with_config(config)
 
-      expect(violations.map(&:message)).to eq [
-        "DefWithParentheses: Omit the parentheses in defs "\
+      expect(violations).to eq [
+        "Style/DefWithParentheses: Omit the parentheses in defs "\
         "when the method doesn't accept any arguments."
       ]
+    end
+
+    context 'with old-style syntax' do
+      it 'has one violation' do
+        config = <<-TEXT.strip_heredoc
+          StringLiterals:
+            EnforcedStyle: single_quotes
+
+          DefWithParentheses:
+            Enabled: false
+        TEXT
+
+        violations = violations_with_config(config)
+
+        expect(violations).to eq [
+          "Prefer single-quoted strings when you don't need string "\
+          "interpolation or special symbols."
+        ]
+      end
     end
 
     context 'with excluded files' do
@@ -412,7 +429,8 @@ a = { one: 1}
       TEXT
 
       style_guide = StyleGuide.new(config)
-      style_guide.violations(build_file(content))
+      violations = style_guide.violations(build_file(content))
+      violations.map(&:message)
     end
   end
 
