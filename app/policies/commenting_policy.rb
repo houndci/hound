@@ -1,9 +1,11 @@
 class CommentingPolicy
   def comment_permitted?(pull_request, previous_comments_on_line, violation)
+    existing_messages = previous_comments_on_line.map(&:body)
+
     in_review?(pull_request, violation.line) &&
       violation_not_previously_reported?(
         violation.messages,
-        previous_comments_on_line
+        existing_messages
       )
   end
 

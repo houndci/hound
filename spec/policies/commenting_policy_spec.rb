@@ -47,7 +47,8 @@ describe CommentingPolicy do
         message = 'Trailing whitespace'
         line_violation = stubbed_line_violation([message])
         pull_request = stubbed_pull_request
-        previous_comments_on_line = [message]
+        comment = double(:comment, body: message)
+        previous_comments_on_line = [comment]
         commenting_policy = CommentingPolicy.new
 
         result = commenting_policy.comment_permitted?(
