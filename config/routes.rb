@@ -10,6 +10,7 @@ Houndapp::Application.routes.draw do
   resources :repos, only: [:index] do
     resource :activation, only: [:create]
     resource :deactivation, only: [:create]
+    resource :subscription, only: [:create, :destroy]
   end
   resources :repo_syncs, only: [:index, :create]
   resource :user, only: [:show]

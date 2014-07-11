@@ -1,0 +1,55 @@
+{
+  "object": "customer",
+  "created": 1407253905,
+  "id": "cus_2e3fqARc1uHtCv",
+  "livemode": false,
+  "description": "Customer for test@example.com",
+  "email": "scott@thoughtbot.com",
+  "delinquent": false,
+  "metadata": {
+    "user_id": "1"
+  },
+  "subscriptions": {
+    "object": "list",
+    "total_count": 0,
+    "has_more": false,
+    "url": "/v1/customers/cus_2e3fqARc1uHtCv/subscriptions",
+    "data": [
+
+    ]
+  },
+  "discount": null,
+  "account_balance": 0,
+  "currency": "usd",
+  "cards": {
+    "object": "list",
+    "total_count": 1,
+    "has_more": false,
+    "url": "/v1/customers/cus_4XEhQqh98ncUxy/cards",
+    "data": [
+      {
+        "id": "card_14OAE02QAwplLIsJaYOYJmS3",
+        "object": "card",
+        "last4": "4242",
+        "brand": "Visa",
+        "funding": "credit",
+        "exp_month": 1,
+        "exp_year": 2018,
+        "fingerprint": "EEsAljuM0b4ras7N",
+        "country": "US",
+        "name": null,
+        "address_line1": null,
+        "address_line2": null,
+        "address_city": null,
+        "address_state": null,
+        "address_zip": null,
+        "address_country": null,
+        "cvc_check": "pass",
+        "address_line1_check": null,
+        "address_zip_check": null,
+        "customer": "cus_4XEhQqh98ncUxy"
+      }
+    ]
+  },
+  "default_card": "card_14OAE02QAwplLIsJaYOYJmS3"
+}

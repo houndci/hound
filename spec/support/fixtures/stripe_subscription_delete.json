@@ -1,0 +1,20 @@
+{
+  "id": "sub_488ZZngNkyRMiR",
+  "plan": "basic",
+  "object": "subscription",
+  "start": 1407216749,
+  "status": "canceled",
+  "customer": "cus_2e3fqARc1uHtCv",
+  "cancel_at_period_end": false,
+  "current_period_start": 1407216749,
+  "current_period_end": 1409895149,
+  "ended_at": null,
+  "trial_start": null,
+  "trial_end": null,
+  "canceled_at": null,
+  "quantity": 1,
+  "application_fee_percent": null,
+  "discount": null,
+  "metadata": {
+  }
+}

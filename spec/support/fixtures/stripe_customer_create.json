@@ -1,0 +1,53 @@
+{
+  "object": "customer",
+  "created": 1380227987,
+  "id": "cus_2e3fqARc1uHtCv",
+  "livemode": false,
+  "description": null,
+  "email": "scott@thoughtbot.com",
+  "delinquent": false,
+  "metadata": {
+  },
+  "subscriptions": {
+    "object": "list",
+    "total_count": 0,
+    "has_more": false,
+    "url": "/v1/customers/cus_2e3fqARc1uHtCv/subscriptions",
+    "data": [
+
+    ]
+  },
+  "discount": null,
+  "account_balance": 0,
+  "currency": "usd",
+  "cards": {
+    "object": "list",
+    "total_count": 1,
+    "has_more": false,
+    "url": "/v1/customers/cus_2e3fqARc1uHtCv/cards",
+    "data": [
+      {
+        "id": "card_102e3c2QAwplLIsJn2oXQKvB",
+        "object": "card",
+        "last4": "4242",
+        "type": "Visa",
+        "exp_month": 12,
+        "exp_year": 2013,
+        "fingerprint": "EEsAljuM0b4ras7N",
+        "country": "US",
+        "name": null,
+        "address_line1": null,
+        "address_line2": null,
+        "address_city": null,
+        "address_state": null,
+        "address_zip": null,
+        "address_country": null,
+        "cvc_check": "pass",
+        "address_line1_check": null,
+        "address_zip_check": null,
+        "customer": "cus_2e3fqARc1uHtCv"
+      }
+    ]
+  },
+  "default_card": "card_102e3c2QAwplLIsJn2oXQKvB"
+}
