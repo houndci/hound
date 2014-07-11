@@ -1,10 +1,10 @@
 require "fast_spec_helper"
 
-require "app/models/null_style_guide"
+require "app/models/unknown_style_guide"
 
-describe NullStyleGuide do
+describe UnknownStyleGuide do
   it "doesn't report any violations" do
-    style_guide = NullStyleGuide.new(double)
+    style_guide = UnknownStyleGuide.new(double)
 
     expect(style_guide.violations(double)).to eq([])
   end

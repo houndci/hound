@@ -40,11 +40,7 @@ class StyleChecker
 
   def style_guide_for(language)
     unless @style_guides[language]
-      begin
-        style_guide_class = "#{language}StyleGuide".constantize
-      rescue NameError
-        style_guide_class = NullStyleGuide
-      end
+      style_guide_class = "#{language}StyleGuide".constantize
       custom_config = custom_config_for(language)
       @style_guides[language] = style_guide_class.new(custom_config)
     end

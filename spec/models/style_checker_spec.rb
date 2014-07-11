@@ -5,6 +5,7 @@ require "active_support/core_ext/object/try"
 require "active_support/core_ext/string/inflections"
 require "app/models/ruby_style_guide"
 require "app/models/coffee_script_style_guide"
+require "app/models/unknown_style_guide"
 require "app/models/style_checker"
 require "app/models/file_violation"
 require "app/models/line_violation"
@@ -39,7 +40,7 @@ describe StyleChecker, "#violations" do
   end
 
   it "gracefully ignores files of an unknown language" do
-    modified_file = stub_modified_file("style.css", "body {}", "CSS")
+    modified_file = stub_modified_file("style.css", "body {}", "Unknown")
     style_checker = StyleChecker.new([modified_file])
 
     expect(style_checker.violations).to eq([])

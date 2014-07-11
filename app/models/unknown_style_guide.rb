@@ -1,4 +1,4 @@
-class NullStyleGuide
+class UnknownStyleGuide
   def initialize(_)
   end
 
