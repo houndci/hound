@@ -368,7 +368,7 @@ a = { one: 1}
           Enabled: true
       TEXT
 
-      violations = violations_in(config)
+      violations = violations_with_config(config)
 
       expect(violations).to eq [
         "Omit the parentheses in defs when the method doesn't accept any arguments."
@@ -415,18 +415,19 @@ a = { one: 1}
               - lib/test.rb
         TEXT
 
-        violations = violations_in(config)
+        violations = violations_with_config(config)
 
         expect(violations).to be_empty
       end
     end
 
-    def violations_in(config)
+    def violations_with_config(config)
       content = <<-TEXT.strip_heredoc
         def test_method()
           "hello world"
         end
       TEXT
+      config << "\nStyle/EndOfLine:\n  Enabled: false"
 
       style_guide = StyleGuide.new(config)
       violations = style_guide.violations(build_file(content))
@@ -437,11 +438,15 @@ a = { one: 1}
   private
 
   def violations_in(content)
+    config = <<-YAML.strip_heredoc
+      Style/EndOfLine:
+        Enabled: false
+    YAML
     unless content.end_with?("\n")
       content += "\n"
     end
 
-    StyleGuide.new.violations(build_file(content)).map(&:message)
+    StyleGuide.new(config).violations(build_file(content)).map(&:message)
   end
 
   def build_file(content)
