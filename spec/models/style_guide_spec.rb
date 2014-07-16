@@ -377,6 +377,19 @@ a = { one: 1}
       ]
     end
 
+    it "can use custom configuration to show rubocop cop names" do
+      config = <<-TEXT.strip_heredoc
+        ShowCopNames: true
+      TEXT
+
+      violations = violations_in(config)
+
+      expect(violations.map(&:message)).to eq [
+        "DefWithParentheses: Omit the parentheses in defs "\
+        "when the method doesn't accept any arguments."
+      ]
+    end
+
     context 'with excluded files' do
       it 'has no violations' do
         config = <<-TEXT.strip_heredoc
