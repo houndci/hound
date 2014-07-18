@@ -34,7 +34,8 @@ class Commenter
 
   def previous_line_comments(existing_comments, line_patch_position, filename)
     existing_comments.select do |comment|
-      comment.position == line_patch_position && comment.path == filename
+      comment.original_position == line_patch_position &&
+        comment.path == filename
     end
   end
 end

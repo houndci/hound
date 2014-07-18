@@ -12,7 +12,11 @@ describe Commenter do
         it 'comments on the violation at the correct patch position' do
           line_number = 10
           filename = 'test.rb'
-          comment = double(:comment, position: line_number, path: filename)
+          comment = double(
+            :comment,
+            original_position: line_number,
+            path: filename
+          )
           pull_request = double(
             :pull_request,
             add_comment: true,
@@ -64,7 +68,11 @@ describe Commenter do
         line_number = 10
         filename = 'test.rb'
         comment_body = 'Trailing whitespace'
-        comment = double(:comment, position: line_number, path: filename)
+        comment = double(
+          :comment,
+          original_position: line_number,
+          path: filename
+        )
         pull_request = double(
           :pull_request,
           synchronize?: true,
@@ -107,7 +115,11 @@ describe Commenter do
         line_number = 10
         filename = 'test.rb'
         comment_body = 'Trailing whitespace'
-        comment = double(:comment, position: line_number, path: filename)
+        comment = double(
+          :comment,
+          original_position: line_number,
+          path: filename
+        )
         pull_request = double(
           :pull_request,
           synchronize?: true,

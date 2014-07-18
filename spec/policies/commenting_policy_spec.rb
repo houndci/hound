@@ -44,10 +44,11 @@ describe CommentingPolicy do
 
     context 'when a comment reporting the violation has already been made' do
       it 'returns false' do
-        message = 'Trailing whitespace'
-        line_violation = stubbed_line_violation([message])
+        existing_comment_message = 'Trailing whitespace detected<br>Extra newline'
+        violation_message = 'Trailing whitespace detected'
+        line_violation = stubbed_line_violation([violation_message])
         pull_request = stubbed_pull_request
-        comment = double(:comment, body: message)
+        comment = double(:comment, body: existing_comment_message)
         previous_comments_on_line = [comment]
         commenting_policy = CommentingPolicy.new
 
