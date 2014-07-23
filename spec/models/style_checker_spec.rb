@@ -29,7 +29,7 @@ describe StyleChecker, '#violations' do
     double(
       :modified_file,
       filename: filename,
-      contents: formatted_contents,
+      content: formatted_contents,
       ruby?: true,
       removed?: false,
       relevant_line?: true,

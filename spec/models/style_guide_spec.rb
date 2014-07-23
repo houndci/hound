@@ -454,7 +454,7 @@ a = { one: 1}
       :file,
       ruby?: true,
       removed?: false,
-      contents: content,
+      content: content,
       filename: 'lib/test.rb'
     )
   end

@@ -25,7 +25,7 @@ class StyleGuide
   end
 
   def parse_source(file)
-    RuboCop::ProcessedSource.new(file.contents)
+    RuboCop::ProcessedSource.new(file.content)
   end
 
   def config

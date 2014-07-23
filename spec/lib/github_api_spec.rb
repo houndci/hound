@@ -277,6 +277,7 @@ describe GithubApi, '#add_comment' do
     commit_sha = 'commitsha'
     file = 'test.rb'
     patch_position = 123
+    commit = double(:commit, repo_name: repo_name, sha: commit_sha)
     request = stub_comment_request(
       repo_name,
       pull_request_number,
@@ -287,10 +288,9 @@ describe GithubApi, '#add_comment' do
     )
 
     api.add_comment(
-      repo_name: repo_name,
       pull_request_number: pull_request_number,
+      commit: commit,
       comment: 'test comment',
-      commit: commit_sha,
       filename: file,
       patch_position: patch_position
     )

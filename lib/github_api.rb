@@ -30,10 +30,10 @@ class GithubApi
 
   def add_comment(options)
     client.create_pull_request_comment(
-      options[:repo_name],
+      options[:commit].repo_name,
       options[:pull_request_number],
       options[:comment],
-      options[:commit],
+      options[:commit].sha,
       options[:filename],
       options[:patch_position]
     )

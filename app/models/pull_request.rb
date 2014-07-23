@@ -23,19 +23,16 @@ class PullRequest
   def add_comment(filename, patch_position, message)
     github = GithubApi.new(ENV['HOUND_GITHUB_TOKEN'])
     github.add_comment(
-      repo_name: full_repo_name,
       pull_request_number: number,
       comment: message,
-      commit: head_sha,
+      commit: head_commit,
       filename: filename,
       patch_position: patch_position
     )
   end
 
   def config
-    file_contents(CONFIG_FILE)
-  rescue Octokit::NotFound
-    nil
+    head_commit.file_content(CONFIG_FILE)
   end
 
   def opened?
@@ -49,33 +46,26 @@ class PullRequest
   private
 
   def head_commit_files
-    api.commit_files(full_repo_name, head_sha).map do |file|
-      build_commit_file(file)
-    end
+    head_commit.files
   end
 
   def build_commit_file(file)
-    CommitFile.new(file, file_contents(file.filename))
-  end
-
-  def file_contents(filename)
-    file_contents = api.file_contents(full_repo_name, filename, head_sha)
-    Base64.decode64(file_contents.content)
+    CommitFile.new(file, head_commit)
   end
 
   def api
     @api ||= GithubApi.new(@github_token)
   end
 
-  def full_repo_name
-    @payload.full_repo_name
-  end
-
   def number
     @payload.number
   end
 
-  def head_sha
-    @payload.head_sha
+  def full_repo_name
+    @payload.full_repo_name
+  end
+
+  def head_commit
+    @head_commit ||= Commit.new(full_repo_name, @payload.head_sha, api)
   end
 end
