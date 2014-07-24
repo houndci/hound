@@ -46,6 +46,16 @@ describe StyleChecker, "#violations" do
     expect(style_checker.violations).to eq([])
   end
 
+  it "ignores disabled languages" do
+    coffee_file = stub_modified_file("bad.coffee", "1" * 81, "CoffeeScript")
+    config =
+      "Style/EndOfLine:\n  Enabled: false\nCoffeeScript:\n Enabled: false"
+
+    style_checker = StyleChecker.new([coffee_file], config)
+
+    expect(style_checker.violations).to be_empty
+  end
+
   private
 
   def stub_modified_file(filename, contents, language)

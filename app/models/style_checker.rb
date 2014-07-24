@@ -40,11 +40,21 @@ class StyleChecker
 
   def style_guide_for(language)
     unless @style_guides[language]
-      style_guide_class = "#{language}StyleGuide".constantize
-      custom_config = custom_config_for(language)
-      @style_guides[language] = style_guide_class.new(custom_config)
+      if language_enabled?(language)
+        style_guide_class = "#{language}StyleGuide".constantize
+        custom_config = custom_config_for(language)
+        @style_guides[language] = style_guide_class.new(custom_config)
+      else
+        @style_guides[language] = UnknownStyleGuide.new(:no_config)
+      end
     end
     @style_guides[language]
+  end
+
+  def language_enabled?(language)
+    config = YAML.load_file("config/rubocop.yml")
+    custom_config = custom_ruby_config ? YAML.load(custom_ruby_config) : {}
+    config.merge(custom_config)[language]["Enabled"]
   end
 
   def custom_config_for(language)
