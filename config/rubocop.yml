@@ -41,6 +41,9 @@ ClassLength:
 ClassVars:
   Enabled: false
 
+CoffeeScript:
+  Enabled: true
+
 CollectionMethods:
   PreferredMethods:
     find: detect
@@ -167,6 +170,9 @@ RaiseArgs:
 RegexpLiteral:
   Enabled: false
 
+Ruby:
+  Enabled: true
+
 SelfAssignment:
   Enabled: false
 
@@ -192,6 +198,9 @@ TrailingComma:
   Enabled: false
 
 TrivialAccessors:
+  Enabled: false
+
+Unknown:
   Enabled: false
 
 VariableInterpolation:

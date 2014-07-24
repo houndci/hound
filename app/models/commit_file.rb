@@ -20,8 +20,23 @@ class CommitFile
     @file.status == 'removed'
   end
 
+  def coffeescript?
+    language == "CoffeeScript"
+  end
+
   def ruby?
-    filename.match(/.*\.rb$/)
+    language == "Ruby"
+  end
+
+  def language
+    case filename
+    when /.*\.coffee$/
+      "CoffeeScript"
+    when /.*\.rb$/
+      "Ruby"
+    else
+      "Unknown"
+    end
   end
 
   def modified_lines

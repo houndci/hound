@@ -1,9 +1,9 @@
 require 'fast_spec_helper'
 require 'rubocop'
 require 'active_support/core_ext/string/strip'
-require 'app/models/style_guide'
+require 'app/models/ruby_style_guide'
 
-describe StyleGuide, '#violations' do
+describe RubyStyleGuide, '#violations' do
   context 'with default configuration' do
     describe 'for private prefix' do
       it 'returns no violations' do
@@ -429,7 +429,7 @@ a = { one: 1}
       TEXT
       config << "\nStyle/EndOfLine:\n  Enabled: false"
 
-      style_guide = StyleGuide.new(config)
+      style_guide = RubyStyleGuide.new(config)
       violations = style_guide.violations(build_file(content))
       violations.map(&:message)
     end
@@ -446,7 +446,7 @@ a = { one: 1}
       content += "\n"
     end
 
-    StyleGuide.new(config).violations(build_file(content)).map(&:message)
+    RubyStyleGuide.new(config).violations(build_file(content)).map(&:message)
   end
 
   def build_file(content)

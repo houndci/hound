@@ -1,4 +1,4 @@
-class StyleGuide
+class RubyStyleGuide
   def initialize(override_config_content = nil)
     @override_config_content = override_config_content
   end
