@@ -61,6 +61,8 @@ class PullRequest
   def file_contents(filename)
     file_contents = api.file_contents(full_repo_name, filename, head_sha)
     Base64.decode64(file_contents.content)
+  rescue Octokit::Forbidden
+    ''
   end
 
   def api
