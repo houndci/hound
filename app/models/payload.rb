@@ -12,7 +12,7 @@ class Payload
   end
 
   def head_sha
-    data['pull_request']['head']['sha']
+    pull_request.fetch("head", {})["sha"]
   end
 
   def github_repo_id
@@ -32,10 +32,16 @@ class Payload
   end
 
   def changed_files
-    data['pull_request']['changed_files']
+    pull_request["changed_files"] || 0
   end
 
   def ping?
     data['zen']
+  end
+
+  private
+
+  def pull_request
+    data.fetch("pull_request", {})
   end
 end

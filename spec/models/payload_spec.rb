@@ -3,13 +3,42 @@ require 'app/models/payload'
 
 describe Payload do
   describe '#changed_files' do
-    it 'returns number of changed files' do
-      payload_json = File.read(
-        'spec/support/fixtures/pull_request_opened_event.json'
-      )
-      payload = Payload.new(payload_json)
+    context "with pull_request data" do
+      it "returns number of changed files" do
+        fixture_file = "spec/support/fixtures/pull_request_opened_event.json"
+        payload_json = File.read(fixture_file)
+        payload = Payload.new(payload_json)
 
-      expect(payload.changed_files).to eq 1
+        expect(payload.changed_files).to eq 1
+      end
+    end
+
+    context "with no pull_request data" do
+      it "returns zero" do
+        data = "{}"
+        payload = Payload.new(data)
+
+        expect(payload.changed_files).to be_zero
+      end
+    end
+  end
+
+  describe "#head_sha" do
+    context "with pull_request data" do
+      it "returns sha" do
+        data = { "pull_request" => { "head" => { "sha" => "abc123" } } }
+        payload = Payload.new(data)
+
+        expect(payload.head_sha).to eq "abc123"
+      end
+    end
+
+    context "with no pull_request data" do
+      it "returns nil" do
+        payload = Payload.new("some_key" => "something")
+
+        expect(payload.head_sha).to be_nil
+      end
     end
   end
 
