@@ -129,6 +129,9 @@ NegatedIf:
 NegatedWhile:
   Enabled: false
 
+Next:
+  Enabled: false
+
 NilComparison:
   Enabled: false
 
