@@ -22,5 +22,15 @@ describe Commit do
         expect(commit.file_content("test.rb")).to eq nil
       end
     end
+
+    context "when content is nil" do
+      it "returns nil" do
+        contents = double(:contents, content: nil)
+        github = double(:github_api, file_contents: contents)
+        commit = Commit.new("test/test", "abc", github)
+
+        expect(commit.file_content("test.rb")).to eq nil
+      end
+    end
   end
 end

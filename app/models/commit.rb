@@ -13,7 +13,7 @@ class Commit
 
   def file_content(filename)
     contents = @github.file_contents(repo_name, filename, sha)
-    if contents
+    if contents && contents.content
       Base64.decode64(contents.content)
     end
   rescue Octokit::NotFound
