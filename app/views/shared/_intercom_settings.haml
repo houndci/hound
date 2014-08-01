@@ -1,7 +1,7 @@
 :javascript
   analytics.identify("#{current_user.id}", {
     created : "#{current_user.created_at}",
-    email : "#{current_user.try(:email)}",
+    email : "#{current_user.email_address}",
     username : "#{current_user.github_username}"
   }, {
     Intercom : {
