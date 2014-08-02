@@ -21,16 +21,16 @@ class PullRequest
     )
   end
 
-  def file_content(file_name)
-    head_commit.file_content(file_name)
-  end
-
   def opened?
     payload.action == "opened"
   end
 
   def synchronize?
     payload.action == "synchronize"
+  end
+
+  def head_commit
+    @head_commit ||= Commit.new(full_repo_name, payload.head_sha, api)
   end
 
   private
@@ -49,9 +49,5 @@ class PullRequest
 
   def full_repo_name
     payload.full_repo_name
-  end
-
-  def head_commit
-    @head_commit ||= Commit.new(full_repo_name, payload.head_sha, api)
   end
 end

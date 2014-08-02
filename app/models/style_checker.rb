@@ -2,49 +2,44 @@
 # Builds style guide based on file extension.
 # Delegates to style guide for line violations.
 class StyleChecker
-  CONFIG_FILE = ".hound.yml"
-
-  pattr_initialize :pull_request
+  def initialize(pull_request)
+    @pull_request = pull_request
+    @style_guides = {}
+  end
 
   def violations
-    @violations ||= files_with_changes.flat_map do |file|
-      style_guide(file.filename).violations(file)
+    @violations ||= files_to_check.flat_map do |file|
+      style_guide(file.filename).violations_in_file(file)
     end
   end
 
   private
 
-  def files_with_changes
-    pull_request.pull_request_files.reject(&:removed?)
+  attr_reader :pull_request, :style_guides
+
+  def files_to_check
+    pull_request.pull_request_files.select do |file|
+      !file.removed? && style_guide(file.filename).enabled?
+    end
   end
 
   def style_guide(filename)
-    if filename =~ /.*\.rb$/
-      @ruby_style_guide ||= StyleGuide::Ruby.new(config)
-    elsif filename =~ /.*\.coffee.?/ && enabled?("CoffeeScript")
-      @coffee_script_style_guide ||= StyleGuide::CoffeeScript.new
-    else
-      @unsupported_style_guide ||= StyleGuide::Unsupported.new
-    end
+    style_guide_class = style_guide_class(filename)
+    style_guides[style_guide_class] ||= style_guide_class.new(config)
   end
 
-  def enabled?(language)
-    config[language] && config[language]["Enabled"] == true
+  def style_guide_class(filename)
+    case filename
+    when /.*\.rb$/
+      StyleGuide::Ruby
+    when /.*\.coffee.?/
+      StyleGuide::CoffeeScript
+    else
+      StyleGuide::Unsupported
+    end
   end
 
   def config
-    @config ||= begin
-      if pull_request_config.present?
-        YAML.load(pull_request_config)
-      else
-        {}
-      end
-    rescue Psych::SyntaxError
-      {}
-    end
-  end
-
-  def pull_request_config
-    pull_request.file_content(CONFIG_FILE)
+    @config ||= RepoConfig.new(pull_request.head_commit)
   end
 end

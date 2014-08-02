@@ -1,6 +1,10 @@
 # Returns empty set of violations.
 module StyleGuide
-  class Unsupported
+  class Unsupported < Base
+    def enabled?
+      false
+    end
+
     def violations(_)
       []
     end

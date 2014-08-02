@@ -1,26 +1,23 @@
 require "attr_extras"
 require "rubocop"
+require "coffeelint"
 require "fast_spec_helper"
 require "active_support/core_ext"
-require "app/models/style_guide/ruby"
-require "app/models/style_guide/coffee_script"
-require "app/models/style_guide/unsupported"
-require 'app/models/style_checker'
+require "app/models/style_checker"
 require "app/models/violation"
+require "app/models/repo_config"
+Dir.glob("app/models/style_guide/*.rb", &method(:require))
 
 describe StyleChecker, '#violations' do
   it "returns a collection of computed violations" do
     stylish_file = stub_modified_file("good.rb", "def good; end")
     violated_file = stub_modified_file("bad.rb", "def bad( a ); a; end  ")
+    pull_request =
+      stub_pull_request(pull_request_files: [stylish_file, violated_file])
     expected = Violation.new(
       violated_file.filename,
       violated_file.modified_line_at,
       ['Space inside parentheses detected.', 'Trailing whitespace detected.']
-    )
-    pull_request = double(
-      :pull_request,
-      pull_request_files: [stylish_file, violated_file],
-      file_content: ""
     )
 
     style_checker = StyleChecker.new(pull_request)
@@ -29,54 +26,48 @@ describe StyleChecker, '#violations' do
   end
 
   context "when given a Ruby file" do
-    it "uses the Ruby style guide" do
-      file = stub_modified_file("ruby.rb", %{puts "Hello World"})
-      style_guide = double(:style_guide, violations: [])
-      pull_request = double(:pull_request, pull_request_files: [file])
-      allow(pull_request).to receive(:file_content).and_return("")
-      allow(StyleGuide::Ruby).to receive(:new).and_return(style_guide)
+    it "returns violations" do
+      file = stub_modified_file("ruby.rb", %{puts "Hello World" })
+      pull_request = stub_pull_request(pull_request_files: [file])
 
-      StyleChecker.new(pull_request).violations
+      violations = StyleChecker.new(pull_request).violations
+      messages = violations.flat_map(&:messages)
 
-      expect(StyleGuide::Ruby).to have_received(:new)
+      expect(messages).to eq ["Trailing whitespace detected."]
     end
   end
 
   context "when given a CoffeeScript file" do
+    let(:file_content) { "alert 'Hello World'" }
+
     context "and is enabled out" do
-      it "uses CoffeeScript style guide" do
+      it "returns violations" do
         config = <<-YAML.strip_heredoc
-          CoffeeScript:
-            Enabled: true
+          coffee_script:
+            enabled: true
         YAML
-        file = stub_modified_file("coffee.coffee", %{alert "Hello World"})
-        style_guide = double(:style_guide, violations: [])
-        pull_request = double(
-          :pull_request,
-          full_repo_name: "thoughtbot/upcase",
+        head_commit = double("Commit", file_content: config)
+        file = stub_modified_file("test.coffee", file_content)
+        pull_request = stub_pull_request(
+          head_commit: head_commit,
           pull_request_files: [file],
         )
-        allow(pull_request).to receive(:file_content).
-          with(StyleChecker::CONFIG_FILE).
-          and_return(config)
-        allow(StyleGuide::CoffeeScript).to receive(:new).and_return(style_guide)
 
-        StyleChecker.new(pull_request).violations
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
 
-        expect(StyleGuide::CoffeeScript).to have_received(:new)
+        expect(messages).to eq ["Implicit parens are forbidden"]
       end
     end
 
     context "and CoffeeScript support is not enabled" do
       it "does not use CoffeeScript style guide" do
-        file = stub_modified_file("coffee.coffee", %{alert "Hello World"})
-        pull_request = double(:pull_request, pull_request_files: [file])
-        allow(StyleGuide::CoffeeScript).to receive(:new)
-        allow(pull_request).to receive(:file_content).and_return("")
+        file = stub_modified_file("test.coffee", file_content)
+        pull_request = stub_pull_request(pull_request_files: [file])
 
-        StyleChecker.new(pull_request).violations
+        violations = StyleChecker.new(pull_request).violations
 
-        expect(StyleGuide::CoffeeScript).not_to have_received(:new)
+        expect(violations).to eq []
       end
     end
   end
@@ -84,17 +75,26 @@ describe StyleChecker, '#violations' do
   context "with unsupported file type" do
     it "uses unsupported style guide" do
       file = stub_modified_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
-      pull_request = double(:pull_request, pull_request_files: [file])
-      style_guide = double(:style_guide, violations: [])
-      allow(StyleGuide::Unsupported).to receive(:new).and_return(style_guide)
+      pull_request = stub_pull_request(pull_request_files: [file])
 
-      StyleChecker.new(pull_request).violations
+      violations = StyleChecker.new(pull_request).violations
 
-      expect(StyleGuide::Unsupported).to have_received(:new)
+      expect(violations).to eq []
     end
   end
 
   private
+
+  def stub_pull_request(options = {})
+    head_commit = double("Commit", file_content: "")
+    defaults = {
+      file_content: "",
+      head_commit: head_commit,
+      pull_request_files: [],
+    }
+
+    double("PullRequest", defaults.merge(options))
+  end
 
   def stub_modified_file(filename, contents)
     formatted_contents = "#{contents}\n"

@@ -1,10 +1,13 @@
-require "fast_spec_helper"
-require "rubocop"
 require "active_support/core_ext/string/strip"
+require "active_support/inflector"
 require "attr_extras"
+require "rubocop"
+require "sentry-raven"
+
+require "fast_spec_helper"
+require "app/models/style_guide/base"
 require "app/models/style_guide/ruby"
 require "app/models/violation"
-require "sentry-raven"
 
 describe StyleGuide::Ruby, "#violations" do
   context "with default configuration" do
@@ -326,7 +329,7 @@ end
             end
           CODE
 
-          violations = violations_in(code).flatten
+          violations = violations_in(code)
 
           expect(violations).to eq [
             "Space found before comma.",
@@ -340,14 +343,14 @@ end
   context "with violation on line that was not modified" do
     it "finds no violations" do
       file = double(
-        :file,
+        "CommitFile",
         content: "'hello'",
         filename: "lib/test.rb",
         modified_line_at: nil,
       )
       style_guide = StyleGuide::Ruby.new({})
 
-      violations = style_guide.violations(file)
+      violations = style_guide.violations_in_file(file)
 
       expect(violations).to eq []
     end
@@ -411,29 +414,6 @@ end
       end
     end
 
-    context "with invalid format" do
-      it "does not raise an error" do
-        config = <<-TEXT.strip_heredoc
-          hello world!
-        TEXT
-
-        expect { violations_with_config(config) }.not_to raise_error
-      end
-    end
-
-    context "with invalid indentation" do
-      it "returns errors" do
-        config = <<-TEXT.strip_heredoc
-          Metrics/LineLength:
-          Max: 15
-        TEXT
-
-        violations = violations_with_config(config)
-
-        expect(violations).to eq ["Use the new Ruby 1.9 hash syntax."]
-      end
-    end
-
     def violations_with_config(config)
       content = <<-TEXT.strip_heredoc
         def test_method
@@ -441,26 +421,21 @@ end
         end
       TEXT
 
-      style_guide = StyleGuide::Ruby.new(config)
-      violations = style_guide.violations(build_file(content))
-      violations.map(&:messages).flatten
+      violations_in(content, config)
     end
   end
 
   private
 
-  def violations_in(content)
-    unless content.end_with?("\n")
-      content += "\n"
-    end
-
-    style_guide = StyleGuide::Ruby.new({})
-    style_guide.violations(build_file(content)).flat_map(&:messages)
+  def violations_in(content, config = nil)
+    repo_config = double("RepoConfig", enabled?: true, for: config)
+    style_guide = StyleGuide::Ruby.new(repo_config)
+    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
   end
 
   def build_file(content)
     double(
-      :file,
+      "CommitFile",
       content: content,
       filename: "lib/test.rb",
       modified_line_at: 1,
