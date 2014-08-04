@@ -358,6 +358,16 @@ a = { one: 1}
     context 'for lowercase SQL keywords' do
       it 'returns violations'
     end
+
+    context 'for method definitions with optional named arguments' do
+      it 'does not return violations' do
+        expect(violations_in(<<-CODE)).to be_empty
+def register_email(email:)
+  register(email)
+end
+        CODE
+      end
+    end
   end
 
   context 'with custom configuration' do
