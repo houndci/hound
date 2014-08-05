@@ -1,7 +1,7 @@
 Hound
 =====
 
-[![Build Status](https://secure.travis-ci.org/thoughtbot/hound.png)](http://travis-ci.org/thoughtbot/hound?branch=master)
+[![Build Status](https://travis-ci.org/thoughtbot/hound.svg?branch=master)](http://travis-ci.org/thoughtbot/hound?branch=master)
 [![Code Climate](https://codeclimate.com/github/thoughtbot/hound.png)](https://codeclimate.com/github/thoughtbot/hound)
 
 Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
