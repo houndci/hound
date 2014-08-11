@@ -1,10 +1,10 @@
 .repo-listing {
-  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
   border: 1px solid $base-border-color;
+  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
 
   @include media($small-screen) {
     box-shadow: none;
-    margin: 2em -1em;
+    margin: 1em -1em;
   }
 
   nav {
@@ -60,7 +60,6 @@
         border: none;
         border-radius: 3px;
         color: #fff;
-        display: block;
         display: block;
         font-size: 1.2em;
         margin: 0;
@@ -209,6 +208,35 @@
           border-color: #fff;
         }
       }
+    }
+  }
+
+  @include media($small-screen) {
+    border-top: none;
+    margin-top: -1em;
+
+    input.search {
+      font-size: 1em;
+      padding-right: 2.5em !important;
+
+      &[placeholder] {
+        font-size: 1em;
+        text-overflow: ellipsis;
+      }
+
+      @include placeholder {
+        font-size: 1em;
+        text-overflow: ellipsis;
+      }
+    }
+
+    span.name {
+      font-size: 1.1em !important;
+    }
+
+    .repo:before {
+      font-size: 1em !important;
+      top: 1.2em !important;
     }
   }
 }
