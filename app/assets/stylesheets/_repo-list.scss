@@ -223,11 +223,6 @@
         font-size: 1em;
         text-overflow: ellipsis;
       }
-
-      @include placeholder {
-        font-size: 1em;
-        text-overflow: ellipsis;
-      }
     }
 
     span.name {
