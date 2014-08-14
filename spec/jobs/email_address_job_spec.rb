@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe EmailAddressJob do
   it "is retryable" do
-    expect(RepoSynchronizationJob).to be_a(Retryable)
+    expect(EmailAddressJob).to be_a(Retryable)
   end
 
   it "retries when Resque::TermException is raised" do
