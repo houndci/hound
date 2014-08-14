@@ -1,12 +1,13 @@
 require "fast_spec_helper"
 require "rubocop"
 require "active_support/core_ext/string/strip"
-require "app/models/style_guide"
+require "app/models/style_guide/ruby"
+require "app/models/violation"
 
-describe StyleGuide, "#violations" do
+describe StyleGuide::Ruby, "#violations" do
   context "with default configuration" do
     describe "for { and } as %r literal delimiters" do
-      it "return no violations" do
+      it "returns no violations" do
         expect(violations_in(<<-CODE)).to eq []
           "test" =~ %r|test|
         CODE
@@ -378,9 +379,9 @@ end
       TEXT
       config << "\nStyle/EndOfLine:\n  Enabled: false"
 
-      style_guide = StyleGuide.new(config)
+      style_guide = StyleGuide::Ruby.new(config)
       violations = style_guide.violations(build_file(content))
-      violations.map(&:message)
+      violations.map(&:messages).flatten
     end
   end
 
@@ -395,16 +396,16 @@ end
       content += "\n"
     end
 
-    StyleGuide.new(config).violations(build_file(content)).map(&:message)
+    style_guide = StyleGuide::Ruby.new(config)
+    style_guide.violations(build_file(content)).map(&:messages)
   end
 
   def build_file(content)
     double(
       :file,
-      ruby?: true,
-      removed?: false,
       content: content,
-      filename: "lib/test.rb"
+      filename: "lib/test.rb",
+      modified_line_at: 1,
     )
   end
 end

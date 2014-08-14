@@ -20,14 +20,14 @@ class PullRequest
     end
   end
 
-  def add_comment(filename, patch_position, message)
+  def add_comment(violation)
     github = GithubApi.new(ENV['HOUND_GITHUB_TOKEN'])
     github.add_comment(
       pull_request_number: number,
-      comment: message,
+      comment: violation.messages.join("<br>"),
       commit: head_commit,
-      filename: filename,
-      patch_position: patch_position
+      filename: violation.filename,
+      patch_position: violation.line.patch_position
     )
   end
 

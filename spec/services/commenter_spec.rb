@@ -1,7 +1,6 @@
 require 'fast_spec_helper'
 require 'app/services/commenter'
-require 'app/models/file_violation'
-require 'app/models/line_violation'
+require "app/models/violation"
 require 'app/models/line'
 require 'app/policies/commenting_policy'
 
@@ -26,28 +25,18 @@ describe Commenter do
             :line,
             patch_position: 2
           )
-          line_violation = double(
-            :line_violation,
-            line: line,
-            line_number: line_number,
-            messages: ['Trailing whitespace']
-          )
-          file_violation = double(
-            :file_violation,
+          violation = double(
+            :violation,
             filename: filename,
-            line_violations: [line_violation]
+            line: line
           )
           policy = double(:commenting_policy, comment_permitted?: true)
           allow(CommentingPolicy).to receive(:new).and_return(policy)
           commenter = Commenter.new
 
-          commenter.comment_on_violations([file_violation], pull_request)
+          commenter.comment_on_violations([violation], pull_request)
 
-          expect(pull_request).to have_received(:add_comment).with(
-            file_violation.filename,
-            line.patch_position,
-            line_violation.messages.first
-          )
+          expect(pull_request).to have_received(:add_comment).with(violation)
         end
       end
 
@@ -67,7 +56,6 @@ describe Commenter do
       it 'comments on the violations at the correct patch position' do
         line_number = 10
         filename = 'test.rb'
-        comment_body = 'Trailing whitespace'
         comment = double(
           :comment,
           original_position: line_number,
@@ -85,28 +73,18 @@ describe Commenter do
           :line,
           patch_position: 2
         )
-        line_violation = double(
-          :line_violation,
-          line: line,
-          line_number: line_number,
-          messages: [comment_body]
-        )
-        file_violation = double(
-          :file_violation,
+        violation = double(
+          :violation,
           filename: filename,
-          line_violations: [line_violation]
+          line: line
         )
         commenting_policy = double(:commenting_policy, comment_permitted?: true)
         allow(CommentingPolicy).to receive(:new).and_return(commenting_policy)
         commenter = Commenter.new
 
-        commenter.comment_on_violations([file_violation], pull_request)
+        commenter.comment_on_violations([violation], pull_request)
 
-        expect(pull_request).to have_received(:add_comment).with(
-          file_violation.filename,
-          line.patch_position,
-          line_violation.messages.first
-        )
+        expect(pull_request).to have_received(:add_comment).with(violation)
       end
     end
 
@@ -132,16 +110,12 @@ describe Commenter do
           :line,
           patch_position: 2
         )
-        line_violation = double(
-          :line_violation,
+        violation = double(
+          :violation,
+          filename: filename,
           line: line,
           line_number: line_number,
           messages: [comment_body]
-        )
-        file_violation = double(
-          :file_violation,
-          filename: filename,
-          line_violations: [line_violation]
         )
         commenting_policy = double(
           :commenting_policy,
@@ -150,7 +124,7 @@ describe Commenter do
         allow(CommentingPolicy).to receive(:new).and_return(commenting_policy)
         commenter = Commenter.new
 
-        commenter.comment_on_violations([file_violation], pull_request)
+        commenter.comment_on_violations([violation], pull_request)
 
         expect(pull_request).not_to have_received(:add_comment)
       end

@@ -16,18 +16,8 @@ class CommitFile
     end
   end
 
-  def relevant_line?(line_number)
-    modified_lines.detect do |modified_line|
-      modified_line.line_number == line_number
-    end
-  end
-
   def removed?
     @file.status == 'removed'
-  end
-
-  def ruby?
-    filename.match(/.*\.rb$/)
   end
 
   def modified_lines

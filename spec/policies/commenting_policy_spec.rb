@@ -10,14 +10,14 @@ describe CommentingPolicy do
             opened?: true,
             head_includes?: false
           )
-          line_violation = stubbed_line_violation
+          violation = stubbed_violation
           previous_comments_for_line = []
           commenting_policy = CommentingPolicy.new
 
           result = commenting_policy.comment_permitted?(
             pull_request,
             previous_comments_for_line,
-            line_violation
+            violation
           )
 
           expect(result).to be_true
@@ -27,14 +27,14 @@ describe CommentingPolicy do
       context 'when pull request head includes the given line' do
         it 'returns true' do
           pull_request = stubbed_pull_request
-          line_violation = stubbed_line_violation
+          violation = stubbed_violation
           previous_comments_for_line = []
           commenting_policy = CommentingPolicy.new
 
           result = commenting_policy.comment_permitted?(
             pull_request,
             previous_comments_for_line,
-            line_violation
+            violation
           )
 
           expect(result).to be_true
@@ -46,7 +46,7 @@ describe CommentingPolicy do
       it 'returns false' do
         existing_comment_message = 'Trailing whitespace detected<br>Extra newline'
         violation_message = 'Trailing whitespace detected'
-        line_violation = stubbed_line_violation([violation_message])
+        violation = stubbed_violation([violation_message])
         pull_request = stubbed_pull_request
         comment = double(:comment, body: existing_comment_message)
         previous_comments_on_line = [comment]
@@ -55,7 +55,7 @@ describe CommentingPolicy do
         result = commenting_policy.comment_permitted?(
           pull_request,
           previous_comments_on_line,
-          line_violation
+          violation
         )
 
         expect(result).to be_false
@@ -63,9 +63,9 @@ describe CommentingPolicy do
     end
   end
 
-  def stubbed_line_violation(messages = [])
+  def stubbed_violation(messages = [])
     double(
-      :line_violation,
+      :violation,
       line: double(:line),
       messages: messages
     )

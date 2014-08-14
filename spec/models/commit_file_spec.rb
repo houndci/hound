@@ -5,32 +5,6 @@ require "app/models/patch"
 require "active_support/core_ext/hash"
 
 describe CommitFile do
-  describe "#relevant_line?" do
-    context "when line is modified" do
-      it "returns true" do
-        modified_line = double(:modified_line, line_number: 1)
-        patch = double(:patch, additions: [modified_line])
-        Patch.stub(new: patch)
-
-        result = commit_file.relevant_line?(1)
-
-        expect(result).to be_true
-      end
-    end
-
-    context "when line is not modified" do
-      it "returns false" do
-        modified_line = double(:modified_line, line_number: 1)
-        patch = double(:patch, additions: [modified_line])
-        Patch.stub(new: patch)
-
-        result = commit_file.relevant_line?(2)
-
-        expect(result).to be_false
-      end
-    end
-  end
-
   describe "#removed?" do
     context "when status is removed" do
       it "returns true" do
@@ -45,26 +19,6 @@ describe CommitFile do
         commit_file = commit_file(status: "added")
 
         expect(commit_file).not_to be_removed
-      end
-    end
-  end
-
-  describe "#ruby?" do
-    context "when file is non-ruby" do
-      it "returns false for json" do
-        commit_file1 = commit_file(filename: "app/models/user.json")
-        commit_file2 = commit_file(filename: "public/main.css.scss")
-
-        expect(commit_file1).not_to be_ruby
-        expect(commit_file2).not_to be_ruby
-      end
-    end
-
-    context "when file language is ruby" do
-      it "returns true" do
-        commit_file = commit_file(filename: "app/models/user.rb")
-
-        expect(commit_file).to be_ruby
       end
     end
   end

@@ -113,9 +113,15 @@ describe PullRequest do
       client = double(:github_client, add_comment: nil)
       GithubApi.stub(new: client)
       Commit.stub(new: commit)
+      violation = double(
+        :violation,
+        messages: ["A comment"],
+        filename: "test.rb",
+        line: double(:line, patch_position: 123)
+      )
       pull_request = PullRequest.new(payload, "gh-token")
 
-      pull_request.add_comment("test.rb", 123, "A comment")
+      pull_request.add_comment(violation)
 
       expect(GithubApi).to have_received(:new).with(ENV["HOUND_GITHUB_TOKEN"])
       expect(client).to have_received(:add_comment).with(
