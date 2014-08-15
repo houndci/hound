@@ -151,8 +151,7 @@ ParameterLists:
   Enabled: false
 
 PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%': '{}'
+  Enabled: false
 
 PerlBackrefs:
   Enabled: false
