@@ -4,8 +4,14 @@
     Questions? Tweet #{link_to '@houndci', 'https://twitter.com/houndci'}.
 
   %p
-    Hound is Copyright &copy; #{Date.today.year} thoughtbot. It is open source and may be
-    redistributed under the terms specified in the #{link_to 'license', 'https://github.com/thoughtbot/hound/blob/master/LICENSE'}.
+    Hound is Copyright &copy; #{Date.today.year} thoughtbot. It is open source
+    software and may be redistributed under the terms specified in the
+    #{link_to 'LICENSE', 'https://github.com/thoughtbot/hound/blob/master/LICENSE'}.
 
-  .links
-    = link_to 'View Hound on Github', 'https://github.com/thoughtbot/hound'
+  %ul.links
+    %li
+      = link_to 'View Source Code on Github', 'https://github.com/thoughtbot/hound'
+    %li
+      = link_to 'Terms', 'https://github.com/thoughtbot/hound/blob/master/TERMS.md'
+    %li
+      = link_to 'Privacy', 'https://github.com/thoughtbot/hound/blob/master/PRIVACY.md'
