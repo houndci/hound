@@ -1,7 +1,10 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby
-    pattr_initialize :custom_config
+    CONFIG_FILE = ".hound/ruby.yml"
+    LEGACY_CONFIG_FILE = ".hound.yml"
+
+    pattr_initialize :pull_request
 
     def violations(file)
       if excluded_file?(file)
@@ -45,7 +48,7 @@ module StyleGuide
     end
 
     def hound_config
-      RuboCop::ConfigLoader.configuration_from_file("config/rubocop.yml")
+      RuboCop::ConfigLoader.configuration_from_file(CONFIG_FILE)
     end
 
     def pull_request_config
@@ -67,6 +70,12 @@ module StyleGuide
       if config["ShowCopNames"]
         { debug: true }
       end
+    end
+
+    def config_chain
+      @pull_request.config_for(CONFIG_FILE) ||
+        @pull_request.config_for(LEGACY_CONFIG_FILE) ||
+        "{}"
     end
   end
 end

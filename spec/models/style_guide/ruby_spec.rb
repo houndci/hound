@@ -337,6 +337,23 @@ end
     end
   end
 
+  context "with violation on line that was not modified" do
+    it "finds no violations" do
+      file = double(
+        :file,
+        content: "'hello'",
+        filename: "lib/test.rb",
+        modified_line_at: nil,
+      )
+      pull_request = double(:pull_request, config_for: nil)
+      style_guide = StyleGuide::Ruby.new(pull_request)
+
+      violations = style_guide.violations(file)
+
+      expect(violations).to eq []
+    end
+  end
+
   context "with custom configuration" do
     it "finds only one violation" do
       config = <<-TEXT.strip_heredoc
@@ -425,7 +442,9 @@ end
         end
       TEXT
 
-      style_guide = StyleGuide::Ruby.new(config)
+      pull_request = double(:pull_request, config_for: "")
+
+      style_guide = StyleGuide::Ruby.new(pull_request)
       violations = style_guide.violations(build_file(content))
       violations.map(&:messages).flatten
     end
@@ -434,12 +453,18 @@ end
   private
 
   def violations_in(content)
+    config = <<-YAML.strip_heredoc
+      Style/EndOfLine:
+        Enabled: false
+    YAML
+    pull_request = double(:pull_request, config_for: config)
+
     unless content.end_with?("\n")
       content += "\n"
     end
 
-    style_guide = StyleGuide::Ruby.new("{}")
-    style_guide.violations(build_file(content)).map(&:messages)
+    style_guide = StyleGuide::Ruby.new(pull_request)
+    style_guide.violations(build_file(content)).map(&:messages).flatten
   end
 
   def build_file(content)

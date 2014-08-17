@@ -59,6 +59,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.1)
+    coffeelint (0.3.0)
+      coffee-script
+      execjs
+      json
     colorize (0.7.3)
     columnize (0.8.9)
     crack (0.4.2)
@@ -305,6 +309,7 @@ DEPENDENCIES
   capybara (~> 2.4.0)
   capybara-webkit
   coffee-rails
+  coffeelint
   dalli
   database_cleaner
   factory_girl_rails
