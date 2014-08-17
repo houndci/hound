@@ -22,7 +22,7 @@ class StyleChecker
     case filename
     when /.*\.rb$/
       @ruby_style_guide ||= StyleGuide::Ruby.new(@pull_request)
-    when /.*\.coffee$/
+    when /.*\.coffee.?/
       @coffee_script_style_guide ||= StyleGuide::CoffeeScript.new(@pull_request)
     else
       @null_style_guide ||= StyleGuide::Null.new(@pull_request)
