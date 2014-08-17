@@ -310,6 +310,23 @@ end
     end
   end
 
+  context "with violation on line that was not modified" do
+    it "finds no violations" do
+      file = double(
+        :file,
+        content: "'hello'",
+        filename: "lib/test.rb",
+        modified_line_at: nil,
+      )
+      pull_request = double(:pull_request, config_for: nil)
+      style_guide = StyleGuide::Ruby.new(pull_request)
+
+      violations = style_guide.violations(file)
+
+      expect(violations).to eq []
+    end
+  end
+
   context "with custom configuration" do
     it "finds only one violation" do
       config = <<-TEXT.strip_heredoc

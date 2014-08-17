@@ -37,6 +37,23 @@ class FooBar
     end
   end
 
+  context "with violation on line that was not modified" do
+    it "finds no violations" do
+      file = double(
+        :file,
+        content: "'hello'",
+        filename: "lib/test.coffee",
+        modified_line_at: nil,
+      )
+      pull_request = double(:pull_request, config_for: nil)
+      style_guide = StyleGuide::CoffeeScript.new(pull_request)
+
+      violations = style_guide.violations(file)
+
+      expect(violations).to eq []
+    end
+  end
+
   context "with custom configuration" do
     it "finds no violations" do
       content = "1" * 110
