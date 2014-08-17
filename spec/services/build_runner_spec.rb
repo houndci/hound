@@ -38,8 +38,7 @@ describe BuildRunner, '#run' do
 
       build_runner.run
 
-      expect(StyleChecker).to have_received(:new).
-        with(pull_request.pull_request_files, pull_request.config)
+      expect(StyleChecker).to have_received(:new).with(pull_request)
     end
 
     it 'initializes PullRequest with payload and Hound token' do

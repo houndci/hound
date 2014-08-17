@@ -378,8 +378,9 @@ end
         end
       TEXT
       config << "\nStyle/EndOfLine:\n  Enabled: false"
+      pull_request = double(:pull_request, config_for: config)
 
-      style_guide = StyleGuide::Ruby.new(config)
+      style_guide = StyleGuide::Ruby.new(pull_request)
       violations = style_guide.violations(build_file(content))
       violations.map(&:messages).flatten
     end
@@ -392,12 +393,13 @@ end
       Style/EndOfLine:
         Enabled: false
     YAML
+    pull_request = double(:pull_request, config_for: config)
     unless content.end_with?("\n")
       content += "\n"
     end
 
-    style_guide = StyleGuide::Ruby.new(config)
-    style_guide.violations(build_file(content)).map(&:messages)
+    style_guide = StyleGuide::Ruby.new(pull_request)
+    style_guide.violations(build_file(content)).map(&:messages).flatten
   end
 
   def build_file(content)

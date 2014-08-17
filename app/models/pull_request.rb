@@ -1,6 +1,4 @@
 class PullRequest
-  CONFIG_FILE = '.hound.yml'
-
   def initialize(payload, github_token)
     @payload = payload
     @github_token = github_token
@@ -11,13 +9,13 @@ class PullRequest
   end
 
   def comments
-    api.pull_request_comments(full_repo_name, number)
+    @comments ||= api.pull_request_comments(full_repo_name, number)
   end
 
   def pull_request_files
-    api.pull_request_files(full_repo_name, number).map do |file|
-      build_commit_file(file)
-    end
+    @pull_request_files ||= api.
+      pull_request_files(full_repo_name, number).
+      map { |file| build_commit_file(file) }
   end
 
   def add_comment(violation)
@@ -31,8 +29,8 @@ class PullRequest
     )
   end
 
-  def config
-    head_commit.file_content(CONFIG_FILE)
+  def config_for(file_name)
+    head_commit.file_content(file_name)
   end
 
   def opened?

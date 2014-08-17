@@ -1,8 +1,11 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby
-    def initialize(custom_config)
-      @custom_config = custom_config
+    CONFIG_FILE = ".hound/ruby.yml"
+    LEGACY_CONFIG_FILE = ".hound.yml"
+
+    def initialize(pull_request)
+      @pull_request = pull_request
     end
 
     def violations(file)
@@ -54,10 +57,20 @@ module StyleGuide
     end
 
     def pull_request_config
-      RuboCop::Config.new(YAML.load(@custom_config), "").tap do |config|
+      RuboCop::Config.new(config_content, "").tap do |config|
         config.add_missing_namespaces
         config.make_excludes_absolute
       end
+    end
+
+    def config_content
+      YAML.load(config_chain)
+    end
+
+    def config_chain
+      @pull_request.config_for(CONFIG_FILE) ||
+        @pull_request.config_for(LEGACY_CONFIG_FILE) ||
+        "{}"
     end
   end
 end
