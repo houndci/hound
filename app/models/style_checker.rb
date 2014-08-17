@@ -29,11 +29,9 @@ class StyleChecker
   end
 
   def rolled_out?
-    begin
-      github_organization_name = @pull_request.full_repo_name.split("/").first
-      ENV["COFFEE_ORGS"].split(",").include?(github_organization_name)
-    rescue
-      false
-    end
+    github_organization_name = @pull_request.full_repo_name.split("/").first
+    ENV["COFFEE_ORGS"].split(",").include?(github_organization_name)
+  rescue
+    false
   end
 end
