@@ -38,18 +38,38 @@ describe StyleChecker, '#violations' do
     expect(StyleGuide::Ruby).to have_received(:new)
   end
 
-  it "uses the CoffeeScript style guide when given a CoffeeScript file" do
-    file = stub_modified_file("coffee.coffee", %{alert "Hello World"})
-    style_guide = double(:style_guide, violations: [])
-    StyleGuide::CoffeeScript.stub(new: style_guide)
-    pull_request = double(
-      :pull_request,
-      pull_request_files: [file]
-    )
+  context "when given a CoffeeScript file" do
+    it "and rolled out to GitHub or, it uses CoffeeScript style guide" do
+      file = stub_modified_file("coffee.coffee", %{alert "Hello World"})
+      style_guide = double(:style_guide, violations: [])
+      StyleGuide::CoffeeScript.stub(new: style_guide)
+      pull_request = double(
+        :pull_request,
+        full_repo_name: "thoughtbot/upcase",
+        pull_request_files: [file]
+      )
+      ENV["COFFEE_ORGS"] = "thoughtbot"
 
-    StyleChecker.new(pull_request).violations
+      StyleChecker.new(pull_request).violations
 
-    expect(StyleGuide::CoffeeScript).to have_received(:new)
+      expect(StyleGuide::CoffeeScript).to have_received(:new)
+      ENV["COFFEE_ORGS"] = nil
+    end
+
+    it "but not rolled out to GitHub or, it not use CoffeeScript style guide" do
+      file = stub_modified_file("coffee.coffee", %{alert "Hello World"})
+      style_guide = double(:style_guide, violations: [])
+      StyleGuide::CoffeeScript.stub(new: style_guide)
+      pull_request = double(
+        :pull_request,
+        full_repo_name: "thoughtbot/upcase",
+        pull_request_files: [file]
+      )
+
+      StyleChecker.new(pull_request).violations
+
+      expect(StyleGuide::CoffeeScript).not_to have_received(:new)
+    end
   end
 
   it "uses the Null style guide when given a file we do not support" do

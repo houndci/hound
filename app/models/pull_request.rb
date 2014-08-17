@@ -41,6 +41,10 @@ class PullRequest
     @payload.action == 'synchronize'
   end
 
+  def full_repo_name
+    @payload.full_repo_name
+  end
+
   private
 
   def head_commit_files
@@ -57,10 +61,6 @@ class PullRequest
 
   def number
     @payload.number
-  end
-
-  def full_repo_name
-    @payload.full_repo_name
   end
 
   def head_commit

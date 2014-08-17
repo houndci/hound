@@ -19,13 +19,21 @@ class StyleChecker
   end
 
   def style_guide(filename)
-    case filename
-    when /.*\.rb$/
+    if filename =~ /.*\.rb$/
       @ruby_style_guide ||= StyleGuide::Ruby.new(@pull_request)
-    when /.*\.coffee.?/
+    elsif filename =~ /.*\.coffee.?/ && rolled_out?("COFFEE")
       @coffee_script_style_guide ||= StyleGuide::CoffeeScript.new(@pull_request)
     else
       @null_style_guide ||= StyleGuide::Null.new(@pull_request)
+    end
+  end
+
+  def rolled_out?
+    begin
+      github_organization_name = @pull_request.full_repo_name.split("/").first
+      ENV["COFFEE_ORGS"].split(",").include?(github_organization_name)
+    rescue
+      false
     end
   end
 end
