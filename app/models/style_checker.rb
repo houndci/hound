@@ -21,7 +21,7 @@ class StyleChecker
   def style_guide(filename)
     if filename =~ /.*\.rb$/
       @ruby_style_guide ||= StyleGuide::Ruby.new(@pull_request)
-    elsif filename =~ /.*\.coffee.?/ && rolled_out?("COFFEE")
+    elsif filename =~ /.*\.coffee.?/ && rolled_out?
       @coffee_script_style_guide ||= StyleGuide::CoffeeScript.new(@pull_request)
     else
       @null_style_guide ||= StyleGuide::Null.new(@pull_request)
