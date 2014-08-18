@@ -5,7 +5,14 @@ require 'config/environment'
 require 'rspec/rails'
 
 RSpec.configure do |config|
+  Analytics.backend = FakeAnalyticsRuby.new
+
+  config.before do
+    DatabaseCleaner.clean
+  end
+
   config.infer_base_class_for_anonymous_controllers = false
+  config.include AnalyticsHelper
   config.include AuthenticationHelper
   config.include Features, type: :feature
   config.include HttpsHelper
@@ -13,10 +20,6 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   DatabaseCleaner.strategy = :deletion
   Resque.inline = true
-
-  config.before do
-    DatabaseCleaner.clean
-  end
 end
 
 Capybara.configure do |config|

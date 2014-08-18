@@ -5,7 +5,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    create_session
+    user = find_user || create_user
+    create_session_for(user)
     redirect_to root_path
   end
 
@@ -16,10 +17,23 @@ class SessionsController < ApplicationController
 
   private
 
-  def create_session
-    user = User.where(github_username: github_username).first_or_create
-    session[:github_token] = github_token
+  def find_user
+    if user = User.where(github_username: github_username).first
+      Analytics.new(user).track_signed_in
+    end
+
+    user
+  end
+
+  def create_user
+    user = User.create(github_username: github_username)
+    Analytics.new(user, session[:campaign_params]).track_signed_up
+    user
+  end
+
+  def create_session_for(user)
     session[:remember_token] = user.remember_token
+    session[:github_token] = github_token
   end
 
   def destroy_session

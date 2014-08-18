@@ -7,6 +7,7 @@ class DeactivationsController < ApplicationController
     repo = current_user.repos.find(params[:repo_id])
 
     if activator.deactivate(repo, session[:github_token])
+      analytics.track_deactivated(repo)
       render json: repo, status: :created
     else
       report_exception(

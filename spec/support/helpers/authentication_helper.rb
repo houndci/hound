@@ -6,9 +6,9 @@ module AuthenticationHelper
     session[:github_token] = GITHUB_TOKEN
   end
 
-  def sign_in_as(user)
+  def sign_in_as(user, params = {})
     stub_oauth(user.github_username, GITHUB_TOKEN)
-    visit root_path
+    visit root_path(params)
     click_link(I18n.t('authenticate'), match: :first)
   end
 end

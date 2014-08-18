@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :force_https
+  before_filter :capture_campaign_params
   before_filter :authenticate
   after_filter  :set_csrf_cookie_for_ng
   helper_method :current_user, :signed_in?
@@ -19,6 +20,14 @@ class ApplicationController < ActionController::Base
     true
   end
 
+  def capture_campaign_params
+    session[:campaign_params] ||= {
+      utm_campaign: params[:utm_campaign],
+      utm_medium: params[:utm_medium],
+      utm_source: params[:utm_source],
+    }
+  end
+
   def authenticate
     unless signed_in?
       redirect_to sign_in_path
@@ -31,6 +40,10 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @current_user ||= User.where(remember_token: session[:remember_token]).first
+  end
+
+  def analytics
+    @analytics ||= Analytics.new(current_user, session[:campaign_params])
   end
 
   def set_csrf_cookie_for_ng

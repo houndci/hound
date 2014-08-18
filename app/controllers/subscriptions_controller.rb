@@ -7,6 +7,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     if activator.activate(repo, github_token) && create_subscription
+      analytics.track_subscribed(repo)
       render json: repo, status: :created
     else
       activator.deactivate(repo, github_token)
@@ -19,6 +20,7 @@ class SubscriptionsController < ApplicationController
     repo = current_user.repos.find(params[:repo_id])
 
     if activator.deactivate(repo, session[:github_token]) && delete_subscription
+      analytics.track_unsubscribed(repo)
       render json: repo, status: :created
     else
       report_activation_error("Failed to unsubscribe and deactivate repo")

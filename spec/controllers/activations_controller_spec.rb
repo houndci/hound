@@ -15,6 +15,9 @@ describe ActivationsController, "#create" do
       expect(response.body).to eq RepoSerializer.new(repo).to_json
       expect(activator).to have_received(:activate).
         with(repo, AuthenticationHelper::GITHUB_TOKEN)
+      expect(analytics).to have_tracked("Activated Public Repo").
+        for_user(membership.user).
+        with(properties: { name: repo.full_github_name, revenue: repo.price })
     end
   end
 

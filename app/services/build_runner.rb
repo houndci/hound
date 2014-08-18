@@ -9,6 +9,7 @@ class BuildRunner
     if repo && relevant_pull_request?
       repo.builds.create!(violations: violations)
       commenter.comment_on_violations(violations, pull_request)
+      track_reviewed_repo_for_each_user
     end
   end
 
@@ -36,5 +37,12 @@ class BuildRunner
 
   def repo
     @repo ||= Repo.active.where(github_id: payload.github_repo_id).first
+  end
+
+  def track_reviewed_repo_for_each_user
+    repo.users.each do |user|
+      analytics = Analytics.new(user)
+      analytics.track_reviewed(repo)
+    end
   end
 end

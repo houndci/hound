@@ -17,6 +17,9 @@ describe DeactivationsController, '#create' do
         repo,
         AuthenticationHelper::GITHUB_TOKEN
       )
+      expect(analytics).to have_tracked("Deactivated Public Repo").
+        for_user(membership.user).
+        with(properties: { name: repo.full_github_name, revenue: repo.price })
     end
   end
 
