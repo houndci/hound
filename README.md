@@ -54,6 +54,8 @@ Here a few guidelines to follow:
 
 There a couple areas we would like to concentrate on.
 
-1. Add support for JavaScript and CoffeeScript
-2. Add support for CSS and SCSS
-3. Write [RuboCop](https://github.com/bbatsov/rubocop) cops that don't currently exist and would enforce the [thoughtbot style guide](https://github.com/thoughtbot/guides)
+1. Add support for JavaScript
+2. Add support for CSS and Sass
+3. Write [style guides](app/models/style_guides) that don't currently exist and
+   would enforce the
+   [thoughtbot style guide](https://github.com/thoughtbot/guides).
