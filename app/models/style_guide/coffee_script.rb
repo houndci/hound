@@ -28,7 +28,7 @@ module StyleGuide
     end
 
     def hound_config
-      JSON.parse(File.read("config/coffeelint.json"))
+      JSON.parse(File.read(CONFIG_FILE))
     end
 
     def pull_request_config

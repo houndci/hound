@@ -4,7 +4,7 @@
   %h2 Hound configuration (optional)
 
   %p
-    By default, Hound uses #{link_to "thoughtbot's style guide", 'https://github.com/thoughtbot/guides/tree/master/style#ruby'}
+    By default, Hound uses #{link_to "thoughtbot's style guide", 'https://github.com/thoughtbot/guides/tree/master/style'}
     with no additional setup.
 
   %p
@@ -26,7 +26,9 @@
     file in the root of your repo, and apply the custom configuration on top of
     the default configuration.
 
-  %h3 Adding custom config
+  %p
+    Follow these steps to add your own custom configuration:
+
   %ol.numbered
     %li
       Add a file named
@@ -62,7 +64,7 @@
       See #{link_to 'more config options', 'https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml'} in the RuboCop project.
     %li
       Commit the changes to your repo, and the following pull requests will use
-      your custom configuration.
+      your custom configuration in combination with Hound's defaults.
     %li
       If you set
       %em.code ShowCopNames: true
@@ -85,7 +87,9 @@
     file in the root of your repo, and apply the custom configuration on top of
     the default configuration.
 
-  %h3 Adding custom config
+  %p
+    Follow these steps to add your own custom configuration:
+
   %ol.numbered
     %li
       Add a file named

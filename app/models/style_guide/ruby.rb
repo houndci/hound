@@ -53,7 +53,7 @@ module StyleGuide
     end
 
     def hound_config
-      RuboCop::ConfigLoader.configuration_from_file("config/rubocop.yml")
+      RuboCop::ConfigLoader.configuration_from_file(CONFIG_FILE)
     end
 
     def pull_request_config
