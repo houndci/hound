@@ -35,4 +35,8 @@ class Repo < ActiveRecord::Base
     repo.update_attributes(attributes)
     repo
   end
+
+  def stripe_subscription_id
+    subscription ? subscription.stripe_subscription_id : nil
+  end
 end

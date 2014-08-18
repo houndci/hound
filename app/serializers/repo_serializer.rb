@@ -1,14 +1,15 @@
 class RepoSerializer < ActiveModel::Serializer
   attributes(
-    :id,
-    :github_id,
     :active,
     :full_github_name,
-    :private,
+    :full_plan_name,
+    :github_id,
+    :id,
     :in_organization,
     :price,
     :price_in_cents,
-    :full_plan_name
+    :private,
+    :stripe_subscription_id,
   )
 
   def price_in_cents

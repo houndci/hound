@@ -35,7 +35,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
 
     scope.toggle = ->
       if repo.active
-        if repo.private
+        if repo.stripe_subscription_id
           scope.processing = true
           subscription = new Subscription(repo_id: repo.id)
           subscription.$delete().then(->

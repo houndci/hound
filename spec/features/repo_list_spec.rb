@@ -122,6 +122,26 @@ feature "Repo list", js: true do
     expect(page).to have_content "0 OF 1"
   end
 
+  scenario "user deactivates private repo without subscription" do
+    user = create(:user)
+    repo = create(:repo, :active, private: true)
+    repo.users << user
+    stub_hook_removal_request(repo.full_github_name, repo.hook_id)
+    stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
+
+    sign_in_as(user)
+    visit root_path
+    find(".repos .toggle").click
+
+    expect(page).not_to have_css(".active")
+    expect(page).to have_content "0 OF 1"
+
+    visit current_path
+
+    expect(page).not_to have_css(".active")
+    expect(page).to have_content "0 OF 1"
+  end
+
   private
 
   def with_job_delay
