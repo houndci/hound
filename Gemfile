@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "2.1.2"
 
 gem "active_model_serializers"
-gem "analytics-ruby"
+gem "analytics-ruby", "~> 2.0.0", require: "segment/analytics"
 gem "angularjs-rails"
 gem "bourbon"
 gem "coffee-rails"
