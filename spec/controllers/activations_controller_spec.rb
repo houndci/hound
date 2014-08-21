@@ -17,7 +17,7 @@ describe ActivationsController, "#create" do
         with(repo, AuthenticationHelper::GITHUB_TOKEN)
       expect(analytics).to have_tracked("Activated Public Repo").
         for_user(membership.user).
-        with(properties: { name: repo.full_github_name, revenue: repo.price })
+        with(properties: { name: repo.full_github_name })
     end
   end
 

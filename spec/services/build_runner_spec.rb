@@ -14,7 +14,7 @@ describe BuildRunner, '#run' do
       expect(Build.last.violations.size).to be >= 1
       expect(analytics).to have_tracked("Reviewed Repo").
         for_user(repo.users.first).
-        with(properties: { name: repo.full_github_name, revenue: repo.price })
+        with(properties: { name: repo.full_github_name })
     end
 
     it 'comments on violations' do

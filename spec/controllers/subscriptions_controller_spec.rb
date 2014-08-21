@@ -85,6 +85,6 @@ describe SubscriptionsController, "#destroy" do
       with(repo, membership.user)
     expect(analytics).to have_tracked("Unsubscribed Private Repo").
       for_user(membership.user).
-      with(properties: { name: repo.full_github_name, revenue: repo.price })
+      with(properties: { name: repo.full_github_name, revenue: -repo.price })
   end
 end

@@ -19,7 +19,7 @@ describe DeactivationsController, '#create' do
       )
       expect(analytics).to have_tracked("Deactivated Public Repo").
         for_user(membership.user).
-        with(properties: { name: repo.full_github_name, revenue: repo.price })
+        with(properties: { name: repo.full_github_name })
     end
   end
 
