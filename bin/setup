@@ -20,3 +20,8 @@ heroku join --app hound-production
 if [ ! -f .env ]; then
   cp .sample.env .env
 fi
+
+# Set a default port for Foreman to run the server
+if ! grep -qs 'port' .foreman; then
+  printf 'port: 5000\n' >> .foreman
+fi
