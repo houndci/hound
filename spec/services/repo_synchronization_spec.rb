@@ -13,7 +13,7 @@ describe RepoSynchronization do
       }
       resource = double(:resource, to_hash: attributes)
       api = double(:github_api, repos: [resource])
-      GithubApi.stub(new: api)
+      allow(GithubApi).to receive(:new).and_return(api)
       user = create(:user)
       github_token = 'token'
       synchronization = RepoSynchronization.new(user, github_token)
@@ -34,7 +34,7 @@ describe RepoSynchronization do
       }
       resource = double(:resource, to_hash: attributes)
       api = double(:github_api, repos: [resource])
-      GithubApi.stub(new: api)
+      allow(GithubApi).to receive(:new).and_return(api)
       user = create(:user)
       github_token = 'token'
       synchronization = RepoSynchronization.new(user, github_token)
@@ -57,15 +57,14 @@ describe RepoSynchronization do
       github_token = 'token'
       membership = create(:membership)
       user = membership.user
-
       api = double(:github_api, repos: [resource])
-      GithubApi.stub(new: api)
+      allow(GithubApi).to receive(:new).and_return(api)
       synchronization = RepoSynchronization.new(user, github_token)
 
       synchronization.start
 
       expect(GithubApi).to have_received(:new).with(github_token)
-      expect(user).to have(1).repo
+      expect(user.repos.size).to eq(1)
       expect(user.repos.first.full_github_name).to eq 'user/newrepo'
       expect(user.repos.first.github_id).to eq 456
     end
@@ -85,7 +84,7 @@ describe RepoSynchronization do
       github_token = 'githubtoken'
 
       api = double(:github_api, repos: [resource])
-      GithubApi.stub(new: api)
+      allow(GithubApi).to receive(:new).and_return(api)
       synchronization = RepoSynchronization.new(membership.user, github_token)
 
       synchronization.start
@@ -111,13 +110,12 @@ describe RepoSynchronization do
         github_token = 'githubtoken'
         second_user = create(:user)
         api = double(:github_api, repos: [resource])
-
-        GithubApi.stub(new: api)
+        allow(GithubApi).to receive(:new).and_return(api)
         synchronization = RepoSynchronization.new(second_user, github_token)
 
         synchronization.start
 
-        expect(second_user.reload).to have(1).repos
+        expect(second_user.reload.repos.size).to eq(1)
       end
     end
   end

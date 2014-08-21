@@ -5,8 +5,8 @@ describe SubscriptionsController, "#create" do
     membership = create(:membership)
     repo = membership.repo
     activator = double(:repo_activator, activate: true)
-    RepoActivator.stub(new: activator)
-    RepoSubscriber.stub(subscribe: true)
+    allow(RepoActivator).to receive(:new).and_return(activator)
+    allow(RepoSubscriber).to receive(:subscribe).and_return(true)
     stub_sign_in(membership.user)
 
     post(
@@ -31,8 +31,8 @@ describe SubscriptionsController, "#create" do
     repo = create(:repo)
     user.repos << repo
     activator = double(:repo_activator, activate: true)
-    RepoActivator.stub(new: activator)
-    RepoSubscriber.stub(subscribe: true)
+    allow(RepoActivator).to receive(:new).and_return(activator)
+    allow(RepoSubscriber).to receive(:subscribe).and_return(true)
     stub_sign_in(user)
 
     post(
@@ -51,8 +51,8 @@ describe SubscriptionsController, "#create" do
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, activate: true, deactivate: nil)
-      RepoActivator.stub(new: activator)
-      RepoSubscriber.stub(subscribe: false)
+      allow(RepoActivator).to receive(:new).and_return(activator)
+      allow(RepoSubscriber).to receive(:subscribe).and_return(false)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
@@ -68,8 +68,8 @@ describe SubscriptionsController, "#destroy" do
     membership = create(:membership)
     repo = membership.repo
     activator = double(:repo_activator, deactivate: true)
-    RepoActivator.stub(new: activator)
-    RepoSubscriber.stub(unsubscribe: true)
+    allow(RepoActivator).to receive(:new).and_return(activator)
+    allow(RepoSubscriber).to receive(:unsubscribe).and_return(true)
     stub_sign_in(membership.user)
 
     delete(

@@ -28,7 +28,7 @@ describe CommitFile do
       it "returns modified line at the given line number" do
         modified_line = double(:modified_line, line_number: 1)
         patch = double(:patch, additions: [modified_line])
-        Patch.stub(new: patch)
+        allow(Patch).to receive(:new).and_return(patch)
 
         expect(commit_file.modified_line_at(1)).to eq modified_line
       end
@@ -38,7 +38,7 @@ describe CommitFile do
       it "returns nil" do
         modified_line = double(:modified_line, line_number: 1)
         patch = double(:patch, additions: [modified_line])
-        Patch.stub(new: patch)
+        allow(Patch).to receive(:new).and_return(patch)
 
         expect(commit_file.modified_line_at(2)).to be_nil
       end

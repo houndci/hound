@@ -6,7 +6,7 @@ describe ActivationsController, "#create" do
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, activate: true)
-      RepoActivator.stub(new: activator)
+      allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
@@ -26,7 +26,7 @@ describe ActivationsController, "#create" do
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, activate: false).as_null_object
-      RepoActivator.stub(new: activator)
+      allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
@@ -40,8 +40,8 @@ describe ActivationsController, "#create" do
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, activate: false).as_null_object
-      RepoActivator.stub(new: activator)
-      Raven.stub(:capture_exception)
+      allow(RepoActivator).to receive(:new).and_return(activator)
+      allow(Raven).to receive(:capture_exception)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
@@ -59,7 +59,7 @@ describe ActivationsController, "#create" do
       user = create(:user)
       user.repos << repo
       activator = double(:repo_activator, activate: false)
-      RepoActivator.stub(new: activator)
+      allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(user)
 
       expect { post :create, repo_id: repo.id, format: :json }.to raise_error(

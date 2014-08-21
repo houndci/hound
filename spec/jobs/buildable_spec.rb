@@ -12,9 +12,9 @@ describe Buildable do
     it 'runs build runner' do
       payload_data = double(:payload_data)
       payload = double(:payload)
-      Payload.stub(new: payload)
       build_runner = double(:build_runner, run: nil)
-      BuildRunner.stub(new: build_runner)
+      allow(Payload).to receive(:new).and_return(payload)
+      allow(BuildRunner).to receive(:new).and_return(build_runner)
 
       TestJob.perform(payload_data)
 
@@ -24,9 +24,9 @@ describe Buildable do
     end
 
     it 'retries when Resque::TermException is raised' do
-      Payload.stub(:new).and_raise(Resque::TermException.new(1))
-      Resque.stub(:enqueue)
-      payload_data = double
+      allow(Payload).to receive(:new).and_raise(Resque::TermException.new(1))
+      allow(Resque).to receive(:enqueue)
+      payload_data = double(:payload_data)
 
       TestJob.perform(payload_data)
 

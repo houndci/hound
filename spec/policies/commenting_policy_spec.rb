@@ -20,7 +20,7 @@ describe CommentingPolicy do
             violation
           )
 
-          expect(result).to be_true
+          expect(result).to be_truthy
         end
       end
 
@@ -37,7 +37,7 @@ describe CommentingPolicy do
             violation
           )
 
-          expect(result).to be_true
+          expect(result).to be_truthy
         end
       end
     end
@@ -58,7 +58,7 @@ describe CommentingPolicy do
           violation
         )
 
-        expect(result).to be_false
+        expect(result).to be_falsy
       end
     end
   end

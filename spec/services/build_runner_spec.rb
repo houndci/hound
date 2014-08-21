@@ -11,7 +11,7 @@ describe BuildRunner, '#run' do
 
       expect { build_runner.run }.to change { Build.count }.by(1)
       expect(Build.last).to eq repo.builds.last
-      expect(Build.last.violations).to have_at_least(1).violation
+      expect(Build.last.violations.size).to be >= 1
       expect(analytics).to have_tracked("Reviewed Repo").
         for_user(repo.users.first).
         with(properties: { name: repo.full_github_name, revenue: repo.price })
@@ -65,8 +65,9 @@ describe BuildRunner, '#run' do
   context 'without active repo' do
     it 'does not attempt to comment' do
       repo = create(:repo, :inactive)
-      Commenter.stub(:new)
-      runner = BuildRunner.new(double(:payload, github_repo_id: repo.github_id))
+      payload = double(:payload, github_repo_id: repo.github_id)
+      runner = BuildRunner.new(payload)
+      allow(Commenter).to receive(:new)
 
       runner.run
 
@@ -78,10 +79,11 @@ describe BuildRunner, '#run' do
     it 'does not attempt to comment' do
       repo = create(:repo, :active)
       pull_request = stubbed_pull_request
-      pull_request.stub(opened?: false)
-      pull_request.stub(synchronize?: false)
-      Commenter.stub(:new)
-      runner = BuildRunner.new(double(:payload, github_repo_id: repo.github_id))
+      payload = double(:payload, github_repo_id: repo.github_id)
+      runner = BuildRunner.new(payload)
+      allow(pull_request).
+        to receive_messages(opened?: false, synchronize?: false)
+      allow(Commenter).to receive(:new)
 
       runner.run
 
@@ -96,14 +98,14 @@ describe BuildRunner, '#run' do
   def stubbed_style_checker_with_violations
     violations = [double(:violation)]
     style_checker = double(:style_checker, violations: violations)
-    StyleChecker.stub(new: style_checker)
+    allow(StyleChecker).to receive(:new).and_return(style_checker)
 
     style_checker
   end
 
   def stubbed_commenter
     commenter = double(:commenter).as_null_object
-    Commenter.stub(new: commenter)
+    allow(Commenter).to receive(:new).and_return(commenter)
 
     commenter
   end
@@ -115,7 +117,7 @@ describe BuildRunner, '#run' do
       config: double(:config),
       opened?: true
     )
-    PullRequest.stub(new: pull_request)
+    allow(PullRequest).to receive(:new).and_return(pull_request)
 
     pull_request
   end

@@ -6,7 +6,7 @@ describe ReposController do
       it "pushes an email address job onto queue" do
         user = create(:user, email_address: nil)
         stub_sign_in(user)
-        JobQueue.stub(:push)
+        allow(JobQueue).to receive(:push)
 
         get :index, format: :json
 
@@ -22,7 +22,7 @@ describe ReposController do
       it "does not push an email address job onto queue" do
         user = create(:user, email_address: "test@example.com")
         stub_sign_in(user)
-        JobQueue.stub(:push)
+        allow(JobQueue).to receive(:push)
 
         get :index, format: :json
 
@@ -39,7 +39,7 @@ describe ReposController do
 
         get :index, format: :json
 
-        expect(user).to have(0).repos
+        expect(user.repos.size).to eq(0)
       end
     end
 
@@ -52,7 +52,7 @@ describe ReposController do
 
         get :index, format: :json
 
-        expect(user).to have(1).repo
+        expect(user.repos.size).to eq(1)
       end
     end
   end

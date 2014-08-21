@@ -9,7 +9,7 @@ describe PullRequest do
 
         includes_line = pull_request.head_includes?(Line.new(patch_line))
 
-        expect(includes_line).to be_true
+        expect(includes_line).to be_truthy
       end
     end
 
@@ -21,7 +21,7 @@ describe PullRequest do
 
         includes_line = pull_request.head_includes?(Line.new(patch_line2))
 
-        expect(includes_line).to be_false
+        expect(includes_line).to be_falsy
       end
     end
 
@@ -90,13 +90,13 @@ describe PullRequest do
       patch_position = 7
       filename = "spec/models/style_guide_spec.rb"
       comment = double(:comment, position: patch_position, path: filename)
-      github_api = double(:github_api, pull_request_comments: [comment])
-      GithubApi.stub(new: github_api)
+      github = double(:github, pull_request_comments: [comment])
+      allow(GithubApi).to receive(:new).and_return(github)
       pull_request = PullRequest.new(payload, "githubtoken")
 
       comments = pull_request.comments
 
-      expect(comments).to have(1).item
+      expect(comments.size).to eq(1)
       expect(comments).to match_array([comment])
     end
   end
@@ -110,9 +110,9 @@ describe PullRequest do
         head_sha: "1234abcd"
       )
       commit = double(:commit, repo_name: payload.full_repo_name)
-      client = double(:github_client, add_comment: nil)
-      GithubApi.stub(new: client)
-      Commit.stub(new: commit)
+      github = double(:github_client, add_comment: nil)
+      allow(GithubApi).to receive(:new).and_return(github)
+      allow(Commit).to receive(:new).and_return(commit)
       violation = double(
         :violation,
         messages: ["A comment"],
@@ -124,7 +124,7 @@ describe PullRequest do
       pull_request.add_comment(violation)
 
       expect(GithubApi).to have_received(:new).with(ENV["HOUND_GITHUB_TOKEN"])
-      expect(client).to have_received(:add_comment).with(
+      expect(github).to have_received(:add_comment).with(
         pull_request_number: payload.number,
         commit: commit,
         comment: "A comment",
@@ -150,8 +150,8 @@ describe PullRequest do
     context "when config file is not present" do
       it "returns nil" do
         api = double(:github_api)
-        api.stub(:file_contents).and_raise(Octokit::NotFound)
         pull_request = pull_request(api)
+        allow(api).to receive(:file_contents).and_raise(Octokit::NotFound)
 
         config = pull_request.config
 
@@ -167,7 +167,7 @@ describe PullRequest do
       full_repo_name: "org/repo",
       head_sha: "abc123"
     )
-    GithubApi.stub(new: api)
+    allow(GithubApi).to receive(:new).and_return(api)
     PullRequest.new(payload, "gh-token")
   end
 end

@@ -9,7 +9,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         api = GithubApi.new(token)
         user = GithubUser.new(api)
         teams = [double(permission: 'admin', id: team_id)]
-        api.stub(user_teams: teams)
+        allow(api).to receive(:user_teams).and_return(teams)
 
         expect(user).to have_admin_access_through_team(team_id)
       end
@@ -22,7 +22,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         user = GithubUser.new(api)
         team_id = 1111
         teams = [double(permission: 'admin', id: 4567)]
-        api.stub(user_teams: teams)
+        allow(api).to receive(:user_teams).and_return(teams)
 
         expect(user).not_to have_admin_access_through_team(team_id)
       end
@@ -37,7 +37,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         user = GithubUser.new(api)
         team_id = 4567
         teams = [double(permission: 'pull', id: 4567)]
-        api.stub(user_teams: teams)
+        allow(api).to receive(:user_teams).and_return(teams)
 
         expect(user).not_to have_admin_access_through_team(team_id)
       end

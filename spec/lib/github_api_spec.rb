@@ -29,13 +29,10 @@ describe GithubApi do
             stub_repo_with_org_request(repo_name, token)
             stub_repo_teams_request(repo_name, token)
             stub_user_teams_request(token)
-            add_user_request = stub_add_user_to_team_request(
-              username,
-              team_id,
-              token
-            )
+            add_user_request =
+              stub_add_user_to_team_request(username, team_id, token)
 
-            expect(api.add_user_to_repo(username, repo_name)).to be_true
+            expect(api.add_user_to_repo(username, repo_name)).to be_truthy
             expect(add_user_request).to have_been_requested
           end
         end
@@ -56,7 +53,7 @@ describe GithubApi do
               token
             )
 
-            expect(api.add_user_to_repo(username, repo_name)).to be_false
+            expect(api.add_user_to_repo(username, repo_name)).to be_falsy
             expect(add_user_request).to have_been_requested
           end
         end
@@ -81,7 +78,7 @@ describe GithubApi do
               token
             )
 
-            expect(api.add_user_to_repo(username, repo_name)).to be_true
+            expect(api.add_user_to_repo(username, repo_name)).to be_truthy
             expect(add_user_request).to have_been_requested
           end
         end
@@ -141,7 +138,6 @@ describe GithubApi do
         token = 'abc123'
         username = 'testuser'
         repo_name = 'testing/repo'
-        team_id = 1234 # from fixture
         api = GithubApi.new(token)
         stub_repo_request(repo_name, token)
         add_user_request = stub_add_user_to_repo_request(
@@ -150,7 +146,7 @@ describe GithubApi do
           token
         )
 
-        expect(api.add_user_to_repo(username, repo_name)).to be_true
+        expect(api.add_user_to_repo(username, repo_name)).to be_truthy
         expect(add_user_request).to have_been_requested
       end
     end
@@ -193,7 +189,7 @@ describe GithubApi do
         end
 
         expect(request).to have_been_requested
-        expect(yielded).to be_true
+        expect(yielded).to be_truthy
       end
     end
 
@@ -220,7 +216,7 @@ describe GithubApi do
 
       response = api.remove_hook(repo_name, hook_id)
 
-      expect(response).to be_true
+      expect(response).to be_truthy
     end
   end
 
@@ -234,7 +230,7 @@ describe GithubApi do
 
       files = github_api.commit_files(full_repo_name, commit_sha)
 
-      expect(files).to have(1).item
+      expect(files.size).to eq(1)
       expect(files.first.filename).to eq 'file1.rb'
     end
   end
@@ -262,7 +258,7 @@ describe GithubApi do
         pull_request_number
       )
 
-      expect(files).to have(1).item
+      expect(files.size).to eq(1)
       expect(files.first.filename).to eq 'config/unicorn.rb'
     end
   end
@@ -324,7 +320,7 @@ describe GithubApi do
       )
       expected_comment = "inline if's and while's are not violations?"
 
-      expect(comments).to have(4).items
+      expect(comments.size).to eq(4)
       expect(comments.first.body).to eq expected_comment
     end
   end
@@ -335,7 +331,7 @@ describe GithubApi, '#user_teams' do
     token = 'abc123'
     teams = ['thoughtbot']
     client = double(user_teams: teams)
-    Octokit::Client.stub(new: client)
+    allow(Octokit::Client).to receive(:new).and_return(client)
     api = GithubApi.new(token)
 
     user_teams = api.user_teams

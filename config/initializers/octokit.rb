@@ -1,4 +1,4 @@
-stack = Faraday::Builder.new do |builder|
+stack = Faraday::RackBuilder.new do |builder|
   builder.use(
     Faraday::HttpCache,
     store: Rails.cache,

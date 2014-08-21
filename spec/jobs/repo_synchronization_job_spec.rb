@@ -20,7 +20,7 @@ describe RepoSynchronizationJob do
       user = create(:user, refreshing_repos: true)
       github_token = 'token'
       synchronization = double(:repo_synchronization, start: nil)
-      RepoSynchronization.stub(new: synchronization)
+      allow(RepoSynchronization).to receive(:new).and_return(synchronization)
 
       RepoSynchronizationJob.perform(user.id, github_token)
 
@@ -33,8 +33,8 @@ describe RepoSynchronizationJob do
     end
 
     it 'retries when Resque::TermException is raised' do
-      User.stub(:find).and_raise(Resque::TermException.new(1))
-      Resque.stub(:enqueue)
+      allow(User).to receive(:find).and_raise(Resque::TermException.new(1))
+      allow(Resque).to receive(:enqueue)
       user_id = 'userid'
       github_token = 'token'
 

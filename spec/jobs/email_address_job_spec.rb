@@ -6,18 +6,15 @@ describe EmailAddressJob do
   end
 
   it "retries when Resque::TermException is raised" do
-    User.stub(:find).and_raise(Resque::TermException.new(1))
-    Resque.stub(:enqueue)
     user_id = "userid"
     github_token = "token"
+    allow(User).to receive(:find).and_raise(Resque::TermException.new(1))
+    allow(Resque).to receive(:enqueue)
 
     EmailAddressJob.perform(user_id, github_token)
 
-    expect(Resque).to have_received(:enqueue).with(
-      EmailAddressJob,
-      user_id,
-      github_token
-    )
+    expect(Resque).to have_received(:enqueue).
+      with(EmailAddressJob, user_id, github_token)
   end
 
   context "when user email address is saved" do

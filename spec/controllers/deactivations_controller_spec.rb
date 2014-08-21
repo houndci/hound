@@ -6,7 +6,7 @@ describe DeactivationsController, '#create' do
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, deactivate: true)
-      RepoActivator.stub(new: activator)
+      allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
@@ -28,7 +28,7 @@ describe DeactivationsController, '#create' do
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, deactivate: false)
-      RepoActivator.stub(new: activator)
+      allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
@@ -44,8 +44,8 @@ describe DeactivationsController, '#create' do
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, deactivate: false)
-      RepoActivator.stub(new: activator)
-      Raven.stub(:capture_exception)
+      allow(RepoActivator).to receive(:new).and_return(activator)
+      allow(Raven).to receive(:capture_exception)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json

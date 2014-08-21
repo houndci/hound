@@ -5,7 +5,7 @@ describe JobQueue do
   describe '.push' do
     it 'enqueues a Resque job' do
       job_class = double(:job_class)
-      Resque.stub(:enqueue)
+      allow(Resque).to receive(:enqueue)
 
       JobQueue.push(job_class, 1, 2, 3)
 

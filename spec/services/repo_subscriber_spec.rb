@@ -90,7 +90,7 @@ describe RepoSubscriber do
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
-        expect(result).to be_false
+        expect(result).to be_falsy
       end
     end
 
@@ -102,11 +102,11 @@ describe RepoSubscriber do
         stub_customer_create_request(user)
         stub_subscription_create_request
         stripe_delete_request = stub_subscription_delete_request
-        repo.stub(:create_subscription!).and_raise(StandardError)
+        allow(repo).to receive(:create_subscription!).and_raise(StandardError)
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
-        expect(result).to be_false
+        expect(result).to be_falsy
         expect(stripe_delete_request).to have_been_requested
       end
     end
@@ -140,7 +140,7 @@ describe RepoSubscriber do
       user.repos << subscription.repo
       stub_customer_find_request
       stub_subscription_find_request(subscription)
-      stripe_delete_request = stub_subscription_delete_request
+      stub_subscription_delete_request
 
       RepoSubscriber.unsubscribe(subscription.repo, user)
 

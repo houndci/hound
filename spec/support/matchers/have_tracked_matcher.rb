@@ -12,12 +12,12 @@ RSpec::Matchers.define :have_tracked do |event_name|
     "tracked event"
   end
 
-  failure_message_for_should do |_|
+  failure_message do |_|
     "expected event '#{@event_name}' to be tracked for user '#{@user}' " +
     "with included keys #{@keys} but was not"
   end
 
-  failure_message_for_should_not do |_|
+  failure_message_when_negated do |_|
     "expected event '#{@event_name}' not to be tracked for user '#{@user}' " +
     "with included keys #{@keys} but was"
   end
