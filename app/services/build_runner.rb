@@ -24,7 +24,7 @@ class BuildRunner
   end
 
   def style_checker
-    StyleChecker.new(pull_request.pull_request_files, pull_request.config)
+    StyleChecker.new(pull_request)
   end
 
   def commenter
