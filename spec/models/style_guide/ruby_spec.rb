@@ -308,6 +308,39 @@ end
         CODE
       end
     end
+
+    context "for required keyword arguments" do
+      context "without space after arguments" do
+        it "returns no violations" do
+          code = <<-CODE.strip_heredoc
+            def initialize(name:, age:)
+              @name = name
+              @age = age
+            end
+          CODE
+
+          expect(violations_in(code)).to be_empty
+        end
+      end
+
+      context "with spaces after arguments" do
+        it "returns violations" do
+          code = <<-CODE.strip_heredoc
+            def initialize(name: , age: )
+              @name = name
+              @age = age
+            end
+          CODE
+
+          violations = violations_in(code).flatten
+
+          expect(violations).to eq [
+            "Space found before comma.",
+            "Space inside parentheses detected.",
+          ]
+        end
+      end
+    end
   end
 
   context "with custom configuration" do
