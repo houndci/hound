@@ -37,10 +37,8 @@ module StyleGuide
     end
 
     def config
-      RuboCop::Config.new(
-        RuboCop::ConfigLoader.merge(hound_config, pull_request_config),
-        ""
-      )
+      @config ||= RuboCop::Config.
+        new(RuboCop::ConfigLoader.merge(hound_config, pull_request_config), "")
     end
 
     def rubocop_options
@@ -58,6 +56,9 @@ module StyleGuide
         config.add_missing_namespaces
         config.make_excludes_absolute
       end
+    rescue => error
+      Raven.capture_exception(error)
+      RuboCop::Config.new
     end
   end
 end

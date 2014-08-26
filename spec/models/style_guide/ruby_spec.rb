@@ -3,6 +3,7 @@ require "rubocop"
 require "active_support/core_ext/string/strip"
 require "app/models/style_guide/ruby"
 require "app/models/violation"
+require "sentry-raven"
 
 describe StyleGuide::Ruby, "#violations" do
   context "with default configuration" do
@@ -401,6 +402,18 @@ end
         violations = violations_with_config(config)
 
         expect(violations).to be_empty
+      end
+    end
+
+    context "with invalid format" do
+      it "does not raise an error" do
+        config = <<-TEXT.strip_heredoc
+          hello world!
+        TEXT
+        allow(Raven).to receive(:capture_exception)
+
+        expect { violations_with_config(config) }.not_to raise_error
+        expect(Raven).to have_received(:capture_exception)
       end
     end
 
