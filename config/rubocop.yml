@@ -105,6 +105,9 @@ IfUnlessModifier:
 IfWithSemicolon:
   Enabled: false
 
+InlineComment:
+  Enabled: true
+
 Lambda:
   Enabled: false
 

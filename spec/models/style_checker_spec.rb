@@ -13,9 +13,8 @@ describe StyleChecker, '#violations' do
       violated_file.modified_line_at,
       ['Space inside parentheses detected.', 'Trailing whitespace detected.']
     )
-    config = "Style/EndOfLine:\n  Enabled: false"
 
-    style_checker = StyleChecker.new([stylish_file, violated_file], config)
+    style_checker = StyleChecker.new([stylish_file, violated_file])
 
     expect(style_checker.violations).to eq [expected]
   end

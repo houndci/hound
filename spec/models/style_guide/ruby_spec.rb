@@ -377,7 +377,6 @@ end
           "hello world"
         end
       TEXT
-      config << "\nStyle/EndOfLine:\n  Enabled: false"
 
       style_guide = StyleGuide::Ruby.new(config)
       violations = style_guide.violations(build_file(content))
@@ -388,15 +387,11 @@ end
   private
 
   def violations_in(content)
-    config = <<-YAML.strip_heredoc
-      Style/EndOfLine:
-        Enabled: false
-    YAML
     unless content.end_with?("\n")
       content += "\n"
     end
 
-    style_guide = StyleGuide::Ruby.new(config)
+    style_guide = StyleGuide::Ruby.new("{}")
     style_guide.violations(build_file(content)).map(&:messages)
   end
 
