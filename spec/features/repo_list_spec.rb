@@ -28,7 +28,7 @@ feature "Repo list", js: true do
 
   scenario "user syncs repos" do
     user = create(:user)
-    repo = create(:repo)
+    repo = create(:repo, full_github_name: "user1/test-repo")
     user.repos << repo
     stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
     stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
@@ -40,8 +40,8 @@ feature "Repo list", js: true do
 
     click_link I18n.t("sync_repos")
 
-    expect(page).to have_content I18n.t("syncing_repos").upcase
-    expect(page).not_to have_content "jimtom/My-Private-Repo"
+    expect(page).to have_text("jimtom/My-Private-Repo")
+    expect(page).not_to have_text(repo.full_github_name)
   end
 
   scenario "user signs up" do

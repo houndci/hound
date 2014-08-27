@@ -32,7 +32,7 @@ App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User
     scope.sync = ->
       scope.syncingRepos = true
 
-      sync = Sync.$save().then(->
+      sync = Sync.save().$promise.then(->
         pollSyncStatus()
       , ->
         scope.syncingRepos = false
