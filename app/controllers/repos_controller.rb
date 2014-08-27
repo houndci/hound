@@ -1,5 +1,5 @@
 class ReposController < ApplicationController
-  before_filter :fetch_email_address, only: [:index]
+  before_action :fetch_email_address, only: [:index]
 
   respond_to :json
 

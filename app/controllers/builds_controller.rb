@@ -1,7 +1,7 @@
 class BuildsController < ApplicationController
   before_action :ignore_confirmation_pings, only: [:create]
-  skip_before_filter :verify_authenticity_token, only: [:create]
-  skip_before_filter :authenticate, only: [:create]
+  skip_before_action :verify_authenticity_token, only: [:create]
+  skip_before_action :authenticate, only: [:create]
 
   def create
     JobQueue.push(build_job_class, payload.data)
