@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :force_https
-  before_filter :capture_campaign_params
-  before_filter :authenticate
-  after_filter  :set_csrf_cookie_for_ng
+  before_action :force_https
+  before_action :capture_campaign_params
+  before_action :authenticate
+  after_action  :set_csrf_cookie_for_ng
   helper_method :current_user, :signed_in?
 
   private
