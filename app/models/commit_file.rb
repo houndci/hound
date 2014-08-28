@@ -14,7 +14,7 @@ class CommitFile
   end
 
   def removed?
-    file.status == 'removed'
+    file.status == "removed"
   end
 
   def modified_lines
