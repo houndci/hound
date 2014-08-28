@@ -1,6 +1,7 @@
 require "fast_spec_helper"
 require "rubocop"
 require "active_support/core_ext/string/strip"
+require "attr_extras"
 require "app/models/style_guide/ruby"
 require "app/models/violation"
 require "sentry-raven"

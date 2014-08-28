@@ -1,14 +1,10 @@
 require 'json'
 
 class Payload
-  attr_reader :data
+  pattr_initialize :unparsed_data
 
-  def initialize(data)
-    if data.is_a? String
-      @data = JSON.parse(data)
-    else
-      @data = data
-    end
+  def data
+    @data ||= parse_data
   end
 
   def head_sha
@@ -40,6 +36,14 @@ class Payload
   end
 
   private
+
+  def parse_data
+    if unparsed_data.is_a? String
+      JSON.parse(unparsed_data)
+    else
+      unparsed_data
+    end
+  end
 
   def pull_request
     data.fetch("pull_request", {})

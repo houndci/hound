@@ -1,4 +1,5 @@
 require "fast_spec_helper"
+require "attr_extras"
 require "octokit"
 require "app/models/commit"
 

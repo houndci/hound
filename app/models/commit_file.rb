@@ -1,23 +1,20 @@
 class CommitFile
-  def initialize(file, commit)
-    @file = file
-    @commit = commit
-  end
+  pattr_initialize :file, :commit
 
   def filename
-    @file.filename
+    file.filename
   end
 
   def content
     @content ||= begin
       unless removed?
-        @commit.file_content(filename)
+        commit.file_content(filename)
       end
     end
   end
 
   def removed?
-    @file.status == 'removed'
+    file.status == "removed"
   end
 
   def modified_lines
@@ -33,6 +30,6 @@ class CommitFile
   private
 
   def patch
-    Patch.new(@file.patch)
+    Patch.new(file.patch)
   end
 end

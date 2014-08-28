@@ -1,4 +1,5 @@
 require 'fast_spec_helper'
+require "attr_extras"
 require 'app/models/payload'
 
 describe Payload do

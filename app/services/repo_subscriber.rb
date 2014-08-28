@@ -7,11 +7,7 @@ class RepoSubscriber
     new(repo, user, nil).unsubscribe
   end
 
-  def initialize(repo, user, card_token)
-    @repo = repo
-    @user = user
-    @card_token = card_token
-  end
+  pattr_initialize :repo, :user, :card_token
 
   def subscribe
     stripe_customer = if user.stripe_customer_id
@@ -48,10 +44,6 @@ class RepoSubscriber
     report_exception(error)
     nil
   end
-
-  protected
-
-  attr_reader :repo, :user, :card_token
 
   private
 

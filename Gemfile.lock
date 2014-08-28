@@ -34,6 +34,7 @@ GEM
     angularjs-rails (1.2.22)
     arel (5.0.1.20140414130214)
     ast (2.0.0)
+    attr_extras (3.0.0)
     bourbon (3.2.3)
       sass (~> 3.2)
       thor
@@ -298,6 +299,7 @@ DEPENDENCIES
   active_model_serializers
   analytics-ruby (~> 2.0.0)
   angularjs-rails
+  attr_extras
   bourbon
   byebug
   capybara (~> 2.4.0)
