@@ -1,10 +1,7 @@
 class PullRequest
   CONFIG_FILE = '.hound.yml'
 
-  def initialize(payload, github_token)
-    @payload = payload
-    @github_token = github_token
-  end
+  pattr_initialize :payload, :github_token
 
   def head_includes?(line)
     head_commit_files.detect { |file| file.modified_lines.include?(line) }
@@ -36,11 +33,11 @@ class PullRequest
   end
 
   def opened?
-    @payload.action == 'opened'
+    payload.action == 'opened'
   end
 
   def synchronize?
-    @payload.action == 'synchronize'
+    payload.action == 'synchronize'
   end
 
   private
@@ -54,18 +51,18 @@ class PullRequest
   end
 
   def api
-    @api ||= GithubApi.new(@github_token)
+    @api ||= GithubApi.new(github_token)
   end
 
   def number
-    @payload.number
+    payload.number
   end
 
   def full_repo_name
-    @payload.full_repo_name
+    payload.full_repo_name
   end
 
   def head_commit
-    @head_commit ||= Commit.new(full_repo_name, @payload.head_sha, api)
+    @head_commit ||= Commit.new(full_repo_name, payload.head_sha, api)
   end
 end

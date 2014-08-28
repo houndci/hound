@@ -4,10 +4,10 @@ require 'base64'
 class GithubApi
   SERVICES_TEAM_NAME = 'Services'
 
-  attr_reader :client
+  pattr_initialize :token
 
-  def initialize(token)
-    @client = Octokit::Client.new(access_token: token)
+  def client
+    @client ||= Octokit::Client.new(access_token: token)
   end
 
   def repos

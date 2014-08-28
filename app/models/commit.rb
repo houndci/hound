@@ -1,11 +1,6 @@
 class Commit
+  pattr_initialize :repo_name, :sha, :github
   attr_reader :repo_name, :sha
-
-  def initialize(repo_name, sha, github)
-    @repo_name = repo_name
-    @sha = sha
-    @github = github
-  end
 
   def files
     @files ||= github_files.map { |file| build_commit_file(file) }

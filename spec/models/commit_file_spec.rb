@@ -1,4 +1,5 @@
 require "fast_spec_helper"
+require "attr_extras"
 require "base64"
 require "app/models/commit_file"
 require "app/models/patch"

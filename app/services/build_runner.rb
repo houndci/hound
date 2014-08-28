@@ -1,9 +1,5 @@
 class BuildRunner
-  attr_reader :payload
-
-  def initialize(payload)
-    @payload = payload
-  end
+  vattr_initialize :payload
 
   def run
     if repo && relevant_pull_request?

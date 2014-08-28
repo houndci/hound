@@ -1,9 +1,7 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby
-    def initialize(custom_config)
-      @custom_config = custom_config
-    end
+    pattr_initialize :custom_config
 
     def violations(file)
       if excluded_file?(file)
@@ -52,7 +50,7 @@ module StyleGuide
     end
 
     def pull_request_config
-      RuboCop::Config.new(YAML.load(@custom_config), "").tap do |config|
+      RuboCop::Config.new(YAML.load(custom_config), "").tap do |config|
         config.add_missing_namespaces
         config.make_excludes_absolute
       end
