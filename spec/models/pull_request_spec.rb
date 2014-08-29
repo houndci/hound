@@ -148,14 +148,14 @@ describe PullRequest do
     end
 
     context "when config file is not present" do
-      it "returns nil" do
+      it "returns blank" do
         api = double(:github_api)
         pull_request = pull_request(api)
         allow(api).to receive(:file_contents).and_raise(Octokit::NotFound)
 
         config = pull_request.config
 
-        expect(config).to be_nil
+        expect(config).to eq ""
       end
     end
   end

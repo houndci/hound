@@ -46,10 +46,20 @@ describe CommitFile do
   end
 
   describe "#content" do
-    it "returns string content" do
-      commit_file = commit_file(status: "modified")
+    context "when file is removed" do
+      it "returns nil" do
+        commit_file = commit_file(status: "removed")
 
-      expect(commit_file.content).to eq "some content"
+        expect(commit_file.content).to eq nil
+      end
+    end
+
+    context "when file is modified" do
+      it "returns content string" do
+        commit_file = commit_file(status: "modified")
+
+        expect(commit_file.content).to eq "some content"
+      end
     end
   end
 

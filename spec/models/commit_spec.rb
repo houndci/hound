@@ -15,21 +15,31 @@ describe Commit do
     end
 
     context "when nothing is returned from GitHub" do
-      it "returns nil" do
+      it "returns blank string" do
         github = double(:github_api, file_contents: nil)
         commit = Commit.new("test/test", "abc", github)
 
-        expect(commit.file_content("test.rb")).to eq nil
+        expect(commit.file_content("test.rb")).to eq ""
       end
     end
 
     context "when content is nil" do
-      it "returns nil" do
+      it "returns blank string" do
         contents = double(:contents, content: nil)
         github = double(:github_api, file_contents: contents)
         commit = Commit.new("test/test", "abc", github)
 
-        expect(commit.file_content("test.rb")).to eq nil
+        expect(commit.file_content("test.rb")).to eq ""
+      end
+    end
+
+    context "when error occurs when fetching from GitHub" do
+      it "returns blank string" do
+        github = double(:github_api)
+        commit = Commit.new("test/test", "abc", github)
+        allow(github).to receive(:file_contents).and_raise(Octokit::NotFound)
+
+        expect(commit.file_content("test.rb")).to eq ""
       end
     end
   end
