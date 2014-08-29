@@ -403,10 +403,8 @@ end
         config = <<-TEXT.strip_heredoc
           hello world!
         TEXT
-        allow(Raven).to receive(:capture_exception)
 
         expect { violations_with_config(config) }.not_to raise_error
-        expect(Raven).to have_received(:capture_exception)
       end
     end
 

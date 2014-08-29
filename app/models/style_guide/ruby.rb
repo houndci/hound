@@ -50,13 +50,18 @@ module StyleGuide
     end
 
     def pull_request_config
-      RuboCop::Config.new(YAML.load(custom_config), "").tap do |config|
+      RuboCop::Config.new(parsed_custom_config, "").tap do |config|
         config.add_missing_namespaces
         config.make_excludes_absolute
       end
-    rescue => error
-      Raven.capture_exception(error)
+    rescue NoMethodError
       RuboCop::Config.new
+    end
+
+    def parsed_custom_config
+      YAML.load(@custom_config)
+    rescue Psych::SyntaxError
+      {}
     end
   end
 end
