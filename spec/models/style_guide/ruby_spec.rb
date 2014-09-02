@@ -151,14 +151,6 @@ end
       end
     end
 
-    context "for inline comment" do
-      it "returns violation" do
-        expect(violations_in(<<-CODE)).not_to be_empty
-puts "test" # inline comment
-        CODE
-      end
-    end
-
     context "for long line" do
       it "returns violation" do
         expect(violations_in("a" * 81)).not_to be_empty

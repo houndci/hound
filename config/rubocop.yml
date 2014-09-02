@@ -106,7 +106,7 @@ IfWithSemicolon:
   Enabled: false
 
 InlineComment:
-  Enabled: true
+  Enabled: false
 
 Lambda:
   Enabled: false
