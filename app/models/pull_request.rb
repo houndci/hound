@@ -18,8 +18,7 @@ class PullRequest
   end
 
   def add_comment(violation)
-    github = GithubApi.new(ENV['HOUND_GITHUB_TOKEN'])
-    github.add_comment(
+    api.add_comment(
       pull_request_number: number,
       comment: violation.messages.join("<br>"),
       commit: head_commit,

@@ -1,14 +1,10 @@
 # Print violation messages as comments on given GitHub pull request.
 class Commenter
-  def comment_on_violations(violations, pull_request)
-    violations.each do |violation|
-      previous_comments = previous_line_comments(pull_request, violation)
+  pattr_initialize :pull_request
 
-      if commenting_policy.comment_permitted?(
-        pull_request,
-        previous_comments,
-        violation
-      )
+  def comment_on_violations(violations)
+    violations.each do |violation|
+      if commenting_policy.allowed_for?(violation)
         pull_request.add_comment(violation)
       end
     end
@@ -17,17 +13,6 @@ class Commenter
   private
 
   def commenting_policy
-    CommentingPolicy.new
-  end
-
-  def previous_line_comments(pull_request, violation)
-    existing_comments(pull_request).select do |comment|
-      comment.original_position == violation.line.patch_position &&
-        comment.path == violation.filename
-    end
-  end
-
-  def existing_comments(pull_request)
-    @existing_comments ||= pull_request.comments
+    @commenting_policy ||= CommentingPolicy.new(pull_request)
   end
 end

@@ -123,7 +123,6 @@ describe PullRequest do
 
       pull_request.add_comment(violation)
 
-      expect(GithubApi).to have_received(:new).with(ENV["HOUND_GITHUB_TOKEN"])
       expect(github).to have_received(:add_comment).with(
         pull_request_number: payload.number,
         commit: commit,

@@ -1,81 +1,115 @@
-require 'fast_spec_helper'
-require 'app/policies/commenting_policy'
+require "fast_spec_helper"
+require "app/policies/commenting_policy"
 
 describe CommentingPolicy do
-  describe '#comment_permitted?' do
-    context 'when violation has not previously been reported' do
-      context 'when pull request has been opened' do
-        it 'returns true' do
-          pull_request = stubbed_pull_request(
-            opened?: true,
-            head_includes?: false
-          )
-          violation = stubbed_violation
-          previous_comments_for_line = []
-          commenting_policy = CommentingPolicy.new
+  describe "#allowed_for?" do
+    context "when violation has not previously been commented on" do
+      context "when pull request has been opened" do
+        it "returns true" do
+          pull_request = stub_pull_request(opened?: true)
+          commenting_policy = CommentingPolicy.new(pull_request)
 
-          result = commenting_policy.comment_permitted?(
-            pull_request,
-            previous_comments_for_line,
-            violation
-          )
-
-          expect(result).to be_truthy
+          expect(commenting_policy).to be_allowed_for(stub_violation)
         end
       end
 
-      context 'when pull request head includes the given line' do
-        it 'returns true' do
-          pull_request = stubbed_pull_request
-          violation = stubbed_violation
-          previous_comments_for_line = []
-          commenting_policy = CommentingPolicy.new
+      context "when pull request has been updated" do
+        it "returns true" do
+          pull_request = stub_pull_request(opened?: false, head_includes?: true)
+          commenting_policy = CommentingPolicy.new(pull_request)
 
-          result = commenting_policy.comment_permitted?(
-            pull_request,
-            previous_comments_for_line,
-            violation
+          expect(commenting_policy).to be_allowed_for(stub_violation)
+        end
+      end
+
+      context "when pull request is updated" do
+        it "returns true" do
+          pull_request = stub_pull_request(opened?: false, head_includes?: true)
+          commenting_policy = CommentingPolicy.new(pull_request)
+
+          expect(commenting_policy).to be_allowed_for(stub_violation)
+        end
+
+        context "but the line didn't change" do
+          it "returns false" do
+            pull_request =
+              stub_pull_request(opened?: false, head_includes?: false)
+            commenting_policy = CommentingPolicy.new(pull_request)
+
+            expect(commenting_policy).not_to be_allowed_for(stub_violation)
+          end
+        end
+      end
+
+      context "when comment exists for the same line but different files" do
+        it "returns true" do
+          violation = stub_violation(
+            filename: "foo.rb",
+            messages: ["Trailing whitespace detected"],
           )
+          comment = stub_comment(
+            original_position: violation.line.patch_position,
+            path: "bar.rb",
+          )
+          pull_request = stub_pull_request(comments: [comment])
+          commenting_policy = CommentingPolicy.new(pull_request)
 
-          expect(result).to be_truthy
+          expect(commenting_policy).to be_allowed_for(violation)
         end
       end
     end
 
-    context 'when a comment reporting the violation has already been made' do
-      it 'returns false' do
-        existing_comment_message = 'Trailing whitespace detected<br>Extra newline'
-        violation_message = 'Trailing whitespace detected'
-        violation = stubbed_violation([violation_message])
-        pull_request = stubbed_pull_request
-        comment = double(:comment, body: existing_comment_message)
-        previous_comments_on_line = [comment]
-        commenting_policy = CommentingPolicy.new
+    context "when a line has been previously commented on" do
+      context "when comment includes violation message" do
+        it "returns false" do
+          violation = stub_violation(
+            filename: "foo.rb",
+            messages: ["Trailing whitespace detected"],
+          )
+          comment = stub_comment(
+            original_position: violation.line.patch_position,
+            path: violation.filename,
+            body: "Trailing whitespace detected<br>Extra newline",
+          )
+          pull_request = stub_pull_request(comments: [comment])
+          commenting_policy = CommentingPolicy.new(pull_request)
 
-        result = commenting_policy.comment_permitted?(
-          pull_request,
-          previous_comments_on_line,
-          violation
-        )
+          expect(commenting_policy).not_to be_allowed_for(violation)
+        end
+      end
 
-        expect(result).to be_falsy
+      context "when comment does not include violation message" do
+        it "returns true" do
+          violation = stub_violation(
+            filename: "foo.rb",
+            messages: ["Trailing whitespace detected"],
+          )
+          comment = stub_comment(
+            original_position: violation.line.patch_position,
+            path: violation.filename,
+            body: "Extra newline",
+          )
+          pull_request = stub_pull_request(comments: [comment])
+          commenting_policy = CommentingPolicy.new(pull_request)
+
+          expect(commenting_policy).to be_allowed_for(violation)
+        end
       end
     end
   end
 
-  def stubbed_violation(messages = [])
-    double(
-      :violation,
-      line: double(:line),
-      messages: messages
-    )
+  def stub_comment(options = {})
+    double(:comment, options)
   end
 
-  def stubbed_pull_request(options = { opened?: false, head_includes?: true })
-    double(
-      :pull_request,
-      opened?: options[:opened?],
-      head_includes?: options[:head_includes?],
-    )
+  def stub_violation(options = {})
+    line = double(:line, patch_position: 1)
+    defaults = { filename: "foo.rb", messages: ["Extra newline"], line: line }
+    double(:violation, defaults.merge(options))
+  end
+
+  def stub_pull_request(options = {})
+    defaults = { opened?: true, head_includes?: true, comments: [] }
+    double(:pull_request, defaults.merge(options))
   end
 end

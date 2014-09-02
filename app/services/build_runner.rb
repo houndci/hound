@@ -4,7 +4,7 @@ class BuildRunner
   def run
     if repo && relevant_pull_request?
       repo.builds.create!(violations: violations)
-      commenter.comment_on_violations(violations, pull_request)
+      commenter.comment_on_violations(violations)
       track_reviewed_repo_for_each_user
     end
   end
@@ -24,7 +24,7 @@ class BuildRunner
   end
 
   def commenter
-    Commenter.new
+    Commenter.new(pull_request)
   end
 
   def pull_request

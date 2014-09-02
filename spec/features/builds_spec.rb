@@ -37,6 +37,7 @@ feature 'Builds' do
   scenario 'a failed build' do
     create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
     stub_github_requests_with_violations
+    stub_commit_request(repo_name, pr_sha, ENV["HOUND_GITHUB_TOKEN"])
     stub_pull_request_comments_request(
       repo_name,
       pr_number,
