@@ -194,7 +194,8 @@ VariableInterpolation:
   Enabled: false
 
 TrailingComma:
-  Enabled: false
+  Enabled: true
+  EnforcedStyleForMultiline: comma
 
 TrivialAccessors:
   Enabled: false
