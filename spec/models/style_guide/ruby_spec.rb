@@ -347,9 +347,7 @@ end
 
       violations = violations_with_config(config)
 
-      expect(violations).to eq [
-        "Omit the parentheses in defs when the method doesn't accept any arguments."
-      ]
+      expect(violations).to eq ["Use the new Ruby 1.9 hash syntax."]
     end
 
     it "can use custom configuration to show rubocop cop names" do
@@ -360,8 +358,7 @@ end
       violations = violations_with_config(config)
 
       expect(violations).to eq [
-        "Style/DefWithParentheses: Omit the parentheses in defs "\
-        "when the method doesn't accept any arguments."
+        "Style/HashSyntax: Use the new Ruby 1.9 hash syntax."
       ]
     end
 
@@ -371,8 +368,8 @@ end
           StringLiterals:
             EnforcedStyle: single_quotes
 
-          DefWithParentheses:
-            Enabled: false
+          HashSyntax:
+            EnforcedStyle: hash_rockets
         TEXT
 
         violations = violations_with_config(config)
@@ -408,10 +405,23 @@ end
       end
     end
 
+    context "with invalid indentation" do
+      it "returns errors" do
+        config = <<-TEXT.strip_heredoc
+          Metrics/LineLength:
+          Max: 15
+        TEXT
+
+        violations = violations_with_config(config)
+
+        expect(violations).to eq ["Use the new Ruby 1.9 hash syntax."]
+      end
+    end
+
     def violations_with_config(config)
       content = <<-TEXT.strip_heredoc
-        def test_method()
-          "hello world"
+        def test_method
+          { :foo => "hello world" }
         end
       TEXT
 

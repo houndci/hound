@@ -35,14 +35,13 @@ module StyleGuide
     end
 
     def config
-      @config ||= RuboCop::Config.
-        new(RuboCop::ConfigLoader.merge(hound_config, pull_request_config), "")
+      @config ||= RuboCop::Config.new(merged_config, "")
     end
 
-    def rubocop_options
-      if config["ShowCopNames"]
-        { debug: true }
-      end
+    def merged_config
+      RuboCop::ConfigLoader.merge(hound_config, pull_request_config)
+    rescue TypeError
+      hound_config
     end
 
     def hound_config
@@ -62,6 +61,12 @@ module StyleGuide
       YAML.load(@custom_config)
     rescue Psych::SyntaxError
       {}
+    end
+
+    def rubocop_options
+      if config["ShowCopNames"]
+        { debug: true }
+      end
     end
   end
 end
