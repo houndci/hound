@@ -1,10 +1,9 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby
-    CONFIG_FILE = ".hound/ruby.yml"
-    LEGACY_CONFIG_FILE = ".hound.yml"
+    DEFAULT_CONFIG_FILE = "config/style_guides/ruby.yml"
 
-    pattr_initialize :pull_request
+    pattr_initialize :custom_config
 
     def violations(file)
       if excluded_file?(file)
@@ -48,11 +47,11 @@ module StyleGuide
     end
 
     def hound_config
-      RuboCop::ConfigLoader.configuration_from_file(CONFIG_FILE)
+      RuboCop::ConfigLoader.configuration_from_file(DEFAULT_CONFIG_FILE)
     end
 
     def pull_request_config
-      RuboCop::Config.new(parsed_custom_config, "").tap do |config|
+      RuboCop::Config.new(@custom_config, "").tap do |config|
         config.add_missing_namespaces
         config.make_excludes_absolute
       end
@@ -60,22 +59,10 @@ module StyleGuide
       RuboCop::Config.new
     end
 
-    def parsed_custom_config
-      YAML.load(@custom_config)
-    rescue Psych::SyntaxError
-      {}
-    end
-
     def rubocop_options
       if config["ShowCopNames"]
         { debug: true }
       end
-    end
-
-    def config_chain
-      @pull_request.config_for(CONFIG_FILE) ||
-        @pull_request.config_for(LEGACY_CONFIG_FILE) ||
-        "{}"
     end
   end
 end

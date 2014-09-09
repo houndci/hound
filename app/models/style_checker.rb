@@ -2,36 +2,49 @@
 # Builds style guide based on file extension.
 # Delegates to style guide for line violations.
 class StyleChecker
-  def initialize(pull_request)
-    @pull_request = pull_request
-  end
+  CONFIG_FILE = ".hound.yml"
+
+  pattr_initialize :pull_request
 
   def violations
-    @violations ||= unremoved_files.map do |file|
+    @violations ||= files_with_changes.flat_map do |file|
       style_guide(file.filename).violations(file)
-    end.flatten
+    end
   end
 
   private
 
-  def unremoved_files
-    @pull_request.pull_request_files.reject { |file| file.removed? }
+  def files_with_changes
+    pull_request.pull_request_files.reject(&:removed?)
   end
 
   def style_guide(filename)
     if filename =~ /.*\.rb$/
-      @ruby_style_guide ||= StyleGuide::Ruby.new(@pull_request)
-    elsif filename =~ /.*\.coffee.?/ && rolled_out?
-      @coffee_script_style_guide ||= StyleGuide::CoffeeScript.new(@pull_request)
+      @ruby_style_guide ||= StyleGuide::Ruby.new(config)
+    elsif filename =~ /.*\.coffee.?/ && enabled?("CoffeeScript")
+      @coffee_script_style_guide ||= StyleGuide::CoffeeScript.new
     else
-      @null_style_guide ||= StyleGuide::Null.new(@pull_request)
+      @unsupported_style_guide ||= StyleGuide::Unsupported.new
     end
   end
 
-  def rolled_out?
-    github_organization_name = @pull_request.full_repo_name.split("/").first
-    ENV["COFFEE_ORGS"].split(",").include?(github_organization_name)
-  rescue
-    false
+  def enabled?(language)
+    config[language] && config[language]["Enabled"] == true
+  end
+
+  def config
+    @config ||= begin
+      if pull_request_config.present?
+        YAML.load(pull_request_config)
+      else
+        {}
+      end
+    rescue Psych::SyntaxError
+      {}
+    end
+  end
+
+  def pull_request_config
+    pull_request.file_content(CONFIG_FILE)
   end
 end

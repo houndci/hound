@@ -5,15 +5,15 @@
 
   %p
     With no additional setup, Hound uses
-    #{link_to "default configuration", "https://github.com/thoughtbot/hound/blob/master/.hound"}
+    #{link_to "default configuration", "https://github.com/thoughtbot/hound/blob/master/config/style_guides"}
     that is based on
-    #{link_to "thoughtbot's style guide", 'https://github.com/thoughtbot/guides/tree/master/style'}.
+    #{link_to "thoughtbot's style guide", "https://github.com/thoughtbot/guides/tree/master/style"}.
 
   %p
     Custom configuration of the style guide is entirely optional and is
     achieved by specifying guidelines in
-    %em.code .hound/*
-    files.
+    %em.code .hound.yml
+    file.
 
   %h3 Ruby
 
@@ -24,7 +24,7 @@
 
   %p
     Hound will look for
-    %em.code .hound/ruby.yml
+    %em.code .hound.yml
     file in the root of your repo, and apply the custom configuration on top of
     the default configuration.
 
@@ -34,11 +34,11 @@
   %ol.numbered
     %li
       Add a file named
-      %em.code .hound/ruby.yml
+      %em.code .hound.yml
       to the root of your repo.
     %li
       Add your custom configuration to
-      %em.code .hound/ruby.yml
+      %em.code .hound.yml
       file.
       %p For example:
       %code.code-block
@@ -68,7 +68,7 @@
       If you set
       %em.code ShowCopNames: true
       in your
-      %em.code .hound/ruby.yml
+      %em.code .hound.yml
       file, Hound will prefix all of its pull request comments with the Rubocop config key
       (cop name) of the corresponding style violation. You may find this useful when deciding
       which style rules you would like to enable or disable.
@@ -77,39 +77,29 @@
 
   %p
     Hound uses #{link_to "CoffeeLint", "http://www.coffeelint.org/"} to handle
-    CoffeeScipt style checking. Thus, most of the CoffeeLint configuration is
-    supported in Hound as well.
+    CoffeeScipt style checking.
 
   %p
-    Hound will look for
-    %em.code .hound/coffee.json
-    file in the root of your repo, and apply the custom configuration on top of
-    the default configuration.
-
-  %p
-    Follow these steps to add your own custom configuration:
+    Follow these steps to enable CoffeeScript syntax checking:
 
   %ol.numbered
     %li
       Add a file named
-      %em.code .hound/coffee.json
+      %em.code .hound.yml
       to the root of your repo.
     %li
-      Add your custom configuration to
-      %em.code .hound/coffee.json
+      Add this to
+      %em.code .hound.yml
       file.
-      %p For example:
       %code.code-block
         :preserve
-          {
-            "cyclomatic_complexity": {
-              "value": 10,
-              "level": "error"
-            }
-          }
-      See
-      #{link_to "more config options", "http://www.coffeelint.org/#options"}
-      in the CoffeeLint project.
+          CoffeeScript:
+            Enabled: true
+
     %li
-      Commit the changes to your repo, and the following pull requests will use
-      your custom configuration in combination with Hound's defaults.
+      Commit the changes to your repo, and the following pull requests will be
+      checked for CoffeeScript syntax violations using Hound's default
+      guidelines.
+
+    %p
+      Customization of CoffeeScript guidelines is coming soon.

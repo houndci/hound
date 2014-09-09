@@ -25,7 +25,7 @@ class PullRequest
     )
   end
 
-  def config_for(file_name)
+  def file_content(file_name)
     head_commit.file_content(file_name)
   end
 

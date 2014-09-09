@@ -1,9 +1,6 @@
 # Returns empty set of violations.
 module StyleGuide
-  class Null
-    def initialize(_)
-    end
-
+  class Unsupported
     def violations(_)
       []
     end

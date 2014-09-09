@@ -140,7 +140,7 @@ describe PullRequest do
         api = double(:github_api, file_contents: file_contents)
         pull_request = pull_request(api)
 
-        config = pull_request.config_for("path/file.extension")
+        config = pull_request.file_content("path/file.extension")
 
         expect(config).to eq("test")
       end
@@ -152,7 +152,7 @@ describe PullRequest do
         pull_request = pull_request(api)
         allow(api).to receive(:file_contents).and_raise(Octokit::NotFound)
 
-        config = pull_request.config_for("path/file.extension")
+        config = pull_request.file_content("path/file.extension")
 
         expect(config).to eq ""
       end

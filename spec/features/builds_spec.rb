@@ -89,13 +89,6 @@ feature 'Builds' do
       ENV["HOUND_GITHUB_TOKEN"],
       repo_name: repo_name,
       sha: pr_sha,
-      file: ".hound/ruby.yml",
-      fixture: "config_contents.json"
-    )
-    stub_contents_request(
-      ENV["HOUND_GITHUB_TOKEN"],
-      repo_name: repo_name,
-      sha: pr_sha,
       fixture: 'contents_with_violations.json'
     )
   end

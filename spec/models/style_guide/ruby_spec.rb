@@ -345,8 +345,7 @@ end
         filename: "lib/test.rb",
         modified_line_at: nil,
       )
-      pull_request = double(:pull_request, config_for: nil)
-      style_guide = StyleGuide::Ruby.new(pull_request)
+      style_guide = StyleGuide::Ruby.new({})
 
       violations = style_guide.violations(file)
 
@@ -356,11 +355,12 @@ end
 
   context "with custom configuration" do
     it "finds only one violation" do
-      config = <<-TEXT.strip_heredoc
-        StringLiterals:
-          EnforcedStyle: double_quotes
-          Enabled: true
-      TEXT
+      config = {
+        "StringLiterals" => {
+          "EnforcedStyle" => "double_quotes",
+          "Enabled" => "true",
+        }
+      }
 
       violations = violations_with_config(config)
 
@@ -368,9 +368,7 @@ end
     end
 
     it "can use custom configuration to show rubocop cop names" do
-      config = <<-TEXT.strip_heredoc
-        ShowCopNames: true
-      TEXT
+      config = { "ShowCopNames" => "true" }
 
       violations = violations_with_config(config)
 
@@ -381,13 +379,14 @@ end
 
     context "with old-style syntax" do
       it "has one violation" do
-        config = <<-TEXT.strip_heredoc
-          StringLiterals:
-            EnforcedStyle: single_quotes
-
-          HashSyntax:
-            EnforcedStyle: hash_rockets
-        TEXT
+        config = {
+          "StringLiterals" => {
+            "EnforcedStyle" => "single_quotes"
+          },
+          "HashSyntax" => {
+            "EnforcedStyle" => "hash_rockets"
+          },
+        }
 
         violations = violations_with_config(config)
 
@@ -400,11 +399,11 @@ end
 
     context "with excluded files" do
       it "has no violations" do
-        config = <<-TEXT.strip_heredoc
-          AllCops:
-            Exclude:
-              - lib/test.rb
-        TEXT
+        config = {
+          "AllCops" => {
+            "Exclude" => ["lib/test.rb"]
+          }
+        }
 
         violations = violations_with_config(config)
 
@@ -442,9 +441,7 @@ end
         end
       TEXT
 
-      pull_request = double(:pull_request, config_for: "")
-
-      style_guide = StyleGuide::Ruby.new(pull_request)
+      style_guide = StyleGuide::Ruby.new(config)
       violations = style_guide.violations(build_file(content))
       violations.map(&:messages).flatten
     end
@@ -453,18 +450,12 @@ end
   private
 
   def violations_in(content)
-    config = <<-YAML.strip_heredoc
-      Style/EndOfLine:
-        Enabled: false
-    YAML
-    pull_request = double(:pull_request, config_for: config)
-
     unless content.end_with?("\n")
       content += "\n"
     end
 
-    style_guide = StyleGuide::Ruby.new(pull_request)
-    style_guide.violations(build_file(content)).map(&:messages).flatten
+    style_guide = StyleGuide::Ruby.new({})
+    style_guide.violations(build_file(content)).flat_map(&:messages)
   end
 
   def build_file(content)
