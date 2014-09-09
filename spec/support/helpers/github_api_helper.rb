@@ -167,6 +167,27 @@ module GithubApiHelper
     )
   end
 
+  def stub_chained_org_teams_request(org_name, token)
+    no_services_team_json_response =
+      File.read("spec/support/fixtures/repo_teams.json")
+    services_team_json_response =
+      File.read("spec/support/fixtures/org_teams_with_services_team.json")
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams"
+    ).with(
+      headers: { "Authorization" => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: no_services_team_json_response,
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    ).then.to_return(
+      status: 200,
+      body: services_team_json_response,
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
   def stub_add_user_to_team_request(username, team_id, token = auth_token)
     stub_request(
       :put,

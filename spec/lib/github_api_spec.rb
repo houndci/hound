@@ -18,18 +18,18 @@ describe GithubApi do
   end
 
   describe '#add_user_to_repo' do
+    let(:token) { "abc123" }
+    let(:username) { "testuser" }
+    let(:organization) { "testing" }
+    let(:repo_name) { "#{organization}/repo" }
+    let(:team_id) { 4567 }
+    let(:api) { GithubApi.new(token) }
+
     context 'when repo is part of an organization' do
       context 'when repo is part of a team' do
         context 'when request succeeds' do
           it 'adds Hound user to first repo team with admin access and return true' do
-            token = 'abc123'
-            username = 'testuser'
-            repo_name = 'testing/repo' # from fixture
-            team_id = 4567 # from fixture
-            api = GithubApi.new(token)
-            stub_repo_with_org_request(repo_name, token)
-            stub_repo_teams_request(repo_name, token)
-            stub_user_teams_request(token)
+            stub_common_requests
             add_user_request =
               stub_add_user_to_team_request(username, team_id, token)
 
@@ -40,94 +40,66 @@ describe GithubApi do
 
         context 'when request fails' do
           it 'tries to add Hound user to first repo team with admin access and returns false' do
-            token = 'abc123'
-            username = 'testuser'
-            repo_name = 'testing/repo' # from fixture
-            team_id = 4567 # from fixture
-            api = GithubApi.new(token)
-            stub_repo_with_org_request(repo_name, token)
-            stub_repo_teams_request(repo_name, token)
-            stub_user_teams_request(token)
-            add_user_request = stub_failed_add_user_to_team_request(
-              username,
-              team_id,
-              token
-            )
+            stub_common_requests
+            add_user_request =
+              stub_failed_add_user_to_team_request(username, team_id, token)
 
             expect(api.add_user_to_repo(username, repo_name)).to be_falsy
             expect(add_user_request).to have_been_requested
           end
+        end
+
+        def stub_common_requests
+          stub_repo_with_org_request(repo_name, token)
+          stub_repo_teams_request(repo_name, token)
+          stub_user_teams_request(token)
         end
       end
 
       context 'when repo is not part of a team' do
         context 'when Services team does not exist' do
           it 'creates a Services team and adds user to the new team' do
-            token = 'abc123'
-            username = 'testuser'
-            repo_name = 'testing/repo' # from fixture
             team_id = 1234 # from fixture
-            api = GithubApi.new(token)
             stub_repo_with_org_request(repo_name, token)
             stub_empty_repo_teams_request(repo_name, token)
-            stub_user_teams_request(token)
-            stub_team_creation_request('testing', repo_name, token)
-            stub_org_teams_request('testing', token)
-            add_user_request = stub_add_user_to_team_request(
-              username,
-              team_id,
-              token
-            )
+            stub_team_creation_request(organization, repo_name, token)
+            stub_org_teams_request(organization, token)
+            add_user_request =
+              stub_add_user_to_team_request(username, team_id, token)
 
             expect(api.add_user_to_repo(username, repo_name)).to be_truthy
             expect(add_user_request).to have_been_requested
           end
         end
 
-        context 'when Services team exists' do
-          it 'adds user to Services team' do
-            token = 'abc123'
-            username = 'testuser'
-            repo_name = 'testing/repo' # from fixture
-            services_team_id = 4567 # from fixture
-            api = GithubApi.new(token)
+        context "when team creation raises a validation error" do
+          it "adds user to Services team" do
             stub_repo_with_org_request(repo_name, token)
             stub_empty_repo_teams_request(repo_name, token)
-            stub_user_teams_request(token)
-            stub_failed_team_creation_request('testing', repo_name, token)
-            stub_org_teams_with_services_request('testing', token)
-            stub_add_repo_to_team_request(repo_name, services_team_id, token)
-            add_user_request = stub_add_user_to_team_request(
-              username,
-              services_team_id,
-              token
-            )
+            stub_chained_org_teams_request(organization, token)
+            stub_failed_team_creation_request(organization, repo_name, token)
+            add_user_request =
+              stub_add_user_to_team_request(username, team_id, token)
 
             api.add_user_to_repo(username, repo_name)
 
             expect(add_user_request).to have_been_requested
           end
+        end
 
-          it 'adds repo to Services team' do
-            token = 'abc123'
-            username = 'testuser'
-            repo_name = 'testing/repo' # from fixture
-            services_team_id = 4567 # from fixture
-            api = GithubApi.new(token)
+        context "when Services team exists" do
+          it "adds user to Services team" do
             stub_repo_with_org_request(repo_name, token)
             stub_empty_repo_teams_request(repo_name, token)
-            stub_user_teams_request(token)
-            stub_failed_team_creation_request('testing', repo_name, token)
-            stub_org_teams_with_services_request('testing', token)
-            stub_add_user_to_team_request(username, services_team_id, token)
-            add_repo_request = stub_add_repo_to_team_request(
-              repo_name,
-              services_team_id,
-              token
-            )
+            stub_org_teams_with_services_request(organization, token)
+            add_repo_request =
+              stub_add_repo_to_team_request(repo_name, team_id, token)
+            add_user_request =
+              stub_add_user_to_team_request(username, team_id, token)
 
             api.add_user_to_repo(username, repo_name)
 
+            expect(add_user_request).to have_been_requested
             expect(add_repo_request).to have_been_requested
           end
         end
@@ -136,16 +108,9 @@ describe GithubApi do
 
     context 'when repo is not part of an organization' do
       it 'adds user as collaborator' do
-        token = 'abc123'
-        username = 'testuser'
-        repo_name = 'testing/repo'
-        api = GithubApi.new(token)
         stub_repo_request(repo_name, token)
-        add_user_request = stub_add_user_to_repo_request(
-          username,
-          repo_name,
-          token
-        )
+        add_user_request =
+          stub_add_user_to_repo_request(username, repo_name, token)
 
         expect(api.add_user_to_repo(username, repo_name)).to be_truthy
         expect(add_user_request).to have_been_requested
