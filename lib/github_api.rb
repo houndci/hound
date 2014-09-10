@@ -58,11 +58,6 @@ class GithubApi
     client.remove_hook(full_github_name, hook_id)
   end
 
-  def commit_files(full_repo_name, commit_sha)
-    commit = client.commit(full_repo_name, commit_sha)
-    commit.files
-  end
-
   def pull_request_comments(full_repo_name, pull_request_number)
     client.pull_request_comments(full_repo_name, pull_request_number)
   end

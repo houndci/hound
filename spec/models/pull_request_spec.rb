@@ -1,44 +1,6 @@
 require "spec_helper"
 
 describe PullRequest do
-  describe "#head_includes?" do
-    context "when HEAD commit includes line" do
-      it "returns true" do
-        patch_line = "+ A line of code"
-        pull_request = build_pull_request(patch_line)
-
-        includes_line = pull_request.head_includes?(Line.new(patch_line))
-
-        expect(includes_line).to be_truthy
-      end
-    end
-
-    context "when HEAD commit does not include line" do
-      it "returns false" do
-        patch_line1 = "+ A line of code"
-        patch_line2 = "+ Different line of code"
-        pull_request = build_pull_request(patch_line1)
-
-        includes_line = pull_request.head_includes?(Line.new(patch_line2))
-
-        expect(includes_line).to be_falsy
-      end
-    end
-
-    def build_pull_request(patch_line)
-      file_response = double(
-        :file_response,
-        filename: "test.rb",
-        status: "added",
-        patch: "@@ -1,1 +1,1\n#{patch_line}",
-        content: ""
-      )
-      content = double(content: "")
-      github_api = double(commit_files: [file_response], file_contents: content)
-      pull_request(github_api)
-    end
-  end
-
   describe "#opened?" do
     context "when payload action is opened" do
       it "returns true" do

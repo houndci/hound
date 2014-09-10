@@ -186,21 +186,6 @@ describe GithubApi do
     end
   end
 
-  describe '#commit_files' do
-    it 'returns changed files in commit' do
-      github_token = 'githubtoken'
-      github_api = GithubApi.new(github_token)
-      full_repo_name = 'org/repo'
-      commit_sha = 'commitsha'
-      stub_commit_request(full_repo_name, commit_sha)
-
-      files = github_api.commit_files(full_repo_name, commit_sha)
-
-      expect(files.size).to eq(1)
-      expect(files.first.filename).to eq 'file1.rb'
-    end
-  end
-
   describe '#pull_request_files' do
     it 'returns changed files in a pull request' do
       api = GithubApi.new('authtoken')

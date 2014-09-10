@@ -1,10 +1,6 @@
 class PullRequest
   pattr_initialize :payload, :github_token
 
-  def head_includes?(line)
-    head_commit_files.detect { |file| file.modified_lines.include?(line) }
-  end
-
   def comments
     @comments ||= api.pull_request_comments(full_repo_name, number)
   end
@@ -38,10 +34,6 @@ class PullRequest
   end
 
   private
-
-  def head_commit_files
-    head_commit.files
-  end
 
   def build_commit_file(file)
     CommitFile.new(file, head_commit)

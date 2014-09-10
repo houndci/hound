@@ -2,14 +2,10 @@ class CommentingPolicy
   pattr_initialize :pull_request
 
   def allowed_for?(violation)
-    in_review?(violation.line) && unreported_violation_messages(violation).any?
+    unreported_violation_messages(violation).any?
   end
 
   private
-
-  def in_review?(line)
-    pull_request.opened? || pull_request.head_includes?(line)
-  end
 
   def unreported_violation_messages(violation)
     violation.messages - existing_violation_messages(violation)
