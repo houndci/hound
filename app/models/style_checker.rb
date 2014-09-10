@@ -2,8 +2,6 @@
 # Builds style guide based on file extension.
 # Delegates to style guide for line violations.
 class StyleChecker
-  CONFIG_FILE = ".hound.yml"
-
   pattr_initialize :pull_request
 
   def violations
@@ -33,18 +31,6 @@ class StyleChecker
   end
 
   def config
-    @config ||= begin
-      if pull_request_config.present?
-        YAML.load(pull_request_config)
-      else
-        {}
-      end
-    rescue Psych::SyntaxError
-      {}
-    end
-  end
-
-  def pull_request_config
-    pull_request.file_content(CONFIG_FILE)
+    CommitConfig.new(pull_request.head_commit).to_hash
   end
 end
