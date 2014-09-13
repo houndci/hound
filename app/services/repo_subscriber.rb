@@ -34,12 +34,13 @@ class RepoSubscriber
   def unsubscribe
     stripe_customer = find_stripe_customer
 
-    stripe_subscription = stripe_customer.subscriptions.retrieve(
-      repo.subscription.stripe_subscription_id
-    )
-    stripe_subscription.delete
+    if stripe_customer
+      stripe_subscription = stripe_customer.subscriptions.
+        retrieve(repo.subscription.stripe_subscription_id)
+      stripe_subscription.delete
+    end
 
-    repo.subscription.destroy
+    repo.subscription.try(:destroy)
   rescue => error
     report_exception(error)
     nil

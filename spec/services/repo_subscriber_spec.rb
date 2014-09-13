@@ -146,6 +146,26 @@ describe RepoSubscriber do
 
       expect(subscription.reload).to be_deleted
     end
+
+    context "when Stripe customer doesn't exist" do
+      it "soft deletes repo subscription" do
+        subscription = create(:subscription)
+
+        RepoSubscriber.unsubscribe(subscription.repo, subscription.user)
+
+        expect(subscription.reload).to be_deleted
+      end
+    end
+
+    context "when subscription record doesn't exist" do
+      it "doesn't error" do
+        repo = create(:repo)
+
+        RepoSubscriber.unsubscribe(repo, repo.users.first)
+
+        expect(repo.subscription).to be_nil
+      end
+    end
   end
 
   def stub_customer_create_request(user)
