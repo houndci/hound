@@ -1,5 +1,13 @@
-class Line < Struct.new(:content, :line_number, :patch_position)
-  def ==(other_line)
-    content == other_line.content
+class Line
+  attr_reader :number, :patch_position
+
+  def initialize(number:, content:, patch_position:)
+    @number = number
+    @content = content
+    @patch_position = patch_position
+  end
+
+  def changed?
+    true
   end
 end

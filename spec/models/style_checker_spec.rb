@@ -1,33 +1,34 @@
-require "attr_extras"
-require "rubocop"
-require "coffeelint"
-require "fast_spec_helper"
 require "active_support/core_ext"
+require "coffeelint"
+require "rubocop"
+
+require "fast_spec_helper"
+require "app/models/line"
+require "app/models/unchanged_line"
+require "app/models/repo_config"
 require "app/models/style_checker"
 require "app/models/violation"
-require "app/models/repo_config"
+require "app/models/violations"
 Dir.glob("app/models/style_guide/*.rb", &method(:require))
 
-describe StyleChecker, '#violations' do
+describe StyleChecker, "#violations" do
   it "returns a collection of computed violations" do
-    stylish_file = stub_modified_file("good.rb", "def good; end")
-    violated_file = stub_modified_file("bad.rb", "def bad( a ); a; end  ")
+    stylish_file = stub_commit_file("good.rb", "def good; end")
+    violated_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
     pull_request =
       stub_pull_request(pull_request_files: [stylish_file, violated_file])
-    expected = Violation.new(
-      violated_file.filename,
-      violated_file.modified_line_at,
+    expected_violations =
       ['Space inside parentheses detected.', 'Trailing whitespace detected.']
-    )
 
-    style_checker = StyleChecker.new(pull_request)
+    violation_messages = StyleChecker.new(pull_request).violations.
+      flat_map(&:messages)
 
-    expect(style_checker.violations).to eq [expected]
+    expect(violation_messages).to eq expected_violations
   end
 
   context "when given a Ruby file" do
     it "returns violations" do
-      file = stub_modified_file("ruby.rb", %{puts "Hello World" })
+      file = stub_commit_file("ruby.rb", %{puts "Hello World" })
       pull_request = stub_pull_request(pull_request_files: [file])
 
       violations = StyleChecker.new(pull_request).violations
@@ -47,7 +48,7 @@ describe StyleChecker, '#violations' do
             enabled: true
         YAML
         head_commit = double("Commit", file_content: config)
-        file = stub_modified_file("test.coffee", file_content)
+        file = stub_commit_file("test.coffee", file_content)
         pull_request = stub_pull_request(
           head_commit: head_commit,
           pull_request_files: [file],
@@ -62,7 +63,7 @@ describe StyleChecker, '#violations' do
 
     context "and CoffeeScript support is not enabled" do
       it "does not use CoffeeScript style guide" do
-        file = stub_modified_file("test.coffee", file_content)
+        file = stub_commit_file("test.coffee", file_content)
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
@@ -74,12 +75,23 @@ describe StyleChecker, '#violations' do
 
   context "with unsupported file type" do
     it "uses unsupported style guide" do
-      file = stub_modified_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
+      file = stub_commit_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
       pull_request = stub_pull_request(pull_request_files: [file])
 
       violations = StyleChecker.new(pull_request).violations
 
       expect(violations).to eq []
+    end
+  end
+
+  context "with violation on unchanged line" do
+    it "returns no violations" do
+      file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
+      pull_request = stub_pull_request(pull_request_files: [file])
+
+      violations = StyleChecker.new(pull_request).violations
+
+      expect(violations.count).to eq 0
     end
   end
 
@@ -96,14 +108,15 @@ describe StyleChecker, '#violations' do
     double("PullRequest", defaults.merge(options))
   end
 
-  def stub_modified_file(filename, contents)
+  def stub_commit_file(filename, contents, line = nil)
+    line ||= Line.new(content: "foo", number: 1, patch_position: 2)
     formatted_contents = "#{contents}\n"
     double(
       filename.split(".").first,
       filename: filename,
       content: formatted_contents,
       removed?: false,
-      modified_line_at: 1
+      line_at: line,
     )
   end
 end

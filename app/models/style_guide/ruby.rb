@@ -3,19 +3,17 @@ module StyleGuide
   class Ruby < Base
     DEFAULT_CONFIG_FILE = File.join(CONFIG_DIR, "ruby.yml")
 
+    def violations_in_file(file)
+      if config.file_to_exclude?(file.filename)
+        []
+      else
+        team.inspect_file(parsed_source(file)).map do |violation|
+          Violation.new(file, violation.line, violation.message)
+        end
+      end
+    end
+
     private
-
-    def excluded_file?(file)
-      config.file_to_exclude?(file.filename)
-    end
-
-    def uniq_messages_from_violations(violations)
-      violations.map(&:message).uniq
-    end
-
-    def violations_per_line(file)
-      team.inspect_file(parsed_source(file)).group_by(&:line)
-    end
 
     def team
       RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config, rubocop_options)

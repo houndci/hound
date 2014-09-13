@@ -17,16 +17,15 @@ class CommitFile
     file.status == "removed"
   end
 
-  def modified_line_at(line_number)
-    modified_lines.detect do |modified_line|
-      modified_line.line_number == line_number
-    end
+  def line_at(line_number)
+    changed_lines.detect { |line| line.number == line_number } ||
+      UnchangedLine.new
   end
 
   private
 
-  def modified_lines
-    @modified_lines ||= patch.additions
+  def changed_lines
+    @changed_lines ||= patch.changed_lines
   end
 
   def patch

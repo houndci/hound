@@ -21,9 +21,9 @@ describe CommentingPolicy do
             messages: ["Trailing whitespace detected"],
           )
           comment = stub_comment(
-            original_position: violation.line.patch_position,
-            path: violation.filename,
             body: "Trailing whitespace detected<br>Extra newline",
+            original_position: violation.patch_position,
+            path: violation.filename,
           )
           pull_request = stub_pull_request(comments: [comment])
           commenting_policy = CommentingPolicy.new(pull_request)
@@ -39,7 +39,8 @@ describe CommentingPolicy do
             messages: ["Trailing whitespace detected"],
           )
           comment = stub_comment(
-            original_position: violation.line.patch_position,
+            body: "Trailing whitespace detected",
+            original_position: violation.patch_position,
             path: "bar.rb",
           )
           pull_request = stub_pull_request(comments: [comment])
@@ -56,9 +57,9 @@ describe CommentingPolicy do
             messages: ["Trailing whitespace detected"],
           )
           comment = stub_comment(
-            original_position: violation.line.patch_position,
-            path: violation.filename,
             body: "Extra newline",
+            original_position: violation.patch_position,
+            path: violation.filename,
           )
           pull_request = stub_pull_request(comments: [comment])
           commenting_policy = CommentingPolicy.new(pull_request)
@@ -74,8 +75,11 @@ describe CommentingPolicy do
   end
 
   def stub_violation(options = {})
-    line = double(:line, patch_position: 1)
-    defaults = { filename: "foo.rb", messages: ["Extra newline"], line: line }
+    defaults = {
+      filename: "foo.rb",
+      messages: ["Extra newline"],
+      patch_position: 1,
+    }
     double(:violation, defaults.merge(options))
   end
 

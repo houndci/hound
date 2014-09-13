@@ -8,18 +8,22 @@ class StyleChecker
   end
 
   def violations
-    @violations ||= files_to_check.flat_map do |file|
-      style_guide(file.filename).violations_in_file(file)
-    end
+    @violations ||= Violations.new.push(*violations_in_checked_files).to_a
   end
 
   private
 
   attr_reader :pull_request, :style_guides
 
+  def violations_in_checked_files
+    files_to_check.flat_map do |file|
+      style_guide(file.filename).violations_in_file(file)
+    end
+  end
+
   def files_to_check
-    pull_request.pull_request_files.select do |file|
-      !file.removed? && style_guide(file.filename).enabled?
+    pull_request.pull_request_files.reject(&:removed?).select do |file|
+      style_guide(file.filename).enabled?
     end
   end
 

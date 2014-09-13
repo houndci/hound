@@ -1,9 +1,10 @@
-require "fast_spec_helper"
-require "attr_extras"
 require "base64"
+require "active_support/core_ext/hash"
+
+require "fast_spec_helper"
 require "app/models/commit_file"
 require "app/models/patch"
-require "active_support/core_ext/hash"
+require "app/models/unchanged_line"
 
 describe CommitFile do
   describe "#removed?" do
@@ -24,24 +25,24 @@ describe CommitFile do
     end
   end
 
-  describe "#modified_line_at" do
-    context "with a modified line" do
-      it "returns modified line at the given line number" do
-        modified_line = double(:modified_line, line_number: 1)
-        patch = double(:patch, additions: [modified_line])
+  describe "#line_at" do
+    context "with a changed line" do
+      it "returns a line at the given line number" do
+        line = double("Line", number: 1)
+        patch = double("Patch", changed_lines: [line])
         allow(Patch).to receive(:new).and_return(patch)
 
-        expect(commit_file.modified_line_at(1)).to eq modified_line
+        expect(commit_file.line_at(1)).to eq line
       end
     end
 
-    context "without a modified line" do
+    context "without a changed line" do
       it "returns nil" do
-        modified_line = double(:modified_line, line_number: 1)
-        patch = double(:patch, additions: [modified_line])
+        line = double("Line", number: 1)
+        patch = double("Patch", changed_lines: [line])
         allow(Patch).to receive(:new).and_return(patch)
 
-        expect(commit_file.modified_line_at(2)).to be_nil
+        expect(commit_file.line_at(2)).to be_an UnchangedLine
       end
     end
   end

@@ -3,20 +3,13 @@ module StyleGuide
   class CoffeeScript < Base
     DEFAULT_CONFIG_FILE = File.join(CONFIG_DIR, "coffeescript.json")
 
+    def violations_in_file(file)
+      Coffeelint.lint(file.content, config).map do |violation|
+        Violation.new(file, violation["lineNumber"], violation["message"])
+      end
+    end
+
     private
-
-    def excluded_file?(_file)
-      false
-    end
-
-    def uniq_messages_from_violations(violations)
-      violations.map { |violation| violation["message"] }.uniq
-    end
-
-    def violations_per_line(file)
-      Coffeelint.lint(file.content, config).
-        group_by { |violation| violation["lineNumber"] }
-    end
 
     def config
       default_config.merge(repo_config.for(name))
