@@ -19,14 +19,14 @@ describe RepoConfig do
     end
 
     context "with invalid indentation in hound config" do
-      it "returns true for ruby" do
+      it "returns false for all" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           coffee_script:
           enabled: true
         EOS
         repo_config = RepoConfig.new(commit)
 
-        expect(repo_config).to be_enabled_for("ruby")
+        expect(repo_config).not_to be_enabled_for("ruby")
         expect(repo_config).not_to be_enabled_for("coffee_script")
       end
     end
@@ -82,6 +82,21 @@ describe RepoConfig do
 
         expect(repo_config).to be_enabled_for("ruby")
         expect(repo_config).not_to be_enabled_for("coffee_script")
+      end
+
+      it "returns true for coffee_script and ruby" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          CoffeeScript:
+            Enabled: true
+          LineLength:
+            Max: 80
+          DotPosition:
+            EnforcedStyle: trailing
+        EOS
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config).to be_enabled_for("ruby")
+        expect(repo_config).to be_enabled_for("coffee_script")
       end
     end
 
@@ -141,6 +156,23 @@ describe RepoConfig do
 
         expect(config.for("ruby")).to eq({})
         expect(config.for("coffee_script")).to eq({})
+      end
+    end
+
+    context "with legacy config file" do
+      it "returns config for ruby" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          LineLength:
+            Max: 80
+          DotPosition:
+            EnforcedStyle: trailing
+        EOS
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config.for("ruby")).to eq(
+          "LineLength" => { "Max" => 80 },
+          "DotPosition" => { "EnforcedStyle" => "trailing" },
+        )
       end
     end
 
