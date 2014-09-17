@@ -1,105 +1,61 @@
 = render 'shared/header'
 
 %main.content-doc
-  %h2 Hound configuration (optional)
+  %h2 Configuration
 
   %p
-    With no additional setup, Hound uses
-    #{link_to "default configuration", "https://github.com/thoughtbot/hound/blob/master/config/style_guides"}
-    that is based on
-    #{link_to "thoughtbot's style guide", "https://github.com/thoughtbot/guides/tree/master/style"}.
-
-  %p
-    Custom configuration of the style guide is entirely optional and is
-    achieved by specifying guidelines in
-    %em.code .hound.yml
-    file.
+    Hound uses the 
+    #{link_to "thoughtbot style guide", "https://github.com/thoughtbot/guides/tree/master/style"}
+    by default, unless you configure it to use your own style guide.
 
   %h3 Ruby
 
   %p
-    Hound uses #{link_to "RuboCop", "https://github.com/bbatsov/rubocop"} to
-    handle Ruby style checking. Thus, most of the RuboCop configuration, except
-    inheritance, is supported in Hound as well.
-
-  %p
-    Hound will look for
+    To enable Ruby style checking, add the following to
     %em.code .hound.yml
-    file in the root of your repo, and apply the custom configuration on top of
-    the default configuration.
+    in the root of your project
+
+    %code.code-block
+      :preserve
+        ruby:
+          enabled: true
 
   %p
-    Follow these steps to add your own custom configuration:
+    Hound uses #{link_to "RuboCop", "https://github.com/bbatsov/rubocop"}
+    internally so you can configure Hound by adding a
+    #{link_to "RuboCop config", "https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml"}
+    to your project and adding the following to
+    %em.code .hound.yml
+    in the root of your project.
 
-  %ol.numbered
-    %li
-      Add a file named
-      %em.code .hound.yml
-      to the root of your repo.
-    %li
-      Add your custom configuration to
-      %em.code .hound.yml
-      file.
-      %p For example:
-      %code.code-block
-        :preserve
-          AllCops:
-            Exclude:
-              - config/initializers/third_party.rb
-
-          Style/LineLength:
-            Description: 'Limit lines to 130 characters.'
-            Max: 130
-
-          Style/StringLiterals:
-            EnforcedStyle: single_quotes
-
-          Style/HashSyntax:
-            EnforcedStyle: hash_rockets
-
-          Style/RedundantBegin:
-            Enabled: false
-
-      See #{link_to 'more config options', 'https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml'} in the RuboCop project.
-    %li
-      Commit the changes to your repo, and the following pull requests will use
-      your custom configuration in combination with Hound's defaults.
-    %li
-      If you set
-      %em.code ShowCopNames: true
-      in your
-      %em.code .hound.yml
-      file, Hound will prefix all of its pull request comments with the Rubocop config key
-      (cop name) of the corresponding style violation. You may find this useful when deciding
-      which style rules you would like to enable or disable.
+    %code.code-block
+      :preserve
+        ruby:
+          enabled: true
+          config_file: config/.rubocop.yml
 
   %h3 CoffeeScript
 
   %p
-    Hound uses #{link_to "CoffeeLint", "http://www.coffeelint.org/"} to handle
-    CoffeeScipt style checking.
+    To enable CoffeeScript style checking, add the following to
+    %em.code .hound.yml
+    in the root of your project
+
+    %code.code-block
+      :preserve
+        coffee_script:
+          enabled: true
 
   %p
-    Follow these steps to enable CoffeeScript syntax checking:
+    Hound uses #{link_to "CoffeeLint", "http://www.coffeelint.org/"}
+    internally so you can configure Hound by adding a
+    #{link_to "CoffeeLint config", "https://github.com/clutchski/coffeelint/blob/master/coffeelint.json"}
+    to your project and adding the following to
+    %em.code .hound.yml
+    in the root of your project.
 
-  %ol.numbered
-    %li
-      Add a file named
-      %em.code .hound.yml
-      to the root of your repo.
-    %li
-      Add this to
-      %em.code .hound.yml
-      file.
-      %code.code-block
-        :preserve
-          CoffeeScript:
-            Enabled: true
-
-    %li
-      Commit the changes to your repo, and the following pull requests will be
-      checked for CoffeeScript syntax violations using Hound's default
-      guidelines.
-
-    %p
-      Customization of CoffeeScript guidelines is coming soon.
+    %code.code-block
+      :preserve
+        coffee_script:
+          enabled: true
+          config_file: config/.coffeelint.json
