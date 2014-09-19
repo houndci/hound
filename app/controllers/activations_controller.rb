@@ -4,7 +4,7 @@ class ActivationsController < ApplicationController
 
   respond_to :json
 
-  before_action :check_privacy
+  # before_action :check_privacy
 
   def create
     if activator.activate(repo, session[:github_token])
