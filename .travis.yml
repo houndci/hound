@@ -1,6 +1,6 @@
 language: ruby
 cache: bundler
-rvm: 2.1.2
+rvm: 2.1.1
 
 before_install:
   - export DISPLAY=:99.0
