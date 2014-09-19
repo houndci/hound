@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - db/schema.rb
+    - app/views/**/*
 
 AccessorMethodName:
   Enabled: false
