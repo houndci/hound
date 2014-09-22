@@ -55,7 +55,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
         else
           deactivateRepo()
       else
-        if scope.repo.private
+        if scope.repo.private && stripeEnabled()
           StripeCheckout.open(
             name: scope.repo.full_plan_name,
             amount: scope.repo.price_in_cents,
@@ -63,4 +63,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
           )
         else
           activateRepo()
+
+    stripeEnabled = ->
+      !!Settings.stripePublishableKey
 ]

@@ -31,6 +31,12 @@ class ActivationsController < ApplicationController
   end
 
   def check_privacy
-    raise CannotActivatePrivateRepo if repo.private?
+    if stripe_enabled? && repo.private?
+      raise CannotActivatePrivateRepo
+    end
+  end
+
+  def stripe_enabled?
+    Stripe.api_key.present?
   end
 end
