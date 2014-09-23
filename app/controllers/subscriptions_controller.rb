@@ -54,7 +54,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def delete_subscription
-    RepoSubscriber.unsubscribe(repo, current_user)
+    RepoSubscriber.unsubscribe(repo, repo.subscription.user)
   end
 
   def update_email_address

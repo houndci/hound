@@ -64,13 +64,16 @@ describe SubscriptionsController, "#create" do
 end
 
 describe SubscriptionsController, "#destroy" do
-  it "unsubscribes the user to the repo" do
-    membership = create(:membership)
+  it "deletes subscription associated with subscribing user" do
+    current_user = create(:user)
+    subscribed_user = create(:user)
+    membership = create(:membership, user: current_user)
     repo = membership.repo
+    create(:subscription, repo: repo, user: subscribed_user)
     activator = double(:repo_activator, deactivate: true)
     allow(RepoActivator).to receive(:new).and_return(activator)
     allow(RepoSubscriber).to receive(:unsubscribe).and_return(true)
-    stub_sign_in(membership.user)
+    stub_sign_in(current_user)
 
     delete(
       :destroy,
@@ -82,9 +85,9 @@ describe SubscriptionsController, "#destroy" do
     expect(activator).to have_received(:deactivate).
       with(repo, AuthenticationHelper::GITHUB_TOKEN)
     expect(RepoSubscriber).to have_received(:unsubscribe).
-      with(repo, membership.user)
+      with(repo, subscribed_user)
     expect(analytics).to have_tracked("Unsubscribed Private Repo").
-      for_user(membership.user).
+      for_user(current_user).
       with(properties: { name: repo.name, revenue: -repo.plan_price })
   end
 end
