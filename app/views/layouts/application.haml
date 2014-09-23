@@ -10,7 +10,7 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body
-    - flash.each do |key, value|
+    - user_facing_flashes.each do |key, value|
       .flash{ class: key }
         = value
 

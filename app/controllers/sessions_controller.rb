@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
 
   def create_user
     user = User.create(github_username: github_username)
-    Analytics.new(user, session[:campaign_params]).track_signed_up
+    flash[:signed_up] = true
     user
   end
 

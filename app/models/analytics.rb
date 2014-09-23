@@ -4,11 +4,6 @@ class Analytics
 
   def initialize(user, params = {})
     @user = user
-    @params = params
-  end
-
-  def track_signed_up
-    track(event: "Signed Up", context: { campaign: campaign_params })
   end
 
   def track_signed_in
@@ -71,13 +66,5 @@ class Analytics
     }.merge(options))
   end
 
-  def campaign_params
-    {
-      medium: params[:utm_medium],
-      name: params[:utm_campaign],
-      source: params[:utm_source],
-    }.reject { |_, value| value.blank? }
-  end
-
-  attr_reader :params, :user
+  attr_reader :user
 end
