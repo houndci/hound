@@ -10,11 +10,11 @@ mkdir -p .git/safe
 bundle exec rake db:setup
 
 # Set up deploys
-git remote add staging git@heroku.com:hound-staging.git
-heroku join --app hound-staging
+# git remote add staging git@heroku.com:hound-staging.git
+# heroku join --app hound-staging
 
-git remote add production git@heroku.com:hound-production.git
-heroku join --app hound-production
+# git remote add production git@heroku.com:hound-production.git
+# heroku join --app hound-production
 
 # Set up development environment config
 if [ ! -f .env ]; then

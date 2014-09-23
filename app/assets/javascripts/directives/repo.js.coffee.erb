@@ -49,7 +49,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
           scope.processing = true
           deactivate(repo)
       else
-        if repo.private
+        if false #repo.private
           StripeCheckout.open(
             name: repo.full_plan_name,
             amount: repo.price_in_cents,
