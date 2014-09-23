@@ -9,7 +9,7 @@ require "app/models/style_guide/base"
 require "app/models/style_guide/ruby"
 require "app/models/violation"
 
-describe StyleGuide::Ruby, "#violations" do
+describe StyleGuide::Ruby, "#violations_in_file" do
   context "with default configuration" do
     describe "for { and } as %r literal delimiters" do
       it "returns no violations" do
@@ -340,22 +340,6 @@ end
     end
   end
 
-  context "with violation on line that was not modified" do
-    it "finds no violations" do
-      file = double(
-        "CommitFile",
-        content: "'hello'",
-        filename: "lib/test.rb",
-        modified_line_at: nil,
-      )
-      style_guide = StyleGuide::Ruby.new({})
-
-      violations = style_guide.violations_in_file(file)
-
-      expect(violations).to eq []
-    end
-  end
-
   context "with custom configuration" do
     it "finds only one violation" do
       config = {
@@ -404,7 +388,7 @@ end
       it "has no violations" do
         config = {
           "AllCops" => {
-            "Exclude" => ["lib/test.rb"]
+            "Exclude" => ["lib/a.rb"]
           }
         }
 
@@ -428,17 +412,13 @@ end
   private
 
   def violations_in(content, config = nil)
-    repo_config = double("RepoConfig", enabled?: true, for: config)
+    repo_config = double("RepoConfig", enabled_for?: true, for: config)
     style_guide = StyleGuide::Ruby.new(repo_config)
     style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
   end
 
   def build_file(content)
-    double(
-      "CommitFile",
-      content: content,
-      filename: "lib/test.rb",
-      modified_line_at: 1,
-    )
+    line = double("Line", content: "blah", number: 1, patch_position: 2)
+    double("CommitFile", content: content, filename: "lib/a.rb", line_at: line)
   end
 end

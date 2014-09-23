@@ -17,7 +17,7 @@ class PullRequest
       comment: violation.messages.join("<br>"),
       commit: head_commit,
       filename: violation.filename,
-      patch_position: violation.line.patch_position
+      patch_position: violation.patch_position
     )
   end
 
