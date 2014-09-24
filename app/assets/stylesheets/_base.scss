@@ -23,6 +23,10 @@ body {
   margin-top: 3em;
   padding-bottom: 3em;
 
+  p {
+    padding-bottom: 1em;
+  }
+
   @include media($small-screen) {
     margin-top: 0;
   }

@@ -6,8 +6,8 @@ require "app/models/repo_config"
 
 describe RepoConfig do
   describe "#enabled_for?" do
-    context "with invalid format in hound config" do
-      it "returns true for ruby" do
+    context "with invalid format in Hound config" do
+      it "only returns true for ruby" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           hello world!
         EOS
@@ -15,38 +15,43 @@ describe RepoConfig do
 
         expect(repo_config).to be_enabled_for("ruby")
         expect(repo_config).not_to be_enabled_for("coffee_script")
+        expect(repo_config).not_to be_enabled_for("java_script")
       end
     end
 
-    context "with invalid indentation in hound config" do
-      it "returns false for all" do
+    context "with invalid indentation in Hound config" do
+      it "returns false for all style guides" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           coffee_script:
           enabled: true
         EOS
         repo_config = RepoConfig.new(commit)
 
-        expect(repo_config).not_to be_enabled_for("ruby")
-        expect(repo_config).not_to be_enabled_for("coffee_script")
+        RepoConfig::STYLE_GUIDES.each do |style_guide_name|
+          expect(repo_config).not_to be_enabled_for(style_guide_name)
+        end
       end
     end
 
     context "when all style guides are disabled" do
-      it "returns false for all" do
+      it "returns false for all style guides" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           ruby:
             enabled: false
           coffee_script:
             hello: world
+          java_script:
+            hello: world
         EOS
         repo_config = RepoConfig.new(commit)
 
-        expect(repo_config).not_to be_enabled_for("ruby")
-        expect(repo_config).not_to be_enabled_for("coffee_script")
+        RepoConfig::STYLE_GUIDES.each do |style_guide_name|
+          expect(repo_config).not_to be_enabled_for(style_guide_name)
+        end
       end
     end
 
-    context "when only ruby is enabled" do
+    context "when Ruby is enabled" do
       it "returns true for ruby" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           ruby:
@@ -58,7 +63,7 @@ describe RepoConfig do
       end
     end
 
-    context "when only coffee script is enabled" do
+    context "when CoffeeScript is enabled" do
       it "returns true for coffee_script" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           coffee_script:
@@ -70,37 +75,55 @@ describe RepoConfig do
       end
     end
 
-    context "with legacy config file" do
-      it "returns true for ruby" do
+    context "when JavaScript is enabled" do
+      it "returns true for java_script" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          LineLength:
-            Max: 80
-          DotPosition:
-            EnforcedStyle: trailing
+          java_script:
+            enabled: true
         EOS
         repo_config = RepoConfig.new(commit)
 
-        expect(repo_config).to be_enabled_for("ruby")
-        expect(repo_config).not_to be_enabled_for("coffee_script")
-      end
-
-      it "returns true for coffee_script and ruby" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          CoffeeScript:
-            Enabled: true
-          LineLength:
-            Max: 80
-          DotPosition:
-            EnforcedStyle: trailing
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        expect(repo_config).to be_enabled_for("ruby")
-        expect(repo_config).to be_enabled_for("coffee_script")
+        expect(repo_config).to be_enabled_for("java_script")
       end
     end
 
-    context "when there is no hound config file" do
+    context "with legacy config file" do
+      context "when no style guide is enabled" do
+        it "only returns true for ruby" do
+          commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+            LineLength:
+              Max: 80
+            DotPosition:
+              EnforcedStyle: trailing
+          EOS
+          repo_config = RepoConfig.new(commit)
+
+          expect(repo_config).to be_enabled_for("ruby")
+          expect(repo_config).not_to be_enabled_for("coffee_script")
+          expect(repo_config).not_to be_enabled_for("java_script")
+        end
+      end
+
+      context "when CoffeeScript is enabled" do
+        it "returns true for coffee_script and ruby" do
+          commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+            CoffeeScript:
+              Enabled: true
+            LineLength:
+              Max: 80
+            DotPosition:
+              EnforcedStyle: trailing
+          EOS
+          repo_config = RepoConfig.new(commit)
+
+          expect(repo_config).to be_enabled_for("ruby")
+          expect(repo_config).to be_enabled_for("coffee_script")
+          expect(repo_config).not_to be_enabled_for("java_script")
+        end
+      end
+    end
+
+    context "when there is no Hound config file" do
       it "returns true for ruby" do
         commit = double("Commit", file_content: nil)
         config = RepoConfig.new(commit)
@@ -149,13 +172,14 @@ describe RepoConfig do
       end
     end
 
-    context "when there is no hound config file" do
-      it "returns blank config" do
+    context "when there is no Hound config file" do
+      it "returns empty config for all style guides" do
         commit = double("Commit", file_content: nil)
         config = RepoConfig.new(commit)
 
-        expect(config.for("ruby")).to eq({})
-        expect(config.for("coffee_script")).to eq({})
+        RepoConfig::STYLE_GUIDES.each do |style_guide_name|
+          expect(config.for(style_guide_name)).to eq({})
+        end
       end
     end
 

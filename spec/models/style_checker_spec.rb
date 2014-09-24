@@ -1,5 +1,6 @@
 require "active_support/core_ext"
 require "coffeelint"
+require "jshintrb"
 require "rubocop"
 
 require "fast_spec_helper"
@@ -26,49 +27,168 @@ describe StyleChecker, "#violations" do
     expect(violation_messages).to eq expected_violations
   end
 
-  context "when given a Ruby file" do
-    it "returns violations" do
-      file = stub_commit_file("ruby.rb", %{puts "Hello World" })
-      pull_request = stub_pull_request(pull_request_files: [file])
-
-      violations = StyleChecker.new(pull_request).violations
-      messages = violations.flat_map(&:messages)
-
-      expect(messages).to eq ["Trailing whitespace detected."]
-    end
-  end
-
-  context "when given a CoffeeScript file" do
-    let(:file_content) { "alert 'Hello World'" }
-
-    context "and is enabled out" do
+  context "for a Ruby file" do
+    context "with violations" do
       it "returns violations" do
-        config = <<-YAML.strip_heredoc
-          coffee_script:
-            enabled: true
-        YAML
-        head_commit = double("Commit", file_content: config)
-        file = stub_commit_file("test.coffee", file_content)
-        pull_request = stub_pull_request(
-          head_commit: head_commit,
-          pull_request_files: [file],
-        )
+        file = stub_commit_file("ruby.rb", "puts 123    ")
+        pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
         messages = violations.flat_map(&:messages)
 
-        expect(messages).to eq ["Implicit parens are forbidden"]
+        expect(messages).to eq ["Trailing whitespace detected."]
       end
     end
 
-    context "and CoffeeScript support is not enabled" do
-      it "does not use CoffeeScript style guide" do
-        file = stub_commit_file("test.coffee", file_content)
+    context "with violation on unchanged line" do
+      it "returns no violations" do
+        file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
 
-        expect(violations).to eq []
+        expect(violations.count).to eq 0
+      end
+    end
+
+    context "without violations" do
+      it "returns no violations" do
+        file = stub_commit_file("ruby.rb", "puts 123")
+        pull_request = stub_pull_request(pull_request_files: [file])
+
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
+
+        expect(messages).to be_empty
+      end
+    end
+  end
+
+  context "for a CoffeeScript file" do
+    context "with violations" do
+      context "with CoffeeScript enabled" do
+        it "returns violations" do
+          config = <<-YAML.strip_heredoc
+            coffee_script:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.coffee", "alert 'Hello World'")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).to eq ["Implicit parens are forbidden"]
+        end
+      end
+
+      context "with CoffeeScript disabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            coffee_script:
+              enabled: false
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.coffee", "alert 'Hello World'")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+
+          expect(violations).to be_empty
+        end
+      end
+    end
+
+    context "without violations" do
+      context "with CoffeeScript enabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            coffee_script:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.coffee", "alert('Hello World')")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+
+          expect(violations).to be_empty
+        end
+      end
+    end
+  end
+
+  context "for a JavaScript file" do
+    context "with violations" do
+      context "with JavaScript enabled" do
+        it "returns violations" do
+          config = <<-YAML.strip_heredoc
+            java_script:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.js", "var test = 'test'")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).to include "Missing semicolon."
+        end
+      end
+
+      context "with JavaScript disabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            java_script:
+              enabled: false
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.js", "var test = 'test'")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+
+          expect(violations).to be_empty
+        end
+      end
+    end
+
+    context "without violations" do
+      context "with JavaScript enabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            java_script:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.js", "var test = 'test';")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).not_to include "Missing semicolon."
+        end
       end
     end
   end
@@ -81,17 +201,6 @@ describe StyleChecker, "#violations" do
       violations = StyleChecker.new(pull_request).violations
 
       expect(violations).to eq []
-    end
-  end
-
-  context "with violation on unchanged line" do
-    it "returns no violations" do
-      file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
-      pull_request = stub_pull_request(pull_request_files: [file])
-
-      violations = StyleChecker.new(pull_request).violations
-
-      expect(violations.count).to eq 0
     end
   end
 

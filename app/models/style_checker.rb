@@ -38,6 +38,8 @@ class StyleChecker
       StyleGuide::Ruby
     when /.*\.coffee.?/
       StyleGuide::CoffeeScript
+    when /.*\.js.?/
+      StyleGuide::JavaScript
     else
       StyleGuide::Unsupported
     end

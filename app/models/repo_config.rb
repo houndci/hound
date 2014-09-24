@@ -5,19 +5,13 @@ class RepoConfig
     ".json" => "json",
   }
   HOUND_CONFIG_FILE = ".hound.yml"
-  STYLE_GUIDES = %w(coffee_script ruby)
+  STYLE_GUIDES = %w(ruby coffee_script java_script)
 
   pattr_initialize :commit
 
   def enabled_for?(style_guide_name)
-    if style_guide_name == "ruby" && legacy_config?
-      true
-    else
-      hound_config.detect do |language, config|
-        language == style_guide_name && config && config["enabled"] == true ||
-          legacy_coffee_script_config?(style_guide_name, language)
-      end
-    end
+    style_guide_name == "ruby" && legacy_config? ||
+      enabled_in_config?(style_guide_name)
   end
 
   def for(style_guide_name)
@@ -36,12 +30,13 @@ class RepoConfig
 
   private
 
-  def legacy_config?
-    (hound_config.keys & STYLE_GUIDES).empty?
+  def enabled_in_config?(name)
+    config = hound_config[name] || hound_config[name.camelize]
+    config && (config["enabled"] == true || config["Enabled"] == true)
   end
 
-  def legacy_coffee_script_config?(style_guide_name, language)
-    language == style_guide_name.camelize
+  def legacy_config?
+    (hound_config.keys & STYLE_GUIDES).empty?
   end
 
   def hound_config
