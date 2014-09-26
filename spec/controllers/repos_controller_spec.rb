@@ -32,22 +32,20 @@ describe ReposController do
 
     context "when current user is a member of a repo with missing information" do
       it "clears all memberships to allow for a forced reload" do
-        user = create(:user, :with_email)
         repo = create(:repo, in_organization: nil, private: nil)
-        user.repos << repo
+        user = create(:user, :with_email, repos: [repo])
         stub_sign_in(user)
 
         get :index, format: :json
 
-        expect(user.repos.size).to eq(0)
+        expect(user.reload.repos.size).to eq(0)
       end
     end
 
     context "when current user is a member of a repo with no missing information" do
       it "clears all memberships to allow for a forced reload" do
-        user = create(:user, :with_email)
         repo = create(:repo, in_organization: true, private: true)
-        user.repos << repo
+        user = create(:user, :with_email, repos: [repo])
         stub_sign_in(user)
 
         get :index, format: :json

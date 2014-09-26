@@ -31,8 +31,18 @@ FactoryGirl.define do
   factory :user do
     sequence(:github_username) { |n| "github#{n}" }
 
+    ignore do
+      repos []
+    end
+
     trait :with_email do
       sequence(:email_address) { |n| "jimtom+#{n}@example.com" }
+    end
+
+    after(:build) do |user, evaluator|
+      if evaluator.repos.any?
+        user.repos += evaluator.repos
+      end
     end
   end
 
