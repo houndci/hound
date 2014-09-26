@@ -44,7 +44,7 @@ class PullRequest
   end
 
   def number
-    payload.number
+    payload.pull_request_number
   end
 
   def full_repo_name

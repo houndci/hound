@@ -51,4 +51,13 @@ describe Payload do
       expect(payload.data).to eq data
     end
   end
+
+  describe "#pull_request_number" do
+    it "returns the pull request number" do
+      data = { "number" => 2 }
+      payload = Payload.new(data)
+
+      expect(payload.pull_request_number).to eq 2
+    end
+  end
 end

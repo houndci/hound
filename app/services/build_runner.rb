@@ -1,9 +1,13 @@
 class BuildRunner
-  vattr_initialize :payload
+  pattr_initialize :payload
 
   def run
     if repo && relevant_pull_request?
-      repo.builds.create!(violations: violations)
+      repo.builds.create!(
+        violations: violations,
+        pull_request_number: payload.pull_request_number,
+        commit_sha: payload.head_sha,
+      )
       commenter.comment_on_violations(violations)
       track_reviewed_repo_for_each_user
     end

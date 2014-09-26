@@ -19,7 +19,7 @@ class Payload
     data['repository']['full_name']
   end
 
-  def number
+  def pull_request_number
     data['number']
   end
 
