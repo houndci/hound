@@ -55,6 +55,6 @@ There a couple areas we would like to concentrate on.
 
 1. Add support for JavaScript
 2. Add support for CSS and Sass
-3. Write [style guides](app/models/style_guides) that don't currently exist and
+3. Write [style guides](app/models/style_guide) that don't currently exist and
    would enforce the
    [thoughtbot style guide](https://github.com/thoughtbot/guides).
