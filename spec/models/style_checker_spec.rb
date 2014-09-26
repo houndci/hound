@@ -218,6 +218,69 @@ describe StyleChecker, "#violations" do
     end
   end
 
+  context "for a SCSS file" do
+    context "with violations" do
+      context "with SCSS enabled" do
+        it "returns violations" do
+          head_commit = stub_head_commit(".hound.yml" => scss_enabled_config)
+          file = stub_commit_file(
+            "test.scss",
+            ".table p.inner table td { background: red; }"
+          )
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).to include(
+            "Selector should have depth of applicability no greater than 2, but was 4"
+          )
+        end
+      end
+
+      context "with SCSS disabled" do
+        it "returns no violations" do
+          head_commit = stub_head_commit(".hound.yml" => scss_disabled_config)
+          file = stub_commit_file(
+            "test.scss",
+            ".table p.inner table td { background: red; }"
+          )
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+
+          expect(violations).to be_empty
+        end
+      end
+    end
+
+    context "without violations" do
+      context "with SCSS enabled" do
+        it "returns no violations" do
+          head_commit = stub_head_commit(".hound.yml" => scss_enabled_config)
+          file = stub_commit_file("test.scss", "table td { color: green; }")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).not_to include(
+            "Selector should have depth of applicability no greater than 3"
+          )
+        end
+      end
+    end
+  end
+
   context "with unsupported file type" do
     it "uses unsupported style guide" do
       file = stub_commit_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
@@ -285,5 +348,19 @@ describe StyleChecker, "#violations" do
       enabled_for?: true,
       ignored_javascript_files: []
     )
+  end
+
+  def scss_enabled_config
+    <<-YAML.strip_heredoc
+      scss:
+        enabled: true
+    YAML
+  end
+
+  def scss_disabled_config
+    <<-YAML.strip_heredoc
+      scss:
+        enabled: false
+    YAML
   end
 end

@@ -89,7 +89,7 @@ header {
     }
 
     .menu {
-      @include position(absolute, 100% -2px 0 0);
+      @include position(absolute, 100% -2px null null);
       background: #fff;
       border-radius: 6px;
       border: 1px solid $base-border-color;
@@ -113,7 +113,7 @@ header {
 
   @include media($small-screen) {
     @include fill-parent;
-    @include position(fixed, 0px 0 0 0);
+    @include position(fixed, 0px null null null);
     background: #fff;
     border-bottom: 1px solid $base-border-color;
     height: 65px;

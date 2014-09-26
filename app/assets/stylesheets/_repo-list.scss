@@ -47,7 +47,7 @@
       position: relative;
 
       i.fa-search {
-        @include position(absolute, 0.9em 1.8em 0 0 );
+        @include position(absolute, 0.9em 1.8em null null);
         @include user-select(none);
         color: #fff;
         font-size: 1.2em;
@@ -120,7 +120,7 @@
     }
 
     &:before {
-      @include position(absolute, 0.6em 0 0 0.6em);
+      @include position(absolute, 0.6em null null 0.6em);
       @include transition(all 0.25s linear);
       @extend .fa-spin;
       border-radius: 50%;
@@ -149,7 +149,7 @@
       padding-left: 1em;
 
       &.private:before {
-        @include position(absolute, .25em 0 0 0px);
+        @include position(absolute, .25em null null 0px);
         content: $icon-lock;
         font-family: $icon-font;
         font-size: .8em;
@@ -170,7 +170,7 @@
 
       &:before {
         @include size(20px);
-        @include position(absolute, 0px 0 0 0px);
+        @include position(absolute, 0px null null 0px);
         @include transition(all 0.25s linear);
         background-color: rgb(255,255,255);
         border: 1px solid $base-border-color;
@@ -203,7 +203,7 @@
         border-color: $green;
 
         &:before {
-          @include position(absolute, 0px 0 0 26px);
+          @include position(absolute, 0px null null 26px);
           border-color: $green;
           border-color: #fff;
         }
