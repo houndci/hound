@@ -86,6 +86,18 @@ describe RepoConfig do
       end
     end
 
+    context "when SCSS is enabled" do
+      it "returns true for scss" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          scss:
+            enabled: true
+        EOS
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config).to be_enabled_for("scss")
+      end
+    end
+
     context "with legacy config file" do
       context "when no style guide is enabled" do
         it "only returns true for ruby" do

@@ -40,6 +40,8 @@ class StyleChecker
       StyleGuide::CoffeeScript
     when /.+\.js\z/
       StyleGuide::JavaScript
+    when /.*\.scss.?/
+      StyleGuide::Scss
     else
       StyleGuide::Unsupported
     end
