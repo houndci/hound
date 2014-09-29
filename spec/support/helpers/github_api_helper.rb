@@ -191,22 +191,26 @@ module GithubApiHelper
   def stub_add_user_to_team_request(username, team_id, token = auth_token)
     stub_request(
       :put,
-      "https://api.github.com/teams/#{team_id}/members/#{username}"
+      "https://api.github.com/teams/#{team_id}/memberships/#{username}"
     ).with(
-      body: { name: username }.to_json,
-      headers: { 'Authorization' => "token #{token}" }
+      headers: {
+        "Authorization" => "token #{token}",
+        "Accept" => "application/vnd.github.the-wasp-preview+json"
+      }
     ).to_return(
-      status: 204
+      status: 200
     )
   end
 
   def stub_failed_add_user_to_team_request(username, team_id, token)
     stub_request(
       :put,
-      "https://api.github.com/teams/#{team_id}/members/#{username}"
+      "https://api.github.com/teams/#{team_id}/memberships/#{username}"
     ).with(
-      body: { name: username }.to_json,
-      headers: { 'Authorization' => "token #{token}" }
+      headers: {
+        "Authorization" => "token #{token}",
+        "Accept" => "application/vnd.github.the-wasp-preview+json"
+      }
     ).to_return(
       status: 404
     )

@@ -125,7 +125,9 @@ class GithubApi
   end
 
   def add_user_to_team(username, team_id)
-    client.add_team_member(team_id, username)
+    client.add_team_membership(team_id, username)
+  rescue Octokit::NotFound
+    false
   end
 
   def find_team(name, repo)
