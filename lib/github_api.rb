@@ -81,6 +81,16 @@ class GithubApi
     primary_email["email"]
   end
 
+  def accept_pending_invitations
+    pending_memberships = client.organization_memberships(state: "pending")
+    pending_memberships.each do |pending_membership|
+      client.update_organization_membership(
+        pending_membership["organization"]["login"],
+        state: "active"
+      )
+    end
+  end
+
   private
 
   def add_user_to_org(username, repo)

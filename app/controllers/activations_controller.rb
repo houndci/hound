@@ -8,6 +8,7 @@ class ActivationsController < ApplicationController
 
   def create
     if activator.activate(repo, session[:github_token])
+      JobQueue.push(OrgInvitationJob)
       analytics.track_activated(repo)
       render json: repo, status: :created
     else

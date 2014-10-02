@@ -413,6 +413,35 @@ module GithubApiHelper
     )
   end
 
+  def stubbed_memberships_request(token)
+    stub_request(
+      :get,
+      "https://api.github.com/user/memberships/orgs?state=pending"
+    ).with(
+      headers: { "Authorization" => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/github_org_memberships.json"),
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
+  def stubbed_membership_update_request(token)
+    stub_request(
+      :patch,
+      "https://api.github.com/user/memberships/orgs/invitocat"
+    ).with(
+      headers: { "Authorization" => "token #{token}" },
+      body: { "state" => "active" }
+    ).to_return(
+      status: 200,
+      body: File.read(
+        "spec/support/fixtures/github_org_membership_update.json"
+      ),
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
   private
 
   def auth_token

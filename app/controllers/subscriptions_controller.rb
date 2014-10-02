@@ -7,6 +7,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     if activator.activate(repo, github_token) && create_subscription
+      JobQueue.push(OrgInvitationJob)
       analytics.track_subscribed(repo)
       render json: repo, status: :created
     else

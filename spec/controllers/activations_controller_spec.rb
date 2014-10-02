@@ -7,6 +7,7 @@ describe ActivationsController, "#create" do
       repo = membership.repo
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
+      allow(JobQueue).to receive(:push)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
@@ -18,6 +19,19 @@ describe ActivationsController, "#create" do
       expect(analytics).to have_tracked("Activated Public Repo").
         for_user(membership.user).
         with(properties: { name: repo.full_github_name })
+    end
+
+    it "enqueues invitation job" do
+      membership = create(:membership)
+      repo = membership.repo
+      activator = double(:repo_activator, activate: true)
+      allow(RepoActivator).to receive(:new).and_return(activator)
+      allow(JobQueue).to receive(:push)
+      stub_sign_in(membership.user)
+
+      post :create, repo_id: repo.id, format: :json
+
+      expect(JobQueue).to have_received(:push).with(OrgInvitationJob)
     end
   end
 

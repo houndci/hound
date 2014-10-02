@@ -285,6 +285,20 @@ describe GithubApi do
       expect(comments.first.body).to eq expected_comment
     end
   end
+
+  describe "#accept_pending_invitations" do
+    it "finds and accepts pending org invitations" do
+      github_token = "githubtoken"
+      memberships_request = stubbed_memberships_request(github_token)
+      membership_update_request = stubbed_membership_update_request(github_token)
+      api = GithubApi.new(github_token)
+
+      api.accept_pending_invitations
+
+      expect(memberships_request).to have_been_requested
+      expect(membership_update_request).to have_been_requested
+    end
+  end
 end
 
 describe GithubApi, "#user_teams" do

@@ -1,13 +1,3 @@
-ENV["HOST"] = "test.host"
-ENV["SECRET_KEY_BASE"] = "test-key"
-ENV["HOUND_GITHUB_USERNAME"] = "houndci"
-ENV["HOUND_GITHUB_TOKEN"] = "houndgithubtoken"
-ENV["ENABLE_HTTPS"] = "no"
-ENV["CHANGED_FILES_THRESHOLD"] = "300"
-ENV["REDISTOGO_URL"] = "http://localhost:6379"
-ENV["STRIPE_API_KEY"] = "sk_test_123"
-ENV["STRIPE_PUBLISHABLE_KEY"] = "pk_test_123"
-
 Houndapp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
   config.eager_load = false

@@ -63,6 +63,8 @@ feature "Repo list", js: true do
     stub_add_collaborator_request(repo.full_github_name)
     stub_hook_creation_request(repo.full_github_name, hook_url)
     stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
+    stubbed_memberships_request(ENV["HOUND_GITHUB_TOKEN"])
+    stubbed_membership_update_request(ENV["HOUND_GITHUB_TOKEN"])
 
     sign_in_as(user)
     find("li.repo .toggle").click
@@ -89,6 +91,8 @@ feature "Repo list", js: true do
     stub_user_teams_request
     stub_add_user_to_team_request(hound_user, team_id)
     stub_user_emails_request(AuthenticationHelper::GITHUB_TOKEN)
+    stubbed_memberships_request(ENV["HOUND_GITHUB_TOKEN"])
+    stubbed_membership_update_request(ENV["HOUND_GITHUB_TOKEN"])
 
     sign_in_as(user)
     find(".repos .toggle").click
