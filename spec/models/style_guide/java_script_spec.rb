@@ -36,5 +36,17 @@ describe StyleGuide::JavaScript do
         end
       end
     end
+
+    context "when jshintrb returns nil violation" do
+      it "returns empty array" do
+        style_guide = StyleGuide::JavaScript.new(double("RepoConfig", for: {}))
+        file = double(:file).as_null_object
+        Jshintrb.stub(lint: [nil])
+
+        violations = style_guide.violations_in_file(file)
+
+        expect(violations).to be_empty
+      end
+    end
   end
 end

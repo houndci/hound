@@ -3,7 +3,7 @@ module StyleGuide
     DEFAULT_CONFIG_FILE = File.join(CONFIG_DIR, "javascript.json")
 
     def violations_in_file(file)
-      Jshintrb.lint(file.content, config).map do |violation|
+      Jshintrb.lint(file.content, config).compact.map do |violation|
         Violation.new(file, violation["line"], violation["reason"])
       end
     end
