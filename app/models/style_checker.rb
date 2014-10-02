@@ -34,11 +34,11 @@ class StyleChecker
 
   def style_guide_class(filename)
     case filename
-    when /.*\.rb$/
+    when /.+\.rb\z/
       StyleGuide::Ruby
-    when /.*\.coffee.?/
+    when /.+\.coffee\z/
       StyleGuide::CoffeeScript
-    when /.*\.js.?/
+    when /.+\.js\z/
       StyleGuide::JavaScript
     else
       StyleGuide::Unsupported
