@@ -1,10 +1,9 @@
 {
   "bitwise": true,
-  "curly": true,
   "camelcase": true,
+  "curly": true,
   "forin": true,
   "immed": true,
-  "indent": 2,
   "latedef": true,
   "maxlen": 80,
   "newcap": true,
