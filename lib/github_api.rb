@@ -1,8 +1,8 @@
-require 'octokit'
-require 'base64'
+require "octokit"
+require "base64"
 
 class GithubApi
-  SERVICES_TEAM_NAME = 'Services'
+  SERVICES_TEAM_NAME = "Services"
 
   pattr_initialize :token
 
@@ -42,14 +42,16 @@ class GithubApi
   def create_hook(full_repo_name, callback_endpoint)
     hook = client.create_hook(
       full_repo_name,
-      'web',
+      "web",
       { url: callback_endpoint },
-      { events: ['pull_request'], active: true }
+      { events: ["pull_request"], active: true }
     )
 
     yield hook if block_given?
   rescue Octokit::UnprocessableEntity => error
-    unless error.message.include? 'Hook already exists'
+    if error.message.include? "Hook already exists"
+      true
+    else
       raise
     end
   end
@@ -75,8 +77,8 @@ class GithubApi
   end
 
   def email_address
-    primary_email = client.emails.detect { |email| email['primary'] }
-    primary_email['email']
+    primary_email = client.emails.detect { |email| email["primary"] }
+    primary_email["email"]
   end
 
   private
