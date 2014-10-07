@@ -7,6 +7,7 @@ class Repo < ActiveRecord::Base
 
   alias_attribute :name, :full_github_name
 
+  delegate :type, :price, to: :plan, prefix: true
   delegate :price, to: :subscription, prefix: true
 
   validates :full_github_name, presence: true
@@ -26,20 +27,8 @@ class Repo < ActiveRecord::Base
     update_attributes(active: false, hook_id: nil)
   end
 
-  def plan_price
-    Subscription::PLANS.fetch(plan.to_sym)
-  end
-
   def plan
-    if private?
-      if in_organization?
-        "organization"
-      else
-        "personal"
-      end
-    else
-      "free"
-    end
+    Plan.new(self)
   end
 
   def stripe_subscription_id

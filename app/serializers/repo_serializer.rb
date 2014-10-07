@@ -16,6 +16,6 @@ class RepoSerializer < ActiveModel::Serializer
   end
 
   def full_plan_name
-    "#{object.plan} repo".titleize
+    "#{object.plan_type} repo".titleize
   end
 end

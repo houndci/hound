@@ -1,24 +1,24 @@
 require "spec_helper"
 
 feature "Account" do
-  scenario "viewing" do
+  scenario "user with multiple subscriptions views account page" do
     user = create(:user)
-    org_repo1 = create(:repo, :in_private_org, users: [user])
-    org_repo2 = create(:repo, :in_private_org, users: [user])
-    personal_repo = create(:repo, users: [user], private: true)
-    create(:subscription, repo: org_repo1, user: user)
-    create(:subscription, repo: org_repo2, user: user)
-    create(:subscription, repo: personal_repo, user: user)
-    inactive_subscription = create(:subscription, :inactive, user: user)
+    private_repo = create(:repo, users: [user])
+    create(:subscription, repo: private_repo, user: user, price: 12)
+    individual_repo = create(:repo, users: [user])
+    create(:subscription, repo: individual_repo, user: user, price: 9)
+    organization_repo = create(:repo, users: [user])
+    create(:subscription, repo: organization_repo, user: user, price: 24)
+    public_repo = create(:repo, users: [user])
+
     sign_in_as(user)
 
     visit account_path
 
-    expect(page).to have_css(".account-breakdown", text: "$57.00")
-    expect(page).to have_css(".repos-breakdown", text: org_repo1.name)
-    expect(page).to have_css(".repos-breakdown", text: org_repo2.name)
-    expect(page).to have_css(".repos-breakdown", text: personal_repo.name)
-    expect(page).
-      not_to have_css(".repos-breakdown", text: inactive_subscription.repo.name)
+    expect(page).to have_css(".account-breakdown", text: "$45.00")
+    expect(page).to have_css(".repos-breakdown", text: private_repo.name)
+    expect(page).to have_css(".repos-breakdown", text: individual_repo.name)
+    expect(page).to have_css(".repos-breakdown", text: organization_repo.name)
+    expect(page).not_to have_css(".repos-breakdown", text: public_repo.name)
   end
 end

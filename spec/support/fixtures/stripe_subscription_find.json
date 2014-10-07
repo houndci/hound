@@ -6,7 +6,7 @@
     "created": 1401465831,
     "amount": 900,
     "currency": "usd",
-    "id": "personal",
+    "id": "private",
     "object": "plan",
     "livemode": false,
     "interval_count": 1,

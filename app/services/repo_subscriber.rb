@@ -17,7 +17,7 @@ class RepoSubscriber
       create_stripe_customer
     end
 
-    stripe_subscription = customer.subscriptions.create(plan: repo.plan)
+    stripe_subscription = customer.subscriptions.create(plan: repo.plan_type)
 
     repo.create_subscription!(
       user_id: user.id,
