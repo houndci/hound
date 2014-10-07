@@ -41,7 +41,7 @@ describe StyleGuide::JavaScript do
       it "returns empty array" do
         style_guide = StyleGuide::JavaScript.new(double("RepoConfig", for: {}))
         file = double(:file).as_null_object
-        Jshintrb.stub(lint: [nil])
+        allow(Jshintrb).to receive_messages(lint: [nil])
 
         violations = style_guide.violations_in_file(file)
 
