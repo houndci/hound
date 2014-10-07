@@ -1,8 +1,11 @@
 require "octokit"
 require "base64"
+require "active_support/core_ext/object/with_options"
 
 class GithubApi
   SERVICES_TEAM_NAME = "Services"
+  PREVIEW_MEDIA_TYPE =
+    ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
 
   pattr_initialize :token
 
@@ -82,12 +85,15 @@ class GithubApi
   end
 
   def accept_pending_invitations
-    pending_memberships = client.organization_memberships(state: "pending")
-    pending_memberships.each do |pending_membership|
-      client.update_organization_membership(
-        pending_membership["organization"]["login"],
-        state: "active"
-      )
+    with_preview_client do |preview_client|
+      pending_memberships =
+        preview_client.organization_memberships(state: "pending")
+      pending_memberships.each do |pending_membership|
+        preview_client.update_organization_membership(
+          pending_membership["organization"]["login"],
+          state: "active"
+        )
+      end
     end
   end
 
@@ -125,7 +131,9 @@ class GithubApi
   end
 
   def add_user_to_team(username, team_id)
-    client.add_team_membership(team_id, username)
+    with_preview_client do |preview_client|
+      preview_client.add_team_membership(team_id, username)
+    end
   rescue Octokit::NotFound
     false
   end
@@ -194,5 +202,9 @@ class GithubApi
     exception.errors.any? do |error|
       error[:field] == "name" && error[:code] == "already_exists"
     end
+  end
+
+  def with_preview_client(&block)
+    client.with_options(accept: PREVIEW_MEDIA_TYPE, &block)
   end
 end
