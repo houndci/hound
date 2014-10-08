@@ -11,25 +11,28 @@
           %th.label-text Base Cost
           %th.label-text Quantity
           %th.label-text Subtotal
-        - @repo_groups.each do |repo_group|
+        - @account_page.monthly_line_items.each do |line_item|
           %tr
-            - if repo_group.any?
-              %td
-                = repo_group.first.plan_type.titleize
-              %td $#{repo_group.first.plan_price}/mo
-              %td x#{repo_group.count}
-              %td #{repos_total(repo_group)}
+            %td
+              = line_item.title
+            %td
+              = line_item.base_price
+            %td
+              = line_item.quantity
+            %td
+              = line_item.subtotal
     %dl
       %dt.label-text Total Monthly Cost
-      %dd #{repos_total(@repo_groups.flatten)}
+      %dd
+        = @account_page.total_monthly_cost
 
 %section.account-section
   %h2.label-text Active private repos billed to you
 
   .account-content.repos-breakdown
-    - if @subscribed_repos.any?
+    - if @account_page.repos.any?
       %ul.private-repos
-        - @subscribed_repos.each do |repo|
+        - @account_page.repos.each do |repo|
           %li.repo
             %span.repo-name{ "ng-class" => "{private: #{repo.private}}" }
               = repo.full_github_name
