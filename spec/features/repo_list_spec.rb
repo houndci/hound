@@ -7,7 +7,7 @@ feature "Repo list", js: true do
     repo.users << user
     sign_in_as(user)
 
-    visit root_path
+    visit repos_path
 
     expect(page).to have_content repo.full_github_name
   end
@@ -18,7 +18,7 @@ feature "Repo list", js: true do
     repo.users << user
     sign_in_as(user)
 
-    visit root_path
+    visit repos_path
     find(".search").set(repo.full_github_name)
 
     expect(page).to have_content repo.full_github_name
@@ -31,7 +31,7 @@ feature "Repo list", js: true do
     stub_repo_requests(AuthenticationHelper::GITHUB_TOKEN)
     sign_in_as(user)
 
-    visit root_path
+    visit repos_path
 
     expect(page).to have_content(repo.full_github_name)
 
@@ -68,7 +68,7 @@ feature "Repo list", js: true do
     expect(page).to have_css(".active")
     expect(page).to have_content "1 OF 1"
 
-    visit root_path
+    visit repos_path
 
     expect(page).to have_css(".active")
     expect(page).to have_content "1 OF 1"
@@ -95,7 +95,7 @@ feature "Repo list", js: true do
     expect(page).to have_css(".active")
     expect(page).to have_content "1 OF 1"
 
-    visit root_path
+    visit repos_path
 
     expect(page).to have_css(".active")
     expect(page).to have_content "1 OF 1"
@@ -108,7 +108,7 @@ feature "Repo list", js: true do
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 
     sign_in_as(user)
-    visit root_path
+    visit repos_path
     find(".repos .toggle").click
 
     expect(page).not_to have_css(".active")
@@ -127,7 +127,7 @@ feature "Repo list", js: true do
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 
     sign_in_as(user)
-    visit root_path
+    visit repos_path
     find(".repos .toggle").click
 
     expect(page).not_to have_css(".active")

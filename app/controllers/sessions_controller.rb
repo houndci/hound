@@ -1,13 +1,10 @@
 class SessionsController < ApplicationController
-  skip_before_action :authenticate, only: [:new, :create]
-
-  def new
-  end
+  skip_before_action :authenticate, only: [:create]
 
   def create
     user = find_user || create_user
     create_session_for(user)
-    redirect_to root_path
+    redirect_to repos_path
   end
 
   def destroy

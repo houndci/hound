@@ -1,10 +1,42 @@
-= render 'shared/header'
+= image_tag('landing/HoundLogo.svg', class: 'logo')
+%ol.getting-started
+  %li.step.pitch
+    .tagline
+      %h2
+        Review your JavaScript, CoffeeScript, and Ruby code
+        for style guide violations
+        with a trusty hound.
+    = link_to '/auth/github', class: 'auth button' do
+      %i.fa.fa-github
+      %span= t('authenticate')
 
-:javascript
-  Settings = {
-    stripePublishableKey: '#{ENV['STRIPE_PUBLISHABLE_KEY']}',
-    userEmailAddress: '#{current_user.email_address}'
-  };
+  %li.step.step-activate
+    %h3 Activate Repos
+    %p
+      Tell Hound which GitHub repos to watch. Private repos are $12
+      each per month.
+    %figure
+      = image_tag('landing/step-activate.png')
 
-.repo-listing{ 'repo-list' => '' }
-= render 'preload_template', template: 'repo_list'
+  %li.step.step-code
+    %h3 Commit &amp; Create Pull Request
+    %p
+      Write and commit code as you normally would then
+      open a pull request to get reviewed by Hound.
+    %figure
+      = image_tag('landing/step-code.png')
+
+  %li.step.step-comment
+    %h3 View Hound Comments
+    %p
+      Hound will review your pull request and make inline comments on
+      any style guide violations.
+    %figure
+      = image_tag('landing/step-comment.png')
+
+  %li.step.cta
+    = link_to '/auth/github', class: 'auth button' do
+      %i.fa.fa-github
+      %span= t('authenticate')
+
+= render 'shared/footer'

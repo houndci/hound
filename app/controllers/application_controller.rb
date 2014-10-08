@@ -1,9 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+
   before_action :force_https
   before_action :capture_campaign_params
   before_action :authenticate
   after_action  :set_csrf_cookie_for_ng
+
   helper_method :current_user, :signed_in?
 
   private
@@ -30,7 +32,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate
     unless signed_in?
-      redirect_to sign_in_path
+      redirect_to root_path
     end
   end
 
