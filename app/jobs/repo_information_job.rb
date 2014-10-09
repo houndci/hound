@@ -15,6 +15,6 @@ class RepoInformationJob
       in_organization: github_data[:organization].present?
     )
   rescue Resque::TermException
-    Resque.enqueue(self, user_id, github_token)
+    Resque.enqueue(self, repo_id, github_token)
   end
 end

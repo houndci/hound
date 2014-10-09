@@ -26,7 +26,10 @@ class SessionsController < ApplicationController
   end
 
   def create_user
-    user = User.create(github_username: github_username)
+    user = User.create!(
+      github_username: github_username,
+      email_address: github_email_address
+    )
     flash[:signed_up] = true
     user
   end
@@ -41,10 +44,14 @@ class SessionsController < ApplicationController
   end
 
   def github_username
-    env['omniauth.auth']['info']['nickname']
+    request.env["omniauth.auth"]["info"]["nickname"]
+  end
+
+  def github_email_address
+    request.env["omniauth.auth"]["info"]["email"]
   end
 
   def github_token
-    env['omniauth.auth']['credentials']['token']
+    request.env["omniauth.auth"]["credentials"]["token"]
   end
 end

@@ -18,14 +18,14 @@ describe RepoInformationJob do
   end
 
   it 'retries when Resque::TermException is raised' do
-    user_id = 'userid'
+    repo = create(:repo)
     github_token = 'token'
-    allow(User).to receive(:find).and_raise(Resque::TermException.new(1))
+    allow(Repo).to receive(:find).and_raise(Resque::TermException.new(1))
     allow(Resque).to receive(:enqueue)
 
-    EmailAddressJob.perform(user_id, github_token)
+    RepoInformationJob.perform(repo.id, github_token)
 
     expect(Resque).to have_received(:enqueue).
-      with(EmailAddressJob, user_id, github_token)
+      with(RepoInformationJob, repo.id, github_token)
   end
 end

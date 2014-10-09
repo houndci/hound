@@ -1,17 +1,4 @@
 module GithubApiHelper
-  def stub_user_emails_request(token)
-    stub_request(
-      :get,
-      'https://api.github.com/user/emails'
-    ).with(
-      headers: { 'Authorization' => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/user_emails.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
-  end
-
   def stub_add_collaborator_request(full_repo_name)
     url = "https://api.github.com/repos/#{full_repo_name}/collaborators/houndci"
     stub_request(:put, url).

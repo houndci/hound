@@ -79,11 +79,6 @@ class GithubApi
     client.user_teams
   end
 
-  def email_address
-    primary_email = client.emails.detect { |email| email["primary"] }
-    primary_email["email"]
-  end
-
   def accept_pending_invitations
     with_preview_client do |preview_client|
       pending_memberships =
