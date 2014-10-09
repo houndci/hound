@@ -1,10 +1,10 @@
 class ActivationsController < ApplicationController
   class FailedToActivate < StandardError; end
-  class CannotActivatePrivateRepo < StandardError; end
+  class CannotActivatePaidRepo < StandardError; end
 
   respond_to :json
 
-  before_action :check_privacy
+  before_action :check_repo_plan
 
   def create
     if activator.activate(repo, session[:github_token])
@@ -31,7 +31,9 @@ class ActivationsController < ApplicationController
     RepoActivator.new
   end
 
-  def check_privacy
-    raise CannotActivatePrivateRepo if repo.private?
+  def check_repo_plan
+    if repo.plan_price > 0
+      raise CannotActivatePaidRepo
+    end
   end
 end

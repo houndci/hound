@@ -15,6 +15,7 @@ ENV["CHANGED_FILES_THRESHOLD"] = "300"
 ENV["REDISTOGO_URL"] = "http://localhost:6379"
 ENV["STRIPE_API_KEY"] = "sk_test_123"
 ENV["STRIPE_PUBLISHABLE_KEY"] = "pk_test_123"
+ENV["EXEMPT_ORGS"] = "thoughtbot"
 
 RSpec.configure do |config|
   config.order = "random"

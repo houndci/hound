@@ -1,10 +1,12 @@
 class Plan
   PRICES = {
+    exempt: 0,
     public: 0,
     private: 12
   }
 
   TYPES = {
+    exempt: "exempt",
     public: "public",
     private: "private"
   }
@@ -14,7 +16,9 @@ class Plan
   end
 
   def type
-    if @repo.private?
+    if @repo.exempt?
+      TYPES[:exempt]
+    elsif @repo.private?
       TYPES[:private]
     else
       TYPES[:public]
@@ -22,7 +26,9 @@ class Plan
   end
 
   def price
-    if @repo.private?
+    if @repo.exempt?
+      PRICES[:exempt]
+    elsif @repo.private?
       PRICES[:private]
     else
       PRICES[:public]

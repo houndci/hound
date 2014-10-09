@@ -77,7 +77,7 @@ describe ActivationsController, "#create" do
       stub_sign_in(user)
 
       expect { post :create, repo_id: repo.id, format: :json }.to raise_error(
-        ActivationsController::CannotActivatePrivateRepo
+        ActivationsController::CannotActivatePaidRepo
       )
       expect(activator).not_to have_received(:activate)
     end

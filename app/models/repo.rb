@@ -36,6 +36,20 @@ class Repo < ActiveRecord::Base
   end
 
   def stripe_subscription_id
-    subscription ? subscription.stripe_subscription_id : nil
+    if subscription
+      subscription.stripe_subscription_id
+    end
+  end
+
+  def exempt?
+    ENV["EXEMPT_ORGS"] && ENV["EXEMPT_ORGS"].split.include?(organization)
+  end
+
+  private
+
+  def organization
+    if full_github_name
+      full_github_name.split("/").first
+    end
   end
 end

@@ -5,19 +5,28 @@ describe Plan do
   describe "#type" do
     context "with public repo" do
       it "returns public" do
-        public_repo = double("Repo", private?: false)
+        public_repo = double("Repo", private?: false, exempt?: false)
         plan = Plan.new(public_repo)
 
-        expect(plan.type).to eq Plan::TYPES[:public]
+        expect(plan.type).to eq "public"
       end
     end
 
     context "with private repo" do
       it "returns private" do
-        public_repo = double("Repo", private?: true)
-        plan = Plan.new(public_repo)
+        private_repo = double("Repo", private?: true, exempt?: false)
+        plan = Plan.new(private_repo)
 
-        expect(plan.type).to eq Plan::TYPES[:private]
+        expect(plan.type).to eq "private"
+      end
+    end
+
+    context "with exempt repo" do
+      it "returns exempt" do
+        exempt_repo = double("Repo", exempt?: true)
+        plan = Plan.new(exempt_repo)
+
+        expect(plan.type).to eq "exempt"
       end
     end
   end
@@ -25,19 +34,28 @@ describe Plan do
   describe "#price" do
     context "with public repo" do
       it "returns public price" do
-        public_repo = double("Repo", private?: false)
+        public_repo = double("Repo", private?: false, exempt?: false)
         plan = Plan.new(public_repo)
 
-        expect(plan.price).to eq Plan::PRICES[:public]
+        expect(plan.price).to eq 0
       end
     end
 
     context "with private repo" do
       it "returns private price" do
-        public_repo = double("Repo", private?: true)
-        plan = Plan.new(public_repo)
+        private_repo = double("Repo", private?: true, exempt?: false)
+        plan = Plan.new(private_repo)
 
-        expect(plan.price).to eq Plan::PRICES[:private]
+        expect(plan.price).to eq 12
+      end
+    end
+
+    context "with exempt repo" do
+      it "returns exempt price" do
+        exempt_repo = double("Repo", exempt?: true)
+        plan = Plan.new(exempt_repo)
+
+        expect(plan.price).to eq 0
       end
     end
   end

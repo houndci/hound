@@ -30,6 +30,8 @@ class DeactivationsController < ApplicationController
   end
 
   def check_for_subscription
-    raise CannotDeactivateRepoWithSubscription if repo.subscription
+    if repo.subscription
+      raise CannotDeactivateRepoWithSubscription
+    end
   end
 end
