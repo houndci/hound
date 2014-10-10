@@ -4,7 +4,7 @@
   "curly": true,
   "forin": true,
   "immed": true,
-  "latedef": true,
+  "latedef": "nofunc",
   "maxlen": 80,
   "newcap": true,
   "noarg": true,
