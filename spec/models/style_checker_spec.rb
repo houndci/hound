@@ -73,7 +73,7 @@ describe StyleChecker, "#violations" do
               enabled: true
           YAML
           head_commit = double("Commit", file_content: config)
-          file = stub_commit_file("test.coffee", "alert 'Hello World'")
+          file = stub_commit_file("test.coffee", "foo: ->")
           pull_request = stub_pull_request(
             head_commit: head_commit,
             pull_request_files: [file],
@@ -82,7 +82,7 @@ describe StyleChecker, "#violations" do
           violations = StyleChecker.new(pull_request).violations
           messages = violations.flat_map(&:messages)
 
-          expect(messages).to eq ["Implicit parens are forbidden"]
+          expect(messages).to eq ["Empty function"]
         end
       end
 

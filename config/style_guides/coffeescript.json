@@ -60,7 +60,7 @@
     "level": "ignore"
   },
   "no_implicit_parens": {
-    "level": "error"
+    "level": "ignore"
   },
   "no_interpolation_in_single_quotes": {
     "level": "error"
