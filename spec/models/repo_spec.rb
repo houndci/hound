@@ -30,6 +30,26 @@ describe Repo do
     end
   end
 
+  describe "#activate" do
+    it "updates repo active value to true" do
+      repo = create(:repo, active: false)
+
+      repo.activate
+
+      expect(repo.reload).to be_active
+    end
+  end
+
+  describe "#deactivate" do
+    it "updates repo active value to false" do
+      repo = create(:repo, active: true)
+
+      repo.deactivate
+
+      expect(repo.reload).not_to be_active
+    end
+  end
+
   describe ".find_or_create_with" do
     context "with existing repo" do
       it "updates attributes" do

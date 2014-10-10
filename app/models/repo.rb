@@ -23,8 +23,12 @@ class Repo < ActiveRecord::Base
     repo
   end
 
+  def activate
+    update(active: true)
+  end
+
   def deactivate
-    update_attributes(active: false, hook_id: nil)
+    update(active: false)
   end
 
   def plan

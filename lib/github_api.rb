@@ -50,7 +50,11 @@ class GithubApi
       { events: ["pull_request"], active: true }
     )
 
-    yield hook if block_given?
+    if block_given?
+      yield hook
+    else
+      hook
+    end
   rescue Octokit::UnprocessableEntity => error
     if error.message.include? "Hook already exists"
       true
@@ -60,7 +64,13 @@ class GithubApi
   end
 
   def remove_hook(full_github_name, hook_id)
-    client.remove_hook(full_github_name, hook_id)
+    response = client.remove_hook(full_github_name, hook_id)
+
+    if block_given?
+      yield
+    else
+      response
+    end
   end
 
   def pull_request_comments(full_repo_name, pull_request_number)

@@ -182,6 +182,20 @@ describe GithubApi do
 
       expect(response).to be_truthy
     end
+
+    it "yields given block" do
+      repo_name = "test-user/repo"
+      hook_id = "123"
+      stub_hook_removal_request(repo_name, hook_id)
+      api = GithubApi.new("sometoken")
+      yielded = false
+
+      api.remove_hook(repo_name, hook_id) do
+        yielded = true
+      end
+
+      expect(yielded).to eq true
+    end
   end
 
   describe "#pull_request_files" do
