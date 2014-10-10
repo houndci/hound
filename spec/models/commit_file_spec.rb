@@ -1,5 +1,4 @@
 require "base64"
-require "active_support/core_ext/hash"
 
 require "fast_spec_helper"
 require "app/models/commit_file"

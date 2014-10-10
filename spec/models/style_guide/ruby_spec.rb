@@ -1,5 +1,3 @@
-require "active_support/core_ext/string/strip"
-require "active_support/inflector"
 require "attr_extras"
 require "rubocop"
 require "sentry-raven"

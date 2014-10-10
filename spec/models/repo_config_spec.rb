@@ -1,7 +1,6 @@
 require "attr_extras"
 require "json"
 require "fast_spec_helper"
-require "active_support/core_ext/string"
 require "app/models/repo_config"
 
 describe RepoConfig do

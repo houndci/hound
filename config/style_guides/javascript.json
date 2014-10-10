@@ -1,5 +1,7 @@
 {
+  "asi": false,
   "bitwise": true,
+  "browser": true,
   "camelcase": true,
   "curly": true,
   "forin": true,
@@ -10,10 +12,22 @@
   "noarg": true,
   "noempty": true,
   "nonew": true,
+  "predef": [
+    "$",
+    "jQuery",
+
+    "jasmine",
+    "beforeEach",
+    "describe",
+    "expect",
+    "it",
+
+    "angular",
+    "inject",
+    "module"
+  ],
   "quotmark": true,
-  "undef": true,
-  "unused": true,
   "trailing": true,
-  "browser": true,
-  "asi": false
+  "undef": true,
+  "unused": true
 }

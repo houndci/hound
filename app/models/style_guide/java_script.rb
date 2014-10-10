@@ -11,7 +11,11 @@ module StyleGuide
     private
 
     def config
-      default_config.merge(repo_config.for(name))
+      custom_config = repo_config.for(name)
+      if custom_config["predef"].present?
+        custom_config["predef"] |= default_config["predef"]
+      end
+      default_config.merge(custom_config)
     end
 
     def default_config
