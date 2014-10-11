@@ -266,6 +266,7 @@ describe GithubApi do
       pull_request = double(:pull_request, full_repo_name: "thoughtbot/hound")
       pull_request_id = 253
       commit_sha = "abc253"
+      expected_comment = "inline if's and while's are not violations?"
       stub_pull_request_comments_request(
         pull_request.full_repo_name,
         pull_request_id,
@@ -281,7 +282,6 @@ describe GithubApi do
         pull_request.full_repo_name,
         pull_request_id
       )
-      expected_comment = "inline if's and while's are not violations?"
 
       expect(comments.size).to eq(4)
       expect(comments.first.body).to eq expected_comment

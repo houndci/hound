@@ -74,7 +74,13 @@ class GithubApi
   end
 
   def pull_request_comments(full_repo_name, pull_request_number)
-    client.pull_request_comments(full_repo_name, pull_request_number)
+    paginate do |page|
+      client.pull_request_comments(
+        full_repo_name,
+        pull_request_number,
+        page: page
+      )
+    end
   end
 
   def pull_request_files(full_repo_name, number)
@@ -165,34 +171,35 @@ class GithubApi
   end
 
   def user_repos
-    repos = []
-    page = 1
-
-    loop do
-      results = client.repos(nil, page: page)
-      repos.concat(authorized_repos(results))
-      break unless results.any?
-      page += 1
-    end
-
-    repos
+    repos = paginate { |page| client.repos(nil, page: page) }
+    authorized_repos(repos)
   end
 
   def org_repos
-    repos = []
+    repos = orgs.flat_map do |org|
+      paginate { |page| client.org_repos(org[:login], page: page) }
+    end
 
-    orgs.each do |org|
-      page = 1
+    authorized_repos(repos)
+  end
 
-      loop do
-        results = client.org_repos(org[:login], page: page)
-        repos.concat(authorized_repos(results))
-        break unless results.any?
+  def paginate
+    page = 1
+    results = []
+    all_pages_fetched = false
+
+    until all_pages_fetched do
+      page_results = yield(page)
+
+      if page_results.empty?
+        all_pages_fetched = true
+      else
+        results += page_results
         page += 1
       end
     end
 
-    repos
+    results
   end
 
   def orgs
@@ -200,7 +207,7 @@ class GithubApi
   end
 
   def authorized_repos(repos)
-    repos.select {|repo| repo.permissions.admin }
+    repos.select { |repo| repo.permissions.admin }
   end
 
   def team_exists_exception?(exception)

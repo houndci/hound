@@ -391,17 +391,22 @@ module GithubApiHelper
     ).to_return(status: 200)
   end
 
-  def stub_pull_request_comments_request(full_repo_name, pull_request_number, token = auth_token)
-    stub_request(
-      :get,
-      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
-    ).with(
-      headers: { 'Authorization' => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/pull_request_comments.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
+  def stub_pull_request_comments_request(
+    full_repo_name,
+    pull_request_number,
+    token = auth_token
+  )
+    comments_body =
+      File.read("spec/support/fixtures/pull_request_comments.json")
+    url = "https://api.github.com/repos/#{full_repo_name}/pulls/" +
+      "#{pull_request_number}/comments"
+    headers = { "Content-Type" => "application/json; charset=utf-8" }
+
+    stub_request(:get, "#{url}?page=1").
+      with(headers: { "Authorization" => "token #{token}" }).
+      to_return(status: 200, body: comments_body, headers: headers)
+    stub_request(:get, "#{url}?page=2").
+      to_return(status: 200, body: "[]", headers: headers)
   end
 
   def stubbed_memberships_request(token)
