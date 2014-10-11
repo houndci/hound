@@ -322,6 +322,34 @@ module GithubApiHelper
     )
   end
 
+  def stub_commit_comments_request(full_repo_name, commit_sha)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{full_repo_name}" \
+        "/commits/#{commit_sha}/comments"
+    ).with(
+      headers: { "Authorization" => "token #{hound_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/commit_comments.json"),
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
+  def stub_pull_request_commits_request(full_repo_name, pull_request_number)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{full_repo_name}" \
+        "/pulls/#{pull_request_number}/commits?per_page=100"
+    ).with(
+      headers: { "Authorization" => "token #{hound_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/pull_request_commits.json"),
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
   def stub_pull_request_files_request(full_repo_name, pull_request_number)
     stub_request(
       :get,
@@ -462,6 +490,21 @@ module GithubApiHelper
         commit_id: commit_sha,
         path: file,
         position: line_number
+      }.to_json
+    ).to_return(status: 200)
+  end
+
+  def stub_commit_comment_request(full_repo_name, comment, commit_sha)
+    stub_request(
+      :post,
+      "https://api.github.com/repos/#{full_repo_name}" \
+        "/commits/#{commit_sha}/comments"
+    ).with(
+      body: {
+        body: comment,
+        path: nil,
+        line: nil,
+        position: nil
       }.to_json
     ).to_return(status: 200)
   end

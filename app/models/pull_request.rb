@@ -5,6 +5,12 @@ class PullRequest
     @comments ||= api.pull_request_comments(full_repo_name, number)
   end
 
+  def commits
+    @commits ||= api.
+      pull_request_commits(full_repo_name, number).
+      map { |commit| build_commit(commit) }
+  end
+
   def pull_request_files
     @pull_request_files ||= api.
       pull_request_files(full_repo_name, number).
@@ -38,6 +44,12 @@ class PullRequest
   end
 
   private
+
+  def build_commit(api_commit)
+    Commit.new(full_repo_name, api_commit.sha, api).tap do |commit|
+      commit.message = api_commit.commit.message
+    end
+  end
 
   def build_commit_file(file)
     CommitFile.new(file, head_commit)

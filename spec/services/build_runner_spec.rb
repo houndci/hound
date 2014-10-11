@@ -44,6 +44,18 @@ describe BuildRunner, '#run' do
         with(style_checker.violations)
     end
 
+    it "comments on commits" do
+      build_runner = make_build_runner
+      stubbed_commenter
+      stubbed_style_checker_with_violations
+      commenter = Commenter.new(stubbed_pull_request)
+      allow(Commenter).to receive(:new).and_return(commenter)
+
+      build_runner.run
+
+      expect(commenter).to have_received(:comment_on_commits)
+    end
+
     it 'initializes StyleChecker with modified files and config' do
       build_runner = make_build_runner
       pull_request = stubbed_pull_request

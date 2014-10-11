@@ -10,6 +10,7 @@ class BuildRunner
         commit_sha: payload.head_sha,
       )
       commenter.comment_on_violations(violations)
+      commenter.comment_on_commits
       create_success_status
       track_reviewed_repo_for_each_user
     end

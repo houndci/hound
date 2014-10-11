@@ -44,6 +44,14 @@ class GithubApi
     )
   end
 
+  def add_commit_comment(options)
+    client.create_commit_comment(
+      options[:commit].repo_name,
+      options[:commit].sha,
+      options[:comment]
+    )
+  end
+
   def create_hook(full_repo_name, callback_endpoint)
     hook = client.create_hook(
       full_repo_name,
@@ -75,11 +83,19 @@ class GithubApi
     end
   end
 
+  def commit_comments(full_repo_name, sha)
+    client.commit_comments(full_repo_name, sha)
+  end
+
   def pull_request_comments(full_repo_name, pull_request_number)
     repo_path = Octokit::Repository.path full_repo_name
 
     # client.pull_request_comments does not do auto-pagination.
     client.paginate "#{repo_path}/pulls/#{pull_request_number}/comments"
+  end
+
+  def pull_request_commits(full_repo_name, pull_request_number)
+    client.pull_request_commits(full_repo_name, pull_request_number)
   end
 
   def pull_request_files(full_repo_name, number)
