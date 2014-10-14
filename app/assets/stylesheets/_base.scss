@@ -96,13 +96,7 @@ a, label.toggle {
   @include transition(all 0.15s linear);
   border-bottom: 1px solid transparent;
   color: darken($purple, 5%);
-  display: inline-block;
-  letter-spacing: 2px;
-  font-size: 0.9em;
-  font-weight: bold;
-  padding: 0.2em;
   text-decoration: none;
-  text-transform: uppercase;
 
   &:hover {
     border-color: lighten($purple, 5%);

@@ -43,6 +43,12 @@ header {
 
   a, label.toggle {
     color: $light-font-color;
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 0.2em;
+    text-transform: uppercase;
   }
 
   .dropdown {

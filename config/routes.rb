@@ -1,9 +1,11 @@
 Houndapp::Application.routes.draw do
-  mount Resque::Server, at: '/queue'
+  mount Resque::Server, at: "/queue"
 
-  get '/auth/github/callback', to: 'sessions#create'
-  get '/sign_out', to: 'sessions#destroy'
-  get '/configuration', to: 'application#configuration'
+  get "/auth/github/callback", to: "sessions#create"
+  get "/sign_out", to: "sessions#destroy"
+  get "/configuration", to: "application#configuration"
+
+  get "/faq", to: "pages#show", id: "faq"
 
   resource :account, only: [:show]
   resources :builds, only: [:create]
@@ -17,5 +19,5 @@ Houndapp::Application.routes.draw do
   resources :repo_syncs, only: [:index, :create]
   resource :user, only: [:show]
 
-  root to: 'home#index'
+  root to: "home#index"
 end

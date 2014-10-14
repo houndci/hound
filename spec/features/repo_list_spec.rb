@@ -47,7 +47,7 @@ feature "Repo list", js: true do
 
       sign_in_as(user)
 
-      expect(page).to have_content I18n.t("syncing_repos").upcase
+      expect(page).to have_content I18n.t("syncing_repos")
     end
   end
 

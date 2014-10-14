@@ -1,7 +1,9 @@
 %footer.app-footer
   %p
     Hound is maintained by #{link_to 'thoughtbot', 'http://thoughtbot.com'}.
-    Questions? Tweet #{link_to '@houndci', 'https://twitter.com/houndci'}.
+    Questions? Try the
+    #{link_to 'FAQ', faq_path} or
+    Tweet #{link_to '@houndci', 'https://twitter.com/houndci'}.
 
   %p
     Hound is Copyright &copy; #{Date.today.year} thoughtbot. It is open source
@@ -11,6 +13,8 @@
   %ul.links
     %li
       = link_to 'View Source Code on Github', 'https://github.com/thoughtbot/hound'
+    %li
+      = link_to 'FAQ', faq_path
     %li
       = link_to 'Terms', 'https://github.com/thoughtbot/hound/blob/master/TERMS.md'
     %li
