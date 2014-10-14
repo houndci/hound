@@ -1,5 +1,6 @@
 Houndapp::Application.routes.draw do
   mount Resque::Server, at: "/queue"
+  mount StripeEvent::Engine => "/stripe-event"
 
   get "/auth/github/callback", to: "sessions#create"
   get "/sign_out", to: "sessions#destroy"
