@@ -4,7 +4,8 @@ module OauthHelper
       :github,
       info: {
         nickname: options[:username],
-        email: options[:email]
+        email: options[:email],
+        name: options[:name],
       },
       credentials: {
         token: options[:token]

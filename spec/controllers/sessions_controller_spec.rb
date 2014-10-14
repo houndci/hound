@@ -6,13 +6,15 @@ describe SessionsController do
       it "creates new user" do
         request.env["omniauth.auth"] = stub_oauth(
           username: "jimtom",
-          email: "jimtom@example.com"
+          email: "jimtom@example.com",
+          name: "Jim Tom",
         )
 
         expect { post :create }.to change { User.count }.by(1)
         user = User.last
         expect(user.github_username).to eq "jimtom"
         expect(user.email_address).to eq "jimtom@example.com"
+        expect(user.name).to eq "Jim Tom"
       end
     end
 
