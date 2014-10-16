@@ -1,3 +1,5 @@
+require "golint"
+
 module StyleGuide
   class Go < Base
     def violations_in_file(file)
