@@ -113,7 +113,7 @@ GEM
       thor (~> 0.19.1)
     globalid (0.3.0)
       activesupport (>= 4.1.0)
-    golint (0.0.2)
+    golint (0.0.3)
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -360,7 +360,7 @@ DEPENDENCIES
   factory_girl_rails
   font-awesome-rails
   foreman
-  golint (~> 0.0.2)
+  golint (~> 0.0.3)
   haml-rails
   high_voltage
   jasmine-rails
