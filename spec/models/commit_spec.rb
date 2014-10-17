@@ -15,6 +15,19 @@ describe Commit do
       end
     end
 
+    context "when file contains special characters" do
+      it "does not error when linters try writing to disk" do
+        text = "€25.00"
+        file_contents = double(content: Base64.encode64(text))
+        github = double("GithubApi", file_contents: file_contents)
+        commit = Commit.new("test/test", "abc", github)
+        tmp_file = Tempfile.new("foo", encoding: "utf-8")
+
+        expect { tmp_file.write(commit.file_content("test.rb")) }.
+          not_to raise_error
+      end
+    end
+
     context "when nothing is returned from GitHub" do
       it "returns blank string" do
         github = double(:github_api, file_contents: nil)
