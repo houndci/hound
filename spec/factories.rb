@@ -8,10 +8,10 @@ FactoryGirl.define do
   end
 
   factory :repo do
-    trait(:active) { active true }
-    trait(:inactive) { active false }
+    trait(:enabled) { enabled true }
+    trait(:disabled) { enabled false }
     trait(:in_private_org) do
-      active true
+      enabled true
       in_organization true
       private true
     end

@@ -38,7 +38,7 @@ class BuildRunner
   end
 
   def repo
-    @repo ||= Repo.active.
+    @repo ||= Repo.enabled.
       find_and_update(payload.github_repo_id, payload.full_repo_name)
   end
 

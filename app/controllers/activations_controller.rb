@@ -7,13 +7,13 @@ class ActivationsController < ApplicationController
   before_action :check_repo_plan
 
   def create
-    if activator.activate
-      analytics.track_activated(repo)
+    if activator.enable
+      analytics.track_enabled(repo)
 
       render json: repo, status: :created
     else
       report_exception(
-        FailedToActivate.new('Failed to activate repo'),
+        FailedToActivate.new("Failed to enable repo"),
         user_id: current_user.id,
         repo_id: params[:repo_id]
       )

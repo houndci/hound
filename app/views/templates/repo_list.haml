@@ -3,7 +3,7 @@
     %li.pull-left
       %span.active-count
         #{t('active_repos')}:
-        {{(repos | filter:{active: true}).length}} of {{repos.length}}
+        {{(repos | filter:{enabled: true}).length}} of {{repos.length}}
     %li.pull-right
       %a{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
         %i.fa.fa-refresh
@@ -18,6 +18,6 @@
   .dot
 
 %ul.repos{'ng-hide' => 'syncingRepos'}
-  %li.repo{'repo' => '', 'ng-repeat' => 'repo in repos | filter:search', 'ng-class' => '{active: repo.active, processing: processing}'}
+  %li.repo{'repo' => '', 'ng-repeat' => 'repo in repos | filter:search', 'ng-class' => '{enabled: repo.enabled, processing: processing}'}
 
 = render 'preload_template', template: 'repo'

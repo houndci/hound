@@ -6,25 +6,25 @@ class SubscriptionsController < ApplicationController
   respond_to :json
 
   def create
-    if activator.activate && create_subscription
+    if activator.enable && create_subscription
       analytics.track_subscribed(repo)
 
       render json: repo, status: :created
     else
-      activator.deactivate
-      report_activation_error("Failed to subscribe and activate repo")
+      activator.disable
+      report_activation_error("Failed to subscribe and enable repo")
 
       head 502
     end
   end
 
   def destroy
-    if activator.deactivate && delete_subscription
+    if activator.disable && delete_subscription
       analytics.track_unsubscribed(repo)
 
       render json: repo, status: :created
     else
-      report_activation_error("Failed to unsubscribe and deactivate repo")
+      report_activation_error("Failed to unsubscribe and disable repo")
 
       head 502
     end

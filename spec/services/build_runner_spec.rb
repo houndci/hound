@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe BuildRunner, '#run' do
-  context 'with active repo and opened pull request' do
-    it 'creates a build record with violations' do
-      repo = create(:repo, :active, github_id: 123)
+  context "with enabled repo and opened pull request" do
+    it "creates a build record with violations" do
+      repo = create(:repo, :enabled, github_id: 123)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
         pull_request_number: 5,
@@ -30,7 +30,7 @@ describe BuildRunner, '#run' do
         with(properties: { name: repo.full_github_name })
     end
 
-    it 'comments on violations' do
+    it "comments on violations" do
       build_runner = make_build_runner
       commenter = stubbed_commenter
       style_checker = stubbed_style_checker_with_violations
@@ -44,7 +44,7 @@ describe BuildRunner, '#run' do
         with(style_checker.violations)
     end
 
-    it 'initializes StyleChecker with modified files and config' do
+    it "initializes StyleChecker with modified files and config" do
       build_runner = make_build_runner
       pull_request = stubbed_pull_request
       stubbed_style_checker_with_violations
@@ -56,8 +56,8 @@ describe BuildRunner, '#run' do
       expect(StyleChecker).to have_received(:new).with(pull_request)
     end
 
-    it 'initializes PullRequest with payload and Hound token' do
-      repo = create(:repo, :active, github_id: 123)
+    it "initializes PullRequest with payload and Hound token" do
+      repo = create(:repo, :enabled, github_id: 123)
       payload = stubbed_payload(github_repo_id: repo.github_id)
       build_runner = BuildRunner.new(payload)
       stubbed_pull_request
@@ -71,7 +71,7 @@ describe BuildRunner, '#run' do
     end
 
     it "creates GitHub statuses" do
-      repo = create(:repo, :active, github_id: 123)
+      repo = create(:repo, :enabled, github_id: 123)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
         full_repo_name: "test/repo",
@@ -98,9 +98,9 @@ describe BuildRunner, '#run' do
     end
   end
 
-  context 'without active repo' do
-    it 'does not attempt to comment' do
-      repo = create(:repo, :inactive)
+  context "without enabled repo" do
+    it "does not attempt to comment" do
+      repo = create(:repo, :disabled)
       build_runner = make_build_runner(repo: repo)
       allow(Commenter).to receive(:new)
 
@@ -110,8 +110,8 @@ describe BuildRunner, '#run' do
     end
   end
 
-  context 'without opened or synchronize pull request' do
-    it 'does not attempt to comment' do
+  context "without opened or synchronize pull request" do
+    it "does not attempt to comment" do
       build_runner = make_build_runner
       pull_request = stubbed_pull_request
       allow(pull_request).
@@ -124,7 +124,7 @@ describe BuildRunner, '#run' do
     end
   end
 
-  def make_build_runner(repo: create(:repo, :active, github_id: 123))
+  def make_build_runner(repo: create(:repo, :enabled, github_id: 123))
     payload = stubbed_payload(github_repo_id: repo.github_id)
     BuildRunner.new(payload)
   end

@@ -6,7 +6,7 @@ describe SubscriptionsController, "#create" do
       token = "usergithubtoken"
       membership = create(:membership)
       repo = membership.repo
-      activator = double(:repo_activator, activate: true)
+      activator = double(:repo_activator, enable: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
       allow(JobQueue).to receive(:push)
@@ -20,7 +20,7 @@ describe SubscriptionsController, "#create" do
         format: :json
       )
 
-      expect(activator).to have_received(:activate)
+      expect(activator).to have_received(:enable)
       expect(RepoActivator).to have_received(:new).
         with(repo: repo, github_token: token)
       expect(RepoSubscriber).to have_received(:subscribe).
@@ -34,7 +34,7 @@ describe SubscriptionsController, "#create" do
       user = create(:user, email_address: nil)
       repo = create(:repo)
       user.repos << repo
-      activator = double(:repo_activator, activate: true)
+      activator = double(:repo_activator, enable: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
       allow(JobQueue).to receive(:push)
@@ -53,10 +53,10 @@ describe SubscriptionsController, "#create" do
   end
 
   context "when subscription fails" do
-    it "deactivates repo" do
+    it "disables repo" do
       membership = create(:membership)
       repo = membership.repo
-      activator = double(:repo_activator, activate: true, deactivate: nil)
+      activator = double(:repo_activator, enable: true, disable: nil)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(false)
       stub_sign_in(membership.user)
@@ -64,7 +64,7 @@ describe SubscriptionsController, "#create" do
       post :create, repo_id: repo.id, format: :json
 
       expect(response.code).to eq "502"
-      expect(activator).to have_received(:deactivate)
+      expect(activator).to have_received(:disable)
     end
   end
 end
@@ -77,7 +77,7 @@ describe SubscriptionsController, "#destroy" do
     membership = create(:membership, user: current_user)
     repo = membership.repo
     create(:subscription, repo: repo, user: subscribed_user)
-    activator = double(:repo_activator, deactivate: true)
+    activator = double(:repo_activator, disable: true)
     allow(RepoActivator).to receive(:new).and_return(activator)
     allow(RepoSubscriber).to receive(:unsubscribe).and_return(true)
     stub_sign_in(current_user, token)
@@ -89,7 +89,7 @@ describe SubscriptionsController, "#destroy" do
       format: :json
     )
 
-    expect(activator).to have_received(:deactivate)
+    expect(activator).to have_received(:disable)
     expect(RepoActivator).to have_received(:new).
       with(repo: repo, github_token: token)
     expect(RepoSubscriber).to have_received(:unsubscribe).

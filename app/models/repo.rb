@@ -13,8 +13,10 @@ class Repo < ActiveRecord::Base
   validates :full_github_name, presence: true
   validates :github_id, uniqueness: true, presence: true
 
-  def self.active
-    where(active: true)
+  alias_attribute :enabled, :active
+
+  def self.enabled
+    where(enabled: true)
   end
 
   def self.find_or_create_with(attributes)
@@ -33,12 +35,12 @@ class Repo < ActiveRecord::Base
     repo
   end
 
-  def activate
-    update(active: true)
+  def enable
+    update(enabled: true, active: true)
   end
 
-  def deactivate
-    update(active: false)
+  def disable
+    update(enabled: false, active: false)
   end
 
   def plan
