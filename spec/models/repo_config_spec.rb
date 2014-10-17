@@ -153,7 +153,7 @@ describe RepoConfig do
       end
     end
 
-    context "when coffeescript config file is specified" do
+    context "when CoffeeScript config file is specified" do
       it "returns parsed config" do
         config = config_for_file("coffeelint.json", <<-EOS.strip_heredoc)
           {
@@ -168,6 +168,20 @@ describe RepoConfig do
         expect(result).to eq(
           "no_unnecessary_double_quotes" => { "level" => "error" }
         )
+      end
+    end
+
+    context "when JavaScript config is an invalid JSON format" do
+      it "returns an empty config" do
+        config = config_for_file("javascript.json", <<-EOS.strip_heredoc)
+          {
+            "predef" => ["myGlobal",]
+          }
+        EOS
+
+        result = config.for("java_script")
+
+        expect(result).to eq({})
       end
     end
 
@@ -208,6 +222,10 @@ describe RepoConfig do
         coffee_script:
           enabled: true
           config_file: coffeelint.json
+
+        java_script:
+          enabled: true
+          config_file: javascript.json
       EOS
       commit = double("Commit")
       config = RepoConfig.new(commit)

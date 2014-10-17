@@ -74,5 +74,7 @@ class RepoConfig
 
   def parse_json(content)
     JSON.parse(content)
+  rescue JSON::ParserError
+    {}
   end
 end
