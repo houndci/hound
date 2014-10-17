@@ -12,21 +12,35 @@ require "app/models/violation"
 describe StyleGuide::Scss do
   describe "#violations_in_file" do
     context "with default configuration" do
-      describe "when bad nested rules" do
+      describe "for deep nested selectors" do
         it "returns violation" do
-          expect(violations_in(<<-CODE)).to include "Selector should have depth of applicability no greater than 3, but was 4"
-            .table p.inner table td { background: red; }
+          content = <<-CODE
+.a { .b { .c { .d { background: #000; } } } }
           CODE
+
+          expect(violations_in(content)).to include(
+            "Selector should have depth of applicability no greater than 3, but was 4"
+          )
         end
       end
     end
 
-    context "when bad nested rules check is disabled in config" do
-      context "when bad nested rules" do
+    context "with custom configuration" do
+      describe "for bad nested rules" do
         it "returns no violation" do
-          expect(violations_in(<<-CODE)).to eq []
-            .table p.inner table td { background: red; }
+          config = {
+            "linters" => {
+              "SelectorDepth" => {
+                "enabled" => false
+              }
+            }
+          }
+
+          content = <<-CODE
+.a { .b { .c { .d { background: #000; } } } }
           CODE
+
+          expect(violations_in(content, config)).to eq []
         end
       end
     end
