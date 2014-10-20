@@ -184,6 +184,22 @@ module GithubApiHelper
     )
   end
 
+  def stub_org_teams_with_lowercase_services_request(org_name, token)
+    json_response = File.read(
+      "spec/support/fixtures/org_teams_with_lowercase_services_team.json"
+    )
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
+    ).with(
+      headers: { "Authorization" => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: json_response,
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
   def stub_chained_org_teams_request(org_name, token)
     no_services_team_json_response =
       File.read("spec/support/fixtures/repo_teams.json")

@@ -151,7 +151,7 @@ class GithubApi
 
   def find_team(name, repo)
     client.org_teams(repo.organization.login).detect do |team|
-      team.name == name
+      team.name.downcase == name.downcase
     end
   end
 

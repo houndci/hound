@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1234,
+    "members_url": "https://api.github.com/teams/1234/members{/member}",
+    "name": "test team",
+    "permission": "admin",
+    "repositories_url": "https://api.github.com/teams/1234/repos",
+    "slug": "test-team",
+    "url": "https://api.github.com/teams/1234"
+  },
+  {
+    "id": 4567,
+    "members_url": "https://api.github.com/teams/4567/members{/member}",
+    "name": "services",
+    "permission": "pull",
+    "repositories_url": "https://api.github.com/teams/4567/repos",
+    "slug": "services",
+    "url": "https://api.github.com/teams/4567"
+  }
+]
