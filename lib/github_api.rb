@@ -6,12 +6,13 @@ class GithubApi
   SERVICES_TEAM_NAME = "Services"
   PREVIEW_MEDIA_TYPE =
     ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
-  ITEMS_PER_PAGE = 100
 
   pattr_initialize :token
 
   def client
-    @client ||= Octokit::Client.new(access_token: token)
+    @client ||= Octokit::Client.new(access_token: token).tap do |c|
+      c.auto_paginate = true
+    end
   end
 
   def repos
@@ -151,12 +152,10 @@ class GithubApi
   end
 
   def find_team(name, repo)
-    teams = client.org_teams(repo.organization.login, per_page: ITEMS_PER_PAGE)
-    until (team = teams.find { |t| t.name == name }) ||
-      (next_rel = client.last_response.rels[:next]).nil?
-      teams = client.get(next_rel.href)
-    end
-    team
+    teams = client.paginate(
+      "#{Octokit::Organization.path repo.organization.login}/teams"
+    )
+    teams.find { |t| t.name == name }
   end
 
   def create_team(name, repo)

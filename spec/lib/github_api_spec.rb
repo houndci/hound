@@ -87,7 +87,8 @@ describe GithubApi do
               add_user_request =
                 stub_add_user_to_team_request(username, team_id, token)
 
-              expect(api.add_user_to_repo(username, repo_name)).to be_truthy
+              api.add_user_to_repo(username, repo_name)
+
               expect(add_user_request).to have_been_requested
               expect(add_repo_request).to have_been_requested
             end
@@ -324,7 +325,7 @@ describe GithubApi, "#user_teams" do
   it "returns user's teams" do
     token = "abc123"
     teams = ["thoughtbot"]
-    client = double(user_teams: teams)
+    client = double(user_teams: teams, :auto_paginate= => true)
     allow(Octokit::Client).to receive(:new).and_return(client)
     api = GithubApi.new(token)
 
