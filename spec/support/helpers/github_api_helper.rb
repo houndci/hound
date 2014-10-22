@@ -117,12 +117,42 @@ module GithubApiHelper
   def stub_org_teams_request(org_name, token)
     stub_request(
       :get,
-      "https://api.github.com/orgs/#{org_name}/teams"
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/repo_teams.json'),
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_paginated_org_teams_request(org_name, token)
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
+    ).with(
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: '[]',
+      headers: {
+        'Link' => %(<https://api.github.com/orgs/#{org_name}/teams?page=2&per_page=100>; rel="next"),
+        'Content-Type' => 'application/json; charset=utf-8'
+      }
+    )
+
+    json_response = File.read(
+      'spec/support/fixtures/org_teams_with_services_team.json'
+    )
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams?page=2&per_page=100"
+    ).with(
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: json_response,
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -144,7 +174,7 @@ module GithubApiHelper
     )
     stub_request(
       :get,
-      "https://api.github.com/orgs/#{org_name}/teams"
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
@@ -161,7 +191,7 @@ module GithubApiHelper
       File.read("spec/support/fixtures/org_teams_with_services_team.json")
     stub_request(
       :get,
-      "https://api.github.com/orgs/#{org_name}/teams"
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
