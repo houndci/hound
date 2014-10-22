@@ -42,7 +42,7 @@ class Repo < ActiveRecord::Base
   end
 
   def exempt?
-    ENV["EXEMPT_ORGS"] && ENV["EXEMPT_ORGS"].split.include?(organization)
+    ENV["EXEMPT_ORGS"] && ENV["EXEMPT_ORGS"].split(",").include?(organization)
   end
 
   private
