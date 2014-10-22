@@ -266,9 +266,9 @@ describe GithubApi do
     end
   end
 
-  describe "#add_comment" do
-    it "adds comment to GitHub" do
-      api = GithubApi.new
+  describe "#add_pull_request_comment" do
+    it "adds comment to GitHub pull request" do
+      api = GithubApi.new("authtoken")
       repo_name = "test/repo"
       pull_request_number = 2
       comment = "test comment"
@@ -285,7 +285,7 @@ describe GithubApi do
         patch_position
       )
 
-      api.add_comment(
+      api.add_pull_request_comment(
         pull_request_number: pull_request_number,
         commit: commit,
         comment: "test comment",
@@ -295,54 +295,55 @@ describe GithubApi do
 
       expect(request).to have_been_requested
     end
-  end
 
-  describe "#pull_request_comments" do
-    it "returns comments added to pull request" do
-      api = GithubApi.new
-      pull_request = double(:pull_request, full_repo_name: "thoughtbot/hound")
-      pull_request_id = 253
-      commit_sha = "abc253"
-      expected_comment = "inline if's and while's are not violations?"
-      stub_pull_request_comments_request(
-        pull_request.full_repo_name,
-        pull_request_id
-      )
-      stub_contents_request(
-        repo_name: pull_request.full_repo_name,
-        sha: commit_sha
-      )
+    describe "#pull_request_comments" do
+      it "returns comments added to pull request" do
+        api = GithubApi.new
+        pull_request = double(:pull_request, full_repo_name: "thoughtbot/hound")
+        pull_request_id = 253
+        commit_sha = "abc253"
+        expected_comment = "inline if's and while's are not violations?"
+        stub_pull_request_comments_request(
+          pull_request.full_repo_name,
+          pull_request_id
+        )
+        stub_contents_request(
+          repo_name: pull_request.full_repo_name,
+          sha: commit_sha
+        )
 
-      comments = api.pull_request_comments(
-        pull_request.full_repo_name,
-        pull_request_id
-      )
+        comments = api.pull_request_comments(
+          pull_request.full_repo_name,
+          pull_request_id
+        )
 
-      expect(comments.size).to eq(4)
-      expect(comments.first.body).to eq expected_comment
+        expect(comments.size).to eq(4)
+        expect(comments.first.body).to eq expected_comment
+      end
     end
-  end
 
-  describe "#accept_pending_invitations" do
-    it "finds and accepts pending org invitations" do
-      api = GithubApi.new
-      memberships_request = stub_memberships_request
-      membership_update_request = stub_membership_update_request
+    describe "#accept_pending_invitations" do
+      it "finds and accepts pending org invitations" do
+        api = GithubApi.new
+        memberships_request = stub_memberships_request
+        membership_update_request = stub_membership_update_request
 
-      api.accept_pending_invitations
+        api.accept_pending_invitations
 
-      expect(memberships_request).to have_been_requested
-      expect(membership_update_request).to have_been_requested
+        expect(memberships_request).to have_been_requested
+        expect(membership_update_request).to have_been_requested
+      end
     end
-  end
 
-  it "returns user's teams" do
-    teams = ["thoughtbot"]
-    client = double(user_teams: teams)
-    allow(Octokit::Client).to receive(:new).and_return(client)
+    it "returns user's teams" do
+      teams = ["thoughtbot"]
+      client = double(user_teams: teams)
+      allow(Octokit::Client).to receive(:new).and_return(client)
+      api = GithubApi.new
 
-    user_teams = api.user_teams
+      user_teams = api.user_teams
 
-    expect(user_teams).to eq teams
+      expect(user_teams).to eq teams
+    end
   end
 end

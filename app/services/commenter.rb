@@ -5,7 +5,7 @@ class Commenter
   def comment_on_violations(violations)
     violations.each do |violation|
       if commenting_policy.allowed_for?(violation)
-        pull_request.add_comment(violation)
+        pull_request.comment_on_violation(violation)
       end
     end
   end

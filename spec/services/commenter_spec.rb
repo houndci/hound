@@ -7,7 +7,7 @@ describe Commenter do
     context "when comment is allowed" do
       context "with a violation" do
         it "comments on the violation" do
-          pull_request = double(:pull_request, add_comment: nil)
+          pull_request = double(:pull_request, comment_on_violation: nil)
           violation = double(:violation)
           commenter = Commenter.new(pull_request)
           policy = double(:commenting_policy, allowed_for?: true)
@@ -15,7 +15,8 @@ describe Commenter do
 
           commenter.comment_on_violations([violation])
 
-          expect(pull_request).to have_received(:add_comment).with(violation)
+          expect(pull_request).to have_received(:comment_on_violation).
+            with(violation)
         end
       end
 
@@ -26,7 +27,7 @@ describe Commenter do
 
           commenter.comment_on_violations([])
 
-          expect(pull_request).not_to have_received(:add_comment)
+          expect(pull_request).not_to have_received(:comment_on_violation)
         end
       end
     end
@@ -40,7 +41,7 @@ describe Commenter do
 
         commenter.comment_on_violations([double(:violation)])
 
-        expect(pull_request).not_to have_received(:add_comment)
+        expect(pull_request).not_to have_received(:comment_on_violation)
       end
     end
   end

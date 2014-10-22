@@ -33,7 +33,7 @@ class GithubApi
     client.repository(repo_name)
   end
 
-  def add_comment(options)
+  def add_pull_request_comment(options)
     client.create_pull_request_comment(
       options[:commit].repo_name,
       options[:pull_request_number],
