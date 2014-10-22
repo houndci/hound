@@ -6,6 +6,9 @@ class GithubApi
   SERVICES_TEAM_NAME = "Services"
   PREVIEW_MEDIA_TYPE =
     ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
+  FAILURE_STATUS = "failure"
+  PENDING_STATUS = "pending"
+  SUCCESS_STATUS = "success"
 
   def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
     @token = token
@@ -107,6 +110,15 @@ class GithubApi
     end
   end
 
+  def create_failure_status(full_repo_name, sha, description)
+    create_status(
+      repo: full_repo_name,
+      sha: sha,
+      state: FAILURE_STATUS,
+      description: description
+    )
+  end
+
   def create_pending_status(full_repo_name, sha, description)
     create_status(
       repo: full_repo_name,
@@ -120,7 +132,7 @@ class GithubApi
     create_status(
       repo: full_repo_name,
       sha: sha,
-      state: "success",
+      state: SUCCESS_STATUS,
       description: description
     )
   end

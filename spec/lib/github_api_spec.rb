@@ -328,13 +328,29 @@ describe GithubApi do
     end
   end
 
+  describe "#create_failure_status" do
+    it "makes request to GitHub for creating a failed status" do
+      api = GithubApi.new
+      request = stub_status_request(
+        "test/repo",
+        "sha",
+        GithubApi::FAILURE_STATUS ,
+        "description"
+      )
+
+      api.create_failure_status("test/repo", "sha", "description")
+
+      expect(request).to have_been_requested
+    end
+  end
+
   describe "#create_pending_status" do
     it "makes request to GitHub for creating a pending status" do
       api = GithubApi.new
       request = stub_status_request(
         "test/repo",
         "sha",
-        "pending",
+        GithubApi::PENDING_STATUS,
         "description"
       )
 
@@ -350,7 +366,7 @@ describe GithubApi do
       request = stub_status_request(
         "test/repo",
         "sha",
-        "success",
+        GithubApi::SUCCESS_STATUS,
         "description"
       )
 

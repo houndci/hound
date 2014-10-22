@@ -3,15 +3,13 @@ class BuildRunner
 
   def run
     if repo && relevant_pull_request?
-      create_pending_status
-      repo.builds.create!(
-        violations: violations,
-        pull_request_number: payload.pull_request_number,
-        commit_sha: payload.head_sha,
-      )
-      commenter.comment_on_violations(violations)
-      create_success_status
-      track_reviewed_repo_for_each_user
+      repo_config.validate
+
+      if repo_config.errors.any?
+        create_failed_build
+      else
+        run_build
+      end
     end
   end
 
@@ -19,6 +17,38 @@ class BuildRunner
 
   def relevant_pull_request?
     pull_request.opened? || pull_request.synchronize?
+  end
+
+  def create_failed_build
+    failure_message = repo_config.errors.join("\n")
+
+    github.create_failure_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      failure_message
+    )
+
+    repo.builds.create!(
+      violations: [failure_message],
+      pull_request_number: payload.pull_request_number,
+      commit_sha: payload.head_sha
+    )
+  end
+
+  def repo_config
+    @repo_config ||= RepoConfig.new(pull_request.head_commit)
+  end
+
+  def run_build
+    create_pending_status
+    repo.builds.create!(
+      violations: violations,
+      pull_request_number: payload.pull_request_number,
+      commit_sha: payload.head_sha,
+    )
+    commenter.comment_on_violations(violations)
+    create_success_status
+    track_reviewed_repo_for_each_user
   end
 
   def violations
