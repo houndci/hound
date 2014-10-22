@@ -6,6 +6,7 @@ class GithubApi
   SERVICES_TEAM_NAME = "Services"
   PREVIEW_MEDIA_TYPE =
     ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
+  ITEMS_PER_PAGE = 100
 
   pattr_initialize :token
 
@@ -150,7 +151,7 @@ class GithubApi
   end
 
   def find_team(name, repo)
-    teams = client.org_teams(repo.organization.login, per_page: 100)
+    teams = client.org_teams(repo.organization.login, per_page: ITEMS_PER_PAGE)
     until (team = teams.find { |t| t.name == name }) ||
       (next_rel = client.last_response.rels[:next]).nil?
       teams = client.get(next_rel.href)
