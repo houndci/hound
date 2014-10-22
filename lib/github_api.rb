@@ -10,7 +10,7 @@ class GithubApi
   pattr_initialize :token
 
   def client
-    @client ||= Octokit::Client.new(access_token: token)
+    @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
   end
 
   def repos

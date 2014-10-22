@@ -76,6 +76,23 @@ describe GithubApi do
         end
 
         context "when Services team exists" do
+          context "when Services team is not on the first page of results" do
+            it "adds user to Services team" do
+              stub_repo_with_org_request(repo_name, token)
+              stub_empty_repo_teams_request(repo_name, token)
+              stub_paginated_org_teams_request(organization, token)
+              add_repo_request =
+                stub_add_repo_to_team_request(repo_name, team_id, token)
+              add_user_request =
+                stub_add_user_to_team_request(username, team_id, token)
+
+              api.add_user_to_repo(username, repo_name)
+
+              expect(add_user_request).to have_been_requested
+              expect(add_repo_request).to have_been_requested
+            end
+          end
+
           it "adds user to Services team" do
             stub_repo_with_org_request(repo_name, token)
             stub_empty_repo_teams_request(repo_name, token)

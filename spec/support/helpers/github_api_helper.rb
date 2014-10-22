@@ -78,7 +78,7 @@ module GithubApiHelper
   def stub_repo_teams_request(repo_name, token = auth_token)
     stub_request(
       :get,
-      "https://api.github.com/repos/#{repo_name}/teams"
+      "https://api.github.com/repos/#{repo_name}/teams?per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
@@ -91,7 +91,7 @@ module GithubApiHelper
   def stub_user_teams_request(token = auth_token)
     stub_request(
       :get,
-      'https://api.github.com/user/teams'
+      "https://api.github.com/user/teams?per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
@@ -104,7 +104,7 @@ module GithubApiHelper
   def stub_empty_repo_teams_request(repo_name, token)
     stub_request(
       :get,
-      "https://api.github.com/repos/#{repo_name}/teams"
+      "https://api.github.com/repos/#{repo_name}/teams?per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
@@ -117,13 +117,43 @@ module GithubApiHelper
   def stub_org_teams_request(org_name, token)
     stub_request(
       :get,
-      "https://api.github.com/orgs/#{org_name}/teams"
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/repo_teams.json'),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
+  def stub_paginated_org_teams_request(org_name, token)
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
+    ).with(
+      headers: { "Authorization" => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: "[]",
+      headers: {
+        "Link" => %(<https://api.github.com/orgs/#{org_name}/teams?page=2&per_page=100>; rel="next"),
+        "Content-Type" => "application/json; charset=utf-8"
+      }
+    )
+
+    json_response = File.read(
+      "spec/support/fixtures/org_teams_with_services_team.json"
+    )
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams?page=2&per_page=100"
+    ).with(
+      headers: { "Authorization" => "token #{token}" }
+    ).to_return(
+      status: 200,
+      body: json_response,
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
     )
   end
 
@@ -140,17 +170,17 @@ module GithubApiHelper
 
   def stub_org_teams_with_services_request(org_name, token)
     json_response = File.read(
-      'spec/support/fixtures/org_teams_with_services_team.json'
+      "spec/support/fixtures/org_teams_with_services_team.json"
     )
     stub_request(
       :get,
-      "https://api.github.com/orgs/#{org_name}/teams"
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
     ).with(
-      headers: { 'Authorization' => "token #{token}" }
+      headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
       body: json_response,
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
     )
   end
 
@@ -161,7 +191,7 @@ module GithubApiHelper
       File.read("spec/support/fixtures/org_teams_with_services_team.json")
     stub_request(
       :get,
-      "https://api.github.com/orgs/#{org_name}/teams"
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
@@ -266,7 +296,7 @@ module GithubApiHelper
   def stub_pull_request_files_request(full_repo_name, pull_request_number, auth_token = 'githubtoken')
     stub_request(
       :get,
-      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files"
+      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files?per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{auth_token}" }
     ).to_return(
@@ -310,7 +340,7 @@ module GithubApiHelper
   def stub_paginated_repo_requests(auth_token)
     stub_request(
       :get,
-      'https://api.github.com/user/repos?page=1'
+      "https://api.github.com/user/repos?page=1&per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{auth_token}" }
     ).to_return(
@@ -321,7 +351,7 @@ module GithubApiHelper
 
     stub_request(
       :get,
-      'https://api.github.com/user/repos?page=2'
+      "https://api.github.com/user/repos?page=2&per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{auth_token}" }
     ).to_return(
@@ -332,7 +362,7 @@ module GithubApiHelper
 
     stub_request(
       :get,
-      'https://api.github.com/user/repos?page=3'
+      "https://api.github.com/user/repos?page=3&per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{auth_token}" }
     ).to_return(
@@ -345,7 +375,7 @@ module GithubApiHelper
   def stub_paginated_org_repo_requests(auth_token)
     stub_request(
       :get,
-      'https://api.github.com/orgs/thoughtbot/repos?page=1'
+      "https://api.github.com/orgs/thoughtbot/repos?page=1&per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{auth_token}" }
     ).to_return(
@@ -356,7 +386,7 @@ module GithubApiHelper
 
     stub_request(
       :get,
-      'https://api.github.com/orgs/thoughtbot/repos?page=2'
+      "https://api.github.com/orgs/thoughtbot/repos?page=2&per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{auth_token}" }
     ).to_return(
@@ -367,7 +397,7 @@ module GithubApiHelper
 
     stub_request(
       :get,
-      'https://api.github.com/orgs/thoughtbot/repos?page=3'
+      "https://api.github.com/orgs/thoughtbot/repos?page=3&per_page=100"
     ).with(
       headers: { 'Authorization' => "token #{auth_token}" }
     ).to_return(
@@ -412,7 +442,7 @@ module GithubApiHelper
   def stubbed_memberships_request(token)
     stub_request(
       :get,
-      "https://api.github.com/user/memberships/orgs?state=pending"
+      "https://api.github.com/user/memberships/orgs?per_page=100&state=pending"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
