@@ -10,9 +10,7 @@ class GithubApi
   pattr_initialize :token
 
   def client
-    @client ||= Octokit::Client.new(access_token: token).tap do |c|
-      c.auto_paginate = true
-    end
+    @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
   end
 
   def repos
@@ -152,10 +150,9 @@ class GithubApi
   end
 
   def find_team(name, repo)
-    teams = client.paginate(
-      "#{Octokit::Organization.path repo.organization.login}/teams"
-    )
-    teams.find { |t| t.name == name }
+    client.org_teams(repo.organization.login).detect do |team|
+      team.name == name
+    end
   end
 
   def create_team(name, repo)

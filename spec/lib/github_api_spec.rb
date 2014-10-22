@@ -81,7 +81,6 @@ describe GithubApi do
               stub_repo_with_org_request(repo_name, token)
               stub_empty_repo_teams_request(repo_name, token)
               stub_paginated_org_teams_request(organization, token)
-
               add_repo_request =
                 stub_add_repo_to_team_request(repo_name, team_id, token)
               add_user_request =
