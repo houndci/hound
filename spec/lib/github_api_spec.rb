@@ -324,7 +324,7 @@ describe GithubApi, "#user_teams" do
   it "returns user's teams" do
     token = "abc123"
     teams = ["thoughtbot"]
-    client = double(user_teams: teams, :auto_paginate= => true)
+    client = double(user_teams: teams)
     allow(Octokit::Client).to receive(:new).and_return(client)
     api = GithubApi.new(token)
 
