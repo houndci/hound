@@ -7,3 +7,4 @@ en:
   authenticate: 'Sign In with GitHub'
   active_repos: 'Active repos'
   search_placeholder: 'search by repo or organization name'
+  invalid_config: "%{config_file_name} is empty or has syntax errors"
