@@ -133,6 +133,71 @@ describe RepoConfig do
     end
   end
 
+  describe "#validate" do
+    context "when JavaScript config has formatting errors" do
+      it "adds errors" do
+        config_file_path = "javascript.json"
+        commit = stubbed_commit_with_invalid_config(
+          config_name: "java_script",
+          config_path: config_file_path
+        )
+        config = RepoConfig.new(commit)
+        error_message = I18n.t(
+          "invalid_config",
+          config_file_name: config_file_path
+        )
+
+        expect { config.validate }.to change { config.errors.size }.by(1)
+        expect(config.errors).to match_array([error_message])
+      end
+    end
+
+    context "when CoffeeScript config has formatting errors" do
+      it "adds errors" do
+        config_file_path = "coffeelint.json"
+        commit = stubbed_commit_with_invalid_config(
+          config_name: "coffee_script",
+          config_path: config_file_path
+        )
+        config = RepoConfig.new(commit)
+        error_message = I18n.t(
+          "invalid_config",
+          config_file_name: config_file_path
+        )
+
+        expect { config.validate }.to change { config.errors.size }.by(1)
+        expect(config.errors).to match_array([error_message])
+      end
+    end
+
+    context "when Ruby config has formatting errors" do
+      it "adds errors" do
+        config_file_path = "config/rubocop.yml"
+        commit = stubbed_commit_with_invalid_config(
+          config_name: "ruby",
+          config_path: config_file_path
+        )
+        config = RepoConfig.new(commit)
+        error_message = I18n.t(
+          "invalid_config",
+          config_file_name: config_file_path
+        )
+
+        expect { config.validate }.to change { config.errors.size }.by(1)
+        expect(config.errors).to match_array([error_message])
+      end
+    end
+
+    context "when config does not have formatting errors" do
+      it "does not add errors" do
+       commit = stubbed_commit_with_valid_config
+       config = RepoConfig.new(commit)
+
+        expect { config.validate }.to change { config.errors.size }.by(0)
+      end
+    end
+  end
+
   describe "#for" do
     context "when Ruby config file is specified" do
       it "returns parsed config" do
@@ -228,9 +293,61 @@ describe RepoConfig do
         )
       end
     end
+  end
 
-    def config_for_file(file_path, content)
-      hound_config = <<-EOS.strip_heredoc
+  def stubbed_commit_with_invalid_config(config_name:, config_path:)
+    commit = double("Commit")
+    config_with_errors = <<-EOS.strip_heredoc
+      {
+        "predef" => ["myGlobal",]
+      }
+    EOS
+    hound_config = <<-EOS.strip_heredoc
+      #{config_name}:
+        enabled: true
+        config_file: #{config_path}
+    EOS
+
+    allow(commit).to receive(:file_content).
+      with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
+    allow(commit).to receive(:file_content).
+      with(config_path).and_return(config_with_errors)
+    commit
+  end
+
+  def stubbed_commit_with_valid_config
+    commit = double("Commit")
+    valid_config = <<-EOS.strip_heredoc
+          {
+            "predef": ["myGlobal"]
+          }
+    EOS
+    hound_config = <<-EOS.strip_heredoc
+        ruby:
+          enabled: true
+          config_file: "config/rubocop.yml"
+
+        coffee_script:
+          enabled: true
+          config_file: coffeelint.json
+
+        java_script:
+          enabled: true
+          config_file: javascript.json
+    EOS
+    parsed_hound_config = YAML.load(hound_config)
+    parsed_hound_config.each do |language, config_settings|
+      config_path = parsed_hound_config[language]["config_file"]
+      allow(commit).to receive(:file_content).
+        with(config_path).and_return(valid_config)
+    end
+    allow(commit).to receive(:file_content).
+      with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
+    commit
+  end
+
+  def config_for_file(file_path, content)
+    hound_config = <<-EOS.strip_heredoc
         ruby:
           enabled: true
           config_file: config/rubocop.yml
@@ -242,15 +359,14 @@ describe RepoConfig do
         java_script:
           enabled: true
           config_file: #{file_path}
-      EOS
-      commit = double("Commit")
-      config = RepoConfig.new(commit)
-      allow(commit).to receive(:file_content).
-        with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
-      allow(commit).to receive(:file_content).
-        with(file_path).and_return(content)
+    EOS
+    commit = double("Commit")
+    config = RepoConfig.new(commit)
+    allow(commit).to receive(:file_content).
+      with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
+    allow(commit).to receive(:file_content).
+      with(file_path).and_return(content)
 
-      config
-    end
+    config
   end
 end

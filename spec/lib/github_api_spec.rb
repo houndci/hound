@@ -266,6 +266,25 @@ describe GithubApi do
     end
   end
 
+  describe "#add_issue_comment" do
+    it "adds issue comment to GitHub" do
+      full_repo_name = "test/repo"
+      issue_number = 1
+      comment_body = "Invalid config"
+      client = double(:client, add_comment: true)
+      allow(Octokit::Client).to receive(:new).and_return(client)
+      api = GithubApi.new("authtoken")
+
+      api.add_issue_comment(full_repo_name, issue_number, comment_body)
+
+      expect(client).to have_received(:add_comment).with(
+        full_repo_name,
+        issue_number,
+        comment_body
+      )
+    end
+  end
+
   describe "#add_pull_request_comment" do
     it "adds comment to GitHub pull request" do
       api = GithubApi.new("authtoken")

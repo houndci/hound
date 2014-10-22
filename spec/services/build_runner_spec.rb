@@ -14,6 +14,7 @@ describe BuildRunner, '#run' do
       stubbed_style_checker_with_violations
       stubbed_commenter
       stubbed_pull_request
+      stubbed_repo_config
 
       build_runner.run
       build = Build.first
@@ -31,6 +32,7 @@ describe BuildRunner, '#run' do
     it 'comments on violations' do
       build_runner = make_build_runner
       commenter = stubbed_commenter
+      stubbed_repo_config
       style_checker = stubbed_style_checker_with_violations
       commenter = Commenter.new(stubbed_pull_request)
       allow(Commenter).to receive(:new).and_return(commenter)
@@ -46,6 +48,7 @@ describe BuildRunner, '#run' do
       pull_request = stubbed_pull_request
       stubbed_style_checker_with_violations
       stubbed_commenter
+      stubbed_repo_config
 
       build_runner.run
 
@@ -59,10 +62,29 @@ describe BuildRunner, '#run' do
       stubbed_pull_request
       stubbed_style_checker_with_violations
       stubbed_commenter
+      stubbed_repo_config
 
       build_runner.run
 
       expect(PullRequest).to have_received(:new).with(payload)
+    end
+
+    context "with invalid config" do
+      it "comments on pull request" do
+        error_messages = "config is invalid"
+        build_runner = make_build_runner
+        stubbed_style_checker_with_violations
+        stubbed_repo_config(error_messages)
+        commenter = stubbed_commenter
+        pull_request = stubbed_pull_request
+        allow(pull_request).to receive(:add_comment)
+        allow(commenter).to receive(:comment_on_violations)
+
+        build_runner.run
+
+        expect(pull_request).to have_received(:add_comment).
+          with(error_messages)
+      end
     end
   end
 
@@ -108,7 +130,10 @@ describe BuildRunner, '#run' do
 
   def stubbed_style_checker_with_violations
     violations = [double(:violation)]
-    style_checker = double(:style_checker, violations: violations)
+    style_checker = double(
+      :style_checker,
+      violations: violations
+    )
     allow(StyleChecker).to receive(:new).and_return(style_checker)
 
     style_checker
@@ -126,10 +151,22 @@ describe BuildRunner, '#run' do
       :pull_request,
       pull_request_files: [double(:file)],
       config: double(:config),
-      opened?: true
+      opened?: true,
+      head_commit: double(:commit)
     )
     allow(PullRequest).to receive(:new).and_return(pull_request)
 
     pull_request
+  end
+
+  def stubbed_repo_config(error_messages = nil)
+    repo_config = double(
+      :repo_config,
+      validate: true,
+      errors: [error_messages],
+      error_messages: error_messages
+    )
+    allow(RepoConfig).to receive(:new).and_return(repo_config)
+    repo_config
   end
 end

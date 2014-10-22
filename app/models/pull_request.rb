@@ -1,6 +1,14 @@
 class PullRequest
   pattr_initialize :payload
 
+  def add_comment(comment_body)
+    api.add_issue_comment(
+      payload.full_repo_name,
+      payload.pull_request_number,
+      comment_body
+    )
+  end
+
   def comments
     @comments ||= api.pull_request_comments(full_repo_name, number)
   end
