@@ -2,6 +2,8 @@ language: ruby
 sudo: false
 cache: bundler
 rvm: 2.2.0
+go:
+  - 1.3
 
 before_install:
   - export DISPLAY=:99.0
@@ -9,6 +11,7 @@ before_install:
 
 before_script:
   - psql -c 'create database "hound_test";' -U postgres
+  - go get github.com/golang/lint/golint
 
 services:
   - redis-server
