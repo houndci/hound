@@ -19,8 +19,9 @@ describe SubscriptionsController, "#create" do
         format: :json
       )
 
-      expect(activator).to have_received(:activate).
-        with(repo, AuthenticationHelper::GITHUB_TOKEN)
+      expect(activator).to have_received(:activate)
+      expect(RepoActivator).to have_received(:new).
+        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
       expect(RepoSubscriber).to have_received(:subscribe).
         with(repo, membership.user, "cardtoken")
       expect(analytics).to have_tracked("Subscribed Private Repo").
@@ -47,26 +48,6 @@ describe SubscriptionsController, "#create" do
       )
 
       expect(user.reload.email_address).to eq "jimtom@example.com"
-    end
-
-    it "enqueues invitation job" do
-      membership = create(:membership)
-      repo = membership.repo
-      activator = double(:repo_activator, activate: true)
-      allow(RepoActivator).to receive(:new).and_return(activator)
-      allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-      allow(JobQueue).to receive(:push)
-      stub_sign_in(membership.user)
-
-      post(
-        :create,
-        repo_id: repo.id,
-        card_token: "cardtoken",
-        email_address: "jimtom@example.com",
-        format: :json
-      )
-
-      expect(JobQueue).to have_received(:push).with(OrgInvitationJob)
     end
   end
 
@@ -106,8 +87,9 @@ describe SubscriptionsController, "#destroy" do
       format: :json
     )
 
-    expect(activator).to have_received(:deactivate).
-      with(repo, AuthenticationHelper::GITHUB_TOKEN)
+    expect(activator).to have_received(:deactivate)
+    expect(RepoActivator).to have_received(:new).
+      with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
     expect(RepoSubscriber).to have_received(:unsubscribe).
       with(repo, subscribed_user)
     expect(analytics).to have_tracked("Unsubscribed Private Repo").

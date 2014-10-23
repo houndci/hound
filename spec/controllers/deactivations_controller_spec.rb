@@ -13,10 +13,9 @@ describe DeactivationsController, "#create" do
 
       expect(response.code).to eq "201"
       expect(response.body).to eq RepoSerializer.new(repo).to_json
-      expect(activator).to have_received(:deactivate).with(
-        repo,
-        AuthenticationHelper::GITHUB_TOKEN
-      )
+      expect(activator).to have_received(:deactivate)
+      expect(RepoActivator).to have_received(:new).
+        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
       expect(analytics).to have_tracked("Deactivated Public Repo").
         for_user(membership.user).
         with(properties: { name: repo.full_github_name })
@@ -34,10 +33,9 @@ describe DeactivationsController, "#create" do
       post :create, repo_id: repo.id, format: :json
 
       expect(response.code).to eq "502"
-      expect(activator).to have_received(:deactivate).with(
-        repo,
-        AuthenticationHelper::GITHUB_TOKEN
-      )
+      expect(activator).to have_received(:deactivate)
+      expect(RepoActivator).to have_received(:new).
+        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
     end
 
     it "notifies Sentry" do

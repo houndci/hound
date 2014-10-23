@@ -7,31 +7,18 @@ describe ActivationsController, "#create" do
       repo = membership.repo
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
-      allow(JobQueue).to receive(:push)
       stub_sign_in(membership.user)
 
       post :create, repo_id: repo.id, format: :json
 
       expect(response.code).to eq "201"
       expect(response.body).to eq RepoSerializer.new(repo).to_json
-      expect(activator).to have_received(:activate).
-        with(repo, AuthenticationHelper::GITHUB_TOKEN)
+      expect(activator).to have_received(:activate)
+      expect(RepoActivator).to have_received(:new).
+        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
       expect(analytics).to have_tracked("Activated Public Repo").
         for_user(membership.user).
         with(properties: { name: repo.full_github_name })
-    end
-
-    it "enqueues invitation job" do
-      membership = create(:membership)
-      repo = membership.repo
-      activator = double(:repo_activator, activate: true)
-      allow(RepoActivator).to receive(:new).and_return(activator)
-      allow(JobQueue).to receive(:push)
-      stub_sign_in(membership.user)
-
-      post :create, repo_id: repo.id, format: :json
-
-      expect(JobQueue).to have_received(:push).with(OrgInvitationJob)
     end
   end
 
@@ -46,8 +33,9 @@ describe ActivationsController, "#create" do
       post :create, repo_id: repo.id, format: :json
 
       expect(response.code).to eq "502"
-      expect(activator).to have_received(:activate).
-        with(repo, AuthenticationHelper::GITHUB_TOKEN)
+      expect(activator).to have_received(:activate)
+      expect(RepoActivator).to have_received(:new).
+        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
     end
 
     it "notifies Sentry" do
