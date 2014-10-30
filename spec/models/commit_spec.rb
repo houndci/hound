@@ -7,9 +7,7 @@ describe Commit do
   describe "#file_content" do
     context "when content is returned from GitHub" do
       it "returns content" do
-        file_contents = double(content: Base64.encode64("some content"))
-        github = double(:github_api, file_contents: file_contents)
-        commit = Commit.new("test/test", "abc", github)
+        commit = build_commit("some content")
 
         expect(commit.file_content("test.rb")).to eq "some content"
       end
@@ -17,10 +15,7 @@ describe Commit do
 
     context "when file contains special characters" do
       it "does not error when linters try writing to disk" do
-        text = "€25.00"
-        file_contents = double(content: Base64.encode64(text))
-        github = double("GithubApi", file_contents: file_contents)
-        commit = Commit.new("test/test", "abc", github)
+        commit = build_commit("€25.00")
         tmp_file = Tempfile.new("foo", encoding: "utf-8")
 
         expect { tmp_file.write(commit.file_content("test.rb")) }.
@@ -56,5 +51,22 @@ describe Commit do
         expect(commit.file_content("test.rb")).to eq ""
       end
     end
+
+    context "when file too large error is raised" do
+      it "returns blank" do
+        github = double(:github_api)
+        commit = Commit.new("test/test", "abc", github)
+        error = Octokit::Forbidden.new(body: { errors: [code: "too_large"] })
+        allow(github).to receive(:file_contents).and_raise(error)
+
+        expect(commit.file_content("some/file.rb")).to eq ""
+      end
+    end
+  end
+
+  def build_commit(content)
+    file_contents = double(content: Base64.encode64(content))
+    github = double(:github_api, file_contents: file_contents)
+    Commit.new("test/test", "abc", github)
   end
 end
