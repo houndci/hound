@@ -12,7 +12,7 @@ describe Repo do
     expect(subject).to validate_uniqueness_of(:github_id)
   end
 
-  describe "#exempt" do
+  describe "#exempt?" do
     context "when repo is exempt" do
       it "returns true" do
         repo = Repo.new(full_github_name: "thoughtbot/hound")
@@ -124,6 +124,20 @@ describe Repo do
 
         expect(Repo.count).to eq 1
         expect(repo).to be_present
+      end
+    end
+  end
+
+  describe ".find_and_update" do
+    context "when repo name doesn't match db record" do
+      it "updates the record" do
+        new_repo_name = "new/name"
+        repo = create(:repo, name: "foo/bar")
+
+        Repo.find_and_update(repo.github_id, new_repo_name)
+        repo.reload
+
+        expect(repo.full_github_name).to eq new_repo_name
       end
     end
   end

@@ -36,7 +36,8 @@ class BuildRunner
   end
 
   def repo
-    @repo ||= Repo.active.where(github_id: payload.github_repo_id).first
+    @repo ||= Repo.active.
+      find_and_update(payload.github_repo_id, payload.full_repo_name)
   end
 
   def track_reviewed_repo_for_each_user

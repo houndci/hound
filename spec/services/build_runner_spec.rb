@@ -8,6 +8,7 @@ describe BuildRunner, '#run' do
         github_repo_id: repo.github_id,
         pull_request_number: 5,
         head_sha: "123abc",
+        full_repo_name: repo.name
       )
       build_runner = BuildRunner.new(payload)
       stubbed_style_checker_with_violations
@@ -98,7 +99,11 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_payload(options = {})
-    defaults = { pull_request_number: 123, head_sha: "somesha" }
+    defaults = {
+      pull_request_number: 123,
+      head_sha: "somesha",
+      full_repo_name: "foo/bar"
+    }
     double("Payload", defaults.merge(options))
   end
 
