@@ -3,11 +3,12 @@ require "spec_helper"
 describe DeactivationsController, "#create" do
   context "when deactivation succeeds" do
     it "returns successful response" do
+      token = "sometoken"
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, deactivate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
-      stub_sign_in(membership.user)
+      stub_sign_in(membership.user, token)
 
       post :create, repo_id: repo.id, format: :json
 
@@ -15,7 +16,7 @@ describe DeactivationsController, "#create" do
       expect(response.body).to eq RepoSerializer.new(repo).to_json
       expect(activator).to have_received(:deactivate)
       expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
+        with(repo: repo, github_token: token)
       expect(analytics).to have_tracked("Deactivated Public Repo").
         for_user(membership.user).
         with(properties: { name: repo.full_github_name })
@@ -24,18 +25,19 @@ describe DeactivationsController, "#create" do
 
   context "when deactivation fails" do
     it "returns error response" do
+      token = "sometoken"
       membership = create(:membership)
       repo = membership.repo
       activator = double(:repo_activator, deactivate: false)
       allow(RepoActivator).to receive(:new).and_return(activator)
-      stub_sign_in(membership.user)
+      stub_sign_in(membership.user, token)
 
       post :create, repo_id: repo.id, format: :json
 
       expect(response.code).to eq "502"
       expect(activator).to have_received(:deactivate)
       expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
+        with(repo: repo, github_token: token)
     end
 
     it "notifies Sentry" do

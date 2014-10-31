@@ -62,8 +62,7 @@ describe BuildRunner, '#run' do
 
       build_runner.run
 
-      expect(PullRequest).to have_received(:new).
-        with(payload, ENV["HOUND_GITHUB_TOKEN"])
+      expect(PullRequest).to have_received(:new).with(payload)
     end
   end
 

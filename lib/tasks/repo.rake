@@ -8,7 +8,7 @@ namespace :repo do
     repo_ids = Repo.where(where_condition).limit(3_000).pluck(:id)
     puts 'Scheduling RepoInformationJob jobs for repos ...'
     repo_ids.each do |repo_id|
-      JobQueue.push(RepoInformationJob, repo_id, ENV['HOUND_GITHUB_TOKEN'])
+      JobQueue.push(RepoInformationJob, repo_id)
     end
     puts 'Done scheduling jobs.'
   end

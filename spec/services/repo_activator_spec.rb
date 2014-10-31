@@ -93,14 +93,12 @@ describe RepoActivator do
 
       it 'only swallows Octokit errors' do
         token = "githubtoken"
-        repo = build_stubbed(:repo)
+        repo = double('repo')
         allow(JobQueue).to receive(:push)
-        expect(GithubApi).to receive(:new).and_raise(Exception.new)
+        allow(GithubApi).to receive(:new).and_raise(Exception.new)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
-        expect do
-          activator.activate
-        end.to raise_error(Exception)
+        expect { activator.activate }.to raise_error(Exception)
       end
 
       context 'when Hound cannot be added to repo' do

@@ -11,7 +11,6 @@ describe OrgInvitationJob do
 
     OrgInvitationJob.perform
 
-    expect(GithubApi).to have_received(:new).with(ENV["HOUND_GITHUB_TOKEN"])
     expect(github).to have_received(:accept_pending_invitations)
   end
 

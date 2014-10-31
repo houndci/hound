@@ -32,7 +32,7 @@ class BuildRunner
   end
 
   def pull_request
-    @pull_request ||= PullRequest.new(payload, ENV['HOUND_GITHUB_TOKEN'])
+    @pull_request ||= PullRequest.new(payload)
   end
 
   def repo

@@ -1,5 +1,5 @@
 class PullRequest
-  pattr_initialize :payload, :github_token
+  pattr_initialize :payload
 
   def comments
     @comments ||= api.pull_request_comments(full_repo_name, number)
@@ -40,7 +40,7 @@ class PullRequest
   end
 
   def api
-    @api ||= GithubApi.new(github_token)
+    @api ||= GithubApi.new
   end
 
   def number

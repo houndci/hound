@@ -7,10 +7,12 @@ class GithubApi
   PREVIEW_MEDIA_TYPE =
     ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
 
-  pattr_initialize :token
+  def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
+    @token = token
+  end
 
   def client
-    @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
+    @client ||= Octokit::Client.new(access_token: @token, auto_paginate: true)
   end
 
   def repos

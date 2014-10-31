@@ -7,10 +7,9 @@ describe RepoInformationJob do
 
   it 'collects repo privacy and organization from GitHub' do
     repo = create(:repo, private: false, in_organization: false)
-    github_token = 'token'
-    stub_repo_with_org_request(repo.full_github_name, github_token)
+    stub_repo_with_org_request(repo.full_github_name)
 
-    RepoInformationJob.perform(repo.id, github_token)
+    RepoInformationJob.perform(repo.id)
 
     repo.reload
     expect(repo).to be_private
@@ -19,13 +18,11 @@ describe RepoInformationJob do
 
   it 'retries when Resque::TermException is raised' do
     repo = create(:repo)
-    github_token = 'token'
     allow(Repo).to receive(:find).and_raise(Resque::TermException.new(1))
     allow(Resque).to receive(:enqueue)
 
-    RepoInformationJob.perform(repo.id, github_token)
+    RepoInformationJob.perform(repo.id)
 
-    expect(Resque).to have_received(:enqueue).
-      with(RepoInformationJob, repo.id, github_token)
+    expect(Resque).to have_received(:enqueue).with(RepoInformationJob, repo.id)
   end
 end
