@@ -57,4 +57,46 @@ describe Commit do
       end
     end
   end
+
+  describe "#comments" do
+    it "returns comments on pull request" do
+      filename = "spec/models/style_guide_spec.rb"
+      comment = double(:comment, position: 7, path: filename)
+      github = double(:github, pull_request_comments: [comment])
+      commit = Commit.new("test/test", "abc", github, pull_request_number: 1)
+
+      comments = commit.comments
+
+      expect(comments.size).to eq(1)
+      expect(comments).to match_array([comment])
+    end
+  end
+
+  describe "#add_comment" do
+    it "posts a comment to GitHub for the Hound user" do
+      github = double(:github_client, add_comment: nil)
+      violation = violation_stub
+      commit = Commit.new("test/test", "abc", github, pull_request_number: 1)
+      allow(Commit).to receive(:new).and_return(commit)
+
+      commit.add_comment(violation)
+
+      expect(github).to have_received(:add_comment).with(
+        pull_request_number: 1,
+        commit: commit,
+        comment: violation.messages.first,
+        filename: violation.filename,
+        patch_position: violation.patch_position,
+      )
+    end
+  end
+
+  def violation_stub(options = {})
+    defaults =  {
+      messages: ["A comment"],
+      filename: "test.rb",
+      patch_position: 123,
+    }
+    double("Violation", defaults.merge(options))
+  end
 end

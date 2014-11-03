@@ -2,37 +2,29 @@ class BuildRunner
   pattr_initialize :payload
 
   def run
-    if repo && relevant_pull_request?
-      repo.builds.create!(
-        violations: violations,
-        pull_request_number: payload.pull_request_number,
-        commit_sha: payload.head_sha,
-      )
-      commenter.comment_on_violations(violations)
+    if repo && event.relevant?
+      each_commit_violations do |commit, violations|
+        repo.builds.create!(
+          violations: violations,
+          pull_request_number: payload.pull_request_number,
+          commit_sha: commit.sha,
+        )
+        Commenter.new(commit).comment_on_violations(violations)
+      end
       track_reviewed_repo_for_each_user
     end
   end
 
   private
 
-  def relevant_pull_request?
-    pull_request.opened? || pull_request.synchronize?
+  def each_commit_violations
+    event.commits.each do |commit|
+      yield commit, StyleChecker.new(commit, event.config).violations
+    end
   end
 
-  def violations
-    @violations ||= style_checker.violations
-  end
-
-  def style_checker
-    StyleChecker.new(pull_request)
-  end
-
-  def commenter
-    Commenter.new(pull_request)
-  end
-
-  def pull_request
-    @pull_request ||= PullRequest.new(payload, ENV['HOUND_GITHUB_TOKEN'])
+  def event
+    @event ||= Event.new_from_payload(payload, ENV["HOUND_GITHUB_TOKEN"])
   end
 
   def repo

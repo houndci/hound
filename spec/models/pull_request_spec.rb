@@ -43,50 +43,6 @@ describe PullRequest do
     end
   end
 
-  describe "#comments" do
-    it "returns comments on pull request" do
-      filename = "spec/models/style_guide_spec.rb"
-      comment = double(:comment, position: 7, path: filename)
-      github = double(:github, pull_request_comments: [comment])
-      pull_request = pull_request_stub(github)
-
-      comments = pull_request.comments
-
-      expect(comments.size).to eq(1)
-      expect(comments).to match_array([comment])
-    end
-  end
-
-  describe "#add_comment" do
-    it "posts a comment to GitHub for the Hound user" do
-      payload = payload_stub
-      github = double(:github_client, add_comment: nil)
-      pull_request = pull_request_stub(github, payload)
-      violation = violation_stub
-      commit = double("Commit")
-      allow(Commit).to receive(:new).and_return(commit)
-
-      pull_request.add_comment(violation)
-
-      expect(github).to have_received(:add_comment).with(
-        pull_request_number: payload.pull_request_number,
-        commit: commit,
-        comment: violation.messages.first,
-        filename: violation.filename,
-        patch_position: violation.patch_position,
-      )
-    end
-  end
-
-  def violation_stub(options = {})
-    defaults =  {
-      messages: ["A comment"],
-      filename: "test.rb",
-      patch_position: 123,
-    }
-    double("Violation", defaults.merge(options))
-  end
-
   def payload_stub(options = {})
     defaults = {
       full_repo_name: "org/repo",

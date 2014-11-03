@@ -8,6 +8,21 @@
     #{link_to "thoughtbot style guide", "https://github.com/thoughtbot/guides/tree/master/style"}
     by default, unless you configure it to use your own style guide.
 
+  %h3 Pull Requests & Commits
+
+  %p
+    To enable checking on commits, add the following to
+    %em.code .hound.yml
+    in the root of your project
+
+    %code.code-block
+      :preserve
+        pull_requests:
+          enabled: false
+
+        pushes:
+          enabled: true
+
   %h3 Ruby
 
   %p

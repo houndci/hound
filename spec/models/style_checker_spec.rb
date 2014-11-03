@@ -15,12 +15,11 @@ describe StyleChecker, "#violations" do
   it "returns a collection of computed violations" do
     stylish_file = stub_commit_file("good.rb", "def good; end")
     violated_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
-    pull_request =
-      stub_pull_request(pull_request_files: [stylish_file, violated_file])
+    commit = stub_commit(files: [stylish_file, violated_file])
     expected_violations =
       ['Space inside parentheses detected.', 'Trailing whitespace detected.']
 
-    violation_messages = StyleChecker.new(pull_request).violations.
+    violation_messages = StyleChecker.new(commit, stub_repo_config).violations.
       flat_map(&:messages)
 
     expect(violation_messages).to eq expected_violations
@@ -30,9 +29,9 @@ describe StyleChecker, "#violations" do
     context "with violations" do
       it "returns violations" do
         file = stub_commit_file("ruby.rb", "puts 123    ")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit = stub_commit(files: [file])
 
-        violations = StyleChecker.new(pull_request).violations
+        violations = StyleChecker.new(commit, stub_repo_config).violations
         messages = violations.flat_map(&:messages)
 
         expect(messages).to eq ["Trailing whitespace detected."]
@@ -42,9 +41,9 @@ describe StyleChecker, "#violations" do
     context "with violation on unchanged line" do
       it "returns no violations" do
         file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit = stub_commit(files: [file])
 
-        violations = StyleChecker.new(pull_request).violations
+        violations = StyleChecker.new(commit, stub_repo_config).violations
 
         expect(violations.count).to eq 0
       end
@@ -53,9 +52,9 @@ describe StyleChecker, "#violations" do
     context "without violations" do
       it "returns no violations" do
         file = stub_commit_file("ruby.rb", "puts 123")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit = stub_commit(files: [file])
 
-        violations = StyleChecker.new(pull_request).violations
+        violations = StyleChecker.new(commit, stub_repo_config).violations
         messages = violations.flat_map(&:messages)
 
         expect(messages).to be_empty
@@ -71,14 +70,13 @@ describe StyleChecker, "#violations" do
             coffee_script:
               enabled: true
           YAML
-          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.coffee", "foo: ->")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
+          commit = stub_commit(
+            files: [file],
+            file_content: config
           )
 
-          violations = StyleChecker.new(pull_request).violations
+          violations = StyleChecker.new(commit, stub_repo_config).violations
           messages = violations.flat_map(&:messages)
 
           expect(messages).to eq ["Empty function"]
@@ -91,14 +89,13 @@ describe StyleChecker, "#violations" do
             coffee_script:
               enabled: false
           YAML
-          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.coffee", "alert 'Hello World'")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
+          commit = stub_commit(
+            file_content: config,
+            files: [file],
           )
 
-          violations = StyleChecker.new(pull_request).violations
+          violations = StyleChecker.new(commit, stub_repo_config).violations
 
           expect(violations).to be_empty
         end
@@ -112,14 +109,13 @@ describe StyleChecker, "#violations" do
             coffee_script:
               enabled: true
           YAML
-          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.coffee", "alert('Hello World')")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
+          commit = stub_commit(
+            file_content: config,
+            files: [file],
           )
 
-          violations = StyleChecker.new(pull_request).violations
+          violations = StyleChecker.new(commit, stub_repo_config).violations
 
           expect(violations).to be_empty
         end
@@ -135,14 +131,13 @@ describe StyleChecker, "#violations" do
             java_script:
               enabled: true
           YAML
-          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.js", "var test = 'test'")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
+          commit = stub_commit(
+            file_content: config,
+            files: [file],
           )
 
-          violations = StyleChecker.new(pull_request).violations
+          violations = StyleChecker.new(commit, stub_repo_config).violations
           messages = violations.flat_map(&:messages)
 
           expect(messages).to include "Missing semicolon."
@@ -155,14 +150,14 @@ describe StyleChecker, "#violations" do
             java_script:
               enabled: false
           YAML
-          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.js", "var test = 'test'")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
+          commit = stub_commit(
+            file_content: config,
+            files: [file],
           )
+          repo_config = RepoConfig.new(commit)
 
-          violations = StyleChecker.new(pull_request).violations
+          violations = StyleChecker.new(commit, repo_config).violations
 
           expect(violations).to be_empty
         end
@@ -176,14 +171,13 @@ describe StyleChecker, "#violations" do
             java_script:
               enabled: true
           YAML
-          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.js", "var test = 'test';")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
+          commit = stub_commit(
+            file_content: config,
+            files: [file],
           )
 
-          violations = StyleChecker.new(pull_request).violations
+          violations = StyleChecker.new(commit, stub_repo_config).violations
           messages = violations.flat_map(&:messages)
 
           expect(messages).not_to include "Missing semicolon."
@@ -195,9 +189,9 @@ describe StyleChecker, "#violations" do
   context "with unsupported file type" do
     it "uses unsupported style guide" do
       file = stub_commit_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
-      pull_request = stub_pull_request(pull_request_files: [file])
+      commit = stub_commit(files: [file])
 
-      violations = StyleChecker.new(pull_request).violations
+      violations = StyleChecker.new(commit, stub_repo_config).violations
 
       expect(violations).to eq []
     end
@@ -205,15 +199,12 @@ describe StyleChecker, "#violations" do
 
   private
 
-  def stub_pull_request(options = {})
-    head_commit = double("Commit", file_content: "")
-    defaults = {
-      file_content: "",
-      head_commit: head_commit,
-      pull_request_files: [],
-    }
+  def stub_repo_config(options = {})
+    double("RepoConfig", { enabled_for?: true, for: {} }.merge(options))
+  end
 
-    double("PullRequest", defaults.merge(options))
+  def stub_commit(options = {})
+    double("Commit", { file_content: "", files: [] }.merge(options))
   end
 
   def stub_commit_file(filename, contents, line = nil)

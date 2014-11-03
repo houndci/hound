@@ -1,5 +1,5 @@
 class CommentingPolicy
-  pattr_initialize :pull_request
+  pattr_initialize :commit
 
   def allowed_for?(violation)
     unreported_violation_messages(violation).any?
@@ -24,6 +24,6 @@ class CommentingPolicy
   end
 
   def existing_comments
-    @existing_comments ||= pull_request.comments
+    @existing_comments ||= commit.comments
   end
 end
