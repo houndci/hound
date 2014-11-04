@@ -1,3 +1,5 @@
+require "scss_lint"
+
 module StyleGuide
   class Scss < Base
     DEFAULT_CONFIG_FILE = File.join(CONFIG_DIR, "scss.yml")

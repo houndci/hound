@@ -1,4 +1,11 @@
+scss_files: "**/*.scss"
+
 linters:
+  BangFormat:
+    enabled: true
+    space_before_bang: true
+    space_after_bang: false
+
   BorderZero:
     enabled: true
 
@@ -46,6 +53,11 @@ linters:
   IdWithExtraneousSelector:
     enabled: true
 
+  ImportPath:
+    enabled: true
+    leading_underscore: false
+    filename_extension: false
+
   Indentation:
     enabled: true
     character: space # or 'tab'
@@ -63,6 +75,10 @@ linters:
     enabled: true
     convention: hyphenated_lowercase # or 'BEM', or a regex pattern
 
+  NestingDepth:
+    enabled: true
+    max_depth: 3
+
   PlaceholderInExtend:
     enabled: true
 
@@ -73,6 +89,12 @@ linters:
   PropertySpelling:
     enabled: true
     extra_properties: []
+
+  QualifyingElement:
+    enabled: true
+    allow_with_attribute: false
+    allow_with_class: false
+    allow_with_id: false
 
   SelectorDepth:
     enabled: true
@@ -104,6 +126,7 @@ linters:
 
   SpaceBeforeBrace:
     enabled: true
+    style: space
     allow_single_line_padding: false
 
   SpaceBetweenParens:
@@ -131,6 +154,12 @@ linters:
 
   UrlQuotes:
     enabled: true
+
+  VendorPrefixes:
+    enabled: true
+    identifier_list: base
+    include: []
+    exclude: []
 
   ZeroUnit:
     enabled: true

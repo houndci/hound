@@ -1,43 +1,67 @@
-require "active_support/core_ext/string/strip"
-require "active_support/inflector"
-require "attr_extras"
-require "scss_lint"
-require "sentry-raven"
-
 require "fast_spec_helper"
+require "app/models/violation"
 require "app/models/style_guide/base"
 require "app/models/style_guide/scss"
-require "app/models/violation"
 
 describe StyleGuide::Scss do
   describe "#violations_in_file" do
     context "with default configuration" do
-      describe "for deep nested selectors" do
-        it "returns violation" do
+      describe "for single quotes" do
+        it "has one violation" do
           content = <<-CODE
-.a { .b { .c { .d { background: #000; } } } }
+.a { display: 'none'; }
           CODE
 
           expect(violations_in(content)).to include(
-            "Selector should have depth of applicability no greater than 3, but was 4"
+            "Prefer double-quoted strings"
+          )
+        end
+      end
+
+      describe "for no leading zeros" do
+        it "has one violation" do
+          content = <<-CODE
+.a { margin: .5em; }
+          CODE
+
+          expect(violations_in(content)).to include(
+            "`.5` should be written with a leading zero as `0.5`"
           )
         end
       end
     end
 
     context "with custom configuration" do
-      describe "for bad nested rules" do
+      describe "for single quotes" do
         it "returns no violation" do
           config = {
             "linters" => {
-              "SelectorDepth" => {
-                "enabled" => false
+              "StringQuotes" => {
+                "style" => "single_quotes"
               }
             }
           }
 
           content = <<-CODE
-.a { .b { .c { .d { background: #000; } } } }
+.a { display: 'none'; }
+          CODE
+
+          expect(violations_in(content, config)).to eq []
+        end
+      end
+
+      describe "for no leading zeros" do
+        it "returns no violation" do
+          config = {
+            "linters" => {
+              "LeadingZero" => {
+                "style" => "exclude_zero"
+              }
+            }
+          }
+
+          content = <<-CODE
+.a { margin: .5em; }
           CODE
 
           expect(violations_in(content, config)).to eq []
