@@ -1,8 +1,8 @@
 set :stage, :production
 
 server "80.240.130.206", user: "typework", roles: %w{web app db}
-set :branch, "master"
-set :nginx_server_name, "hubert.com"
+set :branch, "jd-cap-setup"
+set :nginx_server_name, "80.240.130.206"
 
 set :nginx_use_spdy, false
 set :nginx_ssl_certificate, ""

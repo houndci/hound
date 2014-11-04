@@ -3,7 +3,7 @@ set :application, "hubert"
 set :log_level, :debug
 
 set :scm, :git
-set :repo_url,  "git@github.com:thoughtbot/hound.git"
+set :repo_url,  "git@github.com:JensDebergh/hound.git"
 set :deploy_to, "/var/www/hubert"
 set :user, "typework"
 set :keep_releases, 5
