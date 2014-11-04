@@ -134,7 +134,7 @@ describe RepoConfig do
   end
 
   describe "#for" do
-    context "when ruby config file is specified" do
+    context "when Ruby config file is specified" do
       it "returns parsed config" do
         config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
           StringLiterals:
@@ -171,17 +171,33 @@ describe RepoConfig do
       end
     end
 
-    context "when JavaScript config is an invalid JSON format" do
-      it "returns an empty config" do
-        config = config_for_file("javascript.json", <<-EOS.strip_heredoc)
-          {
-            "predef" => ["myGlobal",]
-          }
-        EOS
+    context "when JavaScript config is specified" do
+      context "and filename extension isn't json" do
+        it "returns parsed config" do
+          config = config_for_file(".jshintrc", <<-EOS.strip_heredoc)
+            {
+              "predef": ["hello"]
+            }
+          EOS
 
-        result = config.for("java_script")
+          result = config.for("java_script")
 
-        expect(result).to eq({})
+          expect(result).to eq("predef" => ["hello"])
+        end
+      end
+
+      context "and contains invalid JSON format" do
+        it "returns an empty config" do
+          config = config_for_file("javascript.json", <<-EOS.strip_heredoc)
+            {
+              "predef": ["myGlobal",]
+            }
+          EOS
+
+          result = config.for("java_script")
+
+          expect(result).to eq({})
+        end
       end
     end
 
@@ -225,7 +241,7 @@ describe RepoConfig do
 
         java_script:
           enabled: true
-          config_file: javascript.json
+          config_file: #{file_path}
       EOS
       commit = double("Commit")
       config = RepoConfig.new(commit)

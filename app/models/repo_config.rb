@@ -1,8 +1,9 @@
 # Load and parse config files from GitHub repo
 class RepoConfig
   FILE_TYPES = {
-    ".yml" => "yaml",
-    ".json" => "json",
+    "ruby" => "yaml",
+    "java_script" => "json",
+    "coffee_script" => "json",
   }
   HOUND_CONFIG_FILE = ".hound.yml"
   STYLE_GUIDES = %w(ruby coffee_script java_script)
@@ -21,7 +22,7 @@ class RepoConfig
       config_file_path = config_path_for(style_guide_name)
 
       if config_file_path
-        load_file(config_file_path)
+        load_file(config_file_path, FILE_TYPES[style_guide_name])
       else
         {}
       end
@@ -41,7 +42,7 @@ class RepoConfig
 
   def hound_config
     @hound_config ||= begin
-      content = load_file(HOUND_CONFIG_FILE)
+      content = load_file(HOUND_CONFIG_FILE, "yaml")
       if content.is_a?(Hash)
         content
       else
@@ -55,12 +56,11 @@ class RepoConfig
       hound_config[style_guide_name]["config_file"]
   end
 
-  def load_file(file_path)
+  def load_file(file_path, file_type)
     config_file_content = commit.file_content(file_path)
-    extension = File.extname(file_path)
 
     if config_file_content.present?
-      send("parse_#{FILE_TYPES[extension]}", config_file_content)
+      send("parse_#{file_type}", config_file_content)
     else
       {}
     end
