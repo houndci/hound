@@ -1,10 +1,10 @@
 namespace :reports do
-  desc 'Run all reports'
-  task all: [:activity, :users, :builds, :subscriptions, :cancellations]
+  desc "Run all reports"
+  task all: [:north_star, :users, :builds, :subscriptions, :cancellations]
 
-  desc 'Prints out weekly activity, which is the number of repos that had builds during the week.'
-  task activity: :environment do
-    Report.activity
+  desc "Prints out number of repos with builds per week."
+  task north_star: :environment do
+    Report.north_star
   end
 
   desc 'Prints out new user counts by week.'

@@ -1,6 +1,6 @@
 class Report
-  def self.activity
-    format "Activity" do
+  def self.north_star
+    format "North Star" do
       weeks.each do |week|
         weekly_activity_sql = <<-SQL
           SELECT COUNT(distinct repos.id)
