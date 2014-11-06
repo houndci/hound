@@ -1,0 +1,30 @@
+user "typework"
+working_directory "<%= current_path %>"
+pid "<%= fetch(:unicorn_pid) %>"
+stderr_path "<%= fetch(:unicorn_log) %>"
+stdout_path "<%= fetch(:unicorn_log) %>"
+
+listen "/tmp/unicorn.<%= fetch(:application) %>.sock"
+worker_processes <%= fetch(:unicorn_workers) %>
+timeout 30
+
+preload_app true
+
+before_exec do |server|
+  ENV["BUNDLE_GEMFILE"] = "<%= current_path %>/Gemfile"
+end
+
+before_fork do |server, worker|
+
+  # Quit the old unicorn process
+  old_pid = "#{server.config[:pid]}.oldbin"
+  if File.exists?(old_pid) && server.pid != old_pid
+    begin
+      Process.kill("QUIT", File.read(old_pid).to_i)
+    rescue Errno::ENOENT, Errno::ESRCH
+      # someone else did our job for us
+    end
+  end
+
+  sleep 1
+end
