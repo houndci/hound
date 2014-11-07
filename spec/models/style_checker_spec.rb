@@ -1,16 +1,4 @@
-require "coffeelint"
-require "jshintrb"
-require "rubocop"
-
-require "fast_spec_helper"
-require "app/models/default_config_file"
-require "app/models/line"
-require "app/models/unchanged_line"
-require "app/models/repo_config"
-require "app/models/style_checker"
-require "app/models/violation"
-require "app/models/violations"
-Dir.glob("app/models/style_guide/*.rb", &method(:require))
+require "spec_helper"
 
 describe StyleChecker, "#violations" do
   it "returns a collection of computed violations" do

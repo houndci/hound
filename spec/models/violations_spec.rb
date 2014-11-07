@@ -1,6 +1,4 @@
-require "fast_spec_helper"
-require "app/models/violation"
-require "app/models/violations"
+require "spec_helper"
 
 describe Violations do
   describe "#push" do
@@ -29,6 +27,7 @@ describe Violations do
       end
     end
   end
+
   describe "#uniq" do
     context "when collection is empty" do
       it "adds new violation" do
@@ -56,8 +55,14 @@ describe Violations do
   def build_violation(options = {})
     line_number = options.fetch(:line_number, 1)
     message = options.fetch(:message, "illegal syntax")
-    line = double("Line", changed?: true)
-    file = double("CommitFile", filename: "foo.rb", line_at: line)
-    Violation.new(file, line_number, message)
+    patch_position = 1
+    build(
+      :violation,
+      filename: "foo.rb",
+      patch_position: patch_position,
+      line: double("Line", changed?: true),
+      line_number: line_number,
+      messages: [message]
+    )
   end
 end

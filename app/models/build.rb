@@ -1,11 +1,12 @@
 class Build < ActiveRecord::Base
   belongs_to :repo
+  has_many :violations, dependent: :destroy
 
   before_create :generate_uuid
 
   validates :repo, presence: true
 
-  serialize :violations, Array
+  serialize :violations_archive, Array
 
   def status
     if violations.any?

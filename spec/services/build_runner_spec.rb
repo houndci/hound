@@ -17,11 +17,12 @@ describe BuildRunner, '#run' do
       stubbed_github_api
 
       build_runner.run
-      build = Build.first
+      builds = Build.where(repo_id: repo.id)
+      build = builds.first
 
-      expect(Build.count).to eq 1
+      expect(builds.size).to eq 1
       expect(build).to eq repo.builds.last
-      expect(build.violations.size).to be >= 1
+      expect(build.violations.count).to be >= 1
       expect(build.pull_request_number).to eq 5
       expect(build.commit_sha).to eq payload.head_sha
       expect(analytics).to have_tracked("Reviewed Repo").
@@ -138,7 +139,7 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_style_checker_with_violations
-    violations = [double(:violation)]
+    violations = [build(:violation)]
     style_checker = double(:style_checker, violations: violations)
     allow(StyleChecker).to receive(:new).and_return(style_checker)
 

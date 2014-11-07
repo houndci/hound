@@ -1,9 +1,4 @@
-require "fast_spec_helper"
-require "jshintrb"
-require "app/models/default_config_file"
-require "app/models/violation"
-require "app/models/style_guide/base"
-require "app/models/style_guide/java_script"
+require "spec_helper"
 
 describe StyleGuide::JavaScript do
   include ConfigurationHelper
@@ -11,13 +6,23 @@ describe StyleGuide::JavaScript do
   describe "#violations_in_file" do
     context "with default config" do
       context "when semicolon is missing" do
-        it "returns violation" do
+        it "returns a collection of violation objects" do
           repo_config = double("RepoConfig", for: {})
-          file = double(:file, content: "var blahh = 'blahh'").as_null_object
+          filename = "bad.js"
+          line = double("Line", patch_position: 1)
+          file = double(
+            "File",
+            filename: filename,
+            line_at: line,
+            content: "var blahh = 'blahh'"
+          )
 
           violations = violations_in(file, repo_config)
 
-          expect(violations.first.messages).to include "Missing semicolon."
+          violation = violations.first
+          expect(violation.filename).to eq filename
+          expect(violation.line_number).to eq 1
+          expect(violation.messages).to match_array(["Missing semicolon."])
         end
       end
     end

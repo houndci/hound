@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140926163029) do
+ActiveRecord::Schema.define(version: 20141107174021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "builds", force: true do |t|
-    t.text     "violations"
+    t.text     "violations_archive"
     t.integer  "repo_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
@@ -92,5 +92,17 @@ ActiveRecord::Schema.define(version: 20140926163029) do
   end
 
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+
+  create_table "violations", force: true do |t|
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "build_id",                    null: false
+    t.string   "filename",                    null: false
+    t.integer  "patch_position"
+    t.integer  "line_number"
+    t.text     "messages",       default: [], null: false, array: true
+  end
+
+  add_index "violations", ["build_id"], name: "index_violations_on_build_id", using: :btree
 
 end
