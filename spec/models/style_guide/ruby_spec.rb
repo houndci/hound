@@ -304,6 +304,37 @@ end
       end
     end
 
+    context "for argument list spanning multiple lines" do
+      context "when each argument is not on its own line" do
+        it "returns violations" do
+          code = <<-CODE.strip_heredoc
+            validates :name,
+              presence: true,
+              uniqueness: true
+          CODE
+
+          expect(violations_in(code)).to eq [
+            "Align the parameters of a method call if they span more than " +
+              "one line."
+          ]
+        end
+      end
+
+      context "when each argument is on its own line" do
+        it "returns no violations" do
+          code = <<-CODE.strip_heredoc
+            validates(
+              :name,
+              presence: true,
+              uniqueness: true
+            )
+          CODE
+
+          expect(violations_in(code)).to be_empty
+        end
+      end
+    end
+
     context "for required keyword arguments" do
       context "without space after arguments" do
         it "returns no violations" do
