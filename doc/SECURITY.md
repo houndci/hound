@@ -46,9 +46,6 @@ authenticate your GitHub account using [GitHub's OAuth2 flow][gh-oauth].
 Using OAuth2 means we do not access your GitHub password
 and that you can revoke our access at any time.
 
-We store your GitHub token in your web browser's session cookie.
-We do not store this GitHub token in our PostgreSQL database.
-
 We need this token in order to refresh your GitHub repositories with Hound,
 which we do once, immediately after you authenticate your GitHub account.
 Later, you can manually refresh your GitHub repositories with Hound at any time.
@@ -67,6 +64,10 @@ What happens when Hound refreshes your GitHub repositories
 We pass your GitHub token to our [Ruby on Rails] app
 (the app whose source code you are reading right now),
 which runs on [Heroku].
+
+We temporarily store your GitHub token in the Redis database
+when enqueueing a Resque job
+to fetch a list of your repos.
 
 [Ruby on Rails]: http://rubyonrails.org
 [Heroku]: https://www.heroku.com
@@ -99,8 +100,6 @@ The database is hosted by [Redis to Go].
 [`RepoSynchronizationJob`]: ../app/jobs/repo_synchronization_job.rb
 [Redis]: http://redis.io/
 [Redis to Go]: http://redistogo.com
-
-This is the only time we temporarily store your GitHub token.
 
 We use your GitHub token to add the [@houndci] GitHub user to your repository
 via the [GitHub collaborator API][api1].
