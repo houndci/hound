@@ -87,6 +87,7 @@ GEM
     foreman (0.74.0)
       dotenv (~> 0.11.1)
       thor (~> 0.19.1)
+    golint (0.0.3)
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -314,6 +315,7 @@ DEPENDENCIES
   factory_girl_rails
   font-awesome-rails
   foreman
+  golint (~> 0.0.3)
   haml-rails
   high_voltage
   jquery-rails
