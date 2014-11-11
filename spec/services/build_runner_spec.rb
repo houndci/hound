@@ -41,7 +41,7 @@ describe BuildRunner, '#run' do
         with(style_checker.violations)
     end
 
-    it 'initializes StyleChecker with modified files and config' do
+    it "initializes StyleChecker with commits and config" do
       build_runner = make_build_runner
       pull_request = stubbed_pull_request
       stubbed_style_checker_with_violations
@@ -49,7 +49,10 @@ describe BuildRunner, '#run' do
 
       build_runner.run
 
-      expect(StyleChecker).to have_received(:new).with(pull_request)
+      pull_request.commits.each do |commit|
+        expect(StyleChecker).to have_received(:new).
+          with(commit, pull_request.config)
+      end
     end
 
     it 'initializes PullRequest with payload and Hound token' do
@@ -83,8 +86,7 @@ describe BuildRunner, '#run' do
     it 'does not attempt to comment' do
       build_runner = make_build_runner
       pull_request = stubbed_pull_request
-      allow(pull_request).
-        to receive_messages(opened?: false, synchronize?: false)
+      allow(pull_request).to receive_messages(relevant?: false)
       allow(Commenter).to receive(:new)
 
       build_runner.run
@@ -102,7 +104,8 @@ describe BuildRunner, '#run' do
     defaults = {
       pull_request_number: 123,
       head_sha: "somesha",
-      full_repo_name: "foo/bar"
+      full_repo_name: "foo/bar",
+      pull_request?: true
     }
     double("Payload", defaults.merge(options))
   end
@@ -123,11 +126,13 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_pull_request
+    commit_file = double(:commit_file, filename: "file.rb", removed?: false)
+    commit = double(:commit, sha: "123abc", files: [commit_file])
     pull_request = double(
       :pull_request,
-      pull_request_files: [double(:file)],
       config: double(:config),
-      opened?: true
+      relevant?: true,
+      commits: [commit]
     )
     allow(PullRequest).to receive(:new).and_return(pull_request)
 

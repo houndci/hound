@@ -7,6 +7,10 @@ class RepoConfig
   }
   HOUND_CONFIG_FILE = ".hound.yml"
   STYLE_GUIDES = %w(ruby coffee_script java_script)
+  DEFAULT_CONFIG = {
+    "pull_requests" => { "enabled" => true },
+    "pushes" => { "enabled" => false }
+  }
 
   pattr_initialize :commit
 
@@ -17,7 +21,7 @@ class RepoConfig
 
   def for(style_guide_name)
     if style_guide_name == "ruby" && legacy_config?
-      hound_config
+      hound_config.except(*DEFAULT_CONFIG.keys)
     else
       config_file_path = config_path_for(style_guide_name)
 
@@ -44,9 +48,9 @@ class RepoConfig
     @hound_config ||= begin
       content = load_file(HOUND_CONFIG_FILE, "yaml")
       if content.is_a?(Hash)
-        content
+        DEFAULT_CONFIG.merge(content)
       else
-        {}
+        DEFAULT_CONFIG
       end
     end
   end

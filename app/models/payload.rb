@@ -28,11 +28,25 @@ class Payload
   end
 
   def changed_files
-    pull_request["changed_files"] || 0
+    if pull_request?
+      pull_request["changed_files"] || 0
+    else
+      commits.sum do |c|
+        c["added"].count + c["modified"].count + c["removed"].count
+      end
+    end
   end
 
   def ping?
     data['zen']
+  end
+
+  def commits
+    data.fetch("commits", [])
+  end
+
+  def pull_request?
+    data.key?("pull_request")
   end
 
   private
