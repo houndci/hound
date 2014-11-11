@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'application/_segment_io.haml' do
-
   before do
     allow(view).to receive(:signed_in?).and_return(false)
   end
@@ -16,11 +15,10 @@ describe 'application/_segment_io.haml' do
   end
 
   it 'records a pageview' do
-    record_pageview_line = 'window.analytics.page();'
+    record_pageview_line = 'window.analytics.page("");'
 
     render
 
     expect(rendered).to include(record_pageview_line)
   end
-
 end
