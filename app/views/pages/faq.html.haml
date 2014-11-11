@@ -5,35 +5,77 @@
 %main.content-doc
   %h2 Frequently Asked Questions
 
-  %h3 Can I have Hound check my entire repository for style?
+  %h3 Why isn't Hound commenting on my pull request?
+  %ul.debug-hound-not-working
+    %li.debug-steps
+      Note that Hound only comments when he finds a style violation. Ensure
+      that changes made in your pull request actually contain style guide
+      violations.
+    %li.debug-steps
+      Alternatively, tools like RuboCop and JSHint can be used to
+      check for style guide violations locally, given your configuration.
+    %li.debug-steps
+      Ensure that configuration is setup to report on the specific violations.
+      See the
+      = link_to('configuration', configuration_path)
+      page for more info.
+    %li.debug-steps
+      Be sure your PR is of a manageable size. The Github API has access
+      limits which can affect the number of violations reported. Anecdotally,
+      we've seen pull requests with more than 250 changed files get incomplete
+      responses.
 
+  %h3 Why doesn't Hound list a repo on which I'm a collaborator?
   %p
-    No. we don't recommend doing that. We say "Don't rewrite existing code to
-    follow this guide." See the
+    Only GitHub repository owners can enable Hound for style guide reviews.
+  %p
+    For more information, see GitHub's documentation on permission levels for
+    = link_to('organization repos', 'https://help.github.com/articles/permission-levels-for-an-organization-repository/')
+    and
+    = link_to('user account repos.', 'https://help.github.com/articles/permission-levels-for-a-user-account-repository/')
+
+  %h3 How secure is my code now that Hound has access?
+  %p
+    Please see our
+    = link_to('security page.',
+      'https://github.com/thoughtbot/hound/blob/master/doc/SECURITY.md')
+
+  %h3 Do you offer a trial subscription?
+  %p
+    We currently don't have a trial subscription level. We suggest trying it
+    out on open-sourced repos first, since these can be enabled free of charge.
+
+
+  %h3 Can I have Hound check my entire repository for style?
+  %p
+    No, and we don't recommend doing so. Our rule is "Don't rewrite existing
+    code to follow the style guide." See the
     = link_to('thoughtbot style guide.',
       'https://github.com/thoughtbot/guides#guides')
-
   %p
     It can be dangerous to re-write a lot of code for just style reasons. It
     can introduce functional regressions, which are a higher-level concern than
     style.
-
   %p
     We believe the right approach is to convert a codebase over time, one pull
     request at a time, to conform to a style guide. Only focus on style in
     diffs and make smaller changes that ideally have tests associated with
     them.
-
   %p
     If you'd still like to analyze your whole repo, try using
     = link_to('Rubocop', 'https://github.com/bbatsov/rubocop')
     locally.
 
   %h3 Do you offer GitHub Enterprise support?
-
   %p
     Not at the current time. A user has shared their method of getting it to
     work
     = link_to('here in this GitHub issue',
       'https://github.com/thoughtbot/hound/issues/426')
     but it is an not officially supported approach.
+
+  %h3 How do I unsubscribe from Hound?
+  %p
+    If you are no longer satisfied with Hound, you can cancel your subscription
+    by disabling your repo on
+    = link_to('the repo page.', repos_path)
