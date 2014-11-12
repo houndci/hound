@@ -9,6 +9,19 @@ Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
 Hound reviews GitHub pull requests for style guide violations. [View the style
 guide &rarr;](https://github.com/thoughtbot/guides/tree/master/style)
 
+## Configure the Hound Service
+
+We run Hound as a hosted service at [houndci.com].
+
+If you are setting up Hound for the first time, see the [configuration] page.
+
+If you have questions about the service, see our [FAQ] or email [hound@thoughtbot.com].
+
+[houndci.com]: https://houndci.com
+[configuration]: https://houndci.com/configuration
+[FAQ]: https://houndci.com/faq
+[hound@thoughtbot.com]: mailto:hound@thoughtbot.com
+
 ## Configure Hound on Your Local Development Environment
 
 1. After cloning the repository, run the setup script `./bin/setup`
