@@ -33,16 +33,11 @@ class StyleChecker
   end
 
   def style_guide_class(filename)
-    case filename
-    when /.+\.rb\z/
-      StyleGuide::Ruby
-    when /.+\.coffee\z/
-      StyleGuide::CoffeeScript
-    when /.+\.js\z/
-      StyleGuide::JavaScript
-    else
-      StyleGuide::Unsupported
-    end
+    style_guide_retriever.retrieve(filename)
+  end
+
+  def style_guide_retriever
+    @style_guide_retriever ||= StyleGuideRetriever.new
   end
 
   def config
