@@ -6,7 +6,7 @@ describe "Stripe Webhooks" do
       stub_event "evt_customer_subscription_deleted"
       stripe_customer_id = "cus_00000000000000"
       deactivator_double = double("deactivator")
-      allow(deactivator_double).to receive(:deactivate_all)
+      allow(deactivator_double).to receive(:deactivate_paid_repos)
       allow(RepoDeactivator).to receive(:new).with(stripe_customer_id).
         and_return(deactivator_double)
 
