@@ -23,7 +23,8 @@ class StyleChecker
 
   def files_to_check
     pull_request.pull_request_files.reject(&:removed?).select do |file|
-      style_guide(file.filename).enabled?
+      file_style_guide = style_guide(file.filename)
+      file_style_guide.enabled? && file_style_guide.file_included?(file)
     end
   end
 

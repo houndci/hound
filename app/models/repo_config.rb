@@ -29,6 +29,16 @@ class RepoConfig
     end
   end
 
+  def ignored_javascript_files
+    ignore_file_content = load_javascript_ignore
+
+    if ignore_file_content.present?
+      ignore_file_content.split("\n")
+    else
+      []
+    end
+  end
+
   private
 
   def enabled_in_config?(name)
@@ -64,6 +74,13 @@ class RepoConfig
     else
       {}
     end
+  end
+
+  def load_javascript_ignore
+    ignore_file = hound_config.fetch("java_script", {}).
+      fetch("ignore_file", ".jshintignore")
+
+    commit.file_content(ignore_file)
   end
 
   def parse_yaml(content)

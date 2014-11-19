@@ -190,6 +190,31 @@ describe StyleChecker, "#violations" do
         end
       end
     end
+
+    context "an excluded file" do
+      it "returns no violations" do
+        config = <<-YAML.strip_heredoc
+          java_script:
+            enabled: true
+            ignore_file: '.jshintignore'
+        YAML
+
+        head_commit = stub_head_commit(
+          ".hound.yml" => config,
+          ".jshintignore" => "test.js"
+        )
+
+        file = stub_commit_file("test.js", "var test = 'test'")
+        pull_request = stub_pull_request(
+          head_commit: head_commit,
+          pull_request_files: [file]
+        )
+
+        violations = StyleChecker.new(pull_request).violations
+
+        expect(violations).to be_empty
+      end
+    end
   end
 
   context "with unsupported file type" do
@@ -200,6 +225,18 @@ describe StyleChecker, "#violations" do
       violations = StyleChecker.new(pull_request).violations
 
       expect(violations).to eq []
+    end
+  end
+
+  context "a removed file" do
+    it "does not return a violation for the file" do
+      file = stub_commit_file("ruby.rb", "puts 123    ", removed: true)
+      pull_request = stub_pull_request(pull_request_files: [file])
+
+      violations = StyleChecker.new(pull_request).violations
+      messages = violations.flat_map(&:messages)
+
+      expect(messages).to eq []
     end
   end
 
@@ -216,15 +253,26 @@ describe StyleChecker, "#violations" do
     double("PullRequest", defaults.merge(options))
   end
 
-  def stub_commit_file(filename, contents, line = nil)
+  def stub_commit_file(filename, contents, line = nil, removed: false)
     line ||= Line.new(content: "foo", number: 1, patch_position: 2)
     formatted_contents = "#{contents}\n"
     double(
       filename.split(".").first,
       filename: filename,
       content: formatted_contents,
-      removed?: false,
+      removed?: removed,
       line_at: line,
     )
+  end
+
+  def stub_head_commit(options)
+    head_commit = double("Commit", file_content: nil)
+
+    options.each do |filename, file_contents|
+      allow(head_commit).to receive(:file_content).
+        with(filename).and_return(file_contents)
+    end
+
+    head_commit
   end
 end

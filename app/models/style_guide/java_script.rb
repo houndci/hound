@@ -8,6 +8,10 @@ module StyleGuide
       end
     end
 
+    def file_included?(file)
+      !excluded_files.any? { |pattern| File.fnmatch?(pattern, file.filename) }
+    end
+
     private
 
     def config
@@ -16,6 +20,10 @@ module StyleGuide
         custom_config["predef"] |= default_config["predef"]
       end
       default_config.merge(custom_config)
+    end
+
+    def excluded_files
+      repo_config.ignored_javascript_files
     end
 
     def default_config

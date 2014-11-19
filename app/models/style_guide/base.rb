@@ -13,6 +13,10 @@ module StyleGuide
       raise NotImplementedError.new("must implement ##{__method__}")
     end
 
+    def file_included?(_file)
+      true
+    end
+
     private
 
     def name

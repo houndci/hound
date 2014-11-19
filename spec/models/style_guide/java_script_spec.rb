@@ -59,4 +59,44 @@ describe StyleGuide::JavaScript do
       end
     end
   end
+
+  describe "#file_included?" do
+    context "file is in excluded file list" do
+      it "returns false" do
+        repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
+        style_guide = StyleGuide::JavaScript.new(repo_config)
+        file = double(:file, filename: "foo.js")
+
+        included = style_guide.file_included?(file)
+
+        expect(included).to be false
+      end
+    end
+
+    context "file is not excluded" do
+      it "returns true" do
+        repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
+        style_guide = StyleGuide::JavaScript.new(repo_config)
+        file = double(:file, filename: "bar.js")
+
+        included = style_guide.file_included?(file)
+
+        expect(included).to be true
+      end
+    end
+
+    it "matches a glob pattern" do
+      repo_config = double(
+        "RepoConfig",
+        ignored_javascript_files: ["app/assets/javascripts/*.js"]
+      )
+
+      style_guide = StyleGuide::JavaScript.new(repo_config)
+      file = double(:file, filename: "app/assets/javascripts/bar.js")
+
+      included = style_guide.file_included?(file)
+
+      expect(included).to be false
+    end
+  end
 end

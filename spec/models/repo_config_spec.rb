@@ -229,6 +229,71 @@ describe RepoConfig do
       end
     end
 
+    describe "#jshint_ignore_file" do
+      context "no specific configuration is present" do
+        it "attempts to load a .jshintignore file" do
+          ignored_files = <<-EOIGNORE.strip_heredoc
+            app/assets/javascripts/*.js
+            public/javascripts/**.js
+          EOIGNORE
+
+          hound_config = <<-EOS
+            java_script:
+              enabled: true
+          EOS
+
+          commit = stub_commit(
+            hound_config: hound_config,
+            ".jshintignore" => ignored_files
+          )
+
+          ignored_files = RepoConfig.new(commit).ignored_javascript_files
+
+          expect(ignored_files).
+            to eq ["app/assets/javascripts/*.js", "public/javascripts/**.js"]
+        end
+      end
+
+      context "custom jshint ignore path provided" do
+        it "uses the custom ignore file" do
+          hound_config = <<-EOS
+            java_script:
+              enabled: true
+              ignore_file: ".js_ignore"
+          EOS
+
+          ignored_files = <<-EOIGNORE.strip_heredoc
+            app/assets/javascripts/*.js
+            public/javascripts/**.js
+          EOIGNORE
+
+          commit = stub_commit(
+            hound_config: hound_config,
+            ".js_ignore" => ignored_files
+          )
+
+          ignored_files = RepoConfig.new(commit).ignored_javascript_files
+
+          expect(ignored_files).
+            to eq ["app/assets/javascripts/*.js", "public/javascripts/**.js"]
+        end
+      end
+    end
+
+    def stub_commit(configuration)
+      commit = double("Commit")
+      hound_config = configuration.delete(:hound_config)
+      allow(commit).to receive(:file_content).
+        with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
+
+      configuration.each do |filename, contents|
+        allow(commit).to receive(:file_content).
+          with(filename).and_return(contents)
+      end
+
+      commit
+    end
+
     def config_for_file(file_path, content)
       hound_config = <<-EOS.strip_heredoc
         ruby:
@@ -243,14 +308,13 @@ describe RepoConfig do
           enabled: true
           config_file: #{file_path}
       EOS
-      commit = double("Commit")
-      config = RepoConfig.new(commit)
-      allow(commit).to receive(:file_content).
-        with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
-      allow(commit).to receive(:file_content).
-        with(file_path).and_return(content)
 
-      config
+      commit = stub_commit(
+        hound_config: hound_config,
+        "#{file_path}" => content
+      )
+
+      RepoConfig.new(commit)
     end
   end
 end
