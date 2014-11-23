@@ -4,9 +4,10 @@ class RepoConfig
     "ruby" => "yaml",
     "java_script" => "json",
     "coffee_script" => "json",
+    "php" => "xml",
   }
   HOUND_CONFIG_FILE = ".hound.yml"
-  STYLE_GUIDES = %w(ruby coffee_script java_script)
+  STYLE_GUIDES = %w(ruby coffee_script java_script php)
 
   pattr_initialize :commit
 
@@ -76,5 +77,9 @@ class RepoConfig
     JSON.parse(content)
   rescue JSON::ParserError
     {}
+  end
+
+  def parse_xml(content)
+    content
   end
 end

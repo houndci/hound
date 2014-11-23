@@ -87,3 +87,29 @@
         java_script:
           enabled: true
           config_file: config/.jshint.json
+
+  %h3 PHP
+
+  %p
+    To enable PHP style checking, add the following to
+    %em.code .hound.yml
+    in the root of your project
+
+    %code.code-block
+      :preserve
+        php:
+          enabled: true
+
+  %p
+    Hound uses #{link_to "PHP CodeSniffer", "https://github.com/squizlabs/PHP_CodeSniffer/"}
+    internally so you can configure Hound by adding a
+    #{link_to "PHPCS config", "https://github.com/thoughtbot/hound/blob/master/config/style_guides/php.xml"}
+    to your project and adding the following to
+    %em.code .hound.yml
+    in the root of your project.
+
+    %code.code-block
+      :preserve
+        php:
+          enabled: true
+          config_file: config/phpcs_rulset.xml

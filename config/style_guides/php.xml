@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset name="Example Ruleset">
+
+  <!-- http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+
+  <rule ref="Squiz">
+    <exclude name="Squiz.PHP.CommentedOutCode"/>
+  </rule>
+
+</ruleset>

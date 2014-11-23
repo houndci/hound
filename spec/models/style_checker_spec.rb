@@ -127,6 +127,72 @@ describe StyleChecker, "#violations" do
     end
   end
 
+  context "for a PHP file" do
+    context "with violations" do
+      context "with PHP enabled" do
+        it "returns violations" do
+          config = <<-YAML.strip_heredoc
+            php:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.php", "<?php class Foo {}")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expected_error_message = "Closing brace must be on a line by itself"
+          expect(messages).to include expected_error_message
+        end
+      end
+
+      context "with PHP disabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            php:
+              enabled: false
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.php", "<?php class Foo {}")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+
+          expect(violations).to be_empty
+        end
+      end
+    end
+
+    context "without violations" do
+      context "with PHP enabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            php:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.php", "<?php class Foo\n{\n}")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).not_to include "Missing semicolon."
+        end
+      end
+    end
+  end
+
   context "for a JavaScript file" do
     context "with violations" do
       context "with JavaScript enabled" do
