@@ -33,6 +33,7 @@ gem "sentry-raven"
 gem "stripe"
 gem "uglifier", ">= 1.0.3"
 gem "unicorn"
+gem 'phpcsrb', git: 'https://github.com/blainesch/phpcs-rb.git', submodules: true, branch: '0.1.0'
 
 group :staging, :production do
   gem "rails_12factor"

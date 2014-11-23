@@ -46,6 +46,8 @@ class StyleChecker
       StyleGuide::JavaScript
     when /.+\.scss\z/
       StyleGuide::Scss
+    when /.*\.php.?/
+      StyleGuide::PHP
     else
       StyleGuide::Unsupported
     end

@@ -1,12 +1,13 @@
 # Load and parse config files from GitHub repo
 class RepoConfig
   HOUND_CONFIG = ".hound.yml"
-  LANGUAGES = %w(ruby coffee_script java_script scss)
+  LANGUAGES = %w(ruby coffee_script java_script scss php)
   FILE_TYPES = {
     "ruby" => "yaml",
     "java_script" => "json",
     "coffee_script" => "json",
     "scss" => "yaml",
+    "php" => "xml",
   }
 
   pattr_initialize :commit
@@ -102,5 +103,9 @@ class RepoConfig
     JSON.parse(content)
   rescue JSON::ParserError
     {}
+  end
+
+  def parse_xml(content)
+    content
   end
 end

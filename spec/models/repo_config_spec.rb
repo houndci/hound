@@ -227,6 +227,22 @@ describe RepoConfig do
       end
     end
 
+    context "with PHP config" do
+      it "returns parsed config" do
+        phpcsxml = <<-EOS.strip_heredoc
+          <?xml version="1.0"?>
+          <ruleset name="Ruleset">
+            <rule ref="Squiz" />
+          </ruleset>
+        EOS
+        config = config_for_file("phpcs.xml", phpcsxml.strip)
+
+        result = config.for("php")
+
+        expect(result).to eq(phpcsxml.strip)
+      end
+    end
+
     context "when there is no Hound config file" do
       it "returns empty config for all style guides" do
         commit = double("Commit", file_content: nil)
@@ -342,9 +358,15 @@ describe RepoConfig do
           enabled: true
           config_file: #{file_path}
 
+<<<<<<< HEAD
         scss:
           enabled: true
           config_file: #{file_path}
+=======
+        php:
+          enabled: true
+          config_file: phpcs.xml
+>>>>>>> Add support for PHP.
       EOS
 
       commit = stub_commit(
