@@ -21,6 +21,10 @@ class PullRequest
     )
   end
 
+  def repository_owner
+    payload.repository_owner
+  end
+
   def opened?
     payload.action == "opened"
   end

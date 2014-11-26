@@ -60,4 +60,19 @@ describe Payload do
       expect(payload.pull_request_number).to eq 2
     end
   end
+
+  describe "#repository_owner" do
+    it "returns the owner of the repo's name" do
+      data = {
+        "repository" => {
+          "owner" => {
+            "login" => "thoughtbot"
+          }
+        }
+      }
+      payload = Payload.new(data)
+
+      expect(payload.repository_owner).to eq "thoughtbot"
+    end
+  end
 end
