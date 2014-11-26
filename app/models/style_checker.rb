@@ -30,7 +30,10 @@ class StyleChecker
 
   def style_guide(filename)
     style_guide_class = style_guide_class(filename)
-    style_guides[style_guide_class] ||= style_guide_class.new(config)
+    style_guides[style_guide_class] ||= style_guide_class.new(
+      config,
+      pull_request.repository_owner
+    )
   end
 
   def style_guide_class(filename)

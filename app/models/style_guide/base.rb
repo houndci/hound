@@ -1,9 +1,7 @@
 # Base to contain common style guide logic
 module StyleGuide
-  CONFIG_DIR = "config/style_guides"
-
   class Base
-    pattr_initialize :repo_config
+    pattr_initialize :repo_config, :repository_owner
 
     def enabled?
       repo_config.enabled_for?(name)

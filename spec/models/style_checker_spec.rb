@@ -3,6 +3,7 @@ require "jshintrb"
 require "rubocop"
 
 require "fast_spec_helper"
+require "app/models/default_config_file"
 require "app/models/line"
 require "app/models/unchanged_line"
 require "app/models/repo_config"
@@ -248,6 +249,7 @@ describe StyleChecker, "#violations" do
       file_content: "",
       head_commit: head_commit,
       pull_request_files: [],
+      repository_owner: "some_org"
     }
 
     double("PullRequest", defaults.merge(options))

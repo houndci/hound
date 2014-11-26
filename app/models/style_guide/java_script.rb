@@ -1,6 +1,6 @@
 module StyleGuide
   class JavaScript < Base
-    DEFAULT_CONFIG_FILE = File.join(CONFIG_DIR, "javascript.json")
+    DEFAULT_CONFIG_FILENAME = "javascript.json"
 
     def violations_in_file(file)
       Jshintrb.lint(file.content, config).compact.map do |violation|
@@ -27,7 +27,12 @@ module StyleGuide
     end
 
     def default_config
-      JSON.parse(File.read(DEFAULT_CONFIG_FILE))
+      config_file = File.read(default_config_file)
+      JSON.parse(config_file)
+    end
+
+    def default_config_file
+      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
     end
   end
 end

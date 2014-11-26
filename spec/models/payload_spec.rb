@@ -70,6 +70,7 @@ describe Payload do
           }
         }
       }
+
       payload = Payload.new(data)
 
       expect(payload.repository_owner).to eq "thoughtbot"

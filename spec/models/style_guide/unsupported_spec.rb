@@ -6,7 +6,7 @@ require "app/models/style_guide/unsupported"
 describe StyleGuide::Unsupported do
   describe "#violations_in_file" do
     it "returns an empty array" do
-      style_guide = StyleGuide::Unsupported.new({})
+      style_guide = StyleGuide::Unsupported.new({}, nil)
 
       expect(style_guide.violations_in_file("file.txt")).to eq []
     end

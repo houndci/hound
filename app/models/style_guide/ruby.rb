@@ -1,7 +1,7 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby < Base
-    DEFAULT_CONFIG_FILE = File.join(CONFIG_DIR, "ruby.yml")
+    DEFAULT_CONFIG_FILENAME = "ruby.yml"
 
     def violations_in_file(file)
       if config.file_to_exclude?(file.filename)
@@ -34,7 +34,7 @@ module StyleGuide
     end
 
     def default_config
-      RuboCop::ConfigLoader.configuration_from_file(DEFAULT_CONFIG_FILE)
+      RuboCop::ConfigLoader.configuration_from_file(default_config_file)
     end
 
     def custom_config
@@ -50,6 +50,10 @@ module StyleGuide
       if config["ShowCopNames"]
         { debug: true }
       end
+    end
+
+    def default_config_file
+      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
     end
   end
 end
