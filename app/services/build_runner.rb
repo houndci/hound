@@ -24,7 +24,8 @@ class BuildRunner
     repo_config.validate
 
     if repo_config.errors.any?
-      pull_request.add_comment(repo_config.errors.to_sentence)
+      message_body = repo_config.errors.join("\n")
+      pull_request.add_comment(message_body)
     end
   end
 
