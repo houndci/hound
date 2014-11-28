@@ -190,8 +190,8 @@ describe RepoConfig do
 
     context "when config does not have formatting errors" do
       it "does not add errors" do
-       commit = stubbed_commit_with_valid_config
-       config = RepoConfig.new(commit)
+        commit = stubbed_commit_with_valid_config
+        config = RepoConfig.new(commit)
 
         expect { config.validate }.to change { config.errors.size }.by(0)
       end
@@ -336,7 +336,7 @@ describe RepoConfig do
           config_file: javascript.json
     EOS
     parsed_hound_config = YAML.load(hound_config)
-    parsed_hound_config.each do |language, config_settings|
+    parsed_hound_config.each do |language, _config_settings|
       config_path = parsed_hound_config[language]["config_file"]
       allow(commit).to receive(:file_content).
         with(config_path).and_return(valid_config)
