@@ -91,14 +91,18 @@ class RepoConfig
   end
 
   def validate_style_guide_configs
-    STYLE_GUIDES.each do |style_guide|
-      if enabled_for?(style_guide) && self.for(style_guide).empty?
-        error_message = I18n.t(
-          "invalid_config",
-          config_file_name: config_path_for(style_guide)
-        )
-        add_error(error_message)
-      end
+    invalid_style_guides.each do |style_guide|
+      error_message = I18n.t(
+        "invalid_config",
+        config_file_name: config_path_for(style_guide)
+      )
+      add_error(error_message)
+    end
+  end
+
+  def invalid_style_guides
+    STYLE_GUIDES.select do |style_guide|
+      enabled_for?(style_guide) && self.for(style_guide).empty?
     end
   end
 
