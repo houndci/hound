@@ -4,6 +4,24 @@ require "app/models/commit"
 require "lib/github_api"
 
 describe PullRequest do
+  describe "#add_comment" do
+    it "comments on pull request" do
+      comment_body = "Invalid config"
+      github = double(:github, add_issue_comment: true)
+      payload = payload_stub
+      allow(GithubApi).to receive(:new).and_return(github)
+      pull_request = PullRequest.new(payload)
+
+      pull_request.add_comment(comment_body)
+
+      expect(github).to have_received(:add_issue_comment).with(
+        payload.full_repo_name,
+        payload.pull_request_number,
+        comment_body
+      )
+    end
+  end
+
   describe "#opened?" do
     context "when payload action is opened" do
       it "returns true" do

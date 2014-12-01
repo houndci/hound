@@ -3,6 +3,7 @@ class BuildRunner
 
   def run
     if repo && relevant_pull_request?
+      validate_config
       repo.builds.create!(
         violations: violations,
         pull_request_number: payload.pull_request_number,
@@ -19,16 +20,29 @@ class BuildRunner
     pull_request.opened? || pull_request.synchronize?
   end
 
+  def validate_config
+    repo_config.validate
+
+    if repo_config.errors.any?
+      message_body = repo_config.errors.join("\n")
+      pull_request.add_comment(message_body)
+    end
+  end
+
+  def repo_config
+    @repo_config ||= RepoConfig.new(pull_request.head_commit)
+  end
+
   def violations
     @violations ||= style_checker.violations
   end
 
   def style_checker
-    StyleChecker.new(pull_request)
+    @style_checker ||= StyleChecker.new(pull_request)
   end
 
   def commenter
-    Commenter.new(pull_request)
+    @commenter ||= Commenter.new(pull_request)
   end
 
   def pull_request
