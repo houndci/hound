@@ -44,7 +44,7 @@ ClassVars:
 CollectionMethods:
   PreferredMethods:
     find: detect
-    reduce: inject
+    inject: reduce
     collect: map
     find_all: select
 
