@@ -87,3 +87,27 @@
         java_script:
           enabled: true
           config_file: config/.jshint.json
+
+  %p
+    If you are looking to ignore certain JavaScript files from being checked for
+    style issues you can set the
+    %em.code ignore_file
+    option in the
+    %em.code .hound.yml
+    in the root of your project. This option should be set to a file which
+    defines what files or patterns should be ignored during style checking.
+
+    %code.code-block
+      :preserve
+        java_script:
+          enabled: true
+          ignore_file: config/.javascript_ignore
+
+  %p
+    Each line in the
+    %em.code .javascript_ignore
+    file can specify a pattern for file names to ignore.
+
+    %code.code-block
+      :preserve
+        vendor/assets/javascripts/**.js
