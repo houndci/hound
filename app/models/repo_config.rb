@@ -10,8 +10,7 @@ class RepoConfig
 
   attr_reader :errors
 
-  def initialize(commit)
-    @commit = commit
+  pattr_initialize :commit do
     @errors = []
   end
 

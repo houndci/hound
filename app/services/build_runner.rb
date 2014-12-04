@@ -38,11 +38,11 @@ class BuildRunner
   end
 
   def style_checker
-    @style_checker ||= StyleChecker.new(pull_request)
+    StyleChecker.new(pull_request)
   end
 
   def commenter
-    @commenter ||= Commenter.new(pull_request)
+    Commenter.new(pull_request)
   end
 
   def pull_request

@@ -147,7 +147,8 @@ describe RepoConfig do
           config_file_name: config_file_path
         )
 
-        expect { config.validate }.to change { config.errors.size }.by(1)
+        config.validate
+
         expect(config.errors).to match_array([error_message])
       end
     end
@@ -165,7 +166,8 @@ describe RepoConfig do
           config_file_name: config_file_path
         )
 
-        expect { config.validate }.to change { config.errors.size }.by(1)
+        config.validate
+
         expect(config.errors).to match_array([error_message])
       end
     end
@@ -183,7 +185,8 @@ describe RepoConfig do
           config_file_name: config_file_path
         )
 
-        expect { config.validate }.to change { config.errors.size }.by(1)
+        config.validate
+
         expect(config.errors).to match_array([error_message])
       end
     end
@@ -193,7 +196,9 @@ describe RepoConfig do
         commit = stubbed_commit_with_valid_config
         config = RepoConfig.new(commit)
 
-        expect { config.validate }.to change { config.errors.size }.by(0)
+        config.validate
+
+        expect(config.errors).to be_empty
       end
     end
   end
@@ -318,22 +323,22 @@ describe RepoConfig do
   def stubbed_commit_with_valid_config
     commit = double("Commit")
     valid_config = <<-EOS.strip_heredoc
-          {
-            "predef": ["myGlobal"]
-          }
+      {
+        "predef": ["myGlobal"]
+      }
     EOS
     hound_config = <<-EOS.strip_heredoc
-        ruby:
-          enabled: true
-          config_file: "config/rubocop.yml"
+      ruby:
+        enabled: true
+        config_file: "config/rubocop.yml"
 
-        coffee_script:
-          enabled: true
-          config_file: coffeelint.json
+      coffee_script:
+        enabled: true
+        config_file: coffeelint.json
 
-        java_script:
-          enabled: true
-          config_file: javascript.json
+      java_script:
+        enabled: true
+        config_file: javascript.json
     EOS
     parsed_hound_config = YAML.load(hound_config)
     parsed_hound_config.each do |language, _config_settings|
@@ -348,15 +353,15 @@ describe RepoConfig do
 
   def config_for_file(file_path, content)
     hound_config = <<-EOS.strip_heredoc
-        ruby:
-          enabled: true
-          config_file: config/rubocop.yml
+      ruby:
+        enabled: true
+        config_file: config/rubocop.yml
 
-        coffee_script:
-          enabled: true
-          config_file: coffeelint.json
+      coffee_script:
+        enabled: true
+        config_file: coffeelint.json
 
-        java_script:
+      java_script:
           enabled: true
           config_file: #{file_path}
     EOS
