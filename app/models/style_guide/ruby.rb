@@ -1,7 +1,7 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby < Base
-    DEFAULT_CONFIG_FILE = File.join(CONFIG_DIR, "ruby.yml")
+    DEFAULT_CONFIG_FILE = HoundRubocop::DEFAULT_CONFIG_FILE
 
     def violations_in_file(file)
       if config.file_to_exclude?(file.filename)
