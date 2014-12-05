@@ -3,6 +3,7 @@ cache: bundler
 rvm: 2.1.5
 
 before_install:
+  - sudo apt-get install php5
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 

@@ -201,6 +201,22 @@ describe RepoConfig do
       end
     end
 
+    context "when php config file is specified" do
+      it "returns parsed config" do
+        phpcsxml = <<-EOS.strip_heredoc
+          <?xml version="1.0"?>
+          <ruleset name="Ruleset">
+            <rule ref="Squiz" />
+          </ruleset>
+        EOS
+        config = config_for_file("phpcs.xml", phpcsxml.strip)
+
+        result = config.for("php")
+
+        expect(result).to eq(phpcsxml.strip)
+      end
+    end
+
     context "when there is no Hound config file" do
       it "returns empty config for all style guides" do
         commit = double("Commit", file_content: nil)
@@ -307,6 +323,10 @@ describe RepoConfig do
         java_script:
           enabled: true
           config_file: #{file_path}
+
+        php:
+          enabled: true
+          config_file: phpcs.xml
       EOS
 
       commit = stub_commit(

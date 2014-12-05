@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/blainesch/phpcs-rb.git
+  revision: 40c61341fb73a49b8d9fc26286177a7f5a520a3f
+  branch: 0.1.0
+  submodules: true
+  specs:
+    phpcsrb (0.1.0)
+      json (~> 1.8)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -326,6 +335,7 @@ DEPENDENCIES
   omniauth-github
   paranoia (~> 2.0)
   pg
+  phpcsrb!
   poltergeist
   rails (= 4.1.5)
   rails_12factor
