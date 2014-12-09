@@ -76,13 +76,10 @@ class GithubApi
   end
 
   def pull_request_comments(full_repo_name, pull_request_number)
-    paginate do |page|
-      client.pull_request_comments(
-        full_repo_name,
-        pull_request_number,
-        page: page
-      )
-    end
+    repo_path = Octokit::Repository.path full_repo_name
+
+    # client.pull_request_comments does not do auto-pagination.
+    client.paginate "#{repo_path}/pulls/#{pull_request_number}/comments"
   end
 
   def pull_request_files(full_repo_name, number)
@@ -173,35 +170,15 @@ class GithubApi
   end
 
   def user_repos
-    repos = paginate { |page| client.repos(nil, page: page) }
-    authorized_repos(repos)
+    authorized_repos(client.repos)
   end
 
   def org_repos
     repos = orgs.flat_map do |org|
-      paginate { |page| client.org_repos(org[:login], page: page) }
+      client.org_repos(org[:login])
     end
 
     authorized_repos(repos)
-  end
-
-  def paginate
-    page = 1
-    results = []
-    all_pages_fetched = false
-
-    until all_pages_fetched do
-      page_results = yield(page)
-
-      if page_results.empty?
-        all_pages_fetched = true
-      else
-        results += page_results
-        page += 1
-      end
-    end
-
-    results
   end
 
   def orgs

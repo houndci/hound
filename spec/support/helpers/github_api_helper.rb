@@ -354,31 +354,39 @@ module GithubApiHelper
   end
 
   def stub_paginated_repo_requests(token)
+    repos_url = "https://api.github.com/user/repos"
+
     stub_request(
       :get,
-      "https://api.github.com/user/repos?page=1&per_page=100"
+      "#{repos_url}?per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: {
+        "Link" => %(<#{repos_url}?page=2&per_page=100>; rel="next"),
+        "Content-Type" => "application/json; charset=utf-8",
+      }
     )
 
     stub_request(
       :get,
-      "https://api.github.com/user/repos?page=2&per_page=100"
+      "#{repos_url}?page=2&per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: {
+        "Link" => %(<#{repos_url}?page=3&per_page=100>; rel="next"),
+        "Content-Type" => "application/json; charset=utf-8",
+      }
     )
 
     stub_request(
       :get,
-      "https://api.github.com/user/repos?page=3&per_page=100"
+      "#{repos_url}?page=3&per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
@@ -389,31 +397,39 @@ module GithubApiHelper
   end
 
   def stub_paginated_org_repo_requests(token)
+    org_repos_url = "https://api.github.com/orgs/thoughtbot/repos"
+
     stub_request(
       :get,
-      "https://api.github.com/orgs/thoughtbot/repos?page=1&per_page=100"
+      "#{org_repos_url}?per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: {
+        "Link" => %(<#{org_repos_url}?page=2&per_page=100>; rel="next"),
+        "Content-Type" => "application/json; charset=utf-8",
+      }
     )
 
     stub_request(
       :get,
-      "https://api.github.com/orgs/thoughtbot/repos?page=2&per_page=100"
+      "#{org_repos_url}?page=2&per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
       body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: {
+        "Link" => %(<#{org_repos_url}?page=3&per_page=100>; rel="next"),
+        "Content-Type" => "application/json; charset=utf-8",
+      }
     )
 
     stub_request(
       :get,
-      "https://api.github.com/orgs/thoughtbot/repos?page=3&per_page=100"
+      "#{org_repos_url}?page=3&per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
@@ -444,10 +460,12 @@ module GithubApiHelper
       "#{pull_request_number}/comments"
     headers = { "Content-Type" => "application/json; charset=utf-8" }
 
-    stub_request(:get, "#{url}?page=1").
+    stub_request(:get, "#{url}?per_page=100").
       with(headers: { "Authorization" => "token #{hound_token}" }).
-      to_return(status: 200, body: comments_body, headers: headers)
-    stub_request(:get, "#{url}?page=2").
+      to_return(status: 200, body: comments_body, headers: headers.merge(
+        "Link" => %(<#{url}?page=2&per_page=100>; rel="next"),
+      ))
+    stub_request(:get, "#{url}?page=2&per_page=100").
       to_return(status: 200, body: "[]", headers: headers)
   end
 
