@@ -1,24 +1,38 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe RepoSynchronizationJob do
-  it 'is retryable' do
+  it "is retryable" do
     expect(RepoSynchronizationJob).to be_a(Retryable)
   end
 
-  describe '.before_enqueue' do
-    it 'sets refreshing_repos to true' do
+  describe ".before_enqueue" do
+    it "sets refreshing_repos to true" do
       user = create(:user)
 
-      RepoSynchronizationJob.before_enqueue(user.id, 'token')
+      RepoSynchronizationJob.before_enqueue(user.id, "token")
 
       expect(user.reload).to be_refreshing_repos
     end
+
+    it "returns true if not refreshing" do
+      user = create(:user)
+
+      expect(RepoSynchronizationJob.before_enqueue(user.id, "token")).
+        to be true
+    end
+
+    it "returns false if already refreshing" do
+      user = create(:user, refreshing_repos: true)
+
+      expect(RepoSynchronizationJob.before_enqueue(user.id, "token")).
+        to be false
+    end
   end
 
-  describe '.perform' do
-    it 'syncs repos and sets refreshing_repos to false' do
+  describe ".perform" do
+    it "syncs repos and sets refreshing_repos to false" do
       user = create(:user, refreshing_repos: true)
-      github_token = 'token'
+      github_token = "token"
       synchronization = double(:repo_synchronization, start: nil)
       allow(RepoSynchronization).to receive(:new).and_return(synchronization)
 
@@ -32,11 +46,11 @@ describe RepoSynchronizationJob do
       expect(user.reload).not_to be_refreshing_repos
     end
 
-    it 'retries when Resque::TermException is raised' do
+    it "retries when Resque::TermException is raised" do
       allow(User).to receive(:find).and_raise(Resque::TermException.new(1))
       allow(Resque).to receive(:enqueue)
-      user_id = 'userid'
-      github_token = 'token'
+      user_id = "userid"
+      github_token = "token"
 
       RepoSynchronizationJob.perform(user_id, github_token)
 

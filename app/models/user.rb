@@ -16,6 +16,13 @@ class User < ActiveRecord::Base
 
   before_create :generate_remember_token
 
+  def self.set_refreshing_repos(user_id)
+    updated_records = where(id: user_id, refreshing_repos: false).
+      update_all(refreshing_repos: true)
+
+    updated_records == 1
+  end
+
   def to_s
     github_username
   end

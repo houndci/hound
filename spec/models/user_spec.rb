@@ -18,6 +18,28 @@ describe User do
     end
   end
 
+  describe ".set_refreshing_repos" do
+    it "sets refreshing_repos to true" do
+      user = create(:user)
+
+      User.set_refreshing_repos(user.id)
+
+      expect(user.reload).to be_refreshing_repos
+    end
+
+    it "return true if refreshing_repos was false" do
+      user = create(:user)
+
+      expect(User.set_refreshing_repos(user.id)).to be true
+    end
+
+    it "return false if refreshing_repos was true" do
+      user = create(:user, refreshing_repos: true)
+
+      expect(User.set_refreshing_repos(user.id)).to be false
+    end
+  end
+
   describe '#create' do
     it 'generates a remember_token' do
       user = build(:user)

@@ -4,8 +4,7 @@ class RepoSynchronizationJob
   @queue = :high
 
   def self.before_enqueue(user_id, github_token)
-    user = User.find(user_id)
-    user.update_attribute(:refreshing_repos, true)
+    User.set_refreshing_repos(user_id)
   end
 
   def self.perform(user_id, github_token)
