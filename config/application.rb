@@ -11,5 +11,6 @@ module Houndapp
     config.filter_parameters += [:password]
     config.active_support.escape_html_entities_in_json = true
     config.assets.version = '1.0'
+    config.middleware.insert_before "Rack::ETag", "Rack::Deflater"
   end
 end

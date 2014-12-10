@@ -1,6 +1,4 @@
 class ReposController < ApplicationController
-  before_action :set_vary_header
-
   def index
     respond_to do |format|
       format.html
@@ -10,16 +8,13 @@ class ReposController < ApplicationController
           current_user.repos.clear
         end
 
-        render(
-          json: current_user.repos.order(active: :desc, full_github_name: :asc)
-        )
+        repos = current_user.
+          repos.
+          order(active: :desc, full_github_name: :asc).
+          includes(:subscription)
+
+        render json: repos
       end
     end
-  end
-
-  private
-
-  def set_vary_header
-    response.headers["Vary"] = "Accept"
   end
 end
