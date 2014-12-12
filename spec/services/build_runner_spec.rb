@@ -14,6 +14,7 @@ describe BuildRunner, '#run' do
       stubbed_style_checker_with_violations
       stubbed_commenter
       stubbed_pull_request
+      stubbed_github_api
 
       build_runner.run
       build = Build.first
@@ -34,6 +35,7 @@ describe BuildRunner, '#run' do
       style_checker = stubbed_style_checker_with_violations
       commenter = Commenter.new(stubbed_pull_request)
       allow(Commenter).to receive(:new).and_return(commenter)
+      stubbed_github_api
 
       build_runner.run
 
@@ -46,6 +48,7 @@ describe BuildRunner, '#run' do
       pull_request = stubbed_pull_request
       stubbed_style_checker_with_violations
       stubbed_commenter
+      stubbed_github_api
 
       build_runner.run
 
@@ -59,10 +62,38 @@ describe BuildRunner, '#run' do
       stubbed_pull_request
       stubbed_style_checker_with_violations
       stubbed_commenter
+      stubbed_github_api
 
       build_runner.run
 
       expect(PullRequest).to have_received(:new).with(payload)
+    end
+
+    it "creates GitHub statuses" do
+      repo = create(:repo, :active, github_id: 123)
+      payload = stubbed_payload(
+        github_repo_id: repo.github_id,
+        full_repo_name: "test/repo",
+        head_sha: "headsha"
+      )
+      build_runner = BuildRunner.new(payload)
+      stubbed_pull_request
+      stubbed_style_checker_with_violations
+      stubbed_commenter
+      github_api = stubbed_github_api
+
+      build_runner.run
+
+      expect(github_api).to have_received(:create_pending_status).with(
+        "test/repo",
+        "headsha",
+        "Hound is reviewing changes."
+      )
+      expect(github_api).to have_received(:create_success_status).with(
+        "test/repo",
+        "headsha",
+        "Hound has reviewed the changes."
+      )
     end
   end
 
@@ -131,5 +162,16 @@ describe BuildRunner, '#run' do
     allow(PullRequest).to receive(:new).and_return(pull_request)
 
     pull_request
+  end
+
+  def stubbed_github_api
+    github_api = double(
+      "GithubApi",
+      create_pending_status: nil,
+      create_success_status: nil
+    )
+    allow(GithubApi).to receive(:new).and_return(github_api)
+
+    github_api
   end
 end

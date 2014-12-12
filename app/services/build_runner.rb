@@ -3,12 +3,14 @@ class BuildRunner
 
   def run
     if repo && relevant_pull_request?
+      create_pending_status
       repo.builds.create!(
         violations: violations,
         pull_request_number: payload.pull_request_number,
         commit_sha: payload.head_sha,
       )
       commenter.comment_on_violations(violations)
+      create_success_status
       track_reviewed_repo_for_each_user
     end
   end
@@ -45,5 +47,25 @@ class BuildRunner
       analytics = Analytics.new(user)
       analytics.track_reviewed(repo)
     end
+  end
+
+  def create_pending_status
+    github.create_pending_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      "Hound is reviewing changes."
+    )
+  end
+
+  def create_success_status
+    github.create_success_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      "Hound has reviewed the changes."
+    )
+  end
+
+  def github
+    @github ||= GithubApi.new
   end
 end

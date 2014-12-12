@@ -498,6 +498,37 @@ module GithubApiHelper
     )
   end
 
+  def stub_status_requests(repo_name, sha)
+    stub_status_request(
+      repo_name,
+      sha,
+      "pending",
+      "Hound is reviewing changes."
+    )
+    stub_status_request(
+      repo_name,
+      sha,
+      "success",
+      "Hound has reviewed the changes."
+    )
+  end
+
+  def stub_status_request(full_repo_name, sha, state, description)
+    stub_request(
+      :post,
+      "https://api.github.com/repos/#{full_repo_name}/statuses/#{sha}"
+    ).with(
+      headers: { "Authorization" => "token #{hound_token}" },
+      body: { "description" => description, "state" => state }
+    ).to_return(
+      status: 201,
+      body: File.read(
+        "spec/support/fixtures/github_status_response.json"
+      ),
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
   private
 
   def hound_token
