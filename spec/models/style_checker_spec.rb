@@ -203,7 +203,7 @@ describe StyleChecker, "#violations" do
       file_content: "",
       head_commit: head_commit,
       pull_request_files: [],
-      repository_owner: "some_org"
+      repository_owner_name: "some_org"
     }
 
     double("PullRequest", defaults.merge(options))

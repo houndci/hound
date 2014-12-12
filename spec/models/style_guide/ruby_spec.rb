@@ -461,7 +461,7 @@ end
         end
       CODE
 
-      violations_in(code, repository_owner: "not_thoughtbot")
+      violations_in(code, repository_owner_name: "not_thoughtbot")
 
       expect(RuboCop::ConfigLoader).to have_received(:configuration_from_file).
         with(config_file)
@@ -512,15 +512,15 @@ end
     end
 
     def thoughtbot_violations_in(content)
-      violations_in(content, repository_owner: "thoughtbot")
+      violations_in(content, repository_owner_name: "thoughtbot")
     end
   end
 
   private
 
-  def violations_in(content, config: nil, repository_owner: "ralph")
+  def violations_in(content, config: nil, repository_owner_name: "ralph")
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    style_guide = StyleGuide::Ruby.new(repo_config, repository_owner)
+    style_guide = StyleGuide::Ruby.new(repo_config, repository_owner_name)
     style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
   end
 

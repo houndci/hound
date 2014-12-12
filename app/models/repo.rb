@@ -1,9 +1,9 @@
 class Repo < ActiveRecord::Base
-  has_many :memberships
-  has_many :users, through: :memberships
   has_many :builds
-
+  has_many :memberships
+  belongs_to :owner
   has_one :subscription
+  has_many :users, through: :memberships
 
   alias_attribute :name, :full_github_name
 

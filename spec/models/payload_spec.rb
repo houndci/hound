@@ -1,6 +1,6 @@
-require 'fast_spec_helper'
+require "fast_spec_helper"
 require "attr_extras"
-require 'app/models/payload'
+require "app/models/payload"
 
 describe Payload do
   describe '#changed_files' do
@@ -61,7 +61,7 @@ describe Payload do
     end
   end
 
-  describe "#repository_owner" do
+  describe "#repository_owner_name" do
     it "returns the owner of the repo's name" do
       data = {
         "repository" => {
@@ -73,7 +73,57 @@ describe Payload do
 
       payload = Payload.new(data)
 
-      expect(payload.repository_owner).to eq "thoughtbot"
+      expect(payload.repository_owner_name).to eq "thoughtbot"
+    end
+  end
+
+  describe "#repository_owner_id" do
+    it "returns the owner of the repo's ID" do
+      data = {
+        "repository" => {
+          "owner" => {
+            "id" => 1
+          }
+        }
+      }
+
+      payload = Payload.new(data)
+
+      expect(payload.repository_owner_id).to eq 1
+    end
+  end
+
+  describe "#repository_owner_is_organization?" do
+    context "when the repository owner is a user" do
+      it "returns false" do
+        payload_json = {
+          "repository" => {
+            "owner" => {
+              "id" => 1,
+              "type" => "User"
+            }
+          }
+        }
+        payload = Payload.new(payload_json)
+
+        expect(payload.repository_owner_is_organization?).to be false
+      end
+    end
+
+    context "when the repository owner is an organization" do
+      it "returns true" do
+        payload_json = {
+          "repository" => {
+            "owner" => {
+              "id" => 1,
+              "type" => "Organization"
+            }
+          }
+        }
+        payload = Payload.new(payload_json)
+
+        expect(payload.repository_owner_is_organization?).to be true
+      end
     end
   end
 end
