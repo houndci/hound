@@ -161,12 +161,6 @@ class GithubApi
       permission: "pull"
     }
     client.create_team(repo.organization.login, team_options)
-  rescue Octokit::UnprocessableEntity => e
-    if team_exists_exception?(e)
-      find_team(name, repo)
-    else
-      raise
-    end
   end
 
   def user_repos
@@ -187,12 +181,6 @@ class GithubApi
 
   def authorized_repos(repos)
     repos.select { |repo| repo.permissions.admin }
-  end
-
-  def team_exists_exception?(exception)
-    exception.errors.any? do |error|
-      error[:field] == "name" && error[:code] == "already_exists"
-    end
   end
 
   def with_preview_client(&block)
