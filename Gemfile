@@ -30,17 +30,20 @@ gem "sentry-raven"
 gem "stripe"
 gem "uglifier", ">= 1.0.3"
 gem "unicorn"
-
-group :staging, :production do
-  gem "rails_12factor"
-end
+gem "dotenv-rails"
+gem "foreman"
 
 group :development, :test do
   gem "byebug"
-  gem "foreman"
   gem "konacha"
   gem "poltergeist"
   gem "rspec-rails", ">= 2.14"
+
+  gem "capistrano-rbenv", "~> 2.0", require: false
+  gem "capistrano-bundler", "~> 1.1", require: false
+  gem "capistrano-rails",   "~> 1.1", require: false
+  gem "capistrano3-nginx_unicorn"
+  gem "capistrano-file-permissions"
 end
 
 group :test do
