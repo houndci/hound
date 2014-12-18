@@ -1,6 +1,10 @@
 class BuildRunner
   pattr_initialize :payload
 
+  PENDING_STATE_DESCRIPTION = "Hound is reviewing the changes."
+  SUCCESS_STATE_DESCRIPTION = "Hound has reviewed the changes."
+  STATUS_CONTEXT = "hound"
+
   def run
     if repo && relevant_pull_request?
       create_pending_status
@@ -51,17 +55,19 @@ class BuildRunner
 
   def create_pending_status
     github.create_pending_status(
-      payload.full_repo_name,
-      payload.head_sha,
-      "Hound is reviewing changes."
+      repo_name: payload.full_repo_name,
+      commit: payload.head_sha,
+      description: PENDING_STATE_DESCRIPTION,
+      context: STATUS_CONTEXT
     )
   end
 
   def create_success_status
     github.create_success_status(
-      payload.full_repo_name,
-      payload.head_sha,
-      "Hound has reviewed the changes."
+      repo_name: payload.full_repo_name,
+      commit: payload.head_sha,
+      description: SUCCESS_STATE_DESCRIPTION,
+      context: STATUS_CONTEXT
     )
   end
 
