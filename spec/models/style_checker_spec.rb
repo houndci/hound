@@ -1,6 +1,7 @@
 require "coffeelint"
 require "jshintrb"
 require "rubocop"
+require "scss_lint"
 
 require "fast_spec_helper"
 require "app/models/default_config_file"
@@ -214,6 +215,71 @@ describe StyleChecker, "#violations" do
         violations = StyleChecker.new(pull_request).violations
 
         expect(violations).to be_empty
+      end
+    end
+  end
+
+  context "for a SCSS file" do
+    context "with violations" do
+      context "with scss enabled" do
+        it "returns violations" do
+          config = <<-YAML.strip_heredoc
+            scss:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.scss", ".table p.inner table td { background: red; }")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).to include "Selector should have depth of applicability no greater than 3, but was 4"
+        end
+      end
+
+      context "with SCSS disabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            scss:
+              enabled: false
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.scss", ".table p.inner table td { background: red; }")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+
+          expect(violations).to be_empty
+        end
+      end
+    end
+
+    context "without violations" do
+      context "with SCSS enabled" do
+        it "returns no violations" do
+          config = <<-YAML.strip_heredoc
+            scss:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
+          file = stub_commit_file("test.scss", "table td { color: green; }")
+          pull_request = stub_pull_request(
+            head_commit: head_commit,
+            pull_request_files: [file],
+          )
+
+          violations = StyleChecker.new(pull_request).violations
+          messages = violations.flat_map(&:messages)
+
+          expect(messages).not_to include "Selector should have depth of applicability no greater than 3, but was 4"
+        end
       end
     end
   end
