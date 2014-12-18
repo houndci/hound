@@ -1,9 +1,10 @@
-class UsersController < ApplicationController
-  respond_to :json
-
-  def show
-    respond_with current_user
+class abc
+  
+  def sayhello
     return "WORKING"
   end
 end
+a = abc.new()
+a.sayhello
+
 
