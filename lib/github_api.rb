@@ -3,6 +3,7 @@ require "base64"
 require "active_support/core_ext/object/with_options"
 
 class GithubApi
+  STATUS_LABEL = "houndci"
   SERVICES_TEAM_NAME = "Services"
   PREVIEW_MEDIA_TYPE =
     ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
@@ -206,6 +207,12 @@ class GithubApi
   end
 
   def create_status(repo:, sha:, state:, description:)
-    client.create_status(repo, sha, state, description: description)
+    client.create_status(
+      repo,
+      sha,
+      state,
+      description: description,
+      context: STATUS_LABEL
+    )
   end
 end
