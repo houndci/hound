@@ -6,6 +6,7 @@ class abc
   def something
     for i in (1..10)
       puts i
+      puts something
     end
   end
 end
