@@ -522,9 +522,9 @@ module GithubApiHelper
     ).with(
       headers: { "Authorization" => "token #{hound_token}" },
       body: {
-        "description" => description,
-        "state" => state,
-        "context" => context
+        description: description,
+        state: state,
+        context: context
       }
     ).to_return(
       status: 201,
