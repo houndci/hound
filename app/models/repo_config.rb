@@ -44,11 +44,10 @@ class RepoConfig
   end
 
   def invalid?
-    @errors = invalid_style_guides.map do |style_guide|
-      I18n.t(
-        "invalid_config",
-        config_file_name: config_path_for(style_guide)
-      )
+    @errors.clear
+
+    STYLE_GUIDES.each do |style_guide|
+      self.for(style_guide)
     end
 
     @errors.any?
@@ -85,7 +84,7 @@ class RepoConfig
     config_file_content = commit.file_content(file_path)
 
     if config_file_content.present?
-      send("parse_#{file_type}", config_file_content)
+      send("parse_#{file_type}", config_file_content, file_path)
     else
       {}
     end
@@ -98,15 +97,23 @@ class RepoConfig
     commit.file_content(ignore_file)
   end
 
-  def parse_yaml(content)
+  def parse_yaml(content, file_path)
     YAML.load(content)
   rescue Psych::SyntaxError
+    @errors << I18n.t(
+      "invalid_config",
+      config_file_name: file_path
+    )
     {}
   end
 
-  def parse_json(content)
+  def parse_json(content, file_path)
     JSON.parse(content)
   rescue JSON::ParserError
+    @errors << I18n.t(
+      "invalid_config",
+      config_file_name: file_path
+    )
     {}
   end
 
