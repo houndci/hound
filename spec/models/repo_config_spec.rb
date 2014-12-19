@@ -192,7 +192,7 @@ describe RepoConfig do
         EOS
         commit = stub_commit(
           hound_config: hound_config,
-           file_name => invalid_config
+          file_name => invalid_config
         )
         config = RepoConfig.new(commit)
         error_message = I18n.t(

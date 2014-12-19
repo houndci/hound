@@ -334,7 +334,7 @@ describe GithubApi do
       request = stub_status_request(
         "test/repo",
         "sha",
-        GithubApi::FAILURE_STATUS ,
+        GithubApi::FAILURE_STATUS,
         "description"
       )
 

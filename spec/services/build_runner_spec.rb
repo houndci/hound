@@ -36,8 +36,8 @@ describe BuildRunner, '#run' do
         commenter = stubbed_commenter
         stubbed_repo_config
         style_checker = stubbed_style_checker_with_violations
-        commenter = Commenter.new(stubbed_pull_request)
         allow(Commenter).to receive(:new).and_return(commenter)
+        stubbed_pull_request
         stubbed_github_api
 
         build_runner.run
