@@ -100,20 +100,14 @@ class RepoConfig
   def parse_yaml(content, file_path)
     YAML.load(content)
   rescue Psych::SyntaxError
-    @errors << I18n.t(
-      "invalid_config",
-      config_file_name: file_path
-    )
+    @errors << I18n.t("invalid_config")
     {}
   end
 
   def parse_json(content, file_path)
     JSON.parse(content)
   rescue JSON::ParserError
-    @errors << I18n.t(
-      "invalid_config",
-      config_file_name: file_path
-    )
+    @errors << I18n.t("invalid_config")
     {}
   end
 

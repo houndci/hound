@@ -18,7 +18,7 @@ class BuildRunner
   end
 
   def create_failed_build
-    failure_message = repo_config.errors.join("\n")
+    failure_message = repo_config.errors.first
 
     repo.builds.create!(
       violations: [failure_message],

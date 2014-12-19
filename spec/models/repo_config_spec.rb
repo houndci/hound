@@ -147,10 +147,7 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t(
-          "invalid_config",
-          config_file_name: file_name
-        )
+        error_message = I18n.t("invalid_config")
 
         config.invalid?
 
@@ -171,10 +168,7 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t(
-          "invalid_config",
-          config_file_name: file_name
-        )
+        error_message = I18n.t("invalid_config")
 
         config.invalid?
 
@@ -195,10 +189,7 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t(
-          "invalid_config",
-          config_file_name: file_name
-        )
+        error_message = I18n.t("invalid_config")
 
         config.invalid?
 
