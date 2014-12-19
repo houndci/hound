@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_action :force_https
+  before_action :base_authenticate
   before_action :capture_campaign_params
   before_action :authenticate
   after_action  :set_csrf_cookie_for_ng
@@ -28,6 +29,12 @@ class ApplicationController < ActionController::Base
       utm_medium: params[:utm_medium],
       utm_source: params[:utm_source],
     }
+  end
+
+  def base_authenticate
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV['ADMIN_USERNAME'] && password == ENV['ADMIN_PASSWORD']
+    end
   end
 
   def authenticate
