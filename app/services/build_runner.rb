@@ -22,16 +22,16 @@ class BuildRunner
   def create_failed_build
     failure_message = repo_config.errors.join("\n")
 
-    github.create_failure_status(
-      payload.full_repo_name,
-      payload.head_sha,
-      failure_message
-    )
-
     repo.builds.create!(
       violations: [failure_message],
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha
+    )
+
+    github.create_failure_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      failure_message
     )
   end
 
@@ -40,12 +40,12 @@ class BuildRunner
   end
 
   def run_build
-    create_pending_status
     repo.builds.create!(
       violations: violations,
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
     )
+    create_pending_status
     commenter.comment_on_violations(violations)
     create_success_status
     track_reviewed_repo_for_each_user
