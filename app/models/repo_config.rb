@@ -8,11 +8,7 @@ class RepoConfig
   HOUND_CONFIG_FILE = ".hound.yml"
   STYLE_GUIDES = %w(ruby coffee_script java_script)
 
-  attr_reader :errors
-
-  pattr_initialize :commit do
-    @errors = []
-  end
+  pattr_initialize :commit
 
   def enabled_for?(style_guide_name)
     style_guide_name == "ruby" && legacy_config? ||
@@ -20,15 +16,17 @@ class RepoConfig
   end
 
   def for(style_guide_name)
-    if style_guide_name == "ruby" && legacy_config?
-      hound_config
-    else
-      config_file_path = config_path_for(style_guide_name)
-
-      if config_file_path
-        load_file(config_file_path, FILE_TYPES[style_guide_name])
+    style_guides[style_guide_name] ||= begin
+      if style_guide_name == "ruby" && legacy_config?
+        hound_config
       else
-        {}
+        config_file_path = config_path_for(style_guide_name)
+
+        if config_file_path
+          load_file(config_file_path, FILE_TYPES[style_guide_name])
+        else
+          {}
+        end
       end
     end
   end
@@ -43,13 +41,16 @@ class RepoConfig
     end
   end
 
-  def validate
-    @errors = invalid_style_guides.map do |style_guide|
-      I18n.t(
-        "invalid_config",
-        config_file_name: config_path_for(style_guide)
-      )
+  def load_style_guides
+    @invalid = false
+
+    STYLE_GUIDES.each do |style_guide|
+      self.for(style_guide)
     end
+  end
+
+  def invalid?
+    @invalid == true
   end
 
   private
@@ -99,18 +100,18 @@ class RepoConfig
   def parse_yaml(content)
     YAML.load(content)
   rescue Psych::SyntaxError
+    @invalid = true
     {}
   end
 
   def parse_json(content)
     JSON.parse(content)
   rescue JSON::ParserError
+    @invalid = true
     {}
   end
 
-  def invalid_style_guides
-    STYLE_GUIDES.select do |style_guide|
-      enabled_for?(style_guide) && self.for(style_guide).empty?
-    end
+  def style_guides
+    @style_guides ||= {}
   end
 end

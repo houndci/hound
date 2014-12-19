@@ -133,9 +133,9 @@ describe RepoConfig do
     end
   end
 
-  describe "#validate" do
+  describe "#load_style_guides" do
     context "when JavaScript config has formatting errors" do
-      it "adds errors" do
+      it "sets invalid flag" do
         file_name = "javascript.json"
         hound_config = <<-EOS
           java_script:
@@ -147,19 +147,15 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t(
-          "invalid_config",
-          config_file_name: file_name
-        )
 
-        config.validate
+        config.load_style_guides
 
-        expect(config.errors).to match_array([error_message])
+        expect(config.instance_variable_get("@invalid")).to eq true
       end
     end
 
     context "when CoffeeScript config has formatting errors" do
-      it "adds errors" do
+      it "set invalid flag" do
         file_name = "coffeelint.json"
         hound_config = <<-EOS
           coffee_script:
@@ -171,19 +167,15 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t(
-          "invalid_config",
-          config_file_name: file_name
-        )
 
-        config.validate
+        config.load_style_guides
 
-        expect(config.errors).to match_array([error_message])
+        expect(config.instance_variable_get("@invalid")).to eq true
       end
     end
 
     context "when Ruby config has formatting errors" do
-      it "adds errors" do
+      it "sets invalid flag" do
         file_name = "config/rubocop.yml"
         hound_config = <<-EOS
           ruby:
@@ -195,19 +187,15 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t(
-          "invalid_config",
-          config_file_name: file_name
-        )
 
-        config.validate
+        config.load_style_guides
 
-        expect(config.errors).to match_array([error_message])
+        expect(config.instance_variable_get("@invalid")).to eq true
       end
     end
 
     context "when config does not have formatting errors" do
-      it "does not add errors" do
+      it "does not set invalid flag" do
         hound_config = <<-EOS
           java_script:
             enabled: true
@@ -232,9 +220,32 @@ describe RepoConfig do
         )
         config = RepoConfig.new(commit)
 
-        config.validate
+        config.load_style_guides
 
-        expect(config.errors).to be_empty
+        expect(config.instance_variable_get("@invalid")).not_to eq true
+      end
+    end
+
+  end
+
+  describe "#invalid?" do
+    context "when repo config is invalid" do
+      it "returns true" do
+        commit = double("Commit")
+        config = RepoConfig.new(commit)
+        config.instance_variable_set("@invalid", true)
+
+        expect(config).to be_invalid
+      end
+    end
+
+    context "when repo config is valid" do
+      it "returns false" do
+        commit = double("Commit")
+        config = RepoConfig.new(commit)
+        config.instance_variable_set("@invalid", false)
+
+        expect(config).not_to be_invalid
       end
     end
   end

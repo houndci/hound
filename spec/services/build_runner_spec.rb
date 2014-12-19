@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe BuildRunner, '#run' do
   context 'with active repo and opened pull request' do
-    context "with valid custom config" do
+    context "with valid config" do
       it "creates a build record with violations" do
         repo = create(:repo, :active, github_id: 123)
         payload = stubbed_payload(
@@ -16,15 +16,16 @@ describe BuildRunner, '#run' do
         stubbed_commenter
         stubbed_pull_request
         stubbed_github_api
-        stubbed_repo_config
+        stubbed_repo_config(invalid: false)
 
         build_runner.run
-        build = Build.first
+        builds = Build.where(repo_id: repo.id)
+        build = builds.first
 
-        expect(Build.count).to eq 1
+        expect(builds.size).to eq 1
         expect(build).to eq repo.builds.last
         expect(build.violations.size).to be >= 1
-        expect(build.pull_request_number).to eq 5
+        expect(build.pull_request_number).to eq payload.pull_request_number
         expect(build.commit_sha).to eq payload.head_sha
         expect(analytics).to have_tracked("Reviewed Repo").
           for_user(repo.users.first).
@@ -34,9 +35,9 @@ describe BuildRunner, '#run' do
       it "comments on violations" do
         build_runner = make_build_runner
         commenter = stubbed_commenter
-        stubbed_repo_config
         style_checker = stubbed_style_checker_with_violations
         allow(Commenter).to receive(:new).and_return(commenter)
+        stubbed_repo_config(invalid: false)
         stubbed_pull_request
         stubbed_github_api
 
@@ -49,14 +50,15 @@ describe BuildRunner, '#run' do
       it "initializes StyleChecker with modified files and config" do
         build_runner = make_build_runner
         pull_request = stubbed_pull_request
+        repo_config = stubbed_repo_config(invalid: false)
         stubbed_style_checker_with_violations
         stubbed_commenter
         stubbed_github_api
-        stubbed_repo_config
 
         build_runner.run
 
-        expect(StyleChecker).to have_received(:new).with(pull_request)
+        expect(StyleChecker).to have_received(:new).
+          with(pull_request, repo_config)
       end
 
       it "initializes PullRequest with payload and Hound token" do
@@ -67,7 +69,7 @@ describe BuildRunner, '#run' do
         stubbed_style_checker_with_violations
         stubbed_commenter
         stubbed_github_api
-        stubbed_repo_config
+        stubbed_repo_config(invalid: false)
 
         build_runner.run
 
@@ -85,7 +87,7 @@ describe BuildRunner, '#run' do
         stubbed_pull_request
         stubbed_style_checker_with_violations
         stubbed_commenter
-        stubbed_repo_config
+        stubbed_repo_config(invalid: false)
         github_api = stubbed_github_api
 
         build_runner.run
@@ -103,22 +105,25 @@ describe BuildRunner, '#run' do
       end
     end
 
-    context "with invalid custom config" do
+    context "with invalid config" do
       it "creates failure GitHub status" do
         build_runner = make_build_runner
         stubbed_pull_request
-        failure_message = "config is invalid"
-        stubbed_repo_config(failure_message)
+        failure_message = I18n.t("invalid_config")
+        stubbed_repo_config(invalid: true)
         github_api = double("GithubApi", create_failure_status: nil)
         allow(GithubApi).to receive(:new).and_return(github_api)
 
         build_runner.run
 
-        expect(github_api).to have_received(:create_failure_status).
-          with("foo/bar", "somesha", failure_message)
+        expect(github_api).to have_received(:create_failure_status).with(
+          stubbed_payload.full_repo_name,
+          stubbed_payload.head_sha,
+          failure_message
+        )
       end
 
-      it "creates a build record with violations" do
+      it "creates a build record with a violation" do
         repo = create(:repo, :active, github_id: 123)
         payload = stubbed_payload(
           github_repo_id: repo.github_id,
@@ -128,13 +133,12 @@ describe BuildRunner, '#run' do
         )
         build_runner = BuildRunner.new(payload)
         stubbed_pull_request
-        failure_message = "config is invalid"
-        stubbed_repo_config(failure_message)
+        stubbed_repo_config(invalid: true)
         github_api = double("GithubApi", create_failure_status: nil)
         allow(GithubApi).to receive(:new).and_return(github_api)
 
         build_runner.run
-        build = Build.first
+        build = Build.find_by(repo_id: repo.id, commit_sha: payload.head_sha)
         violation = build.violations.first
 
         expect(Build.count).to eq 1
@@ -142,7 +146,7 @@ describe BuildRunner, '#run' do
         expect(build.violations.size).to eq 1
         expect(build.pull_request_number).to eq payload.pull_request_number
         expect(build.commit_sha).to eq payload.head_sha
-        expect(violation).to eq failure_message
+        expect(violation).to eq violation
       end
     end
   end
@@ -226,11 +230,11 @@ describe BuildRunner, '#run' do
     github_api
   end
 
-  def stubbed_repo_config(error_messages = nil)
+  def stubbed_repo_config(options)
     repo_config = double(
       :repo_config,
-      validate: true,
-      errors: [error_messages]
+      load_style_guides: true,
+      invalid?: options[:invalid]
     )
     allow(RepoConfig).to receive(:new).and_return(repo_config)
     repo_config

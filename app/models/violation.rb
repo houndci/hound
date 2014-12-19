@@ -5,7 +5,6 @@ class Violation < ActiveRecord::Base
   belongs_to :build
 
   validates :build, presence: true
-  validates :filename, presence: true
 
   attr_writer :line
 

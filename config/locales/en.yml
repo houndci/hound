@@ -2,9 +2,9 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  active_repos: 'Active repos'
+  authenticate: 'Sign In with GitHub'
+  invalid_config: "Invalid configuration syntax"
+  search_placeholder: 'search by repo or organization name'
   sync_repos: 'Refresh repo list'
   syncing_repos: 'Loading repos...'
-  authenticate: 'Sign In with GitHub'
-  active_repos: 'Active repos'
-  search_placeholder: 'search by repo or organization name'
-  invalid_config: "%{config_file_name} is empty or has syntax errors"
