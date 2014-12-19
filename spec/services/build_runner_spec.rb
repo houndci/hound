@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe BuildRunner, '#run' do
   context 'with active repo and opened pull request' do
-    context "with valid custom config" do
+    context "with valid config" do
       it "creates a build record with violations" do
         repo = create(:repo, :active, github_id: 123)
         payload = stubbed_payload(
@@ -19,12 +19,12 @@ describe BuildRunner, '#run' do
         stubbed_repo_config
 
         build_runner.run
-        build = Build.first
+        build = Build.find_by(repo_id: repo.id, commit_sha: payload.head_sha)
 
         expect(Build.count).to eq 1
         expect(build).to eq repo.builds.last
         expect(build.violations.size).to be >= 1
-        expect(build.pull_request_number).to eq 5
+        expect(build.pull_request_number).to eq payload.pull_request_number
         expect(build.commit_sha).to eq payload.head_sha
         expect(analytics).to have_tracked("Reviewed Repo").
           for_user(repo.users.first).
@@ -103,7 +103,7 @@ describe BuildRunner, '#run' do
       end
     end
 
-    context "with invalid custom config" do
+    context "with invalid config" do
       it "creates failure GitHub status" do
         build_runner = make_build_runner
         stubbed_pull_request
@@ -114,8 +114,11 @@ describe BuildRunner, '#run' do
 
         build_runner.run
 
-        expect(github_api).to have_received(:create_failure_status).
-          with("foo/bar", "somesha", failure_message)
+        expect(github_api).to have_received(:create_failure_status).with(
+          stubbed_payload.full_repo_name,
+          stubbed_payload.head_sha,
+          failure_message
+        )
       end
 
       it "creates a build record with violations" do
@@ -134,7 +137,7 @@ describe BuildRunner, '#run' do
         allow(GithubApi).to receive(:new).and_return(github_api)
 
         build_runner.run
-        build = Build.first
+        build = Build.find_by(repo_id: repo.id, commit_sha: payload.head_sha)
         violation = build.violations.first
 
         expect(Build.count).to eq 1
