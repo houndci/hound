@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
-    - db/schema.rb
+    - 'db/**/*'
+  RunRailsCops: true
 
 AccessorMethodName:
   Enabled: false
@@ -12,7 +13,7 @@ Alias:
   Enabled: false
 
 ArrayJoin:
-  Enabled: false
+  Enabled: true
 
 AsciiComments:
   Enabled: false
@@ -55,28 +56,28 @@ CommentAnnotation:
   Enabled: false
 
 CyclomaticComplexity:
-  Enabled: false
+  Enabled: true
 
 Delegate:
-  Enabled: false
+  Enabled: true
 
 DeprecatedHashMethods:
-  Enabled: false
+  Enabled: true
 
 Documentation:
   Enabled: false
 
 DotPosition:
-  EnforcedStyle: trailing
+  EnforcedStyle: leading
 
 DoubleNegation:
-  Enabled: false
+  Enabled: true
 
 EachWithObject:
   Enabled: false
 
 EmptyLiteral:
-  Enabled: false
+  Enabled: true
 
 Encoding:
   Enabled: false
@@ -97,7 +98,7 @@ GlobalVars:
   Enabled: false
 
 GuardClause:
-  Enabled: false
+  Enabled: true
 
 IfUnlessModifier:
   Enabled: false
@@ -118,7 +119,8 @@ LineEndConcatenation:
   Enabled: false
 
 LineLength:
-  Max: 80
+  Max: 100
+  Description: 'Limit lines to 100 characters.'
 
 MethodLength:
   Enabled: false
@@ -133,19 +135,19 @@ NegatedWhile:
   Enabled: false
 
 Next:
-  Enabled: false
+  Enabled: true
 
 NilComparison:
-  Enabled: false
+  Enabled: true
 
 Not:
-  Enabled: false
+  Enabled: true
 
 NumericLiterals:
   Enabled: false
 
 OneLineConditional:
-  Enabled: false
+  Enabled: true
 
 OpMethod:
   Enabled: false
@@ -154,7 +156,7 @@ ParameterLists:
   Enabled: false
 
 PercentLiteralDelimiters:
-  Enabled: false
+  Enabled: true
 
 PerlBackrefs:
   Enabled: false
@@ -173,10 +175,10 @@ RegexpLiteral:
   Enabled: false
 
 SelfAssignment:
-  Enabled: false
+  Enabled: true
 
 SingleLineBlockParams:
-  Enabled: false
+  Enabled: true
 
 SingleLineMethods:
   Enabled: false
@@ -188,13 +190,14 @@ SpecialGlobalVars:
   Enabled: false
 
 StringLiterals:
-  EnforcedStyle: double_quotes
+  EnforcedStyle: single_quotes
 
 VariableInterpolation:
   Enabled: false
 
 TrailingComma:
-  Enabled: false
+  Enabled: true
+  EnforcedStyle: no_comma
 
 TrivialAccessors:
   Enabled: false
@@ -209,7 +212,7 @@ WhileUntilModifier:
   Enabled: false
 
 WordArray:
-  Enabled: false
+  Enabled: true
 
 # Lint
 
@@ -250,10 +253,10 @@ ParenthesesAsGroupedExpression:
   Enabled: false
 
 RequireParentheses:
-  Enabled: false
+  Enabled: true
 
 UnderscorePrefixedVariableName:
-  Enabled: false
+  Enabled: true
 
 Void:
   Enabled: false
