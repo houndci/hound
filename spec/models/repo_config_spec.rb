@@ -133,7 +133,7 @@ describe RepoConfig do
     end
   end
 
-  describe "#validate" do
+  describe "#invalid?" do
     context "when JavaScript config has formatting errors" do
       it "adds errors" do
         file_name = "javascript.json"
@@ -152,7 +152,7 @@ describe RepoConfig do
           config_file_name: file_name
         )
 
-        config.validate
+        config.invalid?
 
         expect(config.errors).to match_array([error_message])
       end
@@ -176,7 +176,7 @@ describe RepoConfig do
           config_file_name: file_name
         )
 
-        config.validate
+        config.invalid?
 
         expect(config.errors).to match_array([error_message])
       end
@@ -200,7 +200,7 @@ describe RepoConfig do
           config_file_name: file_name
         )
 
-        config.validate
+        config.invalid?
 
         expect(config.errors).to match_array([error_message])
       end
@@ -232,7 +232,7 @@ describe RepoConfig do
         )
         config = RepoConfig.new(commit)
 
-        config.validate
+        config.invalid?
 
         expect(config.errors).to be_empty
       end

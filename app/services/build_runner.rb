@@ -3,9 +3,7 @@ class BuildRunner
 
   def run
     if repo && relevant_pull_request?
-      repo_config.validate
-
-      if repo_config.errors.any?
+      if repo_config.invalid?
         create_failed_build
       else
         run_build

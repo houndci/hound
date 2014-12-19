@@ -43,13 +43,15 @@ class RepoConfig
     end
   end
 
-  def validate
+  def invalid?
     @errors = invalid_style_guides.map do |style_guide|
       I18n.t(
         "invalid_config",
         config_file_name: config_path_for(style_guide)
       )
     end
+
+    @errors.any?
   end
 
   private
