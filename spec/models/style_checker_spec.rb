@@ -14,7 +14,7 @@ Dir.glob("app/models/style_guide/*.rb", &method(:require))
 
 describe StyleChecker, "#violations" do
   it "returns a collection of computed violations" do
-    config = double("RepoConfig", enabled_for?: true, "for" => {} )
+    config = double("RepoConfig", enabled_for?: true, "for" => {})
     stylish_file = stub_commit_file("good.rb", "def good; end")
     violated_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
     pull_request =
@@ -31,7 +31,7 @@ describe StyleChecker, "#violations" do
   context "for a Ruby file" do
     context "with violations" do
       it "returns violations" do
-        config = double("RepoConfig", enabled_for?: true, "for" => {} )
+        config = double("RepoConfig", enabled_for?: true, "for" => {})
         file = stub_commit_file("ruby.rb", "puts 123    ")
         pull_request = stub_pull_request(pull_request_files: [file])
 
@@ -44,7 +44,7 @@ describe StyleChecker, "#violations" do
 
     context "with violation on unchanged line" do
       it "returns no violations" do
-        config = double("RepoConfig", enabled_for?: true, "for" => {} )
+        config = double("RepoConfig", enabled_for?: true, "for" => {})
         file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
         pull_request = stub_pull_request(pull_request_files: [file])
 
@@ -56,7 +56,7 @@ describe StyleChecker, "#violations" do
 
     context "without violations" do
       it "returns no violations" do
-        config = double("RepoConfig", enabled_for?: true, "for" => {} )
+        config = double("RepoConfig", enabled_for?: true, "for" => {})
         file = stub_commit_file("ruby.rb", "puts 123")
         pull_request = stub_pull_request(pull_request_files: [file])
 
@@ -72,7 +72,7 @@ describe StyleChecker, "#violations" do
     context "with violations" do
       context "with CoffeeScript enabled" do
         it "returns violations" do
-          config = double("RepoConfig", enabled_for?: true, "for" => {} )
+          config = double("RepoConfig", enabled_for?: true, "for" => {})
           coffee_script_config = <<-YAML.strip_heredoc
             coffee_script:
               enabled: true
@@ -115,7 +115,7 @@ describe StyleChecker, "#violations" do
     context "without violations" do
       context "with CoffeeScript enabled" do
         it "returns no violations" do
-          config = double("RepoConfig", enabled_for?: false, "for" => {} )
+          config = double("RepoConfig", enabled_for?: false, "for" => {})
           coffee_script_config = <<-YAML.strip_heredoc
             coffee_script:
               enabled: true
@@ -187,7 +187,7 @@ describe StyleChecker, "#violations" do
     context "without violations" do
       context "with JavaScript enabled" do
         it "returns no violations" do
-          config = double("RepoConfig", enabled_for?: false, "for" => {} )
+          config = double("RepoConfig", enabled_for?: false, "for" => {})
           javascript_config = <<-YAML.strip_heredoc
             java_script:
               enabled: true
