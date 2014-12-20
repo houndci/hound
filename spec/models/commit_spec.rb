@@ -97,6 +97,15 @@ describe Commit do
       end
     end
 
+    context "with an empty commit message" do
+      it "returns an empty string" do
+        commit = Commit.new(double, double, double).
+          tap { |c| c.message = "" }
+
+        expect(commit.subject).to eq("")
+      end
+    end
+
     context "without a commit message" do
       it "returns an empty string" do
         commit = Commit.new(double, double, double)
@@ -113,6 +122,15 @@ describe Commit do
           tap { |c| c.message = "fix\n\na\n\nbug" }
 
         expect(commit.body).to eq("a\n\nbug")
+      end
+    end
+
+    context "with an empty commit message" do
+      it "returns an empty string" do
+        commit = Commit.new(double, double, double).
+          tap { |c| c.message = "" }
+
+        expect(commit.subject).to eq("")
       end
     end
 

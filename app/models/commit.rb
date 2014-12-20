@@ -23,10 +23,10 @@ class Commit
   end
 
   def subject
-    message ? message.split("\n\n").first : ""
+    message.to_s.split("\n\n").first || ""
   end
 
   def body
-    message ? message.split("\n\n", 2).last : ""
+    message.to_s.split("\n\n", 2).last || ""
   end
 end
