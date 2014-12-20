@@ -18,12 +18,13 @@ class BuildRunner
   end
 
   def create_failed_build
-    create_build(repo_config.errors)
+    failure_message = I18n.t("invalid_config")
+    create_build([failure_message])
 
     github.create_failure_status(
       payload.full_repo_name,
       payload.head_sha,
-      repo_config.errors.first
+      failure_message
     )
   end
 
@@ -52,7 +53,7 @@ class BuildRunner
   end
 
   def style_checker
-    StyleChecker.new(pull_request)
+    StyleChecker.new(pull_request, repo_config)
   end
 
   def commenter

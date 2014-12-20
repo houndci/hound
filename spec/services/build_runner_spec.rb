@@ -49,14 +49,15 @@ describe BuildRunner, '#run' do
       it "initializes StyleChecker with modified files and config" do
         build_runner = make_build_runner
         pull_request = stubbed_pull_request
+        repo_config = stubbed_repo_config(invalid: false)
         stubbed_style_checker_with_violations
         stubbed_commenter
         stubbed_github_api
-        stubbed_repo_config(invalid: false)
 
         build_runner.run
 
-        expect(StyleChecker).to have_received(:new).with(pull_request)
+        expect(StyleChecker).to have_received(:new).
+          with(pull_request, repo_config)
       end
 
       it "initializes PullRequest with payload and Hound token" do
@@ -107,8 +108,8 @@ describe BuildRunner, '#run' do
       it "creates failure GitHub status" do
         build_runner = make_build_runner
         stubbed_pull_request
-        failure_message = "config is invalid"
-        stubbed_repo_config(error_messages: failure_message, invalid: true)
+        failure_message = I18n.t("invalid_config")
+        stubbed_repo_config(invalid: true)
         github_api = double("GithubApi", create_failure_status: nil)
         allow(GithubApi).to receive(:new).and_return(github_api)
 
@@ -131,8 +132,8 @@ describe BuildRunner, '#run' do
         )
         build_runner = BuildRunner.new(payload)
         stubbed_pull_request
-        failure_message = "config is invalid"
-        stubbed_repo_config(error_messages: failure_message, invalid: true)
+        failure_message = I18n.t("invalid_config")
+        stubbed_repo_config(invalid: true)
         github_api = double("GithubApi", create_failure_status: nil)
         allow(GithubApi).to receive(:new).and_return(github_api)
 
@@ -232,8 +233,7 @@ describe BuildRunner, '#run' do
   def stubbed_repo_config(options)
     repo_config = double(
       :repo_config,
-      invalid?: options[:invalid],
-      errors: [options[:error_messages]]
+      invalid?: options[:invalid]
     )
     allow(RepoConfig).to receive(:new).and_return(repo_config)
     repo_config

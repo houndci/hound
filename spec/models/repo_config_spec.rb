@@ -135,7 +135,7 @@ describe RepoConfig do
 
   describe "#invalid?" do
     context "when JavaScript config has formatting errors" do
-      it "adds errors" do
+      it "returns true" do
         file_name = "javascript.json"
         hound_config = <<-EOS
           java_script:
@@ -147,16 +147,13 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t("invalid_config")
 
-        config.invalid?
-
-        expect(config.errors).to match_array([error_message])
+        expect(config).to be_invalid
       end
     end
 
     context "when CoffeeScript config has formatting errors" do
-      it "adds errors" do
+      it "returns true" do
         file_name = "coffeelint.json"
         hound_config = <<-EOS
           coffee_script:
@@ -168,16 +165,13 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t("invalid_config")
 
-        config.invalid?
-
-        expect(config.errors).to match_array([error_message])
+        expect(config).to be_invalid
       end
     end
 
     context "when Ruby config has formatting errors" do
-      it "adds errors" do
+      it "returns true" do
         file_name = "config/rubocop.yml"
         hound_config = <<-EOS
           ruby:
@@ -189,16 +183,13 @@ describe RepoConfig do
           file_name => invalid_config
         )
         config = RepoConfig.new(commit)
-        error_message = I18n.t("invalid_config")
 
-        config.invalid?
-
-        expect(config.errors).to match_array([error_message])
+        expect(config).to be_invalid
       end
     end
 
     context "when config does not have formatting errors" do
-      it "does not add errors" do
+      it "returns false" do
         hound_config = <<-EOS
           java_script:
             enabled: true
@@ -223,9 +214,7 @@ describe RepoConfig do
         )
         config = RepoConfig.new(commit)
 
-        config.invalid?
-
-        expect(config.errors).to be_empty
+        expect(config).not_to be_invalid
       end
     end
   end

@@ -8,10 +8,8 @@ class RepoConfig
   HOUND_CONFIG_FILE = ".hound.yml"
   STYLE_GUIDES = %w(ruby coffee_script java_script)
 
-  attr_reader :errors
-
   pattr_initialize :commit do
-    @errors = []
+    @invalid = false
   end
 
   def enabled_for?(style_guide_name)
@@ -44,13 +42,11 @@ class RepoConfig
   end
 
   def invalid?
-    @errors.clear
-
     STYLE_GUIDES.each do |style_guide|
       self.for(style_guide)
     end
 
-    @errors.any?
+    @invalid == true
   end
 
   private
@@ -100,14 +96,14 @@ class RepoConfig
   def parse_yaml(content)
     YAML.load(content)
   rescue Psych::SyntaxError
-    @errors << I18n.t("invalid_config")
+    @invalid = true
     {}
   end
 
   def parse_json(content)
     JSON.parse(content)
   rescue JSON::ParserError
-    @errors << I18n.t("invalid_config")
+    @invalid = true
     {}
   end
 
