@@ -8,9 +8,7 @@ class RepoConfig
   HOUND_CONFIG_FILE = ".hound.yml"
   STYLE_GUIDES = %w(ruby coffee_script java_script)
 
-  pattr_initialize :commit do
-    @invalid = false
-  end
+  pattr_initialize :commit
 
   def enabled_for?(style_guide_name)
     style_guide_name == "ruby" && legacy_config? ||
@@ -42,6 +40,8 @@ class RepoConfig
   end
 
   def invalid?
+    @invalid = false
+
     STYLE_GUIDES.each do |style_guide|
       self.for(style_guide)
     end
