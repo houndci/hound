@@ -106,10 +106,4 @@ class RepoConfig
     @invalid = true
     {}
   end
-
-  def invalid_style_guides
-    STYLE_GUIDES.select do |style_guide|
-      enabled_for?(style_guide) && self.for(style_guide).empty?
-    end
-  end
 end
