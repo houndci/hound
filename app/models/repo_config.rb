@@ -84,7 +84,7 @@ class RepoConfig
     config_file_content = commit.file_content(file_path)
 
     if config_file_content.present?
-      send("parse_#{file_type}", config_file_content, file_path)
+      send("parse_#{file_type}", config_file_content)
     else
       {}
     end
@@ -97,14 +97,14 @@ class RepoConfig
     commit.file_content(ignore_file)
   end
 
-  def parse_yaml(content, file_path)
+  def parse_yaml(content)
     YAML.load(content)
   rescue Psych::SyntaxError
     @errors << I18n.t("invalid_config")
     {}
   end
 
-  def parse_json(content, file_path)
+  def parse_json(content)
     JSON.parse(content)
   rescue JSON::ParserError
     @errors << I18n.t("invalid_config")
