@@ -332,13 +332,19 @@ describe GithubApi do
     it "makes request to GitHub for creating a pending status" do
       api = GithubApi.new
       request = stub_status_request(
-        "test/repo",
-        "sha",
-        "pending",
-        "description"
+        repo_name: "test/repo",
+        commit: "sha",
+        state: "pending",
+        description: "description",
+        context: "context"
       )
 
-      api.create_pending_status("test/repo", "sha", "description")
+      api.create_pending_status(
+        repo_name: "test/repo",
+        commit: "sha",
+        description: "description",
+        context: "context"
+      )
 
       expect(request).to have_been_requested
     end
@@ -348,13 +354,19 @@ describe GithubApi do
     it "makes request to GitHub for creating a success status" do
       api = GithubApi.new
       request = stub_status_request(
-        "test/repo",
-        "sha",
-        "success",
-        "description"
+        repo_name: "test/repo",
+        commit: "sha",
+        state: "success",
+        description: "description",
+        context: "context"
       )
 
-      api.create_success_status("test/repo", "sha", "description")
+      api.create_success_status(
+        repo_name: "test/repo",
+        commit: "sha",
+        description: "description",
+        context: "context"
+      )
 
       expect(request).to have_been_requested
     end

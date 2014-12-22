@@ -86,14 +86,16 @@ describe BuildRunner, '#run' do
       build_runner.run
 
       expect(github_api).to have_received(:create_pending_status).with(
-        "test/repo",
-        "headsha",
-        "Hound is reviewing changes."
+        repo_name: "test/repo",
+        commit: "headsha",
+        description: "Hound is reviewing the changes.",
+        context: "hound"
       )
       expect(github_api).to have_received(:create_success_status).with(
-        "test/repo",
-        "headsha",
-        "Hound has reviewed the changes."
+        repo_name: "test/repo",
+        commit: "headsha",
+        description: "Hound has reviewed the changes.",
+        context: "hound"
       )
     end
   end
