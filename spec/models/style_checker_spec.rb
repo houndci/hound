@@ -198,7 +198,7 @@ describe StyleChecker, "#violations" do
     context "with violations" do
       context "with scss enabled" do
         it "returns violations" do
-          head_commit = double("Commit", file_content: config)
+          head_commit = double("Commit", file_content: scss_enabled_config)
           file = stub_commit_file(
             "test.scss",
             ".table p.inner table td { background: red; }"
@@ -219,11 +219,7 @@ describe StyleChecker, "#violations" do
 
       context "with SCSS disabled" do
         it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-            scss:
-              enabled: false
-          YAML
-          head_commit = double("Commit", file_content: config)
+          head_commit = double("Commit", file_content: scss_disabled_config)
           file = stub_commit_file(
             "test.scss",
             ".table p.inner table td { background: red; }"
@@ -243,11 +239,7 @@ describe StyleChecker, "#violations" do
     context "without violations" do
       context "with SCSS enabled" do
         it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-            scss:
-              enabled: true
-          YAML
-          head_commit = double("Commit", file_content: config)
+          head_commit = double("Commit", file_content: scss_enabled_config)
           file = stub_commit_file("test.scss", "table td { color: green; }")
           pull_request = stub_pull_request(
             head_commit: head_commit,
