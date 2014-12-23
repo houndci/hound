@@ -74,7 +74,8 @@ describe StyleGuide::Scss do
 
   def violations_in(content, config = nil)
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    style_guide = StyleGuide::Scss.new(repo_config)
+    repository_owner = "ralph"
+    style_guide = StyleGuide::Scss.new(repo_config, repository_owner)
     style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
   end
 
