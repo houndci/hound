@@ -175,6 +175,9 @@ RegexpLiteral:
 SelfAssignment:
   Enabled: false
 
+ShadowingOuterLocalVariable:
+  Enabled: false
+
 SingleLineBlockParams:
   Enabled: false
 
