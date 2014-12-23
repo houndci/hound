@@ -1,7 +1,4 @@
-require "fast_spec_helper"
-require "app/models/violation"
-require "app/models/style_guide/base"
-require "app/models/style_guide/scss"
+require "spec_helper"
 
 describe StyleGuide::Scss do
   describe "#violations_in_file" do
