@@ -2,18 +2,18 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
   scope: true
   templateUrl: '/templates/repo'
   link: (scope, element, attributes) ->
-    activateRepo = ->
+    enableRepo = ->
       scope.processing = true
 
-      scope.repo.$activate()
-        .catch(-> alert('Your repo failed to activate.'))
+      scope.repo.$enable()
+        .catch(-> alert('Your repo failed to enable.'))
         .finally(-> scope.processing = false)
 
-    deactivateRepo = ->
+    disableRepo = ->
       scope.processing = true
 
-      scope.repo.$deactivate()
-        .catch(-> alert('Your repo failed to deactivate.'))
+      scope.repo.$disable()
+        .catch(-> alert('Your repo failed to disable.'))
         .finally(-> scope.processing = false)
 
     createSubscription = (stripeToken) ->
@@ -26,7 +26,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
       )
 
       subscription.$save().then((response) ->
-        scope.repo.active = true
+        scope.repo.enabled = true
         scope.repo.stripe_subscription_id = response.stripe_subscription_id
       ).catch(->
         alert('Your subscription failed.')
@@ -40,7 +40,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
       subscription = new Subscription(repo_id: scope.repo.id)
 
       subscription.$delete().then(->
-        scope.repo.active = false
+        scope.repo.enabled = false
         scope.repo.stripe_subscription_id = null
       ).catch(->
         alert('Your repo could not be disabled')
@@ -49,11 +49,11 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
       )
 
     scope.toggle = ->
-      if scope.repo.active
+      if scope.repo.enabled
         if scope.repo.stripe_subscription_id
           deleteSubscription()
         else
-          deactivateRepo()
+          disableRepo()
       else
         if scope.repo.price_in_cents > 0
           StripeCheckout.open(
@@ -62,5 +62,5 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
             createSubscription
           )
         else
-          activateRepo()
+          enableRepo()
 ]

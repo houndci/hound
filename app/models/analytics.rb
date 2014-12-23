@@ -10,18 +10,18 @@ class Analytics
     track(event: "Signed In")
   end
 
-  def track_activated(repo)
+  def track_enabled(repo)
     track(
-      event: "Activated Public Repo",
+      event: "Enabled Public Repo",
       properties: {
         name: repo.full_github_name
       }
     )
   end
 
-  def track_deactivated(repo)
+  def track_disabled(repo)
     track(
-      event: "Deactivated Public Repo",
+      event: "Disabled Public Repo",
       properties: {
         name: repo.full_github_name
       }
@@ -61,7 +61,7 @@ class Analytics
 
   def track(options)
     backend.track({
-      active_repos_count: user.repos.active.count,
+      enabled_repos_count: user.repos.enabled.count,
       user_id: user.id,
     }.merge(options))
   end

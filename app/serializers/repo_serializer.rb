@@ -1,6 +1,6 @@
 class RepoSerializer < ActiveModel::Serializer
   attributes(
-    :active,
+    :enabled,
     :full_github_name,
     :full_plan_name,
     :github_id,

@@ -52,7 +52,7 @@ feature "Repo list", js: true do
     end
   end
 
-  scenario "user activates repo" do
+  scenario "user enables repo" do
     token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, private: false)
@@ -67,16 +67,16 @@ feature "Repo list", js: true do
     sign_in_as(user, token)
     find("li.repo .toggle").click
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".enabled")
     expect(page).to have_content "1 OF 1"
 
     visit repos_path
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".enabled")
     expect(page).to have_content "1 OF 1"
   end
 
-  scenario "user with admin access activates organization repo" do
+  scenario "user with admin access enables organization repo" do
     user = create(:user)
     repo = create(:repo, private: false, full_github_name: "testing/repo")
     repo.users << user
@@ -95,18 +95,18 @@ feature "Repo list", js: true do
     sign_in_as(user, token)
     find(".repos .toggle").click
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".enabled")
     expect(page).to have_content "1 OF 1"
 
     visit repos_path
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".enabled")
     expect(page).to have_content "1 OF 1"
   end
 
-  scenario "user deactivates repo" do
+  scenario "user disables repo" do
     user = create(:user)
-    repo = create(:repo, :active)
+    repo = create(:repo, :enabled)
     repo.users << user
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 
@@ -114,18 +114,18 @@ feature "Repo list", js: true do
     visit repos_path
     find(".repos .toggle").click
 
-    expect(page).not_to have_css(".active")
+    expect(page).not_to have_css(".enabled")
     expect(page).to have_content "0 OF 1"
 
     visit current_path
 
-    expect(page).not_to have_css(".active")
+    expect(page).not_to have_css(".enabled")
     expect(page).to have_content "0 OF 1"
   end
 
-  scenario "user deactivates private repo without subscription" do
+  scenario "user disables private repo without subscription" do
     user = create(:user)
-    repo = create(:repo, :active, private: true)
+    repo = create(:repo, :enabled, private: true)
     repo.users << user
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 
@@ -133,12 +133,12 @@ feature "Repo list", js: true do
     visit repos_path
     find(".repos .toggle").click
 
-    expect(page).not_to have_css(".active")
+    expect(page).not_to have_css(".enabled")
     expect(page).to have_content "0 OF 1"
 
     visit current_path
 
-    expect(page).not_to have_css(".active")
+    expect(page).not_to have_css(".enabled")
     expect(page).to have_content "0 OF 1"
   end
 

@@ -4,13 +4,13 @@ class RepoActivator
     @repo = repo
   end
 
-  def activate
-    activate_repo && enqueue_org_invitation
+  def enable
+    enable_repo && enqueue_org_invitation
   end
 
-  def deactivate
+  def disable
     change_repository_state_quietly do
-      delete_webhook && repo.deactivate
+      delete_webhook && repo.disable
     end
   end
 
@@ -18,9 +18,9 @@ class RepoActivator
 
   attr_reader :github_token, :repo
 
-  def activate_repo
+  def enable_repo
     change_repository_state_quietly do
-      add_hound_to_repo && create_webhook && repo.activate
+      add_hound_to_repo && create_webhook && repo.enable
     end
   end
 
