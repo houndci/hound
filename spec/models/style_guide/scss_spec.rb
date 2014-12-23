@@ -40,6 +40,7 @@ describe StyleGuide::Scss do
     context "with custom configuration" do
       describe "for single quotes" do
         it "returns no violation" do
+          content = ".a { display: 'none'; }"
           config = {
             "linters" => {
               "StringQuotes" => {
@@ -48,14 +49,13 @@ describe StyleGuide::Scss do
             }
           }
 
-          content = ".a { display: 'none'; }"
-
           expect(violations_in(content, config)).to eq []
         end
       end
 
       describe "for no leading zeros" do
         it "returns no violation" do
+          content = ".a { margin: .5em; }"
           config = {
             "linters" => {
               "LeadingZero" => {
@@ -63,8 +63,6 @@ describe StyleGuide::Scss do
               }
             }
           }
-
-          content = ".a { margin: .5em; }"
 
           expect(violations_in(content, config)).to eq []
         end
