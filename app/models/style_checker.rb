@@ -42,7 +42,7 @@ class StyleChecker
       StyleGuide::Ruby
     when /.+\.coffee\z/
       StyleGuide::CoffeeScript
-    when /.+\.js\z/
+    when /^((?!\.+).)*\.js\z/
       StyleGuide::JavaScript
     else
       StyleGuide::Unsupported
