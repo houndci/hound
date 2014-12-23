@@ -114,8 +114,6 @@ class GithubApi
       state: "pending",
       description: description
     )
-  rescue Octokit::NotFound
-    # noop
   end
 
   def create_success_status(full_repo_name, sha, description)
@@ -209,5 +207,7 @@ class GithubApi
 
   def create_status(repo:, sha:, state:, description:)
     client.create_status(repo, sha, state, description: description)
+  rescue Octokit::NotFound
+    # noop
   end
 end
