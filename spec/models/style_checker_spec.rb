@@ -53,6 +53,18 @@ describe StyleChecker, "#violations" do
   end
 
   context "for a CoffeeScript file" do
+    it "is processed with a coffee.js extension" do
+      file = stub_commit_file("test.coffee.js", "foo ->")
+      pull_request = stub_pull_request(pull_request_files: [file])
+      style_checker = StyleChecker.new(pull_request)
+      allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
+
+      violations = style_checker.violations
+      messages = violations.flat_map(&:messages)
+
+      expect(messages).to eq ["Empty function"]
+    end
+
     context "with violations" do
       context "with CoffeeScript enabled" do
         it "returns violations" do
@@ -264,5 +276,14 @@ describe StyleChecker, "#violations" do
     end
 
     head_commit
+  end
+
+  def stub_repo_config
+    double(
+      "RepoConfig",
+      for: {},
+      enabled_for?: true,
+      ignored_javascript_files: []
+    )
   end
 end
