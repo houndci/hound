@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/causes/scss-lint.git
-  revision: ec2b899c3eb7835c2c98b496db462c55df5477ef
-  specs:
-    scss-lint (0.31.0)
-      rainbow (~> 2.0)
-      sass (~> 3.4.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -278,6 +270,9 @@ GEM
     sawyer (0.5.5)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
+    scss-lint (0.31.0)
+      rainbow (~> 2.0)
+      sass (~> 3.4.1)
     sentry-raven (0.9.4)
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
@@ -367,7 +362,7 @@ DEPENDENCIES
   rspec-rails (>= 2.14)
   rubocop (= 0.25.0)
   sass-rails
-  scss-lint!
+  scss-lint
   sentry-raven
   shoulda-matchers
   stripe

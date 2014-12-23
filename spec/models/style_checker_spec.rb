@@ -208,9 +208,9 @@ describe StyleChecker, "#violations" do
 
   context "for a SCSS file" do
     context "with violations" do
-      context "with scss enabled" do
+      context "with SCSS enabled" do
         it "returns violations" do
-          head_commit = double("Commit", file_content: scss_enabled_config)
+          head_commit = stub_head_commit(".hound.yml" => scss_enabled_config)
           file = stub_commit_file(
             "test.scss",
             ".table p.inner table td { background: red; }"
@@ -231,7 +231,7 @@ describe StyleChecker, "#violations" do
 
       context "with SCSS disabled" do
         it "returns no violations" do
-          head_commit = double("Commit", file_content: scss_disabled_config)
+          head_commit = stub_head_commit(".hound.yml" => scss_disabled_config)
           file = stub_commit_file(
             "test.scss",
             ".table p.inner table td { background: red; }"
@@ -251,7 +251,7 @@ describe StyleChecker, "#violations" do
     context "without violations" do
       context "with SCSS enabled" do
         it "returns no violations" do
-          head_commit = double("Commit", file_content: scss_enabled_config)
+          head_commit = stub_head_commit(".hound.yml" => scss_enabled_config)
           file = stub_commit_file("test.scss", "table td { color: green; }")
           pull_request = stub_pull_request(
             head_commit: head_commit,
