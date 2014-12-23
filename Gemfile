@@ -28,6 +28,7 @@ gem "rubocop", "0.25.0"
 gem "sass-rails", "~> 4.0.2"
 gem "sentry-raven"
 gem "stripe"
+gem "stripe_event"
 gem "uglifier", ">= 1.0.3"
 gem "unicorn"
 

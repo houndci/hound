@@ -21,6 +21,7 @@ RSpec.configure do |config|
   config.include HttpsHelper
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
+  config.include RSpec::Rails::RequestExampleGroup, type: :feature
   DatabaseCleaner.strategy = :deletion
   Resque.inline = true
 end
