@@ -7,10 +7,11 @@ linters:
     space_after_bang: false
 
   BorderZero:
-    enabled: true
+    enabled: false
 
   ColorKeyword:
     enabled: true
+    severity: warning
 
   Comment:
     enabled: true
@@ -26,7 +27,7 @@ linters:
 
   ElsePlacement:
     enabled: true
-    style: same_line # or 'new_line'
+    style: same_line
 
   EmptyLineBetweenBlocks:
     enabled: true
@@ -40,12 +41,12 @@ linters:
     present: true
 
   HexLength:
-    enabled: true
-    style: short # or 'long'
+    enabled: false
+    style: short
 
   HexNotation:
     enabled: true
-    style: lowercase # or 'uppercase'
+    style: lowercase
 
   HexValidation:
     enabled: true
@@ -60,12 +61,12 @@ linters:
 
   Indentation:
     enabled: true
-    character: space # or 'tab'
+    character: space
     width: 2
 
   LeadingZero:
     enabled: true
-    style: include_zero # or exclude_zero
+    style: include_zero
 
   MergeableSelector:
     enabled: true
@@ -73,18 +74,20 @@ linters:
 
   NameFormat:
     enabled: true
-    convention: hyphenated_lowercase # or 'BEM', or a regex pattern
+    convention: hyphenated_lowercase
 
   NestingDepth:
     enabled: true
-    max_depth: 3
+    max_depth: 4
+    severity: warning
 
   PlaceholderInExtend:
-    enabled: true
+    enabled: false
 
   PropertySortOrder:
     enabled: true
     ignore_unspecified: false
+    severity: warning
 
   PropertySpelling:
     enabled: true
@@ -95,17 +98,20 @@ linters:
     allow_with_attribute: false
     allow_with_class: false
     allow_with_id: false
+    severity: warning
 
   SelectorDepth:
     enabled: true
-    max_depth: 3
+    max_depth: 2
+    severity: warning
 
   SelectorFormat:
     enabled: true
-    convention: hyphenated_lowercase # or 'snake_case', or 'camel_case', or a regex pattern
+    convention: hyphenated_lowercase
 
   Shorthand:
     enabled: true
+    severity: warning
 
   SingleLinePerProperty:
     enabled: true
@@ -119,7 +125,7 @@ linters:
 
   SpaceAfterPropertyColon:
     enabled: true
-    style: one_space # or 'no_space', or 'at_least_one_space', or 'aligned'
+    style: one_space
 
   SpaceAfterPropertyName:
     enabled: true
@@ -135,7 +141,7 @@ linters:
 
   StringQuotes:
     enabled: true
-    style: double_quotes # or single_quotes
+    style: double_quotes
 
   TrailingSemicolon:
     enabled: true
@@ -157,12 +163,13 @@ linters:
 
   VendorPrefixes:
     enabled: true
-    identifier_list: base
+    identifier_list: bourbon
     include: []
     exclude: []
 
   ZeroUnit:
     enabled: true
+    severity: warning
 
   Compass::*:
     enabled: false
