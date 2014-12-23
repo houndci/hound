@@ -26,7 +26,7 @@ gem "resque", "~> 1.22.0"
 gem "resque-retry"
 gem "resque-sentry"
 gem "rubocop", "0.25.0"
-gem "sass-rails", "~> 5.0.0.beta1"
+gem "sass-rails"
 gem "scss-lint", github: "causes/scss-lint", require: false
 gem "sentry-raven"
 gem "stripe"

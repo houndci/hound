@@ -56,7 +56,11 @@ describe StyleChecker, "#violations" do
     context "with violations" do
       context "with CoffeeScript enabled" do
         it "returns violations" do
-          head_commit = double("Commit", file_content: scss_enabled_config)
+          config = <<-YAML.strip_heredoc
+            coffee_script:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.coffee", "foo: ->")
           pull_request = stub_pull_request(
             head_commit: head_commit,
@@ -72,7 +76,11 @@ describe StyleChecker, "#violations" do
 
       context "with CoffeeScript disabled" do
         it "returns no violations" do
-          head_commit = double("Commit", file_content: scss_disabled_config)
+          config = <<-YAML.strip_heredoc
+            coffee_script:
+              enabled: false
+          YAML
+          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.coffee", "alert 'Hello World'")
           pull_request = stub_pull_request(
             head_commit: head_commit,
@@ -89,7 +97,11 @@ describe StyleChecker, "#violations" do
     context "without violations" do
       context "with CoffeeScript enabled" do
         it "returns no violations" do
-          head_commit = double("Commit", file_content: scss_enabled_config)
+          config = <<-YAML.strip_heredoc
+            coffee_script:
+              enabled: true
+          YAML
+          head_commit = double("Commit", file_content: config)
           file = stub_commit_file("test.coffee", "alert('Hello World')")
           pull_request = stub_pull_request(
             head_commit: head_commit,
