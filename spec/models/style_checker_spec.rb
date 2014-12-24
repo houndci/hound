@@ -224,7 +224,7 @@ describe StyleChecker, "#violations" do
           messages = violations.flat_map(&:messages)
 
           expect(messages).to include(
-            "Selector should have depth of applicability no greater than 3"
+            "Selector should have depth of applicability no greater than 2, but was 4"
           )
         end
       end
