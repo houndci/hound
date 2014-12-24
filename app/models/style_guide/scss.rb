@@ -1,10 +1,10 @@
-require "scss_lint"
-
 module StyleGuide
   class Scss < Base
     DEFAULT_CONFIG_FILENAME = "scss.yml"
 
     def violations_in_file(file)
+      require "scss_lint"
+
       if config.excluded_file?(file.filename)
         []
       else
