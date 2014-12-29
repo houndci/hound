@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.1.5"
+ruby "2.2.0"
 
 gem "active_model_serializers", "0.8.3"
 gem "analytics-ruby", "~> 2.0.0", require: "segment/analytics"
