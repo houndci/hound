@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   before_action :force_https
   before_action :capture_campaign_params
   before_action :authenticate
-  after_action  :set_csrf_cookie_for_ng
 
   helper_method :current_user, :signed_in?
 
@@ -46,12 +45,6 @@ class ApplicationController < ActionController::Base
 
   def analytics
     @analytics ||= Analytics.new(current_user, session[:campaign_params])
-  end
-
-  def set_csrf_cookie_for_ng
-    if protect_against_forgery?
-      cookies['XSRF-TOKEN'] = form_authenticity_token
-    end
   end
 
   def report_exception(exception, metadata)

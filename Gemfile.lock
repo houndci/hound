@@ -40,6 +40,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     analytics-ruby (2.0.6)
+    angular_rails_csrf (1.0.3)
+      rails (>= 3, < 5)
     angularjs-rails (1.2.22)
     arel (6.0.0)
     ast (2.0.0)
@@ -324,6 +326,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (= 0.8.3)
   analytics-ruby (~> 2.0.0)
+  angular_rails_csrf
   angularjs-rails
   attr_extras
   bourbon
