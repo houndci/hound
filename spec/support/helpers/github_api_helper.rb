@@ -294,8 +294,8 @@ module GithubApiHelper
       :post,
       "https://api.github.com/repos/#{repo_name}/statuses/#{sha}"
     ).with(
-      body: { state: state, description: description },
-      headers: { "Authorization" => "token #{hound_token}" }
+      headers: { "Authorization" => "token #{hound_token}" },
+      body: { context: "hound", description: description, state: state }
     ).to_return(
       status: 404,
       headers: { "Content-Type" => "application/json; charset=utf-8" }
@@ -532,16 +532,10 @@ module GithubApiHelper
       "https://api.github.com/repos/#{full_repo_name}/statuses/#{sha}"
     ).with(
       headers: { "Authorization" => "token #{hound_token}" },
-      body: {
-        "context" => "hound",
-        "description" => description,
-        "state" => state
-      }
+      body: { context: "hound", description: description, state: state }
     ).to_return(
       status: 201,
-      body: File.read(
-        "spec/support/fixtures/github_status_response.json"
-      ),
+      body: File.read("spec/support/fixtures/github_status_response.json"),
       headers: { "Content-Type" => "application/json; charset=utf-8" }
     )
   end
