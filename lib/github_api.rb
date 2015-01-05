@@ -206,7 +206,13 @@ class GithubApi
   end
 
   def create_status(repo:, sha:, state:, description:)
-    client.create_status(repo, sha, state, description: description)
+    client.create_status(
+      repo,
+      sha,
+      state,
+      context: "hound",
+      description: description
+    )
   rescue Octokit::NotFound
     # noop
   end

@@ -532,7 +532,11 @@ module GithubApiHelper
       "https://api.github.com/repos/#{full_repo_name}/statuses/#{sha}"
     ).with(
       headers: { "Authorization" => "token #{hound_token}" },
-      body: { "description" => description, "state" => state }
+      body: {
+        "context" => "hound",
+        "description" => description,
+        "state" => state
+      }
     ).to_return(
       status: 201,
       body: File.read(
