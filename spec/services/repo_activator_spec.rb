@@ -91,6 +91,20 @@ describe RepoActivator do
         expect(result).to be_falsy
       end
 
+      it "reports raised exceptions to Sentry" do
+        token = nil
+        repo = build_stubbed(:repo)
+        error = Octokit::Error.new
+        allow(JobQueue).to receive(:push)
+        allow(GithubApi).to receive(:new).and_raise(error)
+        activator = RepoActivator.new(github_token: token, repo: repo)
+        allow(Raven).to receive(:capture_exception)
+
+        activator.activate
+
+        expect(Raven).to have_received(:capture_exception).with(error)
+      end
+
       it 'only swallows Octokit errors' do
         token = "githubtoken"
         repo = double('repo')

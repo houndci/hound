@@ -56,6 +56,18 @@ describe RepoSubscriber do
 
         expect(result).to be_falsy
       end
+
+      it "reports raised exceptions to Sentry" do
+        repo = build_stubbed(:repo)
+        user = create(:user, repos: [repo])
+        stub_customer_create_request(user)
+        stub_failed_subscription_create_request(repo.plan_type)
+        allow(Raven).to receive(:capture_exception)
+
+        RepoSubscriber.subscribe(repo, user, "cardtoken")
+
+        expect(Raven).to have_received(:capture_exception)
+      end
     end
 
     context "when repo subscription fails to create" do
@@ -108,6 +120,31 @@ describe RepoSubscriber do
       RepoSubscriber.unsubscribe(subscription.repo, user)
 
       expect(subscription.reload).to be_deleted
+    end
+
+    context "when Stripe unsubscription fails" do
+      it "returns false" do
+        repo = build_stubbed(:repo)
+        user = build_stubbed(:user, repos: [repo])
+        stub_customer_create_request(user)
+        stub_failed_subscription_destroy_request
+
+        result = RepoSubscriber.unsubscribe(repo, user)
+
+        expect(result).to be_falsy
+      end
+
+      it "reports raised exceptions to Sentry" do
+        repo = build_stubbed(:repo)
+        user = build_stubbed(:user, repos: [repo])
+        stub_customer_create_request(user)
+        stub_failed_subscription_destroy_request
+        allow(Raven).to receive(:capture_exception)
+
+        RepoSubscriber.unsubscribe(repo, user)
+
+        expect(Raven).to have_received(:capture_exception)
+      end
     end
   end
 
@@ -205,6 +242,23 @@ describe RepoSubscriber do
           type: "card_error",
           param: "number",
           code: "incorrect_number"
+        }
+      }.to_json
+    )
+  end
+
+  def stub_failed_subscription_destroy_request
+    stub_request(
+      :destroy,
+      "https://api.stripe.com/v1/customers/#{STRIPE_CUSTOMER_ID}/subscriptions"
+    ).with(
+      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}"}
+    ).to_return(
+      status: 402,
+      body: {
+        error: {
+          message: "Error",
+          type: "error",
         }
       }.to_json
     )

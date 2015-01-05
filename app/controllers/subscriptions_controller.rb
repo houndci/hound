@@ -12,7 +12,6 @@ class SubscriptionsController < ApplicationController
       render json: repo, status: :created
     else
       activator.deactivate
-      report_activation_error("Failed to subscribe and activate repo")
 
       head 502
     end
@@ -24,8 +23,6 @@ class SubscriptionsController < ApplicationController
 
       render json: repo, status: :created
     else
-      report_activation_error("Failed to unsubscribe and deactivate repo")
-
       head 502
     end
   end
@@ -46,13 +43,6 @@ class SubscriptionsController < ApplicationController
 
   def create_subscription
     RepoSubscriber.subscribe(repo, current_user, params[:card_token])
-  end
-
-  def report_activation_error(message)
-    report_exception(
-      FailedToActivate.new(message),
-      user_id: current_user.id, repo_id: params[:repo_id]
-    )
   end
 
   def delete_subscription

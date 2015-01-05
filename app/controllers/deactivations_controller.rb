@@ -11,10 +11,6 @@ class DeactivationsController < ApplicationController
       analytics.track_deactivated(repo)
       render json: repo, status: :created
     else
-      report_exception(
-        FailedToActivate.new('Failed to deactivate repo'),
-        user_id: current_user.id, repo_id: params[:repo_id]
-      )
       head 502
     end
   end
