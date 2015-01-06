@@ -8,7 +8,11 @@ class RepoConfig
   HOUND_CONFIG_FILE = ".hound.yml"
   STYLE_GUIDES = %w(ruby coffee_script java_script)
 
-  pattr_initialize :commit
+  attr_reader :style_guides
+
+  pattr_initialize :commit do
+    @style_guides = {}
+  end
 
   def enabled_for?(style_guide_name)
     style_guide_name == "ruby" && legacy_config? ||
@@ -109,9 +113,5 @@ class RepoConfig
   rescue JSON::ParserError
     @invalid = true
     {}
-  end
-
-  def style_guides
-    @style_guides ||= {}
   end
 end

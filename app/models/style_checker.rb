@@ -2,10 +2,8 @@
 # Builds style guide based on file extension.
 # Delegates to style guide for line violations.
 class StyleChecker
-  def initialize(pull_request, repo_config)
-    @pull_request = pull_request
+  pattr_initialize :pull_request, :config do
     @style_guides = {}
-    @config = repo_config
   end
 
   def violations

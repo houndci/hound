@@ -3,8 +3,8 @@
 
 en:
   active_repos: 'Active repos'
-  authenticate: 'Sign In with GitHub'
+  authenticate: "Sign In with GitHub"
   invalid_config: "Invalid configuration syntax"
   search_placeholder: 'search by repo or organization name'
-  sync_repos: 'Refresh repo list'
-  syncing_repos: 'Loading repos...'
+  sync_repos: "Refresh repo list"
+  syncing_repos: "Loading repos..."
