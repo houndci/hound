@@ -228,6 +228,26 @@ describe GithubApi do
     end
   end
 
+  describe "#pull_request_commits" do
+    it "returns commits in a pull request" do
+      api = GithubApi.new
+      pull_request = double(:pull_request, full_repo_name: "thoughtbot/hound")
+      pull_request_number = 123
+      stub_pull_request_commits_request(
+        pull_request.full_repo_name, pull_request_number
+      )
+
+      commits = api.pull_request_commits(
+        pull_request.full_repo_name, pull_request_number
+      )
+
+      expect(commits.size).to eq(1)
+      expect(commits.first.commit.message).to start_with(
+        "Ignore confirmation 'zen' pings sent out setup"
+      )
+    end
+  end
+
   describe "#pull_request_files" do
     it "returns changed files in a pull request" do
       api = GithubApi.new
@@ -276,46 +296,79 @@ describe GithubApi do
 
       expect(request).to have_been_requested
     end
+  end
 
-    describe "#pull_request_comments" do
-      it "returns comments added to pull request" do
-        api = GithubApi.new
-        pull_request = double(:pull_request, full_repo_name: "thoughtbot/hound")
-        pull_request_id = 253
-        commit_sha = "abc253"
-        expected_comment = "inline if's and while's are not violations?"
-        stub_pull_request_comments_request(
-          pull_request.full_repo_name,
-          pull_request_id
-        )
-        stub_contents_request(
-          repo_name: pull_request.full_repo_name,
-          sha: commit_sha
-        )
+  describe "#add_commit_comment" do
+    it "adds comment to GitHub commit" do
+      api = GithubApi.new("authtoken")
+      repo_name = "test/repo"
+      comment = "test comment"
+      commit_sha = "commitsha"
+      commit = double(:commit, repo_name: repo_name, sha: commit_sha)
+      request = stub_commit_comment_request(repo_name, comment, commit_sha)
 
-        comments = api.pull_request_comments(
-          pull_request.full_repo_name,
-          pull_request_id
-        )
+      api.add_commit_comment(commit: commit, comment: comment)
 
-        expect(comments.size).to eq(4)
-        expect(comments.first.body).to eq expected_comment
-      end
+      expect(request).to have_been_requested
     end
+  end
 
-    describe "#accept_pending_invitations" do
-      it "finds and accepts pending org invitations" do
-        api = GithubApi.new
-        memberships_request = stub_memberships_request
-        membership_update_request = stub_membership_update_request
+  describe "#pull_request_comments" do
+    it "returns comments added to pull request" do
+      api = GithubApi.new
+      pull_request = double(:pull_request, full_repo_name: "thoughtbot/hound")
+      pull_request_id = 253
+      commit_sha = "abc253"
+      expected_comment = "inline if's and while's are not violations?"
+      stub_pull_request_comments_request(
+        pull_request.full_repo_name,
+        pull_request_id
+      )
+      stub_contents_request(
+        repo_name: pull_request.full_repo_name,
+        sha: commit_sha
+      )
 
-        api.accept_pending_invitations
+      comments = api.pull_request_comments(
+        pull_request.full_repo_name,
+        pull_request_id
+      )
 
-        expect(memberships_request).to have_been_requested
-        expect(membership_update_request).to have_been_requested
-      end
+      expect(comments.size).to eq(4)
+      expect(comments.first.body).to eq expected_comment
     end
+  end
 
+  describe "#commit_comments" do
+    it "returns comments added to commit" do
+      api = GithubApi.new
+      repo_name = "thoughtbot/hound"
+      commit_sha = "abc253"
+      expected_comment =
+        "[:+1:!](https://twitter.com/houndci/status/518079134577074176)"
+      stub_commit_comments_request(repo_name, commit_sha)
+
+      comments = api.commit_comments(repo_name, commit_sha)
+
+      expect(comments.size).to eq(1)
+      expect(comments.first.body).to eq expected_comment
+    end
+  end
+
+  describe "#accept_pending_invitations" do
+    it "finds and accepts pending org invitations" do
+      api = GithubApi.new
+      memberships_request = stub_memberships_request
+      membership_update_request = stub_membership_update_request
+
+      api.accept_pending_invitations
+
+      expect(memberships_request).to have_been_requested
+      expect(membership_update_request).to have_been_requested
+    end
+  end
+
+  describe "#user_teams" do
     it "returns user's teams" do
       teams = ["thoughtbot"]
       client = double(user_teams: teams)

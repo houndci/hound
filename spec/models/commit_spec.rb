@@ -57,4 +57,89 @@ describe Commit do
       end
     end
   end
+
+  describe "#comments" do
+    it "fetches comments from GitHub" do
+      github = double(:github_client, commit_comments: nil)
+      commit = Commit.new("test/test", "abc", github)
+
+      commit.comments
+
+      expect(github).to have_received(:commit_comments).with(
+        commit.repo_name,
+        commit.sha
+      )
+    end
+  end
+
+  describe "#add_comment" do
+    it "posts a comment to GitHub for the Hound user" do
+      github = double(:github_client, add_commit_comment: nil)
+      commit = Commit.new("test/test", "abc", github)
+      comment = "Commit violation"
+
+      commit.add_comment(comment)
+
+      expect(github).to have_received(:add_commit_comment).with(
+        commit: commit,
+        comment: comment
+      )
+    end
+  end
+
+  describe "#subject" do
+    context "with a commit message" do
+      it "returns all lines up to double newlines" do
+        commit = Commit.new(double, double, double).
+          tap { |c| c.message = "fix\na\n\nbug" }
+
+        expect(commit.subject).to eq("fix\na")
+      end
+    end
+
+    context "with an empty commit message" do
+      it "returns an empty string" do
+        commit = Commit.new(double, double, double).
+          tap { |c| c.message = "" }
+
+        expect(commit.subject).to eq("")
+      end
+    end
+
+    context "without a commit message" do
+      it "returns an empty string" do
+        commit = Commit.new(double, double, double)
+
+        expect(commit.subject).to eq("")
+      end
+    end
+  end
+
+  describe "#body" do
+    context "with a commit message" do
+      it "returns all lines after the first double newlines" do
+        commit = Commit.new(double, double, double).
+          tap { |c| c.message = "fix\n\na\n\nbug" }
+
+        expect(commit.body).to eq("a\n\nbug")
+      end
+    end
+
+    context "with an empty commit message" do
+      it "returns an empty string" do
+        commit = Commit.new(double, double, double).
+          tap { |c| c.message = "" }
+
+        expect(commit.subject).to eq("")
+      end
+    end
+
+    context "without a commit message" do
+      it "returns an empty string" do
+        commit = Commit.new(double, double, double)
+
+        expect(commit.body).to eq("")
+      end
+    end
+  end
 end

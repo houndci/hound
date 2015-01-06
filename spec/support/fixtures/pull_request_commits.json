@@ -1,0 +1,72 @@
+[
+  {
+    "sha": "9a0822414cc33ec3ecdb6e241a72895028a39570",
+    "commit": {
+      "author": {
+        "name": "Britt Ballard",
+        "email": "britt@thoughtbot.com",
+        "date": "2014-03-07T20:49:26Z"
+      },
+      "committer": {
+        "name": "Britt Ballard",
+        "email": "britt@thoughtbot.com",
+        "date": "2014-03-07T22:01:45Z"
+      },
+      "message": "Ignore confirmation 'zen' pings sent out setup\n\n* When a person first adds the webhook github responds with a \"zen\" ping\n* We don't need to do anything in this case, so these POSTs should be ignored\n* Fix for: https://app.getsentry.com/app20126465herokucom/production/group/14971351/",
+      "tree": {
+        "sha": "6edc5391359ba1421208fdb101267e20c16afa8e",
+        "url": "https://api.github.com/repos/thoughtbot/hound/git/trees/6edc5391359ba1421208fdb101267e20c16afa8e"
+      },
+      "url": "https://api.github.com/repos/thoughtbot/hound/git/commits/9a0822414cc33ec3ecdb6e241a72895028a39570",
+      "comment_count": 0
+    },
+    "url": "https://api.github.com/repos/thoughtbot/hound/commits/9a0822414cc33ec3ecdb6e241a72895028a39570",
+    "html_url": "https://github.com/thoughtbot/hound/commit/9a0822414cc33ec3ecdb6e241a72895028a39570",
+    "comments_url": "https://api.github.com/repos/thoughtbot/hound/commits/9a0822414cc33ec3ecdb6e241a72895028a39570/comments",
+    "author": {
+      "login": "brittballard",
+      "id": 129564,
+      "avatar_url": "https://avatars.githubusercontent.com/u/129564?v=2",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brittballard",
+      "html_url": "https://github.com/brittballard",
+      "followers_url": "https://api.github.com/users/brittballard/followers",
+      "following_url": "https://api.github.com/users/brittballard/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brittballard/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brittballard/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brittballard/subscriptions",
+      "organizations_url": "https://api.github.com/users/brittballard/orgs",
+      "repos_url": "https://api.github.com/users/brittballard/repos",
+      "events_url": "https://api.github.com/users/brittballard/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brittballard/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brittballard",
+      "id": 129564,
+      "avatar_url": "https://avatars.githubusercontent.com/u/129564?v=2",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brittballard",
+      "html_url": "https://github.com/brittballard",
+      "followers_url": "https://api.github.com/users/brittballard/followers",
+      "following_url": "https://api.github.com/users/brittballard/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brittballard/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brittballard/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brittballard/subscriptions",
+      "organizations_url": "https://api.github.com/users/brittballard/orgs",
+      "repos_url": "https://api.github.com/users/brittballard/repos",
+      "events_url": "https://api.github.com/users/brittballard/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brittballard/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c39adcdfdbd0966e5a649337937a2b9d4864ddd0",
+        "url": "https://api.github.com/repos/thoughtbot/hound/commits/c39adcdfdbd0966e5a649337937a2b9d4864ddd0",
+        "html_url": "https://github.com/thoughtbot/hound/commit/c39adcdfdbd0966e5a649337937a2b9d4864ddd0"
+      }
+    ]
+  }
+]

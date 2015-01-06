@@ -1,0 +1,33 @@
+[
+  {
+    "url": "https://api.github.com/repos/thoughtbot/hound/comments/8032255",
+    "html_url": "https://github.com/thoughtbot/hound/commit/913ef9c11d96cc090a02020336fbe95a0c1ff52c#commitcomment-8032255",
+    "id": 8032255,
+    "user": {
+      "login": "alxndr",
+      "id": 174307,
+      "avatar_url": "https://avatars.githubusercontent.com/u/174307?v=2",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alxndr",
+      "html_url": "https://github.com/alxndr",
+      "followers_url": "https://api.github.com/users/alxndr/followers",
+      "following_url": "https://api.github.com/users/alxndr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alxndr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alxndr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alxndr/subscriptions",
+      "organizations_url": "https://api.github.com/users/alxndr/orgs",
+      "repos_url": "https://api.github.com/users/alxndr/repos",
+      "events_url": "https://api.github.com/users/alxndr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alxndr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "position": null,
+    "line": null,
+    "path": null,
+    "commit_id": "913ef9c11d96cc090a02020336fbe95a0c1ff52c",
+    "created_at": "2014-10-03T18:45:05Z",
+    "updated_at": "2014-10-03T18:45:05Z",
+    "body": "[:+1:!](https://twitter.com/houndci/status/518079134577074176)"
+  }
+]

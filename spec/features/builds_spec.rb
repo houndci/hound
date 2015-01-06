@@ -39,6 +39,8 @@ feature 'Builds' do
     stub_github_requests_with_violations
     stub_commit_request(repo_name, pr_sha)
     stub_pull_request_comments_request(repo_name, pr_number)
+    stub_pull_request_commits_request(repo_name, pr_number)
+    stub_commit_comments_requests
     comment_request = stub_simple_comment_request
     stub_status_requests(repo_name, pr_sha)
 
@@ -82,6 +84,15 @@ feature 'Builds' do
     stub_request(
       :post,
       "https://api.github.com/repos/#{repo_name}/pulls/#{pr_number}/comments"
+    )
+  end
+
+  def stub_commit_comments_requests
+    stub_request(
+      :any,
+      %r{https://api\.github\.com/repos/#{repo_name}/commits/.*/comments}
+    ).to_return(
+      body: []
     )
   end
 end

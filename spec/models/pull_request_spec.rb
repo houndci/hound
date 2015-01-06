@@ -43,6 +43,24 @@ describe PullRequest do
     end
   end
 
+  describe "#commits" do
+    it "returns commits in pull request" do
+      commit = double(
+        :commit,
+        sha: "1234abcd",
+        commit: double(:commit, message: "Comment on commits")
+      )
+      github = double(:github, pull_request_commits: [commit])
+      pull_request = pull_request_stub(github)
+
+      commits = pull_request.commits
+
+      expect(commits.size).to eq(1)
+      expect(commits.first.sha).to eq("1234abcd")
+      expect(commits.first.message).to eq("Comment on commits")
+    end
+  end
+
   describe "#comments" do
     it "returns comments on pull request" do
       filename = "spec/models/style_guide_spec.rb"
