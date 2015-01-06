@@ -18,8 +18,15 @@ class CommentingPolicy
 
   def previous_comments_on_line(violation)
     existing_comments.select do |comment|
-      comment.path == violation.filename &&
-        comment.original_position == violation.patch_position
+      comment.path == violation.filename && on_same_line?(violation, comment)
+    end
+  end
+
+  def on_same_line?(violation, comment)
+    if comment.position
+      comment.position == violation.patch_position
+    else
+      comment.original_position == violation.patch_position
     end
   end
 

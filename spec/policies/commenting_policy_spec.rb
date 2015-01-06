@@ -67,11 +67,33 @@ describe CommentingPolicy do
           expect(commenting_policy).to be_allowed_for(violation)
         end
       end
+
+      context "when commented line changes patch location" do
+        it "returns false" do
+          violation = stub_violation(
+            filename: "foo.rb",
+            messages: ["Trailing whitespace detected"],
+          )
+          comment = stub_comment(
+            body: "Trailing whitespace detected<br>Extra newline",
+            position: violation.patch_position,
+            original_position: violation.patch_position + 3,
+            path: violation.filename,
+          )
+          pull_request = stub_pull_request(comments: [comment])
+          commenting_policy = CommentingPolicy.new(pull_request)
+
+          expect(commenting_policy).not_to be_allowed_for(violation)
+        end
+      end
     end
   end
 
   def stub_comment(options = {})
-    double(:comment, options)
+    defaults = {
+      position: nil
+    }
+    double(:comment, defaults.merge(options))
   end
 
   def stub_violation(options = {})
