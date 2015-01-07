@@ -1,9 +1,9 @@
-class RepoInformationJob
+class RepoInformationJob < ActiveJob::Base
   extend Retryable
 
-  @queue = :low
+  queue_as :low
 
-  def self.perform(repo_id)
+  def perform(repo_id)
     repo = Repo.find(repo_id)
     repo.touch
 
@@ -15,6 +15,6 @@ class RepoInformationJob
       in_organization: github_data[:organization].present?
     )
   rescue Resque::TermException
-    Resque.enqueue(self, repo_id)
+    retry_job
   end
 end

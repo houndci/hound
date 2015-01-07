@@ -9,7 +9,7 @@ describe RepoInformationJob do
     repo = create(:repo, private: false, in_organization: false)
     stub_repo_with_org_request(repo.full_github_name)
 
-    RepoInformationJob.perform(repo.id)
+    RepoInformationJob.perform_now(repo.id)
 
     repo.reload
     expect(repo).to be_private
@@ -19,10 +19,10 @@ describe RepoInformationJob do
   it 'retries when Resque::TermException is raised' do
     repo = create(:repo)
     allow(Repo).to receive(:find).and_raise(Resque::TermException.new(1))
-    allow(Resque).to receive(:enqueue)
+    allow(RepoInformationJob.queue_adapter).to receive(:enqueue)
 
-    RepoInformationJob.perform(repo.id)
+    RepoInformationJob.perform_now(repo.id)
 
-    expect(Resque).to have_received(:enqueue).with(RepoInformationJob, repo.id)
+    expect(RepoInformationJob.queue_adapter).to have_received(:enqueue)
   end
 end
