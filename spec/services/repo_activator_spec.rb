@@ -7,7 +7,6 @@ describe RepoActivator do
         token = "githubtoken"
         repo = create(:repo)
         stub_github_api
-        allow(JobQueue).to receive(:push).and_return(true)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
         result = activator.activate
@@ -21,7 +20,6 @@ describe RepoActivator do
         repo = create(:repo)
         github = stub_github_api
         token = "githubtoken"
-        allow(JobQueue).to receive(:push)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
         activator.activate
@@ -33,7 +31,6 @@ describe RepoActivator do
         repo = create(:repo)
         stub_github_api
         token = "githubtoken"
-        allow(JobQueue).to receive(:push).and_return(true)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
         result = activator.activate
@@ -47,7 +44,6 @@ describe RepoActivator do
             repo = create(:repo)
             token = "githubtoken"
             github = stub_github_api
-            allow(JobQueue).to receive(:push)
             activator = RepoActivator.new(github_token: token, repo: repo)
 
             activator.activate
@@ -65,7 +61,6 @@ describe RepoActivator do
           repo = create(:repo)
           github = stub_github_api
           token = "githubtoken"
-          allow(JobQueue).to receive(:push)
           activator = RepoActivator.new(github_token: token, repo: repo)
 
           activator.activate
@@ -82,7 +77,6 @@ describe RepoActivator do
       it 'returns false if API request raises' do
         token = nil
         repo = build_stubbed(:repo)
-        allow(JobQueue).to receive(:push)
         expect(GithubApi).to receive(:new).and_raise(Octokit::Error.new)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
@@ -94,7 +88,6 @@ describe RepoActivator do
       it 'only swallows Octokit errors' do
         token = "githubtoken"
         repo = double('repo')
-        allow(JobQueue).to receive(:push)
         allow(GithubApi).to receive(:new).and_raise(Exception.new)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
@@ -106,7 +99,6 @@ describe RepoActivator do
           token = "githubtoken"
           repo = build_stubbed(:repo, full_github_name: "test/repo")
           github = double(:github, add_user_to_repo: false)
-          allow(JobQueue).to receive(:push)
           allow(GithubApi).to receive(:new).and_return(github)
           activator = RepoActivator.new(github_token: token, repo: repo)
 
@@ -121,7 +113,6 @@ describe RepoActivator do
       it 'does not raise' do
         token = 'token'
         repo = build_stubbed(:repo)
-        allow(JobQueue).to receive(:push)
         github = double(:github, create_hook: nil, add_user_to_repo: true)
         allow(GithubApi).to receive(:new).and_return(github)
         activator = RepoActivator.new(github_token: token, repo: repo)
@@ -141,7 +132,6 @@ describe RepoActivator do
         stub_github_api
         token = "githubtoken"
         repo = create(:repo)
-        allow(JobQueue).to receive(:push)
         create(:membership, repo: repo)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
@@ -154,7 +144,6 @@ describe RepoActivator do
       it 'removes GitHub hook' do
         github_api = stub_github_api
         token = "githubtoken"
-        allow(JobQueue).to receive(:push)
         repo = create(:repo)
         create(:membership, repo: repo)
         activator = RepoActivator.new(github_token: token, repo: repo)
@@ -168,7 +157,6 @@ describe RepoActivator do
       it 'returns true if the repo activates successfully' do
         stub_github_api
         token = "githubtoken"
-        allow(JobQueue).to receive(:push)
         membership = create(:membership)
         repo = membership.repo
         activator = RepoActivator.new(github_token: token, repo: repo)
@@ -183,7 +171,6 @@ describe RepoActivator do
       it 'returns false if the repo does not activate successfully' do
         repo = double('repo')
         token = nil
-        allow(JobQueue).to receive(:push)
         expect(GithubApi).to receive(:new).and_raise(Octokit::Error.new)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
@@ -195,7 +182,6 @@ describe RepoActivator do
       it 'only swallows Octokit errors' do
         repo = double('repo')
         token = nil
-        allow(JobQueue).to receive(:push)
         expect(GithubApi).to receive(:new).and_raise(Exception.new)
         activator = RepoActivator.new(github_token: token, repo: repo)
 
