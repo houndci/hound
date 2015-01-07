@@ -21,8 +21,9 @@ describe RepoInformationJob do
     allow(Repo).to receive(:find).and_raise(Resque::TermException.new(1))
     allow(RepoInformationJob.queue_adapter).to receive(:enqueue)
 
-    RepoInformationJob.perform_now(repo.id)
+    job = RepoInformationJob.perform_now(repo.id)
 
-    expect(RepoInformationJob.queue_adapter).to have_received(:enqueue)
+    expect(RepoInformationJob.queue_adapter).
+      to have_received(:enqueue).with(job)
   end
 end

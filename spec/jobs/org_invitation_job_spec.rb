@@ -18,8 +18,8 @@ describe OrgInvitationJob do
     allow(GithubApi).to receive(:new).and_raise(Resque::TermException.new(1))
     allow(OrgInvitationJob.queue_adapter).to receive(:enqueue)
 
-    OrgInvitationJob.perform_now
+    job = OrgInvitationJob.perform_now
 
-    expect(OrgInvitationJob.queue_adapter).to have_received(:enqueue)
+    expect(OrgInvitationJob.queue_adapter).to have_received(:enqueue).with(job)
   end
 end
