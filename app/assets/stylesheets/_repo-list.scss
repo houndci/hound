@@ -170,7 +170,7 @@
 
       &:before {
         @include size(20px);
-        @include position(absolute, 0px null null 0px);
+        @include position(absolute, null null null 1px);
         @include transition(all 0.25s linear);
         background-color: rgb(255,255,255);
         border: 1px solid $base-border-color;
@@ -203,7 +203,7 @@
         border-color: $green;
 
         &:before {
-          @include position(absolute, 0px null null 26px);
+          @include position(absolute, null null null 27px);
           border-color: $green;
           border-color: #fff;
         }
