@@ -9,7 +9,7 @@ class BuildRunner
         pull_request_number: payload.pull_request_number,
         commit_sha: payload.head_sha,
       )
-      commenter.comment_on_violations(violations)
+      commenter.comment_on_violations(priority_violations)
       create_success_status
       track_reviewed_repo_for_each_user
     end
@@ -23,6 +23,10 @@ class BuildRunner
 
   def violations
     @violations ||= style_checker.violations
+  end
+
+  def priority_violations
+    violations.take(ENV["MAX_COMMENTS"].to_i)
   end
 
   def style_checker
