@@ -2,8 +2,7 @@ class RepoSyncsController < ApplicationController
   respond_to :json
 
   def create
-    JobQueue.push(
-      RepoSynchronizationJob,
+    RepoSynchronizationJob.perform_later(
       current_user.id,
       session[:github_token]
     )

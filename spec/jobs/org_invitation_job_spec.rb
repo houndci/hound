@@ -5,6 +5,10 @@ describe OrgInvitationJob do
     expect(OrgInvitationJob).to be_a(Retryable)
   end
 
+  it "queue_as high" do
+    expect(OrgInvitationJob.new.queue_name).to eq("high")
+  end
+
   it "accepts invitations" do
     github = double("GithubApi", accept_pending_invitations: nil)
     allow(GithubApi).to receive(:new).and_return(github)

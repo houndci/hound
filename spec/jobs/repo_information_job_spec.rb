@@ -5,6 +5,10 @@ describe RepoInformationJob do
     expect(RepoInformationJob).to be_a(Retryable)
   end
 
+  it "queue_as low" do
+    expect(RepoInformationJob.new.queue_name).to eq("low")
+  end
+
   it 'collects repo privacy and organization from GitHub' do
     repo = create(:repo, private: false, in_organization: false)
     stub_repo_with_org_request(repo.full_github_name)

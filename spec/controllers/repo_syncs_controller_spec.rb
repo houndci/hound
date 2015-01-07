@@ -5,11 +5,11 @@ describe RepoSyncsController, '#create' do
     token = "usergithubtoken"
     user = create(:user)
     stub_sign_in(user, token)
-    allow(JobQueue).to receive(:push)
+    allow(RepoSynchronizationJob).to receive(:perform_later)
 
     post :create
 
-    expect(JobQueue).to have_received(:push).
-      with(RepoSynchronizationJob, user.id, token)
+    expect(RepoSynchronizationJob).
+      to have_received(:perform_later).with(user.id, token)
   end
 end

@@ -1,18 +1,24 @@
-class RepoSynchronizationJob
+class RepoSynchronizationJob < ActiveJob::Base
+  class AlreadyRefresing < StandardError; end
   extend Retryable
 
-  @queue = :high
+  queue_as :high
 
-  def self.before_enqueue(user_id, github_token)
-    User.set_refreshing_repos(user_id)
+  before_perform do |job|
+    unless User.set_refreshing_repos(job.arguments.first)
+      raise AlreadyRefresing
+    end
   end
 
-  def self.perform(user_id, github_token)
+  def perform(user_id, github_token)
     user = User.find(user_id)
     synchronization = RepoSynchronization.new(user, github_token)
     synchronization.start
     user.update_attribute(:refreshing_repos, false)
   rescue Resque::TermException
-    Resque.enqueue(self, user_id, github_token)
+    retry_job
+  end
+
+  rescue_from(AlreadyRefresing) do |e|
   end
 end
