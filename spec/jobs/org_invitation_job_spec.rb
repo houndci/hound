@@ -9,7 +9,7 @@ describe OrgInvitationJob do
     github = double("GithubApi", accept_pending_invitations: nil)
     allow(GithubApi).to receive(:new).and_return(github)
 
-    OrgInvitationJob.new.perform
+    OrgInvitationJob.perform_now
 
     expect(github).to have_received(:accept_pending_invitations)
   end
@@ -18,7 +18,7 @@ describe OrgInvitationJob do
     allow(GithubApi).to receive(:new).and_raise(Resque::TermException.new(1))
     allow(Resque).to receive(:enqueue)
 
-    OrgInvitationJob.new.perform
+    OrgInvitationJob.perform_now
 
     expect(Resque).to have_received(:enqueue).
       with(OrgInvitationJob)
