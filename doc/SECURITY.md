@@ -102,10 +102,11 @@ The database is hosted by [Redis to Go].
 [Redis to Go]: http://redistogo.com
 
 We use your GitHub token to add the [@houndci] GitHub user to your repository
-via the [GitHub collaborator API][api1].
-@houndci is added to a "Services" team within your organization
-and creates the "Services" team if it doesn't exist.
-Your GitHub user will need admin privileges for that repository.
+via the [GitHub collaborator API][api1]. @houndci will be added to a team that
+has access to the enabled repository. If an existing team cannot be found, we'll
+create a "Services" team with *push* access to the enabled repository. This is
+necessary for @houndci to see pull requests, make comments, and update pull
+request statuses.
 
 [@houndci]: https://github.com/houndci
 [api1]: https://developer.github.com/v3/repos/collaborators/#add-collaborator

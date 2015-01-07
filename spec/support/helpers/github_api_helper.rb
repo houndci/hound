@@ -47,7 +47,7 @@ module GithubApiHelper
       body: {
         name: 'Services',
         repo_names: [repo_name],
-        permission: 'pull'
+        permission: "push"
       }.to_json,
       headers: { "Authorization" => "token #{user_token}" }
     ).to_return(
@@ -65,7 +65,7 @@ module GithubApiHelper
       body: {
         name: 'Services',
         repo_names: [repo_name],
-        permission: 'pull'
+        permission: "push"
       }.to_json,
       headers: { "Authorization" => "token #{user_token}" }
     ).to_return(

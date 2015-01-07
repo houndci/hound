@@ -176,7 +176,7 @@ class GithubApi
     team_options = {
       name: name,
       repo_names: [repo.full_name],
-      permission: "pull"
+      permission: "push"
     }
     client.create_team(repo.organization.login, team_options)
   end
