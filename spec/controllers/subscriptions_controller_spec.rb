@@ -9,7 +9,6 @@ describe SubscriptionsController, "#create" do
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-      allow(JobQueue).to receive(:push)
       stub_sign_in(membership.user, token)
 
       post(
@@ -37,7 +36,6 @@ describe SubscriptionsController, "#create" do
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-      allow(JobQueue).to receive(:push)
       stub_sign_in(user)
 
       post(

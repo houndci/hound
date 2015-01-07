@@ -11,7 +11,7 @@ namespace :repo do
     puts 'Scheduling RepoInformationJob jobs for repos ...'
 
     repo_ids.each do |repo_id|
-      JobQueue.push(RepoInformationJob, repo_id)
+      RepoInformationJob.perform_later(repo_id)
     end
 
     puts 'Done scheduling jobs (max 3000). Rerun as necessary.'

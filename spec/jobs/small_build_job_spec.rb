@@ -1,14 +1,15 @@
-require 'fast_spec_helper'
-require 'app/jobs/retryable'
-require 'app/jobs/buildable'
-require 'app/jobs/small_build_job'
+require 'spec_helper'
 
 describe SmallBuildJob do
   it 'is retryable' do
     expect(SmallBuildJob).to be_a(Retryable)
   end
 
+  it "queue_as medium" do
+    expect(SmallBuildJob.new.queue_name).to eq("medium")
+  end
+
   it 'is buildable' do
-    expect(SmallBuildJob).to be_a(Buildable)
+    expect(SmallBuildJob.new).to be_a(Buildable)
   end
 end
