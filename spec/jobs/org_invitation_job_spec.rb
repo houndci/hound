@@ -16,11 +16,10 @@ describe OrgInvitationJob do
 
   it "retries when Resque::TermException is raised" do
     allow(GithubApi).to receive(:new).and_raise(Resque::TermException.new(1))
-    allow(Resque).to receive(:enqueue)
+    allow(OrgInvitationJob.queue_adapter).to receive(:enqueue)
 
     OrgInvitationJob.perform_now
 
-    expect(Resque).to have_received(:enqueue).
-      with(OrgInvitationJob)
+    expect(OrgInvitationJob.queue_adapter).to have_received(:enqueue)
   end
 end

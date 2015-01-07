@@ -7,6 +7,6 @@ class OrgInvitationJob < ActiveJob::Base
     github = GithubApi.new
     github.accept_pending_invitations
   rescue Resque::TermException
-    Resque.enqueue(self)
+    retry_job
   end
 end
