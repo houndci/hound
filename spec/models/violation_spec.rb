@@ -5,7 +5,6 @@ describe Violation do
 
   describe "validations" do
     it { should validate_presence_of(:build) }
-    it { should validate_presence_of(:filename) }
   end
 
   describe "#add_messages" do

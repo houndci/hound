@@ -3,15 +3,13 @@ class BuildRunner
 
   def run
     if repo && relevant_pull_request?
-      create_pending_status
-      repo.builds.create!(
-        violations: violations,
-        pull_request_number: payload.pull_request_number,
-        commit_sha: payload.head_sha,
-      )
-      commenter.comment_on_violations(violations)
-      create_success_status
-      track_reviewed_repo_for_each_user
+      repo_config.load_style_guides
+
+      if repo_config.invalid?
+        create_failed_build
+      else
+        run_build
+      end
     end
   end
 
@@ -21,12 +19,46 @@ class BuildRunner
     pull_request.opened? || pull_request.synchronize?
   end
 
-  def violations
+  def create_failed_build
+    create_build([invalid_config_violation])
+
+    github.create_failure_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      I18n.t("invalid_config")
+    )
+  end
+
+  def invalid_config_violation
+    Violation.new(messages: [I18n.t("invalid_config")])
+  end
+
+  def repo_config
+    @repo_config ||= RepoConfig.new(pull_request.head_commit)
+  end
+
+  def create_build(violations)
+    repo.builds.create!(
+      violations: violations,
+      pull_request_number: payload.pull_request_number,
+      commit_sha: payload.head_sha
+    )
+  end
+
+  def run_build
+    create_build(style_checker_violations)
+    create_pending_status
+    commenter.comment_on_violations(style_checker_violations)
+    create_success_status
+    track_reviewed_repo_for_each_user
+  end
+
+  def style_checker_violations
     @violations ||= style_checker.violations
   end
 
   def style_checker
-    StyleChecker.new(pull_request)
+    StyleChecker.new(pull_request, repo_config)
   end
 
   def commenter

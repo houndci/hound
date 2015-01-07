@@ -145,6 +145,174 @@ describe RepoConfig do
     end
   end
 
+  describe "#load_style_guides" do
+    context "when JavaScript config has formatting errors" do
+      it "sets invalid flag" do
+        file_name = "javascript.json"
+        hound_config = <<-EOS
+          java_script:
+            enabled: true
+            config_file: #{file_name}
+        EOS
+        commit = stub_commit(
+          hound_config: hound_config,
+          file_name => invalid_config
+        )
+        config = RepoConfig.new(commit)
+
+        config.load_style_guides
+
+        expect(config.instance_variable_get("@invalid")).to eq true
+      end
+    end
+
+    context "when CoffeeScript config has formatting errors" do
+      it "set invalid flag" do
+        file_name = "coffeelint.json"
+        hound_config = <<-EOS
+          coffee_script:
+            enabled: true
+            config_file: #{file_name}
+        EOS
+        commit = stub_commit(
+          hound_config: hound_config,
+          file_name => invalid_config
+        )
+        config = RepoConfig.new(commit)
+
+        config.load_style_guides
+
+        expect(config.instance_variable_get("@invalid")).to eq true
+      end
+    end
+
+    context "when Ruby config has formatting errors" do
+      it "sets invalid flag" do
+        file_name = "config/rubocop.yml"
+        hound_config = <<-EOS
+          ruby:
+            enabled: true
+            config_file: #{file_name}
+        EOS
+        commit = stub_commit(
+          hound_config: hound_config,
+          file_name => invalid_config
+        )
+        config = RepoConfig.new(commit)
+
+        config.load_style_guides
+
+        expect(config.instance_variable_get("@invalid")).to eq true
+      end
+    end
+
+    context "when config does not have formatting errors" do
+      it "does not set invalid flag" do
+        hound_config = <<-EOS
+          java_script:
+            enabled: true
+            config_file: "javascript.json"
+          ruby:
+            enabled: true
+            config_file: "config/rubocop.yml"
+          coffee_script:
+            enabled: true
+            config_file: coffeelint.json
+        EOS
+        valid_config = <<-EOS.strip_heredoc
+          {
+            "predef": ["myGlobal"]
+          }
+        EOS
+        commit = stub_commit(
+          hound_config: hound_config,
+          "config/rubocop.yml" => valid_config,
+          "coffeelint.json" => valid_config,
+          "javascript.json" => valid_config
+        )
+        config = RepoConfig.new(commit)
+
+        config.load_style_guides
+
+        expect(config.instance_variable_get("@invalid")).not_to eq true
+      end
+    end
+
+  end
+
+  describe "#invalid?" do
+    context "when repo config is invalid" do
+      it "returns true" do
+        commit = double("Commit")
+        config = RepoConfig.new(commit)
+        config.instance_variable_set("@invalid", true)
+
+        expect(config).to be_invalid
+      end
+    end
+
+    context "when repo config is valid" do
+      it "returns false" do
+        commit = double("Commit")
+        config = RepoConfig.new(commit)
+        config.instance_variable_set("@invalid", false)
+
+        expect(config).not_to be_invalid
+      end
+    end
+  end
+
+  describe "#jshint_ignore_file" do
+    context "no specific configuration is present" do
+      it "attempts to load a .jshintignore file" do
+        ignored_files = <<-EOIGNORE.strip_heredoc
+          app/assets/javascripts/*.js
+          public/javascripts/**.js
+        EOIGNORE
+
+        hound_config = <<-EOS
+          java_script:
+            enabled: true
+        EOS
+
+        commit = stub_commit(
+          hound_config: hound_config,
+          ".jshintignore" => ignored_files
+        )
+
+        ignored_files = RepoConfig.new(commit).ignored_javascript_files
+
+        expect(ignored_files).
+          to eq ["app/assets/javascripts/*.js", "public/javascripts/**.js"]
+      end
+    end
+
+    context "custom jshint ignore path provided" do
+      it "uses the custom ignore file" do
+        hound_config = <<-EOS
+          java_script:
+            enabled: true
+            ignore_file: ".js_ignore"
+        EOS
+
+        ignored_files = <<-EOIGNORE.strip_heredoc
+          app/assets/javascripts/*.js
+          public/javascripts/**.js
+        EOIGNORE
+
+        commit = stub_commit(
+          hound_config: hound_config,
+          ".js_ignore" => ignored_files
+        )
+
+        ignored_files = RepoConfig.new(commit).ignored_javascript_files
+
+        expect(ignored_files).
+          to eq ["app/assets/javascripts/*.js", "public/javascripts/**.js"]
+      end
+    end
+  end
+
   describe "#for" do
     context "when Ruby config file is specified" do
       it "returns parsed config" do
@@ -240,83 +408,33 @@ describe RepoConfig do
         )
       end
     end
+  end
 
-    describe "#jshint_ignore_file" do
-      context "no specific configuration is present" do
-        it "attempts to load a .jshintignore file" do
-          ignored_files = <<-EOIGNORE.strip_heredoc
-            app/assets/javascripts/*.js
-            public/javascripts/**.js
-          EOIGNORE
+  def stub_commit(configuration)
+    commit = double("Commit")
+    hound_config = configuration.delete(:hound_config)
+    allow(commit).to receive(:file_content).
+      with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
 
-          hound_config = <<-EOS
-            java_script:
-              enabled: true
-          EOS
-
-          commit = stub_commit(
-            hound_config: hound_config,
-            ".jshintignore" => ignored_files
-          )
-
-          ignored_files = RepoConfig.new(commit).ignored_javascript_files
-
-          expect(ignored_files).
-            to eq ["app/assets/javascripts/*.js", "public/javascripts/**.js"]
-        end
-      end
-
-      context "custom jshint ignore path provided" do
-        it "uses the custom ignore file" do
-          hound_config = <<-EOS
-            java_script:
-              enabled: true
-              ignore_file: ".js_ignore"
-          EOS
-
-          ignored_files = <<-EOIGNORE.strip_heredoc
-            app/assets/javascripts/*.js
-            public/javascripts/**.js
-          EOIGNORE
-
-          commit = stub_commit(
-            hound_config: hound_config,
-            ".js_ignore" => ignored_files
-          )
-
-          ignored_files = RepoConfig.new(commit).ignored_javascript_files
-
-          expect(ignored_files).
-            to eq ["app/assets/javascripts/*.js", "public/javascripts/**.js"]
-        end
-      end
-    end
-
-    def stub_commit(configuration)
-      commit = double("Commit")
-      hound_config = configuration.delete(:hound_config)
+    configuration.each do |filename, contents|
       allow(commit).to receive(:file_content).
-        with(RepoConfig::HOUND_CONFIG_FILE).and_return(hound_config)
-
-      configuration.each do |filename, contents|
-        allow(commit).to receive(:file_content).
-          with(filename).and_return(contents)
-      end
-
-      commit
+        with(filename).and_return(contents)
     end
 
-    def config_for_file(file_path, content)
-      hound_config = <<-EOS.strip_heredoc
-        ruby:
-          enabled: true
-          config_file: config/rubocop.yml
+    commit
+  end
 
-        coffee_script:
-          enabled: true
-          config_file: coffeelint.json
+  def config_for_file(file_path, content)
+    hound_config = <<-EOS.strip_heredoc
+      ruby:
+        enabled: true
+        config_file: config/rubocop.yml
 
-        java_script:
+      coffee_script:
+        enabled: true
+        config_file: coffeelint.json
+
+      java_script:
           enabled: true
           config_file: #{file_path}
       EOS
@@ -327,6 +445,9 @@ describe RepoConfig do
       )
 
       RepoConfig.new(commit)
-    end
+  end
+
+  def invalid_config
+    '{ "predef": ["myGlobal";] }'
   end
 end
