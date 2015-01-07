@@ -1,11 +1,11 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Buildable do
   class TestJob < ActiveJob::Base
     include Buildable
   end
 
-  describe 'perform' do
+  describe "perform" do
     it 'runs build runner' do
       payload_data = double(:payload_data)
       payload = double(:payload)

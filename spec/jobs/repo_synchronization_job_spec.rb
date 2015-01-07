@@ -72,7 +72,8 @@ describe RepoSynchronizationJob do
 
       job = RepoSynchronizationJob.perform_now(user_id, github_token)
 
-      expect(RepoSynchronizationJob.queue_adapter).to have_received(:enqueue).with(job)
+      expect(RepoSynchronizationJob.queue_adapter).
+        to have_received(:enqueue).with(job)
     end
   end
 end

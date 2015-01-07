@@ -19,6 +19,6 @@ class RepoSynchronizationJob < ActiveJob::Base
     retry_job
   end
 
-  rescue_from(AlreadyRefresing) do |e|
+  rescue_from(AlreadyRefresing) do |_e|
   end
 end

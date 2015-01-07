@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe LargeBuildJob do
   it 'is retryable' do
