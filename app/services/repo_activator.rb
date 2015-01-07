@@ -47,7 +47,7 @@ class RepoActivator
   end
 
   def enqueue_org_invitation
-    JobQueue.push(OrgInvitationJob)
+    OrgInvitationJob.perform_later
   end
 
   def delete_webhook

@@ -1,9 +1,9 @@
-class OrgInvitationJob
+class OrgInvitationJob < ActiveJob::Base
   extend Retryable
 
-  @queue = :high
+  queue_as :high
 
-  def self.perform
+  def perform
     github = GithubApi.new
     github.accept_pending_invitations
   rescue Resque::TermException
