@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe StyleChecker, "#violations" do
   it "returns a collection of computed violations" do
-    config = double("RepoConfig", enabled_for?: true, "for" => {})
+    config = double("RepoConfig", enabled_for?: true, for: {})
     stylish_file = stub_commit_file("good.rb", "def good; end")
     violated_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
     pull_request =

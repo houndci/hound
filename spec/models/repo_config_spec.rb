@@ -150,12 +150,12 @@ describe RepoConfig do
 
         config.load_style_guides
 
-        expect(config.instance_variable_get("@invalid")).to eq true
+        expect(config).to be_invalid
       end
     end
 
     context "when CoffeeScript config has formatting errors" do
-      it "set invalid flag" do
+      it "is invalid" do
         file_name = "coffeelint.json"
         hound_config = <<-EOS
           coffee_script:
@@ -170,12 +170,12 @@ describe RepoConfig do
 
         config.load_style_guides
 
-        expect(config.instance_variable_get("@invalid")).to eq true
+        expect(config).to be_invalid
       end
     end
 
     context "when Ruby config has formatting errors" do
-      it "sets invalid flag" do
+      it "is invalid" do
         file_name = "config/rubocop.yml"
         hound_config = <<-EOS
           ruby:
@@ -190,12 +190,12 @@ describe RepoConfig do
 
         config.load_style_guides
 
-        expect(config.instance_variable_get("@invalid")).to eq true
+        expect(config).to be_invalid
       end
     end
 
     context "when config does not have formatting errors" do
-      it "does not set invalid flag" do
+      it "is not invalid" do
         hound_config = <<-EOS
           java_script:
             enabled: true
@@ -221,29 +221,6 @@ describe RepoConfig do
         config = RepoConfig.new(commit)
 
         config.load_style_guides
-
-        expect(config.instance_variable_get("@invalid")).not_to eq true
-      end
-    end
-
-  end
-
-  describe "#invalid?" do
-    context "when repo config is invalid" do
-      it "returns true" do
-        commit = double("Commit")
-        config = RepoConfig.new(commit)
-        config.instance_variable_set("@invalid", true)
-
-        expect(config).to be_invalid
-      end
-    end
-
-    context "when repo config is valid" do
-      it "returns false" do
-        commit = double("Commit")
-        config = RepoConfig.new(commit)
-        config.instance_variable_set("@invalid", false)
 
         expect(config).not_to be_invalid
       end
