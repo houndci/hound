@@ -135,7 +135,7 @@ describe RepoConfig do
 
   describe "#load_style_guides" do
     context "when JavaScript config has formatting errors" do
-      it "sets invalid flag" do
+      it "is invalid" do
         file_name = "javascript.json"
         hound_config = <<-EOS
           java_script:
