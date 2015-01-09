@@ -94,12 +94,7 @@ There a couple areas we would like to concentrate on.
    would enforce the
    [thoughtbot style guide](https://github.com/thoughtbot/guides).
 
-License
--------
-
-This application is Copyright © 2007 thoughtbot, inc. It is provided to Learn
-subscribers for educational purposes only, and Subscribers do not have a license
-to reuse or distribute the application or its source code.
+### Contributor License Agreement
 
 If you submit a Contribution to this application's source code, you hereby grant
 to thoughtbot, inc. a worldwide, royalty-free, exclusive, perpetual and
