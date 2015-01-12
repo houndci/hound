@@ -82,6 +82,25 @@ describe GithubApi do
             end
           end
 
+          context "when Services team has pull access" do
+            it "updates permissions to push access" do
+              stub_repo_with_org_request(repo_name, user_token)
+              stub_empty_repo_teams_request(repo_name, user_token)
+              stub_org_teams_with_pull_permission_services_request(
+                organization,
+                user_token
+              )
+              stub_add_repo_to_team_request(repo_name, team_id, user_token)
+              stub_add_user_to_team_request(username, team_id, user_token)
+              update_team_request =
+                stub_update_team_permission_request(team_id, user_token)
+
+              api.add_user_to_repo(username, repo_name)
+
+              expect(update_team_request).to have_been_requested
+            end
+          end
+
           it "adds user to 'Services' team" do
             stub_repo_with_org_request(repo_name, user_token)
             stub_empty_repo_teams_request(repo_name, user_token)

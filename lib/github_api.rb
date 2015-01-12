@@ -150,6 +150,7 @@ class GithubApi
     team = find_team(SERVICES_TEAM_NAME, repo)
 
     if team
+      ensure_push_permission(team)
       client.add_team_repository(team.id, repo.full_name)
     else
       team = create_team(SERVICES_TEAM_NAME, repo)
@@ -164,6 +165,12 @@ class GithubApi
     end
   rescue Octokit::NotFound
     false
+  end
+
+  def ensure_push_permission(team)
+    if team[:permission] == "pull"
+      client.update_team(team.id, permission: "push")
+    end
   end
 
   def find_team(name, repo)

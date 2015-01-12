@@ -57,6 +57,20 @@ module GithubApiHelper
     )
   end
 
+  def stub_update_team_permission_request(team_id, user_token)
+    json_response = File.read("spec/support/fixtures/team_update.json")
+    stub_request(
+      :patch,
+      "https://api.github.com/teams/#{team_id}"
+    ).with(
+      headers: { "Authorization" => "token #{user_token}" }
+    ).to_return(
+      status: 200,
+      body: json_response,
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
   def stub_failed_team_creation_request(org, repo_name, user_token)
     stub_request(
       :post,
@@ -171,6 +185,22 @@ module GithubApiHelper
   def stub_org_teams_with_services_request(org_name, user_token)
     json_response = File.read(
       "spec/support/fixtures/org_teams_with_services_team.json"
+    )
+    stub_request(
+      :get,
+      "https://api.github.com/orgs/#{org_name}/teams?per_page=100"
+    ).with(
+      headers: { "Authorization" => "token #{user_token}" }
+    ).to_return(
+      status: 200,
+      body: json_response,
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
+  def stub_org_teams_with_pull_permission_services_request(org_name, user_token)
+    json_response = File.read(
+      "spec/support/fixtures/org_teams_with_pull_permission_services_team.json"
     )
     stub_request(
       :get,

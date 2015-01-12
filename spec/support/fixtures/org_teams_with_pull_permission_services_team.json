@@ -12,7 +12,7 @@
     "id": 4567,
     "members_url": "https://api.github.com/teams/4567/members{/member}",
     "name": "Services",
-    "permission": "push",
+    "permission": "pull",
     "repositories_url": "https://api.github.com/teams/4567/repos",
     "slug": "services",
     "url": "https://api.github.com/teams/4567"
