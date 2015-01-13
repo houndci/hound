@@ -9,12 +9,10 @@ class RepoSynchronization
   end
 
   def start
-    user.repos.clear
-
-    api.repos.each do |resource|
-      attributes = repo_attributes(resource.to_hash)
-      user.repos << Repo.find_or_create_with(attributes)
-    end
+    existing_repos = user.repos.to_a
+    rebuild_user_repos
+    deleted_repos = existing_repos - user.repos
+    deactivate_repos(deleted_repos)
   end
 
   private
@@ -26,5 +24,25 @@ class RepoSynchronization
       full_github_name: attributes[:full_name],
       in_organization: attributes[:owner][:type] == ORGANIZATION_TYPE
     }
+  end
+
+  def rebuild_user_repos
+    user.repos.clear
+
+    api.repos.each do |resource|
+      attributes = repo_attributes(resource.to_hash)
+      repo = Repo.find_or_create_with(attributes)
+      user.repos << repo
+    end
+  end
+
+  def deactivate_repos(deleted_repos)
+    deleted_repos.each do |repo|
+      repo.deactivate
+
+      if repo.subscription
+        RepoSubscriber.unsubscribe(repo, user)
+      end
+    end
   end
 end
