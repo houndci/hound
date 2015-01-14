@@ -65,15 +65,33 @@ describe StyleGuide::Scss do
         end
       end
     end
+
+    context "over multiple runs" do
+      it "it reports errors only for the given file" do
+        style_guide = build_style_guide
+        bad_content = ".a { .b { .c { background: #000; } } }"
+        good_content = ".a { margin: 0.5em; }\n"
+
+        bad_run = style_guide.violations_in_file(build_file(bad_content))
+        good_run = style_guide.violations_in_file(build_file(good_content))
+
+        expect(bad_run).not_to be_empty
+        expect(good_run).to be_empty
+      end
+    end
   end
 
   private
 
   def violations_in(content, config = nil)
+    style_guide = build_style_guide(config)
+    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+  end
+
+  def build_style_guide(config = nil)
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
     repository_owner = "ralph"
-    style_guide = StyleGuide::Scss.new(repo_config, repository_owner)
-    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+    StyleGuide::Scss.new(repo_config, repository_owner)
   end
 
   def build_file(text)

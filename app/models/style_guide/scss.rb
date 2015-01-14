@@ -8,6 +8,7 @@ module StyleGuide
       if config.excluded_file?(file.filename)
         []
       else
+        runner = build_runner
         runner.run([file.content])
 
         runner.lints.map do |violation|
@@ -26,8 +27,8 @@ module StyleGuide
 
     private
 
-    def runner
-      @runner ||= SCSSLint::Runner.new(config)
+    def build_runner
+      SCSSLint::Runner.new(config)
     end
 
     def config
