@@ -59,7 +59,7 @@ feature "Repo list", js: true do
     repo.users << user
     hook_url = "http://#{ENV["HOST"]}/builds"
     stub_repo_request(repo.full_github_name, token)
-    stub_add_collaborator_request(repo.full_github_name, token)
+    stub_add_collaborator_request("houndci", repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
     stub_memberships_request
     stub_membership_update_request
