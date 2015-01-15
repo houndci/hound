@@ -4,8 +4,7 @@ require "active_support/core_ext/object/with_options"
 
 class GithubApi
   SERVICES_TEAM_NAME = "Services"
-  PREVIEW_MEDIA_TYPE =
-    ::Octokit::Client::Organizations::ORG_INVITATIONS_PREVIEW_MEDIA_TYPE
+  PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon-preview+json"
 
   def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
     @token = token
@@ -95,15 +94,12 @@ class GithubApi
   end
 
   def accept_pending_invitations
-    with_preview_client do |preview_client|
-      pending_memberships =
-        preview_client.organization_memberships(state: "pending")
-      pending_memberships.each do |pending_membership|
-        preview_client.update_organization_membership(
-          pending_membership["organization"]["login"],
-          state: "active"
-        )
-      end
+    pending_memberships = client.organization_memberships(state: "pending")
+    pending_memberships.each do |pending_membership|
+      client.update_organization_membership(
+        pending_membership["organization"]["login"],
+        state: "active"
+      )
     end
   end
 
@@ -160,9 +156,7 @@ class GithubApi
   end
 
   def add_user_to_team(username, team_id)
-    with_preview_client do |preview_client|
-      preview_client.add_team_membership(team_id, username)
-    end
+    client.add_team_membership(team_id, username)
   rescue Octokit::NotFound
     false
   end
