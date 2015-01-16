@@ -4,6 +4,7 @@ class RepoConfig
     "ruby" => "yaml",
     "java_script" => "json",
     "coffee_script" => "json",
+    "scss" => "yaml",
   }
   HOUND_CONFIG_FILE = ".hound.yml"
   STYLE_GUIDES = %w(ruby coffee_script java_script scss)
@@ -22,7 +23,7 @@ class RepoConfig
       config_file_path = config_path_for(style_guide_name)
 
       if config_file_path
-        load_file(config_file_path, FILE_TYPES[style_guide_name])
+        load_file(config_file_path, FILE_TYPES.fetch(style_guide_name))
       else
         {}
       end

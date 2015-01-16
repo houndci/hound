@@ -213,6 +213,29 @@ describe RepoConfig do
       end
     end
 
+    context "with SCSS config" do
+      it "returns parsed config" do
+        config_text = <<-EOS.strip_heredoc
+          linters:
+            StringQuotes:
+              enabled: true
+              style: double_quotes
+        EOS
+        config = config_for_file(".scss.yml", config_text)
+
+        result = config.for("scss")
+
+        expect(result).to eq(
+          "linters" => {
+            "StringQuotes" => {
+              "enabled" => true,
+              "style" => "double_quotes",
+            }
+          }
+        )
+      end
+    end
+
     context "when there is no Hound config file" do
       it "returns empty config for all style guides" do
         commit = double("Commit", file_content: nil)
@@ -317,6 +340,10 @@ describe RepoConfig do
           config_file: coffeelint.json
 
         java_script:
+          enabled: true
+          config_file: #{file_path}
+
+        scss:
           enabled: true
           config_file: #{file_path}
       EOS
