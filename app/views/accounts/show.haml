@@ -1,6 +1,16 @@
 - content_for :page_title, "Your Account"
 
+:javascript
+  Settings = {
+    stripePublishableKey: '#{ENV['STRIPE_PUBLISHABLE_KEY']}',
+    userEmailAddress: '#{current_user.email_address}'
+  };
+
 = render 'shared/header'
+
+- if @account_page.repos.any?
+  %section.account-section{ "account" => "" }
+  = render "preload_template", template: "account"
 
 %section.account-section
   %h2.label-text Your monthly cost
