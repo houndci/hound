@@ -6,9 +6,9 @@ App.factory 'StripeCheckout', ->
       token: successCallback
     ).open(
       angular.extend(
-        options,
         email: Settings.userEmailAddress,
         panelLabel: '{{amount}} per month',
-        allowRememberMe: false
+        allowRememberMe: false,
+        options
       )
     )
