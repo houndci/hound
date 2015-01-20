@@ -42,6 +42,7 @@ end
 group :development, :test do
   gem "byebug"
   gem "foreman"
+  gem "jasmine-rails"
   gem "konacha"
   gem "poltergeist"
   gem "rspec-rails", ">= 2.14"

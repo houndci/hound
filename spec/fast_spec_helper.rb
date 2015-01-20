@@ -22,5 +22,6 @@ ENV["EXEMPT_ORGS"] = "thoughtbot,billybob"
 RSpec.configure do |config|
   config.order = "random"
   config.include GithubApiHelper
+  config.include StripeApiHelper
   WebMock.disable_net_connect!(allow_localhost: true)
 end
