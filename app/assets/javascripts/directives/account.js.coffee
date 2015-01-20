@@ -12,8 +12,6 @@ App.directive "account", ["Account", "StripeCheckout", (Account, StripeCheckout)
         console.log(response)
       ).catch(->
         alert("Could not update card information.")
-      ).finally(->
-        console.log("something happened, at least")
       )
 
     scope.updateCardInfo = ->
