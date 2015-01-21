@@ -367,9 +367,9 @@ end
   context "with custom configuration" do
     it "finds only one violation" do
       config = {
-        "StringLiterals" => {
-          "EnforcedStyle" => "double_quotes",
-          "Enabled" => "true",
+        "HashSyntax" => {
+          "EnforcedStyle" => "ruby19",
+          "Enabled" => true,
         }
       }
 

@@ -32,7 +32,8 @@ module StyleGuide
     end
 
     def config
-      @config ||= RuboCop::Config.new(merged_config, "")
+      # @config ||= RuboCop::Config.new(merged_config, "")
+      @config ||= RuboCopConfig.new(merged_config, "")
     end
 
     def merged_config
@@ -41,8 +42,10 @@ module StyleGuide
       default_config
     end
 
+    # Change to base_config? Maybe not
     def default_config
-      RuboCop::ConfigLoader.configuration_from_file(default_config_file)
+      # RuboCop::ConfigLoader.configuration_from_file(default_config_file)
+      RuboCop::ConfigLoader.load_file(default_config_file)
     end
 
     def custom_config
