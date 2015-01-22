@@ -32,19 +32,16 @@ module StyleGuide
     end
 
     def config
-      # @config ||= RuboCop::Config.new(merged_config, "")
       @config ||= RuboCopConfig.new(merged_config, "")
     end
 
     def merged_config
-      RuboCop::ConfigLoader.merge(default_config, custom_config)
+      RuboCop::ConfigLoader.merge(base_config, custom_config)
     rescue TypeError
-      default_config
+      base_config
     end
 
-    # Change to base_config? Maybe not
-    def default_config
-      # RuboCop::ConfigLoader.configuration_from_file(default_config_file)
+    def base_config
       RuboCop::ConfigLoader.load_file(default_config_file)
     end
 
