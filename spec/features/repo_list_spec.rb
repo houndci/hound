@@ -28,6 +28,7 @@ feature "Repo list", js: true do
     token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, full_github_name: "user1/test-repo")
+    repo.memberships.destroy_all
     user.repos << repo
     stub_repo_requests(token)
 
