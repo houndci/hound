@@ -1,7 +1,12 @@
 # Base to contain common style guide logic
 module StyleGuide
   class Base
-    pattr_initialize :repo_config, :repository_owner
+    attr_reader :repo_config, :repository_owner
+
+    def initialize(repo_config = nil, repository_owner = nil)
+      @repo_config = repo_config
+      @repository_owner = repository_owner
+    end
 
     def enabled?
       repo_config.enabled_for?(name)

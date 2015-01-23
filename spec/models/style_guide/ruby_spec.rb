@@ -4,16 +4,9 @@ describe StyleGuide::Ruby, "#violations_in_file" do
   context "when code violates configured style" do
     context "with namespace" do
       it "returns violations" do
-        config = {
-          "Style/CollectionMethods" => {
-            "Enabled" => true,
-            "PreferredMethods" => {
-              "find" => "detect"
-            }
-          }
-        }
+        config_file = "ruby_style_with_namespaces.yml"
 
-        expect(violations_in(<<-CODE, config: config)).not_to be_empty
+        expect(violations_in(<<-CODE, config_file)).not_to be_empty
 users.find do |user|
   user.active?
 end
@@ -23,61 +16,21 @@ end
 
     context "without namespace" do
       it "returns violations" do
-        config = {
-          "CollectionMethods" => {
-            "Enabled" => true,
-            "PreferredMethods" => {
-              "find" => "detect"
-            }
-          }
-        }
+        config_file = "ruby_style_without_namespaces.yml"
 
-        expect(violations_in(<<-CODE, config: config)).not_to be_empty
+        expect(violations_in(<<-CODE, config_file)).not_to be_empty
 users.find do |user|
   user.active?
 end
         CODE
-      end
-    end
-
-    context "when configured to show cop names" do
-      it "returns violations including cop names" do
-        config = {
-          "ShowCopNames" => true,
-          "CollectionMethods" => {
-            "Enabled" => true,
-            "PreferredMethods" => {
-              "find" => "detect"
-            }
-          }
-        }
-
-        violations = violations_in(<<-CODE, config: config)
-users.find do |user|
-  user.active?
-end
-        CODE
-
-        expect(violations.size).to eq 1
-        expect(violations.first).to include "CollectionMethods"
       end
     end
 
     context "with excluded files" do
       it "does not return violations" do
-        config = {
-          "AllCops" => {
-            "Exclude" => ["lib/a.rb"]
-          },
-          "CollectionMethods" => {
-            "Enabled" => true,
-            "PreferredMethods" => {
-              "find" => "detect"
-            }
-          }
-        }
+        config_file = "ruby_style_with_excluded_files.yml"
 
-        violations = violations_in(<<-CODE, config: config)
+        violations = violations_in(<<-CODE, config_file)
 users.find do |user|
   user.active?
 end
@@ -102,13 +55,19 @@ alias :baz :foo
 
   private
 
-  def violations_in(content, config: nil)
-    repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    style_guide = StyleGuide::Ruby.new(repo_config, "ralph")
-    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+  def violations_in(content, config_file = nil)
+    if config_file
+      stub_const(
+        "StyleGuide::Ruby::CUSTOM_CONFIG_FILE",
+        File.join("spec/support/fixtures", config_file)
+      )
+    end
+
+    style_guide = StyleGuide::Ruby.new
+    style_guide.violations_in_file(build_commit_file(content)).flat_map(&:messages)
   end
 
-  def build_file(content)
+  def build_commit_file(content)
     line = double("Line", content: "blah", number: 1, patch_position: 2)
     double("CommitFile", content: content, filename: "lib/a.rb", line_at: line)
   end

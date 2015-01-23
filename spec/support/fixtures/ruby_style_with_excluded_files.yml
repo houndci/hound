@@ -1,0 +1,8 @@
+AllCops:
+  Exclude:
+    - 'lib/a.rb'
+
+CollectionMethods:
+  Enabled: true
+  PreferredMethods:
+    find: 'detect'

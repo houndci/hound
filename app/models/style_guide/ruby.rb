@@ -1,7 +1,8 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby < Base
-    DEFAULT_CONFIG_FILENAME = "ruby.yml"
+    BASE_CONFIG_FILE = "config/style_guides/ruby.yml"
+    CUSTOM_CONFIG_FILE = ".ruby-style.yml"
 
     def violations_in_file(file)
       if config.file_to_exclude?(file.filename)
@@ -24,7 +25,7 @@ module StyleGuide
     private
 
     def team
-      RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config, rubocop_options)
+      RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config)
     end
 
     def parsed_source(file)
@@ -42,26 +43,15 @@ module StyleGuide
     end
 
     def base_config
-      RuboCop::ConfigLoader.load_file(default_config_file)
+      RuboCop::ConfigLoader.load_file(BASE_CONFIG_FILE)
     end
 
     def custom_config
-      RuboCop::Config.new(repo_config.for(name), "").tap do |config|
-        config.add_missing_namespaces
-        config.make_excludes_absolute
+      if File.file?(CUSTOM_CONFIG_FILE)
+        RuboCop::ConfigLoader.load_file(CUSTOM_CONFIG_FILE)
+      else
+        RuboCop::Config.new
       end
-    rescue NoMethodError
-      RuboCop::Config.new
-    end
-
-    def rubocop_options
-      if config["ShowCopNames"]
-        { debug: true }
-      end
-    end
-
-    def default_config_file
-      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
     end
   end
 end

@@ -1,0 +1,4 @@
+Style/CollectionMethods:
+  Enabled: true
+  PreferredMethods:
+    find: 'detect'
