@@ -1,4 +1,3 @@
-# Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby < Base
     BASE_CONFIG_FILE = "config/style_guides/ruby.yml"
@@ -8,7 +7,8 @@ module StyleGuide
       if config.file_to_exclude?(file.filename)
         []
       else
-        team.inspect_file(parsed_source(file)).map do |violation|
+        # Are non ".rb" riles having a chance to get here?
+        rubocop_team.inspect_file(processed_source(file)).map do |violation|
           line = file.line_at(violation.line)
 
           Violation.new(
@@ -24,11 +24,11 @@ module StyleGuide
 
     private
 
-    def team
+    def rubocop_team
       RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config)
     end
 
-    def parsed_source(file)
+    def processed_source(file)
       RuboCop::ProcessedSource.new(file.content, file.filename)
     end
 
@@ -38,8 +38,6 @@ module StyleGuide
 
     def merged_config
       RuboCop::ConfigLoader.merge(base_config, custom_config)
-    rescue TypeError
-      base_config
     end
 
     def base_config
