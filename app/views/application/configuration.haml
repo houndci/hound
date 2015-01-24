@@ -10,6 +10,10 @@
     #{link_to "thoughtbot style guide", "https://github.com/thoughtbot/guides/tree/master/style"}
     by default, unless you configure it to use your own style guide.
 
+  %p
+    Configure Hound for Ruby, CoffeeScript, JavaScript, and SCSS
+    by following these instructions.
+
   %h3 Ruby
 
   %p
@@ -78,7 +82,7 @@
     Hound uses #{link_to "JSHint", "https://github.com/jshint/jshint/"}
     internally so you can configure Hound by adding a
     #{link_to "JSHint config", "https://github.com/thoughtbot/hound/blob/master/config/style_guides/javascript.json"}
-    to your project and adding the following to
+    file to your project and adding the following to
     %em.code .hound.yml
     in the root of your project.
 
@@ -111,3 +115,30 @@
     %code.code-block
       :preserve
         vendor/assets/javascripts/**.js
+
+  %h3 SCSS
+
+  %p
+    To enable SCSS style checking, add the following to
+    %em.code .hound.yml
+    in the root of your project
+
+    %code.code-block
+      :preserve
+        scss:
+          enabled: true
+
+  %p
+    Hound uses #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint"}
+    internally so you can configure Hound by adding a
+    #{link_to "SCSS config", "https://github.com/causes/scss-lint/blob/master/config/default.yml"}
+    file to your project and adding the following to
+    %em.code .hound.yml
+    in the root of your project.
+
+    %code.code-block
+      :preserve
+        scss:
+          enabled: true
+          config_file: config/scss.yml
+
