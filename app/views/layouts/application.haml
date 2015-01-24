@@ -10,7 +10,7 @@
     = javascript_include_tag 'https://checkout.stripe.com/checkout.js'
     = javascript_include_tag 'application'
     = csrf_meta_tags
-  %body
+  %body{ class: content_for(:body_class) || "hound" }
     - user_facing_flashes.each do |key, value|
       .flash{ class: key }
         = value

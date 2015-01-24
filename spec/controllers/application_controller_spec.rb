@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe HomeController, "#index" do
+describe LandingController, "#index" do
   context "when https is enabled" do
     context "and http is used" do
       it "redirects to https" do

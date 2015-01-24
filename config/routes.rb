@@ -20,5 +20,5 @@ Houndapp::Application.routes.draw do
   resources :repo_syncs, only: [:index, :create]
   resource :user, only: [:show]
 
-  root to: "home#index"
+  root to: "landing#index"
 end

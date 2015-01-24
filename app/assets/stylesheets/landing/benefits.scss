@@ -1,0 +1,37 @@
+@import "getting_started";
+
+.landing.benefits {
+  h2 {
+    font-size: 1.6em;
+    font-weight: 300;
+    line-height: 1.6;
+    margin: 0 0 0.4em;
+  }
+
+  .hero {
+    img.logo {
+      width: 50%;
+      margin-bottom: $gutter;
+    }
+    text-align: center;
+  }
+
+  ul.supported-languages {
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+    overflow: hidden;
+    img {
+      height: 100px;
+      width: auto;
+    }
+    li {
+      display: block;
+      @include span-columns(1 of 3);
+      text-align: center;
+      span {
+        display: block;
+        @include fill-parent;
+      }
+    }
+  }
+}

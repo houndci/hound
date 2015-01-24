@@ -1,0 +1,14 @@
+@import "getting_started";
+
+.landing.original {
+  img.logo {
+    @include size(auto 100px);
+    margin-left: -3em;
+
+    @include media($small-screen) {
+      @include size(auto 72px);
+      display: block;
+      margin: 0 auto;
+    }
+  }
+}
