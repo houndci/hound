@@ -1,16 +1,17 @@
 !!!
-%html{'ng-app' => 'Hound'}
+%html{"ng-app" => "Hound"}
   %head
-    %meta{ content: 'width=device-width,initial-scale=1', name: 'viewport' }
+    %meta{ content: "width=device-width,initial-scale=1", name: "viewport" }
     %title
       = [content_for(:page_title), "Hound"].compact.uniq.join(" | ")
-    %link{ href: '//fonts.googleapis.com/css?family=Lato:300,400,700,900', rel: 'stylesheet', type:'text/css' }
-    = stylesheet_link_tag    'application', :media => 'all'
-    = javascript_include_tag 'https://js.stripe.com/v2/'
-    = javascript_include_tag 'https://checkout.stripe.com/checkout.js'
-    = javascript_include_tag 'application'
+    %link{ href: "//fonts.googleapis.com/css?family=Lato:300,400,700,900", rel: "stylesheet", type:"text/css" }
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "https://js.stripe.com/v2/"
+    = javascript_include_tag "https://checkout.stripe.com/checkout.js"
+    = javascript_include_tag "application"
     = csrf_meta_tags
-  %body
+  %body{ class: content_for(:body_class) || "hound" }
+    = render "application/header"
     - user_facing_flashes.each do |key, value|
       .flash{ class: key }
         = value
@@ -18,8 +19,10 @@
     .content
       = yield
 
+    = render "application/footer"
+
     = javascript_tag do
       = yield :javascript
 
     - if analytics?
-      = render 'segment_io'
+      = render "segment_io"

@@ -1,0 +1,22 @@
+footer {
+  padding: 4em 1em;
+  text-align: center;
+
+  ul.footer-nav {
+    margin-bottom: 4em;
+
+    li {
+      display: inline-block;
+
+      ~ li:before {
+        border-left: 1px solid $base-border-color;
+        content: "";
+        display: inline-block;
+        height: 1em;
+        margin-left: 0.5em;
+        padding-left: 0.5em;
+        vertical-align: middle;
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+%footer
+  %ul.footer-nav
+    %li
+      = link_to "Source Code", "https://github.com/thoughtbot/hound"
+    %li
+      = link_to "FAQ", faq_path
+    %li
+      = link_to "Terms", "https://github.com/thoughtbot/hound/blob/master/doc/TERMS.md"
+    %li
+      = link_to "Privacy", "https://github.com/thoughtbot/hound/blob/master/doc/PRIVACY.md"
+    %li
+      = link_to "Security", "https://github.com/thoughtbot/hound/blob/master/doc/SECURITY.md"
+
+  %article.legal
+    %p
+      Hound is maintained by #{link_to 'thoughtbot', 'http://thoughtbot.com'}.
+      Questions? Try the
+      #{link_to "FAQ", faq_path} or
+      Tweet #{link_to "@houndci", "https://twitter.com/houndci", target: "_blank"}.
+
+    %p
+      Hound is Copyright &copy; #{Date.today.year} thoughtbot. It is open source
+      software and may be redistributed under the terms specified in the
+      #{link_to "LICENSE", "https://github.com/thoughtbot/hound/blob/master/LICENSE"}.
+
+    %p
+      The names and logos for Hound are trademarks of thoughtbot.
