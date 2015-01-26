@@ -5,13 +5,8 @@ body {
 }
 
 .content {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 1em;
-
-  @include media($small-screen) {
-    padding: 1em;
-  }
+  @include outer-container;
+  padding: 0em 1em;
 }
 
 .content-doc {
