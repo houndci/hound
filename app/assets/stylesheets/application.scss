@@ -5,8 +5,9 @@
 
 @import 'variables';
 @import 'animations';
-@import 'base';
+@import 'application/helpers';
 
+@import 'base';
 @import 'accounts/show';
 @import 'application/footer';
 @import 'application/header';
