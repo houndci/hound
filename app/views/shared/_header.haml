@@ -11,7 +11,8 @@
     %ul.pull-right
       %li
         = link_to account_path, class: "account" do
-          .avatar(style="background-image: url('#{avatar_url(current_user)}')")
+          - if current_user.email_address.present?
+            .avatar(style="background-image: url('#{avatar_url(current_user)}')")
           %span #{current_user.github_username}
       %li
         = link_to "Sign Out", sign_out_path, class: "sign-out"
