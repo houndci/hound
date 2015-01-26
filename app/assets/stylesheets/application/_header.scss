@@ -1,143 +1,73 @@
 header {
   @include clearfix;
-  height: 40px;
-  margin: 0 -1em 2em;
-  padding: 0 1em 2em;
+  height: 120px;
 
-  h1.logo {
-    color: $light-font-color;
-    letter-spacing: 4px;
+  a.logo {
+    border: none;
+    display: block;
     float: left;
-    font-weight: 900;
-    font-size: 2.2em;
-    margin: 0;
-    text-transform: uppercase;
+    margin-right: 1em;
+    padding: 0;
+
+    &:hover {
+      border: none;
+    }
+
+    h1 {
+      @include hide-text;
+      @include size(50px);
+      background: image_url("icon.svg") no-repeat center center;
+      margin: 0;
+    }
   }
 
-  ul.nav {
+  ul {
     display: table;
-    float: right;
     height: 100%;
-    margin-top: .75em;
 
     li {
-      color: $light-font-color;
       display: table-cell;
-      font-size: 0.9em;
-      font-weight: bold;
-      letter-spacing: 2px;
-      padding: 0.1em 0;
-      text-transform: uppercase;
       vertical-align: middle;
 
       & + li {
-        padding-left: 2em;
-
-        @include media($small-screen) {
-          border-left: none;
-          padding-left: 0;
-        }
-      }
-    }
-  }
-
-  a, label.toggle {
-    color: $light-font-color;
-    display: inline-block;
-    font-size: 0.9em;
-    font-weight: bold;
-    letter-spacing: 2px;
-    padding: 0.2em;
-    text-transform: uppercase;
-  }
-
-  .dropdown {
-    display: block;
-    position: relative;
-
-    label {
-      cursor: pointer;
-
-      &:after {
-        font-family: $icon-font;
-        line-height: 1em;
-        margin-left: .5em;
-      }
-    }
-
-    input#account-menu-toggle {
-      display: none;
-
-      & ~ label {
-        &:after {
-          content: $icon-dropdown;
-        }
+        padding-left: 1em;
       }
 
-      &:checked {
-        & ~ label {
-          &:after {
-            content: $icon-dropup;
+      a {
+        color: $light-font-color;
+        display: block;
+        font-weight: 300;
+        letter-spacing: 1px;
+
+        &.docs,
+        &.faq {
+          border: 1px solid $base-border-color;
+          border-radius: 20px;
+          line-height: 38px;
+          padding: 0em 1.4em;
+
+          &:hover {
+            border-color: $purple;
           }
         }
 
-        & ~ .menu {
-          opacity: 1;
-          visibility: visible;
+        &.account {
+          .avatar {
+            @include size(38px);
+            background: rgb(240,240,240) no-repeat 50% 50%;
+            background-size: cover;
+            border-radius: 50%;
+            display: inline-block;
+            vertical-align: middle;
+          }
+
+          span {
+            display: inline-block;
+            margin-left: 0.2em;
+            vertical-align: middle;
+          }
         }
       }
-    }
-
-    .menu {
-      @include position(absolute, 100% -2px null null);
-      background: #fff;
-      border-radius: 6px;
-      border: 1px solid $base-border-color;
-      opacity: 0;
-      padding: 1em;
-      visibility: hidden;
-      width: 210px;
-      z-index: 10;
-
-      a {
-        border: none;
-        display: block;
-        margin-bottom: 0.8em;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
-
-  @include media($small-screen) {
-    @include fill-parent;
-    @include position(fixed, 0px null null null);
-    background: #fff;
-    border-bottom: 1px solid $base-border-color;
-    height: 65px;
-    padding: 1em;
-    z-index: 3;
-
-    h1.logo {
-      font-size: 1.5em;
-      letter-spacing: .1em;
-      text-align: center;
-    }
-
-    ul.nav {
-      display: block;
-      margin-top: .25em;
-
-      li {
-        display: inline-block;
-      }
-    }
-
-    label.toggle:hover {
-      border: none;
-      color: $light-font-color;
     }
   }
 }

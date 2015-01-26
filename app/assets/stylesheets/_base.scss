@@ -11,7 +11,7 @@ body {
 .content {
   max-width: 640px;
   margin: 0 auto;
-  padding: 2em 1em;
+  padding: 0em 1em;
 
   @include media($small-screen) {
     padding: 1em;
@@ -92,14 +92,12 @@ em.code {
   }
 }
 
-a, label.toggle {
+a {
   @include transition(all 0.15s linear);
-  border-bottom: 1px solid transparent;
   color: darken($purple, 5%);
   text-decoration: none;
 
   &:hover {
-    border-color: lighten($purple, 5%);
     color: darken($purple, 5%);
   }
 }

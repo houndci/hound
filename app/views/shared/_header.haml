@@ -1,14 +1,18 @@
 %header
-  = link_to root_path do
-    %h1.logo Hound
+  %ul.pull-left
+    %li
+      = link_to repos_path, class: "logo" do
+        %h1 Hound
+    %li
+      = link_to "Docs", configuration_path, class: "docs"
+    %li
+      = link_to "FAQ", faq_path, class: "faq"
   - if signed_in?
-    %ul.nav
-      %li.dropdown
-        %input#account-menu-toggle{type: 'checkbox'}
-        %label.toggle{for: 'account-menu-toggle'} #{current_user}
-        .menu
-          = link_to 'Your Repos', repos_path, class: 'repo-link'
-          = link_to "Your Account", account_path
-          = link_to 'Configure Hound', configuration_path
-          = link_to 'FAQ', faq_path
-          = link_to 'Sign Out', sign_out_path
+    %ul.pull-right
+      %li
+        = link_to account_path, class: "account" do
+          - if current_user.email_address.present?
+            .avatar(style="background-image: url('#{avatar_url(current_user)}')")
+          %span #{current_user.github_username}
+      %li
+        = link_to "Sign Out", sign_out_path, class: "sign-out"
