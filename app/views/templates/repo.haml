@@ -1,2 +1,7 @@
-%a.toggle{'href' => '', 'ng-click' => 'toggle()'}
-%span.repo-name{'ng-class' => '{private: repo.private}'} {{ repo.full_github_name }}
+.repo-name
+  %span {{ repo.full_github_name }}
+.activation-toggle{'ng-class' => '{private: repo.private}'}
+  .private-indicator
+    %i.fa.fa-lock
+    %span / $12
+  %a.toggle{'href' => '', 'ng-click' => 'toggle()'}

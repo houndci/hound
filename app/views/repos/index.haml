@@ -4,5 +4,9 @@
 
 .dashboard
   %aside
+    %nav.individual-org
+      %header.current-org
+        %h2 thoughtbot
+    %nav.all-orgs
   %section.repo-listing{ 'repo-list' => '' }
-    = render 'preload_template', template: 'repo_list'
+  = render 'preload_template', template: 'repo_list'
