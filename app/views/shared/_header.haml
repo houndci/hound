@@ -11,7 +11,7 @@
     %ul.pull-right
       %li
         = link_to account_path, class: "account" do
-          .avatar
-          %span #{current_user}
+          .avatar(style="background-image: url('#{avatar_url(current_user)}')")
+          %span #{current_user.github_username}
       %li
         = link_to "Sign Out", sign_out_path, class: "sign-out"

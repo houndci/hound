@@ -54,7 +54,8 @@ header {
         &.account {
           .avatar {
             @include size(38px);
-            background: rgb(240,240,240);
+            background: rgb(240,240,240) no-repeat 50% 50%;
+            background-size: cover;
             border-radius: 50%;
             display: inline-block;
             vertical-align: middle;
