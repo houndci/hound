@@ -85,10 +85,16 @@ aside {
     }
 
     nav {
-      padding: 1em 1em 0 0;
+      padding-top: 1em;
+
+      ul ~ ul {
+        border-top: 1px dotted rgb(220, 220, 220);
+        margin-top: 1em;
+        padding-top: 1em;
+      }
 
       li {
-        padding: 0.8em 0em;
+        padding: 0.8em 1em 0.8em 0;
 
         .icon {
           @include size(24px);
