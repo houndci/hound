@@ -19,12 +19,10 @@ module StyleGuide
     private
 
     def config
-      @config ||= begin
-        if File.file?(CUSTOM_CONFIG_FILE)
-          JSON.parse(File.read(CUSTOM_CONFIG_FILE))
-        else
-          Hash.new
-        end
+      if File.file?(CUSTOM_CONFIG_FILE)
+        JSON.parse(File.read(CUSTOM_CONFIG_FILE))
+      else
+        Hash.new
       end
     end
   end
