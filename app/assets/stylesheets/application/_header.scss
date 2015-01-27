@@ -1,6 +1,6 @@
 $medium-screen-header: new-breakpoint(max-width em(850) 4);
 
-header {
+header.global {
   @include clearfix;
   height: 120px;
   padding: 0 2em;

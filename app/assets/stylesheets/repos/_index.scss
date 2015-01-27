@@ -2,18 +2,93 @@
   @include clearfix;
   border: 1px solid $base-border-color;
   border-radius: 5px;
+  margin-bottom: 6em;
+  overflow: hidden;
   padding: 2em;
 }
 
 aside {
   float: left;
+  position: relative;
   width: 300px;
+
+  section.single-org {
+    @include transition(all 0.4s ease-out);
+    box-shadow: 1px 0 0 0 $base-border-color;
+    position: relative;
+    z-index: 2;
+
+    &.open {
+      @include transform(translateX(-100%));
+    }
+
+    header.current-org {
+      border-bottom: 1px solid $base-border-color;
+      display: table;
+      height: 60px;
+      padding-left: 0.6em;
+      width: 100%;
+
+      .title,
+      .menu-toggle {
+        display: table-cell;
+        height: 100%;
+        vertical-align: middle;
+      }
+
+      .icon {
+        @include size(24px);
+        border-radius: 50%;
+        background: rgb(200,200,200);
+        display: inline-block;
+        margin-right: 0.3em;
+        vertical-align: middle;
+      }
+
+      h2 {
+        display: inline-block;
+        margin: 0;
+        font-weight: 300;
+        vertical-align: middle;
+      }
+    }
+
+    nav {
+      padding: 1em 0.6em;
+
+      li {
+        padding: 0.8em 0em;
+
+        .icon {
+          @include size(24px);
+          border: 1px solid $base-border-color;
+          border-radius: 50%;
+          display: inline-block;
+          margin-right: 0.3em;
+          vertical-align: middle;
+        }
+
+        a {
+          color: $light-font-color;
+          display: inline-block;
+          font-weight: 300;
+          letter-spacing: 1px;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  section.all-orgs {
+    @include position(absolute, 0px 0px 0 0);
+    z-index: 1;
+  }
 }
 
 .repo-listing {
   border-left: 1px solid $base-border-color;
   margin-left: 300px;
-  padding: 1em 0 0 1em;
+  padding: 0em 0 0 2em;
 
   @include media($small-screen) {
   }
