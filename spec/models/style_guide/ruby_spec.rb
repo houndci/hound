@@ -68,7 +68,7 @@ alias :baz :foo
   end
 
   def build_commit_file(content)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
+    line = double("Line", content: nil, number: 1, patch_position: 2)
     double("CommitFile", content: content, filename: "lib/a.rb", line_at: line)
   end
 end
