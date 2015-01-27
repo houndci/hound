@@ -149,13 +149,10 @@ aside {
   margin-left: 300px;
   padding: 0em 0 0 2em;
 
-  @include media($small-screen) {
-  }
-
   nav.repo-tools {
     background: #fff;
     display: table;
-    padding-bottom: 1em;
+    padding: 0em 0em 0em;
     width: 100%;
     vertical-align: middle;
 
@@ -165,12 +162,11 @@ aside {
       position: relative;
 
       i.fa-search {
-        @include position(absolute, 1em null null 1em);
+        @include position(absolute, 16px null null 1em);
         @include user-select(none);
-        color: $light-font-color;
-        color: $base-accent-color;
-        color: #FFF;
-        font-size: 1.3em;
+        color: rgba(255,255,255,0.6);
+        display: none;
+        font-size: 15px;
       }
 
       input.search {
@@ -185,7 +181,7 @@ aside {
         height: 60px;
         letter-spacing: 1px;
         margin: 0;
-        padding: 0.8em 0.8em 0.8em 3em;
+        padding: 0.8em 1em;
         width: 100%;
 
         &:focus {
@@ -226,7 +222,7 @@ aside {
       i.fa {
         color: inherit;
         margin-right: 0.2em;
-        font-size: 1.3em;
+        font-size: 1em;
         padding-top: 2px;
         vertical-align: middle;
       }
@@ -269,7 +265,7 @@ aside {
     @include clearfix;
     display: table;
     height: 80px;
-    padding: 0em;
+    padding: 0em 0em;
     position: relative;
     width: 100%;
 
@@ -345,6 +341,7 @@ aside {
       }
 
       .toggle {
+        @include transition(all 0.15s linear);
         @include user-select(none);
         background: rgb(230,230,230);
         border-radius: 20px;
@@ -364,6 +361,10 @@ aside {
           display: block;
           position: absolute;
           z-index: 2;
+        }
+
+        &:hover {
+          background-color: rgb(215,215,215);
         }
       }
     }
