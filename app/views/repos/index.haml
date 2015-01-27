@@ -3,18 +3,20 @@
 = render 'settings'
 
 .dashboard
-  %aside
-    %section.single-org
-      %header.current-org
-        .title
-          .icon
+  %aside(ng-class="{ 'open': menu }")
+    %section.current-org
+      %header
+        .title-wrapper
+          .icon(style="background-image: url('')")
           %h2 thoughtbot
         .menu-toggle
+          %a.open-menu(href="" ng-click="menu = !menu")
+            %i.fa.fa-bars
       %nav
         %ul
           %li
             .icon
-            = link_to "Repositories", "#"
+            = link_to "Repositories", "#", class: "current"
           %li
             .icon
             = link_to "Ruby Styles", "#"
@@ -23,5 +25,16 @@
             = link_to "Javascript Styles", "#"
 
     %section.all-orgs
+      %header
+        .title-wrapper
+          %h2 Your Organizations
+        .menu-toggle
+          %a.close-menu(href="" ng-click="menu = !menu")
+            %i.fa.fa-times
+      %nav
+        %ul
+          %li
+            .icon.org(style="background-image: url('')")
+            = link_to "thoughtbot", "#", class: "current"
   %section.repo-listing{ 'repo-list' => '' }
   = render 'preload_template', template: 'repo_list'

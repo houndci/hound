@@ -8,44 +8,75 @@
 }
 
 aside {
+  box-shadow: 1px 0 0 0 $base-border-color;
   float: left;
+  overflow: hidden;
   position: relative;
   width: 300px;
 
-  section.single-org {
-    @include transition(all 0.4s ease-out);
-    box-shadow: 1px 0 0 0 $base-border-color;
-    position: relative;
-    z-index: 2;
-
-    &.open {
-      @include transform(translateX(-100%));
+  &.open {
+    section.all-orgs {
+      @include transform(translateX(0%));
     }
 
-    header.current-org {
+    section.current-org {
+      opacity: 0;
+    }
+  }
+
+  section.current-org,
+  section.all-orgs {
+    @include transition(all 0.3s ease-out);
+    position: relative;
+
+    > header {
       border-bottom: 1px solid $base-border-color;
       display: table;
       height: 60px;
-      padding-left: 0.6em;
       width: 100%;
 
-      .title,
+      .title-wrapper,
       .menu-toggle {
         display: table-cell;
         height: 100%;
         vertical-align: middle;
       }
 
+      .menu-toggle {
+        text-align: right;
+        width: 30px;
+
+        a {
+          color: $light-font-color;
+          display: block;
+          line-height: 60px;
+          padding: 0 1em;
+
+          &:hover {
+            color: $base-font-color;
+          }
+        }
+
+        i.fa {
+          display: inline-block;
+          padding-top: 4px;
+        }
+      }
+
       .icon {
-        @include size(24px);
-        border-radius: 50%;
-        background: rgb(200,200,200);
+        @include size(30px);
+        border-radius: 3px;
+        background: rgb(220,220,220);
+        background-size: cover;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
         display: inline-block;
         margin-right: 0.3em;
         vertical-align: middle;
       }
 
       h2 {
+        color: $medium-font-color;
         display: inline-block;
         margin: 0;
         font-weight: 300;
@@ -54,7 +85,7 @@ aside {
     }
 
     nav {
-      padding: 1em 0.6em;
+      padding: 1em 1em 0 0;
 
       li {
         padding: 0.8em 0em;
@@ -66,14 +97,30 @@ aside {
           display: inline-block;
           margin-right: 0.3em;
           vertical-align: middle;
+
+          &.org {
+            border-radius: 3px;
+            background: rgb(220,220,220);
+            background-size: cover;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+          }
         }
 
         a {
           color: $light-font-color;
           display: inline-block;
           font-weight: 300;
-          letter-spacing: 1px;
           vertical-align: middle;
+
+          &:hover {
+            color: $medium-font-color;
+          }
+
+          &.current {
+            color: $medium-font-color;
+            font-weight: 400;
+          }
         }
       }
     }
@@ -81,6 +128,12 @@ aside {
 
   section.all-orgs {
     @include position(absolute, 0px 0px 0 0);
+    @include transform(translateX(120%));
+    z-index: 2;
+  }
+
+  section.current-org {
+    opacity: 1;
     z-index: 1;
   }
 }
@@ -102,33 +155,41 @@ aside {
 
     .search-wrapper {
       display: table-cell;
+      padding-right: 1em;
       position: relative;
 
       i.fa-search {
-        @include position(absolute, 1em null null 0.8em);
+        @include position(absolute, 1em null null 1em);
         @include user-select(none);
         color: $light-font-color;
+        color: $base-accent-color;
+        color: #FFF;
         font-size: 1.3em;
       }
 
       input.search {
         @include transition(all 0.25s ease-out);
         @include box-sizing(border-box);
-        background-color: rgb(248,248,248);
-        border: 1px solid $base-border-color;
-        color: $light-font-color;
+        background-color: lighten($purple, 10%);
+        border: 1px solid lighten($purple, 10%);
+        border-radius: 3px;
+        color: #FFF;
         display: block;
+        font-weight: 300;
         height: 60px;
+        letter-spacing: 1px;
         margin: 0;
-        padding: 0.8em 0.8em 0.8em 2.6em;
+        padding: 0.8em 0.8em 0.8em 3em;
         width: 100%;
 
         &:focus {
           outline: none;
+          background-color: $purple;
+          border-color: $purple;
         }
 
         @include placeholder {
-          color: $light-font-color;
+          color: #FFF;
           font-weight: 300;
           letter-spacing: 1px;
         }
@@ -136,10 +197,10 @@ aside {
     }
 
     a.refresh {
-      background-color: rgb(248,248,248);
-      border: 1px solid $base-border-color;
-      border-left: none;
-      color: $light-font-color;
+      background-color: lighten($purple, 10%);
+      border-radius: 3px;
+      border: 1px solid lighten($purple, 10%);
+      color: #FFF;
       display: table-cell;
       font-size: 1em;
       font-weight: 300;
@@ -149,6 +210,12 @@ aside {
       text-align: center;
       vertical-align: middle;
       width: 200px;
+
+      &:hover {
+        background-color: $purple;
+        border-color: $purple;
+        color: #FFF;
+      }
 
       i.fa {
         color: inherit;
@@ -196,7 +263,7 @@ aside {
     @include clearfix;
     display: table;
     height: 80px;
-    padding: 0em 0.6em;
+    padding: 0em;
     position: relative;
     width: 100%;
 
@@ -225,9 +292,9 @@ aside {
 
     .repo-name {
       @include transition(all 0.25s linear);
-      color: $light-font-color;
+      color: $medium-font-color;
       display: table-cell;
-      font-size: 1.6em;
+      font-size: 1.5em;
       font-weight: 300;
       height: 100%;
       overflow: hidden;
@@ -246,9 +313,9 @@ aside {
       .private-indicator {
         display: none;
         font-weight: 300;
-        height: 30px;
+        height: 28px;
         margin-right: 0.4em;
-        padding-top: 4px;
+        padding-top: 2px;
         vertical-align: middle;
 
         i.fa {
@@ -256,6 +323,7 @@ aside {
           display: inline-block;
           font-size: 1.2em;
           margin-right: 0.1em;
+          padding-top: 1px;
           vertical-align: middle;
         }
 
@@ -275,14 +343,14 @@ aside {
         background: rgb(230,230,230);
         border-radius: 20px;
         display: inline-block;
-        height: 30px;
+        height: 28px;
         padding: 2px;
         position: relative;
         vertical-align: middle;
-        width: 60px;
+        width: 56px;
 
         &:before {
-          @include size(26px);
+          @include size(24px);
           @include transition(all 0.25s linear);
           background-color: rgb(255,255,255);
           border-radius: 100%;
