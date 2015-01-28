@@ -64,7 +64,7 @@ aside {
       }
 
       .icon {
-        @include size(30px);
+        @include size(24px);
         border-radius: 3px;
         background: rgb(220,220,220);
         background-size: cover;
@@ -237,18 +237,18 @@ aside {
 
   .loading {
     background-color: #fff;
-    padding: 1.1em 1.9em 1em;
+    padding: 4em 1em;
     text-align: center;
 
     .dot {
-      @include size(20px);
+      @include size(24px);
       @include animation(loading 1.3s ease-out);
       @include animation-iteration-count(infinite);
       background-color: rgba($green, 0.1);
       border-radius: 100%;
       border: 1px solid $green;
       display: inline-block;
-      opacity: 0.15;
+      opacity: 0.1;
       margin: 0 1.2em;
 
       &:nth-child(2) {
@@ -273,15 +273,10 @@ aside {
       border-top: 1px solid $base-border-color;
     }
 
-    @include media($small-screen) {
-      padding: 1.1em 1em 1em;
-    }
-
     &:before {
       @include transition(all 0.25s linear);
       @extend .fa-spin;
-      border-radius: 50%;
-      color: rgb(210,210,210);
+      color: $base-accent-color;
       content: '\f013';
       display: inline-block;
       font-size: 1.6em;
@@ -303,6 +298,11 @@ aside {
       position: relative;
       text-overflow: ellipsis;
       vertical-align: middle;
+
+      span {
+        display: inline-block;
+        padding-bottom: 2px;
+      }
     }
 
     .activation-toggle {
@@ -310,40 +310,37 @@ aside {
       height: 100%;
       text-align: right;
       vertical-align: middle;
-      width: 130px;
+      width: 150px;
 
-      .private-indicator {
+      span.private-label {
+        background: lighten($gold, 40%);
+        border: 1px solid $gold;
+        border-radius: 3px;
+        color: darken($gold, 5%);
         display: none;
         font-weight: 300;
-        height: 28px;
-        margin-right: 0.4em;
-        padding-top: 2px;
+        font-size: 0.9em;
+        letter-spacing: 1px;
+        margin-right: 0.6em;
+        text-align: center;
+        padding: 0.2em 0.6em;
         vertical-align: middle;
 
         i.fa {
           color: $gold;
           display: inline-block;
-          font-size: 1.2em;
-          margin-right: 0.1em;
-          padding-top: 1px;
-          vertical-align: middle;
-        }
-
-        span {
-          color: $gold;
-          display: inline-block;
-          vertical-align: middle;
+          margin-right: 0.2em;
         }
       }
 
-      &.private .private-indicator {
+      &.private span.private-label {
         display: inline-block;
       }
 
       .toggle {
         @include transition(all 0.15s linear);
         @include user-select(none);
-        background: rgb(230,230,230);
+        background: rgb(228, 215, 201);
         border-radius: 20px;
         display: inline-block;
         height: 28px;
@@ -364,7 +361,7 @@ aside {
         }
 
         &:hover {
-          background-color: rgb(215,215,215);
+          background-color: darken(rgb(228, 215, 201), 5%);
         }
       }
     }
@@ -376,7 +373,7 @@ aside {
       }
 
       .repo-name {
-        padding-left: 1.2em;
+        padding-left: 1.4em;
       }
     }
 
@@ -386,30 +383,6 @@ aside {
       &:before {
         right: 2px;
       }
-    }
-  }
-
-  @include media($small-screen) {
-    border-top: none;
-    margin-top: -1em;
-
-    input.search {
-      font-size: 1em;
-      padding-right: 2.5em !important;
-
-      &[placeholder] {
-        font-size: 1em;
-        text-overflow: ellipsis;
-      }
-    }
-
-    .repo-name {
-      font-size: 1.1em !important;
-    }
-
-    .repo:before {
-      font-size: 1em !important;
-      top: 1.2em !important;
     }
   }
 }
