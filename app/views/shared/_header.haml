@@ -7,8 +7,8 @@
       = link_to "Docs", configuration_path, class: "docs"
     %li
       = link_to "FAQ", faq_path, class: "faq"
-  - if signed_in?
-    %ul.pull-right
+  %ul.pull-right
+    - if signed_in?
       %li
         = link_to account_path, class: "account" do
           - if current_user.email_address.present?
@@ -16,3 +16,6 @@
           %span #{current_user.github_username}
       %li
         = link_to "Sign Out", sign_out_path, class: "sign-out"
+    - else
+      %li
+        = render "shared/auth_button"
