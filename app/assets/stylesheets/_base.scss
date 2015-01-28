@@ -11,7 +11,7 @@ body {
 .content {
   max-width: 640px;
   margin: 0 auto;
-  padding: 0em 1em;
+  padding: 0em 1em 3em;
 
   @include media($small-screen) {
     padding: 1em;
