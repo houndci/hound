@@ -94,6 +94,13 @@ There a couple areas we would like to concentrate on.
    would enforce the
    [thoughtbot style guide](https://github.com/thoughtbot/guides).
 
+### License
+
+The names and logos for Hound are trademarks of thoughtbot, inc.
+
+Hound is Copyright © 2014 thoughtbot, inc.  It is free software, and may be
+redistributed under the terms specified in the [LICENSE](LICENSE) file.
+
 ### Contributor License Agreement
 
 If you submit a Contribution to this application's source code, you hereby grant
