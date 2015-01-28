@@ -2,12 +2,22 @@ header {
   @include clearfix;
   height: 120px;
 
+  @include media($small-screen) {
+    height: auto;
+    padding: 2em 0;
+    text-align: center;
+  }
+
   a.logo {
     border: none;
     display: block;
     float: left;
     margin-right: 1em;
     padding: 0;
+
+    @include media($small-screen) {
+      margin-right: 0;
+    }
 
     &:hover {
       border: none;
@@ -25,9 +35,27 @@ header {
     display: table;
     height: 100%;
 
+    @include media($small-screen) {
+      display: inline-block;
+      margin: 0 0.5em;
+
+      &.pull-right,
+      &.pull-left {
+        float: none;
+      }
+
+      & + ul {
+        padding-top: 1.2em;
+      }
+    }
+
     li {
       display: table-cell;
       vertical-align: middle;
+
+      @include media($small-screen) {
+        display: inline-block;
+      }
 
       & + li {
         padding-left: 1em;
