@@ -2,7 +2,7 @@ Hound
 =====
 
 [![Build Status](https://travis-ci.org/thoughtbot/hound.svg?branch=master)](http://travis-ci.org/thoughtbot/hound?branch=master)
-[![Code Climate](https://codeclimate.com/github/thoughtbot/hound.png)](https://codeclimate.com/github/thoughtbot/hound)
+[![Code Climate](https://codeclimate.com/repos/526ab75ff3ea007df603b773/badges/32cb8e64b2e265d8cad6/gpa.svg)](https://codeclimate.com/repos/526ab75ff3ea007df603b773/feed)
 
 Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
 
