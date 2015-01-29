@@ -1,80 +1,72 @@
 class Report
   def self.north_star
-    format "North Star" do
-      weeks.each do |week|
-        weekly_activity_sql = <<-SQL
-          SELECT COUNT(distinct repos.id)
-          FROM repos
-          JOIN builds ON builds.repo_id = repos.id
-          WHERE builds.created_at >= '#{week}'
-          AND builds.created_at < '#{week + 7.days}'
-        SQL
-
-        generate_output(weekly_activity_sql, week)
-      end
+    generate_report("North Star") do |week|
+      <<-SQL
+        SELECT COUNT(distinct repos.id)
+        FROM repos
+        JOIN builds ON builds.repo_id = repos.id
+        WHERE builds.created_at >= '#{week}'
+        AND builds.created_at < '#{week + 7.days}'
+      SQL
     end
   end
 
   def self.users
-    format "Users" do
-      weeks.each do |week|
-        new_users_by_week_sql = <<-SQL
-          SELECT COUNT(*)
-          FROM users
-          WHERE created_at >= '#{week}'
-          AND created_at < '#{week + 7.days}'
-        SQL
-
-        generate_output(new_users_by_week_sql, week)
-      end
+    generate_report("Users") do |week|
+      <<-SQL
+        SELECT COUNT(*)
+        FROM users
+        WHERE created_at >= '#{week}'
+        AND created_at < '#{week + 7.days}'
+      SQL
     end
   end
 
   def self.builds
-    format "Builds" do
-      weeks.each do |week|
-        builds_by_week_sql = <<-SQL
-          SELECT COUNT(*)
-          FROM builds
-          WHERE created_at >= '#{week}'
-          AND created_at < '#{week + 7.days}'
-        SQL
-
-        generate_output(builds_by_week_sql, week)
-      end
+    generate_report("Builds") do |week|
+      <<-SQL
+        SELECT COUNT(*)
+        FROM builds
+        WHERE created_at >= '#{week}'
+        AND created_at < '#{week + 7.days}'
+      SQL
     end
   end
 
   def self.subscriptions
-    format "Subscriptions" do
-      weeks.each do |week|
-        subscriptions_by_week_sql = <<-SQL
-          SELECT COUNT(*)
-          FROM subscriptions
-          WHERE deleted_at IS NULL
-          AND created_at >= '#{week}'
-          AND created_at < '#{week + 7.days}'
-        SQL
-
-        generate_output(subscriptions_by_week_sql, week)
-      end
+    generate_report("Subscriptions") do |week|
+      <<-SQL
+        SELECT COUNT(*)
+        FROM subscriptions
+        WHERE deleted_at IS NULL
+        AND created_at >= '#{week}'
+        AND created_at < '#{week + 7.days}'
+      SQL
     end
   end
 
   def self.cancellations
-    format "Cancellations" do
-      weeks.each do |week|
-        cancellations_by_week_sql = <<-SQL
-          SELECT COUNT(*)
-          FROM subscriptions
-          WHERE deleted_at IS NOT NULL
-          AND created_at >= '#{week}'
-          AND created_at < '#{week + 7.days}'
-        SQL
-
-        generate_output(cancellations_by_week_sql, week)
-      end
+    generate_report("Subscriptions") do |week|
+      <<-SQL
+        SELECT COUNT(*)
+        FROM subscriptions
+        WHERE deleted_at IS NOT NULL
+        AND created_at >= '#{week}'
+        AND created_at < '#{week + 7.days}'
+      SQL
     end
+  end
+
+  def self.generate_report(title)
+    puts "#{title}:"
+
+    weeks.each do |week|
+      sql = yield week
+      results = Repo.connection.execute(sql).first
+      puts "#{week}: #{results["count"]}"
+    end
+
+    puts "\n\n"
   end
 
   def self.weeks
@@ -86,16 +78,5 @@ class Report
     Repo.connection.execute(series_sql).map do |result|
       Date.parse(result["week"])
     end
-  end
-
-  def self.generate_output(sql, week)
-    results = Repo.connection.execute(sql).first
-    puts "#{week}: #{results["count"]}"
-  end
-
-  def self.format(report_title)
-    puts "#{report_title}:"
-    yield
-    puts "\n\n"
   end
 end
