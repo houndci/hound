@@ -46,7 +46,7 @@ class Report
   end
 
   def self.cancellations
-    generate_report("Subscriptions") do |week|
+    generate_report("Cancellations") do |week|
       <<-SQL
         SELECT COUNT(*)
         FROM subscriptions

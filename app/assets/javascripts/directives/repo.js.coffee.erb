@@ -1,4 +1,4 @@
-App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCheckout) ->
+App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, StripeCheckout, User) ->
   scope: true
   templateUrl: '/templates/repo'
   link: (scope, element, attributes) ->
@@ -16,15 +16,37 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
         .catch(-> alert('Your repo failed to deactivate.'))
         .finally(-> scope.processing = false)
 
-    createSubscription = (stripeToken) ->
-      scope.processing = true
+    showCreditCardForm = ->
+      StripeCheckout.open(
+        name: scope.repo.full_plan_name,
+        amount: scope.repo.price_in_cents,
+        createSubscriptionWithNewCard
+      )
 
+    createSubscription = (user) ->
+      if scope.repo.price_in_cents > 0
+        if user.card_exists
+          createSubscriptionWithExistingCard()
+        else
+          showCreditCardForm()
+      else
+        activateRepo()
+
+    createSubscriptionWithExistingCard = ->
+      scope.processing = true
+      subscription = new Subscription(repo_id: scope.repo.id)
+      saveSubscription(subscription)
+
+    createSubscriptionWithNewCard = (stripeToken) ->
+      scope.processing = true
       subscription = new Subscription(
         repo_id: scope.repo.id
         card_token: stripeToken.id
         email_address: stripeToken.email
       )
+      saveSubscription(subscription)
 
+    saveSubscription = (subscription) ->
       subscription.$save().then((response) ->
         scope.repo.active = true
         scope.repo.stripe_subscription_id = response.stripe_subscription_id
@@ -55,12 +77,5 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', (Subscription, StripeCh
         else
           deactivateRepo()
       else
-        if scope.repo.price_in_cents > 0
-          StripeCheckout.open(
-            name: scope.repo.full_plan_name,
-            amount: scope.repo.price_in_cents,
-            createSubscription
-          )
-        else
-          activateRepo()
+        User.get().$promise.then(createSubscription)
 ]

@@ -17,7 +17,7 @@ describe RepoSubscriber do
         RepoSubscriber.subscribe(repo, user, "cardtoken")
 
         expect(subscription_request).to have_been_requested
-        expect(update_request).to have_been_requested
+        expect(update_request).not_to have_been_requested
         expect(repo.subscription.stripe_subscription_id).
           to eq(stripe_subscription_id)
         expect(repo.subscription_price).to(eq(Plan::PRICES[:private]))
@@ -27,7 +27,7 @@ describe RepoSubscriber do
     context "when Stripe customer does not exist" do
       it "creates a new Stripe customer, subscription and repo subscription" do
         repo = create(:repo)
-        user = create(:user, repos: [repo])
+        user = create(:user, repos: [repo], stripe_customer_id: "")
         customer_request = stub_customer_create_request(user)
         subscription_request =
           stub_subscription_create_request(plan: repo.plan_type)
