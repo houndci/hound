@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108003045) do
+ActiveRecord::Schema.define(version: 20150130051749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "builds", force: :cascade do |t|
     t.text     "violations_archive"
@@ -36,7 +37,8 @@ ActiveRecord::Schema.define(version: 20150108003045) do
     t.datetime "updated_at"
   end
 
-  add_index "memberships", ["repo_id", "user_id"], name: "index_memberships_on_repo_id_and_user_id", using: :btree
+  add_index "memberships", ["repo_id"], name: "index_memberships_on_repo_id", using: :btree
+  add_index "memberships", ["user_id"], name: "index_memberships_on_user_id", using: :btree
 
   create_table "repos", force: :cascade do |t|
     t.integer  "github_id",                                    null: false
