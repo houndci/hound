@@ -31,7 +31,6 @@ gem "sass-rails"
 gem "scss-lint", require: false
 gem "sentry-raven"
 gem "stripe"
-gem "stripe_event"
 gem "uglifier", ">= 1.0.3"
 gem "unicorn"
 

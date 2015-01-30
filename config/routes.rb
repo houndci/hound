@@ -1,6 +1,5 @@
 Houndapp::Application.routes.draw do
   mount Resque::Server, at: "/queue"
-  mount StripeEvent::Engine => "/stripe-event"
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
 
   get "/auth/github/callback", to: "sessions#create"
