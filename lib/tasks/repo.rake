@@ -45,4 +45,9 @@ namespace :repo do
       WHERE repos.id = del.id AND del.rn > 1
     SQL
   end
+
+  desc "Update missing owner_id's"
+  task update_owners: :environment do
+    UpdateRepoOwner.run
+  end
 end

@@ -30,6 +30,18 @@ module GithubApiHelper
     )
   end
 
+  def stub_not_found_repo_request(repo_name, token)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo_name}"
+    ).with(
+      headers: { 'Authorization' => "token #{token}" }
+    ).to_return(
+      status: 404,
+      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+    )
+  end
+
   def stub_repo_with_org_request(repo_name, token = hound_token)
     stub_request(
       :get,

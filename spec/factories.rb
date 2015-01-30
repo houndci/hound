@@ -8,6 +8,7 @@ FactoryGirl.define do
   end
 
   factory :repo do
+    owner
     trait(:active) { active true }
     trait(:inactive) { active false }
     trait(:in_private_org) do
