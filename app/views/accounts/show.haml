@@ -7,9 +7,10 @@
   %h2.label-text
     Your monthly cost
 
-    %span.section-action
-      %a{ 'ng-controller' => 'accountController', 'ng-click' => 'showStripeForm()' }
-        Update Credit Card
+    - if current_user.stripe_customer_id.present?
+      %span.section-action
+        %a{ 'ng-controller' => 'accountController', 'ng-click' => 'showStripeForm()' }
+          Update Credit Card
 
   .account-content.account-breakdown
     %table
