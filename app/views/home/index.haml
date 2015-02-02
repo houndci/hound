@@ -8,9 +8,7 @@
         Review your JavaScript, CoffeeScript, and Ruby code
         for style guide violations
         with a trusty hound.
-    = link_to '/auth/github', class: 'auth button' do
-      %i.fa.fa-github
-      %span= t('authenticate')
+    = render "shared/auth_button"
 
   %li.step.step-activate
     %h3 Activate Repos

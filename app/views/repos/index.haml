@@ -1,12 +1,7 @@
 - content_for :page_title, "Your Repos"
 
 = render 'shared/header'
-
-:javascript
-  Settings = {
-    stripePublishableKey: '#{ENV['STRIPE_PUBLISHABLE_KEY']}',
-    userEmailAddress: '#{current_user.email_address}'
-  };
+= render 'settings'
 
 .repo-listing{ 'repo-list' => '' }
 = render 'preload_template', template: 'repo_list'

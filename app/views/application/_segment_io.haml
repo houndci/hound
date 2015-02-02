@@ -6,11 +6,14 @@
 - if flash[:signed_up]
   :javascript
     window.analytics.alias("#{current_user.id}");
+
+- if signed_in?
+  = render "identify"
+
+- if flash[:signed_up]
+  :javascript
     window.analytics.track("Signed Up", {
       context: {
         campaign: #{session[:campaign_params].to_json}
       }
     });
-
-- if signed_in?
-  = render 'shared/intercom_settings'

@@ -1,0 +1,101 @@
+header {
+  @include clearfix;
+  height: 120px;
+
+  @include media($small-screen) {
+    height: auto;
+    padding: 2em 0;
+    text-align: center;
+  }
+
+  a.logo {
+    border: none;
+    display: block;
+    float: left;
+    margin-right: 1em;
+    padding: 0;
+
+    @include media($small-screen) {
+      margin-right: 0;
+    }
+
+    &:hover {
+      border: none;
+    }
+
+    h1 {
+      @include hide-text;
+      @include size(50px);
+      background: image_url("icon.svg") no-repeat center center;
+      margin: 0;
+    }
+  }
+
+  ul {
+    display: table;
+    height: 100%;
+
+    @include media($small-screen) {
+      display: inline-block;
+      margin: 0 0.5em;
+
+      &.pull-right,
+      &.pull-left {
+        float: none;
+      }
+
+      & + ul {
+        padding-top: 1.2em;
+      }
+    }
+
+    li {
+      display: table-cell;
+      vertical-align: middle;
+
+      @include media($small-screen) {
+        display: inline-block;
+      }
+
+      & + li {
+        padding-left: 1em;
+      }
+
+      a {
+        color: $light-font-color;
+        display: block;
+        font-weight: 300;
+        letter-spacing: 1px;
+
+        &.docs,
+        &.faq {
+          border: 1px solid $base-border-color;
+          border-radius: 20px;
+          line-height: 38px;
+          padding: 0em 1.4em;
+
+          &:hover {
+            border-color: $purple;
+          }
+        }
+
+        &.account {
+          .avatar {
+            @include size(38px);
+            background: rgb(240,240,240) no-repeat 50% 50%;
+            background-size: cover;
+            border-radius: 50%;
+            display: inline-block;
+            vertical-align: middle;
+          }
+
+          span {
+            display: inline-block;
+            margin-left: 0.2em;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
+}

@@ -47,10 +47,6 @@ class ApplicationController < ActionController::Base
     @analytics ||= Analytics.new(current_user, session[:campaign_params])
   end
 
-  def report_exception(exception, metadata)
-    Raven.capture_exception(exception, extra: metadata)
-  end
-
   protected
 
   def verified_request?

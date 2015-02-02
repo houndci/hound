@@ -32,8 +32,7 @@ class RepoActivator
   end
 
   def add_hound_to_repo
-    github_username = ENV.fetch("HOUND_GITHUB_USERNAME")
-    github.add_user_to_repo(github_username, repo.full_github_name)
+    AddHoundToRepo.run(repo.full_github_name, github)
   end
 
   def github

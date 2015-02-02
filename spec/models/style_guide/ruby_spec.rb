@@ -420,6 +420,24 @@ end
 
         expect(violations).to be_empty
       end
+
+      it 'allows a cop to be excluded for specific files or directories' do
+        config = {
+          "StringLiterals" => {
+            "EnforcedStyle" => "single_quotes"
+          },
+          "HashSyntax" => {
+            "Exclude" => ["lib/**/*"]
+          }
+        }
+
+        violations = violations_with_config(config)
+
+        expect(violations).to eq [
+          "Prefer single-quoted strings when you don't need string "\
+          "interpolation or special symbols."
+        ]
+      end
     end
 
     def violations_with_config(config)

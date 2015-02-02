@@ -33,7 +33,7 @@ describe GithubUser, '#has_admin_access_through_team?' do
         api = GithubApi.new
         user = GithubUser.new(api)
         team_id = 4567
-        teams = [double(permission: 'pull', id: 4567)]
+        teams = [double(permission: "push", id: 4567)]
         allow(api).to receive(:user_teams).and_return(teams)
 
         expect(user).not_to have_admin_access_through_team(team_id)

@@ -23,6 +23,11 @@ class PaymentGatewayCustomer
     end
   end
 
+  def update_card(card_token)
+    customer.card = card_token
+    customer.save
+  end
+
   private
 
   def default_card

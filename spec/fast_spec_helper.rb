@@ -14,6 +14,7 @@ ENV["HOUND_GITHUB_USERNAME"] = "houndci"
 ENV["HOUND_GITHUB_TOKEN"] = "houndgithubtoken"
 ENV["ENABLE_HTTPS"] = "no"
 ENV["CHANGED_FILES_THRESHOLD"] = "300"
+ENV["MAX_COMMENTS"] = "10"
 ENV["STRIPE_API_KEY"] = "sk_test_123"
 ENV["STRIPE_PUBLISHABLE_KEY"] = "pk_test_123"
 ENV["EXEMPT_ORGS"] = "thoughtbot,billybob"
@@ -21,5 +22,6 @@ ENV["EXEMPT_ORGS"] = "thoughtbot,billybob"
 RSpec.configure do |config|
   config.order = "random"
   config.include GithubApiHelper
+  config.include StripeApiHelper
   WebMock.disable_net_connect!(allow_localhost: true)
 end

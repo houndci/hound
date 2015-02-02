@@ -14,3 +14,11 @@ Resque::Failure::MultipleWithRetrySuppression.classes = [
   Resque::Failure::Sentry
 ]
 Resque::Failure.backend = Resque::Failure::MultipleWithRetrySuppression
+
+Resque.before_fork do
+  defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
+end
+
+Resque.after_fork do
+  defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
+end

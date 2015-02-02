@@ -2,7 +2,7 @@ Hound
 =====
 
 [![Build Status](https://travis-ci.org/thoughtbot/hound.svg?branch=master)](http://travis-ci.org/thoughtbot/hound?branch=master)
-[![Code Climate](https://codeclimate.com/github/thoughtbot/hound.png)](https://codeclimate.com/github/thoughtbot/hound)
+[![Code Climate](https://codeclimate.com/repos/526ab75ff3ea007df603b773/badges/32cb8e64b2e265d8cad6/gpa.svg)](https://codeclimate.com/repos/526ab75ff3ea007df603b773/feed)
 
 Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
 
@@ -29,27 +29,21 @@ If you have questions about the service, see our [FAQ] or email [hound@thoughtbo
    [Application Settings under Account settings](https://github.com/settings/applications).
 3. Under the GitHub Developer Applications panel - Click on "Register new
    application"
-4. Fill in the application details:
+4. Point [ngrok] to your local Hound instance:
+   `ngrok -subdomain=<your-initials>-hound 5000`
+5. Fill in the application details:
   * Application Name: Hound Development
-  * Homepage URL: http://localhost:5000
-  * Authorization Callback URL: http://localhost:5000
-5. On the confirmation screen, copy the `Client ID` and `Client Secret` to
+  * Homepage URL: http://<your-initials>-hound.ngrok.com
+  * Authorization Callback URL: http://<your-initials>-hound.ngrok.com
+6. On the confirmation screen, copy the `Client ID` and `Client Secret` to
    `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
    file does not exist.
-6. Generate the [Stripe tokens] and copy them into your `.env` file. Put the
-   'Test Secret Key' as the value for `STRIPE_API_KEY` and 'Test Publishable
-   Key' as the value for `STRIPE_PUBLISHABLE_KEY`.
-7. Create a Stripe plan called "private" for your development environment
-   https://dashboard.stripe.com/test/plans
-> ID: "private"
-> Name: "private"
-
-8. Run `foreman start`. Foreman will start the web server, `redis-server`, and
+7. Run `foreman start`. Foreman will start the web server, `redis-server`, and
    the resque background job queue. NOTE: `rails server` will not load the
    appropriate environment variables and you'll get a "Missing `secret_key_base`
    for 'development' environment" error.
 
-[Stripe tokens]: https://manage.stripe.com/account/apikeys
+[ngrok]: https://ngrok.com
 
 Testing
 -----------
@@ -99,3 +93,27 @@ There a couple areas we would like to concentrate on.
 3. Write [style guides](app/models/style_guide) that don't currently exist and
    would enforce the
    [thoughtbot style guide](https://github.com/thoughtbot/guides).
+
+### License
+
+The names and logos for Hound are trademarks of thoughtbot, inc.
+
+Hound is Copyright © 2014 thoughtbot, inc.  It is free software, and may be
+redistributed under the terms specified in the [LICENSE](LICENSE) file.
+
+### Contributor License Agreement
+
+If you submit a Contribution to this application's source code, you hereby grant
+to thoughtbot, inc. a worldwide, royalty-free, exclusive, perpetual and
+irrevocable license, with the right to grant or transfer an unlimited number of
+non-exclusive licenses or sublicenses to third parties, under the Copyright
+covering the Contribution to use the Contribution by all means, including but
+not limited to:
+
+* to publish the Contribution,
+* to modify the Contribution, to prepare Derivative Works based upon or
+  containing the Contribution and to combine the Contribution with other
+  software code,
+* to reproduce the Contribution in original or modified form,
+* to distribute, to make the Contribution available to the public, display and
+  publicly perform the Contribution in original or modified form.

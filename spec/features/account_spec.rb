@@ -1,6 +1,24 @@
 require "spec_helper"
 
 feature "Account" do
+  scenario "user without Stripe Customer ID" do
+    user = create(:user, stripe_customer_id: nil)
+
+    sign_in_as(user)
+    visit account_path
+
+    expect(page).not_to have_text("Update Credit Card")
+  end
+
+  scenario "user with Stripe Customer ID" do
+    user = create(:user, stripe_customer_id: "123")
+
+    sign_in_as(user)
+    visit account_path
+
+    expect(page).to have_text("Update Credit Card")
+  end
+
   scenario "user with multiple subscriptions views account page" do
     user = create(:user)
     individual_repo = create(:repo, users: [user])

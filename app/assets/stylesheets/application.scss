@@ -5,10 +5,11 @@
 
 @import 'variables';
 @import 'animations';
-@import 'base';
-@import 'sessions-new';
-@import 'repo-list';
-@import 'account';
+@import 'application/helpers';
 
-@import 'shared/footer';
-@import 'header';
+@import 'base';
+@import 'accounts/show';
+@import 'application/footer';
+@import 'application/header';
+@import 'repos/index';
+@import 'sessions/new';

@@ -106,24 +106,40 @@ describe Repo do
   end
 
   describe ".find_or_create_with" do
-    context "with existing repo" do
+    context "with existing github name" do
       it "updates attributes" do
-        repo = create(:repo)
+        repo = create(:repo, github_id: 1)
+        new_attributes = { github_id: 2, full_github_name: repo.name }
 
-        found_repo = Repo.find_or_create_with(github_id: repo.github_id)
+        Repo.find_or_create_with(new_attributes)
+        repo.reload
 
         expect(Repo.count).to eq 1
-        expect(found_repo).to eq repo
+        expect(repo.name).to eq new_attributes[:full_github_name]
+        expect(repo.github_id).to eq new_attributes[:github_id]
+      end
+    end
+
+    context "with existing github id" do
+      it "updates attributes" do
+        repo = create(:repo, full_github_name: "foo")
+        new_attributes = { github_id: repo.github_id, full_github_name: "bar" }
+
+        Repo.find_or_create_with(new_attributes)
+        repo.reload
+
+        expect(Repo.count).to eq 1
+        expect(repo.github_id).to eq new_attributes[:github_id]
+        expect(repo.name).to eq new_attributes[:full_github_name]
       end
     end
 
     context "with new repo" do
       it "creates repo with attributes" do
-        attributes = build(:repo).attributes
-        repo = Repo.find_or_create_with(attributes)
+        repo = Repo.find_or_create_with(attributes_for(:repo))
 
         expect(Repo.count).to eq 1
-        expect(repo).to be_present
+        expect(repo.reload).to be_present
       end
     end
   end
