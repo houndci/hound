@@ -2,83 +2,117 @@
 - content_for :body_class, "landing benefits"
 - content_for :variation, "benefits"
 
-.hero
-  = image_tag('landing/HoundLogo.svg', class: 'logo')
-  %h2
-    Keep your code clean with automated style checking
-  = link_to '/auth/github', class: 'auth button' do
-    %i.fa.fa-github
-    %span= t('authenticate')
-
-%ul.supported-languages
-  %li
-    = image_tag('languages/ruby.png')
-    %span Ruby
-  %li
-    = image_tag('languages/javascript.png')
-    %span JavaScript
-  %li
-    = image_tag('languages/sass.png')
-    %span Scss
-
-.use-cases
-  .use-case
-    %h3 Keep your codebases consistent
+%section.hero
+  .section-content
+    = image_tag('landing/HoundLogo.svg', class: 'hound-logo')
+    %h2
+      Your code, always in style.
     %p
-      Code inconsistency is a huge source of technical debt as projects scale.
-      Avoid delays by catching and fixing style violations
-      before they get merged.
-  .use-case
-    %h3 Stop wasting time nitpicking
-    %p
-      When developers have to worry about low-level style violations,
-      they can miss bigger problems like security vulnerabilities or
-      performance problems.
-  .use-case
-    %h3 Simplify developer onboarding
-    %p
-      Automated code review is faster and less awkward
-      than peer-to-peer feedback,
-      and helps new devs learn the ropes faster.
-  .use-case
-    %h3 Bring your code up to industry standards
-    %p
-      Hound starts you off with styleguides
-      used by top companies in the industry.
-      If you work differently, no problem!
-      It's easy to train Hound to work with your team's style.
+      Hound calls out style violations in your code when pull requests are
+      opened, allowing you to always maintain a clean codebase.
 
-%h2 How it works
-%ol.getting-started
-  %li.step.step-activate
-    %h3 Activate Repos
+    %ul.call-to-action
+      %li
+        = link_to "/auth/github", class: "auth button" do
+          %i.fa.fa-github
+          %span= t('authenticate')
+
+%section.use-cases
+  .section-content
+    %header.section-header
+      %h3
+        Why does style matter?
+
+    %dl
+      %dt Consistancy
+      %dd
+        Decide on a style and use it. Sticking with a style guide helps reduce
+        the amount of decisions that a developer needs to make when writing
+        code, helping to keep their focus on logic not semantics.
+
+    %dl
+      %dt Readability
+      %dd
+        Many style rules are chosen for purposes of enhancing visual
+        comprehension and when every line of code is written in the same style,
+        the whole codebase becomes easier to read, understand and de-bug.
+
+    %dl
+      %dt Cohesion
+      %dd
+        A cohesive codebase is a reflection of a cohesive team. Consistent use
+        of a style guide gets everyone on the same page and can help when
+        introducing new developers to an existing codebase.
+
+    .supported-languages
+      %h3
+        Hound currently runs style and linting checks on
+
+      %ul.supported-languages-list
+        %li
+          = image_tag 'languages/ruby.png', class: 'language-logo'
+          %p.language-name
+            Ruby
+        %li
+          = image_tag 'languages/coffeescript.png', class: 'language-logo'
+          %p.language-name
+            CoffeeScript
+        %li
+          = image_tag 'languages/javascript.png', class: 'language-logo'
+          %p.language-name
+            JavaScript
+        %li
+          = image_tag 'languages/sass.png', class: 'language-logo'
+          %p.language-name
+            Scss
+
+
+%section.use-cases
+  .section-content
+    %h3
+      Write code, make commits, submit a pull request, get reviewed.
+
     %p
-      Tell Hound which GitHub repos to watch.
-      Private repos are $12 each per month.
-      Public repos are free.
-    %figure
-      = image_tag('landing/step-activate.png')
+      Hound integrates with your existing workflow by reviewing and commenting
+      on code the moment a GitHub pull request is opened. Every commit made to
+      an open pull request will also get reviewed by Hound. It’s like having an
+      automated teammate, dedicated to style.
 
-  %li.step.step-code
-    %h3 Commit &amp; Create Pull Request
+    %h3
+      Use our guides or configure your own.
+
     %p
-      Write and commit code as you normally would then
-      open a pull request to get reviewed by Hound.
-    %figure
-      = image_tag('landing/step-code.png')
+      Hounds default style guides build upon accepted industry standards and
+      are the result of years of utilization in software projects at
+      thoughtbot. Have your own style guide or need to modify the default?
+      Hound provides the ability to customize your guides to best suit your
+      teams needs.
 
-  %li.step.step-comment
-    %h3 View Hound Comments
-    %p
-      Hound will review your pull request and make inline comments on
-      any style guide violations.
-    %figure
-      = image_tag('landing/step-comment.png')
+%section.pricing#pricing
+  .section-content
+    %header.section-header
+      %h3
+        Stay focused on the things that can’t be automated and let Hound keep
+        your style inline.
 
-%h2 The best in the business rely on Hound every day
-%ul.used-by
-  %li= image_tag('customers/thoughtbot.svg')
-  %li= image_tag('customers/thoughtbot.svg')
-  %li= image_tag('customers/thoughtbot.svg')
+    %dl.plan-tier
+      %dt
+        %i.fa.fa-book
+        Open Source
+      %dd
+        Get high quality pull requests today
+      %dd
+        Free
 
-= render 'shared/footer'
+    %dl.plan-tier
+      %dt
+        %i.fa.fa-lock
+        Private Teams
+      %dd
+        Save time bringing new developers up to speed on your team's coding
+        standards.
+      %dd
+        $12/mo per repo
+
+%footer.section-content
+  = render 'shared/footer'
