@@ -105,12 +105,14 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates repo" do
+    token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, :active)
     repo.users << user
+    stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 
-    sign_in_as(user)
+    sign_in_as(user, token)
     visit repos_path
     find(".repos .toggle").click
 
@@ -124,12 +126,14 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates private repo without subscription" do
+    token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, :active, private: true)
     repo.users << user
+    stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
 
-    sign_in_as(user)
+    sign_in_as(user, token)
     visit repos_path
     find(".repos .toggle").click
 
