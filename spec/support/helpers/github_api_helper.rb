@@ -10,6 +10,17 @@ module GithubApiHelper
     )
   end
 
+  def stub_remove_collaborator_request(username, repo_name, user_token)
+    stub_request(
+      :delete,
+      "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
+    ).with(
+      headers: { "Authorization" => "token #{user_token}" }
+    ).to_return(
+      status: 204,
+    )
+  end
+
   def stub_repo_requests(user_token)
     stub_paginated_repo_requests(user_token)
     stub_orgs_request(user_token)

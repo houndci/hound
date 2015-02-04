@@ -111,6 +111,7 @@ feature "Repo list", js: true do
     repo.users << user
     stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
+    stub_remove_collaborator_request("houndci", repo.full_github_name, token)
 
     sign_in_as(user, token)
     visit repos_path
@@ -132,6 +133,7 @@ feature "Repo list", js: true do
     repo.users << user
     stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
+    stub_remove_collaborator_request("houndci", repo.full_github_name, token)
 
     sign_in_as(user, token)
     visit repos_path

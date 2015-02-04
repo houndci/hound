@@ -111,6 +111,10 @@ class GithubApi
     client.add_collaborator(repo_name, username)
   end
 
+  def remove_collaborator(repo_name, username)
+    client.remove_collaborator(repo_name, username)
+  end
+
   def user_teams
     client.user_teams
   end
