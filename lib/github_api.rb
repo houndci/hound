@@ -15,7 +15,7 @@ class GithubApi
   end
 
   def repos
-    user_repos + org_repos
+    user_repos + all_org_repos
   end
 
   def repo(repo_name)
@@ -154,12 +154,14 @@ class GithubApi
     authorized_repos(client.repos)
   end
 
-  def org_repos
-    repos = orgs.flat_map do |org|
-      client.org_repos(org[:login])
+  def all_org_repos
+    orgs.flat_map do |org|
+      org_repos(org[:login])
     end
+  end
 
-    authorized_repos(repos)
+  def org_repos(name)
+    authorized_repos(client.org_repos(name))
   end
 
   def orgs
