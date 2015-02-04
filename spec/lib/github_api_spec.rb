@@ -317,6 +317,20 @@ describe GithubApi do
     end
   end
 
+  describe "#remove_collaborator" do
+    it "makes a request to GitHub" do
+      username = "houndci"
+      repo_name = "foo/bar"
+      token = "github_token"
+      api = GithubApi.new(token)
+      request = stub_remove_collaborator_request(username, repo_name, token)
+
+      api.remove_collaborator(repo_name, username)
+
+      expect(request).to have_been_requested
+    end
+  end
+
   describe "#update_team" do
     it "makes a request" do
       team_id = 123
