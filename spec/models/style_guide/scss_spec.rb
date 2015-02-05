@@ -18,7 +18,9 @@ describe StyleGuide::Scss do
           config_file = "scss_style.yml"
           deep_nested_selectors = ".a { display: 'none'; }"
 
-          expect(violations_in(deep_nested_selectors, config_file)).not_to be_empty
+          violations = violations_in(deep_nested_selectors, config_file)
+
+          expect(violations).not_to be_empty
         end
       end
     end
