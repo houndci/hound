@@ -136,7 +136,8 @@ describe RepoActivator do
 
         activator.deactivate
 
-        expect(RemoveHoundFromRepo).to have_received(:run).with(repo.full_github_name, github_api)
+        expect(RemoveHoundFromRepo).
+          to have_received(:run).with(repo.full_github_name, github_api)
       end
 
       it "returns true" do

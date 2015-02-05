@@ -54,7 +54,8 @@ describe RemoveHoundFromRepo do
             repo_name = "foo/bar"
             repo = double("Repo")
             another_repo = double("AnotherRepo")
-            github_repo = double("GithubRepo", organization: double(login: "foo"))
+            github_repo =
+              double("GithubRepo", organization: double(login: "foo"))
             github = double(
               "GithubApi",
               repo: github_repo,
