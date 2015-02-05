@@ -1,4 +1,4 @@
-# Config class that disabled all rules by default, unlike RuboCop's
+# Config class that disables all rules by default, unlike RuboCop's
 class RuboCopConfig < RuboCop::Config
   def cop_enabled?(cop)
     if for_cop(cop)
