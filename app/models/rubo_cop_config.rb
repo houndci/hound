@@ -2,7 +2,7 @@
 class RuboCopConfig < RuboCop::Config
   def cop_enabled?(cop)
     if for_cop(cop)
-      for_cop(cop)['Enabled']
+      for_cop(cop)["Enabled"]
     else
       false
     end
