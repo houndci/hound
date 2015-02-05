@@ -108,7 +108,7 @@ module GithubApiHelper
     ).to_return(
       status: 200,
       body: File.read("spec/support/fixtures/team_repos.json"),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
     )
   end
 

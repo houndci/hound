@@ -7,7 +7,8 @@ describe RemoveHoundFromRepo do
       it "removes user from repo" do
         repo_name = "foo/bar"
         github_repo = double("GithubRepo", organization: false)
-        github = double("GithubApi", repo: github_repo, remove_collaborator: nil)
+        github =
+          double("GithubApi", repo: github_repo, remove_collaborator: nil)
 
         RemoveHoundFromRepo.run(repo_name, github)
 
@@ -24,7 +25,8 @@ describe RemoveHoundFromRepo do
             github_team =
               double("RepoTeams", id: team_id, name: "Services")
             repo_name = "foo/bar"
-            github_repo = double("GithubRepo", organization: double(login: "foo"))
+            github_repo =
+              double("GithubRepo", organization: double(login: "foo"))
             github = double(
               "GithubApi",
               repo: github_repo,
@@ -36,8 +38,9 @@ describe RemoveHoundFromRepo do
 
             RemoveHoundFromRepo.run(repo_name, github)
 
-            expect(github).to have_received(:org_teams).with('foo')
-            expect(github).to have_received(:remove_repo_from_team).with(team_id, repo_name)
+            expect(github).to have_received(:org_teams).with("foo")
+            expect(github).
+              to have_received(:remove_repo_from_team).with(team_id, repo_name)
             expect(github).to have_received(:team_repos).with(team_id)
             expect(github).to have_received(:delete_team).with(team_id)
           end
@@ -63,8 +66,9 @@ describe RemoveHoundFromRepo do
 
             RemoveHoundFromRepo.run(repo_name, github)
 
-            expect(github).to have_received(:org_teams).with('foo')
-            expect(github).to have_received(:remove_repo_from_team).with(team_id, repo_name)
+            expect(github).to have_received(:org_teams).with("foo")
+            expect(github).
+              to have_received(:remove_repo_from_team).with(team_id, repo_name)
             expect(github).to have_received(:team_repos).with(team_id)
             expect(github).not_to have_received(:delete_team)
           end
