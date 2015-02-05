@@ -22,6 +22,6 @@ feature "Landing page split testing" do
   end
 
   def alternate_landing_page_content
-    "Keep your code clean with automated style checking"
+    "Hound calls out style violations in your code when pull requests are opened, allowing you to always maintain a clean codebase"
   end
 end
