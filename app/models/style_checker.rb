@@ -1,6 +1,3 @@
-# Filters files to reviewable subset.
-# Builds style guide based on file extension.
-# Delegates to style guide for line violations.
 class StyleChecker
   def initialize(pull_request)
     @pull_request = pull_request
@@ -23,13 +20,6 @@ class StyleChecker
 
   def files_to_check
     pull_request.pull_request_files.reject(&:removed?)
-
-    # pull_request.pull_request_files.reject(&:removed?).select do |file|
-    #   file_style_guide = style_guide(file.filename)
-    #   # Checks if style guide is enabled
-    #   # remove line?
-    #   file_style_guide.enabled? && file_style_guide.file_included?(file)
-    # end
   end
 
   def style_guide(filename)
@@ -55,7 +45,6 @@ class StyleChecker
   end
 
   def config(style_guide_class)
-    # @config ||= RepoConfig.new(pull_request.head_commit)
     pull_request.file_content(style_guide_class::CONFIG_FILE)
   end
 end
