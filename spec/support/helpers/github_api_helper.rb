@@ -123,6 +123,17 @@ module GithubApiHelper
     )
   end
 
+  def stub_remove_repo_from_team_request(team_id, repo_name, user_github_token)
+    stub_request(
+      :delete,
+      "https://api.github.com/teams/#{team_id}/repos/#{repo_name}"
+    ).with(
+      headers: { "Authorization" => "token #{user_github_token}" }
+    ).to_return(
+      status: 200
+    )
+  end
+
   def stub_user_teams_request(user_token)
     stub_request(
       :get,

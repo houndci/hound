@@ -372,4 +372,20 @@ describe GithubApi do
       expect(request).to have_been_requested
     end
   end
+
+  describe "#remove_repo_from_team" do
+    it "makes a request to remove repo from team" do
+      team_id = 222
+      repo_name = "foo/bar"
+      token = "github_token"
+      api = GithubApi.new(token)
+      request = stub_remove_repo_from_team_request(
+        team_id, repo_name, token
+      )
+
+      api.remove_repo_from_team(team_id, repo_name)
+
+      expect(request).to have_been_requested
+    end
+  end
 end
