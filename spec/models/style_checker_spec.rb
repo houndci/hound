@@ -13,7 +13,7 @@ describe StyleChecker, "#violations" do
       )
       allow(StyleGuide::Ruby).to receive(:new).and_return(ruby_style_guide)
 
-      violation_messages = StyleChecker.new(pull_request).violations
+      StyleChecker.new(pull_request).violations
 
       expect(ruby_style_guide).to have_received(:violations_in_file).with(file)
     end
@@ -34,7 +34,7 @@ describe StyleChecker, "#violations" do
           receive(:new).and_return(ruby_style_guide)
         )
 
-        violation_messages = StyleChecker.new(pull_request).violations
+        StyleChecker.new(pull_request).violations
 
         expect(ruby_style_guide).to(
           have_received(:violations_in_file).with(file)
@@ -56,7 +56,7 @@ describe StyleChecker, "#violations" do
           receive(:new).and_return(ruby_style_guide)
         )
 
-        violation_messages = StyleChecker.new(pull_request).violations
+        StyleChecker.new(pull_request).violations
 
         expect(ruby_style_guide).to(
           have_received(:violations_in_file).with(file)
@@ -79,7 +79,7 @@ describe StyleChecker, "#violations" do
         receive(:new).and_return(ruby_style_guide)
       )
 
-      violation_messages = StyleChecker.new(pull_request).violations
+      StyleChecker.new(pull_request).violations
 
       expect(ruby_style_guide).to have_received(:violations_in_file).with(file)
     end
@@ -97,7 +97,7 @@ describe StyleChecker, "#violations" do
       )
       allow(StyleGuide::Scss).to receive(:new).and_return(ruby_style_guide)
 
-      violation_messages = StyleChecker.new(pull_request).violations
+      StyleChecker.new(pull_request).violations
 
       expect(ruby_style_guide).to have_received(:violations_in_file).with(file)
     end
@@ -117,7 +117,7 @@ describe StyleChecker, "#violations" do
         receive(:new).and_return(ruby_style_guide)
       )
 
-      violation_messages = StyleChecker.new(pull_request).violations
+      StyleChecker.new(pull_request).violations
 
       expect(ruby_style_guide).to have_received(:violations_in_file).with(file)
     end
@@ -135,7 +135,7 @@ describe StyleChecker, "#violations" do
       )
       allow(StyleGuide::Ruby).to receive(:new).and_return(ruby_style_guide)
 
-      violation_messages = StyleChecker.new(pull_request).violations
+      StyleChecker.new(pull_request).violations
 
       expect(ruby_style_guide).not_to have_received(:violations_in_file)
     end
