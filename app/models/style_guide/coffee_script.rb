@@ -32,9 +32,5 @@ module StyleGuide
     def base_config
       JSON.parse(File.read(BASE_CONFIG_FILE))
     end
-
-    # def default_config_file
-    #   DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
-    # end
   end
 end

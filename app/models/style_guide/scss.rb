@@ -49,9 +49,5 @@ module StyleGuide
     def base_config
       SCSSLint::Config.send(:load_options_hash_from_file, BASE_CONFIG_FILE)
     end
-
-    # def default_config_file
-    #   DefaultConfigFile.new(BASE_CONFIG_FILE, repository_owner).path
-    # end
   end
 end
