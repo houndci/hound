@@ -12,7 +12,7 @@ class Commit
   rescue Octokit::NotFound
     ""
   rescue Octokit::Forbidden => exception
-    if exception.errors.first[:code] == "too_large"
+    if exception.errors.any? && exception.errors.first[:code] == "too_large"
       ""
     else
       raise exception

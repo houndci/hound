@@ -62,6 +62,17 @@ describe Commit do
         expect(commit.file_content("some/file.rb")).to eq ""
       end
     end
+
+    context "when exception contains no errors" do
+      it "raises the error" do
+        github = double("GithubApi")
+        commit = Commit.new("test/test", "abc", github)
+        error = Octokit::Forbidden.new(body: { errors: [] })
+        allow(github).to receive(:file_contents).and_raise(error)
+
+        expect { commit.file_content("some/file.rb") }.to raise_error(error)
+      end
+    end
   end
 
   def build_commit(content)
