@@ -317,6 +317,18 @@ describe GithubApi do
     end
   end
 
+  describe "#update_team" do
+    it "makes a request" do
+      team_id = 123
+      api = GithubApi.new
+      request = stub_update_team_permission_request(team_id)
+
+      api.update_team(team_id, permissions: "push")
+
+      expect(request).to have_been_requested
+    end
+  end
+
   describe "#remove_collaborator" do
     it "makes a request to GitHub" do
       username = "houndci"
@@ -331,13 +343,16 @@ describe GithubApi do
     end
   end
 
-  describe "#update_team" do
-    it "makes a request" do
-      team_id = 123
-      api = GithubApi.new
-      request = stub_update_team_permission_request(team_id)
+  describe "#team_repos" do
+    it "makes a request to get repos in a team" do
+      team_id = 222
+      token = "github_token"
+      api = GithubApi.new(token)
+      request = stub_team_repos_request(
+        team_id, token
+      )
 
-      api.update_team(team_id, permissions: "push")
+      api.team_repos(team_id)
 
       expect(request).to have_been_requested
     end
