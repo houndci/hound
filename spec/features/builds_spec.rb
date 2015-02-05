@@ -68,7 +68,7 @@ feature 'Builds' do
     stub_contents_request(
       repo_name: repo_name,
       sha: pr_sha,
-      file: '.hound.yml',
+      file: '.ruby-style.yml',
       fixture: 'config_contents.json'
     )
     stub_contents_request(

@@ -22,15 +22,21 @@ class StyleChecker
   end
 
   def files_to_check
-    pull_request.pull_request_files.reject(&:removed?).select do |file|
-      file_style_guide = style_guide(file.filename)
-      file_style_guide.enabled? && file_style_guide.file_included?(file)
-    end
+    pull_request.pull_request_files.reject(&:removed?)
+
+    # pull_request.pull_request_files.reject(&:removed?).select do |file|
+    #   file_style_guide = style_guide(file.filename)
+    #   # Checks if style guide is enabled
+    #   # remove line?
+    #   file_style_guide.enabled? && file_style_guide.file_included?(file)
+    # end
   end
 
   def style_guide(filename)
     style_guide_class = style_guide_class(filename)
-    style_guides[style_guide_class] ||= style_guide_class.new(config)
+    style_guides[style_guide_class] ||= style_guide_class.new(
+      config(style_guide_class)
+    )
   end
 
   def style_guide_class(filename)
@@ -50,6 +56,6 @@ class StyleChecker
 
   def config(style_guide_class)
     # @config ||= RepoConfig.new(pull_request.head_commit)
-    pull_request.file_content(style_guide_class::CUSTOM_CONFIG_FILE)
+    pull_request.file_content(style_guide_class::CONFIG_FILE)
   end
 end
