@@ -1,10 +1,17 @@
+require "scss_lint"
+
 module StyleGuide
   class Scss < Base
-    DEFAULT_CONFIG_FILENAME = "scss.yml"
+    BASE_CONFIG_FILE = "config/style_guides/scss.yml"
+    CONFIG_FILE = ".scss-style.yml"
+
+    attr_reader :custom_config
+
+    def initialize(config = "")
+      @custom_config = YAML.load(config) || {}
+    end
 
     def violations_in_file(file)
-      require "scss_lint"
-
       if config.excluded_file?(file.filename)
         []
       else
@@ -32,28 +39,19 @@ module StyleGuide
     end
 
     def config
-      SCSSLint::Config.new(custom_options || default_options)
+      SCSSLint::Config.new(merged_config)
     end
 
-    def custom_options
-      if options = repo_config.for(name)
-        merge(default_options, options)
-      end
+    def merged_config
+      SCSSLint::Config.send(:smart_merge, base_config, custom_config)
     end
 
-    def merge(a, b)
-      SCSSLint::Config.send(:smart_merge, a, b)
+    def base_config
+      SCSSLint::Config.send(:load_options_hash_from_file, BASE_CONFIG_FILE)
     end
 
-    def default_options
-      @default_options ||= SCSSLint::Config.send(
-        :load_options_hash_from_file,
-        default_config_file
-      )
-    end
-
-    def default_config_file
-      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
-    end
+    # def default_config_file
+    #   DefaultConfigFile.new(BASE_CONFIG_FILE, repository_owner).path
+    # end
   end
 end
