@@ -357,4 +357,19 @@ describe GithubApi do
       expect(request).to have_been_requested
     end
   end
+
+  describe "#delete_team" do
+    it "makes a request to delete team for given id" do
+      team_id = 222
+      token = "github_token"
+      api = GithubApi.new(token)
+      request = stub_delete_team_request(
+        team_id, token
+      )
+
+      api.delete_team(team_id)
+
+      expect(request).to have_been_requested
+    end
+  end
 end
