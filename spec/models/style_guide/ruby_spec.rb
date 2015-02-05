@@ -56,14 +56,13 @@ alias :baz :foo
   private
 
   def violations_in(content, config_file = nil)
-    if config_file
-      stub_const(
-        "StyleGuide::Ruby::CUSTOM_CONFIG_FILE",
-        File.join("spec/support/fixtures", config_file)
-      )
+    style_guide = if config_file
+      config = File.read(File.join("spec/support/fixtures", config_file))
+      StyleGuide::Ruby.new(config)
+    else
+      StyleGuide::Ruby.new
     end
 
-    style_guide = StyleGuide::Ruby.new
     style_guide.violations_in_file(build_commit_file(content)).flat_map(&:messages)
   end
 

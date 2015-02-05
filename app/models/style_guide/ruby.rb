@@ -1,7 +1,16 @@
 module StyleGuide
   class Ruby < Base
     BASE_CONFIG_FILE = "config/style_guides/ruby.yml"
-    CUSTOM_CONFIG_FILE = ".ruby-style.yml"
+    CONFIG_FILE = ".ruby-style.yml"
+
+    attr_reader :custom_config
+
+    def initialize(config = "")
+      config = YAML.load(config) || {}
+      @custom_config = RuboCop::Config.new(config, CONFIG_FILE)
+      @custom_config.add_missing_namespaces
+      @custom_config.make_excludes_absolute
+    end
 
     def violations_in_file(file)
       if config.file_to_exclude?(file.filename)
@@ -42,14 +51,6 @@ module StyleGuide
 
     def base_config
       RuboCop::ConfigLoader.load_file(BASE_CONFIG_FILE)
-    end
-
-    def custom_config
-      if File.file?(CUSTOM_CONFIG_FILE)
-        RuboCop::ConfigLoader.load_file(CUSTOM_CONFIG_FILE)
-      else
-        RuboCop::Config.new
-      end
     end
   end
 end

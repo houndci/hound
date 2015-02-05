@@ -1,7 +1,13 @@
-# Determine CoffeeScript style guide violations per-line.
 module StyleGuide
   class CoffeeScript < Base
-    DEFAULT_CONFIG_FILENAME = "coffeescript.json"
+    BASE_CONFIG_FILE = "config/style_guides/coffeescript.json"
+    CONFIG_FILE = ".coffeescript-style.json"
+
+    attr_reader :custom_config
+
+    def initialize(config = "{}")
+      @custom_config = JSON.parse(config)
+    end
 
     def violations_in_file(file)
       Coffeelint.lint(file.content, config).map do |violation|
@@ -20,16 +26,15 @@ module StyleGuide
     private
 
     def config
-      default_config.merge(repo_config.for(name))
+      base_config.merge(custom_config)
     end
 
-    def default_config
-      config = File.read(default_config_file)
-      JSON.parse(config)
+    def base_config
+      JSON.parse(File.read(BASE_CONFIG_FILE))
     end
 
-    def default_config_file
-      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
-    end
+    # def default_config_file
+    #   DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
+    # end
   end
 end
