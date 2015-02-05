@@ -3,10 +3,10 @@ require "spec_helper"
 describe StyleGuide::JavaScript do
   describe "#violations_in_file" do
     context "without config" do
-      context "without semicolon" do
+      context "with trailing whitespace" do
         it "does not return violations" do
           expect(violations_in(<<-CODE)).to be_empty
-var test = 'test'
+var test = 'test';   
           CODE
         end
       end
