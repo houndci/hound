@@ -63,7 +63,9 @@ alias :baz :foo
       StyleGuide::Ruby.new
     end
 
-    style_guide.violations_in_file(build_commit_file(content)).flat_map(&:messages)
+    style_guide.
+      violations_in_file(build_commit_file(content)).
+      flat_map(&:messages)
   end
 
   def build_commit_file(content)

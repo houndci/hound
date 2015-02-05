@@ -40,6 +40,11 @@ describe StyleGuide::Scss do
 
   def build_commit_file(content)
     line = double("Line", content: nil, number: 1, patch_position: 2)
-    double("CommitFile", content: content, filename: "lib/a.scss", line_at: line)
+    double(
+      "CommitFile",
+      content: content,
+      filename: "lib/a.scss",
+      line_at: line
+    )
   end
 end
