@@ -7,7 +7,10 @@ describe StyleChecker, "#violations" do
       pull_request = stub_pull_request(pull_request_files: [file])
       line = double("Line", changed?: true)
       violation = Violation.new(line: line)
-      ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violation)
+      ruby_style_guide = double(
+        "StyleGuide::Ruby",
+        violations_in_file: violation
+      )
       allow(StyleGuide::Ruby).to receive(:new).and_return(ruby_style_guide)
 
       violation_messages = StyleChecker.new(pull_request).violations
@@ -23,12 +26,19 @@ describe StyleChecker, "#violations" do
         pull_request = stub_pull_request(pull_request_files: [file])
         line = double("Line", changed?: true)
         violation = Violation.new(line: line)
-        ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violation)
-        allow(StyleGuide::CoffeeScript).to receive(:new).and_return(ruby_style_guide)
+        ruby_style_guide = double(
+          "StyleGuide::Ruby",
+          violations_in_file: violation
+        )
+        allow(StyleGuide::CoffeeScript).to(
+          receive(:new).and_return(ruby_style_guide)
+        )
 
         violation_messages = StyleChecker.new(pull_request).violations
 
-        expect(ruby_style_guide).to have_received(:violations_in_file).with(file)
+        expect(ruby_style_guide).to(
+          have_received(:violations_in_file).with(file)
+        )
       end
     end
 
@@ -38,12 +48,19 @@ describe StyleChecker, "#violations" do
         pull_request = stub_pull_request(pull_request_files: [file])
         line = double("Line", changed?: true)
         violation = Violation.new(line: line)
-        ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violation)
-        allow(StyleGuide::CoffeeScript).to receive(:new).and_return(ruby_style_guide)
+        ruby_style_guide = double(
+          "StyleGuide::Ruby",
+          violations_in_file: violation
+        )
+        allow(StyleGuide::CoffeeScript).to(
+          receive(:new).and_return(ruby_style_guide)
+        )
 
         violation_messages = StyleChecker.new(pull_request).violations
 
-        expect(ruby_style_guide).to have_received(:violations_in_file).with(file)
+        expect(ruby_style_guide).to(
+          have_received(:violations_in_file).with(file)
+        )
       end
     end
   end
@@ -54,8 +71,13 @@ describe StyleChecker, "#violations" do
       pull_request = stub_pull_request(pull_request_files: [file])
       line = double("Line", changed?: true)
       violation = Violation.new(line: line)
-      ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violation)
-      allow(StyleGuide::JavaScript).to receive(:new).and_return(ruby_style_guide)
+      ruby_style_guide = double(
+        "StyleGuide::Ruby",
+        violations_in_file: violation
+      )
+      allow(StyleGuide::JavaScript).to(
+        receive(:new).and_return(ruby_style_guide)
+      )
 
       violation_messages = StyleChecker.new(pull_request).violations
 
@@ -69,7 +91,10 @@ describe StyleChecker, "#violations" do
       pull_request = stub_pull_request(pull_request_files: [file])
       line = double("Line", changed?: true)
       violation = Violation.new(line: line)
-      ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violation)
+      ruby_style_guide = double(
+        "StyleGuide::Ruby",
+        violations_in_file: violation
+      )
       allow(StyleGuide::Scss).to receive(:new).and_return(ruby_style_guide)
 
       violation_messages = StyleChecker.new(pull_request).violations
@@ -84,8 +109,13 @@ describe StyleChecker, "#violations" do
       pull_request = stub_pull_request(pull_request_files: [file])
       line = double("Line", changed?: true)
       violation = Violation.new(line: line)
-      ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violation)
-      allow(StyleGuide::Unsupported).to receive(:new).and_return(ruby_style_guide)
+      ruby_style_guide = double(
+        "StyleGuide::Ruby",
+        violations_in_file: violation
+      )
+      allow(StyleGuide::Unsupported).to(
+        receive(:new).and_return(ruby_style_guide)
+      )
 
       violation_messages = StyleChecker.new(pull_request).violations
 
@@ -99,7 +129,10 @@ describe StyleChecker, "#violations" do
       pull_request = stub_pull_request(pull_request_files: [file])
       line = double("Line", changed?: true)
       violation = Violation.new(line: line)
-      ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violation)
+      ruby_style_guide = double(
+        "StyleGuide::Ruby",
+        violations_in_file: violation
+      )
       allow(StyleGuide::Ruby).to receive(:new).and_return(ruby_style_guide)
 
       violation_messages = StyleChecker.new(pull_request).violations
