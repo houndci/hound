@@ -1,6 +1,7 @@
 header {
-  @include clearfix;
+  @include outer-container;
   height: 120px;
+  padding: 0 1em;
 
   @include media($small-screen) {
     height: auto;
