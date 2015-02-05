@@ -3,7 +3,6 @@ require "base64"
 require "active_support/core_ext/object/with_options"
 
 class GithubApi
-  SERVICES_TEAM_NAME = "Services"
   PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon-preview+json"
 
   def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
@@ -127,6 +126,10 @@ class GithubApi
     client.org_teams(org_name)
   end
 
+  def team_repos(team_id)
+    client.team_repos(team_id)
+  end
+
   def create_team(team_name:, org_name:, repo_name:)
     team_options = {
       name: team_name,
@@ -136,8 +139,16 @@ class GithubApi
     client.create_team(org_name, team_options)
   end
 
+  def delete_team(team_id)
+    client.delete_team(team_id)
+  end
+
   def add_repo_to_team(team_id, repo_name)
     client.add_team_repository(team_id, repo_name)
+  end
+
+  def remove_repo_from_team(team_id, repo_name)
+    client.remove_team_repository(team_id, repo_name)
   end
 
   def add_user_to_team(username, team_id)
