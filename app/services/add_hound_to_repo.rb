@@ -1,15 +1,7 @@
 # Adds @hounci user to the a private repository as collaborator,
 # or to an organization team that has access to the repository
 # This is necessary for making comments as the houndci user
-class AddHoundToRepo
-  SERVICES_TEAM_NAME = "Services"
-
-  pattr_initialize :repo_name, :github
-
-  def self.run(repo_name, github)
-    new(repo_name, github).run
-  end
-
+class AddHoundToRepo < ManageHound
   def run
     if repo.organization
       add_user_to_org
@@ -19,10 +11,6 @@ class AddHoundToRepo
   end
 
   private
-
-  def repo
-    @repo ||= github.repo(repo_name)
-  end
 
   def add_collaborator_to_repo
     github.add_collaborator(repo_name, github_username)
@@ -64,23 +52,9 @@ class AddHoundToRepo
     github.add_user_to_team(github_username, team.id)
   end
 
-  def find_services_team
-    github.org_teams(org_name).detect do |team|
-      team.name.downcase == SERVICES_TEAM_NAME.downcase
-    end
-  end
-
   def ensure_push_permission(team)
     if team.permission == "pull"
       github.update_team(team.id, permission: "push")
     end
-  end
-
-  def org_name
-    repo.organization.login
-  end
-
-  def github_username
-    @github_username ||= ENV.fetch("HOUND_GITHUB_USERNAME")
   end
 end
