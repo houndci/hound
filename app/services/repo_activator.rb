@@ -5,7 +5,7 @@ class RepoActivator
   end
 
   def activate
-    activate_repo && enqueue_org_invitation
+    activate_repo.tap { enqueue_org_invitation }
   end
 
   def deactivate

@@ -14,22 +14,6 @@ describe RepoActivator do
         expect(JobQueue).to have_received(:push).with(OrgInvitationJob)
       end
 
-      context "without org repo" do
-        it "will not enqueue org invitation job" do
-          allow(JobQueue).to receive(:push).with(OrgInvitationJob)
-          repo = create(:repo)
-          stub_github_api
-          activator = build_activator(repo: repo)
-
-          activator.activate
-
-          expect(repo.in_organization).to be_falsy
-          expect(JobQueue).not_to have_received(:push).with(OrgInvitationJob)
-        end
-      end
-    end
-
-    context 'when repo activation succeeds' do
       it "marks repo as active" do
         repo = create(:repo, in_organization: true)
         stub_github_api
@@ -40,6 +24,34 @@ describe RepoActivator do
         expect(result).to be_truthy
         expect(repo.reload).to be_active
       end
+    end
+
+    context "without org repo" do
+      it "will not enqueue org invitation job" do
+        allow(JobQueue).to receive(:push).with(OrgInvitationJob)
+        repo = create(:repo)
+        stub_github_api
+        activator = build_activator(repo: repo)
+
+        activator.activate
+
+        expect(repo.in_organization).to be_falsy
+        expect(JobQueue).not_to have_received(:push).with(OrgInvitationJob)
+      end
+
+      it "marks repo as active" do
+        repo = create(:repo, in_organization: false)
+        stub_github_api
+        activator = build_activator(repo: repo)
+
+        result = activator.activate
+
+        expect(result).to be_truthy
+        expect(repo.reload).to be_active
+      end
+    end
+
+    context 'when repo activation succeeds' do
 
       it "adds Hound to the repo" do
         token = "some_token"
