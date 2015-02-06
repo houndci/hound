@@ -52,7 +52,6 @@ describe RepoActivator do
     end
 
     context "when repo activation succeeds" do
-
       it "adds Hound to the repo" do
         token = "some_token"
         repo = build(:repo, name: "foo/bar")
