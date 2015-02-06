@@ -28,13 +28,13 @@ class AddHoundToRepo < ManageHound
 
   def team_with_admin_access
     @team_with_admin_access ||= begin
-                                  repo_teams = github.repo_teams(repo_name)
-                                  token_bearer = GithubUser.new(github)
+      repo_teams = github.repo_teams(repo_name)
+      token_bearer = GithubUser.new(github)
 
-                                  repo_teams.detect do |repo_team|
-                                    token_bearer.has_admin_access_through_team?(repo_team.id)
-                                  end
-                                end
+      repo_teams.detect do |repo_team|
+        token_bearer.has_admin_access_through_team?(repo_team.id)
+      end
+    end
   end
 
   def add_user_and_repo_to_services_team

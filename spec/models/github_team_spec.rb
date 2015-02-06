@@ -41,8 +41,8 @@ describe GithubTeam do
 
         github_team.add_repo(repo_name)
 
-        expect(github).to have_received(:update_team)
-          .with(id, permission: "push")
+        expect(github).to have_received(:update_team).
+          with(id, permission: "push")
       end
     end
 
@@ -80,7 +80,8 @@ describe GithubTeam do
 
       github_team.remove_repo(repo_name)
 
-      expect(github).to have_received(:remove_repo_from_team).with(id, repo_name)
+      expect(github).to have_received(:remove_repo_from_team).
+        with(id, repo_name)
     end
   end
 
