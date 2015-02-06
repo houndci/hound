@@ -16,9 +16,9 @@ class RemoveHoundFromRepo < ManageHound
   end
 
   def remove_services_team_from_repo
-    if decorated_services_team
-      decorated_services_team.remove_repo(repo_name)
-      decorated_services_team.remove_user(github_username)
+    if team = decorated_services_team
+      team.remove_repo(repo_name)
+      team.remove_user(github_username)
     end
   end
 end
