@@ -281,7 +281,12 @@ describe GithubApi do
       org_name = "foo"
       team_name = "TestTeam"
       api = GithubApi.new(token)
-      request = stub_create_team_request(org_name, team_name, full_repo_name, token)
+      request = stub_create_team_request(
+        org_name,
+        team_name,
+        full_repo_name,
+        token,
+      )
 
       api.create_team(
         org_name: org_name,
