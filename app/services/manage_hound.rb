@@ -1,7 +1,7 @@
 require "app/models/github_team"
 
 class ManageHound
-  SERVICES_TEAM_NAME = "Services"
+  GITHUB_TEAM_NAME = "Services"
 
   pattr_initialize :repo_name, :github
 
@@ -33,7 +33,7 @@ class ManageHound
 
   def find_services_team
     @services_team ||= github.org_teams(org_name).detect do |team|
-      team.name.downcase == SERVICES_TEAM_NAME.downcase
+      team.name.downcase == GITHUB_TEAM_NAME.downcase
     end
   end
 

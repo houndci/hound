@@ -49,7 +49,7 @@ class AddHoundToRepo < ManageHound
 
   def create_team
     github.create_team(
-      team_name: SERVICES_TEAM_NAME,
+      team_name: GITHUB_TEAM_NAME,
       org_name: org_name,
       repo_name: repo_name
     )

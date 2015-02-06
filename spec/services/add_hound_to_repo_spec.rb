@@ -47,7 +47,7 @@ describe AddHoundToRepo do
 
             expect(github).to have_received(:create_team).with(
               org_name: "foo",
-              team_name: AddHoundToRepo::SERVICES_TEAM_NAME,
+              team_name: AddHoundToRepo::GITHUB_TEAM_NAME,
               repo_name: repo_name
             )
             expect(github).to have_received(:add_user_to_team).
