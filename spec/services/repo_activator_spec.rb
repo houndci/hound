@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe RepoActivator do
   describe '#activate' do
-
-    context "Org invitation" do
+    context "with org repo" do
       it "will enqueue org invitation job" do
         allow(JobQueue).to receive(:push).with(OrgInvitationJob)
         repo = create(:repo, in_organization: true)
@@ -15,16 +14,18 @@ describe RepoActivator do
         expect(JobQueue).to have_received(:push).with(OrgInvitationJob)
       end
 
-      it "will not enqueue org invitation job if repo is not a part of Org" do
-        allow(JobQueue).to receive(:push).with(OrgInvitationJob)
-        repo = create(:repo)
-        stub_github_api
-        activator = build_activator(repo: repo)
+      context "without org repo" do
+        it "will not enqueue org invitation job" do
+          allow(JobQueue).to receive(:push).with(OrgInvitationJob)
+          repo = create(:repo)
+          stub_github_api
+          activator = build_activator(repo: repo)
 
-        activator.activate
+          activator.activate
 
-        expect(repo.in_organization).to be_falsy
-        expect(JobQueue).not_to have_received(:push).with(OrgInvitationJob)
+          expect(repo.in_organization).to be_falsy
+          expect(JobQueue).not_to have_received(:push).with(OrgInvitationJob)
+        end
       end
     end
 
