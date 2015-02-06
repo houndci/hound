@@ -153,6 +153,23 @@ section.importance {
 }
 
 section.value {
+  padding: 5em 0 0;
+
+  article {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    text-align: center;
+
+    &~ article {
+      margin-top: 3em;
+    }
+
+    figure {
+      background: rgb(240,240,240);
+      height: 200px;
+      margin-top: 2em;
+    }
+  }
 }
 
 section.configuration {
