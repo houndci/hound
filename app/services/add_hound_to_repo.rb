@@ -39,19 +39,21 @@ class AddHoundToRepo < ManageHound
 
   def add_user_and_repo_to_services_team
     team = decorated_services_team
+
     if team
       team.add_repo(repo_name)
     else
-      team = GithubTeam.new(
-        github.create_team(
-          team_name: SERVICES_TEAM_NAME,
-          org_name: org_name,
-          repo_name: repo_name
-        ),
-        github
-      )
+      team = GithubTeam.new(create_team, github)
     end
 
-    github.add_user_to_team(github_username, team.id)
+    team.add_user(github_username)
+  end
+
+  def create_team
+    github.create_team(
+      team_name: SERVICES_TEAM_NAME,
+      org_name: org_name,
+      repo_name: repo_name
+    )
   end
 end

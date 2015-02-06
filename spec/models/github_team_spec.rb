@@ -71,6 +71,22 @@ describe GithubTeam do
     end
   end
 
+  describe "#remove_repo" do
+    it "calls github with the team id and passed repo name" do
+      id = 1234
+      team = double("OctoKitTeam", id: id, permission: non_pull_permission)
+      github = double("Github", remove_repo_from_team: true)
+      github_team = GithubTeam.new(team, github)
+
+      github_team.remove_repo(repo_name)
+
+      expect(github).to have_received(:remove_repo_from_team).with(id, repo_name)
+    end
+  end
+
+  describe "#remove_user" do
+  end
+
   def non_pull_permission
     "either push or admin"
   end

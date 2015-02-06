@@ -25,11 +25,19 @@ class GithubTeam
     remove_user_from_team(github_username)
   end
 
+  def add_user(github_username)
+    add_user_to_team(github_username)
+  end
+
   protected
 
   attr_reader :team, :github
 
   private
+
+  def add_user_to_team(github_username)
+    github.add_user_to_team(github_username, id)
+  end
 
   def remove_user_from_team(github_username)
     team_repos = github.team_repos(id)
