@@ -2,85 +2,108 @@
 - content_for :body_class, "landing benefits"
 - content_for :variation, "benefits"
 
-%section.hero
+%section.intro
   .section-content
-    = image_tag('landing/HoundLogo.svg', class: 'hound-logo')
-    %h2
-      Your code, always in style.
-    %p
-      Hound calls out style violations in your code when pull requests are
-      opened, allowing you to always maintain a clean codebase.
+    .inner-wrapper
+      .hero
+        %h2
+          Your code, always in style.
+        %h3
+          Hound comments on style violations in GitHub pull requests, allowing
+          you to give better reviews and easily maintain a clean codebase.
 
-    %ul.call-to-action
-      %li
-        = link_to "/auth/github", class: "auth button" do
-          %i.fa.fa-github
-          %span= t('authenticate')
+        .cta
+          = link_to "/auth/github", class: "auth button" do
+            %i.fa.fa-github
+            %span= t('authenticate')
 
-%section.use-cases
+    .supported-languages
+      %h4
+        Hound currently runs style checks on:
+
+      %ul.languages
+        %li.language
+          .language-logo
+            = image_tag 'languages/ruby.png'
+          %h5
+            Ruby
+        %li.language
+          .language-logo
+            = image_tag 'languages/coffeescript.png'
+          %h5
+            CoffeeScript
+        %li.language
+          .language-logo
+            = image_tag 'languages/javascript.png'
+          %h5
+            JavaScript
+        %li.language
+          .language-logo
+            = image_tag 'languages/sass.png'
+          %h5
+            Scss
+
+%section.importance
   .section-content
-    %header.section-header
+    .section-title
       %h3
         Why does style matter?
 
-    %dl
-      %dt Consistancy
-      %dd
-        Decide on a style and use it. Sticking with a style guide helps reduce
-        the amount of decisions that a developer needs to make when writing
-        code, helping to keep their focus on logic not semantics.
+    .inner-wrapper
+      %article
+        .figure
+        .pitch
+          %h4 Convention
+          %p
+            Defining and sticking with a style guide helps reduce the amount of
+            decisions that developers needs to make when writing code, helping to
+            keep their focus on logic not semantics and formatting.
 
-    %dl
-      %dt Readability
-      %dd
-        Many style rules are chosen for purposes of enhancing visual
-        comprehension and when every line of code is written in the same style,
-        the whole codebase becomes easier to read, understand and de-bug.
+      %article
+        .figure
+        .pitch
+          %h4 Consistency
+          %p
+            When every line of code is written in the same style, the whole
+            codebase becomes easier to read, understand and de-bug. It also helps
+            prevent areas of the codebase from being “owned” by one person vs. the
+            team.
 
-    %dl
-      %dt Cohesion
-      %dd
-        A cohesive codebase is a reflection of a cohesive team. Consistent use
-        of a style guide gets everyone on the same page and can help when
-        introducing new developers to an existing codebase.
+      %article
+        .figure
+        .pitch
+          %h4 Cleanliness
+          %p
+            A clean codebase is a reflection of a cohesive team. It gives the
+            impression of a team working well together towards a common goal,
+            rather than individual developers working independently.
 
-    .supported-languages
-      %h3
-        Hound currently runs style and linting checks on
+%section.value
+  .section-content
+    %article
+      .section-title
+        %h3
+          Write code, submit a pull request, get reviewed.
+      %p
+        Hound integrates with your existing workflow by reviewing and commenting
+        on code the moment a GitHub pull request is opened. Every commit made to
+        an open pull request will also get reviewed by Hound. It’s like having an
+        automated teammate, dedicated to style.
 
-      %ul.supported-languages-list
-        %li
-          = image_tag 'languages/ruby.png', class: 'language-logo'
-          %p.language-name
-            Ruby
-        %li
-          = image_tag 'languages/coffeescript.png', class: 'language-logo'
-          %p.language-name
-            CoffeeScript
-        %li
-          = image_tag 'languages/javascript.png', class: 'language-logo'
-          %p.language-name
-            JavaScript
-        %li
-          = image_tag 'languages/sass.png', class: 'language-logo'
-          %p.language-name
-            Scss
+    %article
+      .section-title
+        %h3
+          Save time and give better code reviews.
+      %p
+        Automated style checking with Hound gives developers more time to give
+        the kind of code review that people are best at giving (business domain
+        aware analysis of the code). It is a huge expense for developers to spend
+        hours each week doing something that a cloud service can do very quickly.
 
-
-%section.use-cases
+%section.configuration
   .section-content
     %h3
-      Write code, make commits, submit a pull request, get reviewed.
-
-    %p
-      Hound integrates with your existing workflow by reviewing and commenting
-      on code the moment a GitHub pull request is opened. Every commit made to
-      an open pull request will also get reviewed by Hound. It’s like having an
-      automated teammate, dedicated to style.
-
-    %h3
       Use our guides or configure your own.
-
     %p
       Hounds default style guides build upon accepted industry standards and
       are the result of years of utilization in software projects at
@@ -88,31 +111,39 @@
       Hound provides the ability to customize your guides to best suit your
       teams needs.
 
-%section.pricing#pricing
+%section#pricing.pricing
   .section-content
-    %header.section-header
+    .section-title
       %h3
         Stay focused on the things that can’t be automated and let Hound keep
-        your style inline.
+        your style in check.
 
-    %dl.plan-tier
+    %dl.plan
       %dt
         %i.fa.fa-book
         Open Source
       %dd
-        Get high quality pull requests today
+        Get higher quality pull requests.
       %dd
         Free
 
-    %dl.plan-tier
+    %dl.plan
       %dt
         %i.fa.fa-lock
-        Private Teams
+        Private Repos
       %dd
-        Save time bringing new developers up to speed on your team's coding
-        standards.
+        Keep your codebase clean.
       %dd
         $12/mo per repo
+
+%section.security
+  .section-content
+    %h3
+      Uncomfortable giving us access to your code?
+    %p
+      Don’t worry, we get it. Our mission is to help you maintain a clean code
+      base, nothing more. Our security documentation details what kind of
+      access we need and why.
 
 %footer.section-content
   = render 'shared/footer'

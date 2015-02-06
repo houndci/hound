@@ -47,27 +47,30 @@ em.code {
   white-space: pre-wrap;
 }
 
+.inner-wrapper {
+  @include clearfix;
+}
+
 .button {
   @include transition(all 0.15s linear);
   @include user-select(none);
   background: $purple;
-  border-radius: 3px;
-  border: 1px solid $purple;
+  border-radius: 40px;
+  border: 2px solid $purple;
   color: #fff;
   display: block;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 3px;
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing: 2px;
   overflow: hidden;
-  padding: 1em 0.8em;
+  padding: 0.6em 1em;
   position: relative;
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase;
   vertical-align: middle;
 
   &:hover {
-    background: lighten($purple, 6%);
+    background: lighten($purple, 10%);
     color: #fff;
   }
 

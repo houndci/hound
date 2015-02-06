@@ -1,0 +1,142 @@
+@import "getting_started";
+
+.landing.benefits {
+  .content {
+    margin: 0;
+    max-width: none;
+    padding: 0;
+  }
+
+  section + section {
+    border-top: 1px solid #ccc;
+  }
+
+  .section-content {
+    @include outer-container;
+  }
+
+  .section-title {
+    text-align: center;
+
+    h3 {
+      font-weight: 300;
+      font-size: em(24px);
+      margin-bottom: 0;
+    }
+
+    p {
+      margin-top: 0;
+    }
+  }
+}
+
+section.intro {
+  .hero {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    padding: 6em 0 10em;
+    text-align: center;
+
+    h2 {
+      font-size: 3em;
+      font-weight: 300;
+      margin: 0;
+    }
+
+    h3 {
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    .cta {
+      padding-top: 2em;
+    }
+  }
+
+  .supported-languages {
+    padding: 3em 0em 4em;
+    position: relative;
+    text-align: center;
+
+    &:before {
+      @include position(absolute, 0% 0 0 25%);
+      border-top: 1px solid $base-border-color;
+      content: '';
+      height: 0px;
+      width: 50%;
+    }
+
+    h4 {
+      margin: 0 0 2em 0;
+    }
+
+    ul.languages {
+      text-align: center;
+
+      li.language {
+        display: inline-block;
+        padding: 0 2em;
+
+        .language-logo {
+          @include size(100px);
+          border-radius: 50%;
+          border: 2px solid $base-border-color;
+          display: table-cell;
+          vertical-align: middle;
+
+          img {
+            display: block;
+            height: 40px;
+            margin: 0 auto;
+            width: auto;
+          }
+        }
+
+        h5 {
+          font-size: 1em;
+          font-weight: 300;
+          margin: 0;
+          padding-top: 0.4em;
+        }
+      }
+    }
+  }
+}
+
+section.importance {
+  padding: 4em 0;
+
+  .section-title {
+    margin-bottom: 3em;
+  }
+
+  article {
+    @include span-columns(8 of 12);
+    @include shift(2);
+
+    .figure {
+    }
+
+    .pitch {
+    }
+  }
+}
+
+section.value {
+}
+
+section.configuration {
+}
+
+section.pricing {
+  text-align: center;
+
+  dl.plan {
+    text-align: center;
+
+    .fa {
+      display: block;
+    }
+  }
+}
+
