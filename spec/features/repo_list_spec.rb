@@ -59,7 +59,7 @@ feature "Repo list", js: true do
     repo.users << user
     hook_url = "http://#{ENV["HOST"]}/builds"
     stub_repo_request(repo.full_github_name, token)
-    stub_add_collaborator_request("houndci", repo.full_github_name, token)
+    stub_add_collaborator_request(username, repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
     stub_memberships_request
     stub_membership_update_request
@@ -82,13 +82,12 @@ feature "Repo list", js: true do
     repo.users << user
     hook_url = "http://#{ENV["HOST"]}/builds"
     team_id = 4567 # from fixture
-    hound_user = "houndci"
     token = "usergithubtoken"
     stub_repo_with_org_request(repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
     stub_repo_teams_request(repo.full_github_name, token)
     stub_user_teams_request(token)
-    stub_add_user_to_team_request(hound_user, team_id, token)
+    stub_add_user_to_team_request(username, team_id, token)
     stub_memberships_request
     stub_membership_update_request
 
@@ -111,7 +110,7 @@ feature "Repo list", js: true do
     repo.users << user
     stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
-    stub_remove_collaborator_request("houndci", repo.full_github_name, token)
+    stub_remove_collaborator_request(username, repo.full_github_name, token)
 
     sign_in_as(user, token)
     visit repos_path
@@ -133,7 +132,7 @@ feature "Repo list", js: true do
     repo.users << user
     stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
-    stub_remove_collaborator_request("houndci", repo.full_github_name, token)
+    stub_remove_collaborator_request(username, repo.full_github_name, token)
 
     sign_in_as(user, token)
     visit repos_path
@@ -155,5 +154,9 @@ feature "Repo list", js: true do
     yield
   ensure
     Resque.inline = true
+  end
+
+  def username
+    "houndci"
   end
 end

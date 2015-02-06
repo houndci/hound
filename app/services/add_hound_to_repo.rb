@@ -1,3 +1,5 @@
+require "app/services/manage_hound"
+
 # Adds @hounci user to the a private repository as collaborator,
 # or to an organization team that has access to the repository
 # This is necessary for making comments as the houndci user

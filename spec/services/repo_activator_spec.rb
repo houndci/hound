@@ -144,7 +144,7 @@ describe RepoActivator do
         create(:membership, repo: repo)
         activator = build_activator(repo: repo)
         stub_github_api
-        allow(RemoveHoundFromRepo).to receive(:run)
+        allow(RemoveHoundFromRepo).to receive(:run).and_return(false)
 
         activator.deactivate
 
