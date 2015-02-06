@@ -118,6 +118,21 @@ describe RepoSynchronization do
         expect(repo).to be_active
       end
 
+      it "removes the user's membership when there are other memberships" do
+        removed_membership = create(:membership)
+        repo = removed_membership.repo
+        repo.update(active: true)
+        create(:membership, repo: repo)
+        github_token = "githubtoken"
+        stub_api_repos(repos: [])
+        synchronization =
+          RepoSynchronization.new(removed_membership.user, github_token)
+
+        synchronization.start
+
+        expect(repo.memberships).not_to include(removed_membership)
+      end
+
       it "destroys the users membership when a repo gets deactivated" do
         repo = create(:repo, :active)
         repo.memberships.destroy_all

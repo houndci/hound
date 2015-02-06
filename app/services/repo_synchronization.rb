@@ -11,6 +11,7 @@ class RepoSynchronization
   def start
     update_user_repos_from_api
     deactivate_orphaned_repos
+    destroy_stale_memberships
   end
 
   private
@@ -32,6 +33,14 @@ class RepoSynchronization
     repo.memberships.destroy_all
     if repo.subscription
       RepoSubscriber.unsubscribe(repo, user)
+    end
+  end
+
+  def destroy_stale_memberships
+    user.memberships.each do |membership|
+      if !api_repos.include?(membership.repo)
+        membership.destroy
+      end
     end
   end
 
