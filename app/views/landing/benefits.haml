@@ -158,12 +158,16 @@
 
 %section.security
   .section-content
-    %h3
-      Uncomfortable giving us access to your code?
-    %p
-      Don’t worry, we get it. Our mission is to help you maintain a clean code
-      base, nothing more. Our security documentation details what kind of
-      access we need and why.
+    %article
+      %h3
+        Uncomfortable giving us access to your code?
+      %p
+        Don’t worry, we get it. Our mission is to help you maintain a clean code
+        base, nothing more. Our security documentation details what kind of
+        access we need and why.
+
+      .actions
+        = link_to 'Read our security policy.', '#'
 
 %footer.section-content
   = render 'shared/footer'

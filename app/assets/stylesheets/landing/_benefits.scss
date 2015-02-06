@@ -242,3 +242,14 @@ section.pricing {
   }
 }
 
+section.security {
+  border-bottom: 1px solid $base-border-color;
+  padding: 4em 0;
+
+  article {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    @include omega();
+    text-align: center;
+  }
+}
