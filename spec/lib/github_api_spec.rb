@@ -388,4 +388,20 @@ describe GithubApi do
       expect(request).to have_been_requested
     end
   end
+
+  describe "#remove_user_from_team" do
+    it "makes a request to remove a user from a team" do
+      username = "houndci"
+      team_id = 222
+      token = "github_token"
+      api = GithubApi.new(token)
+      request = stub_remove_user_from_team_request(
+        team_id, username, token
+      )
+
+      api.remove_user_from_team(team_id, username)
+
+      expect(request).to have_been_requested
+    end
+  end
 end

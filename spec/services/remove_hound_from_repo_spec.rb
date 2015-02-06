@@ -18,9 +18,13 @@ describe RemoveHoundFromRepo do
     end
 
     context "with org repo" do
+      context "when the services team does not exist" do
+        it "does nothing"
+      end
+
       context "when team exists" do
         context "team has only one repo" do
-          it "will delete Services team" do
+          it "will remove hound user from team" do
             team_id = 222
             github_team =
               double("RepoTeams", id: team_id, name: "Services")
@@ -32,8 +36,8 @@ describe RemoveHoundFromRepo do
               repo: github_repo,
               org_teams: [github_team],
               remove_repo_from_team: true,
-              team_repos: [],
-              delete_team: true
+              remove_user_from_team: true,
+              team_repos: double("TeamRepos", empty?: true),
             )
 
             RemoveHoundFromRepo.run(repo_name, github)
@@ -41,8 +45,8 @@ describe RemoveHoundFromRepo do
             expect(github).to have_received(:org_teams).with("foo")
             expect(github).
               to have_received(:remove_repo_from_team).with(team_id, repo_name)
-            expect(github).to have_received(:team_repos).with(team_id)
-            expect(github).to have_received(:delete_team).with(team_id)
+            expect(github).to have_received(:remove_user_from_team).
+              with(team_id, hound_github_username)
           end
         end
 
@@ -52,8 +56,6 @@ describe RemoveHoundFromRepo do
             github_team =
               double("RepoTeams", id: team_id, name: "Services")
             repo_name = "foo/bar"
-            repo = double("Repo")
-            another_repo = double("AnotherRepo")
             github_repo =
               double("GithubRepo", organization: double(login: "foo"))
             github = double(
@@ -61,8 +63,7 @@ describe RemoveHoundFromRepo do
               repo: github_repo,
               org_teams: [github_team],
               remove_repo_from_team: true,
-              team_repos: [repo, another_repo],
-              delete_team: true
+              team_repos: double("TeamRepos", empty?: false),
             )
 
             RemoveHoundFromRepo.run(repo_name, github)
@@ -70,8 +71,6 @@ describe RemoveHoundFromRepo do
             expect(github).to have_received(:org_teams).with("foo")
             expect(github).
               to have_received(:remove_repo_from_team).with(team_id, repo_name)
-            expect(github).to have_received(:team_repos).with(team_id)
-            expect(github).not_to have_received(:delete_team)
           end
         end
       end
