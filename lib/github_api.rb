@@ -14,7 +14,7 @@ class GithubApi
   end
 
   def repos
-    user_repos + all_org_repos
+    user_repos + repos_from_all_orgs
   end
 
   def repo(repo_name)
@@ -139,10 +139,6 @@ class GithubApi
     client.create_team(org_name, team_options)
   end
 
-  def delete_team(team_id)
-    client.delete_team(team_id)
-  end
-
   def add_repo_to_team(team_id, repo_name)
     client.add_team_repository(team_id, repo_name)
   end
@@ -169,7 +165,7 @@ class GithubApi
     authorized_repos(client.repos)
   end
 
-  def all_org_repos
+  def repos_from_all_orgs
     orgs.flat_map do |org|
       org_repos(org[:login])
     end

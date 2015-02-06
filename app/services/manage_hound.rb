@@ -8,7 +8,7 @@ class ManageHound
   end
 
   def run
-    raise "Must be implemented in child class"
+    raise NotImplementedError.new("must implement ##{__method__}")
   end
 
   private
