@@ -1,8 +1,5 @@
 class GithubTeam
-  def initialize(team, github)
-    @team = team
-    @github = github
-  end
+  pattr_initialize :team, :github
 
   def has_pull_permission?
     team.permission == "pull"
@@ -28,10 +25,6 @@ class GithubTeam
   def add_user(github_username)
     add_user_to_team(github_username)
   end
-
-  protected
-
-  attr_reader :team, :github
 
   private
 
