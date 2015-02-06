@@ -104,20 +104,50 @@ section.intro {
 }
 
 section.importance {
-  padding: 4em 0;
+  padding: 5em 0 7em;
 
   .section-title {
     margin-bottom: 3em;
+
+    h3 {
+      margin: 0;
+    }
   }
 
   article {
     @include span-columns(8 of 12);
     @include shift(2);
 
+    &:first-child {
+      border-top: 1px solid $base-border-color;
+      padding-top: 4em;
+    }
+
+    &~ article {
+      margin-top: 3em;
+    }
+
     .figure {
+      @include span-columns(2 of 8, table);
+      text-align: center;
+      vertical-align: middle;
+
+      .icon {
+        @include size(100px);
+        border: 2px solid $base-border-color;
+        border-radius: 50%;
+        display: inline-block;
+      }
     }
 
     .pitch {
+      @include span-columns(6 of 8, table);
+      overflow: hidden;
+      vertical-align: top;
+
+      h4 {
+        margin: 0 0 0.4em 0;
+      }
     }
   }
 }
