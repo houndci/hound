@@ -321,7 +321,11 @@ describe GithubApi do
     it "makes a request to GitHub" do
       username = "houndci"
       api = GithubApi.new(token)
-      request = stub_remove_collaborator_request(username, full_repo_name, token)
+      request = stub_remove_collaborator_request(
+        username,
+        full_repo_name,
+        token,
+      )
 
       api.remove_collaborator(full_repo_name, username)
 
