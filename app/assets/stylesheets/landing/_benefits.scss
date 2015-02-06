@@ -127,7 +127,7 @@ section.importance {
       margin-top: 3em;
     }
 
-    .figure {
+    figure.media-object {
       @include span-columns(2 of 8, table);
       text-align: center;
       vertical-align: middle;
@@ -140,7 +140,7 @@ section.importance {
       }
     }
 
-    .pitch {
+    .media-body {
       @include span-columns(6 of 8, table);
       overflow: hidden;
       vertical-align: top;
@@ -164,15 +164,32 @@ section.value {
       margin-top: 3em;
     }
 
-    figure {
+    .media-body {
+      margin-bottom: 2em;
+    }
+
+    figure.media-object {
       background: rgb(240,240,240);
       height: 200px;
-      margin-top: 2em;
     }
   }
 }
 
 section.configuration {
+  padding: 4em 0em;
+
+  figure.media-object {
+    @include span-columns(4 of 12, table);
+    background: rgb(240,240,240);
+    height: 250px;
+    vertical-align: middle;
+  }
+
+  .media-body {
+    @include span-columns(6 of 12, table);
+    padding-left: $column;
+    vertical-align: middle;
+  }
 }
 
 section.pricing {
