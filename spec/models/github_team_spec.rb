@@ -5,14 +5,16 @@ describe GithubTeam do
   describe "#has_pull_permission?" do
     it "returns true when team#permission is 'pull'" do
       team = double("OctoKitTeam", permission: pull_permission)
-      github_team = GithubTeam.new(team)
+      github = double("Github")
+      github_team = GithubTeam.new(team, github)
 
       expect(github_team.has_pull_permission?).to be true
     end
 
     it "returns false when team#permission is not pull" do
       team = double("OctoKitTeam", permission: non_pull_permission)
-      github_team = GithubTeam.new(team)
+      github = double("Github")
+      github_team = GithubTeam.new(team, github)
 
       expect(github_team.has_pull_permission?).to be false
     end
@@ -22,7 +24,8 @@ describe GithubTeam do
     it "delegates id to team" do
       id = 1234
       team = double("OctoKitTeam", id: id)
-      github_team = GithubTeam.new(team)
+      github = double("Github")
+      github_team = GithubTeam.new(team, github)
 
       expect(github_team.id).to be id
     end
@@ -34,9 +37,9 @@ describe GithubTeam do
         id = 1234
         team = double("OctoKitTeam", permission: pull_permission, id: id)
         github = double("Github", update_team: true, add_repo_to_team: true)
-        github_team = GithubTeam.new(team)
+        github_team = GithubTeam.new(team, github)
 
-        github_team.add_repo(github, repo_name)
+        github_team.add_repo(repo_name)
 
         expect(github).to have_received(:update_team)
           .with(id, permission: "push")
@@ -48,9 +51,9 @@ describe GithubTeam do
         id = 1234
         team = double("OctoKitTeam", permission: non_pull_permission, id: id)
         github = double("Github", update_team: true, add_repo_to_team: true)
-        github_team = GithubTeam.new(team)
+        github_team = GithubTeam.new(team, github)
 
-        github_team.add_repo(github, repo_name)
+        github_team.add_repo(repo_name)
 
         expect(github).not_to have_received(:update_team)
       end
@@ -60,9 +63,9 @@ describe GithubTeam do
       id = 1234
       team = double("OctoKitTeam", id: id, permission: non_pull_permission)
       github = double("Github", add_repo_to_team: true)
-      github_team = GithubTeam.new(team)
+      github_team = GithubTeam.new(team, github)
 
-      github_team.add_repo(github, repo_name)
+      github_team.add_repo(repo_name)
 
       expect(github).to have_received(:add_repo_to_team).with(id, repo_name)
     end
