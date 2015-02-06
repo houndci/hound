@@ -5,7 +5,7 @@ class RepoActivator
   end
 
   def activate
-    activate_repo && enqueue_org_invitation
+    activate_repo.tap { enqueue_org_invitation }
   end
 
   def deactivate
@@ -46,7 +46,9 @@ class RepoActivator
   end
 
   def enqueue_org_invitation
-    JobQueue.push(OrgInvitationJob)
+    if repo.in_organization?
+      JobQueue.push(OrgInvitationJob)
+    end
   end
 
   def delete_webhook

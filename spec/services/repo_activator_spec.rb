@@ -1,10 +1,21 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe RepoActivator do
-  describe '#activate' do
-    context 'when repo activation succeeds' do
+  describe "#activate" do
+    context "with org repo" do
+      it "will enqueue org invitation job" do
+        allow(JobQueue).to receive(:push).with(OrgInvitationJob)
+        repo = create(:repo, in_organization: true)
+        stub_github_api
+        activator = build_activator(repo: repo)
+
+        activator.activate
+
+        expect(JobQueue).to have_received(:push).with(OrgInvitationJob)
+      end
+
       it "marks repo as active" do
-        repo = create(:repo)
+        repo = create(:repo, in_organization: true)
         stub_github_api
         activator = build_activator(repo: repo)
 
@@ -13,7 +24,34 @@ describe RepoActivator do
         expect(result).to be_truthy
         expect(repo.reload).to be_active
       end
+    end
 
+    context "without org repo" do
+      it "will not enqueue org invitation job" do
+        allow(JobQueue).to receive(:push).with(OrgInvitationJob)
+        repo = create(:repo)
+        stub_github_api
+        activator = build_activator(repo: repo)
+
+        activator.activate
+
+        expect(repo.in_organization).to be_falsy
+        expect(JobQueue).not_to have_received(:push).with(OrgInvitationJob)
+      end
+
+      it "marks repo as active" do
+        repo = create(:repo, in_organization: false)
+        stub_github_api
+        activator = build_activator(repo: repo)
+
+        result = activator.activate
+
+        expect(result).to be_truthy
+        expect(repo.reload).to be_active
+      end
+    end
+
+    context "when repo activation succeeds" do
       it "adds Hound to the repo" do
         token = "some_token"
         repo = build(:repo, name: "foo/bar")
@@ -38,13 +76,13 @@ describe RepoActivator do
 
           expect(github).to have_received(:create_hook).with(
             repo.full_github_name,
-            URI.join("https://#{ENV['HOST']}", "builds").to_s
+            URI.join("https://#{ENV["HOST"]}", "builds").to_s
           )
         end
       end
 
-      context 'when https is disabled' do
-        it 'creates GitHub hook using insecure build URL' do
+      context "when https is disabled" do
+        it "creates GitHub hook using insecure build URL" do
           github = stub_github_api
           repo = build(:repo)
           activator = build_activator(repo: repo)
@@ -53,7 +91,7 @@ describe RepoActivator do
 
           expect(github).to have_received(:create_hook).with(
             repo.full_github_name,
-            URI.join("http://#{ENV['HOST']}", 'builds').to_s
+            URI.join("http://#{ENV["HOST"]}", "builds").to_s
           )
         end
       end
@@ -88,8 +126,8 @@ describe RepoActivator do
       end
     end
 
-    context 'hook already exists' do
-      it 'does not raise' do
+    context "hook already exists" do
+      it "does not raise" do
         activator = build_activator
         github = double("GithubApi", create_hook: nil)
         allow(GithubApi).to receive(:new).and_return(github)
@@ -112,7 +150,7 @@ describe RepoActivator do
         expect(repo.reload).not_to be_active
       end
 
-      it 'removes GitHub hook' do
+      it "removes GitHub hook" do
         repo = create(:repo)
         create(:membership, repo: repo)
         activator = build_activator(repo: repo)
@@ -148,7 +186,7 @@ describe RepoActivator do
         expect(result).to be_falsy
       end
 
-      it 'only swallows Octokit errors' do
+      it "only swallows Octokit errors" do
         error = StandardError.new("this should bubble through")
         activator = build_activator
         expect(GithubApi).to receive(:new).and_raise(error)
