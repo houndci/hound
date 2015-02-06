@@ -19,7 +19,23 @@ describe RemoveHoundFromRepo do
 
     context "with org repo" do
       context "when the services team does not exist" do
-        it "does nothing"
+        it "doesn't remove hound from the repo or team" do
+          repo_name = "foo/bar"
+          github_repo =
+            double("GithubRepo", organization: double(login: "foo"))
+          github = double(
+            "GithubApi",
+            repo: github_repo,
+            remove_repo_from_team: true,
+            remove_user_from_team: true,
+            org_teams: [],
+          )
+
+          expect(RemoveHoundFromRepo.run(repo_name, github)).to be nil
+          expect(github).to have_received(:org_teams).with("foo")
+          expect(github).not_to have_received(:remove_repo_from_team)
+          expect(github).not_to have_received(:remove_user_from_team)
+        end
       end
 
       context "when team exists" do
