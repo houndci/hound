@@ -127,23 +127,34 @@
         Stay focused on the things that can’t be automated and let Hound keep
         your style in check.
 
-    %dl.plan
-      %dt
-        %i.fa.fa-book
-        Open Source
-      %dd
-        Get higher quality pull requests.
-      %dd
-        Free
+    %article.plans
+      .inner-wrapper
+        .plan
+          %h4
+            %i.fa.fa-book
+            Open Source
+          %span.tagline
+            Get higher quality pull requests for:
+          .price
+            .dollar-amount
+              %span $0
+              %small /month
 
-    %dl.plan
-      %dt
-        %i.fa.fa-lock
-        Private Repos
-      %dd
-        Keep your codebase clean.
-      %dd
-        $12/mo per repo
+        .plan
+          %h4
+            %i.fa.fa-lock
+            Private Repos
+          %span.tagline
+            Keep your codebase clean for:
+          .price
+            .dollar-amount
+              %span $12
+              %small /month
+
+    .cta
+      = link_to "/auth/github", class: "auth button" do
+        %i.fa.fa-github
+        %span= t('authenticate')
 
 %section.security
   .section-content
