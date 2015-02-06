@@ -444,8 +444,6 @@ module GithubApiHelper
     )
   end
 
-  private
-
   def hound_token
     ENV["HOUND_GITHUB_TOKEN"]
   end

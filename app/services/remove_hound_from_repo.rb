@@ -16,24 +16,9 @@ class RemoveHoundFromRepo < ManageHound
   end
 
   def remove_services_team_from_repo
-    team = find_services_team
-
-    if team
-      team_id = team.id
-      remove_repo_from_team(team_id)
-      remove_user_from_team(team_id)
+    if decorated_services_team
+      decorated_services_team.remove_repo(github, repo_name)
+      decorated_services_team.remove_user(github, github_username)
     end
-  end
-
-  def remove_user_from_team(team_id)
-    team_repos = github.team_repos(team_id)
-
-    if team_repos.empty?
-      github.remove_user_from_team(team_id, github_username)
-    end
-  end
-
-  def remove_repo_from_team(team_id)
-    github.remove_repo_from_team(team_id, repo_name)
   end
 end

@@ -93,8 +93,6 @@ describe RemoveHoundFromRepo do
     end
   end
 
-  private
-
   def hound_github_username
     ENV["HOUND_GITHUB_USERNAME"]
   end

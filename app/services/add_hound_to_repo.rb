@@ -38,25 +38,19 @@ class AddHoundToRepo < ManageHound
   end
 
   def add_user_and_repo_to_services_team
-    team = find_services_team
-
+    team = decorated_services_team
     if team
-      ensure_push_permission(team)
-      github.add_repo_to_team(team.id, repo_name)
+      team.add_repo(github, repo_name)
     else
-      team = github.create_team(
-        team_name: SERVICES_TEAM_NAME,
-        org_name: org_name,
-        repo_name: repo_name
+      team = GithubTeam.new(
+        github.create_team(
+          team_name: SERVICES_TEAM_NAME,
+          org_name: org_name,
+          repo_name: repo_name
+        )
       )
     end
 
     github.add_user_to_team(github_username, team.id)
-  end
-
-  def ensure_push_permission(team)
-    if team.permission == "pull"
-      github.update_team(team.id, permission: "push")
-    end
   end
 end

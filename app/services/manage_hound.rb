@@ -1,3 +1,5 @@
+require "app/models/github_team"
+
 class ManageHound
   SERVICES_TEAM_NAME = "Services"
 
@@ -21,8 +23,16 @@ class ManageHound
     @github_username ||= ENV.fetch("HOUND_GITHUB_USERNAME")
   end
 
+  def decorated_services_team
+    if find_services_team
+      GithubTeam.new(find_services_team)
+    else
+      nil
+    end
+  end
+
   def find_services_team
-    github.org_teams(org_name).detect do |team|
+    @services_team ||= github.org_teams(org_name).detect do |team|
       team.name.downcase == SERVICES_TEAM_NAME.downcase
     end
   end

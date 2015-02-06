@@ -381,8 +381,6 @@ describe GithubApi do
     end
   end
 
-  private
-
   def token
     "github_token"
   end
