@@ -2,24 +2,6 @@ require "fast_spec_helper"
 require "app/models/github_team"
 
 describe GithubTeam do
-  describe "#has_pull_permission?" do
-    it "returns true when team#permission is 'pull'" do
-      team = double("OctoKitTeam", permission: pull_permission)
-      github = double("Github")
-      github_team = GithubTeam.new(team, github)
-
-      expect(github_team.has_pull_permission?).to be true
-    end
-
-    it "returns false when team#permission is not pull" do
-      team = double("OctoKitTeam", permission: non_pull_permission)
-      github = double("Github")
-      github_team = GithubTeam.new(team, github)
-
-      expect(github_team.has_pull_permission?).to be false
-    end
-  end
-
   describe "#add_repo" do
     context "when the team has pull permission" do
       it "updates the permission to push" do

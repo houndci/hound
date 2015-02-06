@@ -1,10 +1,6 @@
 class GithubTeam
   pattr_initialize :team, :github
 
-  def has_pull_permission?
-    team.permission == "pull"
-  end
-
   def add_repo(repo_name)
     ensure_push_permission
     add_repo_to_team(repo_name)
@@ -26,6 +22,10 @@ class GithubTeam
 
   def add_user_to_team(github_username)
     github.add_user_to_team(team.id, github_username)
+  end
+
+  def has_pull_permission?
+    team.permission == "pull"
   end
 
   def remove_user_from_team(github_username)
