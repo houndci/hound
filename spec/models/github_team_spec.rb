@@ -20,17 +20,6 @@ describe GithubTeam do
     end
   end
 
-  describe "#id" do
-    it "delegates id to team" do
-      id = 1234
-      team = double("OctoKitTeam", id: id)
-      github = double("Github")
-      github_team = GithubTeam.new(team, github)
-
-      expect(github_team.id).to be id
-    end
-  end
-
   describe "#add_repo" do
     context "when the team has pull permission" do
       it "updates the permission to push" do
