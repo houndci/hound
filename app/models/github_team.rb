@@ -36,7 +36,7 @@ class GithubTeam
   private
 
   def add_user_to_team(github_username)
-    github.add_user_to_team(github_username, id)
+    github.add_user_to_team(id, github_username)
   end
 
   def remove_user_from_team(github_username)

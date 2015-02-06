@@ -51,7 +51,7 @@ describe AddHoundToRepo do
               repo_name: repo_name
             )
             expect(github).to have_received(:add_user_to_team).
-              with(hound_github_username, github_team.id)
+              with(github_team.id, hound_github_username)
           end
         end
 

@@ -86,6 +86,38 @@ describe GithubTeam do
   end
 
   describe "#remove_user" do
+    it "calls github with the team id and passed username" do
+      id = 1234
+      team = double("OctoKitTeam", id: id, permission: non_pull_permission)
+      github = double(
+        "Github",
+        team_repos: [],
+        remove_user_from_team: true
+      )
+      github_team = GithubTeam.new(team, github)
+
+      github_team.remove_user(username)
+
+      expect(github).to have_received(:remove_user_from_team).
+        with(id, username)
+    end
+  end
+
+  describe "#add_user" do
+    it "calls github with the team id and passed username" do
+      id = 1234
+      team = double("OctoKitTeam", id: id, permission: non_pull_permission)
+      github = double(
+        "Github",
+        add_user_to_team: true
+      )
+      github_team = GithubTeam.new(team, github)
+
+      github_team.add_user(username)
+
+      expect(github).to have_received(:add_user_to_team).
+        with(id, username)
+    end
   end
 
   def non_pull_permission
@@ -98,5 +130,9 @@ describe GithubTeam do
 
   def repo_name
     "foo/bar"
+  end
+
+  def username
+    "houndci"
   end
 end
