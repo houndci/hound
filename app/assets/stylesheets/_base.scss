@@ -1,7 +1,7 @@
 body {
   background-color: rgb(255,255,255);
   color: $base-font-color;
-  font: 300 1em/1.3 'Lato';
+  font: 300 1em/1.4 'Lato';
 }
 
 .content {
@@ -49,46 +49,6 @@ em.code {
 
 .inner-wrapper {
   @include clearfix;
-}
-
-.button {
-  @include transition(all 0.15s linear);
-  @include user-select(none);
-  background: $purple;
-  border-radius: 40px;
-  border: 2px solid $purple;
-  color: #fff;
-  display: block;
-  font-size: 1.2em;
-  font-weight: 300;
-  letter-spacing: 2px;
-  overflow: hidden;
-  padding: 0.6em 1em;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-
-  &:hover {
-    background: lighten($purple, 10%);
-    color: #fff;
-  }
-
-  &.auth {
-    display: inline-block;
-    z-index: 2;
-  }
-
-  span {
-    vertical-align: middle;
-  }
-
-  i {
-    font-size: 1.5em;
-    display: inline-block;
-    margin-right: 0.2em;
-    vertical-align: middle;
-  }
 }
 
 a {

@@ -1,14 +1,8 @@
-@import "getting_started";
-
 .landing.benefits {
   .content {
     margin: 0;
     max-width: none;
     padding: 0;
-  }
-
-  section + section {
-    border-top: 1px solid #ccc;
   }
 
   .section-content {
@@ -17,16 +11,25 @@
 
   .section-title {
     text-align: center;
+  }
 
-    h3 {
-      font-weight: 300;
-      font-size: em(24px);
-      margin-bottom: 0;
-    }
+  h3 {
+    font-weight: 300;
+    font-size: 2em;
+    letter-spacing: 1px;
+    margin: 0 0 0.4em 0;
+  }
 
-    p {
-      margin-top: 0;
-    }
+  h4 {
+    font-weight: 700;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    margin: 0 0 0.6em 0;
+  }
+
+  p {
+    letter-spacing: 1px;
+    margin: 0;
   }
 }
 
@@ -37,66 +40,87 @@ section.intro {
     padding: 6em 0 10em;
     text-align: center;
 
-    h2 {
+    h1 {
       font-size: 3em;
       font-weight: 300;
+      letter-spacing: 1px;
+      margin: 0 0 0.2em 0;
+    }
+
+    h2 {
+      font-size: 1.2em;
+      font-weight: 300;
+      letter-spacing: 1px;
       margin: 0;
     }
 
-    h3 {
-      font-weight: 300;
-      letter-spacing: 1px;
-    }
-
     .cta {
-      padding-top: 2em;
+      padding-top: 3em;
+
+      a.authentication {
+        @include large-button(solid, $purple, lighten($purple, 10%));
+      }
     }
   }
 
   .supported-languages {
-    padding: 3em 0em 4em;
+    margin-bottom: 8em;
     position: relative;
     text-align: center;
 
     &:before {
-      @include position(absolute, 0% 0 0 25%);
+      @include position(absolute, 0.9em 0 0 30%);
       border-top: 1px solid $base-border-color;
       content: '';
       height: 0px;
-      width: 50%;
+      width: 40%;
+      z-index: 1;
     }
 
     h4 {
-      margin: 0 0 2em 0;
+      background: #fff;
+      display: inline-block;
+      font-weight: 300;
+      font-family: $serif;
+      font-style: italic;
+      margin: 0 0 3em 0;
+      padding: 0 0.8em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .inner-wrapper {
+      @include clearfix;
     }
 
     ul.languages {
-      text-align: center;
+      @include span-columns(8 of 12);
+      @include shift(2);
+      display: table;
 
       li.language {
-        display: inline-block;
-        padding: 0 2em;
+        @include span-columns(2 of 8, table);
+        text-align: center;
+        vertical-align: middle;
 
         .language-logo {
-          @include size(100px);
-          border-radius: 50%;
-          border: 2px solid $base-border-color;
-          display: table-cell;
-          vertical-align: middle;
+          display: inline-block;
+          margin-bottom: 0.8em;
 
           img {
+            @include size(100px);
             display: block;
-            height: 40px;
-            margin: 0 auto;
-            width: auto;
+            margin: 0;
           }
         }
 
         h5 {
-          font-size: 1em;
-          font-weight: 300;
+          color: $light-font-color;
+          font-size: 0.9em;
+          font-weight: 700;
+          letter-spacing: 2px;
           margin: 0;
-          padding-top: 0.4em;
+          text-transform: uppercase;
         }
       }
     }
@@ -104,12 +128,19 @@ section.intro {
 }
 
 section.importance {
-  padding: 5em 0 7em;
+  @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
+  background-color: $purple;
+  color: #fff;
+  padding: 5em 0 10em;
 
   .section-title {
-    margin-bottom: 3em;
+    margin-bottom: 5em;
 
     h3 {
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      display: inline-block;
+      padding: 0 2em 1.4em;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
       margin: 0;
     }
   }
@@ -117,11 +148,6 @@ section.importance {
   article {
     @include span-columns(8 of 12);
     @include shift(2);
-
-    &:first-child {
-      border-top: 1px solid $base-border-color;
-      padding-top: 4em;
-    }
 
     &~ article {
       margin-top: 3em;
@@ -134,26 +160,29 @@ section.importance {
 
       .icon {
         @include size(100px);
-        border: 2px solid $base-border-color;
+        background: rgba(0,0,0, 0.15);
+        border: 2px solid #fff;
         border-radius: 50%;
         display: inline-block;
+        padding-top: 1.8em;
+
+        i.fa {
+          font-size: 3em;
+        }
       }
     }
 
     .media-body {
       @include span-columns(6 of 8, table);
       overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
       vertical-align: top;
-
-      h4 {
-        margin: 0 0 0.4em 0;
-      }
     }
   }
 }
 
 section.value {
-  padding: 5em 0 0;
+  padding: 8em 0;
 
   article {
     @include span-columns(8 of 12);
@@ -162,11 +191,11 @@ section.value {
     text-align: center;
 
     &~ article {
-      margin-top: 3em;
+      margin-top: 8em;
     }
 
     .media-body {
-      margin-bottom: 2em;
+      margin-bottom: 3em;
     }
 
     figure.media-object {
@@ -177,6 +206,8 @@ section.value {
 }
 
 section.configuration {
+  background: rgb(80,80,80);
+  color: #fff;
   padding: 4em 0em;
 
   figure.media-object {
@@ -189,26 +220,31 @@ section.configuration {
   .media-body {
     @include span-columns(6 of 12, table);
     padding-left: $column;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     vertical-align: middle;
   }
 }
 
 section.pricing {
-  padding: 6em 8em;
+  padding: 8em 10em;
   text-align: center;
 
   .section-title {
-    @include span-columns(8 of 12);
-    @include shift(2);
+    @include span-columns(10 of 12);
+    @include shift(1);
     @include omega;
-    margin-bottom: 4em;
+    margin-bottom: 6em;
+
+    h3 {
+      font-size: 2em;
+    }
   }
 
   article.plans {
     @include span-columns(8 of 12);
     @include shift(2);
     @include omega;
-    margin-bottom: 4em;
+    margin-bottom: 3em;
   }
 
   .plan {
@@ -240,10 +276,19 @@ section.pricing {
       }
     }
   }
+
+  .cta {
+    padding-top: 4em;
+  }
+
+  a.authentication {
+    @include large-button(solid, $purple, lighten($purple, 10%));
+  }
 }
 
 section.security {
-  border-bottom: 1px solid $base-border-color;
+  background: $green;
+  color: #fff;
   padding: 4em 0;
 
   article {
@@ -251,5 +296,17 @@ section.security {
     @include shift(2);
     @include omega();
     text-align: center;
+
+    h4, p {
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+  }
+
+  .actions {
+    padding-top: 2em;
+
+    a.security-policy {
+      @include small-button(outline, #fff, $purple);
+    }
   }
 }

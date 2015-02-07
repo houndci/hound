@@ -6,42 +6,38 @@
   .section-content
     .inner-wrapper
       .hero
-        %h2
+        %h1
           Your code, always in style.
-        %h3
+        %h2
           Hound comments on style violations in GitHub pull requests, allowing
           you to give better reviews and easily maintain a clean codebase.
 
         .cta
-          = link_to "/auth/github", class: "auth button" do
+          = link_to "/auth/github", class: "authentication" do
             %i.fa.fa-github
             %span= t('authenticate')
 
     .supported-languages
-      %h4
-        Hound currently runs style checks on:
+      %h4 Currently style checking
 
-      %ul.languages
-        %li.language
-          .language-logo
-            = image_tag 'languages/ruby.png'
-          %h5
-            Ruby
-        %li.language
-          .language-logo
-            = image_tag 'languages/coffeescript.png'
-          %h5
-            CoffeeScript
-        %li.language
-          .language-logo
-            = image_tag 'languages/javascript.png'
-          %h5
-            JavaScript
-        %li.language
-          .language-logo
-            = image_tag 'languages/sass.png'
-          %h5
-            Scss
+      .inner-wrapper
+        %ul.languages
+          %li.language
+            .language-logo
+              = image_tag 'languages/ruby.svg'
+            %h5 Ruby
+          %li.language
+            .language-logo
+              = image_tag 'languages/coffeescript.svg'
+            %h5 CoffeeScript
+          %li.language
+            .language-logo
+              = image_tag 'languages/javascript.svg'
+            %h5 JavaScript
+          %li.language
+            .language-logo
+              = image_tag 'languages/sass.svg'
+            %h5 Scss
 
 %section.importance
   .section-content
@@ -53,6 +49,7 @@
       %article
         %figure.media-object
           .icon
+            %i.fa.fa-bolt
         .media-body
           %h4 Convention
           %p
@@ -63,6 +60,7 @@
       %article
         %figure.media-object
           .icon
+            %i.fa.fa-arrows-alt
         .media-body
           %h4 Consistency
           %p
@@ -74,6 +72,7 @@
       %article
         %figure.media-object
           .icon
+            %i.fa.fa-magic
         .media-body
           %h4 Cleanliness
           %p
@@ -86,7 +85,7 @@
     %article
       .media-body
         %h3
-          Write code, submit a pull request, get reviewed.
+          Write code, submit a pull request, get review.
         %p
           Hound integrates with your existing workflow by reviewing and commenting
           on code the moment a GitHub pull request is opened. Every commit made to
@@ -98,7 +97,7 @@
     %article
       .media-body
         %h3
-          Save time and give better code reviews.
+          Save time, give better code reviews.
         %p
           Automated style checking with Hound gives developers more time to give
           the kind of code review that people are best at giving (business domain
@@ -111,7 +110,7 @@
   .section-content
     %figure.media-object
     .media-body
-      %h3
+      %h4
         Use our guides or configure your own.
       %p
         Hounds default style guides build upon accepted industry standards and
@@ -124,8 +123,9 @@
   .section-content
     .section-title
       %h3
-        Stay focused on the things that can’t be automated and let Hound keep
-        your style in check.
+        Stay focused on the things that can’t be automated.
+        %br
+        Let Hound keep your style in check.
 
     %article.plans
       .inner-wrapper
@@ -151,15 +151,15 @@
               %span $12
               %small /month
 
-    .cta
-      = link_to "/auth/github", class: "auth button" do
-        %i.fa.fa-github
-        %span= t('authenticate')
+      .cta
+        = link_to "/auth/github", class: "authentication" do
+          %i.fa.fa-github
+          %span= t('authenticate')
 
 %section.security
   .section-content
     %article
-      %h3
+      %h4
         Uncomfortable giving us access to your code?
       %p
         Don’t worry, we get it. Our mission is to help you maintain a clean code
@@ -167,4 +167,5 @@
         access we need and why.
 
       .actions
-        = link_to 'Read our security policy.', '#'
+        = link_to '#', class: "security-policy" do
+          %span Read our security policy
