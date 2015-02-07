@@ -17,9 +17,15 @@ describe DeactivationsController, "#create" do
       expect(activator).to have_received(:deactivate)
       expect(RepoActivator).to have_received(:new).
         with(repo: repo, github_token: token)
-      expect(analytics).to have_tracked("Deactivated Public Repo").
+      expect(analytics).to have_tracked("Repo Deactivated").
         for_user(membership.user).
-        with(properties: { name: repo.full_github_name })
+        with(
+          properties: {
+            name: repo.full_github_name,
+            private: false,
+            revenue: 0,
+          }
+        )
     end
   end
 

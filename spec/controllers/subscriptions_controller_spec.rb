@@ -4,8 +4,8 @@ describe SubscriptionsController, "#create" do
   context "when subscription succeeds" do
     it "subscribes the user to the repo" do
       token = "usergithubtoken"
-      membership = create(:membership)
-      repo = membership.repo
+      repo = create(:repo, private: true)
+      membership = create(:membership, repo: repo)
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
@@ -25,9 +25,15 @@ describe SubscriptionsController, "#create" do
         with(repo: repo, github_token: token)
       expect(RepoSubscriber).to have_received(:subscribe).
         with(repo, membership.user, "cardtoken")
-      expect(analytics).to have_tracked("Subscribed Private Repo").
+      expect(analytics).to have_tracked("Repo Activated").
         for_user(membership.user).
-        with(properties: { name: repo.name, revenue: repo.plan_price })
+        with(
+          properties: {
+            name: repo.name,
+            private: true,
+            revenue: repo.plan_price,
+          }
+        )
     end
 
     it "updates the current user's email address" do
@@ -74,8 +80,8 @@ describe SubscriptionsController, "#destroy" do
     token = "usertoken"
     current_user = create(:user)
     subscribed_user = create(:user)
-    membership = create(:membership, user: current_user)
-    repo = membership.repo
+    repo = create(:repo, private: true)
+    create(:membership, repo: repo, user: current_user)
     create(:subscription, repo: repo, user: subscribed_user)
     activator = double(:repo_activator, deactivate: true)
     allow(RepoActivator).to receive(:new).and_return(activator)
@@ -94,8 +100,14 @@ describe SubscriptionsController, "#destroy" do
       with(repo: repo, github_token: token)
     expect(RepoSubscriber).to have_received(:unsubscribe).
       with(repo, subscribed_user)
-    expect(analytics).to have_tracked("Unsubscribed Private Repo").
+    expect(analytics).to have_tracked("Repo Deactivated").
       for_user(current_user).
-      with(properties: { name: repo.name, revenue: -repo.plan_price })
+      with(
+        properties: {
+          name: repo.name,
+          private: true,
+          revenue: -repo.plan_price,
+        }
+      )
   end
 end

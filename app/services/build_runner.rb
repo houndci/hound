@@ -3,6 +3,7 @@ class BuildRunner
 
   def run
     if repo && relevant_pull_request?
+      track_subscribed_build_started
       create_pending_status
       repo.builds.create!(
         violations: violations,
@@ -11,7 +12,7 @@ class BuildRunner
       )
       commenter.comment_on_violations(priority_violations)
       create_success_status
-      track_reviewed_repo_for_each_user
+      track_subscribed_build_completed
     end
   end
 
@@ -46,10 +47,19 @@ class BuildRunner
       find_and_update(payload.github_repo_id, payload.full_repo_name)
   end
 
-  def track_reviewed_repo_for_each_user
-    repo.users.each do |user|
+  def track_subscribed_build_started
+    if repo.subscription
+      user = repo.subscription.user
       analytics = Analytics.new(user)
-      analytics.track_reviewed(repo)
+      analytics.track_build_started(repo)
+    end
+  end
+
+  def track_subscribed_build_completed
+    if repo.subscription
+      user = repo.subscription.user
+      analytics = Analytics.new(user)
+      analytics.track_build_completed(repo)
     end
   end
 
