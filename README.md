@@ -38,7 +38,7 @@ If you have questions about the service, see our [FAQ] or email [hound@thoughtbo
 6. On the confirmation screen, copy the `Client ID` and `Client Secret` to
    `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
    file does not exist.
-7. Run `foreman start`. Foreman will start the web server, `redis-server`, and
+7. Run `foreman start`. Foreman will start the web server and
    the resque background job queue. NOTE: `rails server` will not load the
    appropriate environment variables and you'll get a "Missing `secret_key_base`
    for 'development' environment" error.
