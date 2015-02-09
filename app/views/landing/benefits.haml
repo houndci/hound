@@ -91,6 +91,7 @@
           on code the moment a GitHub pull request is opened.
 
       %figure.media-object
+        = image_tag 'hound_flow.png'
 
     %article
       .media-body
@@ -101,10 +102,12 @@
           give the kind of code review that humans are best at giving.
 
       %figure.media-object
+        = image_tag 'review_example.png'
 
 %section.configuration
   .section-content
     %figure.media-object
+      = image_tag 'guides.png'
     .media-body
       %h4
         Use our guides or configure your own.
@@ -119,7 +122,7 @@
   .section-content
     .section-title
       %h3
-        Hound keeps code style in check.
+        Hound keeps your code style in check.
 
     %article.plans
       .inner-wrapper
@@ -161,5 +164,6 @@
         access we need and why.
 
       .actions
-        = link_to '#', class: "security-policy" do
+        = link_to 'https://github.com/thoughtbot/hound/blob/master/doc/SECURITY.md',
+          target: '_blank', class: "security-policy" do
           %span Read our security policy
