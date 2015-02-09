@@ -392,6 +392,7 @@ end
       it "has one violation" do
         config = {
           "StringLiterals" => {
+            "Enabled" => true,
             "EnforcedStyle" => "single_quotes"
           },
           "HashSyntax" => {
@@ -424,6 +425,7 @@ end
       it 'allows a cop to be excluded for specific files or directories' do
         config = {
           "StringLiterals" => {
+            "Enabled" => true,
             "EnforcedStyle" => "single_quotes"
           },
           "HashSyntax" => {
@@ -520,7 +522,7 @@ end
   private
 
   def violations_in(content, config: nil, repository_owner: "ralph")
-    repo_config = double("RepoConfig", enabled_for?: true, for: config)
+    repo_config = double("RepoConfig", for: config)
     style_guide = StyleGuide::Ruby.new(repo_config, repository_owner)
     style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
   end

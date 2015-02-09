@@ -11,11 +11,6 @@ class RepoConfig
 
   pattr_initialize :commit
 
-  def enabled_for?(style_guide_name)
-    style_guide_name == "ruby" && legacy_config? ||
-      enabled_in_config?(style_guide_name)
-  end
-
   def for(style_guide_name)
     if style_guide_name == "ruby" && legacy_config?
       hound_config
@@ -41,11 +36,6 @@ class RepoConfig
   end
 
   private
-
-  def enabled_in_config?(name)
-    config = hound_config[name] || hound_config[name.camelize]
-    config && (config["enabled"] == true || config["Enabled"] == true)
-  end
 
   def legacy_config?
     (hound_config.keys & STYLE_GUIDES).empty?
