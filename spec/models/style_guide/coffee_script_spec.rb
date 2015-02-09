@@ -7,7 +7,7 @@ describe StyleGuide::CoffeeScript do
     context "with default configuration" do
       context "for long line" do
         it "returns violation" do
-          repo_config = double("RepoConfig", enabled_for?: true, for: {})
+          repo_config = double("RepoConfig", for: {})
           style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
           line = double("Line", content: "blah", number: 1, patch_position: 2)
           file = double(
@@ -105,7 +105,7 @@ describe StyleGuide::CoffeeScript do
     private
 
     def violations_in(content, repository_owner: "ralph")
-      repo_config = double("RepoConfig", enabled_for?: true, for: {})
+      repo_config = double("RepoConfig", for: {})
       style_guide = StyleGuide::CoffeeScript.new(repo_config, repository_owner)
       style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
     end

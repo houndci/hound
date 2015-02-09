@@ -1,150 +1,7 @@
-require "attr_extras"
-require "json"
 require "fast_spec_helper"
 require "app/models/repo_config"
 
 describe RepoConfig do
-  describe "#enabled_for?" do
-    context "with invalid format in Hound config" do
-      it "only returns true for ruby" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          hello world!
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        expect(repo_config).to be_enabled_for("ruby")
-        expect(repo_config).not_to be_enabled_for("coffee_script")
-        expect(repo_config).not_to be_enabled_for("java_script")
-      end
-    end
-
-    context "with invalid indentation in Hound config" do
-      it "returns false for all style guides" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          coffee_script:
-          enabled: true
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        RepoConfig::STYLE_GUIDES.each do |style_guide_name|
-          expect(repo_config).not_to be_enabled_for(style_guide_name)
-        end
-      end
-    end
-
-    context "when all style guides are disabled" do
-      it "returns false for all style guides" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          ruby:
-            enabled: false
-          coffee_script:
-            hello: world
-          java_script:
-            hello: world
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        RepoConfig::STYLE_GUIDES.each do |style_guide_name|
-          expect(repo_config).not_to be_enabled_for(style_guide_name)
-        end
-      end
-    end
-
-    context "when Ruby is enabled" do
-      it "returns true for ruby" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          ruby:
-            enabled: true
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        expect(repo_config).to be_enabled_for("ruby")
-      end
-    end
-
-    context "when CoffeeScript is enabled" do
-      it "returns true for coffee_script" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          coffee_script:
-            enabled: true
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        expect(repo_config).to be_enabled_for("coffee_script")
-      end
-    end
-
-    context "when JavaScript is enabled" do
-      it "returns true for java_script" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          java_script:
-            enabled: true
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        expect(repo_config).to be_enabled_for("java_script")
-      end
-    end
-
-    context "when SCSS is enabled" do
-      it "returns true for scss" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          scss:
-            enabled: true
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        expect(repo_config).to be_enabled_for("scss")
-      end
-    end
-
-    context "with legacy config file" do
-      context "when no style guide is enabled" do
-        it "only returns true for ruby" do
-          commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-            LineLength:
-              Max: 80
-            DotPosition:
-              EnforcedStyle: trailing
-          EOS
-          repo_config = RepoConfig.new(commit)
-
-          expect(repo_config).to be_enabled_for("ruby")
-          expect(repo_config).not_to be_enabled_for("coffee_script")
-          expect(repo_config).not_to be_enabled_for("java_script")
-        end
-      end
-
-      context "when CoffeeScript is enabled" do
-        it "returns true for coffee_script and ruby" do
-          commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-            CoffeeScript:
-              Enabled: true
-            LineLength:
-              Max: 80
-            DotPosition:
-              EnforcedStyle: trailing
-          EOS
-          repo_config = RepoConfig.new(commit)
-
-          expect(repo_config).to be_enabled_for("ruby")
-          expect(repo_config).to be_enabled_for("coffee_script")
-          expect(repo_config).not_to be_enabled_for("java_script")
-        end
-      end
-    end
-
-    context "when there is no Hound config file" do
-      it "returns true for ruby" do
-        commit = double("Commit", file_content: nil)
-        config = RepoConfig.new(commit)
-
-        expect(config).to be_enabled_for("ruby")
-        expect(config).not_to be_enabled_for("coffee_script")
-      end
-    end
-  end
-
   describe "#for" do
     context "when Ruby config file is specified" do
       it "returns parsed config" do
@@ -218,7 +75,6 @@ describe RepoConfig do
         config_text = <<-EOS.strip_heredoc
           linters:
             StringQuotes:
-              enabled: true
               style: double_quotes
         EOS
         config = config_for_file(".scss.yml", config_text)
@@ -228,7 +84,6 @@ describe RepoConfig do
         expect(result).to eq(
           "linters" => {
             "StringQuotes" => {
-              "enabled" => true,
               "style" => "double_quotes",
             }
           }
@@ -272,13 +127,7 @@ describe RepoConfig do
             public/javascripts/**.js
           EOIGNORE
 
-          hound_config = <<-EOS
-            java_script:
-              enabled: true
-          EOS
-
           commit = stub_commit(
-            hound_config: hound_config,
             ".jshintignore" => ignored_files
           )
 
@@ -293,7 +142,6 @@ describe RepoConfig do
         it "uses the custom ignore file" do
           hound_config = <<-EOS
             java_script:
-              enabled: true
               ignore_file: ".js_ignore"
           EOS
 
@@ -332,19 +180,15 @@ describe RepoConfig do
     def config_for_file(file_path, content)
       hound_config = <<-EOS.strip_heredoc
         ruby:
-          enabled: true
           config_file: config/rubocop.yml
 
         coffee_script:
-          enabled: true
           config_file: coffeelint.json
 
         java_script:
-          enabled: true
           config_file: #{file_path}
 
         scss:
-          enabled: true
           config_file: #{file_path}
       EOS
 
