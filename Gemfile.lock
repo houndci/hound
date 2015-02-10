@@ -84,6 +84,8 @@ GEM
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
+    dotenv-rails (0.11.1)
+      dotenv (= 0.11.1)
     erubis (2.7.0)
     execjs (2.2.1)
     factory_girl (4.4.0)
@@ -345,6 +347,7 @@ DEPENDENCIES
   coffee-rails
   coffeelint
   database_cleaner
+  dotenv-rails
   factory_girl_rails
   font-awesome-rails
   foreman
