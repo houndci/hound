@@ -8,7 +8,7 @@ class DeactivationsController < ApplicationController
 
   def create
     if activator.deactivate
-      analytics.track_deactivated(repo)
+      analytics.track_repo_deactivated(repo)
       render json: repo, status: :created
     else
       head 502
