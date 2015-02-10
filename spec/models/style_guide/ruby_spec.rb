@@ -392,6 +392,7 @@ end
       it "has one violation" do
         config = {
           "StringLiterals" => {
+            "Enabled" => "true",
             "EnforcedStyle" => "single_quotes"
           },
           "HashSyntax" => {
@@ -424,6 +425,7 @@ end
       it 'allows a cop to be excluded for specific files or directories' do
         config = {
           "StringLiterals" => {
+            "Enabled" => "true",
             "EnforcedStyle" => "single_quotes"
           },
           "HashSyntax" => {
