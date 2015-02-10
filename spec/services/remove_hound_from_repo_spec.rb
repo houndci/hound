@@ -67,6 +67,31 @@ describe RemoveHoundFromRepo do
         end
 
         context "team has multiple repos" do
+          it "will not remove user from team" do
+            team_id = 222
+            github_team =
+              double("RepoTeams", id: team_id, name: "Services")
+            repo_name = "foo/bar"
+            github_repo =
+              double("GithubRepo", organization: double(login: "foo"))
+            github = double(
+              "GithubApi",
+              repo: github_repo,
+              org_teams: [github_team],
+              remove_repo_from_team: true,
+              remove_user_from_team: true,
+              team_repos: double("TeamRepos", empty?: false),
+            )
+
+            RemoveHoundFromRepo.run(repo_name, github)
+
+            expect(github).to have_received(:org_teams).with("foo")
+            expect(github).
+              to have_received(:remove_repo_from_team).with(team_id, repo_name)
+            expect(github).
+              not_to have_received(:remove_user_from_team)
+          end
+
           it "will remove repo from team" do
             team_id = 222
             github_team =
