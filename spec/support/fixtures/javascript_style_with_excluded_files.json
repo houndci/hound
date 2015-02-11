@@ -1,0 +1,6 @@
+{
+  "trailing": true,
+  "exclude": [
+    "a.js"
+  ]
+}

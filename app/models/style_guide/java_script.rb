@@ -1,46 +1,47 @@
 module StyleGuide
   class JavaScript < Base
-    DEFAULT_CONFIG_FILENAME = "javascript.json"
+    BASE_CONFIG_FILE = "config/style_guides/javascript.json"
+    CONFIG_FILE = ".javascript-style.json"
 
-    def violations_in_file(file)
-      Jshintrb.lint(file.content, config).compact.map do |violation|
-        line = file.line_at(violation["line"])
+    attr_reader :custom_config, :excluded_files
 
-        Violation.new(
-          filename: file.filename,
-          patch_position: line.patch_position,
-          line: line,
-          line_number: violation["line"],
-          messages: [violation["reason"]]
-        )
-      end
+    def initialize(config = "{}")
+      @custom_config = JSON.parse(config)
+      @excluded_files = @custom_config.delete("exclude") || []
     end
 
-    def file_included?(file)
-      !excluded_files.any? { |pattern| File.fnmatch?(pattern, file.filename) }
+    def violations_in_file(file)
+      if include?(file)
+        Jshintrb.lint(file.content, config).compact.map do |violation|
+          line = file.line_at(violation["line"])
+
+          Violation.new(
+            filename: file.filename,
+            patch_position: line.patch_position,
+            line: line,
+            line_number: violation["line"],
+            messages: [violation["reason"]]
+          )
+        end
+      else
+        []
+      end
     end
 
     private
 
-    def config
-      custom_config = repo_config.for(name)
-      if custom_config["predef"].present?
-        custom_config["predef"] |= default_config["predef"]
+    def include?(file)
+      excluded_files.none? do |pattern|
+        File.fnmatch?(pattern, file.filename)
       end
-      default_config.merge(custom_config)
     end
 
-    def excluded_files
-      repo_config.ignored_javascript_files
+    def config
+      base_config.merge(custom_config)
     end
 
-    def default_config
-      config_file = File.read(default_config_file)
-      JSON.parse(config_file)
-    end
-
-    def default_config_file
-      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
+    def base_config
+      JSON.parse(File.read(BASE_CONFIG_FILE))
     end
   end
 end

@@ -1,13 +1,23 @@
-# Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby < Base
-    DEFAULT_CONFIG_FILENAME = "ruby.yml"
+    BASE_CONFIG_FILE = "config/style_guides/ruby.yml"
+    CONFIG_FILE = ".ruby-style.yml"
+
+    attr_reader :custom_config
+
+    def initialize(config = "")
+      config = YAML.load(config) || {}
+      @custom_config = RuboCop::Config.new(config, CONFIG_FILE)
+      @custom_config.add_missing_namespaces
+      @custom_config.make_excludes_absolute
+    end
 
     def violations_in_file(file)
       if config.file_to_exclude?(file.filename)
         []
       else
-        team.inspect_file(parsed_source(file)).map do |violation|
+        # Are non ".rb" riles having a chance to get here?
+        rubocop_team.inspect_file(processed_source(file)).map do |violation|
           line = file.line_at(violation.line)
 
           Violation.new(
@@ -23,45 +33,24 @@ module StyleGuide
 
     private
 
-    def team
-      RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config, rubocop_options)
+    def rubocop_team
+      RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config)
     end
 
-    def parsed_source(file)
+    def processed_source(file)
       RuboCop::ProcessedSource.new(file.content, file.filename)
     end
 
     def config
-      @config ||= RuboCop::Config.new(merged_config, "")
+      @config ||= RuboCopConfig.new(merged_config, "")
     end
 
     def merged_config
-      RuboCop::ConfigLoader.merge(default_config, custom_config)
-    rescue TypeError
-      default_config
+      RuboCop::ConfigLoader.merge(base_config, custom_config)
     end
 
-    def default_config
-      RuboCop::ConfigLoader.configuration_from_file(default_config_file)
-    end
-
-    def custom_config
-      RuboCop::Config.new(repo_config.for(name), "").tap do |config|
-        config.add_missing_namespaces
-        config.make_excludes_absolute
-      end
-    rescue NoMethodError
-      RuboCop::Config.new
-    end
-
-    def rubocop_options
-      if config["ShowCopNames"]
-        { debug: true }
-      end
-    end
-
-    def default_config_file
-      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
+    def base_config
+      RuboCop::ConfigLoader.load_file(BASE_CONFIG_FILE)
     end
   end
 end

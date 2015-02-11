@@ -1,17 +1,17 @@
-require 'spec_helper'
+require "spec_helper"
 
-feature 'Builds' do
+feature "Builds" do
   let(:payload) do
-    File.read('spec/support/fixtures/pull_request_opened_event.json')
+    File.read("spec/support/fixtures/pull_request_opened_event.json")
   end
   let(:parsed_payload) { JSON.parse(payload) }
-  let(:repo_name) { parsed_payload['repository']['full_name'] }
-  let(:repo_id) { parsed_payload['repository']['id'] }
-  let(:pr_sha) { parsed_payload['pull_request']['head']['sha'] }
-  let(:pr_number) { parsed_payload['number'] }
+  let(:repo_name) { parsed_payload["repository"]["full_name"] }
+  let(:repo_id) { parsed_payload["repository"]["id"] }
+  let(:pr_sha) { parsed_payload["pull_request"]["head"]["sha"] }
+  let(:pr_number) { parsed_payload["number"] }
 
-  context 'with payload nesting' do
-    scenario 'a successful build with custom config' do
+  context "with payload nesting" do
+    scenario "a successful build with custom config" do
       create(:repo, github_id: repo_id, full_github_name: repo_name)
       stub_github_requests_with_no_violations
       comment_request = stub_simple_comment_request
@@ -22,8 +22,8 @@ feature 'Builds' do
     end
   end
 
-  context 'without payload nesting' do
-    scenario 'a successful build with custom config' do
+  context "without payload nesting" do
+    scenario "a successful build with custom config" do
       create(:repo, github_id: repo_id, full_github_name: repo_name)
       stub_github_requests_with_no_violations
       comment_request = stub_simple_comment_request
@@ -34,7 +34,7 @@ feature 'Builds' do
     end
   end
 
-  scenario 'a failed build' do
+  scenario "a failed build" do
     create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
     stub_github_requests_with_violations
     stub_commit_request(repo_name, pr_sha)
@@ -52,14 +52,14 @@ feature 'Builds' do
     stub_contents_request(
       repo_name: repo_name,
       sha: pr_sha,
-      file: 'file1.rb',
-      fixture: 'contents.json'
+      file: "file1.rb",
+      fixture: "contents.json"
     )
     stub_contents_request(
       repo_name: repo_name,
       sha: pr_sha,
-      file: '.hound.yml',
-      fixture: 'config_contents.json'
+      file: ".hound.yml",
+      fixture: "config_contents.json"
     )
   end
 
@@ -68,13 +68,13 @@ feature 'Builds' do
     stub_contents_request(
       repo_name: repo_name,
       sha: pr_sha,
-      file: '.hound.yml',
-      fixture: 'config_contents.json'
+      file: ".ruby-style.yml",
+      fixture: "config_contents.json"
     )
     stub_contents_request(
       repo_name: repo_name,
       sha: pr_sha,
-      fixture: 'contents_with_violations.json'
+      fixture: "contents_with_violations.json"
     )
   end
 

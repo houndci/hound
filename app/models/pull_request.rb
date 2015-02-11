@@ -33,6 +33,10 @@ class PullRequest
     payload.action == "synchronize"
   end
 
+  def file_content(filename)
+    head_commit.file_content(filename)
+  end
+
   def head_commit
     @head_commit ||= Commit.new(full_repo_name, payload.head_sha, api)
   end

@@ -5,140 +5,73 @@
 %main.content-doc
   %h2 Configuration
 
-  %p
-    Hound uses the
-    #{link_to "thoughtbot style guide", "https://github.com/thoughtbot/guides/tree/master/style"}
-    by default, unless you configure it to use your own style guide.
-
-  %p
-    Configure Hound for Ruby, CoffeeScript, JavaScript, and SCSS
-    by following these instructions.
-
   %h3 Ruby
 
   %p
-    To enable Ruby style checking, add the following to
-    %em.code .hound.yml
-    in the root of your project
-
-    %code.code-block
-      :preserve
-        ruby:
-          enabled: true
+    Ruby style can be configured by adding a
+    #{link_to "config file", "https://gist.github.com/salbertson/a0d61ab05f64daf1bdc2", target: :blank}
+    to the root of your project. Make sure to name the file
+    %em.code .ruby-style.yml
+    so Hound can find it.
 
   %p
-    Hound uses #{link_to "RuboCop", "https://github.com/bbatsov/rubocop"}
-    internally so you can configure Hound by adding a
-    #{link_to "RuboCop config", "https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml"}
-    to your project and adding the following to
-    %em.code .hound.yml
-    in the root of your project.
-
-    %code.code-block
-      :preserve
-        ruby:
-          enabled: true
-          config_file: config/.rubocop.yml
+    Hound uses #{link_to "RuboCop", "https://github.com/bbatsov/rubocop", target: :blank}
+    internally so most of the
+    #{link_to "RuboCop config", "https://github.com/bbatsov/rubocop/blob/master/config/default.yml", target: :blank}
+    options can be used.
 
   %h3 CoffeeScript
 
   %p
-    To enable CoffeeScript style checking, add the following to
-    %em.code .hound.yml
-    in the root of your project
-
-    %code.code-block
-      :preserve
-        coffee_script:
-          enabled: true
+    CoffeeScript style can be configured by adding a
+    #{link_to "config file", "https://gist.github.com/salbertson/f164c87c0a63f04aafb2", target: :blank}
+    to the root of your project. Make sure to name the file
+    %em.code .coffeescript-style.json
+    so Hound can find it.
 
   %p
-    Hound uses #{link_to "CoffeeLint", "http://www.coffeelint.org/"}
-    internally so you can configure Hound by adding a
-    #{link_to "CoffeeLint config", "https://github.com/clutchski/coffeelint/blob/master/coffeelint.json"}
-    to your project and adding the following to
-    %em.code .hound.yml
-    in the root of your project.
-
-    %code.code-block
-      :preserve
-        coffee_script:
-          enabled: true
-          config_file: config/.coffeelint.json
+    Hound uses #{link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank}
+    internally so most of the
+    #{link_to "CoffeeLint config", "https://github.com/clutchski/coffeelint/blob/master/coffeelint.json", target: :blank}
+    options can be used.
 
   %h3 JavaScript
 
   %p
-    To enable JavaScript style checking, add the following to
-    %em.code .hound.yml
-    in the root of your project
-
-    %code.code-block
-      :preserve
-        java_script:
-          enabled: true
+    JavaScript style can be configured by adding a
+    #{link_to "config file", "https://gist.github.com/salbertson/8186a6bfa5ac362c825b", target: :blank}
+    to the root of your project. Make sure to name the file
+    %em.code .javascript-style.json
+    so Hound can find it.
 
   %p
-    Hound uses #{link_to "JSHint", "https://github.com/jshint/jshint/"}
-    internally so you can configure Hound by adding a
-    #{link_to "JSHint config", "https://github.com/thoughtbot/hound/blob/master/config/style_guides/javascript.json"}
-    file to your project and adding the following to
-    %em.code .hound.yml
-    in the root of your project.
-
-    %code.code-block
-      :preserve
-        java_script:
-          enabled: true
-          config_file: config/.jshint.json
+    Hound uses #{link_to "JSHint", "https://github.com/jshint/jshint", target: :blank}
+    internally so most of the
+    #{link_to "JSHint config", "http://jshint.com/docs/options", target: :blank}
+    options can be used.
 
   %p
-    If you are looking to ignore certain JavaScript files from being checked for
-    style issues you can set the
-    %em.code ignore_file
-    option in the
-    %em.code .hound.yml
-    in the root of your project. This option should be set to a file which
-    defines what files or patterns should be ignored during style checking.
+    If you want to exclude certain files or directories you can add something like this:
 
     %code.code-block
       :preserve
-        java_script:
-          enabled: true
-          ignore_file: config/.javascript_ignore
-
-  %p
-    Each line in the
-    %em.code .javascript_ignore
-    file can specify a pattern for file names to ignore.
-
-    %code.code-block
-      :preserve
-        vendor/assets/javascripts/**.js
+        {
+          "exclude": [
+            "vendor/**"
+          ]
+        }
 
   %h3 SCSS
 
   %p
-    To enable SCSS style checking, add the following to
-    %em.code .hound.yml
-    in the root of your project
-
-    %code.code-block
-      :preserve
-        scss:
-          enabled: true
+    SCSS style can be configured by adding a
+    #{link_to "config file", "https://gist.github.com/salbertson/6d20bcd1c0be681192d7", target: :blank}
+    to the root of your project. Make sure to name the file
+    %em.code .scss-style.yml
+    so Hound can find it.
 
   %p
-    Hound uses #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint"}
-    internally so you can configure Hound by adding a
-    #{link_to "SCSS config", "https://github.com/causes/scss-lint/blob/master/config/default.yml"}
-    file to your project and adding the following to
-    %em.code .hound.yml
-    in the root of your project.
-
-    %code.code-block
-      :preserve
-        scss:
-          enabled: true
-          config_file: config/scss.yml
-
+    Hound uses #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint", target: :blank}
+    internally so most of the
+    #{link_to "SCSS config", "https://github.com/causes/scss-lint/blob/master/config/default.yml", target: :blank}
+    options can be used.

@@ -2,100 +2,51 @@ require "spec_helper"
 
 describe StyleGuide::Scss do
   describe "#violations_in_file" do
-    context "with default configuration" do
-      describe "for deep nested selectors" do
-        it "returns violation" do
-          content = ".a { .b { .c { background: #000; } } }"
+    context "without config" do
+      context "with single quotes" do
+        it "does not return violations" do
+          deep_nested_selectors = ".a { display: 'none'; }"
 
-          expect(violations_in(content)).to include(
-            "Selector should have depth of applicability no greater than 2, but was 3"
-          )
-        end
-      end
-
-      describe "for single quotes" do
-        it "has one violation" do
-          content = ".a { display: 'none'; }"
-
-          expect(violations_in(content)).to include(
-            "Prefer double-quoted strings"
-          )
-        end
-      end
-
-      describe "for no leading zeros" do
-        it "has one violation" do
-          content = ".a { margin: .5em; }"
-
-          expect(violations_in(content)).to include(
-            "`.5` should be written with a leading zero as `0.5`"
-          )
+          expect(violations_in(deep_nested_selectors)).to be_empty
         end
       end
     end
 
-    context "with custom configuration" do
-      describe "for single quotes" do
-        it "returns no violation" do
-          content = ".a { display: 'none'; }\n"
-          config = {
-            "linters" => {
-              "StringQuotes" => {
-                "style" => "single_quotes"
-              }
-            }
-          }
+    context "with single quote rule in config" do
+      describe "with single quotes" do
+        it "returns violations" do
+          config_file = "scss_style.yml"
+          deep_nested_selectors = ".a { display: 'none'; }"
 
-          expect(violations_in(content, config)).to eq []
+          violations = violations_in(deep_nested_selectors, config_file)
+
+          expect(violations).not_to be_empty
         end
-      end
-
-      describe "for no leading zeros" do
-        it "returns no violation" do
-          content = ".a { margin: .5em; }\n"
-          config = {
-            "linters" => {
-              "LeadingZero" => {
-                "style" => "exclude_zero"
-              }
-            }
-          }
-
-          expect(violations_in(content, config)).to eq []
-        end
-      end
-    end
-
-    context "over multiple runs" do
-      it "it reports errors only for the given file" do
-        style_guide = build_style_guide
-        bad_content = ".a { .b { .c { background: #000; } } }"
-        good_content = ".a { margin: 0.5em; }\n"
-
-        bad_run = style_guide.violations_in_file(build_file(bad_content))
-        good_run = style_guide.violations_in_file(build_file(good_content))
-
-        expect(bad_run).not_to be_empty
-        expect(good_run).to be_empty
       end
     end
   end
 
   private
 
-  def violations_in(content, config = nil)
-    style_guide = build_style_guide(config)
-    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+  def violations_in(content, config_file = nil)
+    style_guide = if config_file
+      config = File.read(File.join("spec/support/fixtures", config_file))
+      StyleGuide::Scss.new(config)
+    else
+      StyleGuide::Scss.new
+    end
+
+    style_guide.violations_in_file(build_commit_file(content)).
+      flat_map(&:messages)
   end
 
-  def build_style_guide(config = nil)
-    repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    repository_owner = "ralph"
-    StyleGuide::Scss.new(repo_config, repository_owner)
-  end
-
-  def build_file(text)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
-    double("CommitFile", content: text, filename: "lib/a.scss", line_at: line)
+  def build_commit_file(content)
+    line = double("Line", content: nil, number: 1, patch_position: 2)
+    double(
+      "CommitFile",
+      content: content,
+      filename: "lib/a.scss",
+      line_at: line
+    )
   end
 end

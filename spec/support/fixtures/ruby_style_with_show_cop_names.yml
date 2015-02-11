@@ -1,0 +1,7 @@
+# Fails because it's not a valid cop name
+ShowCopNames: true
+
+CollectionMethods:
+  Enabled: true
+  PreferredMethods:
+    find: 'detect'

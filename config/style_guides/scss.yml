@@ -2,7 +2,7 @@ scss_files: "**/*.scss"
 
 linters:
   BangFormat:
-    enabled: true
+    enabled: false
     space_before_bang: true
     space_after_bang: false
 
@@ -10,167 +10,160 @@ linters:
     enabled: false
 
   ColorKeyword:
-    enabled: true
-    severity: warning
+    enabled: false
 
   Comment:
-    enabled: true
+    enabled: false
 
   DebugStatement:
-    enabled: true
+    enabled: false
 
   DeclarationOrder:
-    enabled: true
+    enabled: false
 
   DuplicateProperty:
-    enabled: true
+    enabled: false
 
   ElsePlacement:
-    enabled: true
-    style: same_line
+    enabled: false
+    style: same_line # or 'new_line'
 
   EmptyLineBetweenBlocks:
-    enabled: true
+    enabled: false
     ignore_single_line_blocks: true
 
   EmptyRule:
-    enabled: true
+    enabled: false
 
   FinalNewline:
-    enabled: true
+    enabled: false
     present: true
 
   HexLength:
     enabled: false
-    style: short
+    style: short # or 'long'
 
   HexNotation:
-    enabled: true
-    style: lowercase
+    enabled: false
+    style: lowercase # or 'uppercase'
 
   HexValidation:
-    enabled: true
+    enabled: false
 
   IdSelector:
-    enabled: true
+    enabled: false
 
   ImportPath:
-    enabled: true
+    enabled: false
     leading_underscore: false
     filename_extension: false
 
   Indentation:
-    enabled: true
-    character: space
+    enabled: false
+    character: space # or 'tab'
     width: 2
 
   LeadingZero:
-    enabled: true
-    style: include_zero
+    enabled: false
+    style: exclude_zero # or 'include_zero'
 
   MergeableSelector:
-    enabled: true
+    enabled: false
     force_nesting: true
 
   NameFormat:
-    enabled: true
+    enabled: false
     allow_leading_underscore: true
-    convention: hyphenated_lowercase
+    convention: hyphenated_lowercase # or 'BEM', or a regex pattern
 
   NestingDepth:
-    enabled: true
-    max_depth: 4
-    severity: warning
+    enabled: false
+    max_depth: 3
 
   PlaceholderInExtend:
     enabled: false
 
   PropertySortOrder:
-    enabled: true
+    enabled: false
     ignore_unspecified: false
-    severity: warning
 
   PropertySpelling:
-    enabled: true
+    enabled: false
     extra_properties: []
 
   QualifyingElement:
-    enabled: true
+    enabled: false
     allow_element_with_attribute: false
     allow_element_with_class: false
     allow_element_with_id: false
-    severity: warning
 
   SelectorDepth:
-    enabled: true
-    max_depth: 2
-    severity: warning
+    enabled: false
+    max_depth: 3
 
   SelectorFormat:
-    enabled: true
-    convention: hyphenated_lowercase
+    enabled: false
+    convention: hyphenated_lowercase # or 'BEM', or 'hyphenated_BEM', or 'snake_case', or 'camel_case', or a regex pattern
 
   Shorthand:
-    enabled: true
-    severity: warning
+    enabled: false
 
   SingleLinePerProperty:
-    enabled: true
+    enabled: false
     allow_single_line_rule_sets: true
 
   SingleLinePerSelector:
-    enabled: true
+    enabled: false
 
   SpaceAfterComma:
-    enabled: true
+    enabled: false
 
   SpaceAfterPropertyColon:
-    enabled: true
-    style: one_space
+    enabled: false
+    style: one_space # or 'no_space', or 'at_least_one_space', or 'aligned'
 
   SpaceAfterPropertyName:
-    enabled: true
+    enabled: false
 
   SpaceBeforeBrace:
-    enabled: true
+    enabled: false
     style: space
     allow_single_line_padding: false
 
   SpaceBetweenParens:
-    enabled: true
+    enabled: false
     spaces: 0
 
   StringQuotes:
-    enabled: true
-    style: double_quotes
+    enabled: false
+    style: single_quotes # or double_quotes
 
   TrailingSemicolon:
-    enabled: true
+    enabled: false
 
   TrailingZero:
     enabled: false
 
   UnnecessaryMantissa:
-    enabled: true
+    enabled: false
 
   UnnecessaryParentReference:
-    enabled: true
+    enabled: false
 
   UrlFormat:
-    enabled: true
+    enabled: false
 
   UrlQuotes:
-    enabled: true
+    enabled: false
 
   VendorPrefixes:
-    enabled: true
-    identifier_list: bourbon
+    enabled: false
+    identifier_list: base
     include: []
     exclude: []
 
   ZeroUnit:
-    enabled: true
-    severity: warning
+    enabled: false
 
   Compass::*:
     enabled: false

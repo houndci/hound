@@ -21,6 +21,7 @@ body {
 
   p {
     padding-bottom: 1em;
+    line-height: 1.8em;
   }
 
   @include media($small-screen) {
