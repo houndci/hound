@@ -50,6 +50,6 @@ class BackfillTimestampForRepos < ActiveRecord::Migration
   end
 
   def down
-    ActiveRecord::IrreversibleMigration
+    raise ActiveRecord::IrreversibleMigration
   end
 end
