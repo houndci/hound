@@ -26,8 +26,10 @@ header {
 
     h1 {
       @include hide-text;
-      @include size(50px);
-      background: image_url("icon.svg") no-repeat center center;
+      background: image_url("logo.svg") no-repeat center center;
+      background-size: 100%;
+      height: 40px;
+      width: 174px;
       margin: 0;
     }
   }
@@ -68,15 +70,22 @@ header {
         font-weight: 300;
         letter-spacing: 1px;
 
+        &.tweet-us,
         &.docs,
         &.faq {
           border: 1px solid $base-border-color;
-          border-radius: 20px;
-          line-height: 38px;
+          border-radius: 26px;
+          line-height: 40px;
           padding: 0em 1.4em;
 
           &:hover {
             border-color: $purple;
+          }
+
+          span {
+            display: inline-block;
+            vertical-align: middle;
+            padding-bottom: 2px;
           }
         }
 

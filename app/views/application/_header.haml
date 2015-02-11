@@ -2,7 +2,8 @@
   %ul.pull-left
     %li
       = link_to repos_path, class: "logo" do
-        %h1 Hound
+        %h1
+          Hound
     %li
       = link_to "Docs", configuration_path, class: "docs"
     %li
@@ -18,4 +19,7 @@
         = link_to "Sign Out", sign_out_path, class: "sign-out"
     - else
       %li
-        = render "shared/auth_button"
+        = link_to "Pricing", "#pricing"
+      %li
+        = link_to 'https://twitter.com/houndci', target: '_blank', class: 'tweet-us' do
+          %span @houndci

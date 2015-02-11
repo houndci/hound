@@ -59,6 +59,11 @@ section.intro {
 
       a.authentication {
         @include large-button(solid, $purple, lighten($purple, 10%));
+
+        i, span {
+          position: relative;
+          z-index: 2;
+        }
       }
     }
   }
@@ -161,7 +166,7 @@ section.importance {
       .icon {
         @include size(100px);
         background: rgba(0,0,0, 0.15);
-        border: 2px solid #fff;
+        border: 1px solid #fff;
         border-radius: 50%;
         display: inline-block;
         padding-top: 1.8em;
@@ -238,6 +243,11 @@ section.configuration {
     padding-left: $column;
     text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     vertical-align: middle;
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
   }
 }
 
