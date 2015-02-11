@@ -12,8 +12,7 @@ describe RepoSynchronization do
         }
       }
       resource = double(:resource, to_hash: attributes)
-      api = double(:github_api, repos: [resource])
-      allow(GithubApi).to receive(:new).and_return(api)
+      stub_api_repos(repos: [resource])
       user = create(:user)
       github_token = 'token'
       synchronization = RepoSynchronization.new(user, github_token)
@@ -33,8 +32,7 @@ describe RepoSynchronization do
         }
       }
       resource = double(:resource, to_hash: attributes)
-      api = double(:github_api, repos: [resource])
-      allow(GithubApi).to receive(:new).and_return(api)
+      stub_api_repos(repos: [resource])
       user = create(:user)
       github_token = 'token'
       synchronization = RepoSynchronization.new(user, github_token)
@@ -42,31 +40,6 @@ describe RepoSynchronization do
       synchronization.start
 
       expect(user.repos.first).to be_in_organization
-    end
-
-    it 'replaces existing repos' do
-      attributes = {
-        full_name: 'user/newrepo',
-        id: 456,
-        private: false,
-        owner: {
-          type: 'User'
-        }
-      }
-      resource = double(:resource, to_hash: attributes)
-      github_token = 'token'
-      membership = create(:membership)
-      user = membership.user
-      api = double(:github_api, repos: [resource])
-      allow(GithubApi).to receive(:new).and_return(api)
-      synchronization = RepoSynchronization.new(user, github_token)
-
-      synchronization.start
-
-      expect(GithubApi).to have_received(:new).with(github_token)
-      expect(user.repos.size).to eq(1)
-      expect(user.repos.first.full_github_name).to eq 'user/newrepo'
-      expect(user.repos.first.github_id).to eq 456
     end
 
     it 'renames an existing repo if updated on github' do
@@ -82,9 +55,7 @@ describe RepoSynchronization do
       }
       resource = double(:resource, to_hash: attributes)
       github_token = 'githubtoken'
-
-      api = double(:github_api, repos: [resource])
-      allow(GithubApi).to receive(:new).and_return(api)
+      stub_api_repos(repos: [resource])
       synchronization = RepoSynchronization.new(membership.user, github_token)
 
       synchronization.start
@@ -108,9 +79,8 @@ describe RepoSynchronization do
         }
         resource = double(:resource, to_hash: attributes)
         github_token = 'githubtoken'
+        stub_api_repos(repos: [resource])
         second_user = create(:user)
-        api = double(:github_api, repos: [resource])
-        allow(GithubApi).to receive(:new).and_return(api)
         synchronization = RepoSynchronization.new(second_user, github_token)
 
         synchronization.start
@@ -118,5 +88,85 @@ describe RepoSynchronization do
         expect(second_user.reload.repos.size).to eq(1)
       end
     end
+
+    describe "when a user no longer has access to a repo" do
+      it "deactivates a repo when there are no other memberships" do
+        repo = create(:repo, :active)
+        repo.memberships.destroy_all
+        membership = create(:membership, repo: repo)
+        github_token = "githubtoken"
+        stub_api_repos(repos: [])
+        synchronization = RepoSynchronization.new(membership.user, github_token)
+
+        synchronization.start
+        repo.reload
+
+        expect(repo).not_to be_active
+      end
+
+      it "does not deactivate a repo when there are other memberships" do
+        repo = create(:membership).repo
+        repo.update(active: true)
+        membership = create(:membership, repo: repo)
+        github_token = "githubtoken"
+        stub_api_repos(repos: [])
+        synchronization = RepoSynchronization.new(membership.user, github_token)
+
+        synchronization.start
+        repo.reload
+
+        expect(repo).to be_active
+      end
+
+      it "removes the user's membership when there are other memberships" do
+        removed_membership = create(:membership)
+        repo = removed_membership.repo
+        repo.update(active: true)
+        create(:membership, repo: repo)
+        github_token = "githubtoken"
+        stub_api_repos(repos: [])
+        synchronization =
+          RepoSynchronization.new(removed_membership.user, github_token)
+
+        synchronization.start
+
+        expect(repo.memberships).not_to include(removed_membership)
+      end
+
+      it "destroys the users membership when a repo gets deactivated" do
+        repo = create(:repo, :active)
+        repo.memberships.destroy_all
+        membership = create(:membership, repo: repo)
+        user = membership.user
+        github_token = "githubtoken"
+        stub_api_repos(repos: [])
+        synchronization = RepoSynchronization.new(membership.user, github_token)
+
+        synchronization.start
+
+        expect(user.memberships).to be_empty
+      end
+
+      it "unsubscribes the user when a repo gets deactivated" do
+        repo = create(:repo, :active)
+        subscription = create(:subscription, repo: repo)
+        user = subscription.user
+        repo.memberships.destroy_all
+        create(:membership, repo: repo, user: user)
+        github_token = "githubtoken"
+        stub_api_repos(repos: [])
+        allow(RepoSubscriber).to receive(:unsubscribe)
+        synchronization = RepoSynchronization.new(user, github_token)
+
+        synchronization.start
+
+        expect(RepoSubscriber).to have_received(:unsubscribe).with(repo, user)
+      end
+    end
+  end
+
+  def stub_api_repos(attrs)
+    api = double(:github_api, attrs)
+    allow(GithubApi).to receive(:new).and_return(api)
   end
 end
