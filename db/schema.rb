@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150130051749) do
+ActiveRecord::Schema.define(version: 20150211101020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20150130051749) do
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id",    null: false
     t.integer  "repo_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "memberships", ["repo_id"], name: "index_memberships_on_repo_id", using: :btree
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 20150130051749) do
     t.boolean  "active",                       default: false, null: false
     t.integer  "hook_id"
     t.string   "full_github_name", limit: 255,                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.boolean  "private"
     t.boolean  "in_organization"
   end
