@@ -44,7 +44,7 @@ class PullRequest
   end
 
   def api
-    @api ||= GithubApi.new
+    @api ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
   end
 
   def number
