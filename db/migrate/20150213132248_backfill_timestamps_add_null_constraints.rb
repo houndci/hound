@@ -1,4 +1,4 @@
-class BackfillTimestampForRepos < ActiveRecord::Migration
+class BackfillTimestampsAddNullConstraints < ActiveRecord::Migration
   def up
     sql = <<-SQL
       UPDATE memberships
@@ -47,9 +47,19 @@ class BackfillTimestampForRepos < ActiveRecord::Migration
     SQL
 
     ActiveRecord::Base.connection.execute(remaining_updates)
+
+    change_column_null :repos, :created_at, false
+    change_column_null :repos, :updated_at, false
+
+    change_column_null :memberships, :created_at, false
+    change_column_null :memberships, :updated_at, false
   end
 
   def down
-    raise ActiveRecord::IrreversibleMigration
+    change_column_null :repos, :created_at, true
+    change_column_null :repos, :updated_at, true
+
+    change_column_null :memberships, :created_at, true
+    change_column_null :memberships, :updated_at, true
   end
 end
