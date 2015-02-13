@@ -1,0 +1,185 @@
+- content_for :page_title, "Hound"
+- content_for :body_class, "landing benefits"
+- content_for :variation, "benefits"
+
+%section.intro
+  .section-content
+    .inner-wrapper
+      .hero
+        %h1
+          Your code, always in style.
+        %h2
+          Hound comments on style violations in GitHub pull requests, allowing
+          you and your team to better review and maintain a clean codebase.
+
+        .cta
+          = link_to "/auth/github", class: "authentication" do
+            %i.fa.fa-github
+            %span= t('authenticate')
+
+    .supported-languages
+      %h4 Currently style checking
+
+      .inner-wrapper
+        %ul.languages
+          %li.language
+            .language-logo
+              = image_tag 'languages/ruby.svg'
+            %h5 Ruby
+          %li.language
+            .language-logo
+              = image_tag 'languages/coffeescript.svg'
+            %h5 CoffeeScript
+          %li.language
+            .language-logo
+              = image_tag 'languages/javascript.svg'
+            %h5 JavaScript
+          %li.language
+            .language-logo
+              = image_tag 'languages/sass.svg'
+            %h5 Scss
+
+%section.importance
+  .section-content
+    .section-title
+      %h3
+        Why does style matter?
+
+    .inner-wrapper
+      %article
+        %figure.media-object
+          .icon
+            %i.fa.fa-bolt
+        .media-body
+          %h4 Convention
+          %p
+            Defining and sticking with a style guide helps reduce the amount of
+            decisions that developers needs to make when writing code, helping to
+            keep their focus on logic not semantics and formatting.
+
+      %article
+        %figure.media-object
+          .icon
+            %i.fa.fa-ellipsis-h
+        .media-body
+          %h4 Consistency
+          %p
+            When every line of code is written in the same style, the whole
+            codebase becomes easier to read, understand and de-bug. It also
+            helps prevent areas of the codebase from being “owned” by one
+            persons unique style vs. the team.
+
+      %article
+        %figure.media-object
+          .icon
+            %i.fa.fa-magic
+        .media-body
+          %h4 Awesomeness
+          %p
+            A clean codebase is a reflection of a cohesive team. It gives the
+            impression of a team working well together towards a common goal,
+            rather than individual developers working independently.
+
+%section.value
+  .section-content
+    %article
+      .media-body
+        %h3
+          Write code, submit a pull request, get review from Hound.
+        %p
+          Hound integrates with your existing workflow by reviewing and commenting
+          on code the moment a GitHub pull request is opened.
+
+      %figure.media-object
+        = image_tag 'hound_flow.png'
+
+    %article
+      .media-body
+        %h3
+          Save time, get better reviews.
+        %p
+          Automated style checking with Hound gives developers more time to
+          give the kind of code review that humans are best at giving.
+
+      %figure.media-object
+        = image_tag 'review_example.png'
+
+%section.support
+  .section-content
+    .section-title
+      %h4 Hound is helping save time and maintain clean codebases for:
+    %article
+      %ul.customers
+        %li.customer
+          = image_tag('turing_school.svg')
+        %li.customer
+          = image_tag('turing_school.svg')
+        %li.customer
+          = image_tag('turing_school.svg')
+        %li.customer
+          = image_tag('turing_school.svg')
+
+%section.configuration
+  .section-content
+    %figure.media-object
+      = image_tag 'guides.png'
+    .media-body
+      %h4
+        Use our guides or configure your own.
+      %p
+        Hounds default style guides build upon accepted industry standards and
+        are the result of years of utilization in software projects at
+        = link_to 'thoughtbot.', 'http://thoughtbot.com/', target: 'blank'
+        Have your own style guide or need to modify the default?
+        Hound provides the ability to customize your guides to best suit your
+        teams needs.
+
+%section.pricing
+  .section-content#pricing
+    .section-title
+      %h3
+        Hound keeps your code style in check.
+
+    %article.plans
+      .inner-wrapper
+        .plan
+          %h4
+            %i.fa.fa-book
+            Open Source
+          %span.tagline
+            Get higher quality pull requests for:
+          .price
+            .dollar-amount
+              %span $0
+              %small /month
+
+        .plan
+          %h4
+            %i.fa.fa-lock
+            Private Repos
+          %span.tagline
+            Keep your codebase clean for:
+          .price
+            .dollar-amount
+              %span $12
+              %small /month
+
+      .cta
+        = link_to "/auth/github", class: "authentication" do
+          %i.fa.fa-github
+          %span= t('authenticate')
+
+%section.security
+  .section-content
+    %article
+      %h4
+        Uncomfortable giving us access to your code?
+      %p
+        Don’t worry, we get it. Our mission is to help you maintain a clean code
+        base, nothing more. Our security documentation details what kind of
+        access we need and why.
+
+      .actions
+        = link_to 'https://github.com/thoughtbot/hound/blob/master/doc/SECURITY.md',
+          target: '_blank', class: "security-policy" do
+          %span Read our security policy

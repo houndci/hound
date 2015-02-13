@@ -1,0 +1,28 @@
+footer {
+  padding: 4em 1em;
+  text-align: center;
+
+  ul.links {
+    margin-bottom: 4em;
+
+    li {
+      display: inline-block;
+
+      &:after {
+        border-right: 1px solid $base-border-color;
+        display: inline-block;
+        content: '';
+        height: 1em;
+        margin: 0 0.5em;
+        vertical-align: middle;
+      }
+
+      &:last-child:after {
+        content: normal;
+      }
+    }
+  }
+
+  article.legal {
+  }
+}

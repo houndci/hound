@@ -30,6 +30,7 @@ gem "rubocop", "0.25.0"
 gem "sass-rails"
 gem "scss-lint", require: false
 gem "sentry-raven"
+gem "split"
 gem "stripe"
 gem "uglifier", ">= 1.0.3"
 gem "unicorn"
