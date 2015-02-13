@@ -8,7 +8,12 @@ class GithubApi
   PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon-preview+json"
   SERVICES_TEAM_NAME = "Services"
 
-  pattr_initialize :token
+  attr_reader :file_cache, :token
+
+  def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
+    @token = token
+    @file_cache = {}
+  end
 
   def client
     @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
@@ -76,7 +81,8 @@ class GithubApi
   end
 
   def file_contents(full_repo_name, filename, sha)
-    client.contents(full_repo_name, path: filename, ref: sha)
+    file_cache["#{full_repo_name}/#{sha}/#{filename}"] ||=
+      client.contents(full_repo_name, path: filename, ref: sha)
   end
 
   def accept_pending_invitations
