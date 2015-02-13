@@ -368,8 +368,7 @@ end
     it "finds only one violation" do
       config = {
         "StringLiterals" => {
-          "EnforcedStyle" => "double_quotes",
-          "Enabled" => "true",
+          "EnforcedStyle" => "double_quotes"
         }
       }
 

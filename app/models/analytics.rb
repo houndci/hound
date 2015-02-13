@@ -10,49 +10,44 @@ class Analytics
     track(event: "Signed In")
   end
 
-  def track_activated(repo)
+  def track_repo_activated(repo)
     track(
-      event: "Activated Public Repo",
-      properties: {
-        name: repo.full_github_name
-      }
-    )
-  end
-
-  def track_deactivated(repo)
-    track(
-      event: "Deactivated Public Repo",
-      properties: {
-        name: repo.full_github_name
-      }
-    )
-  end
-
-  def track_reviewed(repo)
-    track(
-      event: "Reviewed Repo",
-      properties: {
-        name: repo.full_github_name
-      }
-    )
-  end
-
-  def track_subscribed(repo)
-    track(
-      event: "Subscribed Private Repo",
+      event: "Repo Activated",
       properties: {
         name: repo.full_github_name,
-        revenue: repo.plan_price
+        private: repo.private,
+        revenue: repo.plan_price,
       }
     )
   end
 
-  def track_unsubscribed(repo)
+  def track_repo_deactivated(repo)
     track(
-      event: "Unsubscribed Private Repo",
+      event: "Repo Deactivated",
       properties: {
         name: repo.full_github_name,
-        revenue: -repo.plan_price
+        private: repo.private,
+        revenue: -repo.plan_price,
+      }
+    )
+  end
+
+  def track_build_started(repo)
+    track(
+      event: "Build Started",
+      properties: {
+        name: repo.full_github_name,
+        private: repo.private,
+      }
+    )
+  end
+
+  def track_build_completed(repo)
+    track(
+      event: "Build Completed",
+      properties: {
+        name: repo.full_github_name,
+        private: repo.private,
       }
     )
   end

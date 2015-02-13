@@ -20,12 +20,6 @@ FactoryGirl.define do
     sequence(:github_id) { |n| n }
     private false
     in_organization false
-
-    after(:create) do |repo|
-      if repo.users.empty?
-        repo.users << create(:user)
-      end
-    end
   end
 
   factory :user do
@@ -33,12 +27,6 @@ FactoryGirl.define do
 
     ignore do
       repos []
-    end
-
-    after(:build) do |user, evaluator|
-      if evaluator.repos.any?
-        user.repos += evaluator.repos
-      end
     end
   end
 

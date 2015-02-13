@@ -17,7 +17,8 @@ describe ReposController do
     context "when current user is a member of a repo with no missing information" do
       it "clears all memberships to allow for a forced reload" do
         repo = create(:repo, in_organization: true, private: true)
-        user = create(:user, repos: [repo])
+        user = create(:user)
+        user.repos << repo
         stub_sign_in(user)
 
         get :index, format: :json

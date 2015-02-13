@@ -1,3 +1,8 @@
 = link_to "/auth/github", class: "auth button" do
   %i.fa.fa-github
   %span= t("authenticate")
+
+- content_for :analytics do
+  :javascript
+    var link = document.getElementsByClassName("auth")[0];
+    window.analytics.trackLink(link, "Clicked Sign In");

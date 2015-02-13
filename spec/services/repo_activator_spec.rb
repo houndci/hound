@@ -4,14 +4,14 @@ describe RepoActivator do
   describe "#activate" do
     context "with org repo" do
       it "will enqueue org invitation job" do
-        allow(JobQueue).to receive(:push).with(OrgInvitationJob)
+        allow(JobQueue).to receive(:push).with(AcceptOrgInvitationsJob)
         repo = create(:repo, in_organization: true)
         stub_github_api
         activator = build_activator(repo: repo)
 
         activator.activate
 
-        expect(JobQueue).to have_received(:push).with(OrgInvitationJob)
+        expect(JobQueue).to have_received(:push).with(AcceptOrgInvitationsJob)
       end
 
       it "marks repo as active" do
@@ -28,7 +28,7 @@ describe RepoActivator do
 
     context "without org repo" do
       it "will not enqueue org invitation job" do
-        allow(JobQueue).to receive(:push).with(OrgInvitationJob)
+        allow(JobQueue).to receive(:push).with(AcceptOrgInvitationsJob)
         repo = create(:repo)
         stub_github_api
         activator = build_activator(repo: repo)
@@ -36,7 +36,8 @@ describe RepoActivator do
         activator.activate
 
         expect(repo.in_organization).to be_falsy
-        expect(JobQueue).not_to have_received(:push).with(OrgInvitationJob)
+        expect(JobQueue).not_to have_received(:push).
+          with(AcceptOrgInvitationsJob)
       end
 
       it "marks repo as active" do

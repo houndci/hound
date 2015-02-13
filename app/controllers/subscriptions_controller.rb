@@ -7,7 +7,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     if activator.activate && create_subscription
-      analytics.track_subscribed(repo)
+      analytics.track_repo_activated(repo)
 
       render json: repo, status: :created
     else
@@ -19,7 +19,7 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     if activator.deactivate && delete_subscription
-      analytics.track_unsubscribed(repo)
+      analytics.track_repo_deactivated(repo)
 
       render json: repo, status: :created
     else

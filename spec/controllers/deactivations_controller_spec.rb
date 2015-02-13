@@ -17,9 +17,15 @@ describe DeactivationsController, "#create" do
       expect(activator).to have_received(:deactivate)
       expect(RepoActivator).to have_received(:new).
         with(repo: repo, github_token: token)
-      expect(analytics).to have_tracked("Deactivated Public Repo").
+      expect(analytics).to have_tracked("Repo Deactivated").
         for_user(membership.user).
-        with(properties: { name: repo.full_github_name })
+        with(
+          properties: {
+            name: repo.full_github_name,
+            private: false,
+            revenue: 0,
+          }
+        )
     end
   end
 
@@ -43,9 +49,9 @@ describe DeactivationsController, "#create" do
 
   context "when repo has a subscription" do
     it "raises" do
-      repo = create(:repo, private: true)
+      user = create(:user)
+      repo = create(:repo, private: true, users: [user])
       create(:subscription, repo: repo)
-      user = repo.users.first
       stub_sign_in(user)
 
       expect { post :create, repo_id: repo.id, format: :json }.
@@ -57,8 +63,8 @@ describe DeactivationsController, "#create" do
 
   context "when repo is private and does not have a subscription" do
     it "returns successful response" do
-      repo = create(:repo, private: true)
-      user = repo.users.first
+      user = create(:user)
+      repo = create(:repo, private: true, users: [user])
       activator = double(:repo_activator, deactivate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(user)

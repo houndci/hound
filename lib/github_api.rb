@@ -1,3 +1,4 @@
+require "attr_extras"
 require "octokit"
 require "base64"
 require "active_support/core_ext/object/with_options"
@@ -5,12 +6,10 @@ require "active_support/core_ext/object/with_options"
 class GithubApi
   PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon-preview+json"
 
-  def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
-    @token = token
-  end
+  pattr_initialize :token
 
   def client
-    @client ||= Octokit::Client.new(access_token: @token, auto_paginate: true)
+    @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
   end
 
   def repos

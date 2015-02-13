@@ -25,9 +25,6 @@ describe BuildRunner, '#run' do
       expect(build.violations.count).to be >= 1
       expect(build.pull_request_number).to eq 5
       expect(build.commit_sha).to eq payload.head_sha
-      expect(analytics).to have_tracked("Reviewed Repo").
-        for_user(repo.users.first).
-        with(properties: { name: repo.full_github_name })
     end
 
     it 'comments on violations' do
@@ -45,6 +42,8 @@ describe BuildRunner, '#run' do
     end
 
     it "comments a maximum number of times" do
+      allow(ENV).to receive(:[]).with("HOUND_GITHUB_TOKEN").
+        and_return("something")
       allow(ENV).to receive(:[]).with("MAX_COMMENTS").and_return("1")
       build_runner = make_build_runner
       stubbed_commenter
@@ -137,6 +136,31 @@ describe BuildRunner, '#run' do
       build_runner.run
 
       expect(Commenter).not_to have_received(:new)
+    end
+  end
+
+  context "with subscribed private repo and opened pull request" do
+    it "tracks build events" do
+      repo = create(:repo, :active, github_id: 123, private: true)
+      create(:subscription, repo: repo)
+      payload = stubbed_payload(
+        github_repo_id: repo.github_id,
+        full_repo_name: repo.name
+      )
+      build_runner = BuildRunner.new(payload)
+      stubbed_style_checker_with_violations
+      stubbed_commenter
+      stubbed_pull_request
+      stubbed_github_api
+
+      build_runner.run
+
+      expect(analytics).to have_tracked("Build Started").
+        for_user(repo.subscription.user).
+        with(properties: { name: repo.full_github_name, private: true })
+      expect(analytics).to have_tracked("Build Completed").
+        for_user(repo.subscription.user).
+        with(properties: { name: repo.full_github_name, private: true })
     end
   end
 
