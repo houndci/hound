@@ -1,6 +1,17 @@
 require "spec_helper"
 
 feature "Repo list", js: true do
+  scenario "user views landing page" do
+    user = create(:user)
+    repo = create(:repo, full_github_name: "thoughtbot/my-repo")
+    repo.users << user
+    sign_in_as(user)
+
+    visit root_path
+
+    expect(page).to have_content repo.full_github_name
+  end
+
   scenario "user views list" do
     user = create(:user)
     repo = create(:repo, full_github_name: "thoughtbot/my-repo")
