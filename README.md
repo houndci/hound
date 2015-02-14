@@ -81,24 +81,27 @@ First, thank you for contributing!
 
 Here a few guidelines to follow:
 
-1. Write tests
-2. Make sure the entire test suite passes locally and on Travis CI
-3. Open a pull request on GitHub
-4. [Squash your commits](https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature) after receiving feedback
+1. Open an [issue](https://github.com/thoughtbot/hound/issues) to discuss a new feature.
+2. Write tests
+3. Make sure the entire test suite passes locally and on Travis CI
+4. Open a Pull Request
+5. [Squash your commits](https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature) after receiving feedback
+6. Celebrate!
 
 There a couple areas we would like to concentrate on.
 
-1. Add support for JavaScript
-2. Add support for CSS and Sass
-3. Write [style guides](app/models/style_guide) that don't currently exist and
-   would enforce the
-   [thoughtbot style guide](https://github.com/thoughtbot/guides).
+1. ~~Add support for JavaScript~~
+2. ~~Add support for CSS and Sass~~
+3. Add ability for subscribers to update their email address.
+4. Come up with a way to report false positives or general Hound issues.
+5. Don't break Hound when an enabled repo is transferred on GitHub.
+6. Support more languages!
 
 ### License
 
 The names and logos for Hound are trademarks of thoughtbot, inc.
 
-Hound is Copyright © 2014 thoughtbot, inc.  It is free software, and may be
+Hound is Copyright © 2015 thoughtbot, inc.  It is free software, and may be
 redistributed under the terms specified in the [LICENSE](LICENSE) file.
 
 ### Contributor License Agreement
