@@ -13,6 +13,19 @@ describe Commit do
       end
     end
 
+    context "when called multiple times for the same filename" do
+      it "requests from GitHub only once" do
+        file_contents = double(content: Base64.encode64("foo"))
+        github = double(:github_api, file_contents: file_contents)
+        commit = Commit.new("test/test", "abc", github)
+
+        commit.file_content("test.rb")
+        commit.file_content("test.rb")
+
+        expect(github).to have_received(:file_contents).once
+      end
+    end
+
     context "when file contains special characters" do
       it "does not error when linters try writing to disk" do
         commit = build_commit("€25.00")
