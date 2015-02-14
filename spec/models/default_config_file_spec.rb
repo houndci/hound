@@ -15,6 +15,18 @@ describe DefaultConfigFile do
       end
     end
 
+    context "mynewsdesk repository" do
+      it "returns the configuration file used by mynewsdesk" do
+        config_path = File.join(
+          DefaultConfigFile::MYNEWSDESK_CONFIG_DIR,
+          "javascript.json"
+        )
+        config = DefaultConfigFile.new("javascript.json", "mynewsdesk")
+
+        expect(config.path).to eq config_path
+      end
+    end
+
     context "non-thoughtbot repository" do
       it "returns the default hound configuration" do
         config_path = File.join(
