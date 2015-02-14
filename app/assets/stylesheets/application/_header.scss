@@ -1,7 +1,7 @@
 $medium-screen-header: new-breakpoint(max-width em(850) 4);
 
 header.global {
-  @include clearfix;
+  @include outer-container;
   height: 120px;
   padding: 0 0.5em;
 
@@ -9,6 +9,20 @@ header.global {
     height: auto;
     padding: 2em 1em;
     text-align: center;
+  }
+
+  &.home-header {
+    @include clearfix;
+    margin: 0;
+    max-width: none;
+    padding: 0 2em;
+    width: 100%;
+
+    .logo-link h1 {
+      background-image: image-url("logo.svg");
+      height: 40px;
+      width: 174px;
+    }
   }
 
   .logo {
@@ -43,15 +57,13 @@ header.global {
 
     h1 {
       @include hide-text;
-      background: image-url("logo.svg") no-repeat center center;
+      background-image: image_url("icon.svg");
+      background-position: center center;
+      background-repeat: no-repeat;
       background-size: 100%;
-      height: 40px;
+      height: 50px;
       margin: 0;
-      width: 174px;
-
-      // background: image_url("icon.svg") no-repeat center center;
-      // height: 50px;
-      // width: 51px;
+      width: 51px;
     }
   }
 
@@ -96,6 +108,10 @@ header.global {
         display: inline-block;
         font-weight: 300;
         letter-spacing: 1px;
+
+        &:hover {
+          color: $base-accent-color;
+        }
 
         &.auth,
         &.docs,
