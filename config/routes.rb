@@ -20,5 +20,9 @@ Houndapp::Application.routes.draw do
   resources :repo_syncs, only: [:index, :create]
   resource :user, only: [:show]
 
+  %w(404 422 500).each do |status_code|
+    get status_code, to: "errors#show", code: status_code
+  end
+
   root to: "home#index"
 end
