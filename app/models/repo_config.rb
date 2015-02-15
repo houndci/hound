@@ -9,7 +9,9 @@ class RepoConfig
     "scss" => "yaml",
   }
 
-  pattr_initialize :commit
+  pattr_initialize :commit do
+    @language_configs = {}
+  end
 
   def enabled_for?(language)
     options = options_for(language)
@@ -17,17 +19,7 @@ class RepoConfig
   end
 
   def for(language)
-    if language == "ruby" && legacy?
-      hound_config
-    else
-      config_file_path = config_path_for(language)
-
-      if config_file_path
-        load_file(config_file_path, FILE_TYPES.fetch(language))
-      else
-        {}
-      end
-    end
+    @language_configs[language] ||= fetch_language_config(language)
   end
 
   def ignored_javascript_files
@@ -41,6 +33,20 @@ class RepoConfig
   end
 
   private
+
+  def fetch_language_config(language)
+    if language == "ruby" && legacy?
+      hound_config
+    else
+      config_file_path = config_path_for(language)
+
+      if config_file_path
+        load_file(config_file_path, FILE_TYPES.fetch(language))
+      else
+        {}
+      end
+    end
+  end
 
   def options_for(language)
     hound_config[language] || hound_config[language.camelize]

@@ -137,6 +137,29 @@ describe RepoConfig do
   end
 
   describe "#for" do
+    it "caches the results" do
+      config_filename = "rubocop.yml"
+      ruby_config_content = "foo bar"
+      hound_config = <<-EOS.strip_heredoc
+        ruby:
+          enabled: true
+          config_file: #{config_filename}
+      EOS
+      commit = stub_commit(
+        hound_config: hound_config,
+        config_filename => ruby_config_content
+      )
+      repo_config = RepoConfig.new(commit)
+
+      repo_config.for("ruby")
+      repo_config.for("ruby")
+
+      expect(commit).to have_received(:file_content).
+        with(RepoConfig::HOUND_CONFIG).once
+      expect(commit).to have_received(:file_content).
+        with(config_filename).once
+    end
+
     context "when Ruby config file is specified" do
       it "returns parsed config" do
         config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
