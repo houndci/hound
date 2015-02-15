@@ -42,6 +42,7 @@ ClassVars:
   Enabled: false
 
 CollectionMethods:
+  Enabled: true
   PreferredMethods:
     find: detect
     reduce: inject
@@ -83,6 +84,9 @@ Encoding:
 
 EvenOdd:
   Enabled: false
+
+ExtraSpacing:
+  Enabled: true
 
 FileName:
   Enabled: false
