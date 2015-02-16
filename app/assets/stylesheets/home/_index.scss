@@ -20,6 +20,10 @@
     margin: 0 0 0.4em 0;
 
     @include media($small-screen) {
+      font-size: 2.2em;
+    }
+
+    @include media($small-screen) {
       font-size: 1.8em;
     }
   }
@@ -44,6 +48,12 @@ section.intro {
     padding: 7em 1em 11em;
     text-align: center;
 
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+      padding: 4em 1em 7em;
+    }
+
     @include media($small-screen) {
       float: none;
       margin: 0;
@@ -57,9 +67,12 @@ section.intro {
       letter-spacing: 1px;
       margin: 0 0 0.4em 0;
 
+      @include media($medium-screen) {
+        font-size: 3em;
+      }
+
       @include media($small-screen) {
         font-size: 2.7em;
-        line-height: normal;
       }
     }
 
@@ -114,6 +127,11 @@ section.intro {
       width: 40%;
       z-index: 1;
 
+      @include media($medium-screen) {
+        left: 10%;
+        width: 80%;
+      }
+
       @include media($small-screen) {
         left: 0%;
         width: 100%;
@@ -141,7 +159,7 @@ section.intro {
       @include shift(2);
       display: table;
 
-      @include media($small-screen) {
+      @include media($medium-screen) {
         float: none;
         margin: 0;
         width: 100%;
@@ -189,7 +207,11 @@ section.importance {
   @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
   background-color: $purple;
   color: #fff;
-  padding: 5em 0 10em;
+  padding: 5em 1em 10em;
+
+  @include media($small-screen) {
+    padding: 4em 1em 8em;
+  }
 
   @include media($small-screen) {
     padding: 3em 1em 6em;
@@ -211,6 +233,11 @@ section.importance {
     @include span-columns(8 of 12);
     @include shift(2);
 
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+    }
+
     @include media($small-screen) {
       float: none;
       margin: 0;
@@ -220,7 +247,11 @@ section.importance {
     &~ article {
       margin-top: 3em;
 
-      @include media($small-screen) {
+      @include media($medium-screen) {
+        margin-top: 4em;
+      }
+
+      @include media($medium-screen) {
         margin-top: 5em;
       }
     }
@@ -253,7 +284,7 @@ section.importance {
 
     .media-body,
     figure.media-object {
-      @include media($small-screen) {
+      @include media($medium-screen) {
         display: block;
         float: none;
         text-align: center;
@@ -262,7 +293,7 @@ section.importance {
     }
 
     figure.media-object {
-      @include media($small-screen) {
+      @include media($medium-screen) {
         margin-bottom: 1em;
       }
     }
@@ -271,6 +302,10 @@ section.importance {
 
 section.value {
   padding: 8em 0 10em;
+
+  @include media($medium-screen) {
+    padding: 6em 1em 8em;
+  }
 
   @include media($small-screen) {
     padding: 4em 1em 6em;
@@ -281,6 +316,11 @@ section.value {
     @include shift(2);
     @include omega;
     text-align: center;
+
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+    }
 
     @include media($small-screen) {
       float: none;
@@ -363,6 +403,19 @@ section.configuration {
     @include span-columns(4 of 12, table);
     vertical-align: middle;
 
+    @include media($medium-screen) {
+      @include span-columns(8 of 12, block);
+      @include shift(2);
+      float: none;
+      margin-bottom: 2em;
+    }
+
+    @include media($small-screen) {
+      @include span-columns(10 of 12, block);
+      @include shift(1);
+      float: none;
+    }
+
     img {
       display: block;
       width: 100%;
@@ -375,15 +428,7 @@ section.configuration {
     text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     vertical-align: middle;
 
-    a {
-      color: inherit;
-      text-decoration: underline;
-    }
-  }
-
-  .media-body,
-  figure.media-object {
-    @include media($small-screen) {
+    @include media($medium-screen) {
       display: block;
       float: none;
       margin: 0;
@@ -391,11 +436,10 @@ section.configuration {
       text-align: center;
       width: 100%;
     }
-  }
 
-  figure.media-object {
-    @include media($small-screen) {
-      margin-bottom: 2em;
+    a {
+      color: inherit;
+      text-decoration: underline;
     }
   }
 }
@@ -403,6 +447,10 @@ section.configuration {
 section.pricing {
   padding: 4em 1em 10em;
   text-align: center;
+
+  @include media($medium-screen) {
+    padding: 3em 1em 6em;
+  }
 
   @include media($small-screen) {
     padding: 2em 1em;
@@ -414,6 +462,11 @@ section.pricing {
     @include omega;
     margin-bottom: 5em;
     padding-top: 4em;
+
+    @include media($medium-screen) {
+      margin-bottom: 4em;
+      padding-top: 3em;
+    }
 
     @include media($small-screen) {
       display: block;
@@ -434,7 +487,7 @@ section.pricing {
     @include omega;
     margin-bottom: 3em;
 
-    @include media($small-screen) {
+    @include media($medium-screen) {
       display: block;
       float: none;
       margin: 0 0 3em;
@@ -509,6 +562,11 @@ section.security {
     @include shift(2);
     @include omega();
     text-align: center;
+
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+    }
 
     @include media($small-screen) {
       display: block;
