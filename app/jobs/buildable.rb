@@ -7,5 +7,7 @@ module Buildable
     build_runner.run
   rescue Resque::TermException
     Resque.enqueue(self, payload_data)
+  rescue => exception
+    Raven.capture_exception(exception, payload: { data: payload_data })
   end
 end

@@ -25,4 +25,16 @@ describe RepoInformationJob do
 
     expect(Resque).to have_received(:enqueue).with(RepoInformationJob, repo.id)
   end
+
+  it "sends the exception to Sentry with the repo_id" do
+    repo = create(:repo)
+    exception = StandardError.new("hola")
+    allow(Repo).to receive(:find).and_raise(exception)
+    allow(Raven).to receive(:capture_exception)
+
+    RepoInformationJob.perform(repo.id)
+
+    expect(Raven).to have_received(:capture_exception).
+      with(exception, repo: { id: repo.id })
+  end
 end
