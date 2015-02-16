@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>Ruby 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Ruby-4" sketch:type="MSLayerGroup" transform="translate(-0.000000, 0.000000)">
+            <circle id="Oval-1" fill="#EE5C5C" sketch:type="MSShapeGroup" cx="50" cy="50" r="50"></circle>
+            <g id="Group" transform="translate(11.833333, 30.166667)" stroke="#C33A3A" stroke-width="2" fill="#FFFFFF" sketch:type="MSShapeGroup">
+                <path d="M0.0849743334,14.648399 L37.6233831,50.320777 L76.1771892,14.6542178 L60.0780808,0.0716632593 L16.0214264,0.0716632593 L0.0849743334,14.648399 Z" id="Path-15"></path>
+                <path d="M15.5315903,14.9016704 L37.6058974,48.8443301 L58.8028523,14.9016704" id="Path-16"></path>
+                <path d="M0.928889103,15 L75.3774488,15" id="Path-16"></path>
+                <path d="M16.2616946,0.473467517 L17.0058593,15.4840495 L36.898187,0.473467517 L57.2558582,15.4840495 L60.0771605,0.473467517" id="Path-15"></path>
+            </g>
+        </g>
+    </g>
+</svg>

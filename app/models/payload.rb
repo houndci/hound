@@ -1,5 +1,3 @@
-require 'json'
-
 class Payload
   pattr_initialize :unparsed_data
 
@@ -35,8 +33,16 @@ class Payload
     data['zen']
   end
 
-  def repository_owner
+  def repository_owner_id
+    repository["owner"]["id"]
+  end
+
+  def repository_owner_name
     repository["owner"]["login"]
+  end
+
+  def repository_owner_is_organization?
+    repository["owner"]["type"] == GithubApi::ORGANIZATION_TYPE
   end
 
   private

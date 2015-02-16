@@ -111,6 +111,34 @@ describe BuildRunner, '#run' do
         "Hound has reviewed the changes."
       )
     end
+
+    it "upserts repository owner" do
+      owner_github_id = 56789
+      owner_name = "john"
+      repo = create(:repo, :active, github_id: 123)
+      payload = stubbed_payload(
+        github_repo_id: repo.github_id,
+        full_repo_name: "test/repo",
+        head_sha: "headsha",
+        repository_owner_id: owner_github_id,
+        repository_owner_name: owner_name,
+        repository_owner_is_organization?: true,
+      )
+      allow(Owner).to receive(:upsert)
+      build_runner = BuildRunner.new(payload)
+      stubbed_pull_request
+      stubbed_style_checker_with_violations
+      stubbed_commenter
+      stubbed_github_api
+
+      build_runner.run
+
+      expect(Owner).to have_received(:upsert).with(
+        github_id: owner_github_id,
+        name: owner_name,
+        organization: true
+      )
+    end
   end
 
   context 'without active repo' do
@@ -173,7 +201,10 @@ describe BuildRunner, '#run' do
     defaults = {
       pull_request_number: 123,
       head_sha: "somesha",
-      full_repo_name: "foo/bar"
+      full_repo_name: "foo/bar",
+      repository_owner_id: 456,
+      repository_owner_name: "foo",
+      repository_owner_is_organization?: true,
     }
     double("Payload", defaults.merge(options))
   end

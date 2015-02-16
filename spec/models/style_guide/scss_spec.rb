@@ -90,8 +90,8 @@ describe StyleGuide::Scss do
 
   def build_style_guide(config = nil)
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    repository_owner = "ralph"
-    StyleGuide::Scss.new(repo_config, repository_owner)
+    repository_owner_name = "ralph"
+    StyleGuide::Scss.new(repo_config, repository_owner_name)
   end
 
   def build_file(text)

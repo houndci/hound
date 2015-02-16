@@ -40,6 +40,17 @@ ActiveRecord::Schema.define(version: 20150130051749) do
   add_index "memberships", ["repo_id"], name: "index_memberships_on_repo_id", using: :btree
   add_index "memberships", ["user_id"], name: "index_memberships_on_user_id", using: :btree
 
+  create_table "owners", force: :cascade do |t|
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "github_id",                    null: false
+    t.string   "name",                         null: false
+    t.boolean  "organization", default: false, null: false
+  end
+
+  add_index "owners", ["github_id"], name: "index_owners_on_github_id", unique: true, using: :btree
+  add_index "owners", ["name"], name: "index_owners_on_name", unique: true, using: :btree
+
   create_table "repos", force: :cascade do |t|
     t.integer  "github_id",                                    null: false
     t.boolean  "active",                       default: false, null: false
@@ -49,11 +60,13 @@ ActiveRecord::Schema.define(version: 20150130051749) do
     t.datetime "updated_at"
     t.boolean  "private"
     t.boolean  "in_organization"
+    t.integer  "owner_id"
   end
 
   add_index "repos", ["active"], name: "index_repos_on_active", using: :btree
   add_index "repos", ["full_github_name"], name: "index_repos_on_full_github_name", unique: true, using: :btree
   add_index "repos", ["github_id"], name: "index_repos_on_github_id", using: :btree
+  add_index "repos", ["owner_id"], name: "index_repos_on_owner_id", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.datetime "created_at",                                                               null: false
@@ -92,4 +105,5 @@ ActiveRecord::Schema.define(version: 20150130051749) do
 
   add_index "violations", ["build_id"], name: "index_violations_on_build_id", using: :btree
 
+  add_foreign_key "repos", "owners"
 end

@@ -1,4 +1,7 @@
 FactoryGirl.define do
+  sequence(:github_id)
+  sequence(:github_name) { |n| "github_name#{n}" }
+
   factory :build do
     repo
 
@@ -17,13 +20,13 @@ FactoryGirl.define do
     end
 
     sequence(:full_github_name) { |n| "user/repo#{n}" }
-    sequence(:github_id) { |n| n }
+    github_id
     private false
     in_organization false
   end
 
   factory :user do
-    sequence(:github_username) { |n| "github#{n}" }
+    github_username { generate(:github_name) }
 
     ignore do
       repos []
@@ -52,5 +55,10 @@ FactoryGirl.define do
     patch_position 1
     line_number 42
     messages ["Trailing whitespace detected."]
+  end
+
+  factory :owner do
+    github_id
+    name { generate(:github_name) }
   end
 end
