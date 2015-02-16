@@ -45,7 +45,7 @@ section.intro {
   .hero {
     @include span-columns(8 of 12);
     @include shift(2);
-    padding: 7em 1em 11em;
+    padding: 7em 0 11em;
     text-align: center;
 
     @include media($medium-screen) {
@@ -244,7 +244,7 @@ section.importance {
       width: 100%;
     }
 
-    &~ article {
+    ~ article {
       margin-top: 3em;
 
       @include media($medium-screen) {
@@ -256,10 +256,14 @@ section.importance {
       }
     }
 
-    figure.media-object {
+    .media-object {
       @include span-columns(2 of 8, table);
       text-align: center;
       vertical-align: middle;
+
+      @include media($medium-screen) {
+        margin-bottom: 1em;
+      }
 
       .icon {
         @include size(100px);
@@ -283,18 +287,12 @@ section.importance {
     }
 
     .media-body,
-    figure.media-object {
+    .media-object {
       @include media($medium-screen) {
         display: block;
         float: none;
         text-align: center;
         width: 100%;
-      }
-    }
-
-    figure.media-object {
-      @include media($medium-screen) {
-        margin-bottom: 1em;
       }
     }
   }
@@ -542,7 +540,7 @@ section.pricing {
       padding-top: 2em;
     }
 
-    a.auth {
+    .auth {
       @include large-button(solid, $purple, lighten($purple, 10%));
 
       @include media($small-screen) {

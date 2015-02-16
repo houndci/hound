@@ -29,10 +29,10 @@ header {
     }
   }
 
-  a.logo-link {
+  .logo-link {
     display: table-cell;
-    vertical-align: middle;
     text-align: center;
+    vertical-align: middle;
 
     @include media($medium-screen-header) {
       display: inline-block;
@@ -87,7 +87,7 @@ header {
         }
       }
 
-      & + li {
+      + li {
         padding-left: 1em;
       }
 
