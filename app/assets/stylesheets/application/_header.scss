@@ -63,9 +63,15 @@ header {
       &.pull-left {
         float: none;
       }
+    }
 
-      & + ul {
+    + ul {
+      @include media($medium-screen-header) {
         padding-top: 1.2em;
+      }
+
+      @include media($small-screen) {
+        display: none;
       }
     }
 
@@ -76,15 +82,6 @@ header {
 
       @include media($medium-screen-header) {
         display: inline-block;
-      }
-
-      @include media($small-screen) {
-        display: inline-block;
-
-        &.auth-container {
-          padding: 1em 0 0;
-          width: 100%;
-        }
       }
 
       + li {
