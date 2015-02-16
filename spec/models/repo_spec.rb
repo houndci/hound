@@ -13,6 +13,14 @@ describe Repo do
     expect(subject).to validate_uniqueness_of(:github_id)
   end
 
+  it "destroys memberships if on destroy" do
+    repo = create(:membership).repo
+
+    expect{
+     repo.destroy
+    }.to change{ Membership.count }.to(0)
+  end
+
   describe "#exempt?" do
     context "when repo is exempt" do
       it "returns true" do

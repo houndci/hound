@@ -5,6 +5,14 @@ describe User do
   it { should have_many(:subscribed_repos).through(:subscriptions) }
   it { should validate_presence_of :github_username }
 
+  it "destroys memberships if on destroy" do
+    user = create(:membership).user
+
+    expect{
+     user.destroy
+    }.to change{ Membership.count }.to(0)
+  end
+
   describe ".subscribed_repos" do
     it "returns subscribed repos" do
       user = create(:user)
