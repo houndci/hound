@@ -18,6 +18,10 @@
     font-size: 2.8em;
     letter-spacing: 1px;
     margin: 0 0 0.4em 0;
+
+    @include media($small-screen) {
+      font-size: 1.8em;
+    }
   }
 
   h4 {
@@ -37,14 +41,26 @@ section.intro {
   .hero {
     @include span-columns(8 of 12);
     @include shift(2);
-    padding: 7em 0 11em;
+    padding: 7em 1em 11em;
     text-align: center;
+
+    @include media($small-screen) {
+      float: none;
+      margin: 0;
+      padding: 2em 1em 4em;
+      width: 100%;
+    }
 
     h1 {
       font-size: 3.8em;
       font-weight: 300;
       letter-spacing: 1px;
       margin: 0 0 0.4em 0;
+
+      @include media($small-screen) {
+        font-size: 2.7em;
+        line-height: normal;
+      }
     }
 
     h2 {
@@ -52,13 +68,25 @@ section.intro {
       font-weight: 300;
       letter-spacing: 1px;
       margin: 0;
+
+      @include media($small-screen) {
+        font-size: 1em;
+      }
     }
 
     .cta {
       padding-top: 3em;
 
+      @include media($small-screen) {
+        padding-top: 2em;
+      }
+
       a.auth {
         @include large-button(solid, $purple, lighten($purple, 10%));
+
+        @include media($small-screen) {
+          padding: 0.8em 1.4em;
+        }
 
         i, span {
           position: relative;
@@ -70,8 +98,13 @@ section.intro {
 
   .supported-languages {
     margin-bottom: 8em;
+    padding: 0 1em;
     position: relative;
     text-align: center;
+
+    @include media($small-screen) {
+      margin-bottom: 4em;
+    }
 
     &:before {
       @include position(absolute, 0.9em 0 0 30%);
@@ -80,6 +113,11 @@ section.intro {
       height: 0px;
       width: 40%;
       z-index: 1;
+
+      @include media($small-screen) {
+        left: 0%;
+        width: 100%;
+      }
     }
 
     h4 {
@@ -103,10 +141,25 @@ section.intro {
       @include shift(2);
       display: table;
 
+      @include media($small-screen) {
+        float: none;
+        margin: 0;
+        width: 100%;
+      }
+
       li.language {
         @include span-columns(2 of 8, table);
         text-align: center;
         vertical-align: middle;
+
+        @include media($small-screen) {
+          display: inline-block;
+          width: 100%;
+
+          + .language {
+            padding-top: 2em;
+          }
+        }
 
         .language-logo {
           display: inline-block;
@@ -138,6 +191,10 @@ section.importance {
   color: #fff;
   padding: 5em 0 10em;
 
+  @include media($small-screen) {
+    padding: 3em 1em 6em;
+  }
+
   .section-title {
     margin-bottom: 5em;
 
@@ -154,8 +211,18 @@ section.importance {
     @include span-columns(8 of 12);
     @include shift(2);
 
+    @include media($small-screen) {
+      float: none;
+      margin: 0;
+      width: 100%;
+    }
+
     &~ article {
       margin-top: 3em;
+
+      @include media($small-screen) {
+        margin-top: 5em;
+      }
     }
 
     figure.media-object {
@@ -183,11 +250,31 @@ section.importance {
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
       vertical-align: top;
     }
+
+    .media-body,
+    figure.media-object {
+      @include media($small-screen) {
+        display: block;
+        float: none;
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    figure.media-object {
+      @include media($small-screen) {
+        margin-bottom: 1em;
+      }
+    }
   }
 }
 
 section.value {
   padding: 8em 0 10em;
+
+  @include media($small-screen) {
+    padding: 4em 1em 6em;
+  }
 
   article {
     @include span-columns(8 of 12);
@@ -195,14 +282,29 @@ section.value {
     @include omega;
     text-align: center;
 
+    @include media($small-screen) {
+      float: none;
+      margin: 0;
+      width: 100%;
+    }
+
     &~ article {
       border-top: 1px solid $base-border-color;
       margin-top: 8em;
       padding-top: 7em;
+
+      @include media($small-screen) {
+        margin-top: 4em;
+        padding-top: 3em;
+      }
     }
 
     .media-body {
       margin-bottom: 5em;
+
+      @include media($small-screen) {
+        margin-bottom: 3em;
+      }
 
       h3 {
         margin-bottom: 0.6em;
@@ -255,7 +357,7 @@ section.support {
 section.configuration {
   @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
   color: #fff;
-  padding: 4em 0em;
+  padding: 4em 1em;
 
   figure.media-object {
     @include span-columns(4 of 12, table);
@@ -278,11 +380,33 @@ section.configuration {
       text-decoration: underline;
     }
   }
+
+  .media-body,
+  figure.media-object {
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  figure.media-object {
+    @include media($small-screen) {
+      margin-bottom: 2em;
+    }
+  }
 }
 
 section.pricing {
-  padding: 4em 0em 10em;
+  padding: 4em 1em 10em;
   text-align: center;
+
+  @include media($small-screen) {
+    padding: 2em 1em;
+  }
 
   .section-title {
     @include span-columns(10 of 12);
@@ -290,6 +414,14 @@ section.pricing {
     @include omega;
     margin-bottom: 5em;
     padding-top: 4em;
+
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      margin: 0 0 3em;
+      padding-top: 2em;
+      width: 100%;
+    }
 
     h3 {
       margin: 0;
@@ -301,6 +433,13 @@ section.pricing {
     @include shift(2);
     @include omega;
     margin-bottom: 3em;
+
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      margin: 0 0 3em;
+      width: 100%;
+    }
   }
 
   .plan {
@@ -309,6 +448,16 @@ section.pricing {
     border: 2px solid $base-border-color;
     padding: 0 1em;
     text-align: center;
+
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      width: 100%;
+
+      + .plan {
+        margin-top: 2em;
+      }
+    }
 
     h4 {
       border-bottom: 1px dotted $base-border-color;
@@ -335,23 +484,38 @@ section.pricing {
 
   .cta {
     padding-top: 4em;
-  }
 
-  a.auth {
-    @include large-button(solid, $purple, lighten($purple, 10%));
+    @include media($small-screen) {
+      padding-top: 2em;
+    }
+
+    a.auth {
+      @include large-button(solid, $purple, lighten($purple, 10%));
+
+      @include media($small-screen) {
+        padding: 0.8em 1.4em;
+      }
+    }
   }
 }
 
 section.security {
   background: rgb(86,86,86);
   color: #fff;
-  padding: 4em 0;
+  padding: 4em 1em;
 
   article {
     @include span-columns(8 of 12);
     @include shift(2);
     @include omega();
     text-align: center;
+
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      margin: 0;
+      width: 100%;
+    }
 
     h4, p {
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
@@ -363,6 +527,8 @@ section.security {
 
     a.security-policy {
       @include small-button(outline, #fff, $purple);
+      padding-left: 1.2em;
+      padding-right: 1.2em;
     }
   }
 }
