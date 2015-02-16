@@ -8,9 +8,7 @@ describe User do
   it "destroys memberships if on destroy" do
     user = create(:membership).user
 
-    expect{
-     user.destroy
-    }.to change{ Membership.count }.to(0)
+    expect { user.destroy }.to change { Membership.count }.to(0)
   end
 
   describe ".subscribed_repos" do

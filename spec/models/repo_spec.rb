@@ -16,9 +16,7 @@ describe Repo do
   it "destroys memberships if on destroy" do
     repo = create(:membership).repo
 
-    expect{
-     repo.destroy
-    }.to change{ Membership.count }.to(0)
+    expect { repo.destroy }.to change { Membership.count }.to(0)
   end
 
   describe "#exempt?" do
