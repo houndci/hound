@@ -78,10 +78,7 @@ describe GithubTeam do
     it "calls github with the team id and passed username" do
       id = 1234
       team = double("OctoKitTeam", id: id, permission: non_pull_permission)
-      github = double(
-        "Github",
-        add_user_to_team: true
-      )
+      github = double("Github", add_user_to_team: true)
       github_team = GithubTeam.new(team, github)
 
       github_team.add_user(username)

@@ -1,4 +1,5 @@
 require "fast_spec_helper"
+require "app/services/manage_hound"
 require "app/services/remove_hound_from_repo"
 
 describe RemoveHoundFromRepo do

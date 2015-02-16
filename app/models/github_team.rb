@@ -7,7 +7,7 @@ class GithubTeam
   end
 
   def remove_repo(repo_name)
-    remove_repo_from_team(repo_name)
+    github.remove_repo_from_team(team.id, repo_name)
   end
 
   def remove_user(github_username)
@@ -15,14 +15,10 @@ class GithubTeam
   end
 
   def add_user(github_username)
-    add_user_to_team(github_username)
+    github.add_user_to_team(team.id, github_username)
   end
 
   private
-
-  def add_user_to_team(github_username)
-    github.add_user_to_team(team.id, github_username)
-  end
 
   def has_pull_permission?
     team.permission == "pull"
@@ -34,10 +30,6 @@ class GithubTeam
     if team_repos.empty?
       github.remove_user_from_team(team.id, github_username)
     end
-  end
-
-  def remove_repo_from_team(repo_name)
-    github.remove_repo_from_team(team.id, repo_name)
   end
 
   def add_repo_to_team(repo_name)

@@ -1,5 +1,3 @@
-require "app/models/github_team"
-
 class ManageHound
   GITHUB_TEAM_NAME = "Services"
 
@@ -26,8 +24,6 @@ class ManageHound
   def decorated_services_team
     if find_services_team
       GithubTeam.new(find_services_team, github)
-    else
-      nil
     end
   end
 

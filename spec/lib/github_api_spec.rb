@@ -108,7 +108,7 @@ describe GithubApi do
     it "returns changed files in a pull request" do
       hound_token = ENV["HOUND_GITHUB_TOKEN"]
       api = GithubApi.new(hound_token)
-      pull_request = double(:pull_request, full_repo_name: full_repo_name)
+      pull_request = double("PullRequest", full_repo_name: full_repo_name)
       pr_number = 123
       commit_sha = "abc123"
       stub_pull_request_files_request(pull_request.full_repo_name, pr_number)
@@ -132,7 +132,7 @@ describe GithubApi do
       commit_sha = "commitsha"
       file = "test.rb"
       patch_position = 123
-      commit = double(:commit, repo_name: full_repo_name, sha: commit_sha)
+      commit = double("Commit", repo_name: full_repo_name, sha: commit_sha)
       request = stub_comment_request(
         full_repo_name,
         pull_request_number,
@@ -157,7 +157,7 @@ describe GithubApi do
       it "returns comments added to pull request" do
         hound_token = ENV["HOUND_GITHUB_TOKEN"]
         api = GithubApi.new(hound_token)
-        pull_request = double(:pull_request, full_repo_name: full_repo_name)
+        pull_request = double("PullRequest", full_repo_name: full_repo_name)
         pull_request_id = 253
         commit_sha = "abc253"
         expected_comment = "inline if's and while's are not violations?"

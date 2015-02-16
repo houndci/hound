@@ -1,4 +1,5 @@
 require "fast_spec_helper"
+require "app/services/manage_hound"
 require "app/services/add_hound_to_repo"
 require "app/models/github_user"
 
