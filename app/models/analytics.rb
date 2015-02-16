@@ -10,6 +10,16 @@ class Analytics
     track(event: "Signed In")
   end
 
+  def track_repo_activation_failed(repo)
+    track(
+      event: "Repo Activation Failed",
+      properties: {
+        name: repo.full_github_name,
+        private: repo.private
+      }
+    )
+  end
+
   def track_repo_activated(repo)
     track(
       event: "Repo Activated",
