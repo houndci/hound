@@ -21,8 +21,8 @@ class PullRequest
     )
   end
 
-  def repository_owner
-    payload.repository_owner
+  def repository_owner_name
+    payload.repository_owner_name
   end
 
   def opened?
@@ -44,7 +44,7 @@ class PullRequest
   end
 
   def api
-    @api ||= GithubApi.new
+    @api ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
   end
 
   def number

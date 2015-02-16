@@ -6,8 +6,9 @@ describe StyleChecker, "#violations" do
     violated_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
     pull_request =
       stub_pull_request(pull_request_files: [stylish_file, violated_file])
-    expected_violations =
-      ['Space inside parentheses detected.', 'Trailing whitespace detected.']
+    expected_violations = ["Unnecessary spacing detected.",
+                           "Space inside parentheses detected.",
+                           "Trailing whitespace detected."]
 
     violation_messages = StyleChecker.new(pull_request).violations.
       flat_map(&:messages)
@@ -16,19 +17,21 @@ describe StyleChecker, "#violations" do
   end
 
   context "for a Ruby file" do
-    context "with violations" do
+    context "with style violations" do
       it "returns violations" do
         file = stub_commit_file("ruby.rb", "puts 123    ")
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
         messages = violations.flat_map(&:messages)
+        expected_violations = ["Unnecessary spacing detected.",
+                               "Trailing whitespace detected."]
 
-        expect(messages).to eq ["Trailing whitespace detected."]
+        expect(messages).to eq expected_violations
       end
     end
 
-    context "with violation on unchanged line" do
+    context "with style violation on unchanged line" do
       it "returns no violations" do
         file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
         pull_request = stub_pull_request(pull_request_files: [file])
@@ -39,7 +42,7 @@ describe StyleChecker, "#violations" do
       end
     end
 
-    context "without violations" do
+    context "without style violations" do
       it "returns no violations" do
         file = stub_commit_file("ruby.rb", "puts 123")
         pull_request = stub_pull_request(pull_request_files: [file])
@@ -65,130 +68,52 @@ describe StyleChecker, "#violations" do
       expect(messages).to eq ["Empty function"]
     end
 
-    context "with violations" do
-      context "with CoffeeScript enabled" do
-        it "returns violations" do
-          config = <<-YAML.strip_heredoc
-            coffee_script:
-              enabled: true
-          YAML
-          head_commit = double("Commit", file_content: config)
-          file = stub_commit_file("test.coffee", "foo: ->")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
+    context "with style violations" do
+      it "returns violations" do
+        file = stub_commit_file("test.coffee", "foo: ->")
+        pull_request = stub_pull_request(pull_request_files: [file])
 
-          violations = StyleChecker.new(pull_request).violations
-          messages = violations.flat_map(&:messages)
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
 
-          expect(messages).to eq ["Empty function"]
-        end
-      end
-
-      context "with CoffeeScript disabled" do
-        it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-            coffee_script:
-              enabled: false
-          YAML
-          head_commit = double("Commit", file_content: config)
-          file = stub_commit_file("test.coffee", "alert 'Hello World'")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
-
-          violations = StyleChecker.new(pull_request).violations
-
-          expect(violations).to be_empty
-        end
+        expect(messages).to eq ["Empty function"]
       end
     end
 
-    context "without violations" do
-      context "with CoffeeScript enabled" do
-        it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-            coffee_script:
-              enabled: true
-          YAML
-          head_commit = double("Commit", file_content: config)
-          file = stub_commit_file("test.coffee", "alert('Hello World')")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
+    context "without style violations" do
+      it "returns no violations" do
+        file = stub_commit_file("test.coffee", "alert('Hello World')")
+        pull_request = stub_pull_request(pull_request_files: [file])
 
-          violations = StyleChecker.new(pull_request).violations
+        violations = StyleChecker.new(pull_request).violations
 
-          expect(violations).to be_empty
-        end
+        expect(violations).to be_empty
       end
     end
   end
 
   context "for a JavaScript file" do
-    context "with violations" do
-      context "with JavaScript enabled" do
-        it "returns violations" do
-          config = <<-YAML.strip_heredoc
-            java_script:
-              enabled: true
-          YAML
-          head_commit = double("Commit", file_content: config)
-          file = stub_commit_file("test.js", "var test = 'test'")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
+    context "with style violations" do
+      it "returns violations" do
+        file = stub_commit_file("test.js", "var test = 'test'")
+        pull_request = stub_pull_request(pull_request_files: [file])
 
-          violations = StyleChecker.new(pull_request).violations
-          messages = violations.flat_map(&:messages)
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
 
-          expect(messages).to include "Missing semicolon."
-        end
-      end
-
-      context "with JavaScript disabled" do
-        it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-            java_script:
-              enabled: false
-          YAML
-          head_commit = double("Commit", file_content: config)
-          file = stub_commit_file("test.js", "var test = 'test'")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
-
-          violations = StyleChecker.new(pull_request).violations
-
-          expect(violations).to be_empty
-        end
+        expect(messages).to include "Missing semicolon."
       end
     end
 
-    context "without violations" do
-      context "with JavaScript enabled" do
-        it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-            java_script:
-              enabled: true
-          YAML
-          head_commit = double("Commit", file_content: config)
-          file = stub_commit_file("test.js", "var test = 'test';")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
+    context "without style violations" do
+      it "returns no violations" do
+        file = stub_commit_file("test.js", "var test = 'test';")
+        pull_request = stub_pull_request(pull_request_files: [file])
 
-          violations = StyleChecker.new(pull_request).violations
-          messages = violations.flat_map(&:messages)
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
 
-          expect(messages).not_to include "Missing semicolon."
-        end
+        expect(messages).not_to include "Missing semicolon."
       end
     end
 
@@ -196,7 +121,6 @@ describe StyleChecker, "#violations" do
       it "returns no violations" do
         config = <<-YAML.strip_heredoc
           java_script:
-            enabled: true
             ignore_file: '.jshintignore'
         YAML
 
@@ -219,64 +143,34 @@ describe StyleChecker, "#violations" do
   end
 
   context "for a SCSS file" do
-    context "with violations" do
-      context "with SCSS enabled" do
-        it "returns violations" do
-          head_commit = stub_head_commit(".hound.yml" => scss_enabled_config)
-          file = stub_commit_file(
-            "test.scss",
-            ".table p.inner table td { background: red; }"
-          )
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
+    context "with style violations" do
+      it "returns violations" do
+        file = stub_commit_file(
+          "test.scss",
+          ".table p.inner table td { background: red; }"
+        )
+        pull_request = stub_pull_request(pull_request_files: [file])
 
-          violations = StyleChecker.new(pull_request).violations
-          messages = violations.flat_map(&:messages)
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
 
-          expect(messages).to include(
-            "Selector should have depth of applicability no greater than 2, but was 4"
-          )
-        end
-      end
-
-      context "with SCSS disabled" do
-        it "returns no violations" do
-          head_commit = stub_head_commit(".hound.yml" => scss_disabled_config)
-          file = stub_commit_file(
-            "test.scss",
-            ".table p.inner table td { background: red; }"
-          )
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
-
-          violations = StyleChecker.new(pull_request).violations
-
-          expect(violations).to be_empty
-        end
+        expect(messages).to include(
+          "Selector should have depth of applicability no greater than 2, but was 4"
+        )
       end
     end
 
-    context "without violations" do
-      context "with SCSS enabled" do
-        it "returns no violations" do
-          head_commit = stub_head_commit(".hound.yml" => scss_enabled_config)
-          file = stub_commit_file("test.scss", "table td { color: green; }")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            pull_request_files: [file],
-          )
+    context "without style violations" do
+      it "returns no violations" do
+        file = stub_commit_file("test.scss", "table td { color: green; }")
+        pull_request = stub_pull_request(pull_request_files: [file])
 
-          violations = StyleChecker.new(pull_request).violations
-          messages = violations.flat_map(&:messages)
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
 
-          expect(messages).not_to include(
-            "Selector should have depth of applicability no greater than 3"
-          )
-        end
+        expect(messages).not_to include(
+          "Selector should have depth of applicability no greater than 3"
+        )
       end
     end
   end
@@ -312,7 +206,7 @@ describe StyleChecker, "#violations" do
       file_content: "",
       head_commit: head_commit,
       pull_request_files: [],
-      repository_owner: "some_org"
+      repository_owner_name: "some_org"
     }
 
     double("PullRequest", defaults.merge(options))
@@ -344,23 +238,9 @@ describe StyleChecker, "#violations" do
   def stub_repo_config
     double(
       "RepoConfig",
-      for: {},
       enabled_for?: true,
+      for: {},
       ignored_javascript_files: []
     )
-  end
-
-  def scss_enabled_config
-    <<-YAML.strip_heredoc
-      scss:
-        enabled: true
-    YAML
-  end
-
-  def scss_disabled_config
-    <<-YAML.strip_heredoc
-      scss:
-        enabled: false
-    YAML
   end
 end

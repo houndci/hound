@@ -4,14 +4,14 @@ describe RepoActivator do
   describe "#activate" do
     context "with org repo" do
       it "will enqueue org invitation job" do
-        allow(OrgInvitationJob).to receive(:perform_later)
+        allow(AcceptOrgInvitationsJob).to receive(:perform_later)
         repo = create(:repo, in_organization: true)
         stub_github_api
         activator = build_activator(repo: repo)
 
         activator.activate
 
-        expect(OrgInvitationJob).to have_received(:perform_later)
+        expect(AcceptOrgInvitationsJob).to have_received(:perform_later)
       end
 
       it "marks repo as active" do
@@ -28,7 +28,7 @@ describe RepoActivator do
 
     context "without org repo" do
       it "will not enqueue org invitation job" do
-        allow(OrgInvitationJob).to receive(:perform_later)
+        allow(AcceptOrgInvitationsJob).to receive(:perform_later)
         repo = create(:repo)
         stub_github_api
         activator = build_activator(repo: repo)
@@ -36,7 +36,7 @@ describe RepoActivator do
         activator.activate
 
         expect(repo.in_organization).to be_falsy
-        expect(OrgInvitationJob).not_to have_received(:perform_later)
+        expect(AcceptOrgInvitationsJob).not_to have_received(:perform_later)
       end
 
       it "marks repo as active" do
@@ -97,7 +97,7 @@ describe RepoActivator do
       end
     end
 
-    context "when adding hound to rope results in an error" do
+    context "when adding hound to repo results in an error" do
       it "returns false" do
         activator = build_activator
         allow(AddHoundToRepo).to receive(:run).and_raise(Octokit::Error.new)
@@ -105,6 +105,18 @@ describe RepoActivator do
         result = activator.activate
 
         expect(result).to be_falsy
+      end
+
+      it "adds an error" do
+        activator = build_activator
+        error_message = "error"
+        allow(AddHoundToRepo).to receive(:run).and_raise(Octokit::Forbidden.new)
+        allow(ErrorMessageTranslation).to receive(:from_error_response).
+          and_return(error_message)
+
+        activator.activate
+
+        expect(activator.errors).to match_array([error_message])
       end
 
       it "reports raised exception to Sentry" do

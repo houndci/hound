@@ -32,7 +32,7 @@ class StyleChecker
     style_guide_class = style_guide_class(filename)
     style_guides[style_guide_class] ||= style_guide_class.new(
       config,
-      pull_request.repository_owner
+      pull_request.repository_owner_name
     )
   end
 

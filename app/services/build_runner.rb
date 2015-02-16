@@ -12,6 +12,7 @@ class BuildRunner
       )
       commenter.comment_on_violations(priority_violations)
       create_success_status
+      upsert_owner
       track_subscribed_build_completed
     end
   end
@@ -79,7 +80,15 @@ class BuildRunner
     )
   end
 
+  def upsert_owner
+    Owner.upsert(
+      github_id: payload.repository_owner_id,
+      name: payload.repository_owner_name,
+      organization: payload.repository_owner_is_organization?
+    )
+  end
+
   def github
-    @github ||= GithubApi.new
+    @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
   end
 end

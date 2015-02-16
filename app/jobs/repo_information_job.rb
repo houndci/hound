@@ -7,7 +7,7 @@ class RepoInformationJob < ActiveJob::Base
     repo = Repo.find(repo_id)
     repo.touch
 
-    github = GithubApi.new
+    github = GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
     github_data = github.repo(repo.full_github_name)
 
     repo.update_attributes!(

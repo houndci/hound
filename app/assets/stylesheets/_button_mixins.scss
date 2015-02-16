@@ -1,0 +1,57 @@
+@mixin button($type: $outline, $base-color: $purple, $hover-color: $purple) {
+  @include transition(all 0.15s linear);
+  @include user-select(none);
+  border-radius: 40px;
+  border: 2px solid $base-color;
+  display: inline-block;
+  font-size: 0.8em;
+  font-weight: 400;
+  letter-spacing: 2px;
+  overflow: hidden;
+  padding: 0.8em 2.4em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+
+  @if $type == "outline" {
+    background: transparent;
+    color: $base-color;
+
+    &:hover {
+      background: $base-color;
+      color: $hover-color;
+    }
+  } @else if $type == "solid" {
+    background: $base-color;
+    color: #fff;
+
+    &:hover {
+      background: $hover-color;
+    }
+  }
+
+  span {
+    vertical-align: middle;
+  }
+
+  i {
+    display: inline-block;
+    font-size: 1.5em;
+    margin-right: 0.2em;
+    vertical-align: middle;
+  }
+}
+
+@mixin large-button($type: $outline, $base-color: $purple, $hover-color: $purple) {
+  @include button($type, $base-color, $hover-color);
+  font-size: 1em;
+  padding: 0.8em 2.4em;
+}
+
+@mixin small-button($type: $outline, $base-color: $purple, $hover-color: $purple) {
+  @include button($type, $base-color, $hover-color);
+  font-size: 0.8em;
+  padding: 0.8em 2.4em;
+}

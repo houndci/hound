@@ -6,7 +6,7 @@ describe ActivationsController, "#create" do
       token = "sometoken"
       membership = create(:membership)
       repo = membership.repo
-      activator = double(:repo_activator, activate: true)
+      activator = double(:repo_activator, activate: true, errors: [])
       allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user, token)
 
@@ -30,20 +30,29 @@ describe ActivationsController, "#create" do
   end
 
   context "when activation fails" do
-    it "returns error response" do
-      token = "sometoken"
-      membership = create(:membership)
-      repo = membership.repo
-      activator = double(:repo_activator, activate: false).as_null_object
-      allow(RepoActivator).to receive(:new).and_return(activator)
-      stub_sign_in(membership.user, token)
+    context "due to 403 Forbidden from GitHub" do
+      it "returns error response" do
+        token = "sometoken"
+        membership = create(:membership)
+        repo = membership.repo
+        error_message = "You must be an admin to add a team membership"
+        activator = double(
+          :repo_activator,
+          activate: false,
+          errors: [error_message]
+        ).as_null_object
+        allow(RepoActivator).to receive(:new).and_return(activator)
+        stub_sign_in(membership.user, token)
 
-      post :create, repo_id: repo.id, format: :json
+        post :create, repo_id: repo.id, format: :json
 
-      expect(response.code).to eq "502"
-      expect(activator).to have_received(:activate)
-      expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: token)
+        response_body = JSON.parse(response.body)
+        expect(response.code).to eq "502"
+        expect(response_body["errors"]).to match_array(error_message)
+        expect(activator).to have_received(:activate)
+        expect(RepoActivator).to have_received(:new).
+          with(repo: repo, github_token: token)
+      end
     end
   end
 

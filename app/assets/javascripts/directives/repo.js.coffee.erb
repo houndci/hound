@@ -6,8 +6,14 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
       scope.processing = true
 
       scope.repo.$activate()
-        .catch(-> alert('Your repo failed to activate.'))
+        .catch((response) -> alert(errorMessage(response.data)))
         .finally(-> scope.processing = false)
+
+    errorMessage = (responseData) ->
+      if responseData.errors.length > 0
+        responseData.errors.join("\n")
+      else
+        "Your repo failed to activate"
 
     deactivateRepo = ->
       scope.processing = true
