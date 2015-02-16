@@ -28,7 +28,6 @@ describe RepoSynchronizationJob do
 
     it "retries when Resque::TermException is raised" do
       allow(User).to receive(:find).and_raise(Resque::TermException.new(1))
-      allow(User).to receive(:set_refreshing_repos).and_return(true)
       user_id = "userid"
       github_token = "token"
       allow(RepoSynchronizationJob.queue_adapter).to receive(:enqueue)

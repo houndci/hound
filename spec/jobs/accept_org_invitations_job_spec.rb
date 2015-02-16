@@ -24,6 +24,7 @@ describe AcceptOrgInvitationsJob do
 
     job = AcceptOrgInvitationsJob.perform_now
 
-    expect(AcceptOrgInvitationsJob.queue_adapter).to have_received(:enqueue).with(job)
+    expect(AcceptOrgInvitationsJob.queue_adapter).
+      to have_received(:enqueue).with(job)
   end
 end
