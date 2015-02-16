@@ -5,18 +5,18 @@ header.global {
   height: 120px;
   padding: 0 0.5em;
 
-  @include media($medium-screen-header) {
-    height: auto;
-    padding: 2em 1em;
-    text-align: center;
-  }
-
   &.home-header {
     @include clearfix;
     margin: 0;
     max-width: none;
     padding: 0 2em;
     width: 100%;
+
+    @include media($medium-screen-header) {
+      height: auto;
+      padding: 2em 1em;
+      text-align: center;
+    }
 
     .logo-link h1 {
       background-image: image-url("logo.svg");
