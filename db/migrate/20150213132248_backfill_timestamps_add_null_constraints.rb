@@ -1,6 +1,6 @@
 class BackfillTimestampsAddNullConstraints < ActiveRecord::Migration
   def up
-    sql = <<-SQL
+    updates_sql = <<-SQL
       UPDATE memberships
         SET created_at = users.created_at
         FROM users
@@ -26,8 +26,6 @@ class BackfillTimestampsAddNullConstraints < ActiveRecord::Migration
         AND repos.updated_at is NULL;
     SQL
 
-    ActiveRecord::Base.connection.execute(sql)
-
     remaining_updates = <<-SQL
       UPDATE repos
         SET created_at = (select current_timestamp)
@@ -46,6 +44,7 @@ class BackfillTimestampsAddNullConstraints < ActiveRecord::Migration
         WHERE updated_at is NULL;
     SQL
 
+    ActiveRecord::Base.connection.execute(updates_sql)
     ActiveRecord::Base.connection.execute(remaining_updates)
 
     change_column_null :repos, :created_at, false
