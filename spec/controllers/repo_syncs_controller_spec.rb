@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe RepoSyncsController, '#create' do
+describe RepoSyncsController, "#create" do
   context "user is refreshing repos" do
     it "will not enqueues repo sync job" do
       token = "usergithubtoken"
@@ -16,7 +16,7 @@ describe RepoSyncsController, '#create' do
   end
 
   context "user is not refreshing repos" do
-    it 'enqueues repo sync job' do
+    it "enqueues repo sync job" do
       token = "usergithubtoken"
       user = create(:user)
       stub_sign_in(user, token)
