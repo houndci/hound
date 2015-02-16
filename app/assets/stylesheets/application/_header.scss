@@ -1,24 +1,41 @@
+$medium-screen-header: new-breakpoint(max-width em(850) 4);
+
 header {
   @include clearfix;
   height: 120px;
   padding: 0 2em;
   width: 100%;
 
-  @include media($small-screen) {
+  @include media($medium-screen-header) {
     height: auto;
-    padding: 2em 0;
+    padding: 2em 1em;
     text-align: center;
   }
 
-  a.logo {
-    border: none;
-    display: block;
-    float: left;
+  .logo {
+    display: table;
+    height: 100%;
     margin-right: 1em;
-    padding: 0;
+
+    @include media($medium-screen-header) {
+      display: inline-block;
+      float: none;
+      vertical-align: middle;
+    }
 
     @include media($small-screen) {
-      margin-right: 0;
+      margin: 0 0 1em;
+      width: 100%;
+    }
+  }
+
+  .logo-link {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+
+    @include media($medium-screen-header) {
+      display: inline-block;
     }
 
     &:hover {
@@ -39,35 +56,41 @@ header {
     display: table;
     height: 100%;
 
-    @include media($small-screen) {
+    @include media($medium-screen-header) {
       display: inline-block;
-      margin: 0 0.5em;
 
       &.pull-right,
       &.pull-left {
         float: none;
       }
+    }
 
-      & + ul {
+    + ul {
+      @include media($medium-screen-header) {
         padding-top: 1.2em;
+      }
+
+      @include media($small-screen) {
+        display: none;
       }
     }
 
     li {
       display: table-cell;
       vertical-align: middle;
+      text-align: center;
 
-      @include media($small-screen) {
+      @include media($medium-screen-header) {
         display: inline-block;
       }
 
-      & + li {
+      + li {
         padding-left: 1em;
       }
 
       a {
         color: $light-font-color;
-        display: block;
+        display: inline-block;
         font-weight: 300;
         letter-spacing: 1px;
 
