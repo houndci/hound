@@ -204,7 +204,7 @@ section.intro {
 }
 
 section.importance {
-  @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
+  @include background-image(linear-gradient(160deg, $purple, darken($purple, 30%)));
   background-color: $purple;
   color: #fff;
   padding: 5em 1em 10em;
@@ -393,7 +393,7 @@ section.support {
 }
 
 section.configuration {
-  @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
+  @include background-image(linear-gradient(160deg, $purple, darken($purple, 30%)));
   color: #fff;
   padding: 4em 1em;
 
