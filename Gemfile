@@ -46,6 +46,8 @@ group :development, :test do
   gem "konacha"
   gem "poltergeist"
   gem "rspec-rails", ">= 2.14"
+  gem "spring"
+  gem "spring-commands-rspec"
 end
 
 group :test do
