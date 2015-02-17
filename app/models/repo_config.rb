@@ -8,6 +8,7 @@ class RepoConfig
     "coffee_script" => "json",
     "scss" => "yaml",
   }
+  DEFAULT_IGNORED_DIRECTORIES = ["vendor"]
 
   pattr_initialize :commit
 
@@ -38,6 +39,11 @@ class RepoConfig
     else
       []
     end
+  end
+
+  def ignored_directories
+    remote_hound_config = load_file(HOUND_CONFIG, "yaml")
+    remote_hound_config["ignored_directories"] || DEFAULT_IGNORED_DIRECTORIES
   end
 
   private

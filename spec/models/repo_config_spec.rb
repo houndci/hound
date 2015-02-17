@@ -306,6 +306,40 @@ describe RepoConfig do
       end
     end
 
+    describe "#ignored_directories" do
+      it "ignores `vendor` by default" do
+        hound_config = <<-EOS
+            java_script:
+              enabled: true
+              ignore_file: ".js_ignore"
+        EOS
+        commit = stub_commit(hound_config: hound_config)
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config.ignored_directories).to eq ["vendor"]
+      end
+
+      it "can be configured to allow `vendor` by the repository's config" do
+        hound_config = <<-EOS
+            java_script:
+              enabled: true
+              ignore_file: ".js_ignore"
+        EOS
+
+        repo_hound_config = <<-EOS
+            ignored_directories:
+              - tmp
+        EOS
+        commit = stub_commit(
+          hound_config: hound_config,
+          ".hound.yml" => repo_hound_config,
+        )
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config.ignored_directories).to eq ["tmp"]
+      end
+    end
+
     def stub_commit(configuration)
       commit = double("Commit")
       hound_config = configuration.delete(:hound_config)
