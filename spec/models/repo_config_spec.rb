@@ -255,7 +255,7 @@ describe RepoConfig do
       end
     end
 
-    describe "#jshint_ignore_file" do
+    describe "#ignored_javascript_files" do
       context "no specific configuration is present" do
         it "attempts to load a .jshintignore file" do
           ignored_files = <<-EOIGNORE.strip_heredoc
