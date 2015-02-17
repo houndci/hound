@@ -5,7 +5,7 @@ module StyleGuide
     def violations_in_file(file)
       require "scss_lint"
 
-      if config.excluded_file?(file.filename)
+      if excluded_file?(file)
         []
       else
         runner = build_runner
@@ -18,14 +18,18 @@ module StyleGuide
             filename: file.filename,
             line: line,
             line_number: violation.location.line,
-            messages: [violation.description],
-            patch_position: line.patch_position,
+            messages: [violation.description], patch_position: line.patch_position,
           )
         end
       end
     end
 
     private
+
+    def excluded_file?(file)
+      directory_excluded?(file) ||
+        config.excluded_file?(file.filename)
+    end
 
     def build_runner
       SCSSLint::Runner.new(config)

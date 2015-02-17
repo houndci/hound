@@ -79,6 +79,40 @@ describe StyleGuide::Scss do
         expect(good_run).to be_empty
       end
     end
+
+    context "when a file is excluded" do
+      context "when a file is inside an ignored directory" do
+        it "returns no violations" do
+          repo_config = double(
+            "RepoConfig",
+            enabled_for?: true,
+            for: nil,
+            ignored_directories: ["vendor"],
+          )
+          style_guide = build_style_guide
+          allow(style_guide).to receive(:repo_config).and_return(repo_config)
+          bad_content = ".a { .b { .c { background: #000; } } }"
+          file = build_file(bad_content, filename: "vendor/foo.scss")
+
+          expect(style_guide.violations_in_file(file)).to eq []
+        end
+      end
+
+      context "when a file is ignored" do
+        it "returns no violations" do
+          style_guide = build_style_guide
+          bad_content = ".a { .b { .c { background: #000; } } }"
+          file = build_file(bad_content)
+          config_double = double(
+            "SassConfig",
+            excluded_file?: true
+          )
+          allow(style_guide).to receive(:config).and_return(config_double)
+
+          expect(style_guide.violations_in_file(file)).to eq []
+        end
+      end
+    end
   end
 
   private
@@ -89,13 +123,18 @@ describe StyleGuide::Scss do
   end
 
   def build_style_guide(config = nil)
-    repo_config = double("RepoConfig", enabled_for?: true, for: config)
+    repo_config = double(
+      "RepoConfig",
+      enabled_for?: true,
+      for: config,
+      ignored_directories: [],
+    )
     repository_owner_name = "ralph"
     StyleGuide::Scss.new(repo_config, repository_owner_name)
   end
 
-  def build_file(text)
+  def build_file(text, filename: "lib/a.scss")
     line = double("Line", content: "blah", number: 1, patch_position: 2)
-    double("CommitFile", content: text, filename: "lib/a.scss", line_at: line)
+    double("CommitFile", content: text, filename: filename, line_at: line)
   end
 end

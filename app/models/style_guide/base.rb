@@ -15,8 +15,8 @@ module StyleGuide
 
     private
 
-    def directory_not_excluded?(file)
-      !repo_config.ignored_directories.any? do |directory|
+    def directory_excluded?(file)
+      repo_config.ignored_directories.any? do |directory|
         file.filename.start_with? directory
       end
     end

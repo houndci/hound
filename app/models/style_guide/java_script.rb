@@ -17,7 +17,8 @@ module StyleGuide
     end
 
     def file_included?(file)
-      directory_not_excluded?(file) && file_not_excluded?(file)
+      directory_not_excluded?(file) &&
+        file_not_excluded?(file)
     end
 
     private
@@ -28,6 +29,10 @@ module StyleGuide
         custom_config["predef"] |= default_config["predef"]
       end
       default_config.merge(custom_config)
+    end
+
+    def directory_not_excluded?(file)
+      !directory_excluded?(file)
     end
 
     def file_not_excluded?(file)
