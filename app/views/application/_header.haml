@@ -1,9 +1,9 @@
 %header
+  .logo.pull-left
+    = link_to repos_path, class: "logo-link" do
+      %h1
+        Hound
   %ul.pull-left
-    %li
-      = link_to repos_path, class: "logo" do
-        %h1
-          Hound
     %li
       = link_to "Docs", configuration_path, class: "docs"
     %li
@@ -19,9 +19,9 @@
         = link_to "Sign Out", sign_out_path, class: "sign-out"
     - else
       %li
-        = link_to "Pricing", "#pricing"
+        = link_to "Pricing", "#pricing", class: "pricing"
       %li
         = link_to "https://twitter.com/houndci", target: "_blank", class: "tweet-us" do
           %span @houndci
-      %li
+      %li.auth-container
         = render "application/auth_button"

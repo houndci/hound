@@ -24,7 +24,10 @@ namespace :repo do
       WHERE id IN (
         SELECT repos.id FROM repos
         LEFT OUTER JOIN memberships on memberships.repo_id = repos.id
+        LEFT OUTER JOIN subscriptions on subscriptions.repo_id = repos.id
         WHERE memberships.id IS NULL
+        AND subscriptions.id is NULL
+        AND repos.active = false
       )
     SQL
   end
