@@ -2,6 +2,11 @@ require "fast_spec_helper"
 require "app/models/github_team"
 
 describe GithubTeam do
+  let(:non_pull_permission) { "either push or admin" }
+  let(:pull_permission) { "pull"}
+  let(:repo_name) { "foo/bar" }
+  let(:username) { "houndci" }
+
   describe "#add_repo" do
     context "when the team has pull permission" do
       it "updates the permission to push" do
@@ -86,21 +91,5 @@ describe GithubTeam do
       expect(github).to have_received(:add_user_to_team).
         with(id, username)
     end
-  end
-
-  def non_pull_permission
-    "either push or admin"
-  end
-
-  def pull_permission
-    "pull"
-  end
-
-  def repo_name
-    "foo/bar"
-  end
-
-  def username
-    "houndci"
   end
 end

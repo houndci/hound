@@ -1,6 +1,8 @@
 require "spec_helper"
 
 feature "Repo list", js: true do
+  let(:username) { 'houndci' }
+
   scenario "user views landing page" do
     user = create(:user)
     repo = create(:repo, full_github_name: "thoughtbot/my-repo")
@@ -165,9 +167,5 @@ feature "Repo list", js: true do
     yield
   ensure
     Resque.inline = true
-  end
-
-  def username
-    "houndci"
   end
 end
