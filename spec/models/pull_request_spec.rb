@@ -4,22 +4,6 @@ require "app/models/commit"
 require "lib/github_api"
 
 describe PullRequest do
-  describe "#can_be_reviewed?" do
-    it "returns true if payload can be reviewed" do
-      payload = payload_stub(can_be_reviewed?: true)
-      pull_request = PullRequest.new(payload)
-
-      expect(pull_request.can_be_reviewed?).to be_truthy
-    end
-
-    it "returns false if payload cannot be reviewed" do
-      payload = payload_stub(can_be_reviewed?: false)
-      pull_request = PullRequest.new(payload)
-
-      expect(pull_request.can_be_reviewed?).to be_falsy
-    end
-  end
-
   describe "#opened?" do
     context "when payload action is opened" do
       it "returns true" do
@@ -56,6 +40,22 @@ describe PullRequest do
 
         expect(pull_request).not_to be_synchronize
       end
+    end
+  end
+
+  describe "#can_be_reviewed?" do
+    it "returns true if payload can be reviewed" do
+      payload = payload_stub(can_be_reviewed?: true)
+      pull_request = PullRequest.new(payload)
+
+      expect(pull_request.can_be_reviewed?).to be_truthy
+    end
+
+    it "returns false if payload cannot be reviewed" do
+      payload = payload_stub(can_be_reviewed?: false)
+      pull_request = PullRequest.new(payload)
+
+      expect(pull_request.can_be_reviewed?).to be_falsy
     end
   end
 
