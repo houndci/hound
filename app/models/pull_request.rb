@@ -26,7 +26,7 @@ class PullRequest
   end
 
   def can_be_reviewed?
-    !payload.pull_request.empty?
+    payload.can_be_reviewed?
   end
 
   def opened?

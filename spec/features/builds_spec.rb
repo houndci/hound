@@ -37,7 +37,7 @@ feature 'Builds' do
   context "with non PR payload" do
     scenario "does not run build" do
       non_pr_payload = File.read(
-        "spec/support/fixtures/pull_request_opened_event.json"
+        "spec/support/fixtures/push_event.json"
       )
       parsed_payload = JSON.parse(non_pr_payload)
       repo = create(
