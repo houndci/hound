@@ -1,8 +1,31 @@
 require "fast_spec_helper"
 require "attr_extras"
 require "app/models/payload"
+require "lib/github_api"
 
 describe Payload do
+  describe "#can_be_reviewed?" do
+    context "with pull_request data" do
+      it "returns true" do
+        fixture_file = "spec/support/fixtures/pull_request_opened_event.json"
+        payload_json = File.read(fixture_file)
+        payload = Payload.new(payload_json)
+
+        expect(payload.can_be_reviewed?).to be_truthy
+      end
+    end
+
+    context "with no pull_request data" do
+      it "returns false" do
+        fixture_file = "spec/support/fixtures/push_event.json"
+        payload_json = File.read(fixture_file)
+        payload = Payload.new(payload_json)
+
+        expect(payload.can_be_reviewed?).to be_falsy
+      end
+    end
+  end
+
   describe '#changed_files' do
     context "with pull_request data" do
       it "returns number of changed files" do

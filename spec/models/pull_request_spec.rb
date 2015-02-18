@@ -5,22 +5,18 @@ require "lib/github_api"
 
 describe PullRequest do
   describe "#can_be_reviewed?" do
-    context "with pull_request data" do
-      it "returns true" do
-        payload = payload_stub(can_be_reviewed?: true)
-        pull_request = PullRequest.new(payload)
+    it "returns true if payload can be reviewed" do
+      payload = payload_stub(can_be_reviewed?: true)
+      pull_request = PullRequest.new(payload)
 
-        expect(pull_request.can_be_reviewed?).to be_truthy
-      end
+      expect(pull_request.can_be_reviewed?).to be_truthy
     end
 
-    context "with no pull_request data" do
-      it "returns false" do
-        payload = payload_stub(can_be_reviewed?: false)
-        pull_request = PullRequest.new(payload)
+    it "returns false if payload cannot be reviewed" do
+      payload = payload_stub(can_be_reviewed?: false)
+      pull_request = PullRequest.new(payload)
 
-        expect(pull_request.can_be_reviewed?).to be_falsy
-      end
+      expect(pull_request.can_be_reviewed?).to be_falsy
     end
   end
 
