@@ -49,7 +49,7 @@ feature 'Builds' do
 
       page.driver.post builds_path, non_pr_payload
 
-      expect(repo.builds).to be_blank
+      expect(repo.builds).to eq([])
     end
   end
 
