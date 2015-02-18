@@ -4,6 +4,26 @@ require "app/models/commit"
 require "lib/github_api"
 
 describe PullRequest do
+  describe "#can_be_reviewed?" do
+    context "with pull_request data" do
+      it "returns true" do
+        payload = payload_stub(pull_request: double("Payload", empty?: false))
+        pull_request = PullRequest.new(payload)
+
+        expect(pull_request.can_be_reviewed?).to be_truthy
+      end
+    end
+
+    context "with no pull_request data" do
+      it "returns false" do
+        payload = payload_stub(pull_request: double("Payload", empty?: true))
+        pull_request = PullRequest.new(payload)
+
+        expect(pull_request.can_be_reviewed?).to be_falsy
+      end
+    end
+  end
+
   describe "#opened?" do
     context "when payload action is opened" do
       it "returns true" do

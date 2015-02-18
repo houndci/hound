@@ -34,6 +34,25 @@ feature 'Builds' do
     end
   end
 
+  context "with non PR payload" do
+    scenario "does not run build" do
+      non_pr_payload = File.read(
+        "spec/support/fixtures/pull_request_opened_event.json"
+      )
+      parsed_payload = JSON.parse(non_pr_payload)
+      repo = create(
+        :repo,
+        :active,
+        github_id: parsed_payload["repository"]["id"],
+        full_github_name: parsed_payload["repository"]["full_name"]
+      )
+
+      page.driver.post builds_path, non_pr_payload
+
+      expect(repo.builds).to be_blank
+    end
+  end
+
   scenario 'a failed build' do
     create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
     stub_github_requests_with_violations
