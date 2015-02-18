@@ -1,6 +1,7 @@
 //= require angular
 //= require angular-resource
 //= require namespaced
+//= require d3
 //= require_self
 //= require_tree .
 

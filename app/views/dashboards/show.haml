@@ -1,0 +1,8 @@
+- content_for :body_class, "dashboard"
+%h1 Dashboard
+
+.dashboard
+  %h2 Most Common Ruby Violations
+  %violation-dashboard.violations-count-table
+
+= render "preload_template", template: "dashboard"

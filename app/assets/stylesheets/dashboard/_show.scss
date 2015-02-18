@@ -1,0 +1,25 @@
+.violations-count-table {
+  @include outer-container;
+
+  font-size: 0.85em;
+
+  .violation-name { @include span-columns(6); }
+  .violation-bar {
+    @include span-columns(6);
+    @include omega();
+  }
+  .violation-count {
+    @include span-columns(1 of 5);
+  }
+  .svg-container {
+    @include span-columns(4 of 5);
+  }
+}
+
+.svg-container {
+  max-height: 50px;
+
+  rect {
+    fill: rgb(192, 153, 222);
+  }
+}
