@@ -42,8 +42,7 @@ class RepoConfig
   end
 
   def ignored_directories
-    remote_hound_config = load_file(HOUND_CONFIG, "yaml")
-    remote_hound_config["ignored_directories"] || DEFAULT_IGNORED_DIRECTORIES
+    hound_config["ignored_directories"] || DEFAULT_IGNORED_DIRECTORIES
   end
 
   private

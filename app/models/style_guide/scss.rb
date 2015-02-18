@@ -18,7 +18,8 @@ module StyleGuide
             filename: file.filename,
             line: line,
             line_number: violation.location.line,
-            messages: [violation.description], patch_position: line.patch_position,
+            messages: [violation.description],
+            patch_position: line.patch_position,
           )
         end
       end

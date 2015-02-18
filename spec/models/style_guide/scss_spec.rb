@@ -103,10 +103,7 @@ describe StyleGuide::Scss do
           style_guide = build_style_guide
           bad_content = ".a { .b { .c { background: #000; } } }"
           file = build_file(bad_content)
-          config_double = double(
-            "SassConfig",
-            excluded_file?: true
-          )
+          config_double = double("SassConfig", excluded_file?: true)
           allow(style_guide).to receive(:config).and_return(config_double)
 
           expect(style_guide.violations_in_file(file)).to eq []
