@@ -42,7 +42,7 @@ describe Buildable do
       allow(Raven).to receive(:capture_exception)
       payload_data = double("PayloadData")
 
-      TestJob.perform(payload_data)
+      TestJob.perform_now(payload_data)
 
       expect(Raven).to have_received(:capture_exception).
         with(exception, payload: { data: payload_data })

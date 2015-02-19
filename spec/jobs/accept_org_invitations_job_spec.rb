@@ -35,7 +35,7 @@ describe AcceptOrgInvitationsJob do
     allow(github).to receive(:accept_pending_invitations).and_raise(exception)
     allow(Raven).to receive(:capture_exception)
 
-    AcceptOrgInvitationsJob.perform
+    AcceptOrgInvitationsJob.perform_now
 
     expect(Raven).to have_received(:capture_exception).
       with(exception, {})

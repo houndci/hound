@@ -47,7 +47,7 @@ describe RepoSynchronizationJob do
       allow(RepoSynchronization).to receive(:new).and_return(synchronization)
       allow(Raven).to receive(:capture_exception)
 
-      RepoSynchronizationJob.perform(user.id, github_token)
+      RepoSynchronizationJob.perform_now(user.id, github_token)
 
       expect(Raven).to have_received(:capture_exception).
         with(exception, user: { id: user.id })

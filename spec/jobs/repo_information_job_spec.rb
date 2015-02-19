@@ -37,7 +37,7 @@ describe RepoInformationJob do
     allow(Repo).to receive(:find).and_raise(exception)
     allow(Raven).to receive(:capture_exception)
 
-    RepoInformationJob.perform(repo.id)
+    RepoInformationJob.perform_now(repo.id)
 
     expect(Raven).to have_received(:capture_exception).
       with(exception, repo: { id: repo.id })
