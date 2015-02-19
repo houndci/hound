@@ -11,7 +11,7 @@ describe Payload do
         payload_json = File.read(fixture_file)
         payload = Payload.new(payload_json)
 
-        expect(payload.pull_request_attached?).to be
+        expect(payload.pull_request_attached?).to eq(true)
       end
     end
 
@@ -21,7 +21,7 @@ describe Payload do
         payload_json = File.read(fixture_file)
         payload = Payload.new(payload_json)
 
-        expect(payload.pull_request_attached?).not_to be
+        expect(payload.pull_request_attached?).to eq(false)
       end
     end
   end
