@@ -17,7 +17,7 @@ module StyleGuide
 
     def directory_excluded?(file)
       repo_config.ignored_directories.any? do |directory|
-        file.filename.start_with? directory
+        File.fnmatch?("#{directory}/*", file.filename)
       end
     end
 
