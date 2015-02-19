@@ -3,8 +3,6 @@ class SubscriptionsController < ApplicationController
 
   before_action :update_email_address
 
-  respond_to :json
-
   def create
     if activator.activate && create_subscription
       analytics.track_repo_activated(repo)
