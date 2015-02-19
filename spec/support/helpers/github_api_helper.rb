@@ -158,7 +158,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_add_user_to_team_request(username, team_id, user_token)
+  def stub_add_user_to_team_request(team_id, username, user_token)
     url = "https://api.github.com/teams/#{team_id}/memberships/#{username}"
     stub_request(:put, url).
       with(headers: { "Authorization" => "token #{user_token}" }).

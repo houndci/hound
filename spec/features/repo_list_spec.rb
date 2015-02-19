@@ -100,7 +100,7 @@ feature "Repo list", js: true do
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
     stub_repo_teams_request(repo.full_github_name, token)
     stub_user_teams_request(token)
-    stub_add_user_to_team_request(username, team_id, token)
+    stub_add_user_to_team_request(team_id, username, token)
     stub_memberships_request
     stub_membership_update_request
 
