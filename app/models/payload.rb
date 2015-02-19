@@ -30,7 +30,7 @@ class Payload
   end
 
   def ping?
-    data['zen']
+    data["zen"]
   end
 
   def pull_request?
@@ -47,6 +47,28 @@ class Payload
 
   def repository_owner_is_organization?
     repository["owner"]["type"] == GithubApi::ORGANIZATION_TYPE
+  end
+
+  def build_data
+    {
+      "number" => pull_request_number,
+      "action" => action,
+      "pull_request" => {
+        "changed_files" => changed_files,
+        "head" => {
+          "sha" => head_sha,
+        }
+      },
+      "repository" => {
+        "id" => github_repo_id,
+        "full_name" => full_repo_name,
+        "owner" => {
+          "id" => repository_owner_name,
+          "login" => repository_owner_id,
+          "type" => repository["owner"]["type"],
+        }
+      }
+    }
   end
 
   private

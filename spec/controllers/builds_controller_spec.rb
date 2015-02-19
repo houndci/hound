@@ -28,33 +28,31 @@ describe BuildsController, '#create' do
 
   context 'when number of changed files is below the threshold' do
     it 'enqueues small build job' do
-      allow(JobQueue).to receive(:push)
       payload_data = File.read(
         'spec/support/fixtures/pull_request_opened_event.json'
       )
+      payload = Payload.new(payload_data)
+      allow(JobQueue).to receive(:push)
 
       post :create, payload: payload_data
 
-      expect(JobQueue).to have_received(:push).with(
-        SmallBuildJob,
-        JSON.parse(payload_data)
-      )
+      expect(JobQueue).to have_received(:push).
+        with(SmallBuildJob, payload.build_data)
     end
   end
 
   context 'when number of changed files is at the threshold or above' do
     it 'enqueues large build job' do
-      allow(JobQueue).to receive(:push)
       payload_data = File.read(
         'spec/support/fixtures/pull_request_event_with_many_files.json'
       )
+      payload = Payload.new(payload_data)
+      allow(JobQueue).to receive(:push)
 
       post :create, payload: payload_data
 
-      expect(JobQueue).to have_received(:push).with(
-        LargeBuildJob,
-        JSON.parse(payload_data)
-      )
+      expect(JobQueue).to have_received(:push).
+        with(LargeBuildJob, payload.build_data)
     end
   end
 

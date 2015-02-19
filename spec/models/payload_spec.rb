@@ -149,4 +149,19 @@ describe Payload do
       end
     end
   end
+
+  describe "#build_data" do
+    it "returns a subset of original data" do
+      fixture_file = "spec/support/fixtures/pull_request_opened_event.json"
+      payload_json = File.read(fixture_file)
+      payload = Payload.new(payload_json)
+
+      expect(payload.build_data).to include(
+        "number",
+        "action",
+        "pull_request" => hash_including("changed_files", "head"),
+        "repository" => hash_including("id", "full_name", "owner"),
+      )
+    end
+  end
 end

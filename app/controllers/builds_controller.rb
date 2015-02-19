@@ -5,7 +5,7 @@ class BuildsController < ApplicationController
 
   def create
     if payload.pull_request?
-      JobQueue.push(build_job_class, payload.data)
+      JobQueue.push(build_job_class, payload.build_data)
     end
     head :ok
   end
