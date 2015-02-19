@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe BuildRunner, '#run' do
   context "with non pr payload" do
-    it "does not run" do
+    it "does not create a build" do
       repo = create(:repo, :active, github_id: 123)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
