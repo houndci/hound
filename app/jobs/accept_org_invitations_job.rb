@@ -8,5 +8,7 @@ class AcceptOrgInvitationsJob < ActiveJob::Base
     github.accept_pending_invitations
   rescue Resque::TermException
     retry_job
+  rescue => exception
+    Raven.capture_exception(exception, {})
   end
 end

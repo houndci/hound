@@ -27,4 +27,17 @@ describe AcceptOrgInvitationsJob do
     expect(AcceptOrgInvitationsJob.queue_adapter).
       to have_received(:enqueue).with(job)
   end
+
+  it "sends the exception to Sentry" do
+    exception = StandardError.new("hola")
+    github = double("GithubApi")
+    allow(GithubApi).to receive(:new).and_return(github)
+    allow(github).to receive(:accept_pending_invitations).and_raise(exception)
+    allow(Raven).to receive(:capture_exception)
+
+    AcceptOrgInvitationsJob.perform
+
+    expect(Raven).to have_received(:capture_exception).
+      with(exception, {})
+  end
 end

@@ -16,5 +16,7 @@ class RepoInformationJob < ActiveJob::Base
     )
   rescue Resque::TermException
     retry_job
+  rescue => exception
+    Raven.capture_exception(exception, repo: { id: repo_id })
   end
 end

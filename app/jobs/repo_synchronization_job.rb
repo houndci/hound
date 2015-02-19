@@ -10,5 +10,7 @@ class RepoSynchronizationJob < ActiveJob::Base
     user.update_attribute(:refreshing_repos, false)
   rescue Resque::TermException
     retry_job
+  rescue => exception
+    Raven.capture_exception(exception, user: { id: user_id })
   end
 end

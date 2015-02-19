@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
 
   delegate(
     :card_last4,
-    :card_brand,
     to: :payment_gateway_customer
   )
 

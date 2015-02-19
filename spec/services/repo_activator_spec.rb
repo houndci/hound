@@ -156,6 +156,7 @@ describe RepoActivator do
         create(:membership, repo: repo)
         activator = build_activator(repo: repo)
         stub_github_api
+        allow(RemoveHoundFromRepo).to receive(:run).and_return(false)
 
         activator.deactivate
 
@@ -167,6 +168,7 @@ describe RepoActivator do
         create(:membership, repo: repo)
         activator = build_activator(repo: repo)
         github_api = stub_github_api
+        allow(RemoveHoundFromRepo).to receive(:run).and_return(true)
 
         activator.deactivate
 
@@ -174,9 +176,24 @@ describe RepoActivator do
         expect(repo.hook_id).to be_nil
       end
 
+      it "removes hound from repo" do
+        repo = create(:repo)
+        create(:membership, repo: repo)
+        activator = build_activator(repo: repo)
+        github_api = stub_github_api
+        allow(RemoveHoundFromRepo).
+          to receive(:run).with(repo.full_github_name, github_api)
+
+        activator.deactivate
+
+        expect(RemoveHoundFromRepo).
+          to have_received(:run).with(repo.full_github_name, github_api)
+      end
+
       it "returns true" do
         stub_github_api
         token = "githubtoken"
+        allow(RemoveHoundFromRepo).to receive(:run).and_return(true)
         membership = create(:membership)
         repo = membership.repo
         activator = RepoActivator.new(github_token: token, repo: repo)

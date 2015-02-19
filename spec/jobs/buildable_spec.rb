@@ -2,6 +2,7 @@ require "fast_spec_helper"
 require "app/jobs/buildable"
 require "app/models/payload"
 require "app/services/build_runner"
+require "raven"
 
 describe Buildable do
   class TestJob < ActiveJob::Base
@@ -33,6 +34,18 @@ describe Buildable do
       job = TestJob.perform_now(payload_data)
 
       expect(TestJob.queue_adapter).to have_received(:enqueue).with(job)
+    end
+
+    it "sends the exception to Sentry with the user_id" do
+      exception = StandardError.new("hola")
+      allow(Payload).to receive(:new).and_raise(exception)
+      allow(Raven).to receive(:capture_exception)
+      payload_data = double("PayloadData")
+
+      TestJob.perform(payload_data)
+
+      expect(Raven).to have_received(:capture_exception).
+        with(exception, payload: { data: payload_data })
     end
   end
 
