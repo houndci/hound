@@ -10,7 +10,7 @@ describe BuildRunner, '#run' do
       )
       pull_request = stubbed_pull_request
       allow(pull_request).
-        to receive_messages(can_be_reviewed?: false)
+        to receive_messages(reviewable?: false)
       build_runner = BuildRunner.new(payload)
 
       build_runner.run
@@ -252,7 +252,7 @@ describe BuildRunner, '#run' do
       pull_request_files: [double(:file)],
       config: double(:config),
       opened?: true,
-      can_be_reviewed?: true
+      reviewable?: true
     )
     allow(PullRequest).to receive(:new).and_return(pull_request)
 

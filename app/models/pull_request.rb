@@ -25,8 +25,8 @@ class PullRequest
     payload.repository_owner_name
   end
 
-  def can_be_reviewed?
-    payload.can_be_reviewed?
+  def reviewable?
+    payload.pull_request_attached?
   end
 
   def opened?

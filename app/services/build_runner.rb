@@ -20,7 +20,7 @@ class BuildRunner
   private
 
   def relevant_pull_request?
-    pull_request.can_be_reviewed? && (
+    pull_request.reviewable? && (
       pull_request.opened? || pull_request.synchronize?
     )
   end
