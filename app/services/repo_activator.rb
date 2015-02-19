@@ -12,7 +12,9 @@ class RepoActivator
   end
 
   def deactivate
-    deactivate_repo
+    change_repository_state_quietly do
+      delete_webhook && repo.deactivate
+    end
   end
 
   private
@@ -25,22 +27,12 @@ class RepoActivator
     end
   end
 
-  def deactivate_repo
-    change_repository_state_quietly do
-      remove_hound_from_repo && delete_webhook && repo.deactivate
-    end
-  end
-
   def change_repository_state_quietly
     yield
   rescue Octokit::Error => error
     add_error(error)
     Raven.capture_exception(error)
     false
-  end
-
-  def remove_hound_from_repo
-    RemoveHoundFromRepo.run(repo.full_github_name, github)
   end
 
   def add_hound_to_repo

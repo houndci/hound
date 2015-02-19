@@ -1,5 +1,4 @@
 require "fast_spec_helper"
-require "app/services/manage_hound"
 require "app/services/add_hound_to_repo"
 require "app/models/github_user"
 
@@ -48,11 +47,11 @@ describe AddHoundToRepo do
 
             expect(github).to have_received(:create_team).with(
               org_name: "foo",
-              team_name: AddHoundToRepo::GITHUB_TEAM_NAME,
+              team_name: AddHoundToRepo::SERVICES_TEAM_NAME,
               repo_name: repo_name
             )
             expect(github).to have_received(:add_user_to_team).
-              with(github_team.id, hound_github_username)
+              with(hound_github_username, github_team.id)
           end
         end
 

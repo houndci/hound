@@ -20,7 +20,7 @@ class GithubApi
   end
 
   def repos
-    user_repos + repos_from_all_orgs
+    user_repos + org_repos
   end
 
   def repo(repo_name)
@@ -117,10 +117,6 @@ class GithubApi
     client.add_collaborator(repo_name, username)
   end
 
-  def remove_collaborator(repo_name, username)
-    client.remove_collaborator(repo_name, username)
-  end
-
   def user_teams
     client.user_teams
   end
@@ -131,10 +127,6 @@ class GithubApi
 
   def org_teams(org_name)
     client.org_teams(org_name)
-  end
-
-  def team_repos(team_id)
-    client.team_repos(team_id)
   end
 
   def create_team(team_name:, org_name:, repo_name:)
@@ -148,14 +140,6 @@ class GithubApi
 
   def add_repo_to_team(team_id, repo_name)
     client.add_team_repository(team_id, repo_name)
-  end
-
-  def remove_repo_from_team(team_id, repo_name)
-    client.remove_team_repository(team_id, repo_name)
-  end
-
-  def remove_user_from_team(team_id, username)
-    client.remove_team_membership(team_id, username)
   end
 
   def add_user_to_team(username, team_id)
@@ -172,14 +156,12 @@ class GithubApi
     authorized_repos(client.repos)
   end
 
-  def repos_from_all_orgs
-    orgs.flat_map do |org|
-      org_repos(org[:login])
+  def org_repos
+    repos = orgs.flat_map do |org|
+      client.org_repos(org[:login])
     end
-  end
 
-  def org_repos(name)
-    authorized_repos(client.org_repos(name))
+    authorized_repos(repos)
   end
 
   def orgs
