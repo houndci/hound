@@ -29,6 +29,8 @@ class GithubTeam
 
     if team_repos.empty?
       github.remove_user_from_team(team.id, github_username)
+    else
+      true
     end
   end
 
