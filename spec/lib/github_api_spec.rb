@@ -266,9 +266,9 @@ describe GithubApi do
       username = "houndci"
       team_id = 123
       api = GithubApi.new(token)
-      request = stub_add_user_to_team_request(username, team_id, token)
+      request = stub_add_user_to_team_request(team_id, username, token)
 
-      api.add_user_to_team(username, team_id)
+      api.add_user_to_team(team_id, username)
 
       expect(request).to have_been_requested
     end

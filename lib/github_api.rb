@@ -152,7 +152,7 @@ class GithubApi
     client.remove_team_membership(team_id, username)
   end
 
-  def add_user_to_team(username, team_id)
+  def add_user_to_team(team_id, username)
     client.add_team_membership(team_id, username)
   end
 
