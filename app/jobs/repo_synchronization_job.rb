@@ -14,5 +14,7 @@ class RepoSynchronizationJob
     user.update_attribute(:refreshing_repos, false)
   rescue Resque::TermException
     Resque.enqueue(self, user_id, github_token)
+  rescue => exception
+    Raven.capture_exception(exception, user: { id: user_id })
   end
 end
