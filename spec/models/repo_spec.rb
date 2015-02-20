@@ -6,6 +6,7 @@ describe Repo do
   it { should validate_presence_of :github_id }
   it { should belong_to :owner }
   it { should have_many(:users).through(:memberships) }
+  it { should have_many(:memberships).dependent(:destroy) }
 
   it "validates uniqueness of github_id" do
     create(:repo)

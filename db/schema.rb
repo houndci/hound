@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150213132248) do
+ActiveRecord::Schema.define(version: 20150217090319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,5 +105,7 @@ ActiveRecord::Schema.define(version: 20150213132248) do
 
   add_index "violations", ["build_id"], name: "index_violations_on_build_id", using: :btree
 
+  add_foreign_key "memberships", "repos"
+  add_foreign_key "memberships", "users"
   add_foreign_key "repos", "owners"
 end
