@@ -42,6 +42,7 @@ describe BuildRunner, '#run' do
     end
 
     it "comments a maximum number of times" do
+      allow(ENV).to receive(:[])
       allow(ENV).to receive(:[]).with("HOUND_GITHUB_TOKEN").
         and_return("something")
       allow(ENV).to receive(:[]).with("MAX_COMMENTS").and_return("1")
@@ -189,6 +190,23 @@ describe BuildRunner, '#run' do
       expect(analytics).to have_tracked("Build Completed").
         for_user(repo.subscription.user).
         with(properties: { name: repo.full_github_name, private: true })
+    end
+  end
+
+  context "when ignoring public repos" do
+    context "when repo is public" do
+      it "does not check for violations" do
+        stubbed_pull_request
+        style_checker = stubbed_style_checker(violations: ["boom"])
+        payload = stubbed_payload(public_repo?: true, github_repo_id: 123)
+        build_runner = BuildRunner.new(payload)
+        allow(ENV).to receive(:[])
+        allow(ENV).to receive(:[]).with("IGNORE_PUBLIC_REPOS").and_return("true")
+
+        build_runner.run
+
+        expect(style_checker).not_to receive(:violations)
+      end
     end
   end
 

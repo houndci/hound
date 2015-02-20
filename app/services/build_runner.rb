@@ -2,7 +2,7 @@ class BuildRunner
   pattr_initialize :payload
 
   def run
-    if repo && relevant_pull_request?
+    if repo && relevant_pull_request? && !repo_blacklisted?
       track_subscribed_build_started
       create_pending_status
       repo.builds.create!(
@@ -90,5 +90,13 @@ class BuildRunner
 
   def github
     @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+  end
+
+  def repo_blacklisted?
+    if ENV["IGNORE_PUBLIC_REPOS"] == "true"
+      !payload.private_repo?
+    else
+      false
+    end
   end
 end
