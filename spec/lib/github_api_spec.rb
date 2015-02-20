@@ -17,6 +17,35 @@ describe GithubApi do
     end
   end
 
+  describe "#file_contents" do
+    context "used multiple times with same arguments" do
+      it "requests file content once" do
+        client = double("Octokit::Client", contents: "filecontent")
+        allow(Octokit::Client).to receive(:new).and_return(client)
+        token = "authtoken"
+        github = GithubApi.new(token)
+        repo = "jimtom/wow"
+        filename = ".hound.yml"
+        sha = "abc123"
+
+        contents = github.file_contents(repo, filename, sha)
+        same_contents = github.file_contents(repo, filename, sha)
+
+        expect(contents).to eq "filecontent"
+        expect(same_contents).to eq contents
+        expect(Octokit::Client).to have_received(:new).with(
+          access_token: token,
+          auto_paginate: true
+        )
+        expect(client).to have_received(:contents).with(
+          repo,
+          path: filename,
+          ref: sha
+        ).once
+      end
+    end
+  end
+
   describe "#create_hook" do
     context "when hook does not exist" do
       it "creates pull request web hook" do
@@ -266,9 +295,9 @@ describe GithubApi do
       username = "houndci"
       team_id = 123
       api = GithubApi.new(token)
-      request = stub_add_user_to_team_request(username, team_id, token)
+      request = stub_add_user_to_team_request(team_id, username, token)
 
-      api.add_user_to_team(username, team_id)
+      api.add_user_to_team(team_id, username)
 
       expect(request).to have_been_requested
     end

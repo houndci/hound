@@ -18,7 +18,7 @@ class AddHoundToRepo < ManageHound
 
   def add_user_to_org
     if team_with_admin_access
-      github.add_user_to_team(github_username, team_with_admin_access.id)
+      github.add_user_to_team(team_with_admin_access.id, github_username)
     else
       add_user_and_repo_to_services_team
     end

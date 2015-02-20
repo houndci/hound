@@ -17,7 +17,7 @@ describe AddHoundToRepo do
 
             expect(result).to eq true
             expect(github).to have_received(:add_user_to_team).
-              with(hound_github_username, github_team_id)
+              with(github_team_id, hound_github_username)
           end
         end
 
@@ -65,7 +65,7 @@ describe AddHoundToRepo do
             AddHoundToRepo.run("foo/bar", github)
 
             expect(github).to have_received(:add_user_to_team).
-              with(hound_github_username, github_team_id)
+              with(github_team_id, hound_github_username)
           end
 
           context "when team name is lowercase" do
@@ -77,7 +77,7 @@ describe AddHoundToRepo do
               AddHoundToRepo.run("foo/bar", github)
 
               expect(github).to have_received(:add_user_to_team).
-                with(hound_github_username, github_team_id)
+                with(github_team_id, hound_github_username)
             end
           end
         end
