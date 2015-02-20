@@ -33,6 +33,10 @@ class Payload
     data['zen']
   end
 
+  def pull_request?
+    pull_request.present?
+  end
+
   def repository_owner_id
     repository["owner"]["id"]
   end

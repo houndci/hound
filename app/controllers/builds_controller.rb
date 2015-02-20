@@ -4,7 +4,9 @@ class BuildsController < ApplicationController
   skip_before_action :authenticate, only: [:create]
 
   def create
-    JobQueue.push(build_job_class, payload.data)
+    if payload.pull_request?
+      JobQueue.push(build_job_class, payload.data)
+    end
     head :ok
   end
 

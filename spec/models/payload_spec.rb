@@ -1,6 +1,7 @@
 require "fast_spec_helper"
 require "attr_extras"
 require "app/models/payload"
+require "lib/github_api"
 
 describe Payload do
   describe '#changed_files' do
@@ -49,6 +50,28 @@ describe Payload do
       payload = Payload.new(data)
 
       expect(payload.data).to eq data
+    end
+  end
+
+  describe "#pull_request?" do
+    context "when payload for push of a commit" do
+      it "returns false" do
+        push_event = File.read("spec/support/fixtures/push_event.json")
+        payload = Payload.new(push_event)
+
+        expect(payload).not_to be_pull_request
+      end
+    end
+
+    context "when payload for pull request" do
+      it "returns true" do
+        push_event = File.read(
+          "spec/support/fixtures/pull_request_opened_event.json"
+        )
+        payload = Payload.new(push_event)
+
+        expect(payload).to be_pull_request
+      end
     end
   end
 
