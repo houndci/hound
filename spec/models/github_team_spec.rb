@@ -72,10 +72,29 @@ describe GithubTeam do
       )
       github_team = GithubTeam.new(team, github)
 
-      github_team.remove_user(username)
+      result = github_team.remove_user(username)
 
+      expect(result).to eq true
       expect(github).to have_received(:remove_user_from_team).
         with(id, username)
+    end
+
+    context "when team still has repos" do
+      it "does not remove the user" do
+        id = 1234
+        team = double("OctoKitTeam", id: id, permission: non_pull_permission)
+        github = double(
+          "Github",
+          team_repos: [double("Repo")],
+          remove_user_from_team: true
+        )
+        github_team = GithubTeam.new(team, github)
+
+        github_team.remove_user(username)
+
+        expect(github).not_to have_received(:remove_user_from_team).
+          with(id, username)
+      end
     end
   end
 

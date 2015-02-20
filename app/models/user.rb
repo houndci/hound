@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
   has_many :repos, through: :memberships
   has_many :subscribed_repos, through: :subscriptions, source: :repo
   has_many :subscriptions

@@ -1,6 +1,6 @@
 class Repo < ActiveRecord::Base
   has_many :builds
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
   belongs_to :owner
   has_one :subscription
   has_many :users, through: :memberships

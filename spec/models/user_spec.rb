@@ -4,6 +4,7 @@ describe User do
   it { should have_many(:repos).through(:memberships) }
   it { should have_many(:subscribed_repos).through(:subscriptions) }
   it { should validate_presence_of :github_username }
+  it { should have_many(:memberships).dependent(:destroy) }
 
   describe ".subscribed_repos" do
     it "returns subscribed repos" do

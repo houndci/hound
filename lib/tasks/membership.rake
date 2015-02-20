@@ -12,4 +12,12 @@ namespace :membership do
 
     ActiveRecord::Base.connection.execute sql
   end
+
+  desc "Clean up stale memberships"
+  task cleanup_stale_entries: :environment do
+    ActiveRecord::Base.connection.execute <<-SQL
+      DELETE FROM memberships
+      WHERE (repo_id NOT IN (SELECT id FROM repos))
+    SQL
+  end
 end

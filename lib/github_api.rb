@@ -8,7 +8,12 @@ class GithubApi
   PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon-preview+json"
   SERVICES_TEAM_NAME = "Services"
 
-  pattr_initialize :token
+  attr_reader :file_cache, :token
+
+  def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
+    @token = token
+    @file_cache = {}
+  end
 
   def client
     @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
@@ -76,7 +81,8 @@ class GithubApi
   end
 
   def file_contents(full_repo_name, filename, sha)
-    client.contents(full_repo_name, path: filename, ref: sha)
+    file_cache["#{full_repo_name}/#{sha}/#{filename}"] ||=
+      client.contents(full_repo_name, path: filename, ref: sha)
   end
 
   def accept_pending_invitations
@@ -148,12 +154,12 @@ class GithubApi
     client.remove_team_repository(team_id, repo_name)
   end
 
-  def remove_user_from_team(team_id, username)
-    client.remove_team_membership(team_id, username)
+  def add_user_to_team(team_id, username)
+    client.add_team_membership(team_id, username)
   end
 
-  def add_user_to_team(username, team_id)
-    client.add_team_membership(team_id, username)
+  def remove_user_from_team(team_id, username)
+    client.remove_team_membership(team_id, username)
   end
 
   def update_team(team_id, options)
