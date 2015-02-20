@@ -37,19 +37,18 @@ header.global {
     }
 
     @include media($small-screen) {
+      display: table;
       margin: 0 0 1em;
       width: 100%;
+    }
+
+    .va-cell {
+      font-size: 0;
     }
   }
 
   .logo-link {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-
-    @include media($medium-screen-header) {
-      display: inline-block;
-    }
+    display: inline-block;
 
     &:hover {
       border: none;

@@ -3,7 +3,7 @@
 = render 'settings'
 
 .dashboard
-  %aside(ng-class="{ 'open': menu }")
+  %aside(ng-class="{ 'closed': menu }")
     %section.current-org
       %header
         .title-wrapper
@@ -17,35 +17,21 @@
           %li
             .icon
             = link_to "Repositories", "#", class: "current"
-        %ul
-          %li
-            .icon
-            = link_to "Ruby Rules", "#"
-          %li
-            .icon
-            = link_to "Javascript Rules", "#"
-          %li
-            .icon
-            = link_to "Coffeescript Rules", "#"
-          %li
-            .icon
-            = link_to "Scss Rules", "#"
-        %ul
-          %li
-            .icon
-            = link_to "Billing", "#"
 
     %section.all-orgs
       %header
         .title-wrapper
-          %h2 Your Organizations
-        .menu-toggle
-          %a.close-menu(href="" ng-click="menu = !menu")
-            %i.fa.fa-times
+          %h2 Repos by Org
       %nav
         %ul
           %li
             .icon.org(style="background-image: url('')")
-            = link_to "thoughtbot", "#", class: "current"
+            = link_to "frechg", "#", "ng-click" => "menu = !menu"
+          %li
+            .icon.org(style="background-image: url('')")
+            = link_to "thoughtbot", "#", "ng-click" => "menu = !menu"
+          %li
+            .icon.org(style="background-image: url('')")
+            = link_to "Ship.io", "#", "ng-click" => "menu = !menu"
   %section.repo-listing{ 'repo-list' => '' }
   = render 'preload_template', template: 'repo_list'

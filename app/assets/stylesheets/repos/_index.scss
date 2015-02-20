@@ -2,30 +2,33 @@
   @include clearfix;
   border: 1px solid $base-border-color;
   border-radius: 5px;
-  overflow: hidden;
+  display: table;
+  min-height: 500px;
   padding: 2em;
 }
 
 aside {
+  @include span-columns(3 of 12, table);
   box-shadow: 1px 0 0 0 $base-border-color;
-  float: left;
   overflow: hidden;
   position: relative;
-  width: 300px;
+  vertical-align: top;
 
-  &.open {
+  &.closed {
     section.all-orgs {
-      @include transform(translateX(0%));
+      @include transform(translateX(120%));
+      opacity: 0;
     }
 
     section.current-org {
-      opacity: 0;
+      opacity: 1;
     }
   }
 
   section.current-org,
   section.all-orgs {
     @include transition(all 0.3s ease-out);
+    overflow-y: scroll;
     position: relative;
 
     > header {
@@ -132,21 +135,24 @@ aside {
   }
 
   section.all-orgs {
-    @include position(absolute, 0px 0px 0 0);
-    @include transform(translateX(120%));
+    @include position(absolute, 0px 0px 0px 0);
+    @include transform(translateX(0%));
+    opacity: 1;
     z-index: 2;
   }
 
   section.current-org {
-    opacity: 1;
+    opacity: 0;
     z-index: 1;
   }
 }
 
 .repo-listing {
+  @include span-columns(9 of 12, table);
+  @include omega;
   border-left: 1px solid $base-border-color;
-  margin-left: 300px;
-  padding: 0em 0 0 2em;
+  padding: 0 0 0 2em;
+  vertical-align: top;
 
   nav.repo-tools {
     background: #fff;
