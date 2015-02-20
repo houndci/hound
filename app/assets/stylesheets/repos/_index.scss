@@ -189,6 +189,7 @@ aside {
         padding: 0.8em 1em;
         width: 100%;
 
+        &:hover,
         &:focus {
           outline: none;
           background-color: $purple;
@@ -204,10 +205,10 @@ aside {
     }
 
     a.refresh {
-      background-color: lighten($purple, 10%);
+      background-color: #fff;
       border-radius: 3px;
       border: 1px solid lighten($purple, 10%);
-      color: #FFF;
+      color: $purple;
       display: table-cell;
       font-size: 1em;
       font-weight: 300;
