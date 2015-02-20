@@ -2,6 +2,7 @@ require "spec_helper"
 
 describe Owner do
   it { should have_many(:repos) }
+  it { should have_many(:style_configs).dependent(:destroy) }
 
   describe ".upsert" do
     context "when owner does not exist" do
