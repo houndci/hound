@@ -111,7 +111,7 @@ describe StyleGuide::JavaScript do
           repo_config = double(
             "RepoConfig",
             ignored_javascript_files: ["foo.js"],
-            ignored_directories: [],
+            ignored_paths: [],
           )
           style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
           file = double(:file, filename: "foo.js")
@@ -127,7 +127,7 @@ describe StyleGuide::JavaScript do
           repo_config = double(
             "RepoConfig",
             ignored_javascript_files: ["vendor/bar.js"],
-            ignored_directories: ["vendor"],
+            ignored_paths: ["vendor/**"],
           )
           style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
           file = double("File", filename: "vendor/foo.js")
@@ -144,7 +144,7 @@ describe StyleGuide::JavaScript do
         repo_config = double(
           "RepoConfig",
           ignored_javascript_files: ["foo.js"],
-          ignored_directories: [],
+          ignored_paths: [],
         )
         style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
         file = double(:file, filename: "bar.js")
@@ -159,7 +159,7 @@ describe StyleGuide::JavaScript do
       repo_config = double(
         "RepoConfig",
         ignored_javascript_files: ["app/assets/javascripts/*.js"],
-        ignored_directories: [],
+        ignored_paths: [],
       )
 
       style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")

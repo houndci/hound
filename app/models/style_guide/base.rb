@@ -16,8 +16,8 @@ module StyleGuide
     private
 
     def directory_excluded?(file)
-      repo_config.ignored_directories.any? do |directory|
-        File.fnmatch?("#{directory}/*", file.filename)
+      repo_config.ignored_paths.any? do |pattern|
+        File.fnmatch?(pattern, file.filename)
       end
     end
 

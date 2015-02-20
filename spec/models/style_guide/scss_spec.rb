@@ -87,7 +87,7 @@ describe StyleGuide::Scss do
             "RepoConfig",
             enabled_for?: true,
             for: nil,
-            ignored_directories: ["vendor"],
+            ignored_paths: ["vendor/**"],
           )
           style_guide = build_style_guide
           allow(style_guide).to receive(:repo_config).and_return(repo_config)
@@ -124,7 +124,7 @@ describe StyleGuide::Scss do
       "RepoConfig",
       enabled_for?: true,
       for: config,
-      ignored_directories: [],
+      ignored_paths: [],
     )
     repository_owner_name = "ralph"
     StyleGuide::Scss.new(repo_config, repository_owner_name)

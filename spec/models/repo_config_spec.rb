@@ -306,8 +306,8 @@ describe RepoConfig do
       end
     end
 
-    describe "#ignored_directories" do
-      it "returns `vendor` by default" do
+    describe "#ignored_paths" do
+      it "defaults to `vendor`" do
         hound_config = <<-EOS
           java_script:
             enabled: true
@@ -316,7 +316,9 @@ describe RepoConfig do
         commit = stub_commit(hound_config: hound_config)
         repo_config = RepoConfig.new(commit)
 
-        expect(repo_config.ignored_directories).to eq ["vendor"]
+        expect(repo_config.ignored_paths).to eq(
+          RepoConfig::DEFAULT_IGNORED_DIRECTORIES
+        )
       end
 
       context "when configured by the repo's config" do
@@ -325,14 +327,14 @@ describe RepoConfig do
             java_script:
               enabled: true
               ignore_file: ".js_ignore"
-            ignored_directories:
+            ignored_paths:
               - tmp
           EOS
 
           commit = stub_commit(hound_config: hound_config)
           repo_config = RepoConfig.new(commit)
 
-          expect(repo_config.ignored_directories).to eq ["tmp"]
+          expect(repo_config.ignored_paths).to eq ["tmp"]
         end
       end
     end
