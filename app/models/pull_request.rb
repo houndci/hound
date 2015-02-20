@@ -26,7 +26,7 @@ class PullRequest
   end
 
   def reviewable?
-    payload.pull_request_attached?
+    payload.pull_request?
   end
 
   def opened?

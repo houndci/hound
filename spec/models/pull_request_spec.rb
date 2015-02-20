@@ -45,14 +45,14 @@ describe PullRequest do
 
   describe "#reviewable?" do
     it "returns true if payload can be reviewed" do
-      payload = payload_stub(pull_request_attached?: true)
+      payload = payload_stub(pull_request?: true)
       pull_request = PullRequest.new(payload)
 
       expect(pull_request).to be_reviewable
     end
 
     it "returns false if payload cannot be reviewed" do
-      payload = payload_stub(pull_request_attached?: false)
+      payload = payload_stub(pull_request?: false)
       pull_request = PullRequest.new(payload)
 
       expect(pull_request).not_to be_reviewable
