@@ -1,6 +1,25 @@
 require 'spec_helper'
 
 describe BuildRunner, '#run' do
+  context "with non pr payload" do
+    it "does not create a build" do
+      repo = create(:repo, :active, github_id: 123)
+      payload = stubbed_payload(
+        github_repo_id: repo.github_id,
+        full_repo_name: repo.name
+      )
+      pull_request = stubbed_pull_request
+      allow(pull_request).
+        to receive_messages(reviewable?: false)
+      build_runner = BuildRunner.new(payload)
+
+      build_runner.run
+      builds = Build.where(repo_id: repo.id)
+
+      expect(builds.size).to eq 0
+    end
+  end
+
   context 'with active repo and opened pull request' do
     it 'creates a build record with violations' do
       repo = create(:repo, :active, github_id: 123)
@@ -232,7 +251,8 @@ describe BuildRunner, '#run' do
       :pull_request,
       pull_request_files: [double(:file)],
       config: double(:config),
-      opened?: true
+      opened?: true,
+      reviewable?: true
     )
     allow(PullRequest).to receive(:new).and_return(pull_request)
 

@@ -1,6 +1,7 @@
 require "fast_spec_helper"
 require "attr_extras"
 require "app/models/payload"
+require "lib/github_api"
 
 describe Payload do
   describe '#changed_files' do
@@ -123,6 +124,28 @@ describe Payload do
         payload = Payload.new(payload_json)
 
         expect(payload.repository_owner_is_organization?).to be true
+      end
+    end
+  end
+
+  describe "#pull_request?" do
+    context "with pull_request data" do
+      it "returns true" do
+        fixture_file = "spec/support/fixtures/pull_request_opened_event.json"
+        payload_json = File.read(fixture_file)
+        payload = Payload.new(payload_json)
+
+        expect(payload.pull_request?).to eq(true)
+      end
+    end
+
+    context "with no pull_request data" do
+      it "returns false" do
+        fixture_file = "spec/support/fixtures/push_event.json"
+        payload_json = File.read(fixture_file)
+        payload = Payload.new(payload_json)
+
+        expect(payload.pull_request?).to eq(false)
       end
     end
   end

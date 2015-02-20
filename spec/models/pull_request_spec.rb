@@ -43,6 +43,22 @@ describe PullRequest do
     end
   end
 
+  describe "#reviewable?" do
+    it "returns true if payload can be reviewed" do
+      payload = payload_stub(pull_request?: true)
+      pull_request = PullRequest.new(payload)
+
+      expect(pull_request).to be_reviewable
+    end
+
+    it "returns false if payload cannot be reviewed" do
+      payload = payload_stub(pull_request?: false)
+      pull_request = PullRequest.new(payload)
+
+      expect(pull_request).not_to be_reviewable
+    end
+  end
+
   describe "#comments" do
     it "returns comments on pull request" do
       filename = "spec/models/style_guide_spec.rb"

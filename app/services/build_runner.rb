@@ -20,7 +20,9 @@ class BuildRunner
   private
 
   def relevant_pull_request?
-    pull_request.opened? || pull_request.synchronize?
+    pull_request.reviewable? && (
+      pull_request.opened? || pull_request.synchronize?
+    )
   end
 
   def violations

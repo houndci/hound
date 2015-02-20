@@ -25,6 +25,10 @@ class PullRequest
     payload.repository_owner_name
   end
 
+  def reviewable?
+    payload.pull_request?
+  end
+
   def opened?
     payload.action == "opened"
   end

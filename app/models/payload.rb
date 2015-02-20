@@ -45,6 +45,10 @@ class Payload
     repository["owner"]["type"] == GithubApi::ORGANIZATION_TYPE
   end
 
+  def pull_request?
+    !pull_request.empty?
+  end
+
   private
 
   def parse_data
