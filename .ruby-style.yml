@@ -482,7 +482,7 @@ Metrics/AbcSize:
 Metrics/BlockNesting:
   Description: Avoid excessive block nesting
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#three-is-the-number-thou-shalt-count
-  Enabled: false
+  Enabled: true
   Max: 3
 Metrics/ClassLength:
   Description: Avoid classes longer than 100 lines of code.
@@ -492,7 +492,7 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Description: A complexity metric that is strongly correlated to the number of test
     cases needed to validate a method.
-  Enabled: false
+  Enabled: true
   Max: 6
 Metrics/LineLength:
   Description: Limit lines to 80 characters.
@@ -504,15 +504,15 @@ Metrics/LineLength:
   - http
   - https
 Metrics/MethodLength:
-  Description: Avoid methods longer than 10 lines of code.
+  Description: Avoid methods longer than 20 lines of code.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#short-methods
-  Enabled: false
-  CountComments: false
-  Max: 10
+  Enabled: true
+  CountComments: true
+  Max: 20
 Metrics/ParameterLists:
-  Description: Avoid parameter lists longer than three or four parameters.
+  Description: Avoid long parameter lists.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#too-many-params
-  Enabled: false
+  Enabled: true
   Max: 5
   CountKeywordArgs: true
 Metrics/PerceivedComplexity:
