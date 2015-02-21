@@ -382,8 +382,8 @@ aside {
 
     &.active .toggle {
       background-color: $green;
-      border-color: $green;
-      color: #fff;
+      border-color: darken($green, 30%);
+      color: darken($green, 40%);
 
       &:before {
         content: 'Active';
