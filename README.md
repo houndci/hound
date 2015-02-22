@@ -26,8 +26,8 @@ If you have questions about the service, see our [FAQ] or email [hound@thoughtbo
 
 1. After cloning the repository, run the setup script `./bin/setup`
 2. Log into your GitHub account and go to the
-   [Application Settings under Account settings](https://github.com/settings/applications).
-3. Under the GitHub Developer Applications panel - Click on "Register new
+   [Applications under Personal settings](https://github.com/settings/applications).
+3. Under the Developer applications panel - Click on "Register new
    application"
 4. Point [ngrok] to your local Hound instance:
    `ngrok -subdomain=<your-initials>-hound 5000`
