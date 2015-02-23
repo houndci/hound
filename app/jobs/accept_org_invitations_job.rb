@@ -8,5 +8,7 @@ class AcceptOrgInvitationsJob
     github.accept_pending_invitations
   rescue Resque::TermException
     Resque.enqueue(self)
+  rescue => exception
+    Raven.capture_exception(exception, {})
   end
 end

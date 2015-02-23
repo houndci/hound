@@ -6,7 +6,7 @@ describe ActivationsController, "#create" do
       token = "sometoken"
       membership = create(:membership)
       repo = membership.repo
-      activator = double(:repo_activator, activate: true, errors: [])
+      activator = double("RepoActivator", activate: true, errors: [])
       allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user, token)
 
@@ -37,10 +37,10 @@ describe ActivationsController, "#create" do
         repo = membership.repo
         error_message = "You must be an admin to add a team membership"
         activator = double(
-          :repo_activator,
+          "RepoActivator",
           activate: false,
           errors: [error_message]
-        ).as_null_object
+        )
         allow(RepoActivator).to receive(:new).and_return(activator)
         stub_sign_in(membership.user, token)
 
@@ -54,6 +54,29 @@ describe ActivationsController, "#create" do
           with(repo: repo, github_token: token)
       end
     end
+
+    it "tracks failed activation" do
+      membership = create(:membership)
+      repo = membership.repo
+      activator = double(
+        "RepoActivator",
+        activate: false,
+        errors: []
+      )
+      allow(RepoActivator).to receive(:new).and_return(activator)
+      stub_sign_in(membership.user)
+
+      post :create, repo_id: repo.id, format: :json
+
+      expect(analytics).to have_tracked("Repo Activation Failed").
+        for_user(membership.user).
+        with(
+          properties: {
+            name: repo.full_github_name,
+            private: false
+          }
+        )
+    end
   end
 
   context "when repo is not public" do
@@ -61,7 +84,7 @@ describe ActivationsController, "#create" do
       repo = create(:repo, private: true)
       user = create(:user)
       user.repos << repo
-      activator = double(:repo_activator, activate: false)
+      activator = double("RepoActivator", activate: false)
       allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(user)
 

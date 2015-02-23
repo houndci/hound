@@ -1,6 +1,4 @@
 class RepoSyncsController < ApplicationController
-  respond_to :json
-
   def create
     JobQueue.push(
       RepoSynchronizationJob,

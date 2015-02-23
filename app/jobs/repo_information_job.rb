@@ -16,5 +16,7 @@ class RepoInformationJob
     )
   rescue Resque::TermException
     Resque.enqueue(self, repo_id)
+  rescue => exception
+    Raven.capture_exception(exception, repo: { id: repo_id })
   end
 end

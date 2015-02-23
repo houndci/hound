@@ -9,10 +9,6 @@ class PaymentGatewayCustomer
     default_card.last4
   end
 
-  def card_brand
-    default_card.brand
-  end
-
   def customer
     @customer ||= begin
       if user.stripe_customer_id.present?
@@ -43,14 +39,20 @@ class PaymentGatewayCustomer
     def cards
       []
     end
+
+    def subscriptions
+      NoSubscription.new
+    end
+  end
+
+  class NoSubscription
+    def retrieve(*_args)
+      nil
+    end
   end
 
   class BlankCard
     def last4
-      ""
-    end
-
-    def brand
       ""
     end
   end

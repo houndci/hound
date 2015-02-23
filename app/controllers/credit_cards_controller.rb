@@ -1,8 +1,6 @@
 class CreditCardsController < ApplicationController
   class CreditCardUpdateFailed < StandardError; end
 
-  respond_to :json
-
   def update
     customer = PaymentGatewayCustomer.new(current_user)
 

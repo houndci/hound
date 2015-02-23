@@ -228,8 +228,6 @@ GEM
     redis (3.2.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
-    responders (2.0.2)
-      railties (>= 4.2.0.alpha, < 5)
     resque (1.25.2)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
@@ -247,6 +245,8 @@ GEM
     resque-sentry (1.2.0)
       resque (>= 1.18.0)
       sentry-raven (>= 0.4.6)
+    resque-timeout (1.0.0)
+      resque (~> 1.0)
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
@@ -370,10 +370,10 @@ DEPENDENCIES
   poltergeist
   rails (= 4.2)
   rails_12factor
-  responders (~> 2.0)
   resque (~> 1.25.0)
   resque-retry
   resque-sentry
+  resque-timeout
   rspec-rails (>= 2.14)
   rubocop (= 0.29.1)
   sass-rails

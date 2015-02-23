@@ -2,8 +2,6 @@ class DeactivationsController < ApplicationController
   class FailedToActivate < StandardError; end
   class CannotDeactivateRepoWithSubscription < StandardError; end
 
-  respond_to :json
-
   before_action :check_for_subscription
 
   def create

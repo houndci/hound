@@ -15,5 +15,6 @@ module Houndapp
       "Rack::ETag",
       "RedirectToConfiguration"
     )
+    config.exceptions_app = routes
   end
 end

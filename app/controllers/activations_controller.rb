@@ -2,8 +2,6 @@ class ActivationsController < ApplicationController
   class FailedToActivate < StandardError; end
   class CannotActivatePaidRepo < StandardError; end
 
-  respond_to :json
-
   before_action :check_repo_plan
 
   def create
@@ -11,6 +9,7 @@ class ActivationsController < ApplicationController
       analytics.track_repo_activated(repo)
       render json: repo, status: :created
     else
+      analytics.track_repo_activation_failed(repo)
       render json: { errors: activator.errors }, status: 502
     end
   end

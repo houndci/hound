@@ -1,4 +1,5 @@
 require "fast_spec_helper"
+require "app/services/manage_hound"
 require "app/services/add_hound_to_repo"
 require "app/models/github_user"
 
@@ -16,7 +17,7 @@ describe AddHoundToRepo do
 
             expect(result).to eq true
             expect(github).to have_received(:add_user_to_team).
-              with(hound_github_username, github_team_id)
+              with(github_team_id, hound_github_username)
           end
         end
 
@@ -47,11 +48,11 @@ describe AddHoundToRepo do
 
             expect(github).to have_received(:create_team).with(
               org_name: "foo",
-              team_name: AddHoundToRepo::SERVICES_TEAM_NAME,
+              team_name: AddHoundToRepo::GITHUB_TEAM_NAME,
               repo_name: repo_name
             )
             expect(github).to have_received(:add_user_to_team).
-              with(hound_github_username, github_team.id)
+              with(github_team.id, hound_github_username)
           end
         end
 
@@ -64,7 +65,7 @@ describe AddHoundToRepo do
             AddHoundToRepo.run("foo/bar", github)
 
             expect(github).to have_received(:add_user_to_team).
-              with(hound_github_username, github_team_id)
+              with(github_team_id, hound_github_username)
           end
 
           context "when team name is lowercase" do
@@ -76,7 +77,7 @@ describe AddHoundToRepo do
               AddHoundToRepo.run("foo/bar", github)
 
               expect(github).to have_received(:add_user_to_team).
-                with(hound_github_username, github_team_id)
+                with(github_team_id, hound_github_username)
             end
           end
         end

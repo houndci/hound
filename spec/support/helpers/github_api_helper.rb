@@ -10,6 +10,17 @@ module GithubApiHelper
     )
   end
 
+  def stub_remove_collaborator_request(username, repo_name, user_token)
+    stub_request(
+      :delete,
+      "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
+    ).with(
+      headers: { "Authorization" => "token #{user_token}" }
+    ).to_return(
+      status: 204,
+    )
+  end
+
   def stub_repo_requests(user_token)
     stub_paginated_repo_requests(user_token)
     stub_orgs_request(user_token)
@@ -88,6 +99,41 @@ module GithubApiHelper
     )
   end
 
+  def stub_team_repos_request(team_id, user_github_token)
+    stub_request(
+      :get,
+      "https://api.github.com/teams/#{team_id}/repos?per_page=100"
+    ).with(
+      headers: { "Authorization" => "token #{user_github_token}" }
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/team_repos.json"),
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
+    )
+  end
+
+  def stub_remove_repo_from_team_request(team_id, repo_name, user_github_token)
+    stub_request(
+      :delete,
+      "https://api.github.com/teams/#{team_id}/repos/#{repo_name}"
+    ).with(
+      headers: { "Authorization" => "token #{user_github_token}" }
+    ).to_return(
+      status: 200
+    )
+  end
+
+  def stub_remove_user_from_team_request(team_id, username, user_github_token)
+    stub_request(
+      :delete,
+      "https://api.github.com/teams/#{team_id}/memberships/#{username}"
+    ).with(
+      headers: { "Authorization" => "token #{user_github_token}" }
+    ).to_return(
+      status: 200
+    )
+  end
+
   def stub_user_teams_request(user_token)
     stub_request(
       :get,
@@ -112,7 +158,7 @@ module GithubApiHelper
     )
   end
 
-  def stub_add_user_to_team_request(username, team_id, user_token)
+  def stub_add_user_to_team_request(team_id, username, user_token)
     url = "https://api.github.com/teams/#{team_id}/memberships/#{username}"
     stub_request(:put, url).
       with(headers: { "Authorization" => "token #{user_token}" }).
