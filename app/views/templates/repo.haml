@@ -1,5 +1,5 @@
 .repo-name
   %span {{ repo.full_github_name }}
 .activation-toggle{'ng-class' => '{private: repo.private}'}
-  %span.private-label Private
+  %span.private-label Private - $12
   %a.toggle{'href' => '', 'ng-click' => 'toggle()'}

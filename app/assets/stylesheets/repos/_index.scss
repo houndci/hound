@@ -177,12 +177,11 @@ aside {
       input.search {
         @include transition(all 0.25s ease-out);
         @include box-sizing(border-box);
-        background-color: lighten($purple, 10%);
-        border: 1px solid lighten($purple, 10%);
+        background-color: rgb(248,248,248);
+        border: 2px solid $base-border-color;
         border-radius: 3px;
-        color: #FFF;
         display: block;
-        font-weight: 300;
+        font-weight: 400;
         height: 60px;
         letter-spacing: 1px;
         margin: 0;
@@ -192,26 +191,32 @@ aside {
         &:hover,
         &:focus {
           outline: none;
-          background-color: $purple;
+          background-color: rgba($purple, 0.1);
           border-color: $purple;
+          color: $purple;
+
+          @include placeholder {
+            color: $purple;
+          }
         }
 
         @include placeholder {
-          color: #FFF;
-          font-weight: 300;
+          @include transition(all 0.25s ease-out);
+          color: $light-font-color;
+          font-weight: 400;
           letter-spacing: 1px;
         }
       }
     }
 
     a.refresh {
-      background-color: lighten($purple, 10%);
+      background-color: rgb(248,248,248);
       border-radius: 3px;
-      border: 1px solid lighten($purple, 10%);
-      color: #fff;
+      border: 2px solid $base-border-color;
+      color: $light-font-color;
       display: table-cell;
       font-size: 1em;
-      font-weight: 300;
+      font-weight: 400;
       letter-spacing: 1px;
       margin: 0;
       padding: 0;
@@ -220,23 +225,9 @@ aside {
       width: 200px;
 
       &:hover {
-        background-color: $purple;
+        background-color: rgba($purple, 0.1);
         border-color: $purple;
-        color: #FFF;
-      }
-
-      i.fa {
-        color: inherit;
-        margin-right: 0.2em;
-        font-size: 1em;
-        padding-top: 2px;
-        vertical-align: middle;
-      }
-
-      span {
-        color: inherit;
-        display: inline-block;
-        vertical-align: middle;
+        color: $purple;
       }
     }
   }
@@ -314,9 +305,9 @@ aside {
     .activation-toggle {
       display: table-cell;
       height: 100%;
+      padding-left: 1em;
       text-align: right;
       vertical-align: middle;
-      width: 200px;
 
       span.private-label {
         background: lighten($gold, 50%);
@@ -347,15 +338,15 @@ aside {
         @include transition(none);
         @include user-select(none);
         border-radius: 20px;
-        background: #fff;
-        border: 1px solid $purple;
+        background: rgba($purple, 0.1);
+        border: 2px solid $purple;
         color: $purple;
         display: inline-block;
+        font-weight: 400;
         letter-spacing: 1px;
         padding: 0.4em 1em;
         text-align: center;
         vertical-align: middle;
-        width: 110px;
 
         &:before {
           content: 'Activate';
@@ -395,7 +386,7 @@ aside {
         color: #fff;
 
         &:before {
-          content: 'Turn Off';
+          content: 'Deactivate';
         }
       }
     }
