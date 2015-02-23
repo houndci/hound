@@ -5,7 +5,7 @@ module StyleGuide
     def violations_in_file(file)
       require "scss_lint"
 
-      if config.excluded_file?(file.filename)
+      if excluded_file?(file)
         []
       else
         runner = build_runner
@@ -26,6 +26,11 @@ module StyleGuide
     end
 
     private
+
+    def excluded_file?(file)
+      directory_excluded?(file) ||
+        config.excluded_file?(file.filename)
+    end
 
     def build_runner
       SCSSLint::Runner.new(config)

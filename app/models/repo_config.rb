@@ -8,6 +8,7 @@ class RepoConfig
     "coffee_script" => "json",
     "scss" => "yaml",
   }
+  DEFAULT_IGNORED_DIRECTORIES = ["vendor/**"]
 
   pattr_initialize :commit
 
@@ -38,6 +39,10 @@ class RepoConfig
     else
       []
     end
+  end
+
+  def ignored_paths
+    hound_config["ignored_paths"] || DEFAULT_IGNORED_DIRECTORIES
   end
 
   private

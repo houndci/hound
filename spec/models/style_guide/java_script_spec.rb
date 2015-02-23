@@ -106,20 +106,46 @@ describe StyleGuide::JavaScript do
 
   describe "#file_included?" do
     context "file is in excluded file list" do
-      it "returns false" do
-        repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
-        style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
-        file = double(:file, filename: "foo.js")
+      context "when the file is in the ignored files list" do
+        it "returns false" do
+          repo_config = double(
+            "RepoConfig",
+            ignored_javascript_files: ["foo.js"],
+            ignored_paths: [],
+          )
+          style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
+          file = double(:file, filename: "foo.js")
 
-        included = style_guide.file_included?(file)
+          included = style_guide.file_included?(file)
 
-        expect(included).to be false
+          expect(included).to be false
+        end
+      end
+
+      context "when the file is inside an ignored directory" do
+        it "returns false" do
+          repo_config = double(
+            "RepoConfig",
+            ignored_javascript_files: ["vendor/bar.js"],
+            ignored_paths: ["vendor/**"],
+          )
+          style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
+          file = double("File", filename: "vendor/foo.js")
+
+          included = style_guide.file_included?(file)
+
+          expect(included).to be false
+        end
       end
     end
 
     context "file is not excluded" do
       it "returns true" do
-        repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
+        repo_config = double(
+          "RepoConfig",
+          ignored_javascript_files: ["foo.js"],
+          ignored_paths: [],
+        )
         style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
         file = double(:file, filename: "bar.js")
 
@@ -132,7 +158,8 @@ describe StyleGuide::JavaScript do
     it "matches a glob pattern" do
       repo_config = double(
         "RepoConfig",
-        ignored_javascript_files: ["app/assets/javascripts/*.js"]
+        ignored_javascript_files: ["app/assets/javascripts/*.js"],
+        ignored_paths: [],
       )
 
       style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")

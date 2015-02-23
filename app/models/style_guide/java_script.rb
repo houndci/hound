@@ -17,7 +17,8 @@ module StyleGuide
     end
 
     def file_included?(file)
-      !excluded_files.any? { |pattern| File.fnmatch?(pattern, file.filename) }
+      directory_not_excluded?(file) &&
+        file_not_excluded?(file)
     end
 
     private
@@ -28,6 +29,16 @@ module StyleGuide
         custom_config["predef"] |= default_config["predef"]
       end
       default_config.merge(custom_config)
+    end
+
+    def directory_not_excluded?(file)
+      !directory_excluded?(file)
+    end
+
+    def file_not_excluded?(file)
+      !excluded_files.any? do |pattern|
+        File.fnmatch?(pattern, file.filename)
+      end
     end
 
     def excluded_files

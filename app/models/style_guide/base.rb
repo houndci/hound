@@ -15,6 +15,12 @@ module StyleGuide
 
     private
 
+    def directory_excluded?(file)
+      repo_config.ignored_paths.any? do |pattern|
+        File.fnmatch?(pattern, file.filename)
+      end
+    end
+
     def name
       self.class.name.demodulize.underscore
     end

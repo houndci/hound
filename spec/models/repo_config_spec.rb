@@ -255,7 +255,7 @@ describe RepoConfig do
       end
     end
 
-    describe "#jshint_ignore_file" do
+    describe "#ignored_javascript_files" do
       context "no specific configuration is present" do
         it "attempts to load a .jshintignore file" do
           ignored_files = <<-EOIGNORE.strip_heredoc
@@ -302,6 +302,39 @@ describe RepoConfig do
 
           expect(ignored_files).
             to eq ["app/assets/javascripts/*.js", "public/javascripts/**.js"]
+        end
+      end
+    end
+
+    describe "#ignored_paths" do
+      it "defaults to `vendor`" do
+        hound_config = <<-EOS
+          java_script:
+            enabled: true
+            ignore_file: ".js_ignore"
+        EOS
+        commit = stub_commit(hound_config: hound_config)
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config.ignored_paths).to eq(
+          RepoConfig::DEFAULT_IGNORED_DIRECTORIES
+        )
+      end
+
+      context "when configured by the repo's config" do
+        it "returns configured directories" do
+          hound_config = <<-EOS
+            java_script:
+              enabled: true
+              ignore_file: ".js_ignore"
+            ignored_paths:
+              - tmp
+          EOS
+
+          commit = stub_commit(hound_config: hound_config)
+          repo_config = RepoConfig.new(commit)
+
+          expect(repo_config.ignored_paths).to eq ["tmp"]
         end
       end
     end
