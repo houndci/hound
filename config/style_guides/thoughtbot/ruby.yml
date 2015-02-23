@@ -194,9 +194,6 @@ SpecialGlobalVars:
 StringLiterals:
   EnforcedStyle: double_quotes
 
-VariableInterpolation:
-  Enabled: false
-
 TrailingComma:
   Enabled: false
 
