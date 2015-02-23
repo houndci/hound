@@ -30,6 +30,7 @@ describe BuildsController, '#create' do
       payload_data = File.read(
         'spec/support/fixtures/pull_request_opened_event.json'
       )
+      payload = Payload.new(payload_data)
 
       post :create, payload: payload_data
 
@@ -45,12 +46,26 @@ describe BuildsController, '#create' do
       payload_data = File.read(
         'spec/support/fixtures/pull_request_event_with_many_files.json'
       )
+      payload = Payload.new(payload_data)
 
       post :create, payload: payload_data
 
       expect(LargeBuildJob).to have_received(:perform_later).with(
         JSON.parse(payload_data)
       )
+    end
+  end
+
+  context "when payload is not for pull request" do
+    it "does not schedule a job" do
+      payload_data = File.read("spec/support/fixtures/push_event.json")
+      allow(LargeBuildJob).to receive(:perform_later)
+      allow(SmallBuildJob).to receive(:perform_later)
+
+      post :create, payload: payload_data
+
+      expect(LargeBuildJob).not_to have_received(:perform_later)
+      expect(SmallBuildJob).not_to have_received(:perform_later)
     end
   end
 end

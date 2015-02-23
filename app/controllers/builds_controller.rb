@@ -4,7 +4,9 @@ class BuildsController < ApplicationController
   skip_before_action :authenticate, only: [:create]
 
   def create
-    build_job_class.perform_later(payload.data)
+    if payload.pull_request?
+      build_job_class.perform_later(payload.data)
+    end
     head :ok
   end
 

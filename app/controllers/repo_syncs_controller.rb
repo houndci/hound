@@ -1,6 +1,4 @@
 class RepoSyncsController < ApplicationController
-  respond_to :json
-
   def create
     unless current_user.refreshing_repos?
       RepoSynchronizationJob.perform_later(

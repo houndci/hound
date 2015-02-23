@@ -2,8 +2,6 @@ class ActivationsController < ApplicationController
   class FailedToActivate < StandardError; end
   class CannotActivatePaidRepo < StandardError; end
 
-  respond_to :json
-
   before_action :check_repo_plan
 
   def create
