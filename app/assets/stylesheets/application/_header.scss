@@ -12,17 +12,17 @@ header.global {
     padding: 0 2em;
     width: 100%;
 
-    @include media($medium-screen-header) {
-      height: auto;
-      padding: 2em 1em;
-      text-align: center;
-    }
-
     .logo-link h1 {
       background-image: image-url("logo.svg");
       height: 40px;
       width: 174px;
     }
+  }
+
+  @include media($medium-screen-header) {
+    height: auto;
+    padding: 2em 1em;
+    text-align: center;
   }
 
   .logo {
@@ -81,7 +81,7 @@ header.global {
 
     + ul {
       @include media($medium-screen-header) {
-        padding-top: 1.2em;
+        padding: 1.2em 1em;
       }
 
       @include media($small-screen) {

@@ -5,14 +5,23 @@
   display: table;
   min-height: 500px;
   padding: 2em;
+
+  @include media($large-screen) {
+    padding: 1em;
+  }
 }
 
 aside {
   @include span-columns(3 of 12, table);
   box-shadow: 1px 0 0 0 $base-border-color;
+  min-width: 250px;
   overflow: hidden;
   position: relative;
   vertical-align: top;
+
+  @include media($large-screen) {
+    display: none;
+  }
 
   &.closed {
     section.all-orgs {
@@ -154,6 +163,12 @@ aside {
   padding: 0 0 0 2em;
   vertical-align: top;
 
+  @include media($large-screen) {
+    border: none;
+    padding: 0;
+    width: 100%;
+  }
+
   nav.repo-tools {
     background: #fff;
     display: table;
@@ -165,6 +180,12 @@ aside {
       display: table-cell;
       padding-right: 1em;
       position: relative;
+
+      @include media($small-screen) {
+        display: block;
+        margin-bottom: 1em;
+        padding: 0;
+      }
 
       i.fa-search {
         @include position(absolute, 16px null null 1em);
@@ -180,6 +201,7 @@ aside {
         background-color: rgb(248,248,248);
         border: 2px solid $base-border-color;
         border-radius: 3px;
+        color: $light-font-color;
         display: block;
         font-weight: 400;
         height: 60px;
@@ -224,6 +246,12 @@ aside {
       vertical-align: middle;
       width: 200px;
 
+      @include media($small-screen) {
+        display: block;
+        padding: 0.8em;
+        width: 100%;
+      }
+
       &:hover {
         background-color: rgba($purple, 0.1);
         border-color: $purple;
@@ -262,9 +290,15 @@ aside {
     @include clearfix;
     display: table;
     height: 80px;
-    padding: 0em 0em;
+    padding: 0;
     position: relative;
     width: 100%;
+
+    @include media($small-screen) {
+      display: block;
+      height: auto;
+      padding: 1em 0;
+    }
 
     &~ li {
       border-top: 1px solid $base-border-color;
@@ -296,6 +330,14 @@ aside {
       text-overflow: ellipsis;
       vertical-align: middle;
 
+      @include media($small-screen) {
+        display: block;
+        font-size: 1.2em;
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin-bottom: 0.6em;
+      }
+
       span {
         display: inline-block;
         padding-bottom: 2px;
@@ -308,6 +350,12 @@ aside {
       padding-left: 1em;
       text-align: right;
       vertical-align: middle;
+
+      @include media($small-screen) {
+        display: block;
+        text-align: left;
+        padding: 0;
+      }
 
       span.private-label {
         background: lighten($gold, 50%);
@@ -323,6 +371,10 @@ aside {
         padding: 0.2em 0.6em;
         vertical-align: middle;
 
+        @include media($small-screen) {
+          margin: 0.1em 0 0 0.6em;
+        }
+
         i.fa {
           color: $gold;
           display: inline-block;
@@ -330,8 +382,12 @@ aside {
         }
       }
 
-      &.private span.private-label {
-        display: inline-block;
+      &.private {
+        min-width: 250px;
+
+        span.private-label {
+          display: inline-block;
+        }
       }
 
       .toggle {
@@ -347,6 +403,11 @@ aside {
         padding: 0.4em 1em;
         text-align: center;
         vertical-align: middle;
+
+        @include media($small-screen) {
+          float: left;
+          padding: 0.2em 0.8em;
+        }
 
         &:before {
           content: 'Activate';
