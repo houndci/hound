@@ -11,7 +11,7 @@ describe RepoSyncsController, "#create" do
       post :create
 
       expect(RepoSynchronizationJob).
-        not_to have_received(:perform_later).with(user.id, token)
+        not_to have_received(:perform_later).with(user, token)
     end
   end
 
@@ -25,7 +25,7 @@ describe RepoSyncsController, "#create" do
       post :create
 
       expect(RepoSynchronizationJob).
-        to have_received(:perform_later).with(user.id, token)
+        to have_received(:perform_later).with(user, token)
     end
   end
 end

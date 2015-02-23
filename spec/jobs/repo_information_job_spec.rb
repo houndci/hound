@@ -13,7 +13,7 @@ describe RepoInformationJob do
     repo = create(:repo, private: false, in_organization: false)
     stub_repo_with_org_request(repo.full_github_name)
 
-    RepoInformationJob.perform_now(repo.id)
+    RepoInformationJob.perform_now(repo)
 
     repo.reload
     expect(repo).to be_private
@@ -22,10 +22,10 @@ describe RepoInformationJob do
 
   it 'retries when Resque::TermException is raised' do
     repo = create(:repo)
-    allow(Repo).to receive(:find).and_raise(Resque::TermException.new(1))
+    allow(GithubApi).to receive(:new).and_raise(Resque::TermException.new(1))
     allow(RepoInformationJob.queue_adapter).to receive(:enqueue)
 
-    job = RepoInformationJob.perform_now(repo.id)
+    job = RepoInformationJob.perform_now(repo)
 
     expect(RepoInformationJob.queue_adapter).
       to have_received(:enqueue).with(job)
@@ -34,10 +34,10 @@ describe RepoInformationJob do
   it "sends the exception to Sentry with the repo_id" do
     repo = create(:repo)
     exception = StandardError.new("hola")
-    allow(Repo).to receive(:find).and_raise(exception)
+    allow(GithubApi).to receive(:new).and_raise(exception)
     allow(Raven).to receive(:capture_exception)
 
-    RepoInformationJob.perform_now(repo.id)
+    RepoInformationJob.perform_now(repo)
 
     expect(Raven).to have_received(:capture_exception).
       with(exception, repo: { id: repo.id })

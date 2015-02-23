@@ -16,7 +16,7 @@ describe RepoSynchronizationJob do
       synchronization = double(:repo_synchronization, start: nil)
       allow(RepoSynchronization).to receive(:new).and_return(synchronization)
 
-      RepoSynchronizationJob.perform_now(user.id, github_token)
+      RepoSynchronizationJob.perform_now(user, github_token)
 
       expect(RepoSynchronization).to have_received(:new).with(
         user,
@@ -27,12 +27,12 @@ describe RepoSynchronizationJob do
     end
 
     it "retries when Resque::TermException is raised" do
-      allow(User).to receive(:find).and_raise(Resque::TermException.new(1))
-      user_id = "userid"
+      allow(RepoSynchronization).to receive(:new).and_raise(Resque::TermException.new(1))
+      user = build_stubbed(:user)
       github_token = "token"
       allow(RepoSynchronizationJob.queue_adapter).to receive(:enqueue)
 
-      job = RepoSynchronizationJob.perform_now(user_id, github_token)
+      job = RepoSynchronizationJob.perform_now(user, github_token)
 
       expect(RepoSynchronizationJob.queue_adapter).
         to have_received(:enqueue).with(job)
@@ -47,7 +47,7 @@ describe RepoSynchronizationJob do
       allow(RepoSynchronization).to receive(:new).and_return(synchronization)
       allow(Raven).to receive(:capture_exception)
 
-      RepoSynchronizationJob.perform_now(user.id, github_token)
+      RepoSynchronizationJob.perform_now(user, github_token)
 
       expect(Raven).to have_received(:capture_exception).
         with(exception, user: { id: user.id })
