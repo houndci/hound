@@ -35,7 +35,7 @@
   },
   "max_line_length": {
     "level": "error",
-    "value": 80
+    "value": 120
   },
   "missing_fat_arrows": {
     "level": "ignore"
