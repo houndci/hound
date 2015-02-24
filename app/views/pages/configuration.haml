@@ -3,34 +3,33 @@
 %main.content-doc
   %h2 Configuration
 
-  %p
-    Hound uses the
-    #{link_to "thoughtbot style guide", "https://github.com/thoughtbot/guides/tree/master/style"}
-    by default, unless you configure it to use your own style guide.
-
-  %p
-    Configure Hound for Ruby, CoffeeScript, JavaScript, and SCSS
-    by following these instructions.
-
   %h3 Ruby
 
   %p
-    Hound uses #{link_to "RuboCop", "https://github.com/bbatsov/rubocop"}
-    internally so you can configure Hound by adding a
-    #{link_to "RuboCop config", "https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml"}
-    to your project and adding the following to
+    Hound uses
+    #{link_to "RuboCop", "https://github.com/bbatsov/rubocop", target: :blank}
+    with this
+    #{link_to "configuration", "https://gist.github.com/salbertson/8b5cf70c2354e04ec7cd", target: :blank}.
+
+  %p
+    If you need to configure Hound differently, simply copy the default file
+    into your project and name it
+    %em.code .ruby-style.yml
+
+  %p
+    You also need to add a
     %em.code .hound.yml
-    in the root of your project.
+    to the root of your project and reference the config.
 
     %code.code-block
       :preserve
         ruby:
-          config_file: config/.rubocop.yml
+          config_file: .ruby-style.yml
 
   %p
     To disable Ruby style checking, add the following to
     %em.code .hound.yml
-    in the root of your project
+    in the root of your project.
 
     %code.code-block
       :preserve
@@ -40,17 +39,25 @@
   %h3 CoffeeScript
 
   %p
-    Hound uses #{link_to "CoffeeLint", "http://www.coffeelint.org/"}
-    internally so you can configure Hound by adding a
-    #{link_to "CoffeeLint config", "https://github.com/clutchski/coffeelint/blob/master/coffeelint.json"}
-    to your project and adding the following to
+    Hound uses
+    #{link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank}
+    with this
+    #{link_to "configuration", "https://gist.github.com/salbertson/7ce998ffcdf09efa2627", target: :blank}.
+
+  %p
+    If you need to configure Hound differently, simply copy the default file
+    into your project and name it
+    %em.code .coffeescript-style.json
+
+  %p
+    You also need to add a
     %em.code .hound.yml
-    in the root of your project.
+    to the root of your project and reference the config.
 
     %code.code-block
       :preserve
         coffee_script:
-          config_file: config/.coffeelint.json
+          config_file: .coffeescript-style.json
 
   %p
     To disable CoffeeScript style checking, add the following to
@@ -65,17 +72,25 @@
   %h3 JavaScript
 
   %p
-    Hound uses #{link_to "JSHint", "https://github.com/jshint/jshint/"}
-    internally so you can configure Hound by adding a
-    #{link_to "JSHint config", "https://github.com/thoughtbot/hound/blob/master/config/style_guides/javascript.json"}
-    file to your project and adding the following to
+    Hound uses
+    #{link_to "JSHint", "https://github.com/jshint/jshint", target: :blank}
+    with this
+    #{link_to "configuration", "https://gist.github.com/salbertson/2023aa80a2807d24d6a4", target: :blank}.
+
+  %p
+    If you need to configure Hound differently, simply copy the default file
+    into your project and name it
+    %em.code .javascript-style.json
+
+  %p
+    You also need to add a
     %em.code .hound.yml
-    in the root of your project.
+    to the root of your project and reference the config.
 
     %code.code-block
       :preserve
         java_script:
-          config_file: config/.jshint.json
+          config_file: .javascript-style.json
 
   %p
     If you are looking to ignore certain JavaScript files from being checked for
@@ -113,17 +128,25 @@
   %h3 SCSS
 
   %p
-    Hound uses #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint"}
-    internally so you can configure Hound by adding a
-    #{link_to "SCSS config", "https://github.com/causes/scss-lint/blob/master/config/default.yml"}
-    file to your project and adding the following to
+    Hound uses
+    #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint", target: :blank}
+    with this
+    #{link_to "configuration", "https://gist.github.com/salbertson/da7120f7a11b5ac460f5", target: :blank}.
+
+  %p
+    If you need to configure Hound differently, simply copy the default file
+    into your project and name it
+    %em.code .scss-style.yml
+
+  %p
+    You also need to add a
     %em.code .hound.yml
-    in the root of your project.
+    to the root of your project and reference the config.
 
     %code.code-block
       :preserve
         scss:
-          config_file: config/scss.yml
+          config_file: .scss-style.yml
 
   %p
     To disable SCSS style checking, add the following to
@@ -134,3 +157,6 @@
       :preserve
         scss:
           enabled: false
+
+  %p
+    Please tweet at us #{link_to "@houndci", "https://twitter.com/houndci", target: :blank} or email us at #{link_to "hound@thoughtbot.com", "mailto:hound@thoughtbot.com"} if you have any questions or need a hand.
