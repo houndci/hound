@@ -6,9 +6,12 @@ linters:
     space_after_bang: false
   BorderZero:
     enabled: false
+    convention: zero
   ColorKeyword:
     enabled: true
     severity: warning
+  ColorVariable:
+    enabled: true
   Comment:
     enabled: true
   DebugStatement:
@@ -38,12 +41,15 @@ linters:
     enabled: true
   IdSelector:
     enabled: true
+  ImportantRule:
+    enabled: true
   ImportPath:
     enabled: true
     leading_underscore: false
     filename_extension: false
   Indentation:
     enabled: true
+    allow_non_nested_indentation: false
     character: space
     width: 2
   LeadingZero:
@@ -62,10 +68,15 @@ linters:
     severity: warning
   PlaceholderInExtend:
     enabled: false
+  PropertyCount:
+    enabled: true
+    include_nested: false
+    max_properties: 10
   PropertySortOrder:
     enabled: true
     ignore_unspecified: false
     severity: warning
+    separate_groups: false
   PropertySpelling:
     enabled: true
     extra_properties: []
@@ -119,6 +130,9 @@ linters:
     enabled: true
   UrlQuotes:
     enabled: true
+  VariableForProperty:
+    enabled: false
+    properties: []
   VendorPrefixes:
     enabled: true
     identifier_list: bourbon
