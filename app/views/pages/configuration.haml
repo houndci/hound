@@ -93,27 +93,24 @@
           config_file: .javascript-style.json
 
   %p
-    If you are looking to ignore certain JavaScript files from being checked for
-    style issues you can set the
+    If you would like to ignore certain JavaScript files then set
     %em.code ignore_file
-    option in the
+    in your
     %em.code .hound.yml
-    in the root of your project. This option should be set to a file which
-    defines what files or patterns should be ignored during style checking.
 
     %code.code-block
       :preserve
         java_script:
-          ignore_file: config/.javascript_ignore
+          ignore_file: .javascript_ignore
 
   %p
-    Each line in the
+    Each line in
     %em.code .javascript_ignore
-    file can specify a pattern for file names to ignore.
+    should specify a pattern for files to ignore.
 
     %code.code-block
       :preserve
-        vendor/assets/javascripts/**.js
+        vendor/**/*
 
   %p
     To disable JavaScript style checking, add the following to
