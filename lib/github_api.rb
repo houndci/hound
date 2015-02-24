@@ -69,10 +69,7 @@ class GithubApi
   end
 
   def pull_request_comments(full_repo_name, pull_request_number)
-    repo_path = Octokit::Repository.path full_repo_name
-
-    # client.pull_request_comments does not do auto-pagination.
-    client.paginate "#{repo_path}/pulls/#{pull_request_number}/comments"
+    client.pull_request_comments(full_repo_name, pull_request_number)
   end
 
   def pull_request_files(full_repo_name, number)
