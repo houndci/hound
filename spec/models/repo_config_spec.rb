@@ -256,6 +256,13 @@ describe RepoConfig do
     end
 
     describe "#jshint_ignore_file" do
+      it "return default paths" do
+        commit = stub_commit(hound_config: "")
+        ignored_files = RepoConfig.new(commit).ignored_javascript_files
+
+        expect(ignored_files).to eq ["vendor/*"]
+      end
+
       context "no specific configuration is present" do
         it "attempts to load a .jshintignore file" do
           ignored_files = <<-EOIGNORE.strip_heredoc
@@ -309,6 +316,7 @@ describe RepoConfig do
     def stub_commit(configuration)
       commit = double("Commit")
       hound_config = configuration.delete(:hound_config)
+      allow(commit).to receive(:file_content)
       allow(commit).to receive(:file_content).
         with(RepoConfig::HOUND_CONFIG).and_return(hound_config)
 

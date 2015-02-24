@@ -132,15 +132,17 @@ describe StyleGuide::JavaScript do
     it "matches a glob pattern" do
       repo_config = double(
         "RepoConfig",
-        ignored_javascript_files: ["app/assets/javascripts/*.js"]
+        ignored_javascript_files: [
+          "app/assets/javascripts/*.js",
+          "vendor/*",
+        ]
       )
-
       style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
-      file = double(:file, filename: "app/assets/javascripts/bar.js")
+      file1 = double(:file, filename: "app/assets/javascripts/bar.js")
+      file2 = double(:file, filename: "vendor/assets/javascripts/foo.js")
 
-      included = style_guide.file_included?(file)
-
-      expect(included).to be false
+      expect(style_guide.file_included?(file1)).to be false
+      expect(style_guide.file_included?(file2)).to be false
     end
   end
 
