@@ -7,9 +7,7 @@ class ManageHound
     new(repo_name, github).run
   end
 
-  def run
-    raise NotImplementedError.new("must implement ##{__method__}")
-  end
+  attr_implement :run
 
   private
 

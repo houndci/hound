@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
-    - db/schema.rb
+    - "vendor/**/*"
+    - "db/schema.rb"
 
 AccessorMethodName:
   Enabled: false
@@ -193,9 +194,6 @@ SpecialGlobalVars:
 
 StringLiterals:
   EnforcedStyle: double_quotes
-
-VariableInterpolation:
-  Enabled: false
 
 TrailingComma:
   Enabled: false

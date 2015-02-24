@@ -7,9 +7,7 @@ module StyleGuide
       repo_config.enabled_for?(name)
     end
 
-    def violations_in_file(_file)
-      raise NotImplementedError.new("must implement ##{__method__}")
-    end
+    attr_implement :violations_in_file
 
     def file_included?(_file)
       true
