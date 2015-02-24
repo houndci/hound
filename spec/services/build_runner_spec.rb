@@ -44,7 +44,7 @@ describe BuildRunner, '#run' do
     it "comments a maximum number of times" do
       allow(ENV).to receive(:[]).with("HOUND_GITHUB_TOKEN").
         and_return("something")
-      allow(ENV).to receive(:[]).with("MAX_COMMENTS").and_return("1")
+      stub_const("::BuildRunner::MAX_COMMENTS", 1)
       build_runner = make_build_runner
       stubbed_commenter
       violations = build_list(:violation, 2)
@@ -56,7 +56,7 @@ describe BuildRunner, '#run' do
       build_runner.run
 
       expect(commenter).to have_received(:comment_on_violations).
-        with(violations.take(ENV["MAX_COMMENTS"].to_i))
+        with(violations.take(BuildRunner::MAX_COMMENTS))
     end
 
     it 'initializes StyleChecker with modified files and config' do

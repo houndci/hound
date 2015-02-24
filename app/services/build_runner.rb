@@ -1,4 +1,6 @@
 class BuildRunner
+  MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
+
   pattr_initialize :payload
 
   def run
@@ -28,7 +30,7 @@ class BuildRunner
   end
 
   def priority_violations
-    violations.take(ENV["MAX_COMMENTS"].to_i)
+    violations.take(MAX_COMMENTS)
   end
 
   def style_checker
