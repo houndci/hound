@@ -1,10 +1,9 @@
-class RepoInformationJob
+class RepoInformationJob < ActiveJob::Base
   extend Retryable
 
-  @queue = :low
+  queue_as :low
 
-  def self.perform(repo_id)
-    repo = Repo.find(repo_id)
+  def perform(repo)
     repo.touch
 
     github = GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
@@ -15,8 +14,8 @@ class RepoInformationJob
       in_organization: github_data[:organization].present?
     )
   rescue Resque::TermException
-    Resque.enqueue(self, repo_id)
+    retry_job
   rescue => exception
-    Raven.capture_exception(exception, repo: { id: repo_id })
+    Raven.capture_exception(exception, repo: { id: repo.id })
   end
 end

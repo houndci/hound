@@ -22,7 +22,6 @@ RSpec.configure do |config|
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
   DatabaseCleaner.strategy = :deletion
-  Resque.inline = true
 end
 
 Capybara.configure do |config|

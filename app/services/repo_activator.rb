@@ -59,7 +59,7 @@ class RepoActivator
 
   def enqueue_org_invitation
     if repo.in_organization?
-      JobQueue.push(AcceptOrgInvitationsJob)
+      AcceptOrgInvitationsJob.perform_later
     end
   end
 

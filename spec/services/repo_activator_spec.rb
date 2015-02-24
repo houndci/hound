@@ -4,14 +4,14 @@ describe RepoActivator do
   describe "#activate" do
     context "with org repo" do
       it "will enqueue org invitation job" do
-        allow(JobQueue).to receive(:push).with(AcceptOrgInvitationsJob)
+        allow(AcceptOrgInvitationsJob).to receive(:perform_later)
         repo = create(:repo, in_organization: true)
         stub_github_api
         activator = build_activator(repo: repo)
 
         activator.activate
 
-        expect(JobQueue).to have_received(:push).with(AcceptOrgInvitationsJob)
+        expect(AcceptOrgInvitationsJob).to have_received(:perform_later)
       end
 
       it "marks repo as active" do
@@ -28,7 +28,7 @@ describe RepoActivator do
 
     context "without org repo" do
       it "will not enqueue org invitation job" do
-        allow(JobQueue).to receive(:push).with(AcceptOrgInvitationsJob)
+        allow(AcceptOrgInvitationsJob).to receive(:perform_later)
         repo = create(:repo)
         stub_github_api
         activator = build_activator(repo: repo)
@@ -36,8 +36,7 @@ describe RepoActivator do
         activator.activate
 
         expect(repo.in_organization).to be_falsy
-        expect(JobQueue).not_to have_received(:push).
-          with(AcceptOrgInvitationsJob)
+        expect(AcceptOrgInvitationsJob).not_to have_received(:perform_later)
       end
 
       it "marks repo as active" do
@@ -194,7 +193,6 @@ describe RepoActivator do
       it "returns true" do
         stub_github_api
         token = "githubtoken"
-        allow(JobQueue).to receive(:push)
         allow(RemoveHoundFromRepo).to receive(:run).and_return(true)
         membership = create(:membership)
         repo = membership.repo
@@ -227,7 +225,6 @@ describe RepoActivator do
   end
 
   def build_activator(token: "githubtoken", repo: build(:repo))
-    allow(JobQueue).to receive(:push).and_return(true)
     allow(AddHoundToRepo).to receive(:run).and_return(true)
 
     RepoActivator.new(github_token: token, repo: repo)

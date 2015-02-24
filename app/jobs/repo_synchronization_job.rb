@@ -1,20 +1,15 @@
-class RepoSynchronizationJob
+class RepoSynchronizationJob < ActiveJob::Base
   extend Retryable
 
-  @queue = :high
+  queue_as :high
 
-  def self.before_enqueue(user_id, github_token)
-    User.set_refreshing_repos(user_id)
-  end
-
-  def self.perform(user_id, github_token)
-    user = User.find(user_id)
+  def perform(user, github_token)
     synchronization = RepoSynchronization.new(user, github_token)
     synchronization.start
     user.update_attribute(:refreshing_repos, false)
   rescue Resque::TermException
-    Resque.enqueue(self, user_id, github_token)
+    retry_job
   rescue => exception
-    Raven.capture_exception(exception, user: { id: user_id })
+    Raven.capture_exception(exception, user: { id: user.id })
   end
 end
