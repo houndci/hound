@@ -26,7 +26,11 @@ module StyleGuide
 
     def content_for_file(file)
       if erb? file
-        ERB.new(file.content).result
+        begin
+          ERB.new(file.content).result
+        rescue
+          ""
+        end
       else
         file.content
       end

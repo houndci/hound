@@ -125,6 +125,24 @@ describe StyleGuide::CoffeeScript do
           ["Line exceeds maximum allowed length"]
         )
       end
+
+      context "when the file refers to methods outside of it's scope" do
+        it "swallows the exception and returns no violations" do
+          repo_config = double("RepoConfig", enabled_for?: true, for: {})
+          style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
+          line = double("Line", content: "blah", number: 1, patch_position: 2)
+          file = double(
+            "File",
+            content: "<%= i_dont_exist %>",
+            filename: "test.coffee.erb",
+            line_at: line
+          )
+
+          violations = style_guide.violations_in_file(file)
+
+          expect(violations).to be_empty
+        end
+      end
     end
 
     private
