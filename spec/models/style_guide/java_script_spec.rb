@@ -102,6 +102,24 @@ describe StyleGuide::JavaScript do
           with(anything, thoughtbot_configuration)
       end
     end
+
+    context "with ES6 support enabled" do
+      it "respects ES6" do
+        repo_config = double("RepoConfig", for: { esnext: true })
+        line = double("Line", patch_position: 1)
+        file = double(
+          "File",
+          filename: "using_es6_syntax.js",
+          line_at: line,
+          content: "import Ember from 'ember'"
+        )
+
+        violations = violations_in(file, repo_config)
+
+        violation = violations.first
+        expect(violation.messages).to match_array(["Missing semicolon."])
+      end
+    end
   end
 
   describe "#file_included?" do
