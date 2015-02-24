@@ -3,34 +3,30 @@
 %main.content-doc
   %h2 Configuration
 
-  %p
-    Hound uses the
-    #{link_to "thoughtbot style guide", "https://github.com/thoughtbot/guides/tree/master/style"}
-    by default, unless you configure it to use your own style guide.
-
-  %p
-    Configure Hound for Ruby, CoffeeScript, JavaScript, and SCSS
-    by following these instructions.
-
   %h3 Ruby
 
   %p
-    Hound uses #{link_to "RuboCop", "https://github.com/bbatsov/rubocop"}
-    internally so you can configure Hound by adding a
-    #{link_to "RuboCop config", "https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml"}
-    to your project and adding the following to
+    Hound uses
+    #{link_to "RuboCop", "https://github.com/bbatsov/rubocop", target: :blank}
+    with this
+    #{link_to "config", ruby_config_url, target: :blank}
+    by default.
+
+  %p
+    If you need to change the way Hound is configured, simply copy the
+    #{link_to "default config", ruby_config_url, target: :blank}
+    into your project, make changes and reference the file in your
     %em.code .hound.yml
-    in the root of your project.
 
     %code.code-block
       :preserve
         ruby:
-          config_file: config/.rubocop.yml
+          config_file: .ruby-style.yml
 
   %p
-    To disable Ruby style checking, add the following to
+    Add the following code to your
     %em.code .hound.yml
-    in the root of your project
+    to disable Ruby style checking.
 
     %code.code-block
       :preserve
@@ -40,22 +36,26 @@
   %h3 CoffeeScript
 
   %p
-    Hound uses #{link_to "CoffeeLint", "http://www.coffeelint.org/"}
-    internally so you can configure Hound by adding a
-    #{link_to "CoffeeLint config", "https://github.com/clutchski/coffeelint/blob/master/coffeelint.json"}
-    to your project and adding the following to
+    Hound uses
+    #{link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank}
+    with this
+    #{link_to "config", coffeescript_config_url, target: :blank}.
+
+  %p
+    If you need to change the way Hound is configured, simply copy the
+    #{link_to "default config", coffeescript_config_url, target: :blank}.
+    into your project, make changes and reference the file in your
     %em.code .hound.yml
-    in the root of your project.
 
     %code.code-block
       :preserve
         coffee_script:
-          config_file: config/.coffeelint.json
+          config_file: .coffeescript-style.json
 
   %p
-    To disable CoffeeScript style checking, add the following to
+    Add the following code to your
     %em.code .hound.yml
-    in the root of your project
+    to disable CoffeeScript style checking.
 
     %code.code-block
       :preserve
@@ -65,45 +65,38 @@
   %h3 JavaScript
 
   %p
-    Hound uses #{link_to "JSHint", "https://github.com/jshint/jshint/"}
-    internally so you can configure Hound by adding a
-    #{link_to "JSHint config", "https://github.com/thoughtbot/hound/blob/master/config/style_guides/javascript.json"}
-    file to your project and adding the following to
+    Hound uses
+    #{link_to "JSHint", "https://github.com/jshint/jshint", target: :blank}
+    with this
+    #{link_to "config", javascript_config_url, target: :blank}.
+
+  %p
+    If you need to change the way Hound is configured, simply copy the
+    #{link_to "default config", javascript_config_url, target: :blank}.
+    into your project, make changes and reference the file in your
     %em.code .hound.yml
-    in the root of your project.
+
+  %p
+    %code.code-block
+      :preserve
+        java_script:
+          config_file: .javascript-style.json
+
+  %p
+    If you would like to ignore certain JavaScript files, simply copy the
+    #{link_to "default config", javascript_ignore_url, target: :blank}
+    into your project, make changes and reference the file in your
+    %em.code .hound.yml
 
     %code.code-block
       :preserve
         java_script:
-          config_file: config/.jshint.json
+          ignore_file: .javascript_ignore
 
   %p
-    If you are looking to ignore certain JavaScript files from being checked for
-    style issues you can set the
-    %em.code ignore_file
-    option in the
+    Add the following code to your
     %em.code .hound.yml
-    in the root of your project. This option should be set to a file which
-    defines what files or patterns should be ignored during style checking.
-
-    %code.code-block
-      :preserve
-        java_script:
-          ignore_file: config/.javascript_ignore
-
-  %p
-    Each line in the
-    %em.code .javascript_ignore
-    file can specify a pattern for file names to ignore.
-
-    %code.code-block
-      :preserve
-        vendor/assets/javascripts/**.js
-
-  %p
-    To disable JavaScript style checking, add the following to
-    %em.code .hound.yml
-    in the root of your project
+    to disable JavaScript style checking.
 
     %code.code-block
       :preserve
@@ -113,24 +106,32 @@
   %h3 SCSS
 
   %p
-    Hound uses #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint"}
-    internally so you can configure Hound by adding a
-    #{link_to "SCSS config", "https://github.com/causes/scss-lint/blob/master/config/default.yml"}
-    file to your project and adding the following to
-    %em.code .hound.yml
-    in the root of your project.
+    Hound uses
+    #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint", target: :blank}
+    with this
+    #{link_to "config", scss_config_url, target: :blank}.
 
+  %p
+    If you need to change the way Hound is configured, simply copy the
+    #{link_to "default config", scss_config_url, target: :blank}.
+    into your project, make changes and reference the file in your
+    %em.code .hound.yml
+
+  %p
     %code.code-block
       :preserve
         scss:
-          config_file: config/scss.yml
+          config_file: .scss-style.yml
 
   %p
-    To disable SCSS style checking, add the following to
+    Add the following code to your
     %em.code .hound.yml
-    in the root of your project
+    to disable SCSS style checking.
 
     %code.code-block
       :preserve
         scss:
           enabled: false
+
+  %p
+    Please tweet at us #{link_to "@houndci", "https://twitter.com/houndci", target: :blank} or email us at #{mail_to "hound@thoughtbot.com"} if you need a hand.
