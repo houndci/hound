@@ -1,25 +1,36 @@
-require "fast_spec_helper"
-require "golint"
-require "active_support/inflector"
-require "app/models/violation"
-require "app/models/style_guide/base"
-require "app/models/style_guide/go"
+require "spec_helper"
 
 describe StyleGuide::Go do
   describe "#violations_in_file" do
-    context "with default config" do
-      context "when semicolon is missing" do
-        it "returns violation" do
-          style_guide = StyleGuide::Go.new(
-            double("RepoConfig", for: {})
-          )
-          file = double(:file, content: 'item_id := vars["item_id"]', filename: 'sample.go', line_at: nil)
+    context "with style violations" do
+      it "returns violation" do
+        violations = ["expected 'package', found 'var'"]
 
-          violations = style_guide.violations_in_file(file)
-
-          expect(violations.first.messages).to include "expected 'package', found 'IDENT' item_id"
-        end
+        expect(violations_in(<<-CODE)).to eq violations
+          var foo_bar string
+        CODE
       end
     end
+
+    context "without style violations" do
+      it "does not return violation" do
+        expect(violations_in(<<-CODE)).to be_empty
+          package main
+          var fooBar string
+        CODE
+      end
+    end
+  end
+
+  def violations_in(content)
+    repo_config = double("RepoConfig", enabled_for?: true, for: nil)
+    style_guide = StyleGuide::Go.new(repo_config, "ownername")
+    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+  end
+
+  def build_file(content)
+    line = double("Line", content: "doesntmatter", number: 1, patch_position: 2)
+    filename = Rails.root.join("test.go")
+    double("CommitFile", content: content, line_at: line, filename: filename)
   end
 end
