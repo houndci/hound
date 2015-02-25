@@ -358,15 +358,13 @@ describe RepoConfig do
           enabled: true
           config_file: #{file_path}
 
-<<<<<<< HEAD
         scss:
           enabled: true
           config_file: #{file_path}
-=======
+
         php:
           enabled: true
           config_file: phpcs.xml
->>>>>>> Add support for PHP.
       EOS
 
       commit = stub_commit(
