@@ -40,7 +40,7 @@ class StyleChecker
     case filename
     when /.+\.rb\z/
       StyleGuide::Ruby
-    when /.+\.coffee(\.js)?(\.erb)?\z/
+    when /.+\.coffee(\.js)?\z/
       StyleGuide::CoffeeScript
     when /.+\.js\z/
       StyleGuide::JavaScript
