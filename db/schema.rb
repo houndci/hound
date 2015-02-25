@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217090319) do
+ActiveRecord::Schema.define(version: 20150225001118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20150217090319) do
     t.decimal  "price",                              precision: 8, scale: 2, default: 0.0, null: false
   end
 
-  add_index "subscriptions", ["repo_id"], name: "index_subscriptions_on_repo_id", using: :btree
+  add_index "subscriptions", ["repo_id"], name: "index_subscriptions_on_repo_id", unique: true, where: "(deleted_at IS NULL)", using: :btree
   add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
