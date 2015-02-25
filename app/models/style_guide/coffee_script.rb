@@ -28,7 +28,7 @@ module StyleGuide
       if erb? file
         begin
           ERB.new(file.content).result
-        rescue NameError
+        rescue
           ""
         end
       else
