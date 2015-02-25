@@ -175,6 +175,32 @@ describe StyleChecker, "#violations" do
     end
   end
 
+  context "for a Go file" do
+    context "with style violations" do
+      it "returns violations" do
+        file = stub_commit_file("test.go", "var foo_bar string")
+        pull_request = stub_pull_request(pull_request_files: [file])
+
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
+
+        expect(messages).to include "expected 'package', found 'var'"
+      end
+    end
+
+    context "without style violations" do
+      it "returns no violations" do
+        file = stub_commit_file("test.go", "package main\nvar fooBar string")
+        pull_request = stub_pull_request(pull_request_files: [file])
+
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
+
+        expect(messages).to be_empty
+      end
+    end
+  end
+
   context "with unsupported file type" do
     it "uses unsupported style guide" do
       file = stub_commit_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
