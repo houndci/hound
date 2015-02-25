@@ -7,15 +7,6 @@ GIT
       multi_json (>= 1.3)
       rake
 
-GIT
-  remote: https://github.com/blainesch/phpcs-rb.git
-  revision: 40c61341fb73a49b8d9fc26286177a7f5a520a3f
-  branch: 0.1.0
-  submodules: true
-  specs:
-    phpcsrb (0.1.0)
-      json (~> 1.8)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -196,6 +187,8 @@ GEM
       ast (>= 1.1, < 3.0)
     pg (0.17.1)
     phantomjs (1.9.8.0)
+    phpcsrb (0.1.0)
+      json (~> 1.8)
     poltergeist (1.5.1)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -381,7 +374,7 @@ DEPENDENCIES
   omniauth-github
   paranoia (~> 2.0)
   pg
-  phpcsrb!
+  phpcsrb (= 0.1.0)
   poltergeist
   rails (= 4.2)
   rails_12factor
