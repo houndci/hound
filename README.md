@@ -33,8 +33,8 @@ If you have questions about the service, see our [FAQ] or email [hound@thoughtbo
    `ngrok -subdomain=<your-initials>-hound 5000`
 5. Fill in the application details:
   * Application Name: Hound Development
-  * Homepage URL: http://<your-initials>-hound.ngrok.com
-  * Authorization Callback URL: http://<your-initials>-hound.ngrok.com
+  * Homepage URL: `http://<your-initials>-hound.ngrok.com`
+  * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`
 6. On the confirmation screen, copy the `Client ID` and `Client Secret` to
    `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
    file does not exist.
