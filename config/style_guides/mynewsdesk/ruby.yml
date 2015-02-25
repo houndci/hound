@@ -1,5 +1,5 @@
 inherit_from:
-  - ../rubocop.yml
+  - ../ruby.yml
 
 Style/TrailingComma:
   # If EnforcedStyleForMultiline is comma, the cop allows a comma after the
