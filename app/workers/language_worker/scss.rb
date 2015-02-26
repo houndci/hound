@@ -1,7 +1,9 @@
 module LanguageWorker
   class Scss < Base
+    DEFAULT_CONFIG_FILENAME = "scss.yml"
+
     def run
-      #TODO add code name in call
+      #TODO add code-name in call
       connection.post("/", { payload: payload })
     end
 
@@ -11,7 +13,10 @@ module LanguageWorker
       {
         build_worker_id: build_worker.id,
         build_id: build.id,
-        config: config,
+        config: {
+          custom: custom_config,
+          default: default_config
+        },
         file: {
           name: filename,
           content: content,
@@ -21,8 +26,15 @@ module LanguageWorker
       }
     end
 
-    def config
-      # TODO some config stuff like merging with default config
+    def custom_config
+      repo_config.for(name)
+    end
+
+    def default_config
+      DefaultConfigFile.new(
+        DEFAULT_CONFIG_FILENAME,
+        pull_request.repository_owner_name
+      ).content
     end
 
     def connection
