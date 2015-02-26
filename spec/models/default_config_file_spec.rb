@@ -27,4 +27,16 @@ describe DefaultConfigFile do
       end
     end
   end
+
+  describe "#content" do
+    it "returns the configuration file content" do
+      config_path = File.join(
+        DefaultConfigFile::CONFIG_DIR,
+        "javascript.json"
+      )
+      config = DefaultConfigFile.new("javascript.json", "not_thoughtbot")
+
+      expect(config.content).to eq File.read(config_path)
+    end
+  end
 end
