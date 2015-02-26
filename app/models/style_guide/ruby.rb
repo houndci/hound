@@ -54,8 +54,11 @@ module StyleGuide
       RuboCop::Config.new
     end
 
+    # This is deprecated in favor of RuboCop's DisplayCopNames option.
+    # Let's track how often we see this and remove it if we see fit.
     def rubocop_options
-      if config["ShowCopNames"]
+      if config.delete("ShowCopNames")
+        Analytics.new(repository_owner_name).track_show_cop_names
         { debug: true }
       end
     end
