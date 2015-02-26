@@ -13,7 +13,7 @@ class BuildRunner
         commit_sha: payload.head_sha,
       )
       commenter.comment_on_violations(priority_violations)
-      create_success_status
+      create_resulting_status
       upsert_owner
       track_subscribed_build_completed
     end
@@ -74,11 +74,27 @@ class BuildRunner
     )
   end
 
+  def create_resulting_status
+    if violations.any?
+      create_failure_status
+    else
+      create_success_status
+    end
+  end
+
   def create_success_status
     github.create_success_status(
       payload.full_repo_name,
       payload.head_sha,
-      "Hound has reviewed the changes."
+      "Hound remained in blissful meditation."
+    )
+  end
+
+  def create_failure_status
+    github.create_failure_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      "Hound detected a disturbance in the force."
     )
   end
 

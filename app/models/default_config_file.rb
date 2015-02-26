@@ -1,5 +1,5 @@
 class DefaultConfigFile
-  CONFIG_DIR = "config/style_guides"
+  CONFIG_DIR = "config/style_guides/mynewsdesk"
   THOUGHTBOT_CONFIG_DIR = "config/style_guides/thoughtbot"
 
   pattr_initialize :file_name, :repository_owner_name

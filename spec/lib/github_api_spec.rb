@@ -289,6 +289,23 @@ describe GithubApi do
     end
   end
 
+  describe "#create_failure_status" do
+    it "makes request to GitHub for creating a failure status" do
+      hound_token = ENV["HOUND_GITHUB_TOKEN"]
+      api = GithubApi.new(hound_token)
+      request = stub_status_request(
+        "test/repo",
+        "sha",
+        "failure",
+        "description"
+      )
+
+      api.create_failure_status("test/repo", "sha", "description")
+
+      expect(request).to have_been_requested
+    end
+  end
+
   describe "#add_user_to_team" do
     it "makes a request to GitHub" do
       token = "some_token"
