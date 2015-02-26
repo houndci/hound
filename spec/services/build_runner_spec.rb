@@ -124,7 +124,6 @@ describe BuildRunner, '#run' do
         repository_owner_name: owner_name,
         repository_owner_is_organization?: true,
       )
-      allow(Owner).to receive(:upsert)
       build_runner = BuildRunner.new(payload)
       stubbed_pull_request
       stubbed_style_checker_with_violations
@@ -133,11 +132,13 @@ describe BuildRunner, '#run' do
 
       build_runner.run
 
-      expect(Owner).to have_received(:upsert).with(
-        github_id: owner_github_id,
-        name: owner_name,
-        organization: true
+      owner_attributes = Owner.first.slice(:name, :github_id, :organization)
+      expect(owner_attributes).to eq(
+        "name" => owner_name,
+        "github_id" => owner_github_id,
+        "organization" => true
       )
+      expect(repo.reload.owner).to eq Owner.first
     end
   end
 
