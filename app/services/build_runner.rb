@@ -7,6 +7,7 @@ class BuildRunner
     if repo && relevant_pull_request?
       track_subscribed_build_started
       create_pending_status
+      upsert_owner
       repo.builds.create!(
         violations: violations,
         pull_request_number: payload.pull_request_number,
@@ -14,7 +15,6 @@ class BuildRunner
       )
       commenter.comment_on_violations(priority_violations)
       create_success_status
-      upsert_owner
       track_subscribed_build_completed
     end
   end
@@ -83,11 +83,12 @@ class BuildRunner
   end
 
   def upsert_owner
-    Owner.upsert(
+    owner = Owner.upsert(
       github_id: payload.repository_owner_id,
       name: payload.repository_owner_name,
       organization: payload.repository_owner_is_organization?
     )
+    repo.update(owner: owner)
   end
 
   def github
