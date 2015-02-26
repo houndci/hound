@@ -11,11 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225001118) do
+ActiveRecord::Schema.define(version: 20150226092224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
+
+  create_table "build_workers", force: :cascade do |t|
+    t.integer  "build_id"
+    t.datetime "completed_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "builds", force: :cascade do |t|
     t.text     "violations_archive"

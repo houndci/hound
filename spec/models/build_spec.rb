@@ -4,6 +4,7 @@ describe Build do
   it { should belong_to :repo }
   it { should validate_presence_of :repo }
   it { should have_many(:violations).dependent(:destroy) }
+  it { should have_many(:build_workers).dependent(:destroy) }
 end
 
 describe Build, '#status' do

@@ -1,6 +1,7 @@
 class Build < ActiveRecord::Base
   belongs_to :repo
   has_many :violations, dependent: :destroy
+  has_many :build_workers, dependent: :destroy
 
   before_create :generate_uuid
 
