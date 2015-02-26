@@ -4,7 +4,7 @@ module StyleGuide
 
     def violations_in_file(file)
       Jshintrb.lint(file.content, config).compact.map do |violation|
-        line = file.line_at(violation["line"])
+        line = Patch.find_line(file.patch, violation["line"])
 
         Violation.new(
           filename: file.filename,

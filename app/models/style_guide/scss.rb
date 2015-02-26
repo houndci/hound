@@ -12,7 +12,7 @@ module StyleGuide
         runner.run([file.content])
 
         runner.lints.map do |violation|
-          line = file.line_at(violation.location.line)
+          line = Patch.find_line(file.patch, violation.location.line)
 
           Violation.new(
             filename: file.filename,

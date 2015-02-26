@@ -611,9 +611,8 @@ hoge
   end
 
   def build_file(content)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
     filename = Rails.root.join("lib/a.rb")
-    double("CommitFile", content: content, line_at: line, filename: filename)
+    double("CommitFile", content: content, filename: filename, patch: "")
   end
 
   def default_configuration
