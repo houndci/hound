@@ -25,20 +25,24 @@ If you have questions about the service, see our [FAQ] or email [hound@thoughtbo
 ## Configure Hound on Your Local Development Environment
 
 1. After cloning the repository, run the setup script `./bin/setup`
-2. Log into your GitHub account and go to the
-   [Applications under Personal settings](https://github.com/settings/applications).
-3. Under the Developer applications panel - Click on "Register new
-   application"
-4. Point [ngrok] to your local Hound instance:
+2. Point [ngrok] to your local Hound instance:
    `ngrok -subdomain=<your-initials>-hound 5000`
-5. Fill in the application details:
+3. Set the `HOST` variable in your `.env` to your ngrok host. Note the setup script
+   copies `.sample.env` to `.env` for you, if the file does not exist.
+4. Log into your GitHub account and go to the
+   [Applications under Personal settings](https://github.com/settings/applications).
+5. Under the Developer applications panel - Click on "Register new
+   application"
+6. Fill in the application details:
   * Application Name: Hound Development
   * Homepage URL: `http://<your-initials>-hound.ngrok.com`
   * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`
-6. On the confirmation screen, copy the `Client ID` and `Client Secret` to
-   `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
-   file does not exist.
-7. Run `foreman start`. Foreman will start the web server and
+7. On the confirmation screen, copy the `Client ID` and `Client Secret` to `.env`.
+9. Next click "Generate new token" and fill in token details:
+  * Token description: Hound Development
+  * Select scopes: `repo` and `user:email`
+10. On the confirmation screen, copy the generated token to `.env`.
+11. Run `foreman start`. Foreman will start the web server and
    the resque background job queue. NOTE: `rails server` will not load the
    appropriate environment variables and you'll get a "Missing `secret_key_base`
    for 'development' environment" error.
