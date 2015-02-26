@@ -154,6 +154,27 @@ describe RepoConfig do
           "LineLength" => { "Max" => 90 },
         )
       end
+
+      context "with unsafe yaml" do
+        it "raises error" do
+          config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
+            StringLiterals: !ruby/object
+              foo:
+          EOS
+
+          expect { config.for("ruby") }.to raise_error Psych::DisallowedClass
+        end
+      end
+
+      context "with ruby regex in yaml" do
+        it "does not raise an error" do
+          config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
+            WordRegex: !ruby/regexp /\A[\p{Word}]+\z/
+          EOS
+
+          expect { config.for("ruby") }.not_to raise_error
+        end
+      end
     end
 
     context "when CoffeeScript config file is specified" do
