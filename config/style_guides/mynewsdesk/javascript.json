@@ -15,6 +15,8 @@
   "predef": [
     "$",
     "jQuery",
+    "global",
+    "require"
 
     "jasmine",
     "beforeEach",
