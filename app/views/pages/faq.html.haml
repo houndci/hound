@@ -43,6 +43,27 @@
     We currently don't have a trial subscription level. We suggest trying it
     out on open-sourced repos first, since these can be enabled free of charge.
 
+  %h3 Do you offer bulk pricing?
+  %p
+    Yes, we offer monthly or yearly bulk pricing,
+    rather than paying per-repo.
+    Email us at #{mail_to "hound@thoughtbot.com"}
+    with your GitHub organization name
+    and number of repos you'd like to enable.
+
+  %h3 Do you offer GitHub Enterprise support?
+  %p
+    Not at the current time. A user has shared their method of getting it to
+    work
+    = link_to('here in this GitHub issue',
+      'https://github.com/thoughtbot/hound/issues/426')
+    but it is not an officially supported approach.
+
+  %h3 How do I unsubscribe from Hound?
+  %p
+    If you are no longer satisfied with Hound, you can cancel your subscription
+    by disabling your repo on
+    = link_to('the repo page.', repos_path)
 
   %h3 Can I have Hound check my entire repository for style?
   %p
@@ -63,17 +84,3 @@
     If you'd still like to analyze your whole repo, try using
     = link_to('Rubocop', 'https://github.com/bbatsov/rubocop')
     locally.
-
-  %h3 Do you offer GitHub Enterprise support?
-  %p
-    Not at the current time. A user has shared their method of getting it to
-    work
-    = link_to('here in this GitHub issue',
-      'https://github.com/thoughtbot/hound/issues/426')
-    but it is an not officially supported approach.
-
-  %h3 How do I unsubscribe from Hound?
-  %p
-    If you are no longer satisfied with Hound, you can cancel your subscription
-    by disabling your repo on
-    = link_to('the repo page.', repos_path)
