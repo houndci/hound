@@ -18,9 +18,9 @@ module LanguageWorker
 
         expect(Faraday).to have_received(:new).with(url: scss_worker_url)
         expect(connection).to have_received(:post).with(
-          "/",
+          "/?code_name=scss",
           {
-            payload:
+            body:
             {
               build_worker_id: build_worker.id,
               build_id: build_worker.build_id,

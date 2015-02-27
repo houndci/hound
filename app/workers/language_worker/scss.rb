@@ -3,8 +3,7 @@ module LanguageWorker
     DEFAULT_CONFIG_FILENAME = "scss.yml"
 
     def run
-      #TODO add code-name in call
-      connection.post("/", { payload: payload })
+      connection.post("/?code_name=scss", { body: payload })
     end
 
     private
