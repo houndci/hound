@@ -5,6 +5,7 @@
   display: table;
   min-height: 500px;
   padding: 2em;
+  width: 100%;
 
   @include media($large-screen) {
     padding: 1em;
@@ -157,11 +158,8 @@ aside {
 }
 
 .repo-listing {
-  @include span-columns(9 of 12, table);
-  @include omega;
-  border-left: 1px solid $base-border-color;
-  padding: 0 0 0 2em;
   vertical-align: top;
+  width: 100%;
 
   @include media($large-screen) {
     border: none;
@@ -177,7 +175,7 @@ aside {
     vertical-align: middle;
 
     .search-wrapper {
-      display: table-cell;
+      @include span-columns(6 of 9, table);
       padding-right: 1em;
       position: relative;
 
@@ -232,11 +230,11 @@ aside {
     }
 
     a.refresh {
+      @include span-columns(3 of 9, table);
       background-color: rgb(248,248,248);
       border-radius: 3px;
       border: 2px solid $base-border-color;
       color: $light-font-color;
-      display: table-cell;
       font-size: 1em;
       font-weight: 400;
       letter-spacing: 1px;
@@ -244,7 +242,6 @@ aside {
       padding: 0;
       text-align: center;
       vertical-align: middle;
-      width: 200px;
 
       @include media($small-screen) {
         display: block;
