@@ -53,7 +53,7 @@ module LanguageWorker
 
     def default_config_file
       DefaultConfigFile.new(
-        Scss::DEFAULT_CONFIG_FILENAME,
+        "scss.yml",
         "foo"
       ).content
     end

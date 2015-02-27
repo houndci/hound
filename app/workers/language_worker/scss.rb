@@ -1,7 +1,5 @@
 module LanguageWorker
   class Scss < Base
-    DEFAULT_CONFIG_FILENAME = "scss.yml"
-
     def run
       connection.post("/?code_name=scss", { body: payload })
     end
@@ -25,19 +23,12 @@ module LanguageWorker
       }
     end
 
-    def custom_config
-      repo_config.for(name)
-    end
-
-    def default_config
-      DefaultConfigFile.new(
-        DEFAULT_CONFIG_FILENAME,
-        pull_request.repository_owner_name
-      ).content
-    end
-
     def connection
       @connection ||= Faraday.new(url: ENV.fetch("WORKER_URL"))
+    end
+
+    def default_config_file
+      "scss.yml"
     end
   end
 end
