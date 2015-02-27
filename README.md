@@ -1,126 +1,28 @@
-Hound
-=====
+# Hound
 
 [![Build Status](https://travis-ci.org/thoughtbot/hound.svg?branch=master)](http://travis-ci.org/thoughtbot/hound?branch=master)
 [![Code Climate](https://codeclimate.com/repos/526ab75ff3ea007df603b773/badges/32cb8e64b2e265d8cad6/gpa.svg)](https://codeclimate.com/repos/526ab75ff3ea007df603b773/feed)
 
-Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
+This codebase is the Rails app for
+[Hound](http://houndci.com),
+a hosted service
+that reviews GitHub pull requests
+for Ruby, JavaScript, CoffeeScript, and SCSS
+style guide violations.
 
-Hound reviews GitHub pull requests for style guide violations. [View the style
-guide &rarr;](https://github.com/thoughtbot/guides/tree/master/style)
+If you have questions about the service,
+see our [FAQ] or email [hound@thoughtbot.com].
 
-## Configure the Hound Service
+To contribute to the Hound codebase,
+see the [CONTRIBUTING.md] file.
 
-We run Hound as a hosted service at [houndci.com].
-
-If you are setting up Hound for the first time, see the [configuration] page.
-
-If you have questions about the service, see our [FAQ] or email [hound@thoughtbot.com].
-
-[houndci.com]: https://houndci.com
-[configuration]: https://houndci.com/configuration
 [FAQ]: https://houndci.com/faq
 [hound@thoughtbot.com]: mailto:hound@thoughtbot.com
+[CONTRIBUTING.md]: CONTRIBUTING.md
 
-## Configure Hound on Your Local Development Environment
-
-1. After cloning the repository, run the setup script `./bin/setup`
-2. Point [ngrok] to your local Hound instance:
-   `ngrok -subdomain=<your-initials>-hound 5000`
-3. Set the `HOST` variable in your `.env` to your ngrok host. Note the setup script
-   copies `.sample.env` to `.env` for you, if the file does not exist.
-4. Log into your GitHub account and go to the
-   [Applications under Personal settings](https://github.com/settings/applications).
-5. Under the Developer applications panel - Click on "Register new
-   application"
-6. Fill in the application details:
-  * Application Name: Hound Development
-  * Homepage URL: `http://<your-initials>-hound.ngrok.com`
-  * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`
-7. On the confirmation screen, copy the `Client ID` and `Client Secret` to `.env`.
-9. Next click "Generate new token" and fill in token details:
-  * Token description: Hound Development
-  * Select scopes: `repo` and `user:email`
-10. On the confirmation screen, copy the generated token to `.env`.
-11. Run `foreman start`. Foreman will start the web server and
-   the resque background job queue. NOTE: `rails server` will not load the
-   appropriate environment variables and you'll get a "Missing `secret_key_base`
-   for 'development' environment" error.
-
-[ngrok]: https://ngrok.com
-
-Testing
------------
-
-1. Set up your `development` environment as per above.
-2. Run `rake` to execute the full test suite.
-
-#### Stripe
-
-To test Stripe payments on staging use this fake credit card number.
-
-<table>
-  <thead>
-    <tr>
-      <th>Card</th>
-      <th>Number</th>
-      <th>Expiration</th>
-      <th>CVV</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Visa</td>
-      <td>4242424242424242</td>
-      <td>Any future date</td>
-      <td>Any 3 digits</td>
-    </tr>
-  </tbody>
-</table>
-
-Contributing
-------------
-
-First, thank you for contributing!
-
-Here a few guidelines to follow:
-
-1. Open an [issue](https://github.com/thoughtbot/hound/issues) to discuss a new feature.
-2. Write tests
-3. Make sure the entire test suite passes locally and on Travis CI
-4. Open a Pull Request
-5. [Squash your commits](https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature) after receiving feedback
-6. Celebrate!
-
-There a couple areas we would like to concentrate on.
-
-1. ~~Add support for JavaScript~~
-2. ~~Add support for CSS and Sass~~
-3. Add ability for subscribers to update their email address.
-4. Come up with a way to report false positives or general Hound issues.
-5. Don't break Hound when an enabled repo is transferred on GitHub.
-6. Support more languages!
-
-### License
+## License
 
 The names and logos for Hound are trademarks of thoughtbot, inc.
 
 Hound is Copyright © 2015 thoughtbot, inc.  It is free software, and may be
 redistributed under the terms specified in the [LICENSE](LICENSE) file.
-
-### Contributor License Agreement
-
-If you submit a Contribution to this application's source code, you hereby grant
-to thoughtbot, inc. a worldwide, royalty-free, exclusive, perpetual and
-irrevocable license, with the right to grant or transfer an unlimited number of
-non-exclusive licenses or sublicenses to third parties, under the Copyright
-covering the Contribution to use the Contribution by all means, including but
-not limited to:
-
-* to publish the Contribution,
-* to modify the Contribution, to prepare Derivative Works based upon or
-  containing the Contribution and to combine the Contribution with other
-  software code,
-* to reproduce the Contribution in original or modified form,
-* to distribute, to make the Contribution available to the public, display and
-  publicly perform the Contribution in original or modified form.
