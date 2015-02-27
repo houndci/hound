@@ -11,12 +11,6 @@ module LanguageWorker
         pull_request = double("PullRequest", repository_owner_name: "foo")
         build_worker_url = ENV["BUILD_WORKERS_URL"]
         connection = double("Connection", post: true)
-        #violations = [
-          #"Something",
-          #"Another thing"
-        #]
-        #ruby_style_guide = double("StyleGuide::Ruby", violations_in_file: violations)
-        #allow(StyleGuide::Ruby).to receive(:new).and_return(ruby_style_guide)
         allow(Faraday).to receive(:new).with(url: build_worker_url).and_return(connection)
         worker = Ruby.new(build_worker, commit_file, repo_config, pull_request)
 
