@@ -23,7 +23,7 @@ class RepoConfig
       config_file_path = config_path_for(language)
 
       if config_file_path
-        load_file(config_file_path, FILE_TYPES.fetch(language))
+        load_config(config_file_path, FILE_TYPES.fetch(language))
       else
         {}
       end
@@ -73,6 +73,18 @@ class RepoConfig
   def config_path_for(language)
     hound_config[language] &&
       hound_config[language]["config_file"]
+  end
+
+  def load_config(config_file_path, file_type)
+    main_config = load_file(config_file_path, file_type)
+    inherit_from = main_config.fetch("inherit_from", [])
+
+    inherited_config = inherit_from.reduce({}) do |config, ancestor_file_path|
+      ancestor_config = load_file(ancestor_file_path, file_type)
+      config.merge(ancestor_config)
+    end
+
+    inherited_config.merge(main_config.except("inherit_from"))
   end
 
   def load_file(file_path, file_type)
