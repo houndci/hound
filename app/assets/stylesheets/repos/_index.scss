@@ -54,27 +54,6 @@ aside {
         vertical-align: middle;
       }
 
-      .menu-toggle {
-        text-align: right;
-        width: 30px;
-
-        a {
-          color: $light-font-color;
-          display: block;
-          line-height: 60px;
-          padding: 0 1em;
-
-          &:hover {
-            color: $base-font-color;
-          }
-        }
-
-        i.fa {
-          display: inline-block;
-          padding-top: 4px;
-        }
-      }
-
       .icon {
         @include size(24px);
         border-radius: 3px;
@@ -93,6 +72,27 @@ aside {
         margin: 0;
         font-weight: 300;
         vertical-align: middle;
+      }
+    }
+
+    .menu-toggle {
+      text-align: right;
+      width: 30px;
+
+      .toggle {
+        color: $light-font-color;
+        display: block;
+        line-height: 60px;
+        padding: 0 1em;
+
+        &:hover {
+          color: $base-font-color;
+        }
+      }
+
+      i.fa {
+        display: inline-block;
+        padding-top: 4px;
       }
     }
 
@@ -168,7 +168,7 @@ aside {
   }
 
   nav.repo-tools {
-    background: #fff;
+    background: $white;
     display: table;
     padding: 0em 0em 0em;
     width: 100%;
@@ -259,7 +259,7 @@ aside {
   }
 
   .loading {
-    background-color: #fff;
+    background-color: $white;
     padding: 4em 1em;
     text-align: center;
 
@@ -414,7 +414,7 @@ aside {
 
         &:hover {
           background-color: $purple;
-          color: #fff;
+          color: $white;
         }
       }
     }
@@ -442,7 +442,7 @@ aside {
       &:hover {
         background-color: $red;
         border-color: $red;
-        color: #fff;
+        color: $white;
 
         &:before {
           content: 'Deactivate';
