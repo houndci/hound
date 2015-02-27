@@ -6,7 +6,15 @@ module LanguageWorker
 
     private
 
-    def violations_to_send
+    def hound_payload
+      {
+        build_worker_id: build_worker.id,
+        build_id: build_worker.build_id,
+        violations: violations
+      }
+    end
+
+    def violations
       violations_from_guide.flat_map do |violation|
         {
           filename: violation.filename,
@@ -16,14 +24,6 @@ module LanguageWorker
           build_id: build.id
         }
       end
-    end
-
-    def hound_payload
-      {
-        build_worker_id: build_worker.id,
-        build_id: build_worker.build_id,
-        violations: violations_to_send
-      }
     end
 
     def hound_connection

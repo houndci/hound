@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe StyleGuide do
+describe StyleCheck do
   describe "#run" do
     context "for a Ruby file" do
       it "runs LanguageWorker::Ruby" do
@@ -10,12 +10,7 @@ describe StyleGuide do
         repo_config = stub_repo_config
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Ruby")
-        allow(LanguageWorker::Ruby).to receive(:new).with(
-          build_worker,
-          file,
-          repo_config,
-          pull_request
-        ).and_return(worker)
+        allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
         style_check = StyleCheck.new(pull_request, build_worker)
 
         style_check.run
@@ -23,6 +18,14 @@ describe StyleGuide do
         expect(LanguageWorker::Ruby).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
+      end
+
+      context "when ruby is not enabled for the repo" do
+        it "does not run the worker"
+      end
+
+      context "when file is not included" do
+        it "does not run the worker"
       end
     end
 
@@ -34,12 +37,7 @@ describe StyleGuide do
         repo_config = stub_repo_config
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::CoffeeScript")
-        allow(LanguageWorker::CoffeeScript).to receive(:new).with(
-          build_worker,
-          file,
-          repo_config,
-          pull_request
-        ).and_return(worker)
+        allow(LanguageWorker::CoffeeScript).to receive(:new).and_return(worker)
         style_check = StyleCheck.new(pull_request, build_worker)
 
         style_check.run
@@ -47,6 +45,14 @@ describe StyleGuide do
         expect(LanguageWorker::CoffeeScript).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
+      end
+
+      context "when ruby is not enabled for the repo" do
+        it "does not run the worker"
+      end
+
+      context "when file is not included" do
+        it "does not run the worker"
       end
     end
 
@@ -58,12 +64,7 @@ describe StyleGuide do
         repo_config = stub_repo_config
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::JavaScript")
-        allow(LanguageWorker::JavaScript).to receive(:new).with(
-          build_worker,
-          file,
-          repo_config,
-          pull_request
-        ).and_return(worker)
+        allow(LanguageWorker::JavaScript).to receive(:new).and_return(worker)
         style_check = StyleCheck.new(pull_request, build_worker)
 
         style_check.run
@@ -71,6 +72,14 @@ describe StyleGuide do
         expect(LanguageWorker::JavaScript).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
+      end
+
+      context "when ruby is not enabled for the repo" do
+        it "does not run the worker"
+      end
+
+      context "when file is not included" do
+        it "does not run the worker"
       end
     end
 
@@ -82,17 +91,39 @@ describe StyleGuide do
         repo_config = stub_repo_config
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Scss")
-        allow(LanguageWorker::Scss).to receive(:new).with(
-          build_worker,
-          file,
-          repo_config,
-          pull_request
-        ).and_return(worker)
+        allow(LanguageWorker::Scss).to receive(:new).and_return(worker)
         style_check = StyleCheck.new(pull_request, build_worker)
 
         style_check.run
 
         expect(LanguageWorker::Scss).to have_received(:new).
+          with(build_worker, file, repo_config, pull_request)
+        expect(worker).to have_received(:run)
+      end
+
+      context "when ruby is not enabled for the repo" do
+        it "does not run the worker"
+      end
+
+      context "when file is not included" do
+        it "does not run the worker"
+      end
+    end
+
+    context "for an unsupported language" do
+      it "runs the UnsupportedWorker and does nothing" do
+        file = double("File", filename: "foo.unsupported")
+        pull_request = stub_pull_request(pull_request_files: [file])
+        build_worker = double("BuildWorker")
+        repo_config = stub_repo_config
+        allow(RepoConfig).to receive(:new).and_return(repo_config)
+        worker = stub_worker("LanguageWorker::Unsupported")
+        allow(LanguageWorker::Unsupported).to receive(:new).and_return(worker)
+        style_check = StyleCheck.new(pull_request, build_worker)
+
+        style_check.run
+
+        expect(LanguageWorker::Unsupported).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -113,38 +144,25 @@ describe StyleGuide do
     double("PullRequest", defaults.merge(options))
   end
 
-  def stub_commit_file(filename, contents, patch = "", removed: false)
-    formatted_contents = "#{contents}\n"
-    double(
-      filename.split(".").first,
-      filename: filename,
-      content: formatted_contents,
-      removed?: removed,
-      patch: patch
-    )
-  end
-
-  def stub_head_commit(options)
-    head_commit = double("Commit", file_content: nil)
-
-    options.each do |filename, file_contents|
-      allow(head_commit).to receive(:file_content).
-        with(filename).and_return(file_contents)
-    end
-
-    head_commit
-  end
-
-  def stub_repo_config
-    double(
-      "RepoConfig",
+  def stub_repo_config(options = {})
+    default_options = {
       enabled_for?: true,
       for: {},
       ignored_javascript_files: []
+    }
+    double(
+      "RepoConfig",
+      default_options.merge(options)
     )
   end
 
-  def stub_worker(name)
-    double(name, enabled?: true, file_included?: true, run: true)
+  def stub_worker(name, repo_config: stub_repo_config())
+    double(
+      name,
+      enabled?: true,
+      file_included?: true,
+      run: true,
+      repo_config: repo_config
+    )
   end
 end
