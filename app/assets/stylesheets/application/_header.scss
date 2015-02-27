@@ -12,7 +12,7 @@ header.global {
     padding: 0 2em;
     width: 100%;
 
-    .logo-link h1 {
+    h1 {
       background-image: image-url("logo.svg");
       height: 40px;
       width: 174px;
@@ -53,17 +53,17 @@ header.global {
     &:hover {
       border: none;
     }
+  }
 
-    h1 {
-      @include hide-text;
-      background-image: image_url("icon.svg");
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 100%;
-      height: 50px;
-      margin: 0;
-      width: 51px;
-    }
+  h1 {
+    @include hide-text;
+    background-image: image-url("icon.svg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 50px;
+    margin: 0;
+    width: 51px;
   }
 
   ul {

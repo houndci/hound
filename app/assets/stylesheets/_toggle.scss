@@ -13,9 +13,9 @@
   &:before {
     @include size(24px);
     @include transition(all 0.25s linear);
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
     border-radius: 100%;
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     z-index: 2;
