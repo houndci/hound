@@ -222,7 +222,6 @@ describe StyleChecker, "#violations" do
   end
 
   def stub_commit_file(filename, contents, patch = "", removed: false)
-    line ||= Line.new(content: "foo", number: 1, patch_position: 2)
     formatted_contents = "#{contents}\n"
     double(
       filename.split(".").first,

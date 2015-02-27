@@ -34,7 +34,7 @@ module LanguageWorker
                 patch: "",
               },
               hound_url: ENV["BUILD_WORKERS_URL"]
-            }
+            }.to_json
           }
         )
       end

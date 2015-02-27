@@ -3,10 +3,6 @@ module StyleGuide
   class Ruby < Base
     DEFAULT_CONFIG_FILENAME = "ruby.yml"
 
-    def run_from_worker(payload)
-      # Post back violations to hound itself
-    end
-
     def violations_in_file(file)
       if config.file_to_exclude?(file.filename)
         []
