@@ -1,137 +1,205 @@
 - content_for :page_title, "Configuration"
 
-%main.content-doc
-  %h2 Configuration
+.hound-docs.configuration-docs
+  %aside.docs-nav
+    %ul
+      %li
+        = link_to "Hound config", "#configuration"
+      %li
+        = link_to "Ruby config", "#ruby"
+      %li
+        = link_to "Coffeescript config", "#coffeescript"
+      %li
+        = link_to "Javascript config", "#javascript"
+      %li
+        = link_to "SCSS config", "#scss"
 
-  %h3 Ruby
+  %section.doc-content
+    %article
+      %h1 Hound Documentation
+      %p
+        Want to modify style rules to better suit your preferences?
+        Below you will find documentation on configuring style rules for each
+        language we support.
 
-  %p
-    Hound uses
-    #{link_to "RuboCop", "https://github.com/bbatsov/rubocop", target: :blank}
-    with this
-    #{link_to "config", ruby_config_url, target: :blank}
-    by default.
+      %p
+        If this page doesn't help you find what you are looking for,
+        please tweet at us
+        #{link_to "@houndci", "https://twitter.com/houndci", target: :blank}
+        or email us at #{mail_to "hound@thoughtbot.com"}
+        and we will help you out.
 
-  %p
-    If you need to change the way Hound is configured, simply copy the
-    #{link_to "default config", ruby_config_url, target: :blank}
-    into your project, make changes and reference the file in your
-    %em.code .hound.yml
+    %article#configuration
+      %h3 Hound Configuration
+      %p
+        With a
+        %em.code .hound.yml
+        file you can tell Hound which languages not to review
+        (all supported languages are reviewed by default)
+        and specify paths to custom style rules and an ingnore file
+        for JavaScript.
 
-    %code.code-block
-      :preserve
-        ruby:
-          config_file: .ruby-style.yml
+      %p
+        Put your
+        %em.code .hound.yml
+        file in the root directory of your project. Here is an example:
 
-  %p
-    Add the following code to your
-    %em.code .hound.yml
-    to disable Ruby style checking.
+      %code.code-block
+        :preserve
+          scss:
+            enabled: false
 
-    %code.code-block
-      :preserve
-        ruby:
-          enabled: false
+          ruby:
+            config_file: .ruby-style.yml
 
-  %h3 CoffeeScript
+          javascript:
+            ignore_file: .javascript_ignore
 
-  %p
-    Hound uses
-    #{link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank}
-    with this
-    #{link_to "config", coffeescript_config_url, target: :blank}.
+      %p
+        In this example, review of SCSS is deactivated (:sad face:) and we are
+        pointing Hound to a custom config file for Ruby style checking and
+        an ingnore file for JavaScript.
 
-  %p
-    If you need to change the way Hound is configured, simply copy the
-    #{link_to "default config", coffeescript_config_url, target: :blank}.
-    into your project, make changes and reference the file in your
-    %em.code .hound.yml
+    %article#ruby
+      %h3 Ruby
+      %p
+        Hound uses
+        #{link_to "RuboCop", "https://github.com/bbatsov/rubocop", target: :blank}
+        with this
+        #{link_to "config", ruby_config_url, target: :blank}
+        by default.
 
-    %code.code-block
-      :preserve
-        coffee_script:
-          config_file: .coffeescript-style.json
+      %p
+        If you need to change the way Hound is configured, simply copy the
+        #{link_to "default config", ruby_config_url, target: :blank}
+        into your project, make changes and reference the file in your
+        %em.code .hound.yml
 
-  %p
-    Add the following code to your
-    %em.code .hound.yml
-    to disable CoffeeScript style checking.
+        %code.code-block
+          :preserve
+            ruby:
+              config_file: .ruby-style.yml
 
-    %code.code-block
-      :preserve
-        coffee_script:
-          enabled: false
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to disable Ruby style checking.
 
-  %h3 JavaScript
+        %code.code-block
+          :preserve
+            ruby:
+              enabled: false
 
-  %p
-    Hound uses
-    #{link_to "JSHint", "https://github.com/jshint/jshint", target: :blank}
-    with this
-    #{link_to "config", javascript_config_url, target: :blank}.
+    %article#coffeescript
+      %h3 CoffeeScript
 
-  %p
-    If you need to change the way Hound is configured, simply copy the
-    #{link_to "default config", javascript_config_url, target: :blank}.
-    into your project, make changes and reference the file in your
-    %em.code .hound.yml
+      %p
+        Hound uses
+        #{link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank}
+        with this
+        #{link_to "config", coffeescript_config_url, target: :blank}.
 
-  %p
-    %code.code-block
-      :preserve
-        java_script:
-          config_file: .javascript-style.json
+      %p
+        If you need to change the way Hound is configured, simply copy the
+        #{link_to "default config", coffeescript_config_url, target: :blank}.
+        into your project, make changes and reference the file in your
+        %em.code .hound.yml
 
-  %p
-    If you would like to ignore certain JavaScript files, simply copy the
-    #{link_to "default config", javascript_ignore_url, target: :blank}
-    into your project, make changes and reference the file in your
-    %em.code .hound.yml
+        %code.code-block
+          :preserve
+            coffee_script:
+              config_file: .coffeescript-style.json
 
-    %code.code-block
-      :preserve
-        java_script:
-          ignore_file: .javascript_ignore
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to disable CoffeeScript style checking.
 
-  %p
-    Add the following code to your
-    %em.code .hound.yml
-    to disable JavaScript style checking.
+        %code.code-block
+          :preserve
+            coffee_script:
+              enabled: false
 
-    %code.code-block
-      :preserve
-        java_script:
-          enabled: false
+    %article#javascript
+      %h3 JavaScript
 
-  %h3 SCSS
+      %p
+        Hound uses
+        #{link_to "JSHint", "https://github.com/jshint/jshint", target: :blank}
+        with this
+        #{link_to "config", javascript_config_url, target: :blank}.
 
-  %p
-    Hound uses
-    #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint", target: :blank}
-    with this
-    #{link_to "config", scss_config_url, target: :blank}.
+      %p
+        If you need to change the way Hound is configured, simply copy the
+        #{link_to "default config", javascript_config_url, target: :blank}.
+        into your project, make changes and reference the file in your
+        %em.code .hound.yml
 
-  %p
-    If you need to change the way Hound is configured, simply copy the
-    #{link_to "default config", scss_config_url, target: :blank}.
-    into your project, make changes and reference the file in your
-    %em.code .hound.yml
+      %p
+        %code.code-block
+          :preserve
+            java_script:
+              config_file: .javascript-style.json
+            scss:
+              enabled: false
 
-  %p
-    %code.code-block
-      :preserve
-        scss:
-          config_file: .scss-style.yml
+      %p
+        If you would like to ignore certain JavaScript files, simply copy the
+        #{link_to "default config", javascript_ignore_url, target: :blank}
+        into your project, make changes and reference the file in your
+        %em.code .hound.yml
 
-  %p
-    Add the following code to your
-    %em.code .hound.yml
-    to disable SCSS style checking.
+        %code.code-block
+          :preserve
+            java_script:
+              ignore_file: .javascript_ignore
 
-    %code.code-block
-      :preserve
-        scss:
-          enabled: false
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to disable JavaScript style checking.
 
-  %p
-    Please tweet at us #{link_to "@houndci", "https://twitter.com/houndci", target: :blank} or email us at #{mail_to "hound@thoughtbot.com"} if you need a hand.
+        %code.code-block
+          :preserve
+            java_script:
+              enabled: false
+
+    %article#scss
+      %h3 SCSS
+
+      %p
+        Hound uses
+        #{link_to "SCSS-Lint", "https://github.com/causes/scss-lint", target: :blank}
+        with this
+        #{link_to "config", scss_config_url, target: :blank}.
+
+      %p
+        If you need to change the way Hound is configured, simply copy the
+        #{link_to "default config", scss_config_url, target: :blank}.
+        into your project, make changes and reference the file in your
+        %em.code .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            scss:
+              config_file: .scss-style.yml
+
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to disable SCSS style checking.
+
+        %code.code-block
+          :preserve
+            scss:
+              enabled: false
+
+    %article
+      %h3 Didn't find what you where looking for?
+
+      %p
+        Please tweet at us
+        #{link_to "@houndci", "https://twitter.com/houndci", target: :blank}
+        or email us at #{mail_to "hound@thoughtbot.com"}
+        and we will help you out.

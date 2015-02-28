@@ -8,39 +8,6 @@ body {
   @include outer-container;
 }
 
-.content-doc {
-  border-bottom: 1px solid $base-border-color;
-  margin-top: 3em;
-  padding-bottom: 3em;
-
-  p {
-    padding-bottom: 1em;
-  }
-
-  @include media($small-screen) {
-    margin-top: 0;
-  }
-}
-
-.code {
-  background: rgba(#99abc0, .25);
-  display: inline-block;
-  font-family: monospace;
-  font-style: normal;
-}
-
-em.code {
-  padding: .15em;
-}
-
-.code-block {
-  @extend .code;
-  display: block;
-  padding: 1em;
-  margin: .5em 0;
-  white-space: pre-wrap;
-}
-
 .inner-wrapper {
   @include clearfix;
 }
@@ -55,7 +22,30 @@ a {
   }
 }
 
-h3 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: normal;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin: 0 0 0.4em;
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+p {
   margin: 0 0 1em;
 }
 
@@ -74,4 +64,26 @@ ol.numbered {
   li {
     margin: 0.5em 0;
   }
+}
+
+.code {
+  background: rgba(#99abc0, 0.25);
+  display: inline-block;
+  font-family: monospace;
+  font-style: normal;
+}
+
+em.code {
+  border-radius: 2px;
+  padding: 0.3em 0.5em 0.2em;
+}
+
+.code-block {
+  @extend .code;
+  border: 1px solid rgba(#99abc0, 0.25);
+  border-radius: 3px;
+  display: block;
+  padding: 1em;
+  margin: 1em 0 2em;
+  white-space: pre-wrap;
 }
