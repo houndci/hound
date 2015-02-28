@@ -11,6 +11,10 @@
     padding: 0  2em 0 0;
     vertical-align: top;
 
+    @include media($medium-screen) {
+      display: none;
+    }
+
     li a {
       color: $light-font-color;
       display: block;
@@ -35,6 +39,12 @@
     @include span-columns(9 of 12, table);
     border-left: 1px solid $base-border-color;
     padding: 0 0 0 2em;
+
+    @include media($medium-screen) {
+      border: none;
+      padding: 0;
+      width: 100%;
+    }
   }
 
   article {
