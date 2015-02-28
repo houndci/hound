@@ -70,7 +70,7 @@ class BuildRunner
     github.create_pending_status(
       payload.full_repo_name,
       payload.head_sha,
-      "Hound is reviewing changes."
+      I18n.t(:pending_status)
     )
   end
 
@@ -78,7 +78,7 @@ class BuildRunner
     github.create_success_status(
       payload.full_repo_name,
       payload.head_sha,
-      "Hound has reviewed the changes."
+      I18n.t(:success_status)
     )
   end
 
