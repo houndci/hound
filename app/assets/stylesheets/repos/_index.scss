@@ -222,7 +222,7 @@ aside.org-nav {
         }
 
         @include placeholder {
-          @include transition(all 0.25s ease-out);
+          @include transition(color 0.25s ease-out);
           color: $light-font-color;
           font-weight: 400;
           letter-spacing: 1px;
