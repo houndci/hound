@@ -12,7 +12,7 @@
   }
 }
 
-aside {
+aside.org-nav {
   @include span-columns(3 of 12, table);
   box-shadow: 1px 0 0 0 $base-border-color;
   min-width: 250px;
@@ -359,7 +359,7 @@ aside {
         background: lighten($gold, 50%);
         border: 1px solid lighten($gold, 3%);
         border-radius: 3px;
-        color: $gold;
+        color: darken($gold, 5%);
         display: none;
         font-weight: 300;
         font-size: 0.9em;
