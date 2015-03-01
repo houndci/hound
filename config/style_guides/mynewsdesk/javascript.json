@@ -16,7 +16,7 @@
     "$",
     "jQuery",
     "global",
-    "require"
+    "require",
 
     "jasmine",
     "beforeEach",
