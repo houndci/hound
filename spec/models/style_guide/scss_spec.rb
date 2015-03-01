@@ -5,10 +5,10 @@ describe StyleGuide::Scss do
     context "with default configuration" do
       describe "for deep nested selectors" do
         it "returns violation" do
-          content = ".a { .b { .c { background: #000; } } }"
+          content = ".a { .b { .c { .d { background: #000; } } } }"
 
           expect(violations_in(content)).to include(
-            "Selector should have depth of applicability no greater than 2, but was 3"
+            "Selector should have depth of applicability no greater than 3, but was 4"
           )
         end
       end

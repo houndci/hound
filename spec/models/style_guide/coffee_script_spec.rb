@@ -12,7 +12,7 @@ describe StyleGuide::CoffeeScript do
           line = double("Line", content: "blah", number: 1, patch_position: 2)
           file = double(
             :file,
-            content: "1" * 81,
+            content: "1" * 121,
             filename: "test.coffee",
             line_at: line
           )

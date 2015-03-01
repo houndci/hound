@@ -7,7 +7,7 @@ describe StyleGuide::Ruby, "#violations_in_file" do
     describe "for { and } as %r literal delimiters" do
       it "returns no violations" do
         expect(violations_in(<<-CODE)).to eq []
-          "test" =~ %r|test|
+          "test" =~ %r{test}
         CODE
       end
     end
@@ -148,9 +148,9 @@ end
 
     context "for long line" do
       it "returns violation" do
-        violations = ["Line is too long. [81/80]"]
+        violations = ["Line is too long. [121/120]"]
 
-        expect(violations_in("a" * 81 + "\n")).to eq violations
+        expect(violations_in("a" * 121 + "\n")).to eq violations
       end
     end
 
@@ -356,7 +356,7 @@ end
             validates(
               :name,
               presence: true,
-              uniqueness: true
+              uniqueness: true,
             )
           CODE
 

@@ -426,7 +426,13 @@ module GithubApiHelper
       repo_name,
       sha,
       "success",
-      "Hound has reviewed all the changes!"
+      "Hound remained in blissful meditation."
+    )
+    stub_status_request(
+      repo_name,
+      sha,
+      "failure",
+      "Hound detected a disturbance in the force."
     )
   end
 
