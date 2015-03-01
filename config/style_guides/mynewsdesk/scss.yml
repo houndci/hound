@@ -103,7 +103,7 @@ linters:
 
   SelectorDepth:
     enabled: true
-    max_depth: 2
+    max_depth: 3
     severity: warning
 
   SelectorFormat:
