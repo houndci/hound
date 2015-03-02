@@ -21,4 +21,18 @@ describe 'application/_segment_io.haml' do
 
     expect(rendered).to include(record_pageview_line)
   end
+
+  context "with page title and variation" do
+    it "records pageview including page title and variation" do
+      variation = "Happy Dog"
+      page_title = "Landing Page"
+      view.instance_variable_get("@view_flow").set(:variation, variation)
+      view.instance_variable_get("@view_flow").set(:page_title, page_title)
+      record_pageview_line = "window.analytics.page(\"#{page_title} > #{variation}\");"
+
+      render
+
+      expect(rendered).to include(record_pageview_line)
+    end
+  end
 end
