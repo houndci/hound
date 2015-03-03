@@ -28,7 +28,8 @@ describe 'application/_segment_io.haml' do
       page_title = "Landing Page"
       view.instance_variable_get("@view_flow").set(:variation, variation)
       view.instance_variable_get("@view_flow").set(:page_title, page_title)
-      record_pageview_line = "window.analytics.page(\"#{page_title} > #{variation}\");"
+      record_pageview_line =
+        "window.analytics.page(\"#{page_title} > #{variation}\");"
 
       render
 
