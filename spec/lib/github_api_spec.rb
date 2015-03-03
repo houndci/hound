@@ -13,7 +13,7 @@ describe GithubApi do
 
       repos = api.repos
 
-      expect(repos.size).to eq 4
+      expect(repos.size).to eq 2
     end
   end
 

@@ -1,5 +1,5 @@
 [{
-  "id": 1296269,
+  "id": 1296271,
   "owner": {
     "login": "jimtom",
     "id": 1,
@@ -8,7 +8,7 @@
     "url": "https://api.github.com/users/jimtom"
   },
   "name": "my_private_repo",
-  "full_name": "jimtom/My-Private-Repo",
+  "full_name": "jimtom-org/My-Private-Repo",
   "description": "This your first repo!",
   "private": false,
   "fork": false,

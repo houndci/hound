@@ -294,7 +294,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      body: File.read("spec/support/fixtures/github_repos_response_for_jimtom_page2.json"),
       headers: {
         "Link" => %(<#{repos_url}?page=3&per_page=100>; rel="next"),
         "Content-Type" => "application/json; charset=utf-8",
@@ -323,7 +323,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      body: File.read("spec/support/fixtures/github_repos_response_for_jimtom_org.json"),
       headers: {
         "Link" => %(<#{org_repos_url}?page=2&per_page=100>; rel="next"),
         "Content-Type" => "application/json; charset=utf-8",
@@ -337,7 +337,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      body: File.read("spec/support/fixtures/github_repos_response_for_jimtom_org_page2.json"),
       headers: {
         "Link" => %(<#{org_repos_url}?page=3&per_page=100>; rel="next"),
         "Content-Type" => "application/json; charset=utf-8",

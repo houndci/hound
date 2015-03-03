@@ -27,19 +27,4 @@ describe ReposController do
       end
     end
   end
-
-  context "when current user has duplicate memberships" do
-    it "returns unique list of repos" do
-      user = create(:user)
-      repo = create(:repo)
-      repo.users << user
-      repo.users << user
-      stub_sign_in(user)
-
-      get :index, format: :json
-
-      response_body = JSON.parse(response.body)
-      expect(response_body.length).to eq(1)
-    end
-  end
 end
