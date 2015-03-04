@@ -16,7 +16,7 @@ describe RepoSyncsController, "#create" do
   end
 
   context "user is not refreshing repos" do
-    it "enqueues repo sync job" do
+    it "sets user to refreshing repos true and enqueues repo sync job" do
       token = "usergithubtoken"
       user = create(:user)
       stub_sign_in(user, token)
@@ -24,6 +24,7 @@ describe RepoSyncsController, "#create" do
 
       post :create
 
+      expect(user.reload).to be_refreshing_repos
       expect(RepoSynchronizationJob).
         to have_received(:perform_later).with(user, token)
     end
