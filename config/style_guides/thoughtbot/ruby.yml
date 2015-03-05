@@ -108,7 +108,7 @@ Style/CommentAnnotation:
 Style/DotPosition:
   Description: Checks the position of the dot in multi-line method calls.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#consistent-multi-line-chains
-  Enabled: false
+  Enabled: true
   EnforcedStyle: trailing
   SupportedStyles:
   - leading
@@ -116,12 +116,12 @@ Style/DotPosition:
 Style/EmptyLineBetweenDefs:
   Description: Use empty lines between defs.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#empty-lines-between-methods
-  Enabled: false
+  Enabled: true
   AllowAdjacentOneLineDefs: false
 Style/EmptyLinesAroundBlockBody:
   Description: Keeps track of empty lines around block bodies.
-  Enabled: false
-  EnforcedStyle: no_empty_lines
+  Enabled: true
+  EnforcedStyle: empty_lines
   SupportedStyles:
   - empty_lines
   - no_empty_lines
