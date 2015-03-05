@@ -20,7 +20,7 @@ Style/AccessModifierIndentation:
   - indent
 Style/AlignHash:
   Description: Align the elements of a hash literal if they span more than one line.
-  Enabled: false
+  Enabled: true
   EnforcedHashRocketStyle: key
   EnforcedColonStyle: key
   EnforcedLastArgumentHashStyle: always_inspect
@@ -32,7 +32,7 @@ Style/AlignHash:
 Style/AlignParameters:
   Description: Align the parameters of a method call if they span more than one line.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-double-indent
-  Enabled: false
+  Enabled: true
   EnforcedStyle: with_first_parameter
   SupportedStyles:
   - with_first_parameter
@@ -48,7 +48,7 @@ Style/AndOr:
 Style/BarePercentLiterals:
   Description: Checks if usage of %() or %Q() matches configuration.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-q-shorthand
-  Enabled: false
+  Enabled: true
   EnforcedStyle: bare_percent
   SupportedStyles:
   - percent_q
@@ -87,7 +87,7 @@ Style/ClassCheck:
 Style/CollectionMethods:
   Description: Preferred collection methods.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#map-find-select-reduce-size
-  Enabled: false
+  Enabled: true
   PreferredMethods:
     collect: map
     collect!: map!
