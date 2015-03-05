@@ -93,7 +93,7 @@ Style/CollectionMethods:
     collect!: map!
     detect: find
     find_all: select
-    reduce: inject
+    inject: reduce
 Style/CommentAnnotation:
   Description: Checks formatting of special comments (TODO, FIXME, OPTIMIZE, HACK,
     REVIEW).
