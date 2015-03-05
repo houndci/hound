@@ -150,11 +150,11 @@ Style/Encoding:
 Style/FileName:
   Description: Use snake_case for source file names.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-files
-  Enabled: false
+  Enabled: true
   Exclude: []
 Style/FirstParameterIndentation:
   Description: Checks the indentation of the first parameter in a method call.
-  Enabled: false
+  Enabled: true
   EnforcedStyle: special_for_inner_method_call_in_parentheses
   SupportedStyles:
   - consistent
@@ -352,7 +352,7 @@ Style/SingleLineMethods:
 Style/StringLiterals:
   Description: Checks if uses of quotes match the configured preference.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#consistent-string-literals
-  Enabled: false
+  Enabled: true
   EnforcedStyle: double_quotes
   SupportedStyles:
   - single_quotes
