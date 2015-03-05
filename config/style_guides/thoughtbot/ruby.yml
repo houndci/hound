@@ -91,7 +91,7 @@ Style/CollectionMethods:
   PreferredMethods:
     collect: map
     collect!: map!
-    find: detect
+    detect: find
     find_all: select
     reduce: inject
 Style/CommentAnnotation:
