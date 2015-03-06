@@ -1,9 +1,8 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
-  sync_repos: 'Refresh repo list'
-  syncing_repos: 'Loading repos...'
-  authenticate: 'Sign In with GitHub'
-  active_repos: 'Active repos'
-  search_placeholder: 'search by repo or organization name'
+  sync_repos: "Refresh repo list"
+  syncing_repos: "Loading repos..."
+  authenticate: "Sign In with GitHub"
+  active_repos: "Active repos"
+  search_placeholder: "Search by repo"
+  pending_status: "Hound is busy reviewing changes..."
+  success_status: "Hound has reviewed all the changes!"

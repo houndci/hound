@@ -1,16 +1,9 @@
-%nav
-  %ul
-    %li.pull-left
-      %span.active-count
-        #{t('active_repos')}:
-        {{(repos | filter:{active: true}).length}} of {{repos.length}}
-    %li.pull-right
-      %a{'href' => '', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
-        %i.fa.fa-refresh
-        %span {{ syncButtonText }}
+%nav.repo-tools
   .search-wrapper
     %i.fa.fa-search
     %input.search{'type' => 'text', 'placeholder' => t('search_placeholder'), 'ng-model' => 'search.full_github_name'}
+  %a{'href' => '', 'class' => 'refresh', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
+    %span {{ syncButtonText }}
 
 .loading{'ng-show' => 'syncingRepos'}
   .dot

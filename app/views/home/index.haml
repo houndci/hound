@@ -1,5 +1,6 @@
 - content_for :page_title, "Hound"
 - content_for :body_class, "home home-index"
+- content_for :header_class, "home-header"
 
 %section.intro
   .section-content
@@ -160,6 +161,9 @@
             .dollar-amount
               %span $12
               %small /month
+      %p
+        Email #{mail_to "hound@thoughtbot.com"} for bulk pricing
+        for your GitHub organization.
 
       .cta
         = render "application/auth_button"

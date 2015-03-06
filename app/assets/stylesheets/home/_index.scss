@@ -485,6 +485,10 @@ section.pricing {
     @include omega;
     margin-bottom: 3em;
 
+    p {
+      margin-top: 3em;
+    }
+
     @include media($medium-screen) {
       display: block;
       float: none;

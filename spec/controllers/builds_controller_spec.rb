@@ -35,7 +35,7 @@ describe BuildsController, '#create' do
       post :create, payload: payload_data
 
       expect(SmallBuildJob).to have_received(:perform_later).with(
-        JSON.parse(payload_data)
+        payload.build_data
       )
     end
   end
@@ -51,7 +51,7 @@ describe BuildsController, '#create' do
       post :create, payload: payload_data
 
       expect(LargeBuildJob).to have_received(:perform_later).with(
-        JSON.parse(payload_data)
+        payload.build_data
       )
     end
   end

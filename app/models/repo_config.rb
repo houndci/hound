@@ -93,7 +93,7 @@ class RepoConfig
   end
 
   def parse_yaml(content)
-    YAML.safe_load(content)
+    YAML.safe_load(content, [Regexp])
   rescue Psych::SyntaxError
     {}
   end

@@ -1,0 +1,35 @@
+.toggle {
+  @include transition(all 0.15s linear);
+  @include user-select(none);
+  background: $tan;
+  border-radius: 20px;
+  display: inline-block;
+  height: 28px;
+  padding: 2px;
+  position: relative;
+  vertical-align: middle;
+  width: 56px;
+
+  &:before {
+    @include size(24px);
+    @include transition(all 0.25s linear);
+    background-color: rgb(255, 255, 255);
+    border-radius: 100%;
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 2;
+  }
+
+  &:hover {
+    background-color: darken($tan, 5%);
+  }
+
+  &.active {
+    background-color: $green;
+
+    &:before {
+      right: 2px;
+    }
+  }
+}

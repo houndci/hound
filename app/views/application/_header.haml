@@ -1,8 +1,9 @@
-%header
+%header.global-header{ class: content_for(:header_class) }
   .logo.pull-left
-    = link_to repos_path, class: "logo-link" do
-      %h1
-        Hound
+    .va-cell
+      = link_to repos_path, class: "logo-link" do
+        %h1
+          Hound
   %ul.pull-left
     %li
       = link_to "Docs", configuration_path, class: "docs"

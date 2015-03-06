@@ -62,6 +62,15 @@ class Analytics
     )
   end
 
+  def track_show_cop_names
+    track(
+      event: "Using ShowCopNames",
+      properties: {
+        owner: user
+      }
+    )
+  end
+
   private
 
   def track(options)

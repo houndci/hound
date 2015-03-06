@@ -528,7 +528,7 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Description: A complexity metric geared towards measuring complexity for a human
     reader.
-  Enabled: true
+  Enabled: false
   Max: 7
 Lint/AssignmentInCondition:
   Description: Don't use assignment in conditions.

@@ -81,12 +81,12 @@ feature "Repo list", js: true do
     find("li.repo .toggle").click
 
     expect(page).to have_css(".active")
-    expect(page).to have_content "1 OF 1"
+    expect(user.repos.active.count).to eq(1)
 
     visit repos_path
 
     expect(page).to have_css(".active")
-    expect(page).to have_content "1 OF 1"
+    expect(user.repos.active.count).to eq(1)
   end
 
   scenario "user with admin access activates organization repo" do
@@ -108,12 +108,12 @@ feature "Repo list", js: true do
     find(".repos .toggle").click
 
     expect(page).to have_css(".active")
-    expect(page).to have_content "1 OF 1"
+    expect(user.repos.active.count).to eq(1)
 
     visit repos_path
 
     expect(page).to have_css(".active")
-    expect(page).to have_content "1 OF 1"
+    expect(user.repos.active.count).to eq(1)
   end
 
   scenario "user deactivates repo" do
@@ -130,12 +130,12 @@ feature "Repo list", js: true do
     find(".repos .toggle").click
 
     expect(page).not_to have_css(".active")
-    expect(page).to have_content "0 OF 1"
+    expect(user.repos.active.count).to eq(0)
 
     visit current_path
 
     expect(page).not_to have_css(".active")
-    expect(page).to have_content "0 OF 1"
+    expect(user.repos.active.count).to eq(0)
   end
 
   scenario "user deactivates private repo without subscription" do
@@ -152,12 +152,11 @@ feature "Repo list", js: true do
     find(".repos .toggle").click
 
     expect(page).not_to have_css(".active")
-    expect(page).to have_content "0 OF 1"
+    expect(user.repos.active.count).to eq(0)
 
     visit current_path
 
-    expect(page).not_to have_css(".active")
-    expect(page).to have_content "0 OF 1"
+    expect(user.repos.active.count).to eq(0)
   end
 
   private

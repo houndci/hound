@@ -420,13 +420,13 @@ module GithubApiHelper
       repo_name,
       sha,
       "pending",
-      "Hound is reviewing changes."
+      "Hound is busy reviewing changes..."
     )
     stub_status_request(
       repo_name,
       sha,
       "success",
-      "Hound has reviewed the changes."
+      "Hound has reviewed all the changes!"
     )
   end
 

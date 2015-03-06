@@ -103,12 +103,12 @@ describe BuildRunner, '#run' do
       expect(github_api).to have_received(:create_pending_status).with(
         "test/repo",
         "headsha",
-        "Hound is reviewing changes."
+        "Hound is busy reviewing changes..."
       )
       expect(github_api).to have_received(:create_success_status).with(
         "test/repo",
         "headsha",
-        "Hound has reviewed the changes."
+        "Hound has reviewed all the changes!"
       )
     end
 

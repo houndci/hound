@@ -1,0 +1,30 @@
+%aside.org-nav(ng-class="{ 'closed': menu }")
+  %section.current-org
+    %header
+      .title-wrapper
+        .icon(style="background-image: url('')")
+        %h2 thoughtbot
+      .menu-toggle
+        %a.open-menu(href="" ng-click="menu = !menu")
+          %i.fa.fa-chevron-right
+    %nav
+      %ul
+        %li
+          .icon
+          = link_to "Repositories", "#", class: "current"
+
+  %section.all-orgs
+    %header
+      .title-wrapper
+        %h2 Repos by Org
+    %nav
+      %ul
+        %li
+          .icon.org(style="background-image: url('')")
+          = link_to "frechg", "#", "ng-click" => "menu = !menu"
+        %li
+          .icon.org(style="background-image: url('')")
+          = link_to "thoughtbot", "#", "ng-click" => "menu = !menu"
+        %li
+          .icon.org(style="background-image: url('')")
+          = link_to "Ship.io", "#", "ng-click" => "menu = !menu"
