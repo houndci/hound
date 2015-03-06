@@ -1,5 +1,5 @@
 module LanguageWorker
-  class Unsupported
+  class Unsupported < Base
     def run
       true
     end

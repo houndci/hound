@@ -18,7 +18,7 @@ module LanguageWorker
     private
 
     def custom_config
-      repo_config.for(name)
+      repo_config.for(name).to_s
     end
 
     def default_config
