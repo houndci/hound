@@ -6,6 +6,10 @@ body {
 
 .content {
   @include outer-container;
+
+  @include media($medium-screen) {
+    padding: 0 1em;
+  }
 }
 
 .inner-wrapper {

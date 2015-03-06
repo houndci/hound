@@ -2,6 +2,26 @@
 
 = render 'settings'
 
+%section.onboarding
+  .inner-wrapper
+    %h1 Lets keep that code in style:
+    %ol.onboarding-steps
+      %li.step.current-step
+        %h4 Activate Hound on a repo.
+        %p
+          Hound watches for pull requests on all active repos. Activating public repos cost
+          $0 private repos cost $12.
+      %li.step
+        %h4 Open a GitHub pull request on the repo.
+        %p
+          Hound will review all GitHu pull requests that are opened on an activate repo
+          for violations of your style guide.
+      %li.step
+        %h4 Hound comments on your pull request.
+        %p
+          If Hound finds any violations of your style guid he will comment inline
+          on the violation in the GitHub pull request.
+
 .dashboard
   %section.repo-listing{ 'repo-list' => '' }
   = render 'preload_template', template: 'repo_list'
