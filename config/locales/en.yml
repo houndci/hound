@@ -6,3 +6,22 @@ en:
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."
   success_status: "Hound has reviewed all the changes!"
+
+  onboarding:
+    title: "Let's keep that code in style:"
+    step_one_title: "Activate Hound on a repo."
+    step_one_alt_title: "Hound is active on %{count} of your repos!"
+    step_one_desc:
+      "Hound watches for pull requests on all active repos.
+      Activating public repos cost $0 private repos cost $12."
+    step_two_title: "Open a GitHub pull request on the repo."
+    step_two_alt_title: "Open a pull request on an active repo."
+    step_two_desc:
+      "Hound will review all GitHu pull requests that are
+      opened on an activate repo for violations of your style
+      guide."
+    step_three_title: "Hound comments on your pull request."
+    step_three_desc:
+      "If Hound finds any violations of your style guid he will
+      comment inline on the violation in your GitHub pull
+      request."
