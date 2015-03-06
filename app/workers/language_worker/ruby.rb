@@ -10,7 +10,11 @@ module LanguageWorker
       {
         build_worker_id: build_worker.id,
         build_id: build_worker.build_id,
-        violations: violations
+        violations: violations,
+        file: {
+          name: filename,
+          content: content
+        }
       }
     end
 
@@ -20,7 +24,6 @@ module LanguageWorker
           filename: violation.filename,
           line_number: violation.line_number,
           messages: violation.messages,
-          patch_position: violation.patch_position,
           build_id: build.id
         }
       end

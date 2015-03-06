@@ -23,7 +23,11 @@ module LanguageWorker
             body: {
               build_worker_id: build_worker.id,
               build_id: build_worker.build_id,
-              violations: violations(build_worker.build_id)
+              violations: violations(build_worker.build_id),
+              file: {
+                name: "test.rb",
+                content: "some content"
+              }
             }.to_json
           }
         )
@@ -47,7 +51,6 @@ module LanguageWorker
           filename: "test.rb",
           line_number: 1,
           messages: ["Final newline missing."],
-          patch_position: -1,
           build_id: build_id
         }
       ]
