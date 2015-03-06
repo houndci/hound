@@ -5,6 +5,6 @@ module ApplicationHelper
   end
 
   def display_onboarding?
-    current_user.repos.select { |repo| repo.builds.count > 0 }.length == 0
+    current_user.repos.select { |repo| repo.builds.any? }.empty?
   end
 end

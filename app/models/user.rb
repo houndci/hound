@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   end
 
   def has_active_repos?
-    self.repos.active.count > 0
+    repos.active.count > 0
   end
 
   private
