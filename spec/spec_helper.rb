@@ -9,7 +9,7 @@ require "active_support/core_ext"
 Dir["spec/support/**/*.rb"].each { |f| require f }
 
 ENV["HOST"] = "test.host"
-ENV["SECRET_KEY_BASE"] = "test-key"
+ENV["SECRET_KEY_BASE"] = "test-key" * 5
 ENV["HOUND_GITHUB_USERNAME"] = "houndci"
 ENV["HOUND_GITHUB_TOKEN"] = "houndgithubtoken"
 ENV["ENABLE_HTTPS"] = "no"

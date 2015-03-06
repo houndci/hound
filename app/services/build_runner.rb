@@ -44,7 +44,16 @@ class BuildRunner
   end
 
   def pull_request
-    @pull_request ||= PullRequest.new(payload)
+    @pull_request ||= PullRequest.new(payload, token)
+  end
+
+  def token
+    @token ||= user_token || ENV["HOUND_GITHUB_TOKEN"]
+  end
+
+  def user_token
+    user_with_token = repo.users.where.not(token: nil).sample
+    user_with_token && user_with_token.token
   end
 
   def repo
@@ -103,7 +112,7 @@ class BuildRunner
   end
 
   def github
-    @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+    @github ||= GithubApi.new(token)
   end
 
   def configuration_url

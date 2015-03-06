@@ -73,6 +73,8 @@ describe BuildRunner, '#run' do
 
     it 'initializes PullRequest with payload and Hound token' do
       repo = create(:repo, :active, github_id: 123)
+      user = create(:user, token: "user_token")
+      user.repos << repo
       payload = stubbed_payload(github_repo_id: repo.github_id)
       build_runner = BuildRunner.new(payload)
       stubbed_pull_request
@@ -82,7 +84,7 @@ describe BuildRunner, '#run' do
 
       build_runner.run
 
-      expect(PullRequest).to have_received(:new).with(payload)
+      expect(PullRequest).to have_received(:new).with(payload, user.token)
     end
 
     it "creates GitHub statuses" do

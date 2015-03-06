@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20150303212157) do
     t.boolean  "refreshing_repos",               default: false
     t.string   "email_address",      limit: 255
     t.string   "stripe_customer_id", limit: 255
+    t.string   "token"
   end
 
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
