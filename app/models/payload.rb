@@ -49,6 +49,10 @@ class Payload
     repository["owner"]["type"] == GithubApi::ORGANIZATION_TYPE
   end
 
+  def private_repo?
+    repository["private"]
+  end
+
   def build_data
     {
       "number" => pull_request_number,
@@ -66,7 +70,8 @@ class Payload
           "id" => repository_owner_name,
           "login" => repository_owner_id,
           "type" => repository["owner"]["type"],
-        }
+        },
+        "private" => private_repo?,
       }
     }
   end

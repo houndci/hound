@@ -4,6 +4,32 @@ require "app/models/commit"
 require "lib/github_api"
 
 describe PullRequest do
+  describe "#pull_request_files" do
+    context "when repo is public" do
+      it "uses public api token" do
+        payload = payload_stub(private_repo?: false)
+        pull_request = PullRequest.new(payload)
+        pr_files_request = stub_pr_files_request(ENV["PUBLIC_GITHUB_TOKEN"])
+
+        pull_request.pull_request_files
+
+        expect(pr_files_request).to have_been_requested
+      end
+    end
+
+    context "when repo is private" do
+      it "uses private api token" do
+        payload = payload_stub(private_repo?: true)
+        pull_request = PullRequest.new(payload)
+        pr_files_request = stub_pr_files_request(ENV["PRIVATE_GITHUB_TOKEN"])
+
+        pull_request.pull_request_files
+
+        expect(pr_files_request).to have_been_requested
+      end
+    end
+  end
+
   describe "#opened?" do
     context "when payload action is opened" do
       it "returns true" do
@@ -92,6 +118,7 @@ describe PullRequest do
       full_repo_name: "org/repo",
       head_sha: "1234abcd",
       pull_request_number: 5,
+      private_repo?: true,
     }
     double("Payload", defaults.merge(options))
   end
@@ -99,5 +126,11 @@ describe PullRequest do
   def pull_request_stub(api, payload = payload_stub)
     allow(GithubApi).to receive(:new).and_return(api)
     PullRequest.new(payload)
+  end
+
+  def stub_pr_files_request(token)
+    stub_request(:get, %r{api.github.com}).
+      with(headers: { "Authorization" => "token #{token}" }).
+      to_return(body: [])
   end
 end

@@ -4,7 +4,7 @@ class AcceptOrgInvitationsJob < ActiveJob::Base
   queue_as :high
 
   def perform
-    github = GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+    github = GithubApi.new(ENV["PRIVATE_GITHUB_TOKEN"])
     github.accept_pending_invitations
   rescue Resque::TermException
     retry_job

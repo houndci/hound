@@ -42,7 +42,7 @@ describe BuildRunner, '#run' do
     end
 
     it "comments a maximum number of times" do
-      allow(ENV).to receive(:[]).with("HOUND_GITHUB_TOKEN").
+      allow(ENV).to receive(:[]).with("PRIVATE_GITHUB_TOKEN").
         and_return("something")
       stub_const("::BuildRunner::MAX_COMMENTS", 1)
       build_runner = make_build_runner

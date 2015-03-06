@@ -91,6 +91,6 @@ class BuildRunner
   end
 
   def github
-    @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+    @github ||= GithubApi.new(ENV["PRIVATE_GITHUB_TOKEN"])
   end
 end

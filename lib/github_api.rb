@@ -9,7 +9,7 @@ class GithubApi
 
   attr_reader :file_cache, :token
 
-  def initialize(token = ENV["HOUND_GITHUB_TOKEN"])
+  def initialize(token = ENV["PRIVATE_GITHUB_TOKEN"])
     @token = token
     @file_cache = {}
   end
