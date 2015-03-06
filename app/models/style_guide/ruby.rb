@@ -8,7 +8,7 @@ module StyleGuide
         []
       else
         team.inspect_file(parsed_source(file)).map do |violation|
-          line = Patch.find_line(file.patch, violation.line)
+          line = file.line_at(violation.line)
 
           Violation.new(
             filename: file.filename,

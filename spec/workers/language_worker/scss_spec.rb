@@ -30,8 +30,7 @@ module LanguageWorker
               },
               file: {
                 name: "test.rb",
-                content: "some content",
-                patch: "",
+                content: "some content"
               },
               hound_url: ENV["BUILD_WORKERS_URL"]
             }.to_json
@@ -41,7 +40,7 @@ module LanguageWorker
     end
 
     def commit_file(options = {})
-      file = double("File", options.reverse_merge(patch: "", filename: "test.rb"))
+      file = double("File", options.reverse_merge(filename: "test.rb"))
       commit = double(
         :commit,
         repo_name: "test/test",

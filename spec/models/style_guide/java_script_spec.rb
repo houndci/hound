@@ -13,8 +13,8 @@ describe StyleGuide::JavaScript do
           file = double(
             "File",
             filename: filename,
-            content: "var blahh = 'blahh'",
-            patch: "",
+            line_at: line,
+            content: "var blahh = 'blahh'"
           )
 
           violations = violations_in(file, repo_config)
@@ -110,8 +110,8 @@ describe StyleGuide::JavaScript do
         file = double(
           "File",
           filename: "using_es6_syntax.js",
-          content: "import Ember from 'ember'",
-          patch: "",
+          line_at: line,
+          content: "import Ember from 'ember'"
         )
 
         violations = violations_in(file, repo_config)

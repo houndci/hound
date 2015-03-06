@@ -16,8 +16,7 @@ module LanguageWorker
         },
         file: {
           name: filename,
-          content: content,
-          patch: patch
+          content: content
         },
         hound_url: ENV.fetch("BUILD_WORKERS_URL"),
       }

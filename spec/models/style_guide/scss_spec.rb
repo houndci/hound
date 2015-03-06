@@ -95,6 +95,7 @@ describe StyleGuide::Scss do
   end
 
   def build_file(text)
-    double("CommitFile", content: text, filename: "lib/a.scss", patch: "")
+    line = double("Line", content: "blah", number: 1, patch_position: 2)
+    double("CommitFile", content: text, filename: "lib/a.scss", line_at: line)
   end
 end

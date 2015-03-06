@@ -2,10 +2,8 @@ require "spec_helper"
 
 describe StyleChecker, "#violations" do
   it "returns a collection of computed violations" do
-    good_content = "def good; end"
-    bad_content = "def bad( a ); a; end  "
-    stylish_file = stub_commit_file("good.rb", good_content, "\n+#{good_content}")
-    violated_file = stub_commit_file("bad.rb", bad_content, "\n+#{bad_content}")
+    stylish_file = stub_commit_file("good.rb", "def good; end")
+    violated_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
     pull_request =
       stub_pull_request(pull_request_files: [stylish_file, violated_file])
     expected_violations = ["Unnecessary spacing detected.",
@@ -21,8 +19,7 @@ describe StyleChecker, "#violations" do
   context "for a Ruby file" do
     context "with style violations" do
       it "returns violations" do
-        content = "puts 123    "
-        file = stub_commit_file("ruby.rb", content, "\n+#{content}")
+        file = stub_commit_file("ruby.rb", "puts 123    ")
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
@@ -36,7 +33,7 @@ describe StyleChecker, "#violations" do
 
     context "with style violation on unchanged line" do
       it "returns no violations" do
-        file = stub_commit_file("foo.rb", "'wrong quotes'")
+        file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
@@ -60,8 +57,7 @@ describe StyleChecker, "#violations" do
 
   context "for a CoffeeScript file" do
     it "is processed with a coffee.js extension" do
-      content = "foo ->"
-      file = stub_commit_file("test.coffee.js", content, "\n+#{content}")
+      file = stub_commit_file("test.coffee.js", "foo ->")
       pull_request = stub_pull_request(pull_request_files: [file])
       style_checker = StyleChecker.new(pull_request)
       allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
@@ -74,8 +70,7 @@ describe StyleChecker, "#violations" do
 
     context "with style violations" do
       it "returns violations" do
-        content = "foo: ->"
-        file = stub_commit_file("test.coffee", content, "\n+#{content}")
+        file = stub_commit_file("test.coffee", "foo: ->")
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
@@ -100,8 +95,7 @@ describe StyleChecker, "#violations" do
   context "for a JavaScript file" do
     context "with style violations" do
       it "returns violations" do
-        content = "var test = 'test'"
-        file = stub_commit_file("test.js", content, "\n+#{content}")
+        file = stub_commit_file("test.js", "var test = 'test'")
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
@@ -113,8 +107,7 @@ describe StyleChecker, "#violations" do
 
     context "without style violations" do
       it "returns no violations" do
-        content = "var test = 'test';"
-        file = stub_commit_file("test.js", content, "\n+{content}")
+        file = stub_commit_file("test.js", "var test = 'test';")
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
@@ -152,11 +145,9 @@ describe StyleChecker, "#violations" do
   context "for a SCSS file" do
     context "with style violations" do
       it "returns violations" do
-        content = ".table p.inner table td { background: red; }"
         file = stub_commit_file(
           "test.scss",
-          content,
-          "\n+content"
+          ".table p.inner table td { background: red; }"
         )
         pull_request = stub_pull_request(pull_request_files: [file])
 
@@ -221,14 +212,15 @@ describe StyleChecker, "#violations" do
     double("PullRequest", defaults.merge(options))
   end
 
-  def stub_commit_file(filename, contents, patch = "", removed: false)
+  def stub_commit_file(filename, contents, line = nil, removed: false)
+    line ||= Line.new(content: "foo", number: 1, patch_position: 2)
     formatted_contents = "#{contents}\n"
     double(
       filename.split(".").first,
       filename: filename,
       content: formatted_contents,
       removed?: removed,
-      patch: patch
+      line_at: line,
     )
   end
 

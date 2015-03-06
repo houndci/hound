@@ -3,13 +3,6 @@ class Patch
   MODIFIED_LINE = /^\+(?!\+|\+)/
   NOT_REMOVED_LINE = /^[^-]/
 
-  def self.find_line(patch_body, line_number)
-    patch = new(patch_body)
-
-    patch.changed_lines.detect { |line| line.number == line_number } ||
-      UnchangedLine.new
-  end
-
   def initialize(body)
     @body = body || ''
   end
