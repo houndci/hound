@@ -17,6 +17,8 @@ class BuildRunner
       create_success_status
       track_subscribed_build_completed
     end
+  rescue RepoConfig::ParserError
+    create_config_error_status
   end
 
   private
@@ -82,6 +84,15 @@ class BuildRunner
     )
   end
 
+  def create_config_error_status
+    github.create_error_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      I18n.t(:config_error_status),
+      configuration_url
+    )
+  end
+
   def upsert_owner
     owner = Owner.upsert(
       github_id: payload.repository_owner_id,
@@ -93,5 +104,9 @@ class BuildRunner
 
   def github
     @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+  end
+
+  def configuration_url
+    Rails.application.routes.url_helpers.configuration_url(host: ENV["HOST"])
   end
 end

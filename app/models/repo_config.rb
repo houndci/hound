@@ -9,6 +9,8 @@ class RepoConfig
     "scss" => "yaml",
   }
 
+  class ParserError < StandardError; end
+
   pattr_initialize :commit
 
   def enabled_for?(language)
@@ -106,13 +108,18 @@ class RepoConfig
 
   def parse_yaml(content)
     YAML.safe_load(content, [Regexp])
-  rescue Psych::SyntaxError
-    {}
+  rescue Psych::Exception => e
+    raise_repo_config_parser_error(e)
   end
 
   def parse_json(content)
     JSON.parse(content)
-  rescue JSON::ParserError
-    {}
+  rescue JSON::ParserError => e
+    raise_repo_config_parser_error(e)
+  end
+
+  def raise_repo_config_parser_error(e)
+    message = "#{e.class}: #{e.message}"
+    raise RepoConfig::ParserError.new(message)
   end
 end

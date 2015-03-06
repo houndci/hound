@@ -6,6 +6,9 @@ en:
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."
   success_status: "Hound has reviewed all the changes!"
+  config_error_status:
+    "Error parsing your config file. Click \"details\" for
+    assistance."
 
   account:
     bulk_pricing:

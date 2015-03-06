@@ -109,6 +109,16 @@ class GithubApi
     )
   end
 
+  def create_error_status(full_repo_name, sha, description, target_url = nil)
+    create_status(
+      repo: full_repo_name,
+      sha: sha,
+      state: "error",
+      description: description,
+      target_url: target_url
+    )
+  end
+
   def add_collaborator(repo_name, username)
     client.add_collaborator(repo_name, username)
   end
@@ -190,13 +200,14 @@ class GithubApi
     client.with_options(accept: PREVIEW_MEDIA_TYPE, &block)
   end
 
-  def create_status(repo:, sha:, state:, description:)
+  def create_status(repo:, sha:, state:, description:, target_url: nil)
     client.create_status(
       repo,
       sha,
       state,
       context: "hound",
-      description: description
+      description: description,
+      target_url: target_url
     )
   rescue Octokit::NotFound
     # noop
