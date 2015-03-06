@@ -150,6 +150,29 @@ describe Payload do
     end
   end
 
+  describe "#private_repo?" do
+    context "when repo is private" do
+      it "returns true" do
+        fixture_file = "spec/support/fixtures/pull_request_opened_event.json"
+        payload_json = File.read(fixture_file)
+        payload = Payload.new(payload_json)
+
+        expect(payload.private_repo?).to be true
+      end
+    end
+
+    context "when repo is public" do
+      it "returns false" do
+        payload_json = File.read(
+          "spec/support/fixtures/pull_request_synchronize_event.json"
+        )
+        payload = Payload.new(payload_json)
+
+        expect(payload.private_repo?).to be false
+      end
+    end
+  end
+
   describe "#build_data" do
     it "returns a subset of original data" do
       fixture_file = "spec/support/fixtures/pull_request_opened_event.json"
