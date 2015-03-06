@@ -4,23 +4,18 @@
     %ol.onboarding-steps
       - if current_user.has_active_repos?
         %li.step
-          %h4 Hound is active on #{ pluralize( current_user.repos.active.count, 'repo' ) }!
-          %p
-            Hound watches for pull requests on all active repos. Activating public repos cost
-            $0 private repos cost $12.
+          %h4 Hound is active on #{ current_user.repos.active.count } of your repos!
+          %p= t("onboarding.step-one-desc")
+        %li.step.current-step
+          %h4= t("onboarding.step-two-title")
+          %p= t("onboarding.step-two-desc")
       - else
         %li.step.current-step
-          %h4 Activate Hound on a repo.
-          %p
-            Hound watches for pull requests on all active repos. Activating public repos cost
-            $0 private repos cost $12.
-      %li.step{class: ("current-step" if current_user.has_active_repos? )}
-        %h4 Open a GitHub pull request on the repo.
-        %p
-          Hound will review all GitHu pull requests that are opened on an activate repo
-          for violations of your style guide.
+          %h4= t("onboarding.step-one-title")
+          %p= t("onboarding.step-one-desc")
+        %li.step
+          %h4= t("onboarding.step-two-title")
+          %p= t("onboarding.step-two-desc")
       %li.step
-        %h4 Hound comments on your pull request.
-        %p
-          If Hound finds any violations of your style guid he will comment inline
-          on the violation in your GitHub pull request.
+        %h4= t("onboarding.step-three-title")
+        %p= t("onboarding.step-three-desc")
