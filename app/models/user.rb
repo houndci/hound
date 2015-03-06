@@ -35,6 +35,10 @@ class User < ActiveRecord::Base
     repos.where("in_organization IS NULL OR private IS NULL").count > 0
   end
 
+  def has_active_repos?
+    self.repos.active.count > 0
+  end
+
   private
 
   def payment_gateway_customer
