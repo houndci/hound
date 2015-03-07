@@ -3,47 +3,66 @@
 = render 'settings'
 
 %section.account-section
-  %h2.label-text
-    Your monthly cost
+  %aside.account-nav
+    %p.message
+      If you'd like to pay for Hound in bulk on a monthly or annual
+      basis we're happy to make that happen. Email
+      #{mail_to "hound@thoughtbot.com"}
+      with your GitHub org name and the number of repos you'd like to
+      activate.
 
-    - if current_user.stripe_customer_id.present?
-      %span.section-action
-        %a{ 'ng-controller' => 'accountController', 'ng-click' => 'showStripeForm()' }
-          Update Credit Card
+  .account-content
+    %article.billing-breakdown
+      %h3
+        Monthly Billing
+        - if current_user.stripe_customer_id.present?
+          %a{ href: '#', class: 'update-card', 'ng-controller' => 'accountController', 'ng-click' => 'showStripeForm()' }
+            %i.fa.fa-credit-card
+            Update Credit Card
 
-  .account-content.account-breakdown
-    %table
-      %thead
-        %tr
-          %th.label-text Description
-          %th.label-text Base Cost
-          %th.label-text Quantity
-          %th.label-text Subtotal
-        - @account_page.monthly_line_items.each do |line_item|
+      %table.itemized-receipt
+        %thead
           %tr
-            %td
-              = line_item.title
-            %td
-              = line_item.base_price
-            %td
-              = line_item.quantity
-            %td
-              = line_item.subtotal
-    %dl
-      %dt.label-text Total Monthly Cost
-      %dd
-        = @account_page.total_monthly_cost
+            %th Description
+            %th Base Cost
+            %th Quantity
+            %th Subtotal
+        %tbody
+          - @account_page.monthly_line_items.each do |line_item|
+            %tr
+              %td
+                = line_item.title
+              %td
+                = line_item.base_price
+              %td
+                = line_item.quantity
+              %td
+                = line_item.subtotal
 
-%section.account-section
-  %h2.label-text Active private repos billed to you
+      %table.monthly-total
+        %thead
+          %tr
+            %th
+              %label Total Monthly Cost:
+            %th.total-amount
+              %label= @account_page.total_monthly_cost
 
-  .account-content.repos-breakdown
-    - if @account_page.repos.any?
-      %ul.private-repos
-        - @account_page.repos.each do |repo|
-          %li.repo
-            %span.repo-name{ "ng-class" => "{private: #{repo.private}}" }
-              = repo.full_github_name
-    - else
-      %p.empty-state-message
-        You have no private repos billed to you
+    %article.active-private-repos
+      - if @account_page.repos.any?
+        %h3 Active Private Repos
+        %table
+          %thead
+            %tr
+              %th Repository
+              %th Reviews given
+              %th Violations caught
+          %tbody
+            - @account_page.repos.each do |repo|
+              %tr.repo
+                %td
+                  %span.repo-name
+                    = repo.full_github_name
+                %td.reviews-given
+                  = repo.builds.count
+                %td.violations-caught
+                  = repo.total_violations
