@@ -1,0 +1,6 @@
+%content-frame {
+  @include clearfix;
+  border: 1px solid $base-border-color;
+  border-radius: 6px;
+  padding: 2em;
+}

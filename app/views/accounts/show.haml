@@ -3,47 +3,54 @@
 = render 'settings'
 
 %section.account-section
-  %h2.label-text
-    Your monthly cost
+  %aside.account-nav
+    %p.message
+  .account-content
+    .billing-breakdown
+      %h2.label-text
+        Your monthly cost
 
-    - if current_user.stripe_customer_id.present?
-      %span.section-action
-        %a{ 'ng-controller' => 'accountController', 'ng-click' => 'showStripeForm()' }
-          Update Credit Card
+        - if current_user.stripe_customer_id.present?
+          %span.section-action
+            %a{ 'ng-controller' => 'accountController', 'ng-click' => 'showStripeForm()' }
+              Update Credit Card
 
-  .account-content.account-breakdown
-    %table
-      %thead
-        %tr
-          %th.label-text Description
-          %th.label-text Base Cost
-          %th.label-text Quantity
-          %th.label-text Subtotal
-        - @account_page.monthly_line_items.each do |line_item|
+      %table.itemized-receipt
+        %thead
+          %tr
+            %th Description
+            %th Base Cost
+            %th Quantity
+            %th Subtotal
+        %tbody
+          - @account_page.monthly_line_items.each do |line_item|
+            %tr
+              %td
+                = line_item.title
+              %td
+                = line_item.base_price
+              %td
+                = line_item.quantity
+              %td
+                = line_item.subtotal
+
+      %table.monthly-total
+        %tbody
           %tr
             %td
-              = line_item.title
+              %label Total Monthly Cost:
             %td
-              = line_item.base_price
-            %td
-              = line_item.quantity
-            %td
-              = line_item.subtotal
-    %dl
-      %dt.label-text Total Monthly Cost
-      %dd
-        = @account_page.total_monthly_cost
+              %span.total-amount= @account_page.total_monthly_cost
 
-%section.account-section
-  %h2.label-text Active private repos billed to you
+    .active-private-repos
+      %h2 Active private repos billed to you
 
-  .account-content.repos-breakdown
-    - if @account_page.repos.any?
-      %ul.private-repos
-        - @account_page.repos.each do |repo|
-          %li.repo
-            %span.repo-name{ "ng-class" => "{private: #{repo.private}}" }
-              = repo.full_github_name
-    - else
-      %p.empty-state-message
-        You have no private repos billed to you
+      - if @account_page.repos.any?
+        %ul.private-repos
+          - @account_page.repos.each do |repo|
+            %li.repo
+              %span.repo-name{ "ng-class" => "{private: #{repo.private}}" }
+                = repo.full_github_name
+      - else
+        %p.empty-state-message
+          You have no private repos billed to you
