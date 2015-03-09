@@ -1,9 +1,6 @@
 .hound-docs {
-  @include clearfix;
-  border: 1px solid $base-border-color;
-  border-radius: 4px;
+  @extend %content-frame;
   display: table;
-  padding: 2em;
 
   aside.docs-nav {
     @include span-columns(3 of 12, table);
