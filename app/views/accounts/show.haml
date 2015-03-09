@@ -62,9 +62,7 @@
                 %td
                   %span.repo-name
                     = repo.full_github_name
-                %td
-                  %span.reviews-given
-                    = repo.builds.count
-                %td
-                  %span.violations-caught
-                    = repo.total_violations
+                %td.reviews-given
+                  = repo.builds.count
+                %td.violations-caught
+                  = repo.total_violations

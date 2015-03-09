@@ -42,4 +42,20 @@ feature "Account" do
     expect(page).to have_text(organization_repo.name)
     expect(page).not_to have_text(public_repo.name)
   end
+
+  scenario "user sees paid repo usage" do
+    user = create(:user)
+    paid_repo = create(:repo, users: [user])
+    paid_repo.builds << create(:build, :failed)
+    paid_repo.builds << create(:build, :failed)
+    paid_repo.builds << create(:build)
+    create(:subscription, repo: paid_repo, user: user)
+
+    sign_in_as(user)
+
+    visit account_path
+
+    expect(find('td.reviews-given')).to have_text("3");
+    expect(find('td.violations-caught')).to have_text("2");
+  end
 end
