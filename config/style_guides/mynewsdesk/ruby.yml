@@ -25,3 +25,6 @@ Style/PercentLiteralDelimiters:
 
 LineLength:
   Max: 120
+
+Rails/Validation:
+  Enabled: false
