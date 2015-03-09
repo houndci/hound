@@ -22,36 +22,66 @@
     border-left: 1px solid $base-border-color;
     padding: 0 0 0 2em;
   }
-
-  .billing-breakdown {
-    border-bottom: 1px dotted $base-border-color;
-    margin-bottom: 3em;
-    padding-bottom: 2em;
-  }
 }
 
-.account-content {
-  @extend .repo-listing;
-
-  .empty-state-message {
-    opacity: .5;
-    padding: .5em 1em;
-  }
-}
-
-table.itemized-receipt {
-  border: 1px solid $base-border-color;
+.billing-breakdown {
+  border-bottom: 1px dotted $base-border-color;
   margin-bottom: 2em;
+  padding-bottom: 3em;
+
+  .update-card {
+    font-weight: 300;
+    float: right;
+
+    i.fa {
+      display: inline-block;
+      margin-right: 0.2em;
+    }
+  }
+
+  .itemized-receipt,
+  .monthly-total {
+    th,
+    td {
+      &:last-child {
+        text-align: right;
+      }
+    }
+  }
+
+  .itemized-receipt {
+    margin-bottom: 2em;
+  }
+
+  .monthly-total {
+    label {
+      color: $base-font-color;
+    }
+
+    .total-amount {
+      font-size: 1em;
+      padding: 1em 1.2em;
+    }
+  }
+}
+
+.update-credit-card {
+}
+
+.active-private-repos {
+}
+
+table {
+  border-collapse: collapse;
   width: 100%;
+
+  tr {
+    border: 1px solid $base-border-color;
+  }
 
   th,
   td {
-    border-bottom: 1px solid $base-border-color;
     text-align: left;
-
-    &:last-child {
-      text-align: right;
-    }
   }
 
   td {
@@ -66,75 +96,5 @@ table.itemized-receipt {
     letter-spacing: 1px;
     padding: 1em 1.4em;
     text-transform: uppercase;
-  }
-}
-
-.monthly-total {
-  @include clearfix;
-  border: 1px solid $base-border-color;
-  border-collapse: initial;
-  width: 100%;
-
-  td {
-    background-color: rgb(245,245,245);
-    padding: 1em 1.2em;
-    vertical-align: middle;
-  }
-
-
-  label {
-    color: $base-font-color;
-    font-size: 0.8em;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin: 0;
-    text-align: left;
-    text-transform: uppercase;
-  }
-
-  .total-amount {
-    display: inline-block;
-    font-weight: 600;
-    text-align: right;
-    width: 100%;
-  }
-}
-
-.repo-subscription-details {
-  color: #aaa;
-  font-size: .8em;
-  margin-left: 1.4rem;
-
-  .subscription-owner {
-    color: #333;
-  }
-}
-
-.update-info-link {
-  float: right;
-  font-size: .6em;
-  margin-top: -1.55rem;
-}
-
-.billing-info {
-  padding: 1em;
-
-  dl {
-    display: inline-block;
-    margin: 0 1em 0 0;
-    width: 46%;
-  }
-
-  dd {
-   margin: 0;
-  }
-}
-
-.section-action {
-  float: right;
-  margin-top: -0.1em;
-
-  a {
-    cursor: pointer;
   }
 }

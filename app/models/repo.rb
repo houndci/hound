@@ -59,6 +59,10 @@ class Repo < ActiveRecord::Base
     ENV["EXEMPT_ORGS"] && ENV["EXEMPT_ORGS"].split(",").include?(organization)
   end
 
+  def total_violations
+    Violation.joins(:build).where(builds: { repo_id: self.id }).length
+  end
+
   private
 
   def organization
