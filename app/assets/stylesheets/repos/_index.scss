@@ -230,7 +230,7 @@ aside.org-nav {
       }
     }
 
-    a.refresh {
+    button.refresh {
       @include span-columns(3 of 9, table);
       background-color: rgb(248,248,248);
       border-radius: 3px;
@@ -254,6 +254,10 @@ aside.org-nav {
         background-color: rgba($purple, 0.1);
         border-color: $purple;
         color: $purple;
+      }
+
+      &:disabled {
+        opacity: 0.5;
       }
     }
   }
@@ -415,6 +419,10 @@ aside.org-nav {
         &:hover {
           background-color: $purple;
           color: $white;
+        }
+
+        &:disabled {
+          opacity: 0.5;
         }
       }
     }
