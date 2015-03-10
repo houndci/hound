@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def payment_gateway_subscriptions
+    @payment_gateway_subscriptions ||= payment_gateway_customer.subscriptions
+  end
+
   private
 
   def crypt

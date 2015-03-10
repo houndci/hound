@@ -33,18 +33,18 @@ describe AccountsController do
 
     context "when email is provided" do
       context "on success" do
-        it "returns updated account" do
+        it "returns ok status" do
           new_email = "new-email@example.com"
           customer_id = "customer-id"
           user = create(:user, stripe_customer_id: customer_id)
           stub_sign_in(user)
           stub_customer_find_request(customer_id)
-          stub_customer_update_request(email: new_email)
+          update_request = stub_customer_update_request(email: new_email)
 
           patch :update, billable_email: new_email, format: :json
 
-          response_body = JSON.parse(response.body)
-          expect(response_body["billable_email"]).to eq new_email
+          expect(response).to be_ok
+          expect(update_request).to have_been_requested
         end
       end
     end

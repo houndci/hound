@@ -13,9 +13,7 @@
     "total_count": 0,
     "has_more": false,
     "url": "/v1/customers/cus_2e3fqARc1uHtCv/subscriptions",
-    "data": [
-
-    ]
+    "data": []
   },
   "discount": null,
   "account_balance": 0,

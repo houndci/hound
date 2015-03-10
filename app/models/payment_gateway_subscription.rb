@@ -1,7 +1,15 @@
 class PaymentGatewaySubscription
   attr_reader :stripe_subscription
 
-  delegate :id, :metadata, :save, :delete, to: :stripe_subscription
+  delegate(
+    :id,
+    :metadata,
+    :save,
+    :delete,
+    :quantity,
+    :discount,
+    to: :stripe_subscription,
+  )
 
   def initialize(stripe_subscription, new_subscription: false)
     @stripe_subscription = stripe_subscription
@@ -36,6 +44,14 @@ class PaymentGatewaySubscription
 
   def plan
     stripe_subscription.plan.id
+  end
+
+  def plan_amount
+    stripe_subscription.plan.amount
+  end
+
+  def plan_name
+    stripe_subscription.plan.name
   end
 
   def existing_subscription?

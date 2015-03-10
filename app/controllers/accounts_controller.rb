@@ -4,7 +4,8 @@ class AccountsController < ApplicationController
   def show
     @account_page = AccountPage.new(
       repos: find_subscribed_repos,
-      billable_email: current_user.billable_email
+      billable_email: current_user.billable_email,
+      payment_gateway_subscriptions: current_user.payment_gateway_subscriptions,
     )
   end
 
@@ -14,7 +15,7 @@ class AccountsController < ApplicationController
     respond_to do |format|
       format.json do
         if customer.update_email(new_billable_email)
-          render json: updated_account_page
+          head :ok
         else
           head :bad_gateway
         end
@@ -37,12 +38,5 @@ class AccountsController < ApplicationController
 
   def find_subscribed_repos
     current_user.subscribed_repos.order(:full_github_name)
-  end
-
-  def updated_account_page
-    AccountPage.new(
-      repos: find_subscribed_repos,
-      billable_email: new_billable_email
-    )
   end
 end
