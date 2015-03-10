@@ -4,12 +4,7 @@
 
 %section.account-section
   %aside.account-nav
-    %p.message
-      If you'd like to pay for Hound in bulk on a monthly or annual
-      basis we're happy to make that happen. Email
-      #{mail_to "hound@thoughtbot.com"}
-      with your GitHub org name and the number of repos you'd like to
-      activate.
+    %p.message= t("account.bulk_pricing", mail_to: mail_to("hound@thoughtbot.com")).html_safe
 
   .account-content
     %article.billing-breakdown
