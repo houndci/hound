@@ -11,7 +11,7 @@ class UpdateStripeMetadata
       )
 
       if stripe_subscription
-        stripe_subscription.metadata = { repo_id: repo.id }
+        stripe_subscription.metadata = { repo_ids: [repo.id.to_s] }
         stripe_subscription.save
       end
     end

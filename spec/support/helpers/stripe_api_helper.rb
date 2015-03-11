@@ -35,6 +35,17 @@ module StripeApiHelper
     )
   end
 
+  def stub_customer_find_request_with_subscriptions
+    stub_request(:get, "#{stripe_base_url}/#{stripe_customer_id}").with(
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
+    ).to_return(
+      status: 200,
+      body: File.read(
+        "spec/support/fixtures/stripe_customer_find_with_subscriptions.json"
+      )
+    )
+  end
+
   def stub_customer_update_request(attrs = { card: "card-token" })
     stub_request(
       :post,
@@ -66,11 +77,11 @@ module StripeApiHelper
     )
   end
 
-  def stub_subscription_create_request(plan: "free", repo_id: nil)
-    body = { "plan" => plan }
-    if repo_id
-      body.merge!("metadata" => { "repo_id" => repo_id.to_s })
-    end
+  def stub_subscription_create_request(plan: "free", repo_ids: [])
+    body = {
+      "plan" => plan,
+      "metadata" => { "repo_ids" => repo_ids.map(&:to_s) }
+    }
     stub_request(
       :post,
       "#{stripe_base_url}/#{stripe_customer_id}/subscriptions"
@@ -83,17 +94,37 @@ module StripeApiHelper
     )
   end
 
-  def stub_subscription_find_request(subscription)
+  def stub_subscription_update_request(quantity: 1, repo_ids: nil)
+    body = { "quantity" => quantity.to_s }
+
+    if repo_ids.present?
+      body["metadata"] = { repo_ids: repo_ids.map(&:to_s) }
+    end
+
     stub_request(
-      :get,
+      :post,
       "#{stripe_base_url}/#{stripe_customer_id}/"\
-        "subscriptions/#{subscription.stripe_subscription_id}"
+        "subscriptions/#{stripe_subscription_id}"
     ).with(
+      body: body,
       headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_subscription_find.json"),
+      body: File.read("spec/support/fixtures/stripe_subscription_update.json"),
     )
+  end
+
+  def stub_subscription_find_request(subscription, quantity: 1)
+    body = JSON.parse(
+      File.read("spec/support/fixtures/stripe_subscription_find.json")
+    )
+    body["quantity"] = quantity
+    request_url = "#{stripe_base_url}/#{stripe_customer_id}/"\
+      "subscriptions/#{subscription.stripe_subscription_id}"
+
+    stub_request(:get, request_url).with(
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
+    ).to_return(status: 200, body: body.to_json)
   end
 
   def stub_subscription_delete_request
@@ -115,7 +146,7 @@ module StripeApiHelper
       "#{stripe_base_url}/#{stripe_customer_id}/"\
         "subscriptions/#{stripe_subscription_id}"
     ).with(
-      body: "metadata[repo_id]=#{subscription.repo_id}",
+      body: "metadata[repo_ids][]=#{subscription.repo_id}",
       headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
     ).to_return(
       status: 200,
