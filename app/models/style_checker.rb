@@ -17,6 +17,9 @@ class StyleChecker
 
   def violations_in_checked_files
     files_to_check.flat_map do |file|
+      # if style guide is SCSS we enqueue a worker
+      # keep a record of the workers enqueued for each build
+      # need to know the build here!
       style_guide(file.filename).violations_in_file(file)
     end
   end

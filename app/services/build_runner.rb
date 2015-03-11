@@ -7,14 +7,25 @@ class BuildRunner
     if repo && relevant_pull_request?
       track_subscribed_build_started
       create_pending_status
-      repo.builds.create!(
+
+      # create a build first
+      # find violations
+      # update build with violations that were found in Hound, not workers
+      build = repo.builds.create!(
         violations: violations,
         pull_request_number: payload.pull_request_number,
         commit_sha: payload.head_sha,
       )
+
       commenter.comment_on_violations(priority_violations)
+      # cannot always do this with Iron.io when there are records of workers for the build
+
+      # if build has any pending violations, don't create success
       create_success_status
       upsert_owner
+      # this too
+
+      # if build has any pending violations, don't track completed build
       track_subscribed_build_completed
     end
   end
@@ -30,6 +41,7 @@ class BuildRunner
   end
 
   def priority_violations
+    # don't include pending
     violations.take(MAX_COMMENTS)
   end
 

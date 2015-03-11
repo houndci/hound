@@ -8,7 +8,7 @@ class PullRequest
   def pull_request_files
     @pull_request_files ||= api.
       pull_request_files(full_repo_name, number).
-      map { |file| build_commit_file(file) }
+      map { |github_file| build_commit_file(github_file) }
   end
 
   def comment_on_violation(violation)
@@ -39,8 +39,9 @@ class PullRequest
 
   private
 
-  def build_commit_file(file)
-    CommitFile.new(file, head_commit)
+  def build_commit_file(github_file)
+    file_attributes = github_file.to_hash.merge(commit: head_commit)
+    CommitFile.new(file_attributes)
   end
 
   def api

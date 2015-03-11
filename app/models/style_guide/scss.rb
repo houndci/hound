@@ -1,62 +1,42 @@
 module StyleGuide
-  class Scss < Base
+  class Scss
+    class ScssWorker < ActiveJob::Base
+      queue_as :scss
+    end
+
     DEFAULT_CONFIG_FILENAME = "scss.yml"
 
     def violations_in_file(file)
-      require "scss_lint"
+      # find build later by sha
+      # find pending violation later through build and by filename
+      Worker.perform_later(
+        repo_name: file.repo_name,
+        filename: file.filename,
+        commit: file.sha,
+        patch: file.patch_body,
+        content: file.content,
+        default_config: default_config,
+        custom_config: custom_config
+      )
 
-      if config.excluded_file?(file.filename)
-        []
-      else
-        runner = build_runner
-        runner.run([file.content])
-
-        runner.lints.map do |violation|
-          line = file.line_at(violation.location.line)
-
-          Violation.new(
-            filename: file.filename,
-            line: line,
-            line_number: violation.location.line,
-            messages: [violation.description],
-            patch_position: line.patch_position,
-          )
-        end
-      end
+      pending_violation = Violation.new(
+        pending: true,
+        filename: file.filename
+      )
+      [pending_violation]
     end
 
     private
 
-    def build_runner
-      SCSSLint::Runner.new(config)
-    end
-
-    def config
-      SCSSLint::Config.new(custom_options || default_options)
-    end
-
-    def custom_options
-      if options = repo_config.for(name)
-        merge(default_options, options)
-      end
-    end
-
-    def merge(a, b)
-      SCSSLint::Config.send(:smart_merge, a, b)
-    end
-
-    def default_options
-      @default_options ||= SCSSLint::Config.send(
-        :load_options_hash_from_file,
-        default_config_file
-      )
-    end
-
-    def default_config_file
+    def default_config
       DefaultConfigFile.new(
         DEFAULT_CONFIG_FILENAME,
         repository_owner_name
       ).path
+    end
+
+    def custom_config
+      repo_config.for(name)
     end
   end
 end
