@@ -11,7 +11,8 @@ module LanguageWorker
         pull_request = double("PullRequest", repository_owner_name: "foo")
         scss_worker_url = ENV["WORKER_URL"]
         connection = double("Connection", post: true)
-        allow(Faraday).to receive(:new).with(url: scss_worker_url).and_return(connection)
+        allow(Faraday).to receive(:new).with(url: scss_worker_url).
+          and_return(connection)
         worker = Scss.new(build_worker, commit_file, repo_config, pull_request)
 
         worker.run
@@ -19,22 +20,20 @@ module LanguageWorker
         expect(Faraday).to have_received(:new).with(url: scss_worker_url)
         expect(connection).to have_received(:post).with(
           "/?code_name=scss",
+          body:
           {
-            body:
-            {
-              build_worker_id: build_worker.id,
-              build_id: build_worker.build_id,
-              config: {
-                custom: "custom",
-                default: default_config_file
-              },
-              file: {
-                name: "test.rb",
-                content: "some content"
-              },
-              hound_url: ENV["BUILD_WORKERS_URL"]
-            }.to_json
-          }
+            build_worker_id: build_worker.id,
+            build_id: build_worker.build_id,
+            config: {
+              custom: "custom",
+              default: default_config_file
+            },
+            file: {
+              name: "test.rb",
+              content: "some content"
+            },
+            hound_url: ENV["BUILD_WORKERS_URL"]
+          }.to_json
         )
       end
     end

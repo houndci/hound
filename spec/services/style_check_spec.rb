@@ -156,7 +156,7 @@ describe StyleCheck do
     )
   end
 
-  def stub_worker(name, repo_config: stub_repo_config())
+  def stub_worker(name, repo_config: stub_repo_config)
     double(
       name,
       enabled?: true,

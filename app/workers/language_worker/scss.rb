@@ -1,7 +1,7 @@
 module LanguageWorker
   class Scss < Base
     def run
-      connection.post("/?code_name=scss", { body: payload.to_json })
+      connection.post("/?code_name=scss", body: payload.to_json)
     end
 
     private
