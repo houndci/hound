@@ -1,26 +1,22 @@
 class StyleCheck
-  def initialize(pull_request, build_worker)
+  def initialize(pull_request, build)
     @pull_request = pull_request
-    @build_worker = build_worker
-    @workers = {}
+    @build = build
   end
 
   def run
-    files_to_check.each do |file|
-      worker(file).run
+    pull_request_files.select do |file|
+      file_worker = worker(file)
+
+      if file_worker.enabled? && file_worker.file_included?(file)
+        file_worker.run
+      end
     end
   end
 
   private
 
-  attr_reader :pull_request, :build_worker, :workers
-
-  def files_to_check
-    pull_request_files.select do |file|
-      file_worker = worker(file)
-      file_worker.enabled? && file_worker.file_included?(file)
-    end
-  end
+  attr_reader :pull_request, :build
 
   def pull_request_files
     pull_request.pull_request_files(&:removed?)
@@ -28,12 +24,16 @@ class StyleCheck
 
   def worker(file)
     worker_class_name = worker_class_name(file)
-    workers[worker_class_name] ||= worker_class_name.new(
-      build_worker,
+    worker_class_name.new(
+      new_build_worker,
       file,
       repo_config,
       pull_request
     )
+  end
+
+  def new_build_worker
+    build.build_workers.create
   end
 
   def worker_class_name(file)
