@@ -1,0 +1,21 @@
+%section.onboarding
+  .inner-wrapper
+    %h1= t("onboarding.title")
+    %ol.onboarding-steps
+      - if current_user.has_active_repos?
+        %li.step
+          %h4= t("onboarding.step_one_alt_title", count: current_user.repos.active.count )
+          %p= t("onboarding.step_one_desc")
+        %li.step.current-step
+          %h4= t("onboarding.step_two_alt_title")
+          %p= t("onboarding.step_two_desc")
+      - else
+        %li.step.current-step
+          %h4= t("onboarding.step_one_title")
+          %p= t("onboarding.step_one_desc")
+        %li.step
+          %h4= t("onboarding.step_two_title")
+          %p= t("onboarding.step_two_desc")
+      %li.step
+        %h4= t("onboarding.step_three_title")
+        %p= t("onboarding.step_three_desc")

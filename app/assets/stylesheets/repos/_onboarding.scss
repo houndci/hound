@@ -1,0 +1,82 @@
+.onboarding {
+  @include animation(pulse-in 0.4s ease-in-out);
+  @include animation-delay(0.2s);
+  @include animation-fill-mode(both);
+  @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
+  border-radius: 6px;
+  margin-bottom: 2em;
+  opacity: 0;
+  padding: 3px;
+
+  .inner-wrapper {
+    background: $white;
+    border-radius: 4px;
+    padding: 1em 1.6em 1.8em;
+
+    @include media($medium-screen) {
+      padding: 1em;
+    }
+  }
+
+  h1 {
+    color: $base-accent-color;
+    margin-bottom: 0.6em;
+
+    @include media($medium-screen) {
+      font-size: 2em;
+    }
+  }
+
+  ol.onboarding-steps {
+    @include clearfix;
+    counter-reset: step;
+  }
+
+  li.step {
+    @include span-columns(4 of 12);
+    padding-left: 2em;
+    position: relative;
+
+    @include media($medium-screen) {
+      float: none;
+      margin: 0;
+      width: 100%;
+
+      + li {
+        margin-top: 1em;
+      }
+    }
+
+    &:before {
+      @include size(24px);
+      @include position(absolute, -2px 0 0 0px);
+      background-color: rgba($purple, 0.1);
+      border-radius: 50%;
+      border: 2px solid $base-accent-color;
+      color: $base-accent-color;
+      counter-increment: step;
+      content: counter(step);
+      font-weight: 600;
+      font-size: 0.8em;
+      line-height: 20px;
+      text-align: center;
+    }
+
+    &.current-step:before {
+      background-color: $green;
+      border-color: darken($green, 30%);
+      color: darken($green, 40%);
+    }
+
+    h4 {
+      color: $base-font-color;
+      font-weight: 600;
+      margin-bottom: 0.4em;
+    }
+
+    p {
+      color: $light-font-color;
+      margin: 0;
+    }
+  }
+}

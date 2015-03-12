@@ -59,3 +59,19 @@
     @include transform(scale(0.95));
   }
 }
+
+/////////////////////////////////////////////////////////////////////
+
+@include keyframes(pulse-in) {
+  0% {
+    opacity: 0;
+    @include transform(scale(0.95));
+  }
+  50% {
+    @include transform(scale(1.02));
+  }
+  100% {
+    opacity: 1;
+    @include transform(scale(1));
+  }
+}
