@@ -120,7 +120,7 @@ describe StyleChecker, "#violations" do
     context "an excluded file" do
       it "returns no violations" do
         config = <<-YAML.strip_heredoc
-          java_script:
+          javascript:
             ignore_file: '.jshintignore'
         YAML
 

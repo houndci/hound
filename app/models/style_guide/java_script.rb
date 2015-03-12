@@ -45,5 +45,9 @@ module StyleGuide
         repository_owner_name
       ).path
     end
+
+    def name
+      "javascript"
+    end
   end
 end
