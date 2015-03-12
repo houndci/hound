@@ -1,7 +1,9 @@
 module LanguageWorker
-  class CoffeeScript < Base
-    def run
+  class CoffeeScript < StyleGuideBase
+    private
 
+    def style_guide_name
+      StyleGuide::CoffeeScript
     end
   end
 end

@@ -26,7 +26,7 @@ module LanguageWorker
               violations: violations(build_worker.build_id),
               file: {
                 name: "test.rb",
-                content: "some content"
+                content: content
               }
             }.to_json
           }
@@ -40,7 +40,7 @@ module LanguageWorker
         :commit,
         repo_name: "test/test",
         sha: "abc",
-        file_content: "some content"
+        file_content: content
       )
       CommitFile.new(file, commit)
     end
@@ -50,10 +50,14 @@ module LanguageWorker
         {
           filename: "test.rb",
           line_number: 1,
-          messages: ["Final newline missing."],
+          messages: ["unexpected token kEND"],
           build_id: build_id
         }
       ]
+    end
+
+    def content
+      "def a end;"
     end
   end
 end

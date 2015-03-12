@@ -1,7 +1,9 @@
 module LanguageWorker
-  class JavaScript < Base
-    def run
+  class JavaScript < StyleGuideBase
+    private
 
+    def style_guide_name
+      StyleGuide::JavaScript
     end
   end
 end
