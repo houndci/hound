@@ -1,6 +1,4 @@
 class BuildRunner
-  MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
-
   pattr_initialize :payload
 
   def run
@@ -26,7 +24,7 @@ class BuildRunner
   end
 
   def dispatch_workers(build)
-    #StyleChecker.new(pull_request, build).run
+    StyleChecker.new(pull_request, build).run
   end
 
   def pull_request
