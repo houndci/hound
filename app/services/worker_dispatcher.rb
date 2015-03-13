@@ -1,4 +1,8 @@
-class StyleChecker
+class WorkerDispatcher
+  def self.run(pull_request, build)
+    new(pull_request, build).run
+  end
+
   def initialize(pull_request, build)
     @pull_request = pull_request
     @build = build

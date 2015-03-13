@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe StyleChecker do
+describe WorkerDispatcher do
   describe "#run" do
     context "for a Ruby file" do
       it "runs LanguageWorker::Ruby" do
@@ -11,9 +11,8 @@ describe StyleChecker do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Ruby")
         allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
-        style_check = StyleChecker.new(pull_request, build)
 
-        style_check.run
+        WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(LanguageWorker::Ruby).to have_received(:new).
@@ -38,9 +37,8 @@ describe StyleChecker do
           allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::Ruby")
           allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
-          style_check = StyleChecker.new(pull_request, build)
 
-          style_check.run
+          WorkerDispatcher.run(pull_request, build)
 
           first_build_worker = build.build_workers.first
           last_build_worker = build.build_workers.last
@@ -63,9 +61,8 @@ describe StyleChecker do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::CoffeeScript")
         allow(LanguageWorker::CoffeeScript).to receive(:new).and_return(worker)
-        style_check = StyleChecker.new(pull_request, build)
 
-        style_check.run
+        WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(LanguageWorker::CoffeeScript).to have_received(:new).
@@ -91,9 +88,8 @@ describe StyleChecker do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::JavaScript")
         allow(LanguageWorker::JavaScript).to receive(:new).and_return(worker)
-        style_check = StyleChecker.new(pull_request, build)
 
-        style_check.run
+        WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(LanguageWorker::JavaScript).to have_received(:new).
@@ -119,9 +115,8 @@ describe StyleChecker do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Scss")
         allow(LanguageWorker::Scss).to receive(:new).and_return(worker)
-        style_check = StyleChecker.new(pull_request, build)
 
-        style_check.run
+        WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(LanguageWorker::Scss).to have_received(:new).
@@ -147,9 +142,8 @@ describe StyleChecker do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Unsupported")
         allow(LanguageWorker::Unsupported).to receive(:new).and_return(worker)
-        style_check = StyleChecker.new(pull_request, build)
 
-        style_check.run
+        WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(LanguageWorker::Unsupported).to have_received(:new).

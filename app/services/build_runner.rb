@@ -24,7 +24,7 @@ class BuildRunner
   end
 
   def dispatch_workers(build)
-    StyleChecker.new(pull_request, build).run
+    WorkerDispatcher.run(pull_request, build)
   end
 
   def pull_request

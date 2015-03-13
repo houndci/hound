@@ -1,5 +1,3 @@
-require "spec_helper"
-
 shared_examples "Language not moved to IronWorker" do
   describe "#run" do
     it "sends violations to hound" do

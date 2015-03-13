@@ -66,15 +66,12 @@ describe BuildRunner do
         build_runner = BuildRunner.new(payload)
         pull_request = stubbed_pull_request
         stubbed_github_api
-        style_checker = double("StyleChecker", run: true)
-        allow(StyleChecker).to receive(:new).
-          and_return(style_checker)
+        allow(WorkerDispatcher).to receive(:run)
 
         build_runner.run
         build = Build.find_by(repo_id: repo.id)
 
-        expect(StyleChecker).to have_received(:new).with(pull_request, build)
-        expect(style_checker).to have_received(:run)
+        expect(WorkerDispatcher).to have_received(:run).with(pull_request, build)
       end
     end
 
