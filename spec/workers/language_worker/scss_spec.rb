@@ -3,7 +3,7 @@ require "spec_helper"
 module LanguageWorker
   describe Scss do
     describe "#run" do
-      it "sends payload to Scss worker" do
+      it "sends file to be linted to SCSS worker" do
         build_worker = create(:build_worker)
         commit_file = commit_file(status: "added")
         repo_config = double("RepoConfig")
@@ -20,8 +20,7 @@ module LanguageWorker
         expect(Faraday).to have_received(:new).with(url: scss_worker_url)
         expect(connection).to have_received(:post).with(
           "/",
-          body:
-          {
+          body: {
             build_worker_id: build_worker.id,
             build_id: build_worker.build_id,
             config: {
@@ -29,7 +28,7 @@ module LanguageWorker
               default: default_config_file
             },
             file: {
-              name: "test.rb",
+              name: "test.scss",
               content: "some content"
             },
             hound_url: ENV["BUILD_WORKERS_URL"]
@@ -39,7 +38,7 @@ module LanguageWorker
     end
 
     def commit_file(options = {})
-      file = double("File", options.reverse_merge(filename: "test.rb"))
+      file = double("File", options.reverse_merge(filename: "test.scss"))
       commit = double(
         :commit,
         repo_name: "test/test",
