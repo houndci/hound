@@ -315,7 +315,6 @@ aside.org-nav {
 
     &:before {
       @include transition(all 0.25s linear);
-      @extend .fa-spin;
       color: $light-font-color;
       content: '\f013';
       display: inline-block;
@@ -438,6 +437,7 @@ aside.org-nav {
       &:before {
         opacity: 1;
         visibility: visible;
+        @extend .fa-spin;
       }
 
       .repo-name {
