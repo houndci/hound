@@ -17,17 +17,6 @@ module LanguageWorker
 
     private
 
-    def custom_config
-      repo_config.for(name).to_s
-    end
-
-    def default_config
-      DefaultConfigFile.new(
-        default_config_file,
-        pull_request.repository_owner_name
-      ).content
-    end
-
     def name
       self.class.name.demodulize.underscore
     end
