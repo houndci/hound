@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe StyleCheck do
+describe StyleChecker do
   describe "#run" do
     context "for a Ruby file" do
       it "runs LanguageWorker::Ruby" do
@@ -11,7 +11,7 @@ describe StyleCheck do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Ruby")
         allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
-        style_check = StyleCheck.new(pull_request, build)
+        style_check = StyleChecker.new(pull_request, build)
 
         style_check.run
 
@@ -38,7 +38,7 @@ describe StyleCheck do
           allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::Ruby")
           allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
-          style_check = StyleCheck.new(pull_request, build)
+          style_check = StyleChecker.new(pull_request, build)
 
           style_check.run
 
@@ -63,7 +63,7 @@ describe StyleCheck do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::CoffeeScript")
         allow(LanguageWorker::CoffeeScript).to receive(:new).and_return(worker)
-        style_check = StyleCheck.new(pull_request, build)
+        style_check = StyleChecker.new(pull_request, build)
 
         style_check.run
 
@@ -91,7 +91,7 @@ describe StyleCheck do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::JavaScript")
         allow(LanguageWorker::JavaScript).to receive(:new).and_return(worker)
-        style_check = StyleCheck.new(pull_request, build)
+        style_check = StyleChecker.new(pull_request, build)
 
         style_check.run
 
@@ -119,7 +119,7 @@ describe StyleCheck do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Scss")
         allow(LanguageWorker::Scss).to receive(:new).and_return(worker)
-        style_check = StyleCheck.new(pull_request, build)
+        style_check = StyleChecker.new(pull_request, build)
 
         style_check.run
 
@@ -147,7 +147,7 @@ describe StyleCheck do
         allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Unsupported")
         allow(LanguageWorker::Unsupported).to receive(:new).and_return(worker)
-        style_check = StyleCheck.new(pull_request, build)
+        style_check = StyleChecker.new(pull_request, build)
 
         style_check.run
 

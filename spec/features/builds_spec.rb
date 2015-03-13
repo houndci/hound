@@ -34,18 +34,7 @@ feature 'Builds' do
     end
   end
 
-  scenario 'a failed build' do
-    create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
-    stub_github_requests_with_violations
-    stub_commit_request(repo_name, pr_sha)
-    stub_pull_request_comments_request(repo_name, pr_number)
-    comment_request = stub_simple_comment_request
-    stub_status_requests(repo_name, pr_sha)
-
-    page.driver.post builds_path, payload: payload
-
-    expect(comment_request).to have_been_requested
-  end
+  scenario 'a failed build'
 
   def stub_github_requests_with_no_violations
     stub_pull_request_files_request(repo_name, pr_number)

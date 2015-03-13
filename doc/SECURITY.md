@@ -179,6 +179,7 @@ it makes a new HTTP request to GitHub's API to get
 the pull request's diff and file contents.
 Hound never fetches a complete version of your codebase.
 
+# FixMe
 In Ruby memory,
 `BuildRunner` passes your pull request's contents to [`StyleChecker`],
 which loops through the changes files and delegates to the appropriate

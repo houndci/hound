@@ -1,4 +1,4 @@
-class StyleCheck
+class StyleChecker
   def initialize(pull_request, build)
     @pull_request = pull_request
     @build = build

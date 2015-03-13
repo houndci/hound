@@ -7,15 +7,11 @@ class BuildRunner
     if repo && relevant_pull_request?
       track_subscribed_build_started
       create_pending_status
-      repo.builds.create!(
-        violations: violations,
+      build = repo.builds.create!(
         pull_request_number: payload.pull_request_number,
         commit_sha: payload.head_sha,
       )
-      commenter.comment_on_violations(priority_violations)
-      create_success_status
-      upsert_owner
-      track_subscribed_build_completed
+      dispatch_workers(build)
     end
   end
 
@@ -29,16 +25,8 @@ class BuildRunner
     @violations ||= style_checker.violations
   end
 
-  def priority_violations
-    violations.take(MAX_COMMENTS)
-  end
-
-  def style_checker
-    StyleChecker.new(pull_request)
-  end
-
-  def commenter
-    Commenter.new(pull_request)
+  def dispatch_workers(build)
+    #StyleChecker.new(pull_request, build).run
   end
 
   def pull_request
@@ -58,35 +46,11 @@ class BuildRunner
     end
   end
 
-  def track_subscribed_build_completed
-    if repo.subscription
-      user = repo.subscription.user
-      analytics = Analytics.new(user)
-      analytics.track_build_completed(repo)
-    end
-  end
-
   def create_pending_status
     github.create_pending_status(
       payload.full_repo_name,
       payload.head_sha,
       I18n.t(:pending_status)
-    )
-  end
-
-  def create_success_status
-    github.create_success_status(
-      payload.full_repo_name,
-      payload.head_sha,
-      I18n.t(:success_status)
-    )
-  end
-
-  def upsert_owner
-    Owner.upsert(
-      github_id: payload.repository_owner_id,
-      name: payload.repository_owner_name,
-      organization: payload.repository_owner_is_organization?
     )
   end
 
