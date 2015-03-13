@@ -5,7 +5,7 @@ class StyleChecker
   end
 
   def run
-    pull_request_files.select do |file|
+    pull_request_files.each do |file|
       file_worker = worker(file)
 
       if file_worker.enabled? && file_worker.file_included?(file)
