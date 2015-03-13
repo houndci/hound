@@ -1,12 +1,12 @@
 module LanguageWorker
   class Scss < Base
     def run
-      connection.post("/?code_name=scss", body: payload.to_json)
+      connection.post("/", body: worker_payload.to_json)
     end
 
     private
 
-    def payload
+    def worker_payload
       {
         build_worker_id: build_worker.id,
         build_id: build.id,
@@ -34,7 +34,7 @@ module LanguageWorker
     end
 
     def connection
-      @connection ||= Faraday.new(url: ENV.fetch("WORKER_URL"))
+      @connection ||= Faraday.new(url: ENV.fetch("SCSS_WORKER_URL"))
     end
 
     def default_config_file

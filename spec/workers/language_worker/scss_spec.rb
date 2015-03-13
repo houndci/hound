@@ -9,7 +9,7 @@ module LanguageWorker
         repo_config = double("RepoConfig")
         allow(repo_config).to receive(:for).with("scss").and_return("custom")
         pull_request = double("PullRequest", repository_owner_name: "foo")
-        scss_worker_url = ENV["WORKER_URL"]
+        scss_worker_url = ENV["SCSS_WORKER_URL"]
         connection = double("Connection", post: true)
         allow(Faraday).to receive(:new).with(url: scss_worker_url).
           and_return(connection)
@@ -19,7 +19,7 @@ module LanguageWorker
 
         expect(Faraday).to have_received(:new).with(url: scss_worker_url)
         expect(connection).to have_received(:post).with(
-          "/?code_name=scss",
+          "/",
           body:
           {
             build_worker_id: build_worker.id,
