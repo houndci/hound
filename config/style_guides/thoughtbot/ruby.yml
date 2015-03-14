@@ -130,6 +130,10 @@ MethodLength:
 ModuleFunction:
   Enabled: false
 
+MultilineOperationIndentation:
+  Enabled: true
+  EnforcedStyle: indented
+
 NegatedIf:
   Enabled: false
 
