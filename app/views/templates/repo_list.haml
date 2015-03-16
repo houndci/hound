@@ -2,8 +2,9 @@
   .search-wrapper
     %i.fa.fa-search
     %input.search{'type' => 'text', 'placeholder' => t('search_placeholder'), 'ng-model' => 'search.full_github_name'}
-  %a{'href' => '', 'class' => 'refresh', 'ng-click' => 'sync()', 'ng-class' => '{disabled: syncingRepos}'}
-    %span {{ syncButtonText }}
+  .refresh-wrapper
+    %button{'class' => 'refresh', 'ng-click' => 'sync()', 'ng-disabled' => 'syncingRepos'}
+      %span {{ syncButtonText }}
 
 .loading{'ng-show' => 'syncingRepos'}
   .dot

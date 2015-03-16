@@ -255,7 +255,7 @@ Style/MethodName:
 Style/MultilineOperationIndentation:
   Description: Checks indentation of binary operations that span more than one line.
   Enabled: true
-  EnforcedStyle: aligned
+  EnforcedStyle: indented
   SupportedStyles:
   - aligned
   - indented

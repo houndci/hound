@@ -69,7 +69,7 @@ feature "Repo list", js: true do
 
     expect(page).to have_content(repo.full_github_name)
 
-    click_link I18n.t("sync_repos")
+    click_button I18n.t("sync_repos")
 
     expect(page).to have_text("jimtom/My-Private-Repo")
     expect(page).not_to have_text(repo.full_github_name)

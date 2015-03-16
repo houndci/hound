@@ -22,6 +22,6 @@ en:
       guide."
     step_three_title: "Hound comments on your pull request."
     step_three_desc:
-      "If Hound finds any violations of your style guid he will
+      "If Hound finds any violations of your style guide he will
       comment inline on the violation in your GitHub pull
       request."
