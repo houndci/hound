@@ -25,5 +25,6 @@ RSpec.configure do |config|
   config.order = "random"
   config.include GithubApiHelper
   config.include StripeApiHelper
+  config.include ApiHelper
   WebMock.disable_net_connect!(allow_localhost: true)
 end
