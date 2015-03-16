@@ -155,49 +155,83 @@ describe RepoConfig do
         )
       end
 
-      it "supports inherit_from" do
-        hound_config = <<-EOS.strip_heredoc
-          ruby:
-            enabled: true
-            config_file: .rubocop.yml
-        EOS
+      context "with a list of inherit_from files" do
+        it "returns violations" do
+          hound_config = <<-EOS.strip_heredoc
+            ruby:
+              enabled: true
+              config_file: .rubocop.yml
+          EOS
 
-        rubocop = <<-EOS.strip_heredoc
-          inherit_from:
-            - config/base.yml
-            - config/overrides.yml
-          Style/Encoding:
-            Enabled: true
-        EOS
+          rubocop = <<-EOS.strip_heredoc
+            inherit_from:
+              - config/base.yml
+              - config/overrides.yml
+            Style/Encoding:
+              Enabled: true
+          EOS
 
-        base = <<-EOS.strip_heredoc
-          LineLength:
-            Max: 40
-        EOS
+          base = <<-EOS.strip_heredoc
+            LineLength:
+              Max: 40
+          EOS
 
-        overrides = <<-EOS.strip_heredoc
-          Style/HashSyntax:
-            EnforcedStyle: hash_rockets
-          Style/Encoding:
-            Enabled: false
-        EOS
+          overrides = <<-EOS.strip_heredoc
+            Style/HashSyntax:
+              EnforcedStyle: hash_rockets
+            Style/Encoding:
+              Enabled: false
+          EOS
 
-        commit = stub_commit(
-          hound_config: hound_config,
-          ".rubocop.yml" => rubocop,
-          "config/base.yml" => base,
-          "config/overrides.yml" => overrides
-        )
+          commit = stub_commit(
+            hound_config: hound_config,
+            ".rubocop.yml" => rubocop,
+            "config/base.yml" => base,
+            "config/overrides.yml" => overrides
+          )
 
-        config = RepoConfig.new(commit)
+          config = RepoConfig.new(commit)
 
-        result = config.for("ruby")
+          result = config.for("ruby")
 
-        expect(result).to eq(
-          "Style/HashSyntax" => { "EnforcedStyle" => "hash_rockets" },
-          "LineLength" => { "Max" => 40 },
-          "Style/Encoding" => { "Enabled" => true }
-        )
+          expect(result).to eq(
+            "Style/HashSyntax" => { "EnforcedStyle" => "hash_rockets" },
+            "LineLength" => { "Max" => 40 },
+            "Style/Encoding" => { "Enabled" => true }
+          )
+        end
+      end
+
+      context "with a single inherit_from entry" do
+        it "returns violations" do
+          hound_config = <<-EOS.strip_heredoc
+            ruby:
+              config_file: .rubocop.yml
+          EOS
+          rubocop = <<-EOS.strip_heredoc
+            inherit_from: config/base.yml
+
+            Style/Encoding:
+              Enabled: true
+          EOS
+          base = <<-EOS.strip_heredoc
+            LineLength:
+              Max: 40
+          EOS
+          commit = stub_commit(
+            hound_config: hound_config,
+            ".rubocop.yml" => rubocop,
+            "config/base.yml" => base,
+          )
+          config = RepoConfig.new(commit)
+
+          result = config.for("ruby")
+
+          expect(result).to eq(
+            "LineLength" => { "Max" => 40 },
+            "Style/Encoding" => { "Enabled" => true },
+          )
+        end
       end
 
       context "with unsafe yaml" do
