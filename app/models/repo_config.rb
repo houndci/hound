@@ -77,7 +77,7 @@ class RepoConfig
 
   def load_config(config_file_path, file_type)
     main_config = load_file(config_file_path, file_type)
-    inherit_from = main_config.fetch("inherit_from", [])
+    inherit_from = Array(main_config.fetch("inherit_from", []))
 
     inherited_config = inherit_from.reduce({}) do |config, ancestor_file_path|
       ancestor_config = load_file(ancestor_file_path, file_type)
