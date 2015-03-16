@@ -71,7 +71,8 @@ describe BuildRunner do
         build_runner.run
         build = Build.find_by(repo_id: repo.id)
 
-        expect(WorkerDispatcher).to have_received(:run).with(pull_request, build)
+        expect(WorkerDispatcher).
+          to have_received(:run).with(pull_request, build)
       end
     end
 

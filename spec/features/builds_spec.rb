@@ -34,7 +34,7 @@ feature 'Builds' do
     end
   end
 
-  scenario 'a failed build'
+  scenario "a failed build"
 
   def stub_github_requests_with_no_violations
     stub_pull_request_files_request(repo_name, pr_number)

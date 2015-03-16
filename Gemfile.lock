@@ -286,9 +286,6 @@ GEM
     sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
-    scss-lint (0.34.0)
-      rainbow (~> 2.0)
-      sass (~> 3.4.1)
     sentry-raven (0.9.4)
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
@@ -378,7 +375,6 @@ DEPENDENCIES
   rspec-rails (>= 2.14)
   rubocop (= 0.29.1)
   sass-rails
-  scss-lint (= 0.34.0)
   sentry-raven
   shoulda-matchers
   stripe

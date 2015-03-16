@@ -29,7 +29,6 @@ gem "resque-sentry"
 gem "resque-timeout"
 gem "rubocop", "0.29.1"
 gem "sass-rails"
-gem "scss-lint", "0.34.0", require: false
 gem "sentry-raven"
 gem "stripe"
 gem "uglifier", ">= 1.0.3"

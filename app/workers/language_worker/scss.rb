@@ -10,15 +10,23 @@ module LanguageWorker
       {
         build_worker_id: build_worker.id,
         build_id: build.id,
-        config: {
-          custom: custom_config,
-          default: default_config
-        },
-        file: {
-          name: filename,
-          content: content
-        },
+        config: config,
+        file: file,
         hound_url: ENV.fetch("BUILD_WORKERS_URL"),
+      }
+    end
+
+    def file
+      {
+        name: filename,
+        content: content
+      }
+    end
+
+    def config
+      {
+        custom: custom_config,
+        default: default_config
       }
     end
 
