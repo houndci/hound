@@ -5,6 +5,7 @@ class BuildRunner
     if repo && relevant_pull_request?
       track_subscribed_build_started
       create_pending_status
+      upsert_owner
       build = repo.builds.create!(
         pull_request_number: payload.pull_request_number,
         commit_sha: payload.head_sha,
@@ -50,6 +51,15 @@ class BuildRunner
       payload.head_sha,
       I18n.t(:pending_status)
     )
+  end
+
+  def upsert_owner
+    owner = Owner.upsert(
+      github_id: payload.repository_owner_id,
+      name: payload.repository_owner_name,
+      organization: payload.repository_owner_is_organization?
+    )
+    repo.update(owner: owner)
   end
 
   def github

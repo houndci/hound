@@ -74,6 +74,33 @@ describe BuildRunner do
         expect(WorkerDispatcher).
           to have_received(:run).with(pull_request, build)
       end
+
+      it "upserts repository owner" do
+        owner_github_id = 56789
+        owner_name = "john"
+        repo = create(:repo, :active, github_id: 123)
+        payload = stubbed_payload(
+          github_repo_id: repo.github_id,
+          full_repo_name: "test/repo",
+          head_sha: "headsha",
+          repository_owner_id: owner_github_id,
+          repository_owner_name: owner_name,
+          repository_owner_is_organization?: true,
+        )
+        build_runner = BuildRunner.new(payload)
+        stubbed_pull_request
+        stubbed_github_api
+
+        build_runner.run
+
+        owner_attributes = Owner.first.slice(:name, :github_id, :organization)
+        expect(owner_attributes).to eq(
+          "name" => owner_name,
+          "github_id" => owner_github_id,
+          "organization" => true
+        )
+        expect(repo.reload.owner).to eq Owner.first
+      end
     end
 
     context "with subscribed private repo and opened pull request" do
