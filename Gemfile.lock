@@ -312,7 +312,6 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    timecop (0.7.3)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.5.3)
@@ -379,7 +378,6 @@ DEPENDENCIES
   sentry-raven
   shoulda-matchers
   stripe
-  timecop
   uglifier (>= 1.0.3)
   unicorn
   webmock

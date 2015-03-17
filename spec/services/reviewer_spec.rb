@@ -6,7 +6,12 @@ describe Reviewer do
     it "comments on GitHub"
 
     it "create success status to GitHub" do
-      repo = create(:repo, :active, github_id: 123, full_github_name: "test/repo")
+      repo = create(
+        :repo,
+        :active,
+        github_id: 123,
+        full_github_name: "test/repo"
+      )
       file = double("File")
       violations = double("Violations")
       build = create(
@@ -45,18 +50,17 @@ describe Reviewer do
     end
 
     it "mark build worker as complete" do
-      Timecop.freeze
+      travel_to(Time.now) do
+        build_worker = create(:build_worker)
+        file = double("File")
+        violations = double("Violations")
+        reviewer = Reviewer.new(build_worker, file, violations)
+        stubbed_github_api
 
-      time = Time.zone.now
-      build_worker = create(:build_worker)
-      file = double("File")
-      violations = double("Violations")
-      reviewer = Reviewer.new(build_worker, file, violations)
-      stubbed_github_api
+        reviewer.run
 
-      reviewer.run
-
-      expect(build_worker.completed_at).to eq(time)
+        expect(build_worker.completed_at).to eq(Time.now)
+      end
     end
   end
 
