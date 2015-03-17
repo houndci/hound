@@ -96,13 +96,11 @@ describe Reviewer do
             build.pull_request_number
           )
           expect(github_api).to have_received(:add_pull_request_comment).with(
-            {
-              pull_request_number: build.pull_request_number,
-              comment: "I have an error",
-              commit: commit,
-              filename: "a.a",
-              patch_position: 0
-            }
+            pull_request_number: build.pull_request_number,
+            comment: "I have an error",
+            commit: commit,
+            filename: "a.a",
+            patch_position: 0
           )
           expect(Commit).to have_received(:new).with(
             repo.full_github_name,
