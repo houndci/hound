@@ -1,5 +1,5 @@
 module LanguageWorker
-  class StyleGuideBase < Base
+  class StyleGuideWorker < Base
     def run
       hound_connection.post("/", body: hound_payload.to_json)
     end

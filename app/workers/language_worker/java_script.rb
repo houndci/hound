@@ -1,5 +1,5 @@
 module LanguageWorker
-  class JavaScript < StyleGuideBase
+  class JavaScript < StyleGuideWorker
     private
 
     def style_guide_name

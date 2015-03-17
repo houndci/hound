@@ -1,14 +1,10 @@
 class Reviewer
   MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
 
+  pattr_initialize :build_worker, :file, :violations_attrs
+
   def self.run(build_worker, file, violations_attrs)
     new(build_worker, file, violations_attrs).run
-  end
-
-  def initialize(build_worker, file, violations_attrs)
-    @build_worker = build_worker
-    @file = file
-    @violations_attrs = violations_attrs
   end
 
   def run
@@ -19,8 +15,6 @@ class Reviewer
   end
 
   private
-
-  attr_reader :build_worker, :file, :violations_attrs
 
   def mark_build_worker_complete
     build_worker.update!(completed_at: Time.now)

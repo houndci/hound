@@ -34,6 +34,7 @@ feature 'Builds' do
     end
   end
 
+  # TODO not sure what needs to be tested here?
   scenario "a failed build"
 
   def stub_github_requests_with_no_violations

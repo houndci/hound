@@ -1,5 +1,5 @@
 module LanguageWorker
-  class Ruby < StyleGuideBase
+  class Ruby < StyleGuideWorker
     private
 
     def style_guide_name

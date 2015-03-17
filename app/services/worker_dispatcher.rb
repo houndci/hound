@@ -1,11 +1,8 @@
 class WorkerDispatcher
+  pattr_initialize :pull_request, :build
+
   def self.run(pull_request, build)
     new(pull_request, build).run
-  end
-
-  def initialize(pull_request, build)
-    @pull_request = pull_request
-    @build = build
   end
 
   def run
@@ -19,8 +16,6 @@ class WorkerDispatcher
   end
 
   private
-
-  attr_reader :pull_request, :build
 
   def pull_request_files
     pull_request.pull_request_files
