@@ -1,4 +1,6 @@
 class Reviewer
+  MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
+
   def self.run(build_worker, file, violations_attrs)
     new(build_worker, file, violations_attrs).run
   end
@@ -10,7 +12,7 @@ class Reviewer
   end
 
   def run
-    violations
+    commenter.comment_on_violations(priority_violations)
     create_success_status
     track_subscribed_build_completed
     mark_build_worker_complete
@@ -56,6 +58,18 @@ class Reviewer
     end
   end
 
+  def priority_violations
+    violations.take(MAX_COMMENTS)
+  end
+
+  def commenter
+    Commenter.new(pull_request)
+  end
+
+  def pull_request
+    PullRequest.new(review_payload)
+  end
+
   def build
     build_worker.build
   end
@@ -70,5 +84,21 @@ class Reviewer
 
   def github
     @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+  end
+
+  def review_payload
+    Payload.new(
+      {
+        number: build.pull_request_number,
+        pull_request: {
+          head: {
+            sha: build.commit_sha
+          }
+        },
+        repository: {
+          full_name: repo.full_github_name
+        }
+      }.to_json
+    )
   end
 end

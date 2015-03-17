@@ -5,45 +5,18 @@ describe Reviewer do
     context "violations" do
       context "when violations_attrs present" do
         it "creates violations using violations_attrs" do
-          content = "def good; end"
           build = create(:build)
-          violations_attrs = [
-            {
-              line_number: 0,
-              messages: ["I have an error"],
-            },
-            {
-              line_number: 0,
-              messages: ["I have an error"],
-            }
-          ]
-
-          file = {
-            filename: "a.a",
-            patch: "+#{content}",
-            content: content
-          }
-
           build_worker = create(:build_worker, build: build)
           reviewer = Reviewer.new(build_worker, file, violations_attrs)
           stubbed_github_api
 
           reviewer.run
 
-          expect(Violation.count).to eq(2)
-
           first_violation = Violation.first
           expect(first_violation.filename).to eq("a.a")
           expect(first_violation.line_number).to eq(0)
           expect(first_violation.messages).to eq(["I have an error"])
-          expect(first_violation.build_id).to eq(build.id)
-          expect(first_violation.patch_position).to eq(0)
-
-          second_violation = Violation.last
-          expect(second_violation.filename).to eq("a.a")
-          expect(second_violation.line_number).to eq(0)
-          expect(second_violation.messages).to eq(["I have an error"])
-          expect(second_violation.build_id).to eq(build.id)
+          expect(first_violation.build).to eq(Build.last)
           expect(first_violation.patch_position).to eq(0)
         end
       end
@@ -51,7 +24,76 @@ describe Reviewer do
       context "when violations_attrs not present"
     end
 
-    it "comments on GitHub"
+    context "comments" do
+      context "when there are no violations" do
+        it "sends no comments"
+      end
+
+      context "when there are violations" do
+        it "comments on violations" do
+          commenter = stubbed_commenter
+          allow(Commenter).to receive(:new).and_return(commenter)
+          stubbed_github_api
+          build = create(:build)
+          build_worker = create(:build_worker, build: build)
+          reviewer = Reviewer.new(build_worker, file, violations_attrs)
+
+          reviewer.run
+
+          expect(commenter).to have_received(:comment_on_violations).
+            with(Violation.all)
+        end
+
+        it "comments a maximum number of times" do
+          allow(ENV).to receive(:[]).with("HOUND_GITHUB_TOKEN").
+            and_return("something")
+          stub_const("::BuildRunner::MAX_COMMENTS", 1)
+          commenter = stubbed_commenter
+          allow(Commenter).to receive(:new).and_return(commenter)
+          stubbed_github_api
+          build = create(:build)
+          build_worker = create(:build_worker, build: build)
+          reviewer = Reviewer.new(build_worker, file, violations_attrs)
+
+          reviewer.run
+
+          expect(commenter).to have_received(:comment_on_violations).
+            with(Violation.all.take(BuildRunner::MAX_COMMENTS))
+        end
+
+        it "hits the github_api with reviewer payload" do
+          github_api = stubbed_github_api
+          build = create(:build, commit_sha: "sha")
+          repo = build.repo
+          build_worker = create(:build_worker, build: build)
+          commit = double("Commit")
+          allow(Commit).to receive(:new).and_return(commit)
+          reviewer = Reviewer.new(build_worker, file, violations_attrs)
+
+          reviewer.run
+
+          expect(github_api).
+            to have_received(:pull_request_comments).
+            with(build.repo.full_github_name, build.pull_request_number)
+          expect(github_api).
+            to have_received(:add_pull_request_comment).
+            with(
+              {
+                pull_request_number: build.pull_request_number,
+                comment: "I have an error",
+                commit: commit,
+                filename: "a.a",
+                patch_position: 0
+              }
+            )
+            expect(Commit).to have_received(:new).with(
+              repo.full_github_name,
+              "sha",
+              github_api
+            )
+        end
+      end
+    end
 
     it "create success status to GitHub" do
       repo = create(
@@ -115,10 +157,40 @@ describe Reviewer do
   def stubbed_github_api
     github_api = double(
       "GithubApi",
-      create_success_status: nil
+      create_success_status: nil,
+      pull_request_comments: [],
+      add_pull_request_comment: nil
     )
     allow(GithubApi).to receive(:new).and_return(github_api)
 
     github_api
+  end
+
+  def stubbed_commenter
+    commenter = double(:commenter).as_null_object
+    allow(Commenter).to receive(:new).and_return(commenter)
+
+    commenter
+  end
+
+  def violations_attrs
+    [
+      {
+        line_number: 0,
+        messages: ["I have an error"],
+      }
+    ]
+  end
+
+  def content
+    "def good; end"
+  end
+
+  def file
+    {
+      filename: "a.a",
+      patch: "+#{content}",
+      content: content
+    }
   end
 end

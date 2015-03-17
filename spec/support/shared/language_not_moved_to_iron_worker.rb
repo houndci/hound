@@ -2,7 +2,6 @@ shared_examples "Language not moved to IronWorker" do
   describe "#run" do
     it "sends violations to hound" do
       build_worker = create(:build_worker)
-      commit_file = commit_file(status: "added")
       repo_config = double("RepoConfig")
       allow(repo_config).to receive(:for).with(language).and_return({})
       pull_request = double("PullRequest", repository_owner_name: "foo")
@@ -25,7 +24,7 @@ shared_examples "Language not moved to IronWorker" do
         body: {
           build_worker_id: build_worker.id,
           build_id: build_worker.build_id,
-          violations: violations(build_worker.build_id),
+          violations: violations,
           file: {
             name: "test.foo",
             content: content,
@@ -36,11 +35,11 @@ shared_examples "Language not moved to IronWorker" do
     end
   end
 
-  def commit_file(options = {})
+  def commit_file
     CommitFile.new("test.foo", content, "")
   end
 
-  def violations(build_id)
+  def violations
     [
       {
         line_number: 1,
