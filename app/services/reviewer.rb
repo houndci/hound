@@ -47,12 +47,11 @@ class Reviewer
       line = commit_file.line_at(violation[:line_number])
 
       if line.changed?
-        Violation.create!(
+        build.violations.create!(
           filename: file[:filename],
           patch_position: line.patch_position,
           line_number: violation[:line_number],
-          messages: violation[:messages],
-          build_id: build.id
+          messages: violation[:messages]
         )
       end
     end
@@ -82,23 +81,17 @@ class Reviewer
     build.repo
   end
 
-  def github
-    @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
-  end
-
   def review_payload
     Payload.new(
       {
         number: build.pull_request_number,
-        pull_request: {
-          head: {
-            sha: build.commit_sha
-          }
-        },
-        repository: {
-          full_name: repo.full_github_name
-        }
+        pull_request: { head: { sha: build.commit_sha } },
+        repository: { full_name: repo.full_github_name }
       }.to_json
     )
+  end
+
+  def github
+    @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
   end
 end

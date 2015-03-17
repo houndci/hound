@@ -21,18 +21,38 @@ describe Reviewer do
         end
       end
 
-      context "when violations_attrs not present"
+      context "when violations_attrs not present" do
+        it "does not create violations" do
+          build = create(:build)
+          build_worker = create(:build_worker, build: build)
+          reviewer = Reviewer.new(build_worker, file, [])
+          stubbed_github_api
+
+          reviewer.run
+
+          expect(Violation.count).to eq(0)
+        end
+      end
     end
 
     context "comments" do
       context "when there are no violations" do
-        it "sends no comments"
+        it "sends no comments" do
+          github_api = stubbed_github_api
+          build = create(:build, commit_sha: "sha")
+          build_worker = create(:build_worker, build: build)
+          reviewer = Reviewer.new(build_worker, file, [])
+
+          reviewer.run
+
+          expect(github_api).not_to have_received(:pull_request_comments)
+          expect(github_api).not_to have_received(:add_pull_request_comment)
+        end
       end
 
       context "when there are violations" do
         it "comments on violations" do
           commenter = stubbed_commenter
-          allow(Commenter).to receive(:new).and_return(commenter)
           stubbed_github_api
           build = create(:build)
           build_worker = create(:build_worker, build: build)
@@ -49,7 +69,6 @@ describe Reviewer do
             and_return("something")
           stub_const("::BuildRunner::MAX_COMMENTS", 1)
           commenter = stubbed_commenter
-          allow(Commenter).to receive(:new).and_return(commenter)
           stubbed_github_api
           build = create(:build)
           build_worker = create(:build_worker, build: build)
@@ -61,7 +80,7 @@ describe Reviewer do
             with(Violation.all.take(BuildRunner::MAX_COMMENTS))
         end
 
-        it "hits the github_api with reviewer payload" do
+        it "hits the github_api with review payload" do
           github_api = stubbed_github_api
           build = create(:build, commit_sha: "sha")
           repo = build.repo
@@ -72,25 +91,24 @@ describe Reviewer do
 
           reviewer.run
 
-          expect(github_api).
-            to have_received(:pull_request_comments).
-            with(build.repo.full_github_name, build.pull_request_number)
-          expect(github_api).
-            to have_received(:add_pull_request_comment).
-            with(
-              {
-                pull_request_number: build.pull_request_number,
-                comment: "I have an error",
-                commit: commit,
-                filename: "a.a",
-                patch_position: 0
-              }
-            )
-            expect(Commit).to have_received(:new).with(
-              repo.full_github_name,
-              "sha",
-              github_api
-            )
+          expect(github_api).to have_received(:pull_request_comments).with(
+            repo.full_github_name,
+            build.pull_request_number
+          )
+          expect(github_api).to have_received(:add_pull_request_comment).with(
+            {
+              pull_request_number: build.pull_request_number,
+              comment: "I have an error",
+              commit: commit,
+              filename: "a.a",
+              patch_position: 0
+            }
+          )
+          expect(Commit).to have_received(:new).with(
+            repo.full_github_name,
+            "sha",
+            github_api
+          )
         end
       end
     end
