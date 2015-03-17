@@ -5,7 +5,6 @@ module LanguageWorker
     describe "#run" do
       it "sends file to be linted to SCSS worker" do
         build_worker = create(:build_worker)
-        commit_file = commit_file(status: "added")
         repo_config = double("RepoConfig")
         allow(repo_config).to receive(:for).with("scss").and_return("custom")
         pull_request = double("PullRequest", repository_owner_name: "foo")
@@ -29,7 +28,8 @@ module LanguageWorker
             },
             file: {
               name: "test.scss",
-              content: "some content"
+              content: "some content",
+              patch_body: ""
             },
             hound_url: ENV["BUILD_WORKERS_URL"]
           }.to_json

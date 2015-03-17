@@ -5,26 +5,23 @@ describe Reviewer do
     context "violations" do
       context "when violations_attrs present" do
         it "creates violations using violations_attrs" do
+          content = "def good; end"
           build = create(:build)
           violations_attrs = [
             {
-              filename: "a.a",
-              line_number: 2,
+              line_number: 0,
               messages: ["I have an error"],
-              build_id: build.id
             },
             {
-              filename: "a.a",
-              line_number: 2,
+              line_number: 0,
               messages: ["I have an error"],
-              build_id: build.id
             }
           ]
 
           file = {
             filename: "a.a",
-            patch: "",
-            content: "some content"
+            patch: "+#{content}",
+            content: content
           }
 
           build_worker = create(:build_worker, build: build)
@@ -37,17 +34,17 @@ describe Reviewer do
 
           first_violation = Violation.first
           expect(first_violation.filename).to eq("a.a")
-          expect(first_violation.line_number).to eq(2)
+          expect(first_violation.line_number).to eq(0)
           expect(first_violation.messages).to eq(["I have an error"])
           expect(first_violation.build_id).to eq(build.id)
-          expect(first_violation.patch_position).to eq(-1)
+          expect(first_violation.patch_position).to eq(0)
 
           second_violation = Violation.last
           expect(second_violation.filename).to eq("a.a")
-          expect(second_violation.line_number).to eq(2)
+          expect(second_violation.line_number).to eq(0)
           expect(second_violation.messages).to eq(["I have an error"])
           expect(second_violation.build_id).to eq(build.id)
-          expect(first_violation.patch_position).to eq(-1)
+          expect(first_violation.patch_position).to eq(0)
         end
       end
 

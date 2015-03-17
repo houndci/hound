@@ -19,7 +19,8 @@ module LanguageWorker
     def file
       {
         name: filename,
-        content: content
+        content: content,
+        patch_body: patch_body
       }
     end
 

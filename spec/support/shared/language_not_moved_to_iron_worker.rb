@@ -28,7 +28,8 @@ shared_examples "Language not moved to IronWorker" do
           violations: violations(build_worker.build_id),
           file: {
             name: "test.foo",
-            content: content
+            content: content,
+            patch_body: ""
           }
         }.to_json
       )
@@ -42,10 +43,8 @@ shared_examples "Language not moved to IronWorker" do
   def violations(build_id)
     [
       {
-        filename: "test.foo",
         line_number: 1,
         messages: messages,
-        build_id: build_id
       }
     ]
   end

@@ -10,8 +10,7 @@ class Reviewer
   end
 
   def run
-    # Comment
-    save_violations
+    violations
     create_success_status
     track_subscribed_build_completed
     mark_build_worker_complete
@@ -41,23 +40,28 @@ class Reviewer
     )
   end
 
-  def save_violations
-    violations_attrs.each do |violation_attr|
-      commit_file = CommitFile.new(file[:filename], file[:content], file[:patch])
-      line = commit_file.line_at(violation_attr[:line_number])
+  def violations
+    violations_attrs.flat_map do |violation|
+      line = commit_file.line_at(violation[:line_number])
 
-      Violation.create!(
-        filename: violation_attr[:filename],
-        patch_position: line.patch_position,
-        line_number: violation_attr[:line_number],
-        messages: violation_attr[:messages],
-        build_id: violation_attr[:build_id],
-      )
+      if line.changed?
+        Violation.create!(
+          filename: file[:filename],
+          patch_position: line.patch_position,
+          line_number: violation[:line_number],
+          messages: violation[:messages],
+          build_id: build.id
+        )
+      end
     end
   end
 
   def build
     build_worker.build
+  end
+
+  def commit_file
+    CommitFile.new(file[:filename], file[:content], file[:patch])
   end
 
   def repo

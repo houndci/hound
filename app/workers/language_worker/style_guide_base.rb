@@ -15,7 +15,8 @@ module LanguageWorker
         violations: violations,
         file: {
           name: filename,
-          content: content
+          content: content,
+          patch_body: patch_body
         }
       }
     end
@@ -23,10 +24,8 @@ module LanguageWorker
     def violations
       violations_from_guide.flat_map do |violation|
         {
-          filename: violation.filename,
           line_number: violation.line_number,
-          messages: violation.messages,
-          build_id: build.id
+          messages: violation.messages
         }
       end
     end
