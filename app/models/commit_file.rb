@@ -1,20 +1,10 @@
 class CommitFile
-  pattr_initialize :file, :commit
+  attr_reader :filename, :content
 
-  def filename
-    file.filename
-  end
-
-  def content
-    @content ||= begin
-      unless removed?
-        commit.file_content(filename)
-      end
-    end
-  end
-
-  def removed?
-    file.status == "removed"
+  def initialize(filename, content, patch_body)
+    @filename = filename
+    @content = content
+    @patch_body = patch_body
   end
 
   def line_at(line_number)
@@ -24,11 +14,13 @@ class CommitFile
 
   private
 
+  attr_reader :patch_body
+
   def changed_lines
     @changed_lines ||= patch.changed_lines
   end
 
   def patch
-    Patch.new(file.patch)
+    Patch.new(patch_body)
   end
 end

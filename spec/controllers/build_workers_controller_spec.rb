@@ -23,19 +23,20 @@ describe BuildWorkersController do
     it "dispatches a ReviewJob" do
       allow(ReviewJob).to receive(:perform_later)
       file = double("File")
-      violations = double("Violations")
+      violations_attrs = double("ViolationsAttrs")
       build_worker = create(:build_worker)
 
       put(
         :update,
         id: build_worker.id,
-        violations: violations,
+        violations: violations_attrs,
         file: file,
         format: :json
       )
 
       expect(ReviewJob).
-        to have_received(:perform_later).with(build_worker, file, violations)
+        to have_received(:perform_later).
+        with(build_worker, file, violations_attrs)
     end
   end
 end

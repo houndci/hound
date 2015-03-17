@@ -5,7 +5,7 @@ class BuildWorkersController < ApplicationController
     build_worker = find_build_worker
 
     if not build_worker.completed?
-      ReviewJob.perform_later(build_worker, file, violations)
+      ReviewJob.perform_later(build_worker, file, violations_attrs)
 
       render json: {}, status: 201
     else
@@ -17,7 +17,7 @@ class BuildWorkersController < ApplicationController
 
   private
 
-  def violations
+  def violations_attrs
     params[:violations]
   end
 

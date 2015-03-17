@@ -36,17 +36,7 @@ shared_examples "Language not moved to IronWorker" do
   end
 
   def commit_file(options = {})
-    file = double(
-      "File",
-      options.reverse_merge(patch: "", filename: "test.foo")
-    )
-    commit = double(
-      :commit,
-      repo_name: "test/test",
-      sha: "abc",
-      file_content: content
-    )
-    CommitFile.new(file, commit)
+    CommitFile.new("test.foo", content, "")
   end
 
   def violations(build_id)

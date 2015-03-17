@@ -9,11 +9,9 @@ describe StyleGuide::JavaScript do
         it "returns a collection of violation objects" do
           repo_config = double("RepoConfig", for: {})
           filename = "bad.js"
-          line = double("Line", patch_position: 1)
           file = double(
             "File",
             filename: filename,
-            line_at: line,
             content: "var blahh = 'blahh'"
           )
 
@@ -106,11 +104,9 @@ describe StyleGuide::JavaScript do
     context "with ES6 support enabled" do
       it "respects ES6" do
         repo_config = double("RepoConfig", for: { esnext: true })
-        line = double("Line", patch_position: 1)
         file = double(
           "File",
           filename: "using_es6_syntax.js",
-          line_at: line,
           content: "import Ember from 'ember'"
         )
 

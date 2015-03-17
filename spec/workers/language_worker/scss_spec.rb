@@ -37,15 +37,8 @@ module LanguageWorker
       end
     end
 
-    def commit_file(options = {})
-      file = double("File", options.reverse_merge(filename: "test.scss"))
-      commit = double(
-        :commit,
-        repo_name: "test/test",
-        sha: "abc",
-        file_content: "some content"
-      )
-      CommitFile.new(file, commit)
+    def commit_file
+      CommitFile.new("test.scss", "some content", "")
     end
 
     def default_config_file

@@ -31,14 +31,4 @@ describe Violation do
       expect(messages).to match_array([message])
     end
   end
-
-  describe "#on_changed_line?" do
-    it "delegates to line" do
-      violation = build(:violation, line: double("Line", changed?: false))
-
-      changed = violation.on_changed_line?
-
-      expect(changed).to eq false
-    end
-  end
 end

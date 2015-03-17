@@ -23,7 +23,7 @@ class WorkerDispatcher
   attr_reader :pull_request, :build
 
   def pull_request_files
-    pull_request.pull_request_files(&:removed?)
+    pull_request.pull_request_files
   end
 
   def worker(file)

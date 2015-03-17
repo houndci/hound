@@ -2,7 +2,58 @@ require "spec_helper"
 
 describe Reviewer do
   describe "#run" do
-    it "create violations"
+    context "violations" do
+      context "when violations_attrs present" do
+        it "creates violations using violations_attrs" do
+          build = create(:build)
+          violations_attrs = [
+            {
+              filename: "a.a",
+              line_number: 2,
+              messages: ["I have an error"],
+              build_id: build.id
+            },
+            {
+              filename: "a.a",
+              line_number: 2,
+              messages: ["I have an error"],
+              build_id: build.id
+            }
+          ]
+
+          file = {
+            filename: "a.a",
+            patch: "",
+            content: "some content"
+          }
+
+          build_worker = create(:build_worker, build: build)
+          reviewer = Reviewer.new(build_worker, file, violations_attrs)
+          stubbed_github_api
+
+          reviewer.run
+
+          expect(Violation.count).to eq(2)
+
+          first_violation = Violation.first
+          expect(first_violation.filename).to eq("a.a")
+          expect(first_violation.line_number).to eq(2)
+          expect(first_violation.messages).to eq(["I have an error"])
+          expect(first_violation.build_id).to eq(build.id)
+          expect(first_violation.patch_position).to eq(-1)
+
+          second_violation = Violation.last
+          expect(second_violation.filename).to eq("a.a")
+          expect(second_violation.line_number).to eq(2)
+          expect(second_violation.messages).to eq(["I have an error"])
+          expect(second_violation.build_id).to eq(build.id)
+          expect(first_violation.patch_position).to eq(-1)
+        end
+      end
+
+      context "when violations_attrs not present"
+    end
+
     it "comments on GitHub"
 
     it "create success status to GitHub" do
@@ -13,14 +64,14 @@ describe Reviewer do
         full_github_name: "test/repo"
       )
       file = double("File")
-      violations = double("Violations")
+      violations_attrs = []
       build = create(
         :build,
         repo: repo,
         commit_sha: "headsha"
       )
       build_worker = create(:build_worker, build: build)
-      reviewer = Reviewer.new(build_worker, file, violations)
+      reviewer = Reviewer.new(build_worker, file, violations_attrs)
       github_api = stubbed_github_api
 
       reviewer.run
@@ -36,10 +87,10 @@ describe Reviewer do
       repo = create(:repo, :active, github_id: 123, private: true)
       create(:subscription, repo: repo)
       file = double("File")
-      violations = double("Violations")
+      violations_attrs = []
       build = create(:build, repo: repo)
       build_worker = create(:build_worker, build: build)
-      reviewer = Reviewer.new(build_worker, file, violations)
+      reviewer = Reviewer.new(build_worker, file, violations_attrs)
       stubbed_github_api
 
       reviewer.run
@@ -53,8 +104,8 @@ describe Reviewer do
       travel_to(Time.now) do
         build_worker = create(:build_worker)
         file = double("File")
-        violations = double("Violations")
-        reviewer = Reviewer.new(build_worker, file, violations)
+        violations_attrs = []
+        reviewer = Reviewer.new(build_worker, file, violations_attrs)
         stubbed_github_api
 
         reviewer.run

@@ -8,7 +8,7 @@ class PullRequest
   def pull_request_files
     @pull_request_files ||= api.
       pull_request_files(full_repo_name, number).
-      map { |file| build_commit_file(file) }
+      map { |github_file| build_commit_file(github_file) }.compact
   end
 
   def comment_on_violation(violation)
@@ -39,8 +39,18 @@ class PullRequest
 
   private
 
-  def build_commit_file(file)
-    CommitFile.new(file, head_commit)
+  def build_commit_file(github_file)
+    unless file_removed?(github_file)
+      CommitFile.new(
+        github_file.filename,
+        github_file.patch,
+        head_commit.file_content(github_file.filename)
+      )
+    end
+  end
+
+  def file_removed?(github_file)
+    github_file.status == "removed"
   end
 
   def api
