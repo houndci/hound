@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe LanguageWorker::CoffeeScript do
   it_behaves_like "Language not moved to IronWorker" do
