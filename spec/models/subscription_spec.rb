@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe Subscription do
   context "when creating a duplicate subscription for a repo" do

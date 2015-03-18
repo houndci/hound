@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 describe GithubUser, '#has_admin_access_through_team?' do
   context 'when team is admin team' do

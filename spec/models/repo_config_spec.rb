@@ -1,6 +1,6 @@
 require "attr_extras"
 require "json"
-require "fast_spec_helper"
+require "rails_helper"
 require "app/models/repo_config"
 
 describe RepoConfig do

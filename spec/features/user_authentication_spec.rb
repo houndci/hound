@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 feature 'User authentication' do
   scenario "existing user signs in" do

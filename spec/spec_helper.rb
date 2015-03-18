@@ -1,35 +1,29 @@
-ENV['RAILS_ENV'] ||= 'test'
+$: << File.expand_path("../..", __FILE__)
 
-require 'fast_spec_helper'
-require 'config/environment'
-require 'rspec/rails'
+require "attr_extras"
+require "byebug"
+require "webmock/rspec"
+require "active_support"
+require "active_support/core_ext"
 
-ActiveRecord::Migration.maintain_test_schema!
+Dir["spec/support/**/*.rb"].each { |f| require f }
+
+ENV["HOST"] = "test.host"
+ENV["SECRET_KEY_BASE"] = "test-key"
+ENV["HOUND_GITHUB_USERNAME"] = "houndci"
+ENV["HOUND_GITHUB_TOKEN"] = "houndgithubtoken"
+ENV["ENABLE_HTTPS"] = "no"
+ENV["CHANGED_FILES_THRESHOLD"] = "300"
+ENV["MAX_COMMENTS"] = "10"
+ENV["STRIPE_API_KEY"] = "sk_test_123"
+ENV["STRIPE_PUBLISHABLE_KEY"] = "pk_test_123"
+ENV["EXEMPT_ORGS"] = "thoughtbot,billybob"
+ENV["SCSS_WORKER_URL"] = "foo.iron.io"
+ENV["BUILD_WORKERS_URL"] = "localhost"
 
 RSpec.configure do |config|
-  Analytics.backend = FakeAnalyticsRuby.new
-
-  config.before do
-    DatabaseCleaner.clean
-  end
-
-  config.infer_base_class_for_anonymous_controllers = false
-  config.infer_spec_type_from_file_location!
-  config.include AnalyticsHelper
-  config.include AuthenticationHelper
-  config.include Features, type: :feature
-  config.include HttpsHelper
-  config.include OauthHelper
-  config.include FactoryGirl::Syntax::Methods
-  config.include ActiveSupport::Testing::TimeHelpers
-  DatabaseCleaner.strategy = :deletion
-end
-
-Capybara.configure do |config|
-  config.javascript_driver = :webkit
-  config.default_wait_time = 4
-end
-
-OmniAuth.configure do |config|
-  config.test_mode = true
+  config.order = "random"
+  config.include GithubApiHelper
+  config.include StripeApiHelper
+  WebMock.disable_net_connect!(allow_localhost: true)
 end

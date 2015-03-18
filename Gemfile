@@ -45,7 +45,7 @@ group :development, :test do
   gem "jasmine-rails"
   gem "konacha"
   gem "poltergeist"
-  gem "rspec-rails", ">= 2.14"
+  gem "rspec-rails", ">= 3.2"
 end
 
 group :test do

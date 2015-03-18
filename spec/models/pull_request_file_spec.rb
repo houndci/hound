@@ -1,6 +1,6 @@
 require "base64"
 
-require "fast_spec_helper"
+require "spec_helper"
 require "app/models/pull_request_file"
 require "app/models/patch"
 require "app/models/unchanged_line"

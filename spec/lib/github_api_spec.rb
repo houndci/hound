@@ -1,4 +1,4 @@
-require "fast_spec_helper"
+require "spec_helper"
 require "attr_extras"
 require "lib/github_api"
 require "json"

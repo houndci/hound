@@ -1,4 +1,4 @@
-require "fast_spec_helper"
+require "spec_helper"
 require "lib/error_message_translation"
 
 describe ErrorMessageTranslation do

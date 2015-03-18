@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 feature "Account" do
   scenario "user without Stripe Customer ID" do

@@ -1,4 +1,4 @@
-require 'fast_spec_helper'
+require "spec_helper"
 require 'app/models/patch'
 require 'app/models/line'
 
