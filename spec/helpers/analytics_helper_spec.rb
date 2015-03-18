@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 describe AnalyticsHelper, '#analytics?' do
   it "is true when ENV['ANALYTICS'] is present" do

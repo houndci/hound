@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe ActivationsController, "#create" do
   context "when activation succeeds" do

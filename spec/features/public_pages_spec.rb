@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 feature "Public Pages" do
   context "When a user is not signed in" do

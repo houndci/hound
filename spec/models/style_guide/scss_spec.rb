@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe StyleGuide::Scss do
   describe "#violations_in_file" do

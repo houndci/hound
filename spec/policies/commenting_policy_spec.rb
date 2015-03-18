@@ -1,5 +1,5 @@
 require "attr_extras"
-require "fast_spec_helper"
+require "rails_helper"
 require "app/policies/commenting_policy"
 
 describe CommentingPolicy do

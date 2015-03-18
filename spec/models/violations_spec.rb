@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe Violations do
   describe "#push" do

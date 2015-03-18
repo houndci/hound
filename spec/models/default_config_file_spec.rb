@@ -1,5 +1,5 @@
+require "rails_helper"
 require "spec_helper"
-require "fast_spec_helper"
 
 describe DefaultConfigFile do
   describe "#path" do

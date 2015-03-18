@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe DeactivationsController, "#create" do
   context "when deactivation succeeds" do

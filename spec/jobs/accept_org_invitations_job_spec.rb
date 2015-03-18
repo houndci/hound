@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe AcceptOrgInvitationsJob do
   it "is retryable" do

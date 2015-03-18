@@ -1,4 +1,4 @@
-require 'fast_spec_helper'
+require "rails_helper"
 require 'app/services/commenter'
 require 'app/policies/commenting_policy'
 

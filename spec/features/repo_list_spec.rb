@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 feature "Repo list", js: true do
   let(:username) { 'houndci' }

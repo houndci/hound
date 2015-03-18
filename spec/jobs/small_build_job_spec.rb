@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe SmallBuildJob do
   it 'is retryable' do

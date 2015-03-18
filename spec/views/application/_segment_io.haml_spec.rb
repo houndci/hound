@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 describe 'application/_segment_io.haml' do
   before do

@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe StyleChecker, "#violations" do
   it "returns a collection of computed violations" do

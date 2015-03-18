@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe SubscriptionsController, "#create" do
   context "when subscription succeeds" do

@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe CreditCardsController, "#update" do
   context "when credit card is updated" do

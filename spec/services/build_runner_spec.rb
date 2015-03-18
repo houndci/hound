@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 describe BuildRunner, '#run' do
   context 'with active repo and opened pull request' do
