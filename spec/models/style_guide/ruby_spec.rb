@@ -612,7 +612,7 @@ hoge
 
   def build_file(content)
     filename = Rails.root.join("lib/a.rb")
-    CommitFile.new(filename, content, "")
+    PullRequestFile.new(filename, content, "")
   end
 
   def default_configuration

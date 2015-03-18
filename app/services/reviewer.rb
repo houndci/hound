@@ -38,7 +38,7 @@ class Reviewer
 
   def violations
     violations_attrs.flat_map do |violation|
-      line = commit_file.line_at(violation[:line_number])
+      line = pull_request_file.line_at(violation[:line_number])
 
       if line.changed?
         build.violations.create!(
@@ -67,8 +67,8 @@ class Reviewer
     build_worker.build
   end
 
-  def commit_file
-    CommitFile.new(file[:filename], file[:content], file[:patch])
+  def pull_request_file
+    PullRequestFile.new(file[:filename], file[:content], file[:patch])
   end
 
   def repo

@@ -1,7 +1,7 @@
 require "fast_spec_helper"
 require "app/models/pull_request"
 require "app/models/commit"
-require "app/models/commit_file"
+require "app/models/pull_request_file"
 require "lib/github_api"
 
 describe PullRequest do

@@ -1,4 +1,4 @@
-class CommitFile
+class PullRequestFile
   rattr_initialize :filename, :content, :patch_body
 
   def line_at(line_number)

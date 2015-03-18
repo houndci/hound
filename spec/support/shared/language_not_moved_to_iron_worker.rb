@@ -11,7 +11,7 @@ shared_examples "Language not moved to IronWorker" do
         and_return(connection)
       worker = described_class.new(
         build_worker,
-        commit_file,
+        pull_request_file,
         repo_config,
         pull_request
       )
@@ -35,8 +35,8 @@ shared_examples "Language not moved to IronWorker" do
     end
   end
 
-  def commit_file
-    CommitFile.new("test.foo", content, "")
+  def pull_request_file
+    PullRequestFile.new("test.foo", content, "")
   end
 
   def violations
