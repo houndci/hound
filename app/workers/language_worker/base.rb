@@ -1,7 +1,9 @@
 module LanguageWorker
   class Base
-    pattr_initialize :build_worker, :pull_request_file,
-      :repo_config, :pull_request
+    pattr_initialize :build_worker,
+                     :pull_request_file,
+                     :repo_config,
+                     :pull_request
 
     delegate :content, :filename, :patch_body, to: :pull_request_file
     delegate :build, to: :build_worker

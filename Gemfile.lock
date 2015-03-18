@@ -339,7 +339,7 @@ DEPENDENCIES
   analytics-ruby (~> 2.0.0)
   angular_rails_csrf
   angularjs-rails
-  attr_extras
+  attr_extras (~> 4.0)
   bourbon
   byebug
   capybara (~> 2.4.0)
