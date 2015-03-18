@@ -7,6 +7,12 @@ en:
   pending_status: "Hound is busy reviewing changes..."
   success_status: "Hound has reviewed all the changes!"
 
+  account:
+    bulk_pricing:
+      "If you'd like to pay for Hound in bulk on a monthly or annual
+      basis we're happy to make that happen. Email %{mail_to} with your
+      GitHub org name and the number of repos you'd like to activate."
+
   onboarding:
     title: "Let's keep that code in style:"
     step_one_title: "Activate Hound on a repo."
@@ -17,11 +23,11 @@ en:
     step_two_title: "Open a GitHub pull request on the repo."
     step_two_alt_title: "Open a pull request on an active repo."
     step_two_desc:
-      "Hound will review all GitHu pull requests that are
+      "Hound will review all GitHub pull requests that are
       opened on an activate repo for violations of your style
       guide."
     step_three_title: "Hound comments on your pull request."
     step_three_desc:
-      "If Hound finds any violations of your style guide he will
+      "If Hound finds any violations of your style guide it will
       comment inline on the violation in your GitHub pull
       request."
