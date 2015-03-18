@@ -28,7 +28,7 @@ describe PullRequestFile do
     end
   end
 
-  def pull_request_file(options = {})
+  def pull_request_file
     PullRequestFile.new("test.rb", "some content", "")
   end
 end

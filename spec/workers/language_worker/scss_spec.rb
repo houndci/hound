@@ -12,7 +12,12 @@ module LanguageWorker
         connection = double("Connection", post: true)
         allow(Faraday).to receive(:new).with(url: scss_worker_url).
           and_return(connection)
-        worker = Scss.new(build_worker, pull_request_file, repo_config, pull_request)
+        worker = Scss.new(
+          build_worker,
+          pull_request_file,
+          repo_config,
+          pull_request
+        )
 
         worker.run
 
