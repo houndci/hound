@@ -1,7 +1,11 @@
 module LanguageWorker
   class StyleGuideWorker < Base
     def run
-      hound_connection.post("/", body: hound_payload.to_json)
+      Faraday.post do |request|
+        request.url = ENV.fetch("BUILD_WORKERS_URL")
+        request.token_auth(ENV.fetch("BUILD_WORKERS_TOKEN"))
+        request.body = hound_payload.to_json
+      end
     end
 
     attr_implement :style_guide_name
@@ -28,10 +32,6 @@ module LanguageWorker
           messages: violation.messages
         }
       end
-    end
-
-    def hound_connection
-      @hound_connection ||= Faraday.new(url: ENV.fetch("BUILD_WORKERS_URL"))
     end
 
     def violations_from_guide
