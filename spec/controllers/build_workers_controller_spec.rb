@@ -4,10 +4,9 @@ describe BuildWorkersController do
   describe "#update" do
     context "auth" do
       it "unauthorized access without token" do
-
         put :update, id: 1, format: :json
 
-        expect(response.code).to eq("401")
+        expect(response.status).to eq(401)
       end
     end
 
