@@ -2,7 +2,6 @@ class BuildWorkersController < ApplicationController
   skip_before_action :authenticate
   skip_before_action :capture_campaign_params
   skip_before_action :verify_authenticity_token
-  before_action :authenticate_with_token
 
   def update
     build_worker = find_build_worker
@@ -30,11 +29,5 @@ class BuildWorkersController < ApplicationController
 
   def find_build_worker
     @find_build_worker ||= BuildWorker.find(params[:id])
-  end
-
-  def authenticate_with_token
-    authenticate_or_request_with_http_token do |token, _|
-      token == ENV.fetch("BUILD_WORKERS_TOKEN")
-    end
   end
 end

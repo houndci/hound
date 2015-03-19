@@ -2,15 +2,6 @@ require "rails_helper"
 
 describe BuildWorkersController do
   describe "#update" do
-    context "auth" do
-      it "unauthorized access without token" do
-
-        put :update, id: 1, format: :json
-
-        expect(response.code).to eq("401")
-      end
-    end
-
     context "given an completed build" do
       it "does not complete the build" do
         build_worker = create(
@@ -18,7 +9,6 @@ describe BuildWorkersController do
           :completed,
           completed_at: 1.day.ago,
         )
-        authorized_headers_for_build_worker
 
         put :update, id: build_worker.id, format: :json
 
@@ -35,7 +25,6 @@ describe BuildWorkersController do
       file = double("File")
       violations_attrs = double("ViolationsAttrs")
       build_worker = create(:build_worker)
-      authorized_headers_for_build_worker
 
       put(
         :update,

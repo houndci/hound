@@ -20,7 +20,6 @@ ENV["STRIPE_PUBLISHABLE_KEY"] = "pk_test_123"
 ENV["EXEMPT_ORGS"] = "thoughtbot,billybob"
 ENV["SCSS_WORKER_URL"] = "foo.iron.io"
 ENV["BUILD_WORKERS_URL"] = "localhost"
-ENV["BUILD_WORKERS_TOKEN"] = "long-token"
 
 RSpec.configure do |config|
   config.order = "random"
