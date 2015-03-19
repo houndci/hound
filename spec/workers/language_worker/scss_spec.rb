@@ -17,7 +17,8 @@ module LanguageWorker
         worker.run
 
         expect(Faraday).to have_received(:post)
-        expect(faraday_request).to have_received(:url=).with(ENV["SCSS_WORKER_URL"])
+        expect(faraday_request).
+          to have_received(:url=).with(ENV["SCSS_WORKER_URL"])
         expect(faraday_request).to have_received(:body=).with(
           {
             build_worker_id: build_worker.id,
