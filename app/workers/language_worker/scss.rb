@@ -1,7 +1,10 @@
 module LanguageWorker
   class Scss < Base
     def run
-      connection.post("/", body: worker_payload.to_json)
+      Faraday.post do |request|
+        request.url = ENV.fetch("SCSS_WORKER_URL")
+        request.body = worker_payload.to_json
+      end
     end
 
     private
@@ -40,10 +43,6 @@ module LanguageWorker
         default_config_file,
         pull_request.repository_owner_name
       ).content
-    end
-
-    def connection
-      @connection ||= Faraday.new(url: ENV.fetch("SCSS_WORKER_URL"))
     end
 
     def default_config_file
