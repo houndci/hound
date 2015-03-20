@@ -1,6 +1,6 @@
 ENV["RAILS_ENV"] ||= "test"
 
-require "rails_helper"
+require "spec_helper"
 require "config/environment"
 require "rspec/rails"
 
