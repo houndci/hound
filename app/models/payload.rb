@@ -1,3 +1,6 @@
+require "attr_extras"
+require "lib/github_api"
+
 class Payload
   pattr_initialize :unparsed_data
 

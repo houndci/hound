@@ -1,3 +1,6 @@
+require "app/models/patch"
+require "app/models/unchanged_line"
+
 class CommitFile
   pattr_initialize :file, :commit
 

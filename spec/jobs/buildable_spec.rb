@@ -1,8 +1,4 @@
-require "spec_helper"
-require "app/jobs/buildable"
-require "app/models/payload"
-require "app/services/build_runner"
-require "raven"
+require "rails_helper"
 
 describe Buildable do
   class TestJob < ActiveJob::Base
