@@ -40,7 +40,7 @@ Style/AlignParameters:
 Style/AndOr:
   Description: Use &&/|| instead of and/or.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-and-or-or
-  Enabled: false
+  Enabled: true
   EnforcedStyle: always
   SupportedStyles:
   - always
@@ -127,14 +127,14 @@ Style/EmptyLinesAroundBlockBody:
   - no_empty_lines
 Style/EmptyLinesAroundClassBody:
   Description: Keeps track of empty lines around class bodies.
-  Enabled: false
+  Enabled: true
   EnforcedStyle: no_empty_lines
   SupportedStyles:
   - empty_lines
   - no_empty_lines
 Style/EmptyLinesAroundModuleBody:
   Description: Keeps track of empty lines around module bodies.
-  Enabled: false
+  Enabled: true
   EnforcedStyle: no_empty_lines
   SupportedStyles:
   - empty_lines
