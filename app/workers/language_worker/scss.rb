@@ -16,6 +16,7 @@ module LanguageWorker
         config: config,
         file: file,
         hound_url: ENV.fetch("BUILD_WORKERS_URL"),
+        token: ENV.fetch("BUILD_WORKERS_TOKEN")
       }
     end
 

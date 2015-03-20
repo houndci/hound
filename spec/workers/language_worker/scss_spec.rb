@@ -33,6 +33,7 @@ module LanguageWorker
               patch_body: ""
             },
             hound_url: ENV["BUILD_WORKERS_URL"],
+            token: ENV["BUILD_WORKERS_TOKEN"]
           }.to_json
         )
       end
