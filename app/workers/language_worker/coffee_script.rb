@@ -1,5 +1,5 @@
 module LanguageWorker
-  class CoffeeScript < StyleGuideWorker
+  class CoffeeScript < LegacyWorker
     private
 
     def style_guide_name

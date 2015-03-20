@@ -1,8 +1,9 @@
 class BuildWorkersController < ApplicationController
-  skip_before_action :authenticate
-  skip_before_action :capture_campaign_params
-  skip_before_action :verify_authenticity_token
   before_action :authenticate_with_token
+  skip_before_action \
+    :authenticate,
+    :capture_campaign_params,
+    :verify_authenticity_token,
 
   def update
     build_worker = find_build_worker

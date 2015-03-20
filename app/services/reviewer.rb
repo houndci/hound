@@ -1,11 +1,7 @@
 class Reviewer
   MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
 
-  pattr_initialize :build_worker, :file, :violations_attrs
-
-  def self.run(build_worker, file, violations_attrs)
-    new(build_worker, file, violations_attrs).run
-  end
+  static_facade :run, :build_worker, :file, :violations_attrs
 
   def run
     commenter.comment_on_violations(priority_violations)

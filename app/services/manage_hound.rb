@@ -1,11 +1,7 @@
 class ManageHound
   GITHUB_TEAM_NAME = "Services"
 
-  pattr_initialize :repo_name, :github
-
-  def self.run(repo_name, github)
-    new(repo_name, github).run
-  end
+  static_facade :run, :repo_name, :github
 
   attr_implement :run
 

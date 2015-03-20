@@ -8,9 +8,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Ruby")
-        allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -21,11 +19,20 @@ describe WorkerDispatcher do
       end
 
       context "when ruby is not enabled for the repo" do
-        it "does not run the worker"
-      end
+        it "does not run the worker" do
+          file = double("File", filename: "foo.rb")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker("LanguageWorker::Ruby", enabled?: false)
 
-      context "when file is not included" do
-        it "does not run the worker"
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(LanguageWorker::Ruby).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).not_to have_received(:run)
+        end
       end
 
       context "when have multiple files" do
@@ -34,9 +41,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file, file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::Ruby")
-          allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -58,9 +63,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::CoffeeScript")
-        allow(LanguageWorker::CoffeeScript).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -70,12 +73,44 @@ describe WorkerDispatcher do
         expect(worker).to have_received(:run)
       end
 
-      context "when ruby is not enabled for the repo" do
-        it "does not run the worker"
+      context "when CoffeeScript is not enabled for the repo" do
+        it "does not run the worker" do
+          file = double("File", filename: "foo.coffee.js")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker(
+            "LanguageWorker::CoffeeScript",
+            enabled?: false
+          )
+
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(LanguageWorker::CoffeeScript).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).not_to have_received(:run)
+        end
       end
 
       context "when file is not included" do
-        it "does not run the worker"
+        it "does not run the worker" do
+          file = double("File", filename: "foo.coffee.js")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker(
+            "LanguageWorker::CoffeeScript",
+            file_included?: false
+          )
+
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(LanguageWorker::CoffeeScript).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).not_to have_received(:run)
+        end
       end
     end
 
@@ -85,9 +120,9 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
-        worker = stub_worker("LanguageWorker::JavaScript")
-        allow(LanguageWorker::JavaScript).to receive(:new).and_return(worker)
+        worker = stub_worker(
+          "LanguageWorker::JavaScript"
+        )
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -97,12 +132,43 @@ describe WorkerDispatcher do
         expect(worker).to have_received(:run)
       end
 
-      context "when ruby is not enabled for the repo" do
-        it "does not run the worker"
+      context "when javascript is not enabled for the repo" do
+        it "does not run the worker" do
+          file = double("File", filename: "foo.js")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker(
+            "LanguageWorker::JavaScript", enabled?: false
+          )
+
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(LanguageWorker::JavaScript).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).not_to have_received(:run)
+        end
       end
 
       context "when file is not included" do
-        it "does not run the worker"
+        it "does not run the worker" do
+          file = double("File", filename: "foo.js")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker(
+            "LanguageWorker::JavaScript",
+            file_included?: false
+          )
+
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(LanguageWorker::JavaScript).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).not_to have_received(:run)
+        end
       end
     end
 
@@ -112,9 +178,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Scss")
-        allow(LanguageWorker::Scss).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -124,12 +188,38 @@ describe WorkerDispatcher do
         expect(worker).to have_received(:run)
       end
 
-      context "when ruby is not enabled for the repo" do
-        it "does not run the worker"
+      context "when SCSS is not enabled for the repo" do
+        it "does not run the worker" do
+          file = double("File", filename: "foo.scss")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker("LanguageWorker::Scss", enabled?: false)
+
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(LanguageWorker::Scss).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).not_to have_received(:run)
+        end
       end
 
       context "when file is not included" do
-        it "does not run the worker"
+        it "does not run the worker" do
+          file = double("File", filename: "foo.scss")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker("LanguageWorker::Scss", file_included?: false)
+
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(LanguageWorker::Scss).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).not_to have_received(:run)
+        end
       end
     end
 
@@ -139,9 +229,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Unsupported")
-        allow(LanguageWorker::Unsupported).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -173,19 +261,29 @@ describe WorkerDispatcher do
       for: {},
       ignored_javascript_files: []
     }
-    double(
+    repo_config = double(
       "RepoConfig",
       default_options.merge(options)
     )
+    allow(RepoConfig).to receive(:new).and_return(repo_config)
+
+    repo_config
   end
 
-  def stub_worker(name, repo_config: stub_repo_config)
-    double(
-      name,
+  def stub_worker(name, options = {})
+    default_options = {
       enabled?: true,
       file_included?: true,
       run: true,
-      repo_config: repo_config
+      repo_config: stub_pull_request,
+    }
+
+    worker = double(
+      name,
+      default_options.merge(options)
     )
+    allow(name.constantize).to receive(:new).and_return(worker)
+
+    worker
   end
 end
