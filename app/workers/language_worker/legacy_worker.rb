@@ -1,5 +1,5 @@
 module LanguageWorker
-  class StyleGuideWorker < Base
+  class LegacyWorker < Base
     def run
       Faraday.post do |request|
         request.url = ENV.fetch("BUILD_WORKERS_URL")
