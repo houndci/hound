@@ -8,9 +8,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Ruby")
-        allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -26,9 +24,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::Ruby", enabled?: false)
-          allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -45,9 +41,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file, file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::Ruby")
-          allow(LanguageWorker::Ruby).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -69,9 +63,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::CoffeeScript")
-        allow(LanguageWorker::CoffeeScript).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -87,9 +79,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::CoffeeScript", enabled?: false)
-          allow(LanguageWorker::CoffeeScript).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -106,9 +96,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::CoffeeScript", file_included?: false)
-          allow(LanguageWorker::CoffeeScript).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -126,9 +114,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::JavaScript")
-        allow(LanguageWorker::JavaScript).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -144,9 +130,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::JavaScript", enabled?: false)
-          allow(LanguageWorker::JavaScript).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -163,9 +147,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::JavaScript", file_included?: false)
-          allow(LanguageWorker::JavaScript).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -183,9 +165,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Scss")
-        allow(LanguageWorker::Scss).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -201,9 +181,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::Scss", enabled?: false)
-          allow(LanguageWorker::Scss).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -220,9 +198,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          allow(RepoConfig).to receive(:new).and_return(repo_config)
           worker = stub_worker("LanguageWorker::Scss", file_included?: false)
-          allow(LanguageWorker::Scss).to receive(:new).and_return(worker)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -240,9 +216,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        allow(RepoConfig).to receive(:new).and_return(repo_config)
         worker = stub_worker("LanguageWorker::Unsupported")
-        allow(LanguageWorker::Unsupported).to receive(:new).and_return(worker)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -274,10 +248,13 @@ describe WorkerDispatcher do
       for: {},
       ignored_javascript_files: []
     }
-    double(
+    repo_config = double(
       "RepoConfig",
       default_options.merge(options)
     )
+    allow(RepoConfig).to receive(:new).and_return(repo_config)
+
+    repo_config
   end
 
   def stub_worker(name, options = {})
@@ -288,9 +265,12 @@ describe WorkerDispatcher do
       repo_config: stub_pull_request,
     }
 
-    double(
+    worker = double(
       name,
       default_options.merge(options)
     )
+    allow(name.constantize).to receive(:new).and_return(worker)
+
+    worker
   end
 end
