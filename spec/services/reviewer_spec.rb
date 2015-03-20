@@ -16,7 +16,7 @@ describe Reviewer do
           expect(first_violation.filename).to eq("a.a")
           expect(first_violation.line_number).to eq(0)
           expect(first_violation.messages).to eq(["I have an error"])
-          expect(first_violation.build).to eq(Build.last)
+          expect(first_violation.build).to eq(build)
           expect(first_violation.patch_position).to eq(0)
         end
       end
@@ -39,8 +39,7 @@ describe Reviewer do
       context "when there are no violations" do
         it "sends no comments" do
           github_api = stubbed_github_api
-          build = create(:build, commit_sha: "sha")
-          build_worker = create(:build_worker, build: build)
+          build_worker = create(:build_worker)
           reviewer = Reviewer.new(build_worker, file, [])
 
           reviewer.run
@@ -54,8 +53,7 @@ describe Reviewer do
         it "comments on violations" do
           commenter = stubbed_commenter
           stubbed_github_api
-          build = create(:build)
-          build_worker = create(:build_worker, build: build)
+          build_worker = create(:build_worker)
           reviewer = Reviewer.new(build_worker, file, violations_attrs)
 
           reviewer.run
@@ -70,8 +68,7 @@ describe Reviewer do
           stub_const("::BuildRunner::MAX_COMMENTS", 1)
           commenter = stubbed_commenter
           stubbed_github_api
-          build = create(:build)
-          build_worker = create(:build_worker, build: build)
+          build_worker = create(:build_worker)
           reviewer = Reviewer.new(build_worker, file, violations_attrs)
 
           reviewer.run

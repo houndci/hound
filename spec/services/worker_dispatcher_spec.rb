@@ -8,7 +8,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker("LanguageWorker::Ruby")
+        worker = stub_worker(LanguageWorker::Ruby)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -24,7 +24,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::Ruby", enabled?: false)
+          worker = stub_worker(LanguageWorker::Ruby, enabled?: false)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -41,7 +41,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file, file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::Ruby")
+          worker = stub_worker(LanguageWorker::Ruby)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -63,7 +63,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker("LanguageWorker::CoffeeScript")
+        worker = stub_worker(LanguageWorker::CoffeeScript)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -80,7 +80,7 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            "LanguageWorker::CoffeeScript",
+            LanguageWorker::CoffeeScript,
             enabled?: false
           )
 
@@ -100,7 +100,7 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            "LanguageWorker::CoffeeScript",
+            LanguageWorker::CoffeeScript,
             file_included?: false
           )
 
@@ -121,7 +121,7 @@ describe WorkerDispatcher do
         build = create(:build)
         repo_config = stub_repo_config
         worker = stub_worker(
-          "LanguageWorker::JavaScript"
+          LanguageWorker::JavaScript
         )
 
         WorkerDispatcher.run(pull_request, build)
@@ -139,7 +139,7 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            "LanguageWorker::JavaScript", enabled?: false
+            LanguageWorker::JavaScript, enabled?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
@@ -158,7 +158,7 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            "LanguageWorker::JavaScript",
+            LanguageWorker::JavaScript,
             file_included?: false
           )
 
@@ -178,7 +178,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker("LanguageWorker::Scss")
+        worker = stub_worker(LanguageWorker::Scss)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -194,7 +194,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::Scss", enabled?: false)
+          worker = stub_worker(LanguageWorker::Scss, enabled?: false)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -211,7 +211,7 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::Scss", file_included?: false)
+          worker = stub_worker(LanguageWorker::Scss, file_included?: false)
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -229,7 +229,7 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker("LanguageWorker::Unsupported")
+        worker = stub_worker(LanguageWorker::Unsupported)
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -279,10 +279,10 @@ describe WorkerDispatcher do
     }
 
     worker = double(
-      name,
+      name.to_s,
       default_options.merge(options)
     )
-    allow(name.constantize).to receive(:new).and_return(worker)
+    allow(name).to receive(:new).and_return(worker)
 
     worker
   end
