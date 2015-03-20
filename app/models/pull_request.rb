@@ -1,5 +1,6 @@
-require "app/models/commit"
+require "attr_extras"
 require "lib/github_api"
+require "app/models/commit"
 
 class PullRequest
   pattr_initialize :payload

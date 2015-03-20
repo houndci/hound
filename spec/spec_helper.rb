@@ -1,6 +1,5 @@
 $: << File.expand_path("../..", __FILE__)
 
-require "attr_extras"
 require "byebug"
 require "webmock/rspec"
 require "active_support"
