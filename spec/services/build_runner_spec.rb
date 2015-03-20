@@ -11,11 +11,10 @@ describe BuildRunner do
           head_sha: "123abc",
           full_repo_name: repo.name
         )
-        build_runner = BuildRunner.new(payload)
         stubbed_pull_request
         stubbed_github_api
 
-        build_runner.run
+        BuildRunner.run(payload)
         build = Build.find_by(repo_id: repo.id)
 
         expect(build).to eq repo.builds.last
@@ -26,11 +25,10 @@ describe BuildRunner do
       it "initializes PullRequest with payload and Hound token" do
         repo = create(:repo, :active, github_id: 123)
         payload = stubbed_payload(github_repo_id: repo.github_id)
-        build_runner = BuildRunner.new(payload)
         stubbed_pull_request
         stubbed_github_api
 
-        build_runner.run
+        BuildRunner.run(payload)
 
         expect(PullRequest).to have_received(:new).with(payload)
       end
@@ -42,11 +40,10 @@ describe BuildRunner do
           full_repo_name: "test/repo",
           head_sha: "headsha"
         )
-        build_runner = BuildRunner.new(payload)
         stubbed_pull_request
         github_api = stubbed_github_api
 
-        build_runner.run
+        BuildRunner.run(payload)
 
         expect(github_api).to have_received(:create_pending_status).with(
           "test/repo",
@@ -63,12 +60,11 @@ describe BuildRunner do
           head_sha: "123abc",
           full_repo_name: repo.name
         )
-        build_runner = BuildRunner.new(payload)
         pull_request = stubbed_pull_request
         stubbed_github_api
         allow(WorkerDispatcher).to receive(:run)
 
-        build_runner.run
+        BuildRunner.run(payload)
         build = Build.find_by(repo_id: repo.id)
 
         expect(WorkerDispatcher).
@@ -87,11 +83,10 @@ describe BuildRunner do
           repository_owner_name: owner_name,
           repository_owner_is_organization?: true,
         )
-        build_runner = BuildRunner.new(payload)
         stubbed_pull_request
         stubbed_github_api
 
-        build_runner.run
+        BuildRunner.run(payload)
 
         owner_attributes = Owner.first.slice(:name, :github_id, :organization)
         expect(owner_attributes).to eq(
@@ -111,21 +106,15 @@ describe BuildRunner do
           github_repo_id: repo.github_id,
           full_repo_name: repo.name
         )
-        build_runner = BuildRunner.new(payload)
         stubbed_pull_request
         stubbed_github_api
 
-        build_runner.run
+        BuildRunner.run(payload)
 
         expect(analytics).to have_tracked("Build Started").
           for_user(repo.subscription.user).
           with(properties: { name: repo.full_github_name, private: true })
       end
-    end
-
-    def make_build_runner(repo: create(:repo, :active, github_id: 123))
-      payload = stubbed_payload(github_repo_id: repo.github_id)
-      BuildRunner.new(payload)
     end
 
     def stubbed_payload(options = {})

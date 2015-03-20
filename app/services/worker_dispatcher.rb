@@ -1,9 +1,5 @@
 class WorkerDispatcher
-  pattr_initialize :pull_request, :build
-
-  def self.run(pull_request, build)
-    new(pull_request, build).run
-  end
+  static_facade :run, :pull_request, :build
 
   def run
     pull_request_files.each do |file|

@@ -1,5 +1,5 @@
 class BuildRunner
-  pattr_initialize :payload
+  static_facade :run, :payload
 
   def run
     if repo && relevant_pull_request?
