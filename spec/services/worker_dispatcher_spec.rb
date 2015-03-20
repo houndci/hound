@@ -79,7 +79,10 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::CoffeeScript", enabled?: false)
+          worker = stub_worker(
+            "LanguageWorker::CoffeeScript",
+            enabled?: false
+          )
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -96,7 +99,10 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::CoffeeScript", file_included?: false)
+          worker = stub_worker(
+            "LanguageWorker::CoffeeScript",
+            file_included?: false
+          )
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -114,7 +120,9 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker("LanguageWorker::JavaScript")
+        worker = stub_worker(
+          "LanguageWorker::JavaScript"
+        )
 
         WorkerDispatcher.run(pull_request, build)
 
@@ -130,7 +138,9 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::JavaScript", enabled?: false)
+          worker = stub_worker(
+            "LanguageWorker::JavaScript", enabled?: false
+          )
 
           WorkerDispatcher.run(pull_request, build)
 
@@ -147,7 +157,10 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker("LanguageWorker::JavaScript", file_included?: false)
+          worker = stub_worker(
+            "LanguageWorker::JavaScript",
+            file_included?: false
+          )
 
           WorkerDispatcher.run(pull_request, build)
 
