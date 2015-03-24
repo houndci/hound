@@ -10,11 +10,12 @@ class RepoSubscriber
   end
 
   def subscribe
-    customer = if user.stripe_customer_id.present?
-      payment_gateway_customer
-    else
-      create_stripe_customer
-    end
+    # customer = if user.stripe_customer_id.present?
+    #   payment_gateway_customer
+    # else
+    #   create_stripe_customer
+    # end
+    customer = payment_gateway_customer
 
     stripe_subscription = customer.subscriptions.create(
       plan: repo.plan_type,
