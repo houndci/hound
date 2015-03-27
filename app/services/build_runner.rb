@@ -22,10 +22,6 @@ class BuildRunner
     pull_request.opened? || pull_request.synchronize?
   end
 
-  def violations
-    @violations ||= style_checker.violations
-  end
-
   def dispatch_workers(build)
     WorkerDispatcher.run(pull_request, build)
   end
