@@ -16,7 +16,7 @@ class BuildWorkersController < ApplicationController
     else
       error = "BuildWorker##{build_worker.id} has already been finished"
 
-      render json: { error: error }, status: 412
+      render json: { error: error }, status: 409
     end
   end
 

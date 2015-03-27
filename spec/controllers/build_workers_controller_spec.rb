@@ -21,7 +21,7 @@ describe BuildWorkersController do
 
         put :update, id: build_worker.id, format: :json
 
-        expect(response.status).to eq 412
+        expect(response.status).to eq 409
         expect(build_worker.completed_at).to be < Time.now
         expect(json_body["error"]).to eq(
           "BuildWorker##{build_worker.id} has already been finished"
