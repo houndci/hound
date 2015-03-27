@@ -68,6 +68,18 @@ describe StyleChecker, "#violations" do
       expect(messages).to eq ["Empty function"]
     end
 
+    it "is processed with a coffee.erb extension" do
+      file = stub_commit_file("test.coffee.erb", "class strange_ClassNAME")
+      pull_request = stub_pull_request(pull_request_files: [file])
+      style_checker = StyleChecker.new(pull_request)
+      allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
+
+      violations = style_checker.violations
+      messages = violations.flat_map(&:messages)
+
+      expect(messages).to eq ["Class names should be camel cased"]
+    end
+
     context "with style violations" do
       it "returns violations" do
         file = stub_commit_file("test.coffee", "foo: ->")
