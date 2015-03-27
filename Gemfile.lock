@@ -103,6 +103,10 @@ GEM
       activesupport (>= 4.1.0)
     haml (4.0.5)
       tilt
+    haml-lint (0.11.0)
+      haml (~> 4.0)
+      rubocop (>= 0.25.0)
+      sysexits (~> 1.1)
     haml-rails (0.5.3)
       actionpack (>= 4.0.1)
       activesupport (>= 4.0.1)
@@ -311,6 +315,7 @@ GEM
       json (~> 1.8.1)
       mime-types (>= 1.25, < 3.0)
       rest-client (~> 1.4)
+    sysexits (1.2.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
@@ -354,6 +359,7 @@ DEPENDENCIES
   faraday
   font-awesome-rails
   foreman
+  haml-lint
   haml-rails
   high_voltage
   jasmine-rails

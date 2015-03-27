@@ -187,6 +187,36 @@ describe StyleChecker, "#violations" do
     end
   end
 
+  context "for a Haml file" do
+    context "with style violations" do
+      it "returns violations" do
+        file = stub_commit_file("test.haml", "%div.message 123")
+        pull_request = stub_pull_request(pull_request_files: [file])
+
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
+
+        expect(messages).to include(
+          "`%div.message` can be written as `.message` since `%div` is implicit"
+        )
+      end
+    end
+
+    context "without style violations" do
+      it "returns no violations" do
+        file = stub_commit_file("test.haml", ".message 123")
+        pull_request = stub_pull_request(pull_request_files: [file])
+
+        violations = StyleChecker.new(pull_request).violations
+        messages = violations.flat_map(&:messages)
+
+        expect(messages).not_to include(
+          "`%div.message` can be written as `.message` since `%div` is implicit"
+        )
+      end
+    end
+  end
+
   context "with unsupported file type" do
     it "uses unsupported style guide" do
       file = stub_commit_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
