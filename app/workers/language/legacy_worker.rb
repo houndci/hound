@@ -8,6 +8,8 @@ module Language
       end
     end
 
+    attr_implement :style_guide_name
+
     private
 
     def hound_payload
@@ -37,11 +39,6 @@ module Language
         repo_config,
         pull_request.repository_owner_name
       ).violations_in_file(pull_request_file)
-    end
-
-    def style_guide_name
-      guide_name = self.class.name.demodulize
-      "StyleGuide::#{guide_name}".safe_constantize
     end
   end
 end

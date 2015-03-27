@@ -3,17 +3,17 @@ require "rails_helper"
 describe WorkerDispatcher do
   describe "#run" do
     context "for a Ruby file" do
-      it "runs Language::Ruby" do
+      it "runs Language::RubyLegacyWorker" do
         file = double("File", filename: "foo.rb")
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker(Language::Ruby)
+        worker = stub_worker(Language::RubyLegacyWorker)
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(Language::Ruby).to have_received(:new).
+        expect(Language::RubyLegacyWorker).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -24,12 +24,12 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker(Language::Ruby, enabled?: false)
+          worker = stub_worker(Language::RubyLegacyWorker, enabled?: false)
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(Language::Ruby).to have_received(:new).
+          expect(Language::RubyLegacyWorker).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -41,15 +41,15 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file, file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker(Language::Ruby)
+          worker = stub_worker(Language::RubyLegacyWorker)
 
           WorkerDispatcher.run(pull_request, build)
 
           first_build_worker = build.build_workers.first
           last_build_worker = build.build_workers.last
-          expect(Language::Ruby).to have_received(:new).
+          expect(Language::RubyLegacyWorker).to have_received(:new).
             with(first_build_worker, file, repo_config, pull_request)
-          expect(Language::Ruby).to have_received(:new).
+          expect(Language::RubyLegacyWorker).to have_received(:new).
             with(last_build_worker, file, repo_config, pull_request)
           expect(worker).to have_received(:run).twice
           expect(build.build_workers.count).to eq(2)
@@ -58,17 +58,17 @@ describe WorkerDispatcher do
     end
 
     context "for a CoffeeScript file" do
-      it "runs Language::CoffeeScript" do
+      it "runs Language::CoffeeScriptLegacyWorker" do
         file = double("File", filename: "foo.coffee.js")
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker(Language::CoffeeScript)
+        worker = stub_worker(Language::CoffeeScriptLegacyWorker)
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(Language::CoffeeScript).to have_received(:new).
+        expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -80,14 +80,14 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            Language::CoffeeScript,
+            Language::CoffeeScriptLegacyWorker,
             enabled?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(Language::CoffeeScript).to have_received(:new).
+          expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -100,14 +100,14 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            Language::CoffeeScript,
+            Language::CoffeeScriptLegacyWorker,
             file_included?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(Language::CoffeeScript).to have_received(:new).
+          expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -115,19 +115,19 @@ describe WorkerDispatcher do
     end
 
     context "for a JavaScript file" do
-      it "runs Language::CoffeeScript" do
+      it "runs Language::CoffeeScriptLegacyWorker" do
         file = double("File", filename: "foo.js")
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
         worker = stub_worker(
-          Language::JavaScript
+          Language::JavaScriptLegacyWorker
         )
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(Language::JavaScript).to have_received(:new).
+        expect(Language::JavaScriptLegacyWorker).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -139,13 +139,13 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            Language::JavaScript, enabled?: false
+            Language::JavaScriptLegacyWorker, enabled?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(Language::JavaScript).to have_received(:new).
+          expect(Language::JavaScriptLegacyWorker).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -158,14 +158,14 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            Language::JavaScript,
+            Language::JavaScriptLegacyWorker,
             file_included?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(Language::JavaScript).to have_received(:new).
+          expect(Language::JavaScriptLegacyWorker).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
