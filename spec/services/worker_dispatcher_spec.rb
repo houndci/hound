@@ -14,7 +14,7 @@ describe WorkerDispatcher do
 
         build_worker = build.build_workers.first
         expect(Language::RubyLegacyWorker).to have_received(:new).
-          with(build_worker, file, repo_config, pull_request)
+          with(build_worker, file, repo_config, repository_owner_name)
         expect(worker).to have_received(:run)
       end
 
@@ -30,7 +30,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::RubyLegacyWorker).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).not_to have_received(:run)
         end
       end
@@ -48,9 +48,9 @@ describe WorkerDispatcher do
           first_build_worker = build.build_workers.first
           last_build_worker = build.build_workers.last
           expect(Language::RubyLegacyWorker).to have_received(:new).
-            with(first_build_worker, file, repo_config, pull_request)
+            with(first_build_worker, file, repo_config, repository_owner_name)
           expect(Language::RubyLegacyWorker).to have_received(:new).
-            with(last_build_worker, file, repo_config, pull_request)
+            with(last_build_worker, file, repo_config, repository_owner_name)
           expect(worker).to have_received(:run).twice
           expect(build.build_workers.count).to eq(2)
         end
@@ -69,7 +69,7 @@ describe WorkerDispatcher do
 
         build_worker = build.build_workers.first
         expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
-          with(build_worker, file, repo_config, pull_request)
+          with(build_worker, file, repo_config, repository_owner_name)
         expect(worker).to have_received(:run)
       end
 
@@ -88,7 +88,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).not_to have_received(:run)
         end
       end
@@ -108,7 +108,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).not_to have_received(:run)
         end
       end
@@ -128,7 +128,7 @@ describe WorkerDispatcher do
 
         build_worker = build.build_workers.first
         expect(Language::JavaScriptLegacyWorker).to have_received(:new).
-          with(build_worker, file, repo_config, pull_request)
+          with(build_worker, file, repo_config, repository_owner_name)
         expect(worker).to have_received(:run)
       end
 
@@ -146,7 +146,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::JavaScriptLegacyWorker).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).not_to have_received(:run)
         end
       end
@@ -166,7 +166,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::JavaScriptLegacyWorker).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).not_to have_received(:run)
         end
       end
@@ -185,7 +185,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::ScssLegacyWorker).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).to have_received(:run)
         end
       end
@@ -203,7 +203,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::Scss).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).to have_received(:run)
         end
       end
@@ -221,7 +221,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::Scss).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).not_to have_received(:run)
         end
       end
@@ -239,7 +239,7 @@ describe WorkerDispatcher do
 
           build_worker = build.build_workers.first
           expect(Language::Scss).to have_received(:new).
-            with(build_worker, file, repo_config, pull_request)
+            with(build_worker, file, repo_config, repository_owner_name)
           expect(worker).not_to have_received(:run)
         end
       end
@@ -257,7 +257,7 @@ describe WorkerDispatcher do
 
         build_worker = build.build_workers.first
         expect(Language::Unsupported).to have_received(:new).
-          with(build_worker, file, repo_config, pull_request)
+          with(build_worker, file, repo_config, repository_owner_name)
         expect(worker).to have_received(:run)
       end
     end
@@ -271,10 +271,14 @@ describe WorkerDispatcher do
       file_content: "",
       head_commit: head_commit,
       pull_request_files: [],
-      repository_owner_name: "some_org"
+      repository_owner_name: repository_owner_name
     }
 
     double("PullRequest", defaults.merge(options))
+  end
+
+  def repository_owner_name
+    "some_org"
   end
 
   def stub_repo_config(options = {})

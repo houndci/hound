@@ -37,7 +37,7 @@ module Language
     def violations_from_guide
       @violations_from_guide ||= style_guide_name.new(
         repo_config,
-        pull_request.repository_owner_name
+        repository_owner_name
       ).violations_in_file(pull_request_file)
     end
   end

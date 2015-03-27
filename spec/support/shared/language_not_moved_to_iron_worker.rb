@@ -2,13 +2,13 @@ shared_examples "Language not moved to IronWorker" do
   describe "#run" do
     it "sends violations to hound" do
       build_worker = create(:build_worker)
-      pull_request = double("PullRequest", repository_owner_name: "foo")
+      repository_owner_name = "foo"
       faraday_request = stub_faraday
       worker = described_class.new(
         build_worker,
         pull_request_file,
         stub_repo_config,
-        pull_request
+        repository_owner_name
       )
 
       worker.run

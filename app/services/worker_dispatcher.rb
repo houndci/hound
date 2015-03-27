@@ -23,7 +23,7 @@ class WorkerDispatcher
       new_build_worker,
       file,
       repo_config,
-      pull_request
+      pull_request.repository_owner_name
     )
   end
 

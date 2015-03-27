@@ -138,6 +138,7 @@ describe BuildRunner, '#run' do
       head_commit: head_commit,
       pull_request_files: [file],
       config: double(:config),
+      repository_owner_name: "foo",
       opened?: true
     )
     allow(PullRequest).to receive(:new).and_return(pull_request)

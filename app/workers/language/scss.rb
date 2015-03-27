@@ -42,7 +42,7 @@ module Language
     def default_config
       DefaultConfigFile.new(
         default_config_file,
-        pull_request.repository_owner_name
+        repository_owner_name
       ).content
     end
 

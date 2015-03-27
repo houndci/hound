@@ -5,13 +5,12 @@ module Language
     describe "#run" do
       it "sends file to be linted to SCSS worker" do
         build_worker = create(:build_worker)
-        pull_request = double("PullRequest", repository_owner_name: "foo")
         faraday_request = stub_faraday
         worker = Scss.new(
           build_worker,
           pull_request_file,
           stub_repo_config,
-          pull_request
+          repository_owner_name
         )
 
         worker.run
@@ -46,7 +45,7 @@ module Language
     def default_config_file
       DefaultConfigFile.new(
         "scss.yml",
-        "foo"
+        repository_owner_name
       ).content
     end
 
@@ -64,6 +63,10 @@ module Language
       allow(repo_config).to receive(:for).with("scss").and_return("custom")
 
       repo_config
+    end
+
+    def repository_owner_name
+      "foo"
     end
   end
 end
