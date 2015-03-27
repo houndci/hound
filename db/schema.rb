@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20150303212157) do
 
   add_index "violations", ["build_id"], name: "index_violations_on_build_id", using: :btree
 
+  add_foreign_key "build_workers", "builds"
   add_foreign_key "memberships", "repos"
   add_foreign_key "memberships", "users"
   add_foreign_key "repos", "owners"

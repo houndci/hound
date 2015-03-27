@@ -5,5 +5,7 @@ class CreateBuildWorkers < ActiveRecord::Migration
       t.datetime :completed_at
       t.timestamps null: false
     end
+
+    add_foreign_key :build_workers, :builds
   end
 end
