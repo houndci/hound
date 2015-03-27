@@ -1,7 +1,7 @@
 class Reviewer
   MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
 
-  static_facade :run, :build_worker, :file, :violations_attrs
+  static_facade :run, :build_worker, :file, :violations_attributes
 
   def run
     commenter.comment_on_violations(priority_violations)
@@ -33,7 +33,7 @@ class Reviewer
   end
 
   def violations
-    violations_attrs.flat_map do |violation|
+    violations_attributes.flat_map do |violation|
       line = pull_request_file.line_at(violation[:line_number])
 
       if line.changed?

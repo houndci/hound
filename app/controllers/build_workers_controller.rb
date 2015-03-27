@@ -1,15 +1,16 @@
 class BuildWorkersController < ApplicationController
   before_action :authenticate_with_token
-  skip_before_action \
+  skip_before_action(
     :authenticate,
     :capture_campaign_params,
     :verify_authenticity_token,
+  )
 
   def update
     build_worker = find_build_worker
 
     if not build_worker.completed?
-      ReviewJob.perform_later(build_worker, file, violations_attrs)
+      ReviewJob.perform_later(build_worker, file, violations)
 
       render json: {}, status: 201
     else
@@ -21,7 +22,7 @@ class BuildWorkersController < ApplicationController
 
   private
 
-  def violations_attrs
+  def violations
     params[:violations]
   end
 
