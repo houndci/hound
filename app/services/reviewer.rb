@@ -97,6 +97,6 @@ class Reviewer
   end
 
   def github
-    @github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+    GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
   end
 end
