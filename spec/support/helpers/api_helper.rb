@@ -5,7 +5,7 @@ module ApiHelper
 
   def authorized_headers_for_build_worker
     header_token = ActionController::HttpAuthentication::Token.
-      encode_credentials(BUILD_WORKER_TOKEN)
+      encode_credentials(ENV["BUILD_WORKERS_TOKEN"])
     @request.headers["HTTP_AUTHORIZATION"] = header_token
   end
 end

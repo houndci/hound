@@ -15,8 +15,8 @@ module LanguageWorker
         build_id: build.id,
         config: config,
         file: file,
-        hound_url: BUILD_WORKER_URL,
-        token: BUILD_WORKER_TOKEN,
+        hound_url: BUILD_WORKERS_URL,
+        token: BUILD_WORKERS_TOKEN,
       }
     end
 
