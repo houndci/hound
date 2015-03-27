@@ -12,7 +12,6 @@ before_install:
 
 before_script:
   - psql -c 'create database "hound_test";' -U postgres
-  - cp .sample.env .env
 
 services:
   - redis-server
