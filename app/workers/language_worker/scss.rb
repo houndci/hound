@@ -15,8 +15,8 @@ module LanguageWorker
         build_id: build.id,
         config: config,
         file: file,
-        hound_url: ENV.fetch("BUILD_WORKERS_URL"),
-        token: ENV.fetch("BUILD_WORKERS_TOKEN")
+        hound_url: BuildWorkerConfig.url,
+        token: BuildWorkerConfig.token,
       }
     end
 
