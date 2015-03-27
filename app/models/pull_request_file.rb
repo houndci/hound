@@ -1,6 +1,3 @@
-require "app/models/patch"
-require "app/models/unchanged_line"
-
 class PullRequestFile
   rattr_initialize :filename, :content, :patch_body
 

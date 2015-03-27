@@ -1,5 +1,9 @@
+require "base64"
+
 require "spec_helper"
 require "app/models/pull_request_file"
+require "app/models/patch"
+require "app/models/unchanged_line"
 
 describe PullRequestFile do
   describe "#line_at" do
