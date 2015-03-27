@@ -1,6 +1,8 @@
 class PullRequest
   pattr_initialize :payload
 
+  FILE_REMOVED_STATUS = "removed"
+
   def comments
     @comments ||= api.pull_request_comments(full_repo_name, number)
   end
@@ -50,7 +52,7 @@ class PullRequest
   end
 
   def file_removed?(github_file)
-    github_file.status == "removed"
+    github_file.status == FILE_REMOVED_STATUS
   end
 
   def api
