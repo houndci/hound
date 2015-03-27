@@ -1,4 +1,4 @@
-class Reviewer
+class Review
   MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
 
   static_facade :run, :build_worker, :file, :violations_attributes
