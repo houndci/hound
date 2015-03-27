@@ -1,6 +1,4 @@
 class BuildRunner
-  MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
-
   pattr_initialize :payload
 
   def run

@@ -15,10 +15,6 @@ class ManageHound
     @repo ||= github.repo(repo_name)
   end
 
-  def github_username
-    ENV.fetch("HOUND_GITHUB_USERNAME")
-  end
-
   def decorated_services_team
     if find_services_team
       GithubTeam.new(find_services_team, github)

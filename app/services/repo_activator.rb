@@ -75,7 +75,7 @@ class RepoActivator
   end
 
   def protocol
-    if ENV.fetch("ENABLE_HTTPS") == "yes"
+    if ENABLE_HTTPS == "yes"
       "https"
     else
       "http"
