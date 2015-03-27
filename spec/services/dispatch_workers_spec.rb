@@ -281,15 +281,12 @@ describe DispatchWorkers do
     "some_org"
   end
 
-  def stub_repo_config(options = {})
-    default_options = {
+  def stub_repo_config
+    repo_config = double(
+      "RepoConfig",
       enabled_for?: true,
       for: {},
       ignored_javascript_files: []
-    }
-    repo_config = double(
-      "RepoConfig",
-      default_options.merge(options)
     )
     allow(RepoConfig).to receive(:new).and_return(repo_config)
 
@@ -303,7 +300,6 @@ describe DispatchWorkers do
       run: true,
       repo_config: stub_pull_request,
     }
-
     worker = double(
       name.to_s,
       default_options.merge(options)
