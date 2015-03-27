@@ -1,4 +1,4 @@
-class WorkerDispatcher
+class DispatchWorkers
   static_facade :run, :pull_request, :build
 
   def run

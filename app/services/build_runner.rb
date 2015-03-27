@@ -23,7 +23,7 @@ class BuildRunner
   end
 
   def dispatch_workers(build)
-    WorkerDispatcher.run(pull_request, build)
+    DispatchWorkers.run(pull_request, build)
   end
 
   def pull_request

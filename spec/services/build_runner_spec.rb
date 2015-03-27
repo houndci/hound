@@ -61,12 +61,12 @@ describe BuildRunner, '#run' do
       )
       pull_request = stubbed_pull_request
       stubbed_github_api
-      allow(WorkerDispatcher).to receive(:run)
+      allow(DispatchWorkers).to receive(:run)
 
       BuildRunner.run(payload)
       build = Build.find_by(repo_id: repo.id)
 
-      expect(WorkerDispatcher).
+      expect(DispatchWorkers).
         to have_received(:run).with(pull_request, build)
     end
 

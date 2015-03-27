@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe WorkerDispatcher do
+describe DispatchWorkers do
   describe "#run" do
     context "for a Ruby file" do
       it "runs Language::RubyLegacyWorker" do
@@ -10,7 +10,7 @@ describe WorkerDispatcher do
         repo_config = stub_repo_config
         worker = stub_worker(Language::RubyLegacyWorker)
 
-        WorkerDispatcher.run(pull_request, build)
+        DispatchWorkers.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(Language::RubyLegacyWorker).to have_received(:new).
@@ -26,7 +26,7 @@ describe WorkerDispatcher do
           repo_config = stub_repo_config
           worker = stub_worker(Language::RubyLegacyWorker, enabled?: false)
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::RubyLegacyWorker).to have_received(:new).
@@ -43,7 +43,7 @@ describe WorkerDispatcher do
           repo_config = stub_repo_config
           worker = stub_worker(Language::RubyLegacyWorker)
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           first_build_worker = build.build_workers.first
           last_build_worker = build.build_workers.last
@@ -65,7 +65,7 @@ describe WorkerDispatcher do
         repo_config = stub_repo_config
         worker = stub_worker(Language::CoffeeScriptLegacyWorker)
 
-        WorkerDispatcher.run(pull_request, build)
+        DispatchWorkers.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
@@ -84,7 +84,7 @@ describe WorkerDispatcher do
             enabled?: false
           )
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
@@ -104,7 +104,7 @@ describe WorkerDispatcher do
             file_included?: false
           )
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::CoffeeScriptLegacyWorker).to have_received(:new).
@@ -124,7 +124,7 @@ describe WorkerDispatcher do
           Language::JavaScriptLegacyWorker
         )
 
-        WorkerDispatcher.run(pull_request, build)
+        DispatchWorkers.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(Language::JavaScriptLegacyWorker).to have_received(:new).
@@ -142,7 +142,7 @@ describe WorkerDispatcher do
             Language::JavaScriptLegacyWorker, enabled?: false
           )
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::JavaScriptLegacyWorker).to have_received(:new).
@@ -162,7 +162,7 @@ describe WorkerDispatcher do
             file_included?: false
           )
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::JavaScriptLegacyWorker).to have_received(:new).
@@ -181,7 +181,7 @@ describe WorkerDispatcher do
           repo_config = stub_repo_config
           worker = stub_worker(Language::ScssLegacyWorker)
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::ScssLegacyWorker).to have_received(:new).
@@ -199,7 +199,7 @@ describe WorkerDispatcher do
           repo_config = stub_repo_config
           worker = stub_worker(Language::Scss)
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::Scss).to have_received(:new).
@@ -217,7 +217,7 @@ describe WorkerDispatcher do
           repo_config = stub_repo_config
           worker = stub_worker(Language::Scss, enabled?: false)
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::Scss).to have_received(:new).
@@ -235,7 +235,7 @@ describe WorkerDispatcher do
           repo_config = stub_repo_config
           worker = stub_worker(Language::Scss, file_included?: false)
 
-          WorkerDispatcher.run(pull_request, build)
+          DispatchWorkers.run(pull_request, build)
 
           build_worker = build.build_workers.first
           expect(Language::Scss).to have_received(:new).
@@ -253,7 +253,7 @@ describe WorkerDispatcher do
         repo_config = stub_repo_config
         worker = stub_worker(Language::Unsupported)
 
-        WorkerDispatcher.run(pull_request, build)
+        DispatchWorkers.run(pull_request, build)
 
         build_worker = build.build_workers.first
         expect(Language::Unsupported).to have_received(:new).
