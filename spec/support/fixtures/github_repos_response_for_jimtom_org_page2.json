@@ -1,5 +1,5 @@
 [{
-  "id": 1296269,
+  "id": 1296272,
   "owner": {
     "login": "jimtom",
     "id": 1,
@@ -7,9 +7,9 @@
     "gravatar_id": "somehexcode",
     "url": "https://api.github.com/users/jimtom"
   },
-  "name": "my_private_repo",
-  "full_name": "jimtom/My-Private-Repo",
-  "description": "This your first repo!",
+  "name": "my_other_private_repo",
+  "full_name": "jimtom-org/My-Other-Private-Repo",
+  "description": "This your second repo!",
   "private": false,
   "fork": false,
   "url": "https://api.github.com/repos/jimtom/My-Private-Repo",
@@ -32,6 +32,6 @@
   "created_at": "2011-01-26T19:01:12Z",
   "updated_at": "2011-01-26T19:14:43Z",
   "permissions": {
-    "admin": true
+    "admin": false
   }
 }]

@@ -117,6 +117,32 @@ describe BuildRunner do
       end
     end
 
+    it "fails the GitHub status with invalid config" do
+      repo = create(:repo, :active, github_id: 123)
+      payload = stubbed_payload(
+        github_repo_id: repo.github_id,
+        full_repo_name: "test/repo",
+        head_sha: "headsha"
+      )
+      build_runner = BuildRunner.new(payload)
+      pull_request = stubbed_pull_request_with_file("random.js", "")
+      style_checker = stubbed_style_checker_with_invalid_javascript_config(
+        pull_request
+      )
+      allow(build_runner).to receive(:style_checker).and_return(style_checker)
+      allow(build_runner).to receive(:pull_request).and_return(pull_request)
+      github_api = stubbed_github_api
+
+      build_runner.run
+
+      expect(github_api).to have_received(:create_error_status).with(
+        "test/repo",
+        "headsha",
+        I18n.t(:config_error_status),
+        configuration_url
+      )
+    end
+
     def stubbed_payload(options = {})
       defaults = {
         pull_request_number: 123,
@@ -154,5 +180,50 @@ describe BuildRunner do
 
       github_api
     end
+  end
+
+  def invalid_json
+    <<-EOS.strip_heredoc
+      {
+        "predef": ["myGlobal",]
+      }
+    EOS
+  end
+
+  def stub_commit(configuration)
+    commit = double("Commit")
+    hound_config = configuration.delete(:hound_config)
+    allow(commit).to receive(:file_content)
+    allow(commit).to receive(:file_content).
+      with(RepoConfig::HOUND_CONFIG).and_return(hound_config)
+    stub_configuration_for_commit(configuration, commit)
+
+    commit
+  end
+
+  def stub_configuration_for_commit(configuration, commit)
+    configuration.each do |filename, contents|
+      allow(commit).to receive(:file_content).
+        with(filename).and_return(contents)
+    end
+  end
+
+  def config_for_file(file_path, content)
+    hound_config = <<-EOS.strip_heredoc
+      java_script:
+        enabled: true
+        config_file: #{file_path}
+    EOS
+
+    commit = stub_commit(
+      hound_config: hound_config,
+      "#{file_path}" => content
+    )
+
+    RepoConfig.new(commit)
+  end
+
+  def configuration_url
+    Rails.application.routes.url_helpers.configuration_url(host: ENV["HOST"])
   end
 end

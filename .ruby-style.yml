@@ -508,6 +508,8 @@ Metrics/MethodLength:
   Enabled: true
   CountComments: true
   Max: 10
+  Exclude:
+  - "spec/**/*"
 Metrics/ParameterLists:
   Description: Avoid long parameter lists.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#too-many-params

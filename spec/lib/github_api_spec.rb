@@ -13,7 +13,7 @@ describe GithubApi do
 
       repos = api.repos
 
-      expect(repos.size).to eq 4
+      expect(repos.size).to eq 2
     end
   end
 
@@ -181,48 +181,50 @@ describe GithubApi do
 
       expect(request).to have_been_requested
     end
+  end
 
-    describe "#pull_request_comments" do
-      it "returns comments added to pull request" do
-        hound_token = ENV["HOUND_GITHUB_TOKEN"]
-        api = GithubApi.new(hound_token)
-        pull_request = double("PullRequest", full_repo_name: full_repo_name)
-        pull_request_id = 253
-        commit_sha = "abc253"
-        expected_comment = "inline if's and while's are not violations?"
-        stub_pull_request_comments_request(
-          pull_request.full_repo_name,
-          pull_request_id
-        )
-        stub_contents_request(
-          repo_name: pull_request.full_repo_name,
-          sha: commit_sha
-        )
+  describe "#pull_request_comments" do
+    it "returns comments added to pull request" do
+      hound_token = ENV["HOUND_GITHUB_TOKEN"]
+      api = GithubApi.new(hound_token)
+      pull_request = double("PullRequest", full_repo_name: full_repo_name)
+      pull_request_id = 253
+      commit_sha = "abc253"
+      expected_comment = "inline if's and while's are not violations?"
+      stub_pull_request_comments_request(
+        pull_request.full_repo_name,
+        pull_request_id
+      )
+      stub_contents_request(
+        repo_name: pull_request.full_repo_name,
+        sha: commit_sha
+      )
 
-        comments = api.pull_request_comments(
-          pull_request.full_repo_name,
-          pull_request_id
-        )
+      comments = api.pull_request_comments(
+        pull_request.full_repo_name,
+        pull_request_id
+      )
 
-        expect(comments.size).to eq(4)
-        expect(comments.first.body).to eq expected_comment
-      end
+      expect(comments.size).to eq(4)
+      expect(comments.first.body).to eq expected_comment
     end
+  end
 
-    describe "#accept_pending_invitations" do
-      it "finds and accepts pending org invitations" do
-        hound_token = ENV["HOUND_GITHUB_TOKEN"]
-        api = GithubApi.new(hound_token)
-        memberships_request = stub_memberships_request
-        membership_update_request = stub_membership_update_request
+  describe "#accept_pending_invitations" do
+    it "finds and accepts pending org invitations" do
+      hound_token = ENV["HOUND_GITHUB_TOKEN"]
+      api = GithubApi.new(hound_token)
+      memberships_request = stub_memberships_request
+      membership_update_request = stub_membership_update_request
 
-        api.accept_pending_invitations
+      api.accept_pending_invitations
 
-        expect(memberships_request).to have_been_requested
-        expect(membership_update_request).to have_been_requested
-      end
+      expect(memberships_request).to have_been_requested
+      expect(membership_update_request).to have_been_requested
     end
+  end
 
+  describe "#used_teams" do
     it "returns user's teams" do
       teams = ["thoughtbot"]
       client = double(user_teams: teams)
@@ -257,7 +259,6 @@ describe GithubApi do
         sha = "abc"
         hound_token = ENV["HOUND_GITHUB_TOKEN"]
         api = GithubApi.new(hound_token)
-        repo_name = "test/repo"
         stub_failed_status_creation_request(
           full_repo_name,
           sha,
@@ -284,6 +285,23 @@ describe GithubApi do
       )
 
       api.create_success_status("test/repo", "sha", "description")
+
+      expect(request).to have_been_requested
+    end
+  end
+
+  describe "#create_error_status" do
+    it "makes request to GitHub for creating an error status" do
+      hound_token = ENV["HOUND_GITHUB_TOKEN"]
+      api = GithubApi.new(hound_token)
+      request = stub_status_request(
+        "test/repo",
+        "sha",
+        "error",
+        "description"
+      )
+
+      api.create_error_status("test/repo", "sha", "description")
 
       expect(request).to have_been_requested
     end

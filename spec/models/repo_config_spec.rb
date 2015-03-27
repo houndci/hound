@@ -234,6 +234,17 @@ describe RepoConfig do
         end
       end
 
+      context "with bad syntax" do
+        it "raises RepoConfig::ParserError error" do
+          config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
+            StringLiterals: !ruby/object
+              ;foo:
+          EOS
+
+          expect { config.for("ruby") }.to raise_error(RepoConfig::ParserError)
+        end
+      end
+
       context "with unsafe yaml" do
         it "raises error" do
           config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
@@ -241,7 +252,8 @@ describe RepoConfig do
               foo:
           EOS
 
-          expect { config.for("ruby") }.to raise_error Psych::DisallowedClass
+          expect { config.for("ruby") }.
+            to raise_error RepoConfig::ParserError, /Psych::DisallowedClass/
         end
       end
 
@@ -297,9 +309,8 @@ describe RepoConfig do
             }
           EOS
 
-          result = config.for("java_script")
-
-          expect(result).to eq({})
+          expect { config.for("java_script") }.
+            to raise_error(RepoConfig::ParserError)
         end
       end
     end

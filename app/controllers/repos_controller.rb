@@ -11,8 +11,7 @@ class ReposController < ApplicationController
         repos = current_user.
           repos.
           order(active: :desc, full_github_name: :asc).
-          includes(:subscription).
-          uniq
+          includes(:subscription)
 
         render json: repos
       end
