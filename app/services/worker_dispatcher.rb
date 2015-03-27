@@ -40,7 +40,7 @@ class WorkerDispatcher
     when /.+\.js\z/
       Language::JavaScriptLegacyWorker
     when /.+\.scss\z/
-      Language::Scss
+      scss_worker
     else
       Language::Unsupported
     end
@@ -48,5 +48,13 @@ class WorkerDispatcher
 
   def repo_config
     @repo_config ||= RepoConfig.new(pull_request.head_commit)
+  end
+
+  def scss_worker
+    if ENV["IRON_WORKER_ENABLED"]
+      Language::Scss
+    else
+      Language::ScssLegacyWorker
+    end
   end
 end

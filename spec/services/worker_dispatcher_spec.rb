@@ -173,23 +173,44 @@ describe WorkerDispatcher do
     end
 
     context "for a SCSS file" do
-      it "runs Language::Scss" do
-        file = double("File", filename: "foo.scss")
-        pull_request = stub_pull_request(pull_request_files: [file])
-        build = create(:build)
-        repo_config = stub_repo_config
-        worker = stub_worker(Language::Scss)
+      context "when iron worker is disbaled" do
+        it "runs Language::ScssLegacyWorker" do
+          file = double("File", filename: "foo.scss")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker(Language::ScssLegacyWorker)
 
-        WorkerDispatcher.run(pull_request, build)
+          WorkerDispatcher.run(pull_request, build)
 
-        build_worker = build.build_workers.first
-        expect(Language::Scss).to have_received(:new).
-          with(build_worker, file, repo_config, pull_request)
-        expect(worker).to have_received(:run)
+          build_worker = build.build_workers.first
+          expect(Language::ScssLegacyWorker).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).to have_received(:run)
+        end
+      end
+
+      context "when iron worker enabled" do
+        it "runs Language::Scss" do
+          enable_iron_worker
+          file = double("File", filename: "foo.scss")
+          pull_request = stub_pull_request(pull_request_files: [file])
+          build = create(:build)
+          repo_config = stub_repo_config
+          worker = stub_worker(Language::Scss)
+
+          WorkerDispatcher.run(pull_request, build)
+
+          build_worker = build.build_workers.first
+          expect(Language::Scss).to have_received(:new).
+            with(build_worker, file, repo_config, pull_request)
+          expect(worker).to have_received(:run)
+        end
       end
 
       context "when SCSS is not enabled for the repo" do
         it "does not run the worker" do
+          enable_iron_worker
           file = double("File", filename: "foo.scss")
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
@@ -207,6 +228,7 @@ describe WorkerDispatcher do
 
       context "when file is not included" do
         it "does not run the worker" do
+          enable_iron_worker
           file = double("File", filename: "foo.scss")
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
@@ -285,5 +307,10 @@ describe WorkerDispatcher do
     allow(name).to receive(:new).and_return(worker)
 
     worker
+  end
+
+  def enable_iron_worker
+    allow(ENV).
+      to receive(:[]).with("IRON_WORKER_ENABLED").and_return(true)
   end
 end
