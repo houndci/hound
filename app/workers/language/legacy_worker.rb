@@ -2,8 +2,8 @@ module Language
   class LegacyWorker < Base
     def run
       Faraday.post do |request|
-        request.url = BUILD_WORKERS_URL
-        request.token_auth(BUILD_WORKERS_TOKEN)
+        request.url = ENV.fetch("BUILD_WORKERS_URL")
+        request.token_auth(ENV.fetch("BUILD_WORKERS_TOKEN"))
         request.body = hound_payload.to_json
       end
     end
