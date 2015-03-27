@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe LanguageWorker::JavaScript do
+describe Language::JavaScript do
   it_behaves_like "Language not moved to IronWorker" do
     let(:content) { "var blahh = 'blahh';" }
     let(:messages) { ["'blahh' is defined but never used."] }

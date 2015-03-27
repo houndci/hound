@@ -1,4 +1,4 @@
-module LanguageWorker
+module Language
   class LegacyWorker < Base
     def run
       Faraday.post do |request|

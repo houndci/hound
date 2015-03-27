@@ -1,6 +1,6 @@
 require "rails_helper"
 
-module LanguageWorker
+module Language
   describe Scss do
     describe "#run" do
       it "sends file to be linted to SCSS worker" do

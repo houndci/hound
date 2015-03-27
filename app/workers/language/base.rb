@@ -1,4 +1,4 @@
-module LanguageWorker
+module Language
   class Base
     pattr_initialize :build_worker,
                      :pull_request_file,
