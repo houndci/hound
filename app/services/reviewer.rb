@@ -75,7 +75,11 @@ class Reviewer
   end
 
   def pull_request_file
-    PullRequestFile.new(file[:filename], file[:content], file[:patch])
+    @pull_request_file ||= PullRequestFile.new(
+      file[:filename],
+      file[:content],
+      file[:patch],
+    )
   end
 
   def repo
