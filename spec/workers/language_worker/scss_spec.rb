@@ -32,8 +32,8 @@ module LanguageWorker
               content: "some content",
               patch_body: ""
             },
-            hound_url: BuildWorkerConfig.url,
-            token: BuildWorkerConfig.token,
+            hound_url: BUILD_WORKER_URL,
+            token: BUILD_WORKER_TOKEN,
           }.to_json
         )
       end
