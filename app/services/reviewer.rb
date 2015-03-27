@@ -37,14 +37,23 @@ class Reviewer
       line = pull_request_file.line_at(violation[:line_number])
 
       if line.changed?
-        build.violations.create!(
+        create_violation(
           filename: file[:filename],
           patch_position: line.patch_position,
           line_number: violation[:line_number],
-          messages: violation[:messages]
+          messages: violation[:messages],
         )
       end
     end
+  end
+
+  def create_violation(attributes)
+    build.violations.create!(
+      filename: attributes[:filename],
+      patch_position: attributes[:patch_position],
+      line_number: attributes[:line_number],
+      messages: attributes[:messages],
+    )
   end
 
   def priority_violations
