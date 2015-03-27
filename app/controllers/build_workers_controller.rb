@@ -9,7 +9,7 @@ class BuildWorkersController < ApplicationController
   def update
     build_worker = find_build_worker
 
-    if not build_worker.completed?
+    if build_worker.incomplete?
       ReviewJob.perform_later(build_worker, file, violations)
 
       render json: {}, status: 201
