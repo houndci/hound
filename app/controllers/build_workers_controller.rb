@@ -7,8 +7,6 @@ class BuildWorkersController < ApplicationController
   )
 
   def update
-    build_worker = find_build_worker
-
     if build_worker.incomplete?
       ReviewJob.perform_later(build_worker, file, violations)
 
@@ -30,8 +28,8 @@ class BuildWorkersController < ApplicationController
     params[:file]
   end
 
-  def find_build_worker
-    @find_build_worker ||= BuildWorker.find(params[:id])
+  def build_worker
+    @build_worker ||= BuildWorker.find(params[:id])
   end
 
   def authenticate_with_token

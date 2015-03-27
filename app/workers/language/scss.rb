@@ -1,4 +1,4 @@
-module LanguageWorker
+module Language
   class Scss < Base
     def run
       Faraday.post do |request|
@@ -15,8 +15,8 @@ module LanguageWorker
         build_id: build.id,
         config: config,
         file: file,
-        hound_url: BuildWorkerConfig.url,
-        token: BuildWorkerConfig.token,
+        hound_url: BUILD_WORKERS_URL,
+        token: BUILD_WORKERS_TOKEN,
       }
     end
 

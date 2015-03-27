@@ -1,4 +1,4 @@
-module LanguageWorker
+module Language
   class JavaScript < LegacyWorker
     private
 

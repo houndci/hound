@@ -34,15 +34,15 @@ class WorkerDispatcher
   def worker_class_name(file)
     case file.filename
     when /.+\.rb\z/
-      LanguageWorker::Ruby
+      Language::Ruby
     when /.+\.coffee(\.js)?\z/
-      LanguageWorker::CoffeeScript
+      Language::CoffeeScript
     when /.+\.js\z/
-      LanguageWorker::JavaScript
+      Language::JavaScript
     when /.+\.scss\z/
-      LanguageWorker::Scss
+      Language::Scss
     else
-      LanguageWorker::Unsupported
+      Language::Unsupported
     end
   end
 

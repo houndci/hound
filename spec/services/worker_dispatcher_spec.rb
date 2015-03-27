@@ -3,17 +3,17 @@ require "rails_helper"
 describe WorkerDispatcher do
   describe "#run" do
     context "for a Ruby file" do
-      it "runs LanguageWorker::Ruby" do
+      it "runs Language::Ruby" do
         file = double("File", filename: "foo.rb")
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker(LanguageWorker::Ruby)
+        worker = stub_worker(Language::Ruby)
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(LanguageWorker::Ruby).to have_received(:new).
+        expect(Language::Ruby).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -24,12 +24,12 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker(LanguageWorker::Ruby, enabled?: false)
+          worker = stub_worker(Language::Ruby, enabled?: false)
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(LanguageWorker::Ruby).to have_received(:new).
+          expect(Language::Ruby).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -41,15 +41,15 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file, file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker(LanguageWorker::Ruby)
+          worker = stub_worker(Language::Ruby)
 
           WorkerDispatcher.run(pull_request, build)
 
           first_build_worker = build.build_workers.first
           last_build_worker = build.build_workers.last
-          expect(LanguageWorker::Ruby).to have_received(:new).
+          expect(Language::Ruby).to have_received(:new).
             with(first_build_worker, file, repo_config, pull_request)
-          expect(LanguageWorker::Ruby).to have_received(:new).
+          expect(Language::Ruby).to have_received(:new).
             with(last_build_worker, file, repo_config, pull_request)
           expect(worker).to have_received(:run).twice
           expect(build.build_workers.count).to eq(2)
@@ -58,17 +58,17 @@ describe WorkerDispatcher do
     end
 
     context "for a CoffeeScript file" do
-      it "runs LanguageWorker::CoffeeScript" do
+      it "runs Language::CoffeeScript" do
         file = double("File", filename: "foo.coffee.js")
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker(LanguageWorker::CoffeeScript)
+        worker = stub_worker(Language::CoffeeScript)
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(LanguageWorker::CoffeeScript).to have_received(:new).
+        expect(Language::CoffeeScript).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -80,14 +80,14 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            LanguageWorker::CoffeeScript,
+            Language::CoffeeScript,
             enabled?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(LanguageWorker::CoffeeScript).to have_received(:new).
+          expect(Language::CoffeeScript).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -100,14 +100,14 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            LanguageWorker::CoffeeScript,
+            Language::CoffeeScript,
             file_included?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(LanguageWorker::CoffeeScript).to have_received(:new).
+          expect(Language::CoffeeScript).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -115,19 +115,19 @@ describe WorkerDispatcher do
     end
 
     context "for a JavaScript file" do
-      it "runs LanguageWorker::CoffeeScript" do
+      it "runs Language::CoffeeScript" do
         file = double("File", filename: "foo.js")
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
         worker = stub_worker(
-          LanguageWorker::JavaScript
+          Language::JavaScript
         )
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(LanguageWorker::JavaScript).to have_received(:new).
+        expect(Language::JavaScript).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -139,13 +139,13 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            LanguageWorker::JavaScript, enabled?: false
+            Language::JavaScript, enabled?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(LanguageWorker::JavaScript).to have_received(:new).
+          expect(Language::JavaScript).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -158,14 +158,14 @@ describe WorkerDispatcher do
           build = create(:build)
           repo_config = stub_repo_config
           worker = stub_worker(
-            LanguageWorker::JavaScript,
+            Language::JavaScript,
             file_included?: false
           )
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(LanguageWorker::JavaScript).to have_received(:new).
+          expect(Language::JavaScript).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -173,17 +173,17 @@ describe WorkerDispatcher do
     end
 
     context "for a SCSS file" do
-      it "runs LanguageWorker::Scss" do
+      it "runs Language::Scss" do
         file = double("File", filename: "foo.scss")
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker(LanguageWorker::Scss)
+        worker = stub_worker(Language::Scss)
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(LanguageWorker::Scss).to have_received(:new).
+        expect(Language::Scss).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end
@@ -194,12 +194,12 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker(LanguageWorker::Scss, enabled?: false)
+          worker = stub_worker(Language::Scss, enabled?: false)
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(LanguageWorker::Scss).to have_received(:new).
+          expect(Language::Scss).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -211,12 +211,12 @@ describe WorkerDispatcher do
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
           repo_config = stub_repo_config
-          worker = stub_worker(LanguageWorker::Scss, file_included?: false)
+          worker = stub_worker(Language::Scss, file_included?: false)
 
           WorkerDispatcher.run(pull_request, build)
 
           build_worker = build.build_workers.first
-          expect(LanguageWorker::Scss).to have_received(:new).
+          expect(Language::Scss).to have_received(:new).
             with(build_worker, file, repo_config, pull_request)
           expect(worker).not_to have_received(:run)
         end
@@ -229,12 +229,12 @@ describe WorkerDispatcher do
         pull_request = stub_pull_request(pull_request_files: [file])
         build = create(:build)
         repo_config = stub_repo_config
-        worker = stub_worker(LanguageWorker::Unsupported)
+        worker = stub_worker(Language::Unsupported)
 
         WorkerDispatcher.run(pull_request, build)
 
         build_worker = build.build_workers.first
-        expect(LanguageWorker::Unsupported).to have_received(:new).
+        expect(Language::Unsupported).to have_received(:new).
           with(build_worker, file, repo_config, pull_request)
         expect(worker).to have_received(:run)
       end

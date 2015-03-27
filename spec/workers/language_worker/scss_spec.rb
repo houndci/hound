@@ -1,6 +1,6 @@
 require "rails_helper"
 
-module LanguageWorker
+module Language
   describe Scss do
     describe "#run" do
       it "sends file to be linted to SCSS worker" do
@@ -32,8 +32,8 @@ module LanguageWorker
               content: "some content",
               patch_body: ""
             },
-            hound_url: BuildWorkerConfig.url,
-            token: BuildWorkerConfig.token,
+            hound_url: ENV["BUILD_WORKERS_URL"],
+            token: ENV["BUILD_WORKERS_TOKEN"],
           }.to_json
         )
       end
