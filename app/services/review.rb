@@ -33,29 +33,29 @@ class Review
   end
 
   def violations
-    violations_attributes.flat_map do |violation|
-      line = pull_request_file.line_at(violation[:line_number])
+    Violation.transaction do
+      violations_attributes.flat_map do |violation|
+        line = pull_request_file.line_at(violation[:line_number])
 
-      if line.changed?
-        create_violation(
-          filename: file[:filename],
-          patch_position: line.patch_position,
-          line_number: violation[:line_number],
-          messages: violation[:messages],
-        )
+        if line.changed?
+          create_violation(
+            filename: file[:filename],
+            patch_position: line.patch_position,
+            line_number: violation[:line_number],
+            messages: violation[:messages],
+          )
+        end
       end
     end
   end
 
   def create_violation(attributes)
-    Violation.transaction do
-      build.violations.create!(
-        filename: attributes[:filename],
-        patch_position: attributes[:patch_position],
-        line_number: attributes[:line_number],
-        messages: attributes[:messages],
-      )
-    end
+    build.violations.create!(
+      filename: attributes[:filename],
+      patch_position: attributes[:patch_position],
+      line_number: attributes[:line_number],
+      messages: attributes[:messages],
+    )
   end
 
   def priority_violations
