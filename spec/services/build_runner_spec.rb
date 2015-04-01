@@ -96,7 +96,11 @@ describe BuildRunner, '#run' do
       )
       build_runner = BuildRunner.new(payload)
       stubbed_pull_request
-      stubbed_style_checker_with_violations
+      violations = [
+        build(:violation),
+        build(:violation, messages: ["wrong", "bad"]),
+      ]
+      stubbed_style_checker(violations: violations)
       stubbed_commenter
       github_api = stubbed_github_api
 
@@ -110,7 +114,7 @@ describe BuildRunner, '#run' do
       expect(github_api).to have_received(:create_success_status).with(
         "test/repo",
         "headsha",
-        "Hound has reviewed all the changes!"
+        "3 violations found."
       )
     end
 

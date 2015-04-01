@@ -9,6 +9,8 @@ class Violation < ActiveRecord::Base
 
   attr_writer :line
 
+  delegate :count, to: :messages, prefix: true
+
   def add_messages(new_messages)
     self[:messages].concat(new_messages)
   end
