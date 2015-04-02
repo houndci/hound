@@ -46,8 +46,8 @@ class PullRequest
   def build_pull_request_file(github_file)
     PullRequestFile.new(
       github_file.filename,
+      -> { head_commit.file_content(github_file.filename) },
       github_file.patch,
-      head_commit.file_content(github_file.filename)
     )
   end
 

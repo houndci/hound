@@ -28,6 +28,24 @@ describe PullRequestFile do
     end
   end
 
+  describe "#content" do
+    context "when value is callable" do
+      it "returns the return value of the callable object" do
+        file = PullRequestFile.new("test.rb", -> { :sentinel }, "")
+
+        expect(file.content).to eq :sentinel
+      end
+    end
+
+    context "when value is not callable" do
+      it "returns the value" do
+        file = PullRequestFile.new("test.rb", :sentinel, "")
+
+        expect(file.content).to eq :sentinel
+      end
+    end
+  end
+
   def pull_request_file
     PullRequestFile.new("test.rb", "some content", "")
   end

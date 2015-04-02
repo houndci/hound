@@ -6,6 +6,14 @@ class PullRequestFile
       UnchangedLine.new
   end
 
+  def content
+    if @content.respond_to?(:call)
+      @content.call
+    else
+      @content
+    end
+  end
+
   private
 
   def changed_lines
