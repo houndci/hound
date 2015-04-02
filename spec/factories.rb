@@ -14,7 +14,7 @@ FactoryGirl.define do
     build
 
     trait :completed do
-      completed_at Time.now
+      completed_at Time.zone.now
     end
   end
 

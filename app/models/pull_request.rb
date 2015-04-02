@@ -11,8 +11,7 @@ class PullRequest
     @pull_request_files ||= api.
       pull_request_files(full_repo_name, number).
       reject { |github_file| file_removed?(github_file) }.
-      map { |github_file| build_pull_request_file(github_file) }.
-      compact
+      map { |github_file| build_pull_request_file(github_file) }
   end
 
   def comment_on_violation(violation)

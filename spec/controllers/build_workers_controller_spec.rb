@@ -11,23 +11,22 @@ describe BuildWorkersController do
     end
 
     context "when authorized" do
-      context "given a completed build" do
-        it "does not complete the build" do
-          build_worker = create(
-            :build_worker,
-            :completed,
-            completed_at: 1.day.ago,
-          )
-          authorized_headers_for_build_worker
+      it "returns status 201" do
+        allow(ReviewJob).to receive(:perform_later)
+        file = double("File")
+        violations = double("ViolationsAttrs")
+        build_worker = create(:build_worker)
+        authorized_headers_for_build_worker
 
-          put :update, id: build_worker.id, format: :json
+        put(
+          :update,
+          id: build_worker.id,
+          violations: violations,
+          file: file,
+          format: :json,
+        )
 
-          expect(response.status).to eq 409
-          expect(build_worker.completed_at).to be < Time.now
-          expect(json_body["error"]).to eq(
-            "BuildWorker##{build_worker.id} has already been finished"
-          )
-        end
+        expect(response.status).to eq 201
       end
 
       it "dispatches a ReviewJob" do

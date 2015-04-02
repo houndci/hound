@@ -7,14 +7,10 @@ class BuildWorkersController < ApplicationController
   )
 
   def update
-    if build_worker.incomplete?
+    if build_worker.running?
       ReviewJob.perform_later(build_worker, file, violations)
 
       render json: {}, status: 201
-    else
-      error = "BuildWorker##{build_worker.id} has already been finished"
-
-      render json: { error: error }, status: 409
     end
   end
 

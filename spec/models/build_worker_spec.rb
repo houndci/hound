@@ -18,17 +18,17 @@ describe BuildWorker do
     end
   end
 
-  describe "#incomplete?" do
-    it "returns true where incomplete_at is set" do
+  describe "#running?" do
+    it "returns true where complete_at is nil" do
       build_worker = BuildWorker.new(completed_at: Time.now)
 
-      expect(build_worker.incomplete?).to eq false
+      expect(build_worker.running?).to eq false
     end
 
-    it "returns false where completed_at is nil" do
+    it "returns false where completed_at is set" do
       build_worker = BuildWorker.new(completed_at: nil)
 
-      expect(build_worker.incomplete?).to eq true
+      expect(build_worker.running?).to eq true
     end
   end
 end

@@ -7,7 +7,7 @@ class BuildWorker < ActiveRecord::Base
     completed_at?
   end
 
-  def incomplete?
+  def running?
     !completed?
   end
 end

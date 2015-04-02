@@ -96,7 +96,31 @@ describe BuildRunner, '#run' do
       expect(repo.reload.owner).to eq Owner.first
     end
 
-    it "fails the GitHub status with invalid config"
+    it "fails the GitHub status with invalid config" do
+      owner_github_id = 56789
+      owner_name = "john"
+      repo = create(:repo, :active, github_id: 123)
+      payload = stubbed_payload(
+        github_repo_id: repo.github_id,
+        full_repo_name: "test/repo",
+        head_sha: "headsha",
+        repository_owner_id: owner_github_id,
+        repository_owner_name: owner_name,
+        repository_owner_is_organization?: true,
+      )
+      stubbed_pull_request
+      github_api = stubbed_github_api
+      allow(RepoConfig).to receive(:new).and_raise(RepoConfig::ParserError)
+
+      BuildRunner.run(payload)
+
+      expect(github_api).to have_received(:create_error_status).with(
+        "test/repo",
+        "headsha",
+        I18n.t(:config_error_status),
+        anything
+      )
+    end
   end
 
   context "with subscribed private repo and opened pull request" do
@@ -150,7 +174,8 @@ describe BuildRunner, '#run' do
     github_api = double(
       "GithubApi",
       create_pending_status: nil,
-      create_success_status: nil
+      create_success_status: nil,
+      create_error_status: nil,
     )
     allow(GithubApi).to receive(:new).and_return(github_api)
 
