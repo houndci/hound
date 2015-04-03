@@ -19,6 +19,7 @@ heroku join --app hound-production
 # Set up development environment config
 if [ ! -f .env ]; then
   cp .sample.env .env
+  cp .sample.env .env.test
 fi
 
 # Set a default port for Foreman to run the server
