@@ -50,7 +50,12 @@ class Review
   end
 
   def create_violation(attributes)
-    build.violations.create!(attributes)
+    build.violations.create!(
+      filename: attributes[:filename],
+      patch_position: attributes[:patch_position],
+      line_number: attributes[:line_number],
+      messages: attributes[:messages],
+    )
   end
 
   def priority_violations
