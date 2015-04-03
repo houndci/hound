@@ -66,7 +66,18 @@ We pass your GitHub token to our [Ruby on Rails] app
 (the app whose source code you are reading right now),
 which runs on [Heroku].
 
-We temporarily store your GitHub token in the Redis database
+Our app passes your GitHub token from memory in
+[`RepoSyncsController`] to our [Redis] database,
+as part of scheduling a background job ([`RepoSynchronizationJob`]).
+The Redis database is hosted by [Redis to Go].
+
+[`RepoSyncsController`]: ../app/controllers/repo_syncs_controller.rb
+[`RepoSynchronizationJob`]: ../app/jobs/repo_synchronization_job.rb
+[Redis]: http://redis.io/
+[Redis to Go]: http://redistogo.com
+
+As part of this process,
+we temporarily store your GitHub token in the Redis database
 when enqueueing a Resque job to fetch a list of your repos.
 
 [Ruby on Rails]: http://rubyonrails.org
@@ -85,21 +96,13 @@ Refreshing your GitHub repos allows you to later enable Hound on those repos.
 What happens when you enable Hound on your GitHub repository
 ------------------------------------------------------------
 
-When you click the "toggle" switch in the Hound web interface
+When you click the "Activate" button in the Hound web interface
 for one of your private GitHub repositories,
 we send your GitHub token from the web browser's session
 to the Ruby process on Heroku
 through the [`SubscriptionsController`].
 
 [`SubscriptionsController`]: ../app/controllers/subscriptions_controller.rb
-
-Our Ruby process passes your GitHub token from memory in
-[`RepoSynchronizationJob`] to our [Redis] database.
-The database is hosted by [Redis to Go].
-
-[`RepoSynchronizationJob`]: ../app/jobs/repo_synchronization_job.rb
-[Redis]: http://redis.io/
-[Redis to Go]: http://redistogo.com
 
 We use your GitHub token to add the [@houndci] GitHub user to your repository
 via the [GitHub collaborator API][api1]. @houndci will be added to a team that
@@ -176,16 +179,16 @@ The payload is stored in Redis so that
 and back into Ruby memory on Heroku.
 Using the information from the payload,
 it makes a new HTTP request to GitHub's API to get
-the pull request's diff and file contents.
+the pull request's patch and file contents.
 Hound never fetches a complete version of your codebase.
 
 In Ruby memory,
 `BuildRunner` passes your pull request's contents to [`StyleChecker`],
-which loops through the changes files and delegates to the appropriate
+which loops through the changed files and delegates to the appropriate
 [`StyleGuide`] Ruby classes based on file extension (`.rb`, `.js`, etc.).
 
 [`StyleChecker`]: ../app/models/style_checker.rb
-[`StyleChecker`]: ../app/models/style_guide
+[`StyleGuide`]: ../app/models/style_guide
 
 The `StyleGuide` classes wrap the language-specific open source libraries
 that we use to check the style of the code in each pull request notification:
@@ -193,6 +196,7 @@ that we use to check the style of the code in each pull request notification:
 * Ruby: [RuboCop](https://github.com/bbatsov/rubocop)
 * CoffeeScript: [CoffeeLint](http://www.coffeelint.org/)
 * JavaScript: [JSHint](https://github.com/jshint/jshint/)
+* SCSS: [SCSS-Lint](https://github.com/brigade/scss-lint)
 
 Those libraries find style violations
 and pass them back up through `StyleGuide` and `BuildRunner`.
@@ -208,10 +212,9 @@ to comment about the violations on the pull request.
 `BuildRunner` also saves the violations,
 the pull request number,
 and the commit SHA in the `builds` table of our Postgres database.
-This saves a few lines of your code around the diff,
-with a reference to where the violation happened.
-We do this to make our debugging sessions easier.
-We do not save in Postgres the whole diff from the pull request.
+This saves the line number and a reference line number to GitHub's patch.
+We do not save any of your code in Postgres, or Redis.
+It only lives in the memory of the Ruby process.
 
 To browse the portions of the codebase related to
 receiving and processing pull request notifications,
@@ -237,10 +240,7 @@ What you can do to make your Hound use safer
 --------------------------------------------
 
 Use environment variables in your code
-to [separate code from configuration][12factor]
-so we won't accidentally store any credentials or
-other sensitive configuration from your app
-in our `builds` table.
+to [separate code from configuration][12factor].
 
 [12factor]: http://12factor.net/config
 
