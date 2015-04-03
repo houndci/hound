@@ -1,0 +1,5 @@
+auth_button:
+  alternatives:
+    - "Sign In with GitHub"
+    - "Get Started"
+  resettable: false
