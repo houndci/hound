@@ -38,7 +38,8 @@ What happens when you authenticate your GitHub account
 ------------------------------------------------------
 
 Hound uses the [OmniAuth GitHub] Ruby gem to
-authenticate your GitHub account using [GitHub's OAuth2 flow][gh-oauth].
+authenticate your GitHub account using [GitHub's OAuth2 flow][gh-oauth]
+and provide Hound with a GitHub token.
 
 [OmniAuth GitHub]: https://github.com/intridea/omniauth-github
 [gh-oauth]: https://developer.github.com/v3/oauth/
@@ -46,9 +47,9 @@ authenticate your GitHub account using [GitHub's OAuth2 flow][gh-oauth].
 Using OAuth2 means we do not access your GitHub password
 and that you can revoke our access at any time.
 
-We need this token in order to refresh your GitHub repositories with Hound,
-which we do once, immediately after you authenticate your GitHub account.
-Later, you can manually refresh your GitHub repositories with Hound at any time.
+Your GitHub token is needed in order to fetch file content, comments, repo
+information and update Pull Request status. This token is stored in our
+Postgres database on Heroku and is base64 encoded using a protected key.
 
 To browse the portions of the codebase related to authentication,
 try `grep`ing for the following terms:
@@ -66,8 +67,7 @@ We pass your GitHub token to our [Ruby on Rails] app
 which runs on [Heroku].
 
 We temporarily store your GitHub token in the Redis database
-when enqueueing a Resque job
-to fetch a list of your repos.
+when enqueueing a Resque job to fetch a list of your repos.
 
 [Ruby on Rails]: http://rubyonrails.org
 [Heroku]: https://www.heroku.com
