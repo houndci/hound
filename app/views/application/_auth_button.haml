@@ -1,6 +1,10 @@
+= content_for "original", t("authenticate"), flush: true
+= content_for "aggressive", t("aggressive_authenticate"), flush: true
+= content_for :variation, @button_type, flush: true
+
 = link_to "/auth/github", class: "auth" do
   %i.fa.fa-github
-  %span= t("authenticate")
+  %span= content_for @button_type
 
 - content_for :analytics do
   :javascript

@@ -11,6 +11,6 @@ module AuthenticationHelper
       token: token
     )
     visit root_path
-    click_link(I18n.t('authenticate'), match: :first)
+    first(".auth").click
   end
 end

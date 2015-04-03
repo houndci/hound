@@ -2,6 +2,7 @@ en:
   sync_repos: "Refresh repo list"
   syncing_repos: "Loading repos..."
   authenticate: "Sign In with GitHub"
+  aggressive_authenticate: "Try out Hound today!"
   active_repos: "Active repos"
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."
