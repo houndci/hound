@@ -1,10 +1,12 @@
+require "app/models/line"
+
 class Patch
   RANGE_INFORMATION_LINE = /^@@ .+\+(?<line_number>\d+),/
   MODIFIED_LINE = /^\+(?!\+|\+)/
   NOT_REMOVED_LINE = /^[^-]/
 
   def initialize(body)
-    @body = body || ''
+    @body = body || ""
   end
 
   def changed_lines

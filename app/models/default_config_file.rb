@@ -1,3 +1,5 @@
+require "attr_extras"
+
 class DefaultConfigFile
   CONFIG_DIR = "config/style_guides"
   THOUGHTBOT_CONFIG_DIR = "config/style_guides/thoughtbot"

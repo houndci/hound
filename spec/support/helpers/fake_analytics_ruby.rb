@@ -1,3 +1,6 @@
+require "active_support"
+require "active_support/core_ext"
+
 class FakeAnalyticsRuby
   def initialize
     @tracked_events = EventsList.new([])

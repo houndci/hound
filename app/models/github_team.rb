@@ -1,3 +1,5 @@
+require "attr_extras"
+
 class GithubTeam
   pattr_initialize :team, :github
 

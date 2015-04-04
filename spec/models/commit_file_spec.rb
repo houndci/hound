@@ -1,9 +1,5 @@
-require "base64"
-
 require "spec_helper"
 require "app/models/commit_file"
-require "app/models/patch"
-require "app/models/unchanged_line"
 
 describe CommitFile do
   describe "#removed?" do

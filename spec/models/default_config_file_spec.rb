@@ -1,5 +1,5 @@
-require "rails_helper"
 require "spec_helper"
+require "app/models/default_config_file"
 
 describe DefaultConfigFile do
   describe "#path" do

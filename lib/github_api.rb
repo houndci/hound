@@ -1,7 +1,4 @@
-require "attr_extras"
 require "octokit"
-require "base64"
-require "active_support/core_ext/object/with_options"
 
 class GithubApi
   ORGANIZATION_TYPE = "Organization"

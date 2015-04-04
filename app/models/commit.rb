@@ -1,3 +1,6 @@
+require "attr_extras"
+require "octokit"
+
 class Commit
   pattr_initialize :repo_name, :sha, :github
   attr_reader :repo_name, :sha

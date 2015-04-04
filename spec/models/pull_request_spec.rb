@@ -1,7 +1,5 @@
 require "spec_helper"
 require "app/models/pull_request"
-require "app/models/commit"
-require "lib/github_api"
 
 describe PullRequest do
   let(:token) { "some_github_token" }
