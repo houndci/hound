@@ -2,7 +2,7 @@ module Language
   class Scss < Base
     def run
       Faraday.post do |request|
-        request.url = ENV.fetch("SCSS_WORKER_URL")
+        request.url ENV.fetch("SCSS_WORKER_URL")
         request.body = worker_payload.to_json
       end
     end
