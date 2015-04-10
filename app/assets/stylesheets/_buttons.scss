@@ -1,0 +1,13 @@
+button:disabled {
+  border-color: $inactive-color;
+  color: $inactive-color;
+
+  &:hover {
+    background-color: transparent;
+    color: $inactive-color;
+  }
+}
+
+.button-small {
+  @include small-button("outline");
+}

@@ -44,14 +44,14 @@
   }
 }
 
-@mixin large-button($type: $outline, $base-color: $purple, $hover-color: $purple) {
+@mixin large-button($type: $outline, $base-color: $purple, $hover-color: $white) {
   @include button($type, $base-color, $hover-color);
   font-size: 1em;
   padding: 0.8em 2.4em;
 }
 
-@mixin small-button($type: $outline, $base-color: $purple, $hover-color: $purple) {
+@mixin small-button($type: $outline, $base-color: $purple, $hover-color: $white) {
   @include button($type, $base-color, $hover-color);
   font-size: 0.8em;
-  padding: 0.8em 2.4em;
+  padding: 0.5em 1.5em;
 }
