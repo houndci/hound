@@ -92,3 +92,43 @@ table {
     text-transform: uppercase;
   }
 }
+
+.account-details {
+  @include clearfix;
+  border-bottom: 1px dotted $base-border-color;
+  margin-bottom: 2em;
+  padding-bottom: 3em;
+
+  input[type="text"],
+  input[type="email"] {
+    font-weight: 300;
+    padding: 0.5em;
+    min-width: 20em;
+  }
+
+  .form-group {
+    float: left;
+
+    label {
+      display: block;
+    }
+  }
+
+  .form-actions {
+    float: right;
+    margin-top: 1.5em;
+    text-align: right;
+  }
+}
+
+.inline-flash {
+  margin: 0;
+
+  &--success {
+    color: darken($green, 20%);
+  }
+
+  &--error {
+    color: $red;
+  }
+}
