@@ -15,9 +15,13 @@ module Language
         build_id: build.id,
         config: config,
         file: file,
-        hound_url: ENV.fetch("BUILD_WORKERS_URL"),
+        hound_url: callback_url,
         token: ENV.fetch("BUILD_WORKERS_TOKEN"),
       }
+    end
+
+    def callback_url
+      ENV.fetch("BUILD_WORKERS_URL") + "/#{build_worker.id}"
     end
 
     def file
