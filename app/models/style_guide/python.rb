@@ -3,17 +3,21 @@ module StyleGuide
     DEFAULT_CONFIG_FILENAME = "python.json"
 
     def lint(file, config = {})
-      opts = config.to_a.map{ |key, value| "--#{key} #{value}" }.join(" ")
+      opts = config.to_a.map { |key, value| "--#{key} #{value}" }.join(" ")
       lines = `echo "#{file.content}" | flake8 - #{opts}`.split("\n")
       lines.map do |line|
-        parts = line.split(":")
-        {
-          'file' => parts[0],
-          'line' => parts[1].to_i,
-          'char' => parts[2].to_i,
-          'msg' => parts[3].strip
-        }
+        parse_flake8_line(line)
       end
+    end
+
+    def parse_flake8_line(line)
+      parts = line.split(":")
+      {
+        "file" => parts[0],
+        "line" => parts[1].to_i,
+        "char" => parts[2].to_i,
+        "msg" => parts[3].strip
+      }
     end
 
     def violations_in_file(file)

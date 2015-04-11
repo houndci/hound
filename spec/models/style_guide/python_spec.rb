@@ -13,7 +13,7 @@ describe StyleGuide::Python, "#violations_in_file" do
     describe "for unused import" do
       it "returns violations" do
         violations = ["F401 'this' imported but unused"]
-        expect(violations_in('import this')).to eq violations
+        expect(violations_in("import this")).to eq violations
       end
     end
   end
