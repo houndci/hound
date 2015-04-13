@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe SmallBuildJob do
   it 'is retryable' do
-    expect(SmallBuildJob).to be_a(Retryable)
+    expect(SmallBuildJob.new).to be_a(Retryable)
   end
 
   it "queue_as medium" do

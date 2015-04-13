@@ -1,6 +1,5 @@
-class SmallBuildJob < ActiveJob::Base
-  extend Retryable
-  include Buildable
-
+class SmallBuildJob < ApplicationJob
   queue_as :medium
+
+  include Buildable
 end

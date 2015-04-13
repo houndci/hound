@@ -1,10 +1,28 @@
-require 'resque-retry'
-
 module Retryable
-  extend Resque::Plugins::Retry
+  extend ActiveSupport::Concern
 
-  @retry_limit = 10
-  @retry_delay = ENV.fetch("RESQUE_RETRY_DELAY", 30).to_i
+  mattr_accessor :retry_delay, :retry_attempts
 
-  @fatal_exceptions = [Octokit::Unauthorized]
+  included do
+    rescue_from(StandardError) do |exception|
+      if attempts >= Retryable.retry_attempts
+        raise exception
+      end
+
+      retry_job wait: Retryable.retry_delay
+    end
+  end
+
+  def serialize
+    super.merge("attempts" => attempts + 1)
+  end
+
+  def deserialize(job_data)
+    super
+    @attempts = job_data["attempts"]
+  end
+
+  def attempts
+    @attempts ||= 0
+  end
 end

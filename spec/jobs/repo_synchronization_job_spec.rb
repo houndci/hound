@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe RepoSynchronizationJob do
   it "is retryable" do
-    expect(RepoSynchronizationJob).to be_a(Retryable)
+    expect(RepoSynchronizationJob.new).to be_a(Retryable)
   end
 
   it "queue_as high" do
@@ -32,25 +32,11 @@ describe RepoSynchronizationJob do
       github_token = "token"
       allow(RepoSynchronizationJob.queue_adapter).to receive(:enqueue)
 
-      job = RepoSynchronizationJob.perform_now(user, github_token)
+      job = RepoSynchronizationJob.new(user, github_token)
+      job.perform_now
 
       expect(RepoSynchronizationJob.queue_adapter).
         to have_received(:enqueue).with(job)
-    end
-
-    it "sends the exception to Sentry with the user_id" do
-      user = create(:user, refreshing_repos: true)
-      github_token = "token"
-      exception = StandardError.new("hola")
-      synchronization = double(:repo_synchronization)
-      allow(synchronization).to receive(:start).and_raise(exception)
-      allow(RepoSynchronization).to receive(:new).and_return(synchronization)
-      allow(Raven).to receive(:capture_exception)
-
-      RepoSynchronizationJob.perform_now(user, github_token)
-
-      expect(Raven).to have_received(:capture_exception).
-        with(exception, user: { id: user.id })
     end
   end
 end
