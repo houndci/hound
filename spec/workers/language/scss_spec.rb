@@ -17,7 +17,7 @@ module Language
 
         expect(Faraday).to have_received(:post)
         expect(faraday_request).
-          to have_received(:url=).with(ENV["SCSS_WORKER_URL"])
+          to have_received(:url).with(ENV["SCSS_WORKER_URL"])
         expect(faraday_request).to have_received(:body=).with(
           {
             build_worker_id: build_worker.id,
@@ -31,7 +31,7 @@ module Language
               content: "some content",
               patch_body: ""
             },
-            hound_url: ENV["BUILD_WORKERS_URL"],
+            hound_url: "#{ENV["BUILD_WORKERS_URL"]}/#{build_worker.id}",
             token: ENV["BUILD_WORKERS_TOKEN"],
           }.to_json
         )
@@ -51,7 +51,7 @@ module Language
 
     def stub_faraday
       faraday_request = double("FaradayRequest")
-      allow(faraday_request).to receive(:url=)
+      allow(faraday_request).to receive(:url)
       allow(faraday_request).to receive(:body=)
       allow(Faraday).to receive(:post).and_yield(faraday_request)
 
