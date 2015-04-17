@@ -19,16 +19,16 @@ class RepoConfig
   end
 
   def for(language)
-    if language == "ruby" && legacy?
-      hound_config
-    else
-      config_file_path = config_path_for(language)
+    config_file_path = config_path_for(language)
+    config_type = FILE_TYPES.fetch(language)
+    org_level_config = ENV["ORG_#{language.upcase}_CONFIG"]
 
-      if config_file_path
-        load_config(config_file_path, FILE_TYPES.fetch(language))
-      else
-        {}
-      end
+    if config_file_path
+      load_config(config_file_path, config_type)
+    elsif org_level_config
+      load_remote_config(org_level_config, config_type)
+    else
+      {}
     end
   end
 
@@ -87,6 +87,16 @@ class RepoConfig
     end
 
     inherited_config.merge(main_config.except("inherit_from"))
+  end
+
+  def load_remote_config(remote_path, file_type)
+    client = commit.send(:github).client
+    _, repo, path = *remote_path.match(/(.+?\/.+?)\/(.+)/)
+    content = Base64.decode64(client.contents(repo, path: path).content)
+
+    return {} unless content
+
+    send("parse_#{file_type}", content)
   end
 
   def load_file(file_path, file_type)

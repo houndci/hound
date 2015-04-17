@@ -30,13 +30,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
       )
 
     createSubscription = (user) ->
-      if scope.repo.price_in_cents > 0
-        if user.card_exists
-          createSubscriptionWithExistingCard()
-        else
-          showCreditCardForm()
-      else
-        activateRepo()
+      activateRepo()
 
     createSubscriptionWithExistingCard = ->
       scope.processing = true
