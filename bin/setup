@@ -6,6 +6,12 @@ bundle install
 # Add binstubs to PATH via export PATH=".git/safe/../../bin:$PATH" in ~/.zshenv
 mkdir -p .git/safe
 
+# Set up development environment config
+if [ ! -f .env ]; then
+  cp .sample.env .env
+  cp .sample.env .env.test
+fi
+
 # Set up database
 bundle exec rake db:setup
 
@@ -15,12 +21,6 @@ heroku join --app hound-staging
 
 git remote add production git@heroku.com:hound-production.git
 heroku join --app hound-production
-
-# Set up development environment config
-if [ ! -f .env ]; then
-  cp .sample.env .env
-  cp .sample.env .env.test
-fi
 
 # Set a default port for Foreman to run the server
 if ! grep -qs 'port' .foreman; then
