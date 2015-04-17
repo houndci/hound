@@ -28,12 +28,12 @@ class Review
     github.create_success_status(
       repo.full_github_name,
       build.commit_sha,
-      I18n.t(:success_status)
+      I18n.t(:success_status, count: violation_count)
     )
   end
 
   def violations
-    Violation.transaction do
+    @violations ||= Violation.transaction do
       violations_attributes.flat_map do |violation|
         line = pull_request_file.line_at(violation[:line_number])
 
@@ -62,12 +62,16 @@ class Review
     violations.take(MAX_COMMENTS)
   end
 
+  def violation_count
+    violations.sum(&:messages_count)
+  end
+
   def commenter
     Commenter.new(pull_request)
   end
 
   def pull_request
-    PullRequest.new(review_payload)
+    PullRequest.new(review_payload, ENV["HOUND_GITHUB_TOKEN"])
   end
 
   def build

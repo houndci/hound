@@ -16,7 +16,8 @@ describe RepoActivator do
 
       it "marks repo as active" do
         repo = create(:repo, in_organization: true)
-        stub_github_api
+        github = stub_github_api
+        allow(github).to receive(:accept_pending_invitations)
         activator = build_activator(repo: repo)
 
         result = activator.activate

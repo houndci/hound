@@ -7,6 +7,8 @@ class Violation < ActiveRecord::Base
   validates :build, presence: true
   validates :filename, presence: true
 
+  delegate :count, to: :messages, prefix: true
+
   def add_messages(new_messages)
     self[:messages].concat(new_messages)
   end

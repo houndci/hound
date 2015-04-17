@@ -30,5 +30,9 @@ module StyleGuide
         repository_owner_name
       ).path
     end
+
+    def name
+      "coffeescript"
+    end
   end
 end

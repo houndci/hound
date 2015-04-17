@@ -23,32 +23,15 @@ describe BuildRunner, '#run' do
 
     it "initializes PullRequest with payload and Hound token" do
       repo = create(:repo, :active, github_id: 123)
+      user = create(:user, token: "user_token")
+      user.repos << repo
       payload = stubbed_payload(github_repo_id: repo.github_id)
       stubbed_pull_request
       stubbed_github_api
 
       BuildRunner.run(payload)
 
-      expect(PullRequest).to have_received(:new).with(payload)
-    end
-
-    it "creates pending GitHub status" do
-      repo = create(:repo, :active, github_id: 123)
-      payload = stubbed_payload(
-        github_repo_id: repo.github_id,
-        full_repo_name: "test/repo",
-        head_sha: "headsha"
-      )
-      stubbed_pull_request
-      github_api = stubbed_github_api
-
-      BuildRunner.run(payload)
-
-      expect(github_api).to have_received(:create_pending_status).with(
-        "test/repo",
-        "headsha",
-        "Hound is busy reviewing changes..."
-      )
+      expect(PullRequest).to have_received(:new).with(payload, user.token)
     end
 
     it "dispatches workers" do

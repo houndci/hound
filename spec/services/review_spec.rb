@@ -131,7 +131,7 @@ describe Review do
       expect(github_api).to have_received(:create_success_status).with(
         "test/repo",
         "headsha",
-        "Hound has reviewed all the changes!"
+        "No violations found. Woof!"
       )
     end
 

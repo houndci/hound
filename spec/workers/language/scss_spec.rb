@@ -31,7 +31,7 @@ module Language
               content: "some content",
               patch_body: ""
             },
-            hound_url: "#{ENV["BUILD_WORKERS_URL"]}/#{build_worker.id}",
+            hound_url: "#{ENV['BUILD_WORKERS_URL']}/#{build_worker.id}",
             token: ENV["BUILD_WORKERS_TOKEN"],
           }.to_json
         )

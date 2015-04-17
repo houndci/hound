@@ -1,5 +1,3 @@
-ENV["SECRET_KEY_BASE"] = "supersecret"
-
 Houndapp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
   config.eager_load = false
@@ -32,4 +30,6 @@ Houndapp::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.active_job.queue_adapter = :inline
 end

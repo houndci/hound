@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = find_user || create_user
     create_session_for(user)
+    finished("auth_button")
     redirect_to repos_path
   end
 

@@ -5,7 +5,7 @@ require "app/services/build_runner"
 require "raven"
 
 describe Buildable do
-  class TestJob < ActiveJob::Base
+  class BuildableTestJob < ActiveJob::Base
     include Buildable
   end
 
@@ -19,33 +19,11 @@ describe Buildable do
       allow(BuildRunner).to receive(:new).and_return(build_runner)
       allow(Owner).to receive(:upsert)
 
-      TestJob.perform_now(payload_data)
+      BuildableTestJob.perform_now(payload_data)
 
       expect(Payload).to have_received(:new).with(payload_data)
       expect(BuildRunner).to have_received(:new).with(payload)
       expect(build_runner).to have_received(:run)
-    end
-
-    it "retries when Resque::TermException is raised" do
-      allow(Payload).to receive(:new).and_raise(Resque::TermException.new(1))
-      allow(TestJob.queue_adapter).to receive(:enqueue)
-      payload_data = double(:payload_data)
-
-      job = TestJob.perform_now(payload_data)
-
-      expect(TestJob.queue_adapter).to have_received(:enqueue).with(job)
-    end
-
-    it "sends the exception to Sentry with the user_id" do
-      exception = StandardError.new("hola")
-      allow(Payload).to receive(:new).and_raise(exception)
-      allow(Raven).to receive(:capture_exception)
-      payload_data = double("PayloadData")
-
-      TestJob.perform_now(payload_data)
-
-      expect(Raven).to have_received(:capture_exception).
-        with(exception, payload: { data: payload_data })
     end
   end
 

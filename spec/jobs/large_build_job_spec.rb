@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe LargeBuildJob do
   it 'is retryable' do
-    expect(LargeBuildJob).to be_a(Retryable)
+    expect(LargeBuildJob.new).to be_a(Retryable)
   end
 
   it "queue_as low" do

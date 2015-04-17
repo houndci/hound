@@ -76,13 +76,11 @@ feature "Repo list", js: true do
   end
 
   scenario "user signs up" do
-    with_job_delay do
-      user = create(:user)
+    user = create(:user)
 
-      sign_in_as(user)
+    sign_in_as(user)
 
-      expect(page).to have_content I18n.t("syncing_repos")
-    end
+    expect(page).to have_content I18n.t("syncing_repos")
   end
 
   scenario "user activates repo" do
@@ -177,14 +175,5 @@ feature "Repo list", js: true do
     visit current_path
 
     expect(user.repos.active.count).to eq(0)
-  end
-
-  private
-
-  def with_job_delay
-    Resque.inline = false
-    yield
-  ensure
-    Resque.inline = true
   end
 end

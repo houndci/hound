@@ -3,6 +3,34 @@ require "rails_helper"
 describe StyleGuide::CoffeeScript do
   include ConfigurationHelper
 
+  describe "enabled?" do
+    context "with legacy coffee_script key" do
+      it "is not enabled" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          coffee_script:
+            enabled: false
+        EOS
+        repo_config = RepoConfig.new(commit)
+        style_guide = StyleGuide::CoffeeScript.new(repo_config, "RalphJoe")
+
+        expect(style_guide).not_to be_enabled
+      end
+    end
+
+    context "with coffeescript key" do
+      it "is not enabled" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          coffeescript:
+            enabled: false
+        EOS
+        repo_config = RepoConfig.new(commit)
+        style_guide = StyleGuide::CoffeeScript.new(repo_config, "RalphJoe")
+
+        expect(style_guide).not_to be_enabled
+      end
+    end
+  end
+
   describe "#violations_in_file" do
     context "with default configuration" do
       context "for long line" do

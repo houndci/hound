@@ -1,21 +1,21 @@
 class PullRequest
-  pattr_initialize :payload
+  pattr_initialize :payload, :token
 
   FILE_REMOVED_STATUS = "removed"
 
   def comments
-    @comments ||= api.pull_request_comments(full_repo_name, number)
+    @comments ||= user_github.pull_request_comments(full_repo_name, number)
   end
 
   def pull_request_files
-    @pull_request_files ||= api.
+    @pull_request_files ||= user_github.
       pull_request_files(full_repo_name, number).
       reject { |github_file| file_removed?(github_file) }.
       map { |github_file| build_pull_request_file(github_file) }
   end
 
   def comment_on_violation(violation)
-    api.add_pull_request_comment(
+    hound_github.add_pull_request_comment(
       pull_request_number: number,
       comment: violation.messages.join("<br>"),
       commit: head_commit,
@@ -37,7 +37,7 @@ class PullRequest
   end
 
   def head_commit
-    @head_commit ||= Commit.new(full_repo_name, payload.head_sha, api)
+    @head_commit ||= Commit.new(full_repo_name, payload.head_sha, user_github)
   end
 
   private
@@ -54,8 +54,12 @@ class PullRequest
     github_file.status == FILE_REMOVED_STATUS
   end
 
-  def api
-    @api ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+  def user_github
+    @user_github ||= GithubApi.new(token)
+  end
+
+  def hound_github
+    @hound_github ||= GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
   end
 
   def number

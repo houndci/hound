@@ -5,10 +5,12 @@ require "app/models/pull_request_file"
 require "lib/github_api"
 
 describe PullRequest do
+  let(:token) { "some_github_token" }
+
   describe "#opened?" do
     context "when payload action is opened" do
       it "returns true" do
-        pull_request = PullRequest.new(payload_stub(action: "opened"))
+        pull_request = PullRequest.new(payload_stub(action: "opened"), token)
 
         expect(pull_request).to be_opened
       end
@@ -17,7 +19,7 @@ describe PullRequest do
     context "when payload action is not opened" do
       it "returns false" do
         payload = payload_stub(action: "notopened")
-        pull_request = PullRequest.new(payload)
+        pull_request = PullRequest.new(payload, token)
 
         expect(pull_request).not_to be_opened
       end
@@ -28,7 +30,7 @@ describe PullRequest do
     context "when payload action is synchronize" do
       it "returns true" do
         payload = payload_stub(action: "synchronize")
-        pull_request = PullRequest.new(payload)
+        pull_request = PullRequest.new(payload, token)
 
         expect(pull_request).to be_synchronize
       end
@@ -37,7 +39,7 @@ describe PullRequest do
     context "when payload action is not synchronize" do
       it "returns false" do
         payload = payload_stub(action: "notsynchronize")
-        pull_request = PullRequest.new(payload)
+        pull_request = PullRequest.new(payload, token)
 
         expect(pull_request).not_to be_synchronize
       end
@@ -147,6 +149,6 @@ describe PullRequest do
 
   def pull_request_stub(api, payload = payload_stub)
     allow(GithubApi).to receive(:new).and_return(api)
-    PullRequest.new(payload)
+    PullRequest.new(payload, token)
   end
 end

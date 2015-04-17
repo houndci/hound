@@ -1,5 +1,7 @@
 $: << File.expand_path("../..", __FILE__)
 
+ENV["EXEMPT_ORGS"] = "thoughtbot,billybob"
+
 require "attr_extras"
 require "byebug"
 require "webmock/rspec"
@@ -9,7 +11,7 @@ require "active_support/core_ext"
 Dir["spec/support/**/*.rb"].each { |f| require f }
 
 ENV["HOST"] = "test.host"
-ENV["SECRET_KEY_BASE"] = "test-key"
+ENV["SECRET_KEY_BASE"] = "some_really_really_long_super_secret_key_base"
 ENV["HOUND_GITHUB_USERNAME"] = "houndci"
 ENV["HOUND_GITHUB_TOKEN"] = "houndgithubtoken"
 ENV["ENABLE_HTTPS"] = "no"

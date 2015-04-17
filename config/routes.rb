@@ -1,6 +1,7 @@
 Houndapp::Application.routes.draw do
   mount Resque::Server, at: "/queue"
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
+  mount Split::Dashboard, at: "split"
 
   get "/auth/github/callback", to: "sessions#create"
   get "/sign_out", to: "sessions#destroy"

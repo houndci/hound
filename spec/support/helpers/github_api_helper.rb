@@ -431,7 +431,7 @@ module GithubApiHelper
       repo_name,
       sha,
       "success",
-      "Hound has reviewed all the changes!"
+      anything
     )
   end
 

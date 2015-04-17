@@ -442,11 +442,11 @@ end
       end
     end
 
-    context "with excluded files" do
-      it "has no violations" do
+    context "with Exclude option" do
+      it "excludes the file" do
         config = {
           "AllCops" => {
-            "Exclude" => ["lib/a.rb"]
+            "Exclude" => ["app/models/user.rb"]
           }
         }
 
@@ -461,7 +461,7 @@ end
             "EnforcedStyle" => "single_quotes"
           },
           "HashSyntax" => {
-            "Exclude" => ["lib/**/*"]
+            "Exclude" => ["app/models/*"]
           }
         }
 
@@ -471,6 +471,28 @@ end
           "Prefer single-quoted strings when you don't need string "\
           "interpolation or special symbols."
         ]
+      end
+
+      it "ignores rules for excluded directories" do
+        code = <<-TEXT
+          def test_method
+            [1, 2, 3, nil, 3, 1].
+              uniq.
+              compact
+          end
+        TEXT
+
+        config = {
+          "Metrics/MethodLength" => {
+            "Enabled" => true,
+            "Max" => 2,
+            "Exclude" => ["app/**/*"],
+          },
+        }
+
+        violations = violations_in(code, config: config)
+
+        expect(violations).to eq []
       end
     end
 
@@ -611,7 +633,7 @@ hoge
   end
 
   def build_file(content)
-    filename = Rails.root.join("lib/a.rb")
+    filename = "app/models/user.rb"
     PullRequestFile.new(filename, content, "")
   end
 

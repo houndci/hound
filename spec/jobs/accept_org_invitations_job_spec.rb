@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe AcceptOrgInvitationsJob do
   it "is retryable" do
-    expect(AcceptOrgInvitationsJob).to be_a(Retryable)
+    expect(AcceptOrgInvitationsJob.new).to be_a(Retryable)
   end
 
   it "queue_as high" do
@@ -22,22 +22,10 @@ describe AcceptOrgInvitationsJob do
     allow(GithubApi).to receive(:new).and_raise(Resque::TermException.new(1))
     allow(AcceptOrgInvitationsJob.queue_adapter).to receive(:enqueue)
 
-    job = AcceptOrgInvitationsJob.perform_now
+    job = AcceptOrgInvitationsJob.new
+    job.perform_now
 
     expect(AcceptOrgInvitationsJob.queue_adapter).
       to have_received(:enqueue).with(job)
-  end
-
-  it "sends the exception to Sentry" do
-    exception = StandardError.new("hola")
-    github = double("GithubApi")
-    allow(GithubApi).to receive(:new).and_return(github)
-    allow(github).to receive(:accept_pending_invitations).and_raise(exception)
-    allow(Raven).to receive(:capture_exception)
-
-    AcceptOrgInvitationsJob.perform_now
-
-    expect(Raven).to have_received(:capture_exception).
-      with(exception, {})
   end
 end
