@@ -1,6 +1,7 @@
 class SubscriptionsController < ApplicationController
   class FailedToActivate < StandardError; end
 
+  before_action :check_subscription_presence, only: :destroy
   before_action :update_email_address
 
   def create
@@ -45,6 +46,15 @@ class SubscriptionsController < ApplicationController
 
   def delete_subscription
     RepoSubscriber.unsubscribe(repo, repo.subscription.user)
+  end
+
+  def check_subscription_presence
+    if repo.subscription.blank?
+      render(
+        json: { errors: ["No subscription exists for this repo"] },
+        status: :conflict
+      )
+    end
   end
 
   def update_email_address
