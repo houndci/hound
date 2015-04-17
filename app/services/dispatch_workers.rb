@@ -51,7 +51,7 @@ class DispatchWorkers
   end
 
   def scss_worker
-    if ENV["IRON_WORKER_ENABLED"]
+    if ENV.fetch("IRON_WORKER_ENABLED")
       Language::Scss
     else
       Language::ScssLegacyWorker

@@ -35,14 +35,14 @@ class Review
   def violations
     @violations ||= Violation.transaction do
       violations_attributes.flat_map do |violation|
-        line = pull_request_file.line_at(violation[:line_number])
+        line = pull_request_file.line_at(violation["line_number"].to_i)
 
         if line.changed?
           create_violation(
-            filename: file[:filename],
+            filename: file["name"],
             patch_position: line.patch_position,
-            line_number: violation[:line_number],
-            messages: violation[:messages],
+            line_number: violation["line_number"],
+            messages: violation["messages"],
           )
         end
       end
@@ -80,9 +80,9 @@ class Review
 
   def pull_request_file
     @pull_request_file ||= PullRequestFile.new(
-      file[:filename],
-      file[:content],
-      file[:patch],
+      file["name"],
+      file["content"],
+      file["patch_body"],
     )
   end
 

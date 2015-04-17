@@ -3,7 +3,17 @@ shared_examples "Language not moved to IronWorker" do
     it "sends violations to hound" do
       build_worker = create(:build_worker)
       repository_owner_name = "foo"
-      faraday_request = stub_faraday
+      request_body = {
+        build_worker_id: build_worker.id,
+        build_id: build_worker.build_id,
+        violations: violations,
+        file: {
+          name: "test.foo",
+          content: content,
+          patch_body: ""
+        }
+      }
+      request_stub = stub_violation_callback(build_worker, request_body)
       worker = described_class.new(
         build_worker,
         pull_request_file,
@@ -13,23 +23,9 @@ shared_examples "Language not moved to IronWorker" do
 
       worker.run
 
-      expect(Faraday).to have_received(:post)
-      expect(faraday_request).
-        to have_received(:url=).with(ENV["BUILD_WORKERS_URL"])
-      expect(faraday_request).
-        to have_received(:token_auth).with(ENV["BUILD_WORKERS_TOKEN"])
-      expect(faraday_request).to have_received(:body=).with(
-        {
-          build_worker_id: build_worker.id,
-          build_id: build_worker.build_id,
-          violations: violations,
-          file: {
-            name: "test.foo",
-            content: content,
-            patch_body: ""
-          }
-        }.to_json
-      )
+      # fails because of url encoded arrays
+      # https://github.com/lostisland/faraday/issues/78
+      expect(request_stub).to have_been_requested.with(request_body)
     end
   end
 
@@ -46,9 +42,15 @@ shared_examples "Language not moved to IronWorker" do
     ]
   end
 
-  def stub_faraday
+  def stub_violation_callback(build_worker, request_body)
+    stub_request(:put, "https://hound.ngrok.com/build_workers/#{build_worker.id}").
+      with(:body => request_body).
+      to_return(:status => 200, :body => "", :headers => {})
+  end
+
+  def stub_faraday_old
     faraday_request = double("FaradayRequest")
-    allow(faraday_request).to receive(:url=)
+    allow(faraday_request).to receive(:url)
     allow(faraday_request).to receive(:token_auth)
     allow(faraday_request).to receive(:body=)
     allow(Faraday).to receive(:post).and_yield(faraday_request)

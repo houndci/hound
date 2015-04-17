@@ -1,10 +1,15 @@
 module Language
   class LegacyWorker < Base
     def run
-      Faraday.post do |request|
-        request.url = ENV.fetch("BUILD_WORKERS_URL")
-        request.token_auth(ENV.fetch("BUILD_WORKERS_TOKEN"))
-        request.body = hound_payload.to_json
+      hound_client = Faraday.new do |client|
+        client.request :url_encoded
+        client.token_auth(ENV.fetch("BUILD_WORKERS_TOKEN"))
+        client.adapter Faraday.default_adapter
+      end
+
+      hound_client.put do |request|
+        request.url ENV.fetch("BUILD_WORKER_CALLBACK_URL") + "/#{build_worker.id}"
+        request.body = hound_payload
       end
     end
 
