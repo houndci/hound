@@ -198,18 +198,6 @@ describe StyleChecker, "#violations" do
     end
   end
 
-  context "a removed file" do
-    it "does not return a violation for the file" do
-      file = stub_commit_file("ruby.rb", "puts 123    ", removed: true)
-      pull_request = stub_pull_request(pull_request_files: [file])
-
-      violations = StyleChecker.new(pull_request).violations
-      messages = violations.flat_map(&:messages)
-
-      expect(messages).to eq []
-    end
-  end
-
   private
 
   def stub_pull_request(options = {})
@@ -224,14 +212,13 @@ describe StyleChecker, "#violations" do
     double("PullRequest", defaults.merge(options))
   end
 
-  def stub_commit_file(filename, contents, line = nil, removed: false)
+  def stub_commit_file(filename, contents, line = nil)
     line ||= Line.new(content: "foo", number: 1, patch_position: 2)
     formatted_contents = "#{contents}\n"
     double(
       filename.split(".").first,
       filename: filename,
       content: formatted_contents,
-      removed?: removed,
       line_at: line,
     )
   end

@@ -6,15 +6,7 @@ class CommitFile
   end
 
   def content
-    @content ||= begin
-      unless removed?
-        commit.file_content(filename)
-      end
-    end
-  end
-
-  def removed?
-    file.status == "removed"
+    @content ||= commit.file_content(filename)
   end
 
   def line_at(line_number)

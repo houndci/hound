@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 require "app/models/pull_request"
 require "app/models/commit"
 require "lib/github_api"
@@ -76,6 +76,24 @@ describe PullRequest do
         comment: violation.messages.first,
         filename: violation.filename,
         patch_position: violation.patch_position,
+      )
+    end
+  end
+
+  describe "#pull_request_files" do
+    it "does not include removed files" do
+      added_file = double(filename: "foo.rb", status: "added")
+      modified_file = double(filename: "baz.rb", status: "modified")
+      removed_file = double(filename: "bar.rb", status: "removed")
+      all_pull_request_files = [added_file, removed_file, modified_file]
+      github = double(:github, pull_request_files: all_pull_request_files)
+      pull_request = pull_request_stub(github)
+
+      files = pull_request.pull_request_files
+      file_names = files.map(&:filename)
+
+      expect(file_names).to match_array(
+        [added_file.filename, modified_file.filename]
       )
     end
   end
