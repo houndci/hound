@@ -1,9 +1,15 @@
 require "rails_helper"
 
 describe Build do
-  it { should belong_to :repo }
-  it { should validate_presence_of :repo }
-  it { should have_many(:violations).dependent(:destroy) }
+  describe "associations" do
+    it { should belong_to :repo }
+    it { should have_many(:file_reviews).dependent(:destroy) }
+    it { should have_many(:violations).dependent(:destroy) }
+  end
+
+  describe "validations" do
+    it { should validate_presence_of :repo }
+  end
 end
 
 describe Build, '#status' do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306184045) do
+ActiveRecord::Schema.define(version: 20150425204143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,15 @@ ActiveRecord::Schema.define(version: 20150306184045) do
 
   add_index "builds", ["repo_id"], name: "index_builds_on_repo_id", using: :btree
   add_index "builds", ["uuid"], name: "index_builds_on_uuid", unique: true, using: :btree
+
+  create_table "file_reviews", force: :cascade do |t|
+    t.integer  "build_id",     null: false
+    t.datetime "completed_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "file_reviews", ["build_id"], name: "index_file_reviews_on_build_id", using: :btree
 
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -115,6 +124,7 @@ ActiveRecord::Schema.define(version: 20150306184045) do
 
   add_index "violations", ["build_id"], name: "index_violations_on_build_id", using: :btree
 
+  add_foreign_key "file_reviews", "builds"
   add_foreign_key "memberships", "repos"
   add_foreign_key "memberships", "users"
   add_foreign_key "repos", "owners"
