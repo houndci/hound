@@ -69,7 +69,22 @@ linters:
   PlaceholderInExtend:
     enabled: false
   PropertyCount:
-    enabled: false
+    enabled: true
+    include_nested: false
+    max_properties: 10
+  PropertyUnits:
+    enabled: true
+    global: [
+      'ch', 'em', 'ex', 'rem',                 # Font-relative lengths
+      'cm', 'in', 'mm', 'pc', 'pt', 'px', 'q', # Absolute lengths
+      'vh', 'vw', 'vmin', 'vmax',              # Viewport-percentage lengths
+      'deg', 'grad', 'rad', 'turn',            # Angle
+      'ms', 's',                               # Duration
+      'Hz', 'kHz',                             # Frequency
+      'dpi', 'dpcm', 'dppx',                   # Resolution
+      '%',                                     # Other
+    ]
+    properties: {}
   PropertySortOrder:
     enabled: true
     ignore_unspecified: false
@@ -94,6 +109,7 @@ linters:
   Shorthand:
     enabled: true
     severity: warning
+    allowed_shorthands: [1, 2, 3]
   SingleLinePerProperty:
     enabled: true
     allow_single_line_rule_sets: true
@@ -131,13 +147,15 @@ linters:
   VariableForProperty:
     enabled: false
     properties: []
-  VendorPrefixes:
+  VendorPrefix:
     enabled: true
     identifier_list: bourbon
     include: []
     exclude: []
+    additional_identifiers: []
+    excluded_identifiers: []
   ZeroUnit:
     enabled: true
     severity: warning
-  Compass::PropertyWithMixin:
+  Compass::*:
     enabled: false
