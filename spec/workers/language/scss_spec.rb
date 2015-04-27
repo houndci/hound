@@ -17,7 +17,7 @@ module Language
 
         expect(Faraday).to have_received(:post)
         expect(faraday_request).
-          to have_received(:url).with(ENV["SCSS_WORKER_URL"])
+          to have_received(:url).with(ENV.fetch("SCSS_WORKER_URL"))
         expect(faraday_request).to have_received(:body=).with(
           {
             build_worker_id: build_worker.id,
@@ -31,8 +31,8 @@ module Language
               content: "some content",
               patch_body: ""
             },
-            hound_url: "#{ENV['BUILD_WORKERS_URL']}/#{build_worker.id}",
-            token: ENV["BUILD_WORKERS_TOKEN"],
+            hound_url: "#{ENV.fetch("BUILD_WORKER_CALLBACK_URL")}/#{build_worker.id}",
+            token: ENV.fetch("BUILD_WORKERS_TOKEN"),
           }.to_json
         )
       end
