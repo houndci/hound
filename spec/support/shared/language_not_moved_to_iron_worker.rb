@@ -1,6 +1,10 @@
 shared_examples "Language not moved to IronWorker" do
   describe "#run" do
     it "sends violations to hound" do
+      skip <<-EOS.strip_heredoc
+        fails because of url encoded arrays: https://github.com/lostisland/faraday/issues/78
+      EOS
+
       build_worker = create(:build_worker)
       repository_owner_name = "foo"
       request_body = {
@@ -23,8 +27,6 @@ shared_examples "Language not moved to IronWorker" do
 
       worker.run
 
-      # fails because of url encoded arrays
-      # https://github.com/lostisland/faraday/issues/78
       expect(request_stub).to have_been_requested.with(request_body)
     end
   end
