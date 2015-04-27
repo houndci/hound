@@ -199,7 +199,8 @@ describe Review, "#run" do
 
       reviewer.run
 
-      expect(analytics).not_to have_tracked("Build Completed")
+      expect(analytics).not_to have_tracked("Build Completed").
+        for_user(repo.subscription.user)
     end
   end
 
