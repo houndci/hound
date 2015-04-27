@@ -1,12 +1,12 @@
 require "rails_helper"
 
-describe Review do
-  describe "#run" do
-    context "violations" do
+describe Review, "#run" do
+  context "when all of the build_workers are finished" do
+    context "creating violations" do
       context "when violations_attributes present" do
         it "creates violations using violations_attributes" do
           build = create(:build)
-          build_worker = create(:build_worker, build: build)
+          build_worker = create(:build_worker, :completed, build: build)
           reviewer = Review.new(build_worker, file, violations_attributes)
           stubbed_github_api
 
@@ -23,8 +23,7 @@ describe Review do
 
       context "when violations_attributes not present" do
         it "does not create violations" do
-          build = create(:build)
-          build_worker = create(:build_worker, build: build)
+          build_worker = create(:build_worker, :completed)
           reviewer = Review.new(build_worker, file, [])
           stubbed_github_api
 
@@ -35,11 +34,11 @@ describe Review do
       end
     end
 
-    context "comments" do
+    context "commenting" do
       context "when there are no violations" do
         it "sends no comments" do
           github_api = stubbed_github_api
-          build_worker = create(:build_worker)
+          build_worker = create(:build_worker, :completed)
           reviewer = Review.new(build_worker, file, [])
 
           reviewer.run
@@ -53,7 +52,7 @@ describe Review do
         it "comments on violations" do
           commenter = stubbed_commenter
           stubbed_github_api
-          build_worker = create(:build_worker)
+          build_worker = create(:build_worker, :completed)
           reviewer = Review.new(build_worker, file, violations_attributes)
 
           reviewer.run
@@ -68,7 +67,7 @@ describe Review do
           stub_const("::BuildRunner::MAX_COMMENTS", 1)
           commenter = stubbed_commenter
           stubbed_github_api
-          build_worker = create(:build_worker)
+          build_worker = create(:build_worker, :completed)
           reviewer = Review.new(build_worker, file, violations_attributes)
 
           reviewer.run
@@ -81,7 +80,7 @@ describe Review do
           github_api = stubbed_github_api
           build = create(:build, commit_sha: "sha")
           repo = build.repo
-          build_worker = create(:build_worker, build: build)
+          build_worker = create(:build_worker, :completed, build: build)
           commit = double("Commit")
           allow(Commit).to receive(:new).and_return(commit)
           reviewer = Review.new(build_worker, file, violations_attributes)
@@ -115,14 +114,13 @@ describe Review do
         github_id: 123,
         full_github_name: "test/repo"
       )
-      file = double("File")
       violations_attributes = []
       build = create(
         :build,
         repo: repo,
         commit_sha: "headsha"
       )
-      build_worker = create(:build_worker, build: build)
+      build_worker = create(:build_worker, :completed, build: build)
       reviewer = Review.new(build_worker, file, violations_attributes)
       github_api = stubbed_github_api
 
@@ -138,10 +136,9 @@ describe Review do
     it "tracks build complete to analytics" do
       repo = create(:repo, :active, github_id: 123, private: true)
       create(:subscription, repo: repo)
-      file = double("File")
       violations_attributes = []
       build = create(:build, repo: repo)
-      build_worker = create(:build_worker, build: build)
+      build_worker = create(:build_worker, :completed, build: build)
       reviewer = Review.new(build_worker, file, violations_attributes)
       stubbed_github_api
 
@@ -151,19 +148,71 @@ describe Review do
         for_user(repo.subscription.user).
         with(properties: { name: repo.full_github_name, private: true })
     end
+  end
 
-    it "mark build worker as complete" do
-      travel_to(Time.now) do
-        build_worker = create(:build_worker)
-        file = double("File")
-        violations_attributes = []
-        reviewer = Review.new(build_worker, file, violations_attributes)
-        stubbed_github_api
+  context "when the build has unfinished workers" do
+    it "does not comment on violations" do
+      commenter = stubbed_commenter
+      stubbed_github_api
+      build = create(:build)
+      build_worker = create(:build_worker, build: build)
+      unfinished_build_worker = create(:build_worker, build: build)
+      reviewer = Review.new(build_worker, file, violations_attributes)
 
-        reviewer.run
+      reviewer.run
 
-        expect(build_worker.completed_at).to eq(Time.now)
-      end
+      expect(commenter).not_to have_received(:comment_on_violations)
+    end
+
+    it "does not update the build status on GitHub" do
+      repo = create(
+        :repo,
+        :active,
+        github_id: 123,
+        full_github_name: "test/repo"
+      )
+      violations_attributes = []
+      build = create(
+        :build,
+        repo: repo,
+        commit_sha: "headsha"
+      )
+      build_worker = create(:build_worker, build: build)
+      unfinished_build_worker = create(:build_worker, build: build)
+      reviewer = Review.new(build_worker, file, violations_attributes)
+      github_api = stubbed_github_api
+
+      reviewer.run
+
+      expect(github_api).not_to have_received(:create_success_status)
+    end
+
+    it "does not track build complete to analytics" do
+      repo = create(:repo, :active, github_id: 123, private: true)
+      create(:subscription, repo: repo)
+      build = create(:build, repo: repo)
+      build_worker = create(:build_worker, build: build)
+      unfinished_build_worker = create(:build_worker, build: build)
+      violations_attributes = []
+      reviewer = Review.new(build_worker, file, violations_attributes)
+      stubbed_github_api
+
+      reviewer.run
+
+      expect(analytics).not_to have_tracked("Build Completed")
+    end
+  end
+
+  it "mark build worker as complete" do
+    travel_to(Time.now) do
+      build_worker = create(:build_worker)
+      violations_attributes = []
+      reviewer = Review.new(build_worker, file, violations_attributes)
+      stubbed_github_api
+
+      reviewer.run
+
+      expect(build_worker.completed_at).to eq(Time.now)
     end
   end
 

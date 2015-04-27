@@ -4,13 +4,20 @@ class Review
   static_facade :run, :build_worker, :file, :violations_attributes
 
   def run
-    commenter.comment_on_violations(priority_violations)
-    create_success_status
-    track_subscribed_build_completed
     mark_build_worker_complete
+
+    if all_workers_completed?
+      commenter.comment_on_violations(priority_violations)
+      create_success_status
+      track_subscribed_build_completed
+    end
   end
 
   private
+
+  def all_workers_completed?
+    build.build_workers.all?(&:completed?)
+  end
 
   def mark_build_worker_complete
     build_worker.update!(completed_at: Time.now)
