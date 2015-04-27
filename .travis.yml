@@ -1,7 +1,7 @@
 language: ruby
 sudo: false
 cache: bundler
-rvm: 2.2.1
+rvm: 2.2.2
 
 addons:
   postgresql: "9.3"

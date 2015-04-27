@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.2.1"
+ruby "2.2.2"
 
 gem "active_model_serializers", "0.8.3"
 gem "analytics-ruby", "~> 2.0.0", require: "segment/analytics"
@@ -51,7 +51,7 @@ end
 
 group :test do
   gem "capybara", "~> 2.4.0"
-  gem "capybara-webkit"
+  gem "capybara-webkit", "~> 1.5.1"
   gem "database_cleaner"
   gem "factory_girl_rails"
   gem "launchy"

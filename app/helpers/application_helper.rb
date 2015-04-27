@@ -5,6 +5,9 @@ module ApplicationHelper
   end
 
   def display_onboarding?
-    current_user.repos.select { |repo| repo.builds.any? }.empty?
+    Build.
+      joins(repo: :memberships).
+      where(memberships: { user_id: current_user.id }).
+      empty?
   end
 end

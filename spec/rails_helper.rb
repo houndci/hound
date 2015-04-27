@@ -1,6 +1,5 @@
 ENV["RAILS_ENV"] ||= "test"
 
-require "rails_helper"
 require "config/environment"
 require "rspec/rails"
 
@@ -11,6 +10,10 @@ RSpec.configure do |config|
 
   config.before do
     DatabaseCleaner.clean
+  end
+
+  config.before(:each, js: true) do
+    page.driver.block_unknown_urls
   end
 
   config.infer_base_class_for_anonymous_controllers = false

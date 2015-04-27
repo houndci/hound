@@ -2,9 +2,11 @@
 module StyleGuide
   class CoffeeScript < Base
     DEFAULT_CONFIG_FILENAME = "coffeescript.json"
+    ERB_TAGS = /<%.*%>/
 
     def violations_in_file(file)
-      Coffeelint.lint(file.content, config).map do |violation|
+      content = content_for_file(file)
+      lint(content).map do |violation|
         Violation.new(
           filename: file.filename,
           line_number: violation["lineNumber"],
@@ -14,6 +16,22 @@ module StyleGuide
     end
 
     private
+
+    def lint(content)
+      Coffeelint.lint(content, config)
+    end
+
+    def content_for_file(file)
+      if erb? file
+        file.content.gsub(ERB_TAGS, "123")
+      else
+        file.content
+      end
+    end
+
+    def erb?(file)
+      file.filename.ends_with? ".erb"
+    end
 
     def config
       default_config.merge(repo_config.for(name))

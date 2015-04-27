@@ -74,38 +74,63 @@ describe SubscriptionsController, "#create" do
 end
 
 describe SubscriptionsController, "#destroy" do
-  it "deletes subscription associated with subscribing user" do
-    token = "usertoken"
-    current_user = create(:user)
-    subscribed_user = create(:user)
-    repo = create(:repo, private: true)
-    create(:membership, repo: repo, user: current_user)
-    create(:subscription, repo: repo, user: subscribed_user)
-    activator = double(:repo_activator, deactivate: true)
-    allow(RepoActivator).to receive(:new).and_return(activator)
-    allow(RepoSubscriber).to receive(:unsubscribe).and_return(true)
-    stub_sign_in(current_user, token)
+  context "when there is no subscription" do
+    it "returns 409 conflict" do
+      current_user = create(:user)
+      repo = create(:repo, private: true)
+      create(:membership, repo: repo, user: current_user)
+      activator = double("RepoActivator", deactivate: true)
+      allow(RepoActivator).to receive(:new).and_return(activator)
+      stub_sign_in(current_user, "usertoken")
 
-    delete(
-      :destroy,
-      repo_id: repo.id,
-      card_token: "cardtoken",
-      format: :json
-    )
-
-    expect(activator).to have_received(:deactivate)
-    expect(RepoActivator).to have_received(:new).
-      with(repo: repo, github_token: token)
-    expect(RepoSubscriber).to have_received(:unsubscribe).
-      with(repo, subscribed_user)
-    expect(analytics).to have_tracked("Repo Deactivated").
-      for_user(current_user).
-      with(
-        properties: {
-          name: repo.name,
-          private: true,
-          revenue: -repo.plan_price,
-        }
+      delete(
+        :destroy,
+        repo_id: repo.id,
+        card_token: "cardtoken",
+        format: :json
       )
+
+      expect(response.status).to eq(409)
+      response_body = JSON.parse(response.body)
+      expect(response_body["errors"]).
+        to eq(["No subscription exists for this repo"])
+    end
+  end
+
+  context "when there is a subscription" do
+    it "deletes subscription associated with subscribing user" do
+      token = "usertoken"
+      current_user = create(:user)
+      subscribed_user = create(:user)
+      repo = create(:repo, private: true)
+      create(:membership, repo: repo, user: current_user)
+      create(:subscription, repo: repo, user: subscribed_user)
+      activator = double("RepoActivator", deactivate: true)
+      allow(RepoActivator).to receive(:new).and_return(activator)
+      allow(RepoSubscriber).to receive(:unsubscribe).and_return(true)
+      stub_sign_in(current_user, token)
+
+      delete(
+        :destroy,
+        repo_id: repo.id,
+        card_token: "cardtoken",
+        format: :json
+      )
+
+      expect(activator).to have_received(:deactivate)
+      expect(RepoActivator).to have_received(:new).
+        with(repo: repo, github_token: token)
+      expect(RepoSubscriber).to have_received(:unsubscribe).
+        with(repo, subscribed_user)
+      expect(analytics).to have_tracked("Repo Deactivated").
+        for_user(current_user).
+        with(
+          properties: {
+            name: repo.name,
+            private: true,
+            revenue: -repo.plan_price,
+          }
+        )
+    end
   end
 end

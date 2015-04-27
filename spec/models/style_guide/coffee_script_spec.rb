@@ -112,6 +112,46 @@ describe StyleGuide::CoffeeScript do
       end
     end
 
+    context "given a `coffee.erb` file" do
+      it "lints the file" do
+        repo_config = double("RepoConfig", enabled_for?: true, for: {})
+        style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
+        line = double("Line", content: "blah", number: 1, patch_position: 2)
+        file = double(
+          "File",
+          content: "class strange_ClassNAME",
+          filename: "test.coffee.erb",
+          line_at: line
+        )
+
+        violations = style_guide.violations_in_file(file)
+        violation = violations.first
+
+        expect(violations.size).to eq 1
+        expect(violation.filename).to eq "test.coffee.erb"
+        expect(violation.line_number).to eq 1
+        expect(violation.messages).to match_array(
+          ["Class names should be camel cased"]
+        )
+      end
+
+      it "removes the ERB tags from the file" do
+        repo_config = double("RepoConfig", enabled_for?: true, for: {})
+        style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
+        line = double("Line", content: "blah", number: 1, patch_position: 2)
+        file = double(
+          "File",
+          content: "leonidasLastWords = <%= raise 'hell' %>",
+          filename: "test.coffee.erb",
+          line_at: line,
+        )
+
+        violations = style_guide.violations_in_file(file)
+
+        expect(violations).to be_empty
+      end
+    end
+
     private
 
     def violations_in(content, repository_owner_name: "ralph")
