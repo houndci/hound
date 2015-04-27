@@ -173,8 +173,9 @@ describe DispatchWorkers do
     end
 
     context "for a SCSS file" do
-      context "when iron worker is disbaled" do
+      context "when iron worker is disabled" do
         it "runs Language::ScssLegacyWorker" do
+          disable_iron_worker
           file = double("File", filename: "foo.scss")
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
@@ -192,7 +193,6 @@ describe DispatchWorkers do
 
       context "when iron worker enabled" do
         it "runs Language::Scss" do
-          enable_iron_worker
           file = double("File", filename: "foo.scss")
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
@@ -210,7 +210,6 @@ describe DispatchWorkers do
 
       context "when SCSS is not enabled for the repo" do
         it "does not run the worker" do
-          enable_iron_worker
           file = double("File", filename: "foo.scss")
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
@@ -228,7 +227,6 @@ describe DispatchWorkers do
 
       context "when file is not included" do
         it "does not run the worker" do
-          enable_iron_worker
           file = double("File", filename: "foo.scss")
           pull_request = stub_pull_request(pull_request_files: [file])
           build = create(:build)
@@ -309,8 +307,8 @@ describe DispatchWorkers do
     worker
   end
 
-  def enable_iron_worker
+  def disable_iron_worker
     allow(ENV).
-      to receive(:[]).with("IRON_WORKER_ENABLED").and_return(true)
+      to receive(:[]).with("IRON_WORKER_DISABLED").and_return(true)
   end
 end
