@@ -189,8 +189,8 @@ describe Review do
   def violations_attributes
     [
       {
-        line_number: 0,
-        messages: ["I have an error"],
+        "line_number" => 0,
+        "messages" => ["I have an error"],
       }
     ]
   end
@@ -201,9 +201,9 @@ describe Review do
 
   def file
     {
-      filename: "a.a",
-      patch: "+#{content}",
-      content: content
+      "name" => "a.a",
+      "content" => content,
+      "patch_body" => "+#{content}"
     }
   end
 end
