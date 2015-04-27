@@ -156,7 +156,7 @@ describe Review, "#run" do
       stubbed_github_api
       build = create(:build)
       build_worker = create(:build_worker, build: build)
-      unfinished_build_worker = create(:build_worker, build: build)
+      _unfinished_build_worker = create(:build_worker, build: build)
       reviewer = Review.new(build_worker, file, violations_attributes)
 
       reviewer.run
@@ -178,7 +178,7 @@ describe Review, "#run" do
         commit_sha: "headsha"
       )
       build_worker = create(:build_worker, build: build)
-      unfinished_build_worker = create(:build_worker, build: build)
+      _unfinished_build_worker = create(:build_worker, build: build)
       reviewer = Review.new(build_worker, file, violations_attributes)
       github_api = stubbed_github_api
 
@@ -192,7 +192,7 @@ describe Review, "#run" do
       create(:subscription, repo: repo)
       build = create(:build, repo: repo)
       build_worker = create(:build_worker, build: build)
-      unfinished_build_worker = create(:build_worker, build: build)
+      _unfinished_build_worker = create(:build_worker, build: build)
       violations_attributes = []
       reviewer = Review.new(build_worker, file, violations_attributes)
       stubbed_github_api
