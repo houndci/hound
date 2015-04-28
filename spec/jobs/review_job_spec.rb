@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe ReviewJob do
   describe "#perform" do
-    it "calls Review to review violations and file" do
+    it "runs Review" do
       build_worker = build_stubbed(:build_worker)
       file = double("File")
       violations = double("Violations")
