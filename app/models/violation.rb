@@ -7,8 +7,6 @@ class Violation < ActiveRecord::Base
   validates :build, presence: true
   validates :filename, presence: true
 
-  attr_writer :line
-
   delegate :count, to: :messages, prefix: true
 
   def add_messages(new_messages)
@@ -18,12 +16,4 @@ class Violation < ActiveRecord::Base
   def messages
     self[:messages].uniq
   end
-
-  def on_changed_line?
-    line.changed?
-  end
-
-  private
-
-  attr_reader :line
 end

@@ -1,21 +1,16 @@
 class BuildRunner
-  MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
-
-  pattr_initialize :payload
+  static_facade :run, :payload
 
   def run
     if repo && relevant_pull_request?
       track_subscribed_build_started
       create_pending_status
       upsert_owner
-      repo.builds.create!(
-        violations: violations,
+      build = repo.builds.create!(
         pull_request_number: payload.pull_request_number,
         commit_sha: payload.head_sha,
       )
-      commenter.comment_on_violations(priority_violations)
-      create_success_status
-      track_subscribed_build_completed
+      dispatch_workers(build)
     end
   rescue RepoConfig::ParserError
     create_config_error_status
@@ -27,20 +22,8 @@ class BuildRunner
     pull_request.opened? || pull_request.synchronize?
   end
 
-  def violations
-    @violations ||= style_checker.violations
-  end
-
-  def priority_violations
-    violations.take(MAX_COMMENTS)
-  end
-
-  def style_checker
-    StyleChecker.new(pull_request)
-  end
-
-  def commenter
-    Commenter.new(pull_request)
+  def dispatch_workers(build)
+    DispatchWorkers.run(pull_request, build)
   end
 
   def pull_request
@@ -69,27 +52,11 @@ class BuildRunner
     end
   end
 
-  def track_subscribed_build_completed
-    if repo.subscription
-      user = repo.subscription.user
-      analytics = Analytics.new(user)
-      analytics.track_build_completed(repo)
-    end
-  end
-
   def create_pending_status
     github.create_pending_status(
       payload.full_repo_name,
       payload.head_sha,
       I18n.t(:pending_status)
-    )
-  end
-
-  def create_success_status
-    github.create_success_status(
-      payload.full_repo_name,
-      payload.head_sha,
-      I18n.t(:success_status, count: violation_count)
     )
   end
 

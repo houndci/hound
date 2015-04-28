@@ -8,6 +8,10 @@ class DefaultConfigFile
     File.join(directory, file_name)
   end
 
+  def content
+    File.read(path)
+  end
+
   private
 
   def directory

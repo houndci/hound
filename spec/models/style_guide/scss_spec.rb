@@ -94,8 +94,9 @@ describe StyleGuide::Scss do
     StyleGuide::Scss.new(repo_config, repository_owner_name)
   end
 
-  def build_file(text)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
-    double("CommitFile", content: text, filename: "lib/a.scss", line_at: line)
+  def build_file(content)
+    filename = "lib/a.scss"
+    patch_body = ""
+    PullRequestFile.new(filename, content, patch_body)
   end
 end

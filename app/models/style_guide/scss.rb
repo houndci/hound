@@ -12,14 +12,10 @@ module StyleGuide
         runner.run([file.content])
 
         runner.lints.map do |violation|
-          line = file.line_at(violation.location.line)
-
           Violation.new(
             filename: file.filename,
-            line: line,
             line_number: violation.location.line,
-            messages: [violation.description],
-            patch_position: line.patch_position,
+            messages: [violation.description]
           )
         end
       end

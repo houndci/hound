@@ -17,6 +17,13 @@ ActiveRecord::Schema.define(version: 20150306184045) do
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
 
+  create_table "build_workers", force: :cascade do |t|
+    t.integer  "build_id",     null: false
+    t.datetime "completed_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "builds", force: :cascade do |t|
     t.text     "violations_archive"
     t.integer  "repo_id"
@@ -115,6 +122,7 @@ ActiveRecord::Schema.define(version: 20150306184045) do
 
   add_index "violations", ["build_id"], name: "index_violations_on_build_id", using: :btree
 
+  add_foreign_key "build_workers", "builds"
   add_foreign_key "memberships", "repos"
   add_foreign_key "memberships", "users"
   add_foreign_key "repos", "owners"

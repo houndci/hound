@@ -10,6 +10,14 @@ FactoryGirl.define do
     end
   end
 
+  factory :build_worker do
+    build
+
+    trait :completed do
+      completed_at Time.zone.now
+    end
+  end
+
   factory :repo do
     trait(:active) { active true }
     trait(:inactive) { active false }

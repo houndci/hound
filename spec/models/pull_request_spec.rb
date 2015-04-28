@@ -1,6 +1,7 @@
 require "spec_helper"
 require "app/models/pull_request"
 require "app/models/commit"
+require "app/models/pull_request_file"
 require "lib/github_api"
 
 describe PullRequest do
@@ -56,6 +57,54 @@ describe PullRequest do
 
       expect(comments.size).to eq(1)
       expect(comments).to match_array([comment])
+    end
+  end
+
+  describe "#pull_request_files" do
+    context "when files are added" do
+      it "returns commit files" do
+        file_contents = double("FileContents", content: "some content")
+        github_file = double(
+          "GitHubFile",
+          status: "added",
+          filename: "test.rb",
+          patch: ""
+        )
+        removed_github_file = double(
+          "GitHubFile",
+          status: "removed",
+          filename: "test.rb",
+          patch: ""
+        )
+        github = double(
+          "GitHub",
+          pull_request_files: [github_file, removed_github_file],
+          file_contents: file_contents
+        )
+        pull_request = pull_request_stub(github)
+
+        expect(pull_request.pull_request_files.count).to eq(1)
+      end
+    end
+
+    context "when file are removed" do
+      it "returns empty" do
+        file_contents = double("FileContents", content: "some content")
+        github_file = double(
+          "GitHubFile",
+          status: "removed",
+          filename: "test.rb",
+          patch: ""
+        )
+        github = double(
+          "GitHub",
+          pull_request_files: [github_file],
+          file_contents: file_contents
+        )
+        pull_request = pull_request_stub(github)
+
+        expect(pull_request.pull_request_files.count).to eq(0)
+      end
     end
   end
 

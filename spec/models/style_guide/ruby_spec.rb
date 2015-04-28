@@ -633,9 +633,9 @@ hoge
   end
 
   def build_file(content)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
     filename = "app/models/user.rb"
-    double("CommitFile", content: content, line_at: line, filename: filename)
+    patch_body = ""
+    PullRequestFile.new(filename, content, patch_body)
   end
 
   def default_configuration
