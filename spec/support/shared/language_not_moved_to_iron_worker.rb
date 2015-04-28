@@ -46,8 +46,8 @@ shared_examples "Language not moved to IronWorker" do
 
   def stub_violation_callback(build_worker, request_body)
     stub_request(:put, "https://hound.ngrok.com/build_workers/#{build_worker.id}").
-      with(:body => request_body).
-      to_return(:status => 200, :body => "", :headers => {})
+      with(body: request_body).
+      to_return(status: 200, body: "", headers: {})
   end
 
   def stub_faraday_old
