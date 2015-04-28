@@ -164,7 +164,9 @@ describe StyleGuide::CoffeeScript do
     end
 
     def build_file(content)
-      double(:file, content: content, filename: "test.coffee")
+      filename = "test.coffee"
+      patch_body = ""
+      PullRequestFile.new(filename, content, patch_body)
     end
 
     def default_configuration

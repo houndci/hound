@@ -634,7 +634,8 @@ hoge
 
   def build_file(content)
     filename = "app/models/user.rb"
-    PullRequestFile.new(filename, content, "")
+    patch_body = ""
+    PullRequestFile.new(filename, content, patch_body)
   end
 
   def default_configuration
