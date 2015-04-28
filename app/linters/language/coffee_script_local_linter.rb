@@ -1,5 +1,5 @@
 module Language
-  class CoffeeScriptLegacyWorker < LegacyWorker
+  class CoffeeScriptLocalLinter < LocalLinter
     private
 
     def style_guide_name

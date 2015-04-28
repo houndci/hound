@@ -1,5 +1,5 @@
 module Language
-  class LegacyWorker < Base
+  class LocalLinter < Base
     def run
       hound_client = Faraday.new do |client|
         client.request :url_encoded

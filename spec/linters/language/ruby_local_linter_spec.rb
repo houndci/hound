@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Language::RubyLegacyWorker do
+describe Language::RubyLocalLinter do
   it_behaves_like "Language not moved to IronWorker" do
     let(:content) { "def a end;" }
     let(:messages) { ["unexpected token kEND"] }

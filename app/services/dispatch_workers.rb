@@ -3,10 +3,10 @@ class DispatchWorkers
 
   def run
     pull_request_files.each do |file|
-      file_worker = worker(file)
+      linter = build_linter(file)
 
-      if file_worker.enabled? && file_worker.file_included?(file)
-        file_worker.run
+      if linter.enabled? && linter.file_included?(file)
+        linter.run
       end
     end
   end
@@ -17,9 +17,9 @@ class DispatchWorkers
     pull_request.pull_request_files
   end
 
-  def worker(file)
-    worker_class_name = worker_class_name(file)
-    worker_class_name.new(
+  def build_linter(file)
+    linter = linter_class_name(file)
+    linter.new(
       new_build_worker,
       file,
       repo_config,
@@ -31,16 +31,16 @@ class DispatchWorkers
     build.build_workers.create
   end
 
-  def worker_class_name(file)
+  def linter_class_name(file)
     case file.filename
     when /.+\.rb\z/
-      Language::RubyLegacyWorker
+      Language::RubyLocalLinter
     when /.+\.coffee(\.js)?\z/
-      Language::CoffeeScriptLegacyWorker
+      Language::CoffeeScriptLocalLinter
     when /.+\.js\z/
-      Language::JavaScriptLegacyWorker
+      Language::JavaScriptLocalLinter
     when /.+\.scss\z/
-      scss_worker
+      scss_linter
     else
       Language::Unsupported
     end
@@ -50,9 +50,9 @@ class DispatchWorkers
     @repo_config ||= RepoConfig.new(pull_request.head_commit)
   end
 
-  def scss_worker
+  def scss_linter
     if ENV["IRON_WORKER_DISABLED"]
-      Language::ScssLegacyWorker
+      Language::ScssLocalLinter
     else
       Language::Scss
     end

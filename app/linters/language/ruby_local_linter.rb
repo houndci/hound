@@ -1,9 +1,9 @@
 module Language
-  class ScssLegacyWorker < LegacyWorker
+  class RubyLocalLinter < LocalLinter
     private
 
     def style_guide_name
-      StyleGuide::Scss
+      StyleGuide::Ruby
     end
   end
 end

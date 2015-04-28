@@ -1,5 +1,5 @@
 module Language
-  class JavaScriptLegacyWorker < LegacyWorker
+  class JavaScriptLocalLinter < LocalLinter
     private
 
     def style_guide_name
