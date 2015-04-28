@@ -8,7 +8,7 @@ module Language
       end
 
       hound_client.put do |request|
-        request.url ENV.fetch("BUILD_WORKER_CALLBACK_URL") + "/#{build_worker.id}"
+        request.url "#{ENV.fetch("BUILD_WORKER_CALLBACK_URL")}/#{build_worker.id}"
         request.body = hound_payload
       end
     end
