@@ -24,5 +24,9 @@ module Language
     def name
       self.class.name.demodulize.underscore
     end
+
+    def callback_url
+      "#{ENV.fetch("BUILD_WORKER_CALLBACK_URL")}/#{build_worker.id}"
+    end
   end
 end
