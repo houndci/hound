@@ -4,13 +4,14 @@ ruby "2.2.2"
 
 gem "active_model_serializers", "0.8.3"
 gem "analytics-ruby", "~> 2.0.0", require: "segment/analytics"
-gem "angularjs-rails"
 gem "angular_rails_csrf"
+gem "angularjs-rails"
 gem "attr_extras"
 gem "bourbon"
 gem "coffee-rails"
 gem "coffeelint"
 gem "font-awesome-rails"
+gem "foreman"
 gem "haml-rails"
 gem "high_voltage"
 gem "jquery-rails"
@@ -34,18 +35,19 @@ gem "stripe"
 gem "uglifier", ">= 1.0.3"
 gem "unicorn"
 
-group :staging, :production do
-  gem "rails_12factor"
-end
-
 group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
-  gem "foreman"
   gem "jasmine-rails"
   gem "konacha"
   gem "poltergeist"
   gem "rspec-rails", ">= 3.2"
+
+  gem "capistrano-bundler", "~> 1.1.2", require: false
+  gem "capistrano-file-permissions"
+  gem "capistrano-rails", "~> 1.1.1", require: false
+  gem "capistrano-rbenv", "~> 2.0.2", require: false
+  gem "capistrano3-nginx_unicorn"
 end
 
 group :test do
