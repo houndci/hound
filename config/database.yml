@@ -1,6 +1,6 @@
 development: &default
   adapter: postgresql
-  database: hound_development
+  database: visionsmith_development
   encoding: utf8
   host: localhost
   min_messages: warning
@@ -9,7 +9,7 @@ development: &default
 
 test:
   <<: *default
-  database: hound_test
+  database: visionsmith_test
 
 production:
-  url: <%= ENV.fetch("DATABASE_URL", "") %>ion:
+  url: <%= ENV.fetch("DATABASE_URL", "") %>

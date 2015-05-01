@@ -6,6 +6,7 @@ server {
   server_name www.<%= fetch(:nginx_server_name) %>;
   return 301 $scheme://<%= fetch(:nginx_server_name) %>$request_uri;
 }
+
 <% if fetch(:nginx_use_spdy) && fetch(:nginx_enable_pagespeed) %>
 server {
   listen 80;
@@ -25,6 +26,7 @@ server {
   pagespeed off;
 }
 <% end %>
+
 server {
 <% if fetch(:nginx_use_spdy) %>
   listen 443 default ssl spdy;
@@ -61,6 +63,7 @@ server {
     access_log <%= shared_path %>/log/nginx.access.log;
     error_log <%= shared_path %>/log/nginx.error.log;
   }
+
   <% if fetch(:nginx_enable_pagespeed) %>
   location ~ "\.pagespeed\.([a-z]\.)?[a-z]{2}\.[^.]{10}\.[^.]+" { add_header "" ""; }
   location ~ "^/ngx_pagespeed_static/" { }
