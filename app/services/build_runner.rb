@@ -1,8 +1,6 @@
 class BuildRunner
   class ExpiredToken < StandardError; end
 
-  MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
-
   pattr_initialize :payload
 
   def run
@@ -26,10 +24,8 @@ class BuildRunner
     track_subscribed_build_started
     create_pending_status
     upsert_owner
-    create_build
-    commenter.comment_on_violations(priority_violations)
-    create_success_status
-    track_subscribed_build_completed
+    build = create_build
+    BuildReport.run(pull_request, build)
   end
 
   def relevant_pull_request?
@@ -40,16 +36,8 @@ class BuildRunner
     @violations ||= style_checker.violations
   end
 
-  def priority_violations
-    violations.take(MAX_COMMENTS)
-  end
-
   def style_checker
     StyleChecker.new(pull_request)
-  end
-
-  def commenter
-    Commenter.new(pull_request)
   end
 
   def create_build
@@ -78,8 +66,10 @@ class BuildRunner
   end
 
   def repo
-    @repo ||= Repo.active.
-      find_and_update(payload.github_repo_id, payload.full_repo_name)
+    @repo ||= Repo.active.find_and_update(
+      payload.github_repo_id,
+      payload.full_repo_name,
+    )
   end
 
   def reset_token
@@ -97,27 +87,11 @@ class BuildRunner
     end
   end
 
-  def track_subscribed_build_completed
-    if repo.subscription
-      user = repo.subscription.user
-      analytics = Analytics.new(user)
-      analytics.track_build_completed(repo)
-    end
-  end
-
   def create_pending_status
     github.create_pending_status(
       payload.full_repo_name,
       payload.head_sha,
       I18n.t(:pending_status)
-    )
-  end
-
-  def create_success_status
-    github.create_success_status(
-      payload.full_repo_name,
-      payload.head_sha,
-      I18n.t(:success_status, count: violation_count)
     )
   end
 
@@ -145,9 +119,5 @@ class BuildRunner
 
   def configuration_url
     Rails.application.routes.url_helpers.configuration_url(host: ENV["HOST"])
-  end
-
-  def violation_count
-    violations.sum(&:messages_count)
   end
 end

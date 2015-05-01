@@ -27,36 +27,16 @@ describe BuildRunner, '#run' do
       expect(build.commit_sha).to eq payload.head_sha
     end
 
-    it 'comments on violations' do
+    it "runs the BuildReport to finalize the build" do
       build_runner = make_build_runner
-      commenter = stubbed_commenter
-      style_checker = stubbed_style_checker_with_violations
-      commenter = Commenter.new(stubbed_pull_request)
-      allow(Commenter).to receive(:new).and_return(commenter)
       stubbed_github_api
+      pull_request = stubbed_pull_request
+      stubbed_style_checker_with_violations
+      allow(BuildReport).to receive(:run)
 
       build_runner.run
 
-      expect(commenter).to have_received(:comment_on_violations).
-        with(style_checker.violations)
-    end
-
-    it "comments a maximum number of times" do
-      allow(ENV).to receive(:[]).with("HOUND_GITHUB_TOKEN").
-        and_return("something")
-      stub_const("::BuildRunner::MAX_COMMENTS", 1)
-      build_runner = make_build_runner
-      stubbed_commenter
-      violations = build_list(:violation, 2)
-      stubbed_style_checker(violations: violations)
-      commenter = Commenter.new(stubbed_pull_request)
-      allow(Commenter).to receive(:new).and_return(commenter)
-      stubbed_github_api
-
-      build_runner.run
-
-      expect(commenter).to have_received(:comment_on_violations).
-        with(violations.take(BuildRunner::MAX_COMMENTS))
+      expect(BuildReport).to have_received(:run).with(pull_request, Build.last)
     end
 
     it 'initializes StyleChecker with modified files and config' do
@@ -110,11 +90,6 @@ describe BuildRunner, '#run' do
         "test/repo",
         "headsha",
         "Hound is busy reviewing changes..."
-      )
-      expect(github_api).to have_received(:create_success_status).with(
-        "test/repo",
-        "headsha",
-        "3 violations found."
       )
     end
 
@@ -174,29 +149,28 @@ describe BuildRunner, '#run' do
     end
   end
 
-  context 'without active repo' do
-    it 'does not attempt to comment' do
+  context "when the repo is not active" do
+    it "does not create a build" do
       repo = create(:repo, :inactive)
       build_runner = make_build_runner(repo: repo)
-      allow(Commenter).to receive(:new)
 
       build_runner.run
 
-      expect(Commenter).not_to have_received(:new)
+      expect(repo.builds).to be_empty
     end
   end
 
-  context 'without opened or synchronize pull request' do
-    it 'does not attempt to comment' do
-      build_runner = make_build_runner
+  context "when pull request is not opened or synchronized" do
+    it "does not create a build" do
+      repo = create(:repo)
+      build_runner = make_build_runner(repo: repo)
       pull_request = stubbed_pull_request
       allow(pull_request).
         to receive_messages(opened?: false, synchronize?: false)
-      allow(Commenter).to receive(:new)
 
       build_runner.run
 
-      expect(Commenter).not_to have_received(:new)
+      expect(repo.builds).to be_empty
     end
   end
 
@@ -217,9 +191,6 @@ describe BuildRunner, '#run' do
       build_runner.run
 
       expect(analytics).to have_tracked("Build Started").
-        for_user(repo.subscription.user).
-        with(properties: { name: repo.full_github_name, private: true })
-      expect(analytics).to have_tracked("Build Completed").
         for_user(repo.subscription.user).
         with(properties: { name: repo.full_github_name, private: true })
     end
@@ -279,11 +250,17 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_pull_request
+    head_commit = double(
+      "HeadCommit",
+      sha: "headsha",
+      repo_name: "test/repo",
+    )
     pull_request = double(
       :pull_request,
       pull_request_files: [double(:file)],
       config: double(:config),
-      opened?: true
+      opened?: true,
+      head_commit: head_commit,
     )
     allow(PullRequest).to receive(:new).and_return(pull_request)
 
