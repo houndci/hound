@@ -35,7 +35,7 @@ describe StyleGuide::Scss do
     end
 
     context "with custom configuration" do
-      describe "for single quotes" do
+      context "for single quotes" do
         it "returns no violation" do
           content = ".a { display: 'none'; }\n"
           config = {
@@ -50,7 +50,7 @@ describe StyleGuide::Scss do
         end
       end
 
-      describe "for no leading zeros" do
+      context "for no leading zeros" do
         it "returns no violation" do
           content = ".a { margin: .5em; }\n"
           config = {
@@ -62,6 +62,23 @@ describe StyleGuide::Scss do
           }
 
           expect(violations_in(content, config)).to eq []
+        end
+      end
+
+      context "when exclude is provided as string" do
+        it "does not error" do
+          content = ".a { margin: .5em; }\n"
+          config = {
+            "linters" => {
+              "LeadingZero" => {
+                "exclude" => "lib/**",
+              }
+            }
+          }
+
+          expect(violations_in(content, config)).to eq [
+            "`.5` should be written with a leading zero as `0.5`"
+          ]
         end
       end
     end
