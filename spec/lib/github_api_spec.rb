@@ -224,7 +224,7 @@ describe GithubApi do
     end
   end
 
-  describe "#used_teams" do
+  describe "#user_teams" do
     it "returns user's teams" do
       teams = ["thoughtbot"]
       client = double(user_teams: teams)
