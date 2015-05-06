@@ -397,6 +397,46 @@ end
         end
       end
     end
+
+    context "when continued lines are not aligned with operand" do
+      it "returns violations" do
+        code = <<-CODE.strip_heredoc
+          def foo
+            user = User.where(email: "user@example.com").
+              assign_attributes(name: "User")
+            user.save!
+          end
+        CODE
+
+        violations = violations_in(code)
+
+        expect(violations).to eq [
+          "Align the operands of an expression in an assignment " +
+            "spanning multiple lines."
+        ]
+      end
+    end
+
+    context "when continued lines are aligned with operand" do
+      context "with thoughtbot repo" do
+        it "returns violations" do
+          code = <<-CODE.strip_heredoc
+            def foo
+              user = User.where(email: "user@example.com").
+                     assign_attributes(name: "User")
+              user.save!
+            end
+          CODE
+
+          violations = violations_in(code, repository_owner_name: "thoughtbot")
+
+          expect(violations).to eq [
+            "Use 2 (not 7) spaces for indenting an expression " +
+              "in an assignment spanning multiple lines."
+          ]
+        end
+      end
+    end
   end
 
   context "with custom configuration" do
