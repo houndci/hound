@@ -159,10 +159,14 @@ module GithubApiHelper
   end
 
   def stub_add_user_to_team_request(team_id, username, user_token)
-    url = "https://api.github.com/teams/#{team_id}/memberships/#{username}"
-    stub_request(:put, url).
-      with(headers: { "Authorization" => "token #{user_token}" }).
-      to_return(status: 200)
+    stub_request(
+      :put,
+      "https://api.github.com/teams/#{team_id}/memberships/#{username}"
+    ).with(
+      headers: { "Authorization" => "token #{user_token}" }
+    ).to_return(
+      status: 200
+    )
   end
 
   def stub_hook_creation_request(full_repo_name, callback_endpoint, token)
