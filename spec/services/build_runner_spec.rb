@@ -225,6 +225,23 @@ describe BuildRunner, '#run' do
     end
   end
 
+  context "with expired token" do
+    it "removes the expired token" do
+      repo = create(:repo, :active)
+      user = create(:user, token: "expired_token")
+      repo.users << user
+      build_runner = make_build_runner(repo: repo)
+      github_api = stubbed_github_api
+      allow(github_api).to receive(:create_pending_status).
+        and_raise(Octokit::Unauthorized)
+
+      expect { build_runner.run }.to raise_error BuildRunner::ExpiredToken
+      expect(user.reload.token).to be_nil
+
+      expect { build_runner.run }.to raise_error Octokit::Unauthorized
+    end
+  end
+
   def make_build_runner(repo: create(:repo, :active, github_id: 123))
     payload = stubbed_payload(github_repo_id: repo.github_id)
     BuildRunner.new(payload)
@@ -232,6 +249,7 @@ describe BuildRunner, '#run' do
 
   def stubbed_payload(options = {})
     defaults = {
+      action: "synchronize",
       pull_request_number: 123,
       head_sha: "somesha",
       full_repo_name: "foo/bar",

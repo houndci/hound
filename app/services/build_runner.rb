@@ -1,27 +1,36 @@
 class BuildRunner
+  class ExpiredToken < StandardError; end
+
   MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
 
   pattr_initialize :payload
 
   def run
     if repo && relevant_pull_request?
-      track_subscribed_build_started
-      create_pending_status
-      upsert_owner
-      repo.builds.create!(
-        violations: violations,
-        pull_request_number: payload.pull_request_number,
-        commit_sha: payload.head_sha,
-      )
-      commenter.comment_on_violations(priority_violations)
-      create_success_status
-      track_subscribed_build_completed
+      review_pull_request
     end
   rescue RepoConfig::ParserError
     create_config_error_status
+  rescue Octokit::Unauthorized
+    if users_with_token.any?
+      reset_token
+      raise ExpiredToken
+    else
+      raise
+    end
   end
 
   private
+
+  def review_pull_request
+    track_subscribed_build_started
+    create_pending_status
+    upsert_owner
+    create_build
+    commenter.comment_on_violations(priority_violations)
+    create_success_status
+    track_subscribed_build_completed
+  end
 
   def relevant_pull_request?
     pull_request.opened? || pull_request.synchronize?
@@ -43,6 +52,14 @@ class BuildRunner
     Commenter.new(pull_request)
   end
 
+  def create_build
+    repo.builds.create!(
+      violations: violations,
+      pull_request_number: payload.pull_request_number,
+      commit_sha: payload.head_sha,
+    )
+  end
+
   def pull_request
     @pull_request ||= PullRequest.new(payload, token)
   end
@@ -52,13 +69,24 @@ class BuildRunner
   end
 
   def user_token
-    user_with_token = repo.users.where.not(token: nil).sample
-    user_with_token && user_with_token.token
+    user = users_with_token.sample
+    user && user.token
+  end
+
+  def users_with_token
+    repo.users.where.not(token: nil)
   end
 
   def repo
     @repo ||= Repo.active.
       find_and_update(payload.github_repo_id, payload.full_repo_name)
+  end
+
+  def reset_token
+    token_user = repo.users.detect { |user| user.token == token }
+    token_user.update_columns(token: nil)
+
+    @token = nil
   end
 
   def track_subscribed_build_started
