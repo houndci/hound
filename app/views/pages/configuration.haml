@@ -186,6 +186,19 @@
               config_file: .scss-style.yml
 
       %p
+        If you would like to ignore certain SCSS files, add
+        %em.code exclude:
+        to your
+        %em.code .scss-style.yml
+        to exclude scss files from being linted.
+
+        %code.code-block
+          :preserve
+            scss:
+              exclude:
+                - "app/assets/stylesheets/plugins/**"
+
+      %p
         Add the following code to your
         %em.code .hound.yml
         to disable SCSS style checking.
