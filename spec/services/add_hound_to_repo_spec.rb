@@ -58,26 +58,48 @@ describe AddHoundToRepo do
 
         context "when Services team exists" do
           it "adds user to existing Services team" do
-            github_team_id = 1001
-            github = build_github(github_team_id: github_team_id)
+            services_team = double(
+              "GithubTeam",
+              id: 222,
+              name: "Services",
+              permission: "push"
+            )
+            github = build_github(github_team_id: services_team.id)
+            allow(github).to receive(:repo_teams).and_return([])
+            allow(github).to receive(:org_teams).and_return([services_team])
+            allow(github).to receive(:add_repo_to_team)
             allow(github).to receive(:add_user_to_team)
+            repo_name = "foo/bar"
 
-            AddHoundToRepo.run("foo/bar", github)
+            AddHoundToRepo.run(repo_name, github)
 
+            expect(github).to have_received(:add_repo_to_team).
+              with(services_team.id, repo_name)
             expect(github).to have_received(:add_user_to_team).
-              with(github_team_id, hound_github_username)
+              with(services_team.id, hound_github_username)
           end
 
           context "when team name is lowercase" do
             it "adds user to the team" do
-              github_team_id = 1001
-              github = build_github(github_team_id: github_team_id)
+              services_team = double(
+                "GithubTeam",
+                id: 222,
+                name: "services",
+                permission: "push"
+              )
+              github = build_github(github_team_id: services_team.id)
+              allow(github).to receive(:repo_teams).and_return([])
+              allow(github).to receive(:org_teams).and_return([services_team])
+              allow(github).to receive(:add_repo_to_team)
               allow(github).to receive(:add_user_to_team)
+              repo_name = "foo/bar"
 
-              AddHoundToRepo.run("foo/bar", github)
+              AddHoundToRepo.run(repo_name, github)
 
+              expect(github).to have_received(:add_repo_to_team).
+                with(services_team.id, repo_name)
               expect(github).to have_received(:add_user_to_team).
-                with(github_team_id, hound_github_username)
+                with(services_team.id, hound_github_username)
             end
           end
         end
