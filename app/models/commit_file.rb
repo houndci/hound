@@ -14,6 +14,18 @@ class CommitFile
       UnchangedLine.new
   end
 
+  def repo_name
+    commit.repo_name
+  end
+
+  def sha
+    commit.sha
+  end
+
+  def patch_body
+    file.patch
+  end
+
   private
 
   def changed_lines

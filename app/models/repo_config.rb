@@ -32,6 +32,14 @@ class RepoConfig
     end
   end
 
+  def config_for(language)
+    if language == "ruby" && legacy?
+      commit.file_content(HOUND_CONFIG)
+    else
+      commit.file_content(config_path_for(language))
+    end
+  end
+
   def ignored_javascript_files
     ignore_file_content = load_javascript_ignore
 
