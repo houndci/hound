@@ -9,7 +9,7 @@ module StyleGuide
       ScssReviewJob.perform_later(
         repo_name: file.repo_name,
         filename: file.filename,
-        commit: file.sha,
+        commit_sha: file.sha,
         patch: file.patch_body,
         content: file.content,
         default_config: default_config,
