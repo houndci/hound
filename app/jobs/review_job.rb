@@ -10,9 +10,10 @@ class ReviewJob < ApplicationJob
     #   line
     #   message
 
+    filename = attributes.fetch("filename")
     file = CommitFile.new(
       file: OpenStruct.new(
-        filename: attributes.fetch("filename"),
+        filename: filename,
         patch: attributes.fetch("patch")
       ),
       commit: nil
@@ -26,7 +27,7 @@ class ReviewJob < ApplicationJob
       line = file.line_at(violation["line"])
 
       build.violations << Violation.new(
-        filename: file.filename,
+        filename: filename,
         patch_position: line.patch_position,
         line: line,
         line_number: line.number,
