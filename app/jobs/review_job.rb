@@ -24,14 +24,14 @@ class ReviewJob < ApplicationJob
     build = repo.builds.find_by(commit_sha: attributes.fetch("commit_sha"))
 
     attributes.fetch("violations").each do |violation|
-      line = file.line_at(violation[:line])
+      line = file.line_at(violation["line"])
 
       build.violations << Violation.new(
         filename: file.filename,
         patch_position: line.patch_position,
         line: line,
         line_number: line.number,
-        messages: [violation[:message]]
+        messages: [violation["message"]]
       )
     end
 
