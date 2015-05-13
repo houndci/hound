@@ -1,7 +1,7 @@
-class ReviewJob < ApplicationJob
-  queue_as :high
+class ReviewJob
+  @queue = :high
 
-  def perform(attributes)
+  def self.perform(attributes)
     # repo_name
     # filename
     # commit_sha
@@ -11,6 +11,7 @@ class ReviewJob < ApplicationJob
     #   message
 
     raise attributes
+
     filename = attributes.fetch("filename")
     file = CommitFile.new(
       file: OpenStruct.new(
