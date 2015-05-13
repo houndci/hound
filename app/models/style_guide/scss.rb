@@ -16,7 +16,8 @@ module StyleGuide
         custom_config: ""
       )
 
-      [Violation.new(pending: true, filename: file.filename)]
+      line = Line.new(number: 0, content: "", patch_position: 0)
+      [Violation.new(pending: true, filename: file.filename, line: line)]
     end
 
     private
