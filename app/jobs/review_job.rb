@@ -1,3 +1,4 @@
+# Cannot extend ActiveJob, must match class used in service
 class ReviewJob
   @queue = :high
 
@@ -9,8 +10,6 @@ class ReviewJob
     # violations
     #   line
     #   message
-
-    raise attributes
 
     filename = attributes.fetch("filename")
     file = CommitFile.new(
