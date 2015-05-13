@@ -1,7 +1,7 @@
 class ReviewJob < ApplicationJob
   queue_as :review
 
-  def perform
+  def perform(attributes)
     # repo_name
     # filename
     # commit_sha
@@ -11,17 +11,17 @@ class ReviewJob < ApplicationJob
 
     file = CommitFile.new(
       file: OpenStruct.new(
-        filename: params.fetch(:filename),
-        patch: params.fetch(:patch)
+        filename: attributes.fetch(:filename),
+        patch: attributes.fetch(:patch)
       ),
       commit: nil
     )
 
-    repo = Repo.find_by(full_github_name: params.fetch(:repo_name))
+    repo = Repo.find_by(full_github_name: attributes.fetch(:repo_name))
     # are there going to be multiple builds for the same sha?
-    build = repo.builds.find_by(commit_sha: params.fetch(:commit_sha))
+    build = repo.builds.find_by(commit_sha: attributes.fetch(:commit_sha))
 
-    params.fetch(:violations).each do |violation|
+    attributes.fetch(:violations).each do |violation|
       line = file.line_at(violation[:line])
 
       build.violations << Violation.new(
