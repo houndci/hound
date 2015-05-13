@@ -1,6 +1,5 @@
 class ReviewJob < ApplicationJob
-  # queue_as :high
-  queue_as :review
+  queue_as :high
 
   def perform(attributes)
     # repo_name
