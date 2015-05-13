@@ -1,3 +1,3 @@
-class ScssReviewJob < ApplicationJob
-  queue_as :scss_review
+class ScssReviewJob
+  @queue = :scss_review
 end

@@ -6,7 +6,8 @@ module StyleGuide
       default_config = File.read(default_config_file)
       # custom_config = File.read(repo_config.config_for(name))
 
-      ScssReviewJob.perform_later(
+      Resque.enqueue(
+        ScssReviewJob,
         repo_name: file.repo_name,
         filename: file.filename,
         commit_sha: file.sha,

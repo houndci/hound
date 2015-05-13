@@ -6,6 +6,7 @@ class ReviewJob < ApplicationJob
     # repo_name
     # filename
     # commit_sha
+    # patch
     # violations
     #   line
     #   message
