@@ -13,11 +13,15 @@ class ReviewJob
 
     filename = attributes.fetch("filename")
     file = CommitFile.new(
-      file: OpenStruct.new(
+      OpenStruct.new(
         filename: filename,
         patch: attributes.fetch("patch")
       ),
-      commit: nil
+      Commit.new(
+        attributes.fetch("repo_name"),
+        attributes.fetch("commit_sha"),
+        GithubApi.new(ENV["HOUND_GITHUB_TOKEN"])
+      )
     )
 
     repo = Repo.find_by(full_github_name: attributes.fetch("repo_name"))
