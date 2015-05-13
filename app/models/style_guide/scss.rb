@@ -4,7 +4,7 @@ module StyleGuide
 
     def violations_in_file(file)
       default_config = File.read(default_config_file)
-      custom_config = File.read(repo_config.config_for(name))
+      # custom_config = File.read(repo_config.config_for(name))
 
       ScssReviewJob.perform_later(
         repo_name: file.repo_name,
@@ -13,7 +13,7 @@ module StyleGuide
         patch: file.patch_body,
         content: file.content,
         default_config: default_config,
-        custom_config: custom_config
+        custom_config: ""
       )
 
       [Violation.new(pending: true, filename: file.filename)]
