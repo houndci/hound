@@ -63,8 +63,8 @@ class Payload
         "id" => github_repo_id,
         "full_name" => full_repo_name,
         "owner" => {
-          "id" => repository_owner_name,
-          "login" => repository_owner_id,
+          "id" => repository_owner_id,
+          "login" => repository_owner_name,
           "type" => repository["owner"]["type"],
         }
       }
