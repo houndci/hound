@@ -1,4 +1,5 @@
 class ReviewJob < ApplicationJob
+  # queue_as :high
   queue_as :review
 
   def perform(attributes)
