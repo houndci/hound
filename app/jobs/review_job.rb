@@ -10,6 +10,7 @@ class ReviewJob < ApplicationJob
     #   line
     #   message
 
+    raise attributes
     filename = attributes.fetch("filename")
     file = CommitFile.new(
       file: OpenStruct.new(
