@@ -34,7 +34,7 @@ class ReviewJob < ApplicationJob
       )
     end
 
-    build.violations.pending.find_by(filename: filename).destroy!
+    build.violations.where(pending: true, filename: filename).destroy!
 
     # Update GitHub status when no pending violations exist
     # Could create commit object and get GitHub API object from it
