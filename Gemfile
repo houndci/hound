@@ -48,6 +48,7 @@ group :development, :test do
   gem "konacha"
   gem "poltergeist"
   gem "rspec-rails", ">= 3.2"
+  gem "rspec-collection_matchers"
 end
 
 group :test do
