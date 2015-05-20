@@ -17,6 +17,7 @@
     "jQuery",
     "global",
     "require",
+    "__dirname",
 
     "jasmine",
     "beforeEach",
