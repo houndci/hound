@@ -49,7 +49,11 @@ class BuildRunner
   end
 
   def pull_request
-    @pull_request ||= PullRequest.new(payload, user_token.token)
+    @pull_request ||= PullRequest.new(payload, token)
+  end
+
+  def token
+    @token ||= ENV["HOUND_GITHUB_TOKEN"] || user_token
   end
 
   def user_token
