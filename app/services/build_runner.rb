@@ -41,10 +41,14 @@ class BuildRunner
   end
 
   def create_build
+    # create build with file reviews instead of violations
+    # store violations internally
+    # save payload?
     repo.builds.create!(
       violations: violations,
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
+      payload: payload
     )
   end
 

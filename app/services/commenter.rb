@@ -3,7 +3,8 @@ class Commenter
   pattr_initialize :pull_request
 
   def comment_on_violations(violations)
-    violations.each do |violation|
+    violations.to_a.each do |violation|
+      # does this fetch comments for each violation?
       if commenting_policy.allowed_for?(violation)
         pull_request.comment_on_violation(violation)
       end

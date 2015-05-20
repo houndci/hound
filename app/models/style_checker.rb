@@ -17,6 +17,7 @@ class StyleChecker
 
   def violations_in_checked_files
     files_to_check.flat_map do |file|
+      # return file review instead of violations?
       style_guide(file.filename).violations_in_file(file)
     end
   end

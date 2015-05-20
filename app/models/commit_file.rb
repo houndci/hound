@@ -1,4 +1,5 @@
 class CommitFile
+  # change initialize to take parts of file, not GitHub file thing?
   pattr_initialize :file, :commit
 
   def filename

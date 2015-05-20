@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425204143) do
+ActiveRecord::Schema.define(version: 20150520183823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150425204143) do
     t.string   "uuid",                limit: 255, null: false
     t.integer  "pull_request_number"
     t.string   "commit_sha",          limit: 255
+    t.text     "payload"
   end
 
   add_index "builds", ["repo_id"], name: "index_builds_on_repo_id", using: :btree
