@@ -33,7 +33,8 @@ CharacterLiteral:
   Enabled: false
 
 ClassAndModuleChildren:
-  Enabled: false
+  Enabled: true
+  EnforcedStyle: nested
 
 ClassLength:
   Enabled: false
