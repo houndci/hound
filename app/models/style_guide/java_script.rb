@@ -2,17 +2,13 @@ module StyleGuide
   class JavaScript < Base
     DEFAULT_CONFIG_FILENAME = "javascript.json"
 
-    def violations_in_file(file)
-      Jshintrb.lint(file.content, config).compact.map do |violation|
-        line = file.line_at(violation["line"])
-
-        Violation.new(
-          filename: file.filename,
-          patch_position: line.patch_position,
-          line: line,
-          line_number: violation["line"],
-          messages: [violation["reason"]]
-        )
+    def file_review(file)
+      FileReview.new(filename: file.filename) do |file_review|
+        Jshintrb.lint(file.content, config).compact.each do |violation|
+          line = file.line_at(violation["line"])
+          file_review.build_violation(line, violation["reason"])
+        end
+        file_review.complete
       end
     end
 

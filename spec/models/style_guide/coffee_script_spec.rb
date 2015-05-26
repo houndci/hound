@@ -31,26 +31,28 @@ describe StyleGuide::CoffeeScript do
     end
   end
 
-  describe "#violations_in_file" do
+  describe "#file_review" do
+    it "returns a completed file review" do
+      style_guide = build_style_guide
+      file = build_file("foo")
+
+      result = style_guide.file_review(file)
+
+      expect(result).to be_completed
+    end
+
     context "with default configuration" do
       context "for long line" do
-        it "returns violation" do
-          repo_config = double("RepoConfig", enabled_for?: true, for: {})
-          style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
-          line = double("Line", content: "blah", number: 1, patch_position: 2)
-          file = double(
-            :file,
-            content: "1" * 81,
-            filename: "test.coffee",
-            line_at: line
-          )
+        it "returns file review with violations" do
+          style_guide = build_style_guide
+          file = build_file("1" * 81)
 
-          violations = style_guide.violations_in_file(file)
+          violations = style_guide.file_review(file).violations
           violation = violations.first
 
           expect(violations.size).to eq 1
           expect(violation.filename).to eq "test.coffee"
-          expect(violation.patch_position).to eq line.patch_position
+          expect(violation.patch_position).to eq 2
           expect(violation.line_number).to eq 1
           expect(violation.messages).to match_array(
             ["Line exceeds maximum allowed length"]
@@ -59,13 +61,13 @@ describe StyleGuide::CoffeeScript do
       end
 
       context "for trailing whitespace" do
-        it "returns violation" do
+        it "returns file review with violation" do
           expect(violations_in("1   ").first).to match(/trailing whitespace/)
         end
       end
 
       context "for inconsistent indentation" do
-        it "returns violation" do
+        it "returns file review with violation" do
           code = <<-CODE.strip_heredoc
             class FooBar
               foo: ->
@@ -77,7 +79,7 @@ describe StyleGuide::CoffeeScript do
       end
 
       context "for non-PascalCase classes" do
-        it "returns violation" do
+        it "returns file review with violation" do
           result = violations_in("class strange_ClassNAME")
 
           expect(result).to be_any { |m| m =~ /camel cased/ }
@@ -132,23 +134,14 @@ describe StyleGuide::CoffeeScript do
 
     context "given a `coffee.erb` file" do
       it "lints the file" do
-        repo_config = double("RepoConfig", enabled_for?: true, for: {})
-        style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
-        line = double("Line", content: "blah", number: 1, patch_position: 2)
-        file = double(
-          "File",
-          content: "class strange_ClassNAME",
-          filename: "test.coffee.erb",
-          line_at: line
-        )
+        style_guide = build_style_guide
+        file = build_file("class strange_ClassNAME", "test.coffee.erb")
 
-        violations = style_guide.violations_in_file(file)
+        violations = style_guide.file_review(file).violations
         violation = violations.first
 
         expect(violations.size).to eq 1
         expect(violation.filename).to eq "test.coffee.erb"
-        expect(violation.patch_position).to eq line.patch_position
-        expect(violation.line_number).to eq 1
         expect(violation.messages).to match_array(
           ["Class names should be camel cased"]
         )
@@ -157,15 +150,10 @@ describe StyleGuide::CoffeeScript do
       it "removes the ERB tags from the file" do
         repo_config = double("RepoConfig", enabled_for?: true, for: {})
         style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
-        line = double("Line", content: "blah", number: 1, patch_position: 2)
-        file = double(
-          "File",
-          content: "leonidasLastWords = <%= raise 'hell' %>",
-          filename: "test.coffee.erb",
-          line_at: line,
-        )
+        content = "leonidasLastWords = <%= raise 'hell' %>"
+        file = build_file(content, "test.coffee.erb")
 
-        violations = style_guide.violations_in_file(file)
+        violations = style_guide.file_review(file).violations
 
         expect(violations).to be_empty
       end
@@ -179,12 +167,26 @@ describe StyleGuide::CoffeeScript do
         repo_config,
         repository_owner_name
       )
-      style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+      style_guide.
+        file_review(build_file(content)).
+        violations.
+        flat_map(&:messages)
     end
 
-    def build_file(content)
-      line = double("Line", content: "blah", number: 1, patch_position: 2)
-      double(:file, content: content, filename: "test.coffee", line_at: line)
+    def build_file(content, filename = "test.coffee")
+      line = double(
+        "Line",
+        changed?: true,
+        content: "blah",
+        number: 1,
+        patch_position: 2,
+      )
+      double("GithubFile", content: content, filename: filename, line_at: line)
+    end
+
+    def build_style_guide
+      repo_config = double("RepoConfig", enabled_for?: true, for: {})
+      StyleGuide::CoffeeScript.new(repo_config, "RalphJoe")
     end
 
     def default_configuration

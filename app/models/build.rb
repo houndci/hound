@@ -1,19 +1,11 @@
 class Build < ActiveRecord::Base
   belongs_to :repo
   has_many :file_reviews, dependent: :destroy
-  has_many :violations, dependent: :destroy
+  has_many :violations, through: :file_reviews
 
   before_create :generate_uuid
 
   validates :repo, presence: true
-
-  def status
-    if violations.any?
-      'failed'
-    else
-      'passed'
-    end
-  end
 
   private
 

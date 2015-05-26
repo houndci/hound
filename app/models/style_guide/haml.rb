@@ -2,11 +2,15 @@ module StyleGuide
   class Haml < Base
     DEFAULT_CONFIG_FILENAME = "haml.yml"
 
-    def violations_in_file(file)
+    def file_review(file)
       @file = file
 
-      run_linters.map do |violation|
-        violations_in_line(violation)
+      FileReview.new(filename: file.filename) do |file_review|
+        run_linters.map do |violation|
+          line = file.line_at(violation.line)
+
+          file_review.build_violation(line, violation.message)
+        end
       end
     end
 
@@ -35,18 +39,6 @@ module StyleGuide
           linter_class.new(linter_config)
         end
       end.compact
-    end
-
-    def violations_in_line(violation)
-      line = file.line_at(violation.line)
-
-      Violation.new(
-        filename: file.filename,
-        line: line,
-        line_number: violation.line,
-        messages: [violation.message],
-        patch_position: line.patch_position,
-      )
     end
 
     def config

@@ -1,7 +1,16 @@
 require "rails_helper"
 
-describe StyleGuide::Ruby, "#violations_in_file" do
+describe StyleGuide::Ruby, "#file_review" do
   include ConfigurationHelper
+
+  it "returns a completed file review" do
+    repo_config = double("RepoConfig", enabled_for?: true, for: config)
+    style_guide = StyleGuide::Ruby.new(repo_config, "bob")
+
+    result = style_guide.file_review(build_file("test"))
+
+    expect(result).to be_completed
+  end
 
   context "with default configuration" do
     describe "for { and } as %r literal delimiters" do
@@ -669,12 +678,18 @@ hoge
   def violations_in(content, config: nil, repository_owner_name: "ralph")
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
     style_guide = StyleGuide::Ruby.new(repo_config, repository_owner_name)
-    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+    style_guide.file_review(build_file(content)).violations.flat_map(&:messages)
   end
 
   def build_file(content)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
     filename = "app/models/user.rb"
+    line = double(
+      "Line",
+      changed?: true,
+      content: "blah",
+      number: 1,
+      patch_position: 2,
+    )
     double("CommitFile", content: content, line_at: line, filename: filename)
   end
 

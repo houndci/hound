@@ -60,7 +60,10 @@ class Repo < ActiveRecord::Base
   end
 
   def total_violations
-    Violation.joins(:build).where(builds: { repo_id: id }).count
+    Violation.
+      joins(:file_review).
+      where(file_reviews: { build_id: build_ids }).
+      count
   end
 
   private

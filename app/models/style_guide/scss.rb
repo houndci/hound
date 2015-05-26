@@ -2,30 +2,31 @@ module StyleGuide
   class Scss < Base
     DEFAULT_CONFIG_FILENAME = "scss.yml"
 
-    def violations_in_file(file)
+    def file_review(file)
       require "scss_lint"
 
       if config.excluded_file?(file.filename)
-        []
+        FileReview.new(filename: file.filename)
       else
-        runner = build_runner
-        runner.run([file.content])
-
-        runner.lints.map do |violation|
-          line = file.line_at(violation.location.line)
-
-          Violation.new(
-            filename: file.filename,
-            line: line,
-            line_number: violation.location.line,
-            messages: [violation.description],
-            patch_position: line.patch_position,
-          )
-        end
+        perform_file_review(file)
       end
     end
 
     private
+
+    def perform_file_review(file)
+      FileReview.new(filename: file.filename) do |file_review|
+        runner = build_runner
+        runner.run([file.content])
+
+        runner.lints.each do |violation|
+          line = file.line_at(violation.location.line)
+          file_review.build_violation(line, violation.description)
+        end
+
+        file_review.complete
+      end
+    end
 
     def build_runner
       SCSSLint::Runner.new(config)

@@ -46,8 +46,8 @@ feature "Account" do
   scenario "user sees paid repo usage" do
     user = create(:user)
     paid_repo = create(:repo, users: [user])
-    paid_repo.builds << create(:build, :failed)
-    paid_repo.builds << create(:build, :failed)
+    paid_repo.builds << create_failed_build
+    paid_repo.builds << create_failed_build
     paid_repo.builds << create(:build)
     create(:subscription, repo: paid_repo, user: user)
 
@@ -57,5 +57,12 @@ feature "Account" do
 
     expect(find('td.reviews-given')).to have_text("3");
     expect(find('td.violations-caught')).to have_text("2");
+  end
+
+  private
+
+  def create_failed_build
+    file_review = build(:file_review, violations: build_list(:violation, 1))
+    create(:build, file_reviews: [file_review])
   end
 end

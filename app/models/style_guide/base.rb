@@ -2,12 +2,11 @@
 module StyleGuide
   class Base
     pattr_initialize :repo_config, :repository_owner_name
+    attr_implement :file_review
 
     def enabled?
       repo_config.enabled_for?(name)
     end
-
-    attr_implement :violations_in_file
 
     def file_included?(_file)
       true

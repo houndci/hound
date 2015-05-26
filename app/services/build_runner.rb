@@ -32,8 +32,8 @@ class BuildRunner
     pull_request.opened? || pull_request.synchronize?
   end
 
-  def violations
-    @violations ||= style_checker.violations
+  def file_reviews
+    @file_reviews ||= style_checker.file_reviews
   end
 
   def style_checker
@@ -42,7 +42,7 @@ class BuildRunner
 
   def create_build
     repo.builds.create!(
-      violations: violations,
+      file_reviews: file_reviews,
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
     )

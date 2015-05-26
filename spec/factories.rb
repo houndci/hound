@@ -4,18 +4,16 @@ FactoryGirl.define do
 
   factory :build do
     repo
-
-    trait :failed do
-      after(:build) { |build| build.violations << build(:violation) }
-    end
   end
 
   factory :file_review do
-    build
-
     trait :completed do
       completed_at Time.zone.now
     end
+
+    build
+
+    filename "the_thing.rb"
   end
 
   factory :repo do
@@ -57,9 +55,8 @@ FactoryGirl.define do
   end
 
   factory :violation do
-    build
+    file_review
 
-    filename "the_thing.rb"
     patch_position 1
     line_number 42
     messages ["Trailing whitespace detected."]

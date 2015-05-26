@@ -7,19 +7,15 @@ class StyleChecker
     @style_guides = {}
   end
 
-  def violations
-    @violations ||= Violations.new.push(*violations_in_checked_files).to_a
+  def file_reviews
+    files_to_check.map do |file|
+      style_guide(file.filename).file_review(file)
+    end
   end
 
   private
 
   attr_reader :pull_request, :style_guides
-
-  def violations_in_checked_files
-    files_to_check.flat_map do |file|
-      style_guide(file.filename).violations_in_file(file)
-    end
-  end
 
   def files_to_check
     pull_request.pull_request_files.select do |file|

@@ -6,36 +6,31 @@ describe BuildReport do
       it "comments a maximum number of times" do
         stub_const("::BuildReport::MAX_COMMENTS", 1)
         commenter = stubbed_commenter(comment_on_violations: true)
-        build = create(:build, violations: build_list(:violation, 2))
+        file_review = create(
+          :file_review,
+          violations: build_list(:violation, 2),
+        )
         stubbed_github_api
         pull_request = stubbed_pull_request
 
-        BuildReport.run(pull_request, build)
+        BuildReport.run(pull_request, file_review.build)
 
         expect(commenter).to have_received(:comment_on_violations).
-          with(build.violations.take(BuildReport::MAX_COMMENTS))
+          with(file_review.violations.take(BuildReport::MAX_COMMENTS))
       end
 
       it "creates GitHub statuses" do
-        repo = create(:repo, full_github_name: "test/repo")
-        build = create(
-          :build,
-          commit_sha: "headsha",
-          repo: repo,
-          violations: [
-            build(:violation, messages: ["wrong", "bad"]),
-          ],
-        )
+        file_review = create(:file_review, violations: [build(:violation)])
         stubbed_commenter
         github_api = stubbed_github_api
         pull_request = stubbed_pull_request
 
-        BuildReport.run(pull_request, build)
+        BuildReport.run(pull_request, file_review.build)
 
         expect(github_api).to have_received(:create_success_status).with(
           "test/repo",
           "headsha",
-          "2 violations found."
+          "1 violation found."
         )
       end
     end

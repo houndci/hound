@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe StyleGuide::Haml do
-  describe "#violations_in_file" do
+  describe "#file_review" do
     context "with default configuration" do
       context "with an implicit %div violation" do
         it "does not return violations" do
@@ -37,9 +37,8 @@ describe StyleGuide::Haml do
 
   def violations_in(content, config = {})
     style_guide = build_style_guide(config)
-    style_guide.violations_in_file(
-      build_file(content)
-    ).flat_map(&:messages)
+    style_guide.file_review(build_file(content)).violations.
+      flat_map(&:messages)
   end
 
   def build_style_guide(config)
@@ -49,7 +48,13 @@ describe StyleGuide::Haml do
   end
 
   def build_file(text)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
+    line = double(
+      "Line",
+      changed?: true,
+      content: "blah",
+      number: 1,
+      patch_position: 2,
+    )
     double("CommitFile", content: text, filename: "a/b.haml", line_at: line)
   end
 end

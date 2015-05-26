@@ -236,7 +236,8 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_style_checker(violations:)
-    style_checker = double(:style_checker, violations: violations)
+    file_review = build(:file_review, violations: violations)
+    style_checker = double("StyleChecker", file_reviews: [file_review])
     allow(StyleChecker).to receive(:new).and_return(style_checker)
 
     style_checker

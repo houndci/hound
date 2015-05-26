@@ -1,7 +1,15 @@
 require "rails_helper"
 
 describe StyleGuide::Scss do
-  describe "#violations_in_file" do
+  describe "#file_review" do
+    it "returns a completed file review" do
+      file = build_file("foo")
+
+      result = build_style_guide.file_review(file)
+
+      expect(result).to be_completed
+    end
+
     context "with default configuration" do
       describe "for deep nested selectors" do
         it "returns violation" do
@@ -85,12 +93,11 @@ describe StyleGuide::Scss do
 
     context "over multiple runs" do
       it "it reports errors only for the given file" do
-        style_guide = build_style_guide
         bad_content = ".a { .b { .c { background: #000; } } }"
         good_content = ".a { margin: 0.5em; }\n"
 
-        bad_run = style_guide.violations_in_file(build_file(bad_content))
-        good_run = style_guide.violations_in_file(build_file(good_content))
+        bad_run = violations_in(bad_content)
+        good_run = violations_in(good_content)
 
         expect(bad_run).not_to be_empty
         expect(good_run).to be_empty
@@ -102,7 +109,8 @@ describe StyleGuide::Scss do
 
   def violations_in(content, config = nil)
     style_guide = build_style_guide(config)
-    style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
+    style_guide.file_review(build_file(content)).violations.
+      flat_map(&:messages)
   end
 
   def build_style_guide(config = nil)
@@ -112,7 +120,13 @@ describe StyleGuide::Scss do
   end
 
   def build_file(text)
-    line = double("Line", content: "blah", number: 1, patch_position: 2)
+    line = double(
+      "Line",
+      changed?: true,
+      content: "blah",
+      number: 1,
+      patch_position: 2
+    )
     double("CommitFile", content: text, filename: "lib/a.scss", line_at: line)
   end
 end

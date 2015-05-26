@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425204143) do
+ActiveRecord::Schema.define(version: 20150526214750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150425204143) do
     t.datetime "completed_at"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.string   "filename",     null: false
   end
 
   add_index "file_reviews", ["build_id"], name: "index_file_reviews_on_build_id", using: :btree
@@ -113,20 +114,20 @@ ActiveRecord::Schema.define(version: 20150425204143) do
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
   create_table "violations", force: :cascade do |t|
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
-    t.integer  "build_id",                                null: false
-    t.string   "filename",       limit: 255,              null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "patch_position"
     t.integer  "line_number"
-    t.text     "messages",                   default: [], null: false, array: true
+    t.text     "messages",       default: [], null: false, array: true
+    t.integer  "file_review_id",              null: false
   end
 
-  add_index "violations", ["build_id"], name: "index_violations_on_build_id", using: :btree
+  add_index "violations", ["file_review_id"], name: "index_violations_on_file_review_id", using: :btree
 
   add_foreign_key "file_reviews", "builds"
   add_foreign_key "memberships", "repos"
   add_foreign_key "memberships", "users"
   add_foreign_key "repos", "owners"
   add_foreign_key "style_configs", "owners"
+  add_foreign_key "violations", "file_reviews", on_delete: :cascade
 end

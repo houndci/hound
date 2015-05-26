@@ -3,26 +3,32 @@ require "rails_helper"
 describe StyleGuide::JavaScript do
   include ConfigurationHelper
 
-  describe "#violations_in_file" do
+  describe "#file_review" do
+    it "returns a completed file review" do
+      repo_config = double("RepoConfig", enabled_for?: true, for: {})
+      style_guide = StyleGuide::JavaScript.new(repo_config, "bob")
+      file = build_file
+
+      result = style_guide.file_review(file)
+
+      expect(result).to be_completed
+    end
+
     context "with default config" do
       context "when semicolon is missing" do
         it "returns a collection of violation objects" do
           repo_config = double("RepoConfig", for: {})
-          filename = "bad.js"
-          line = double("Line", patch_position: 1)
-          file = double(
-            "File",
-            filename: filename,
-            line_at: line,
-            content: "var blahh = 'blahh'"
-          )
+          file = build_file("var foo = 'bar'")
 
           violations = violations_in(file, repo_config)
 
           violation = violations.first
-          expect(violation.filename).to eq filename
+          expect(violation.filename).to eq file.filename
           expect(violation.line_number).to eq 1
-          expect(violation.messages).to match_array(["Missing semicolon."])
+          expect(violation.messages).to match_array([
+            "Missing semicolon.",
+            "'foo' is defined but never used.",
+          ])
         end
       end
     end
@@ -31,7 +37,7 @@ describe StyleGuide::JavaScript do
       context "when semicolon is missing" do
         it "returns no violation" do
           repo_config = double("RepoConfig", for: { "asi" => true })
-          file = double(:file, content: "parseFloat('1')").as_null_object
+          file = build_file("parseFloat('1')")
 
           violations = violations_in(file, repo_config)
 
@@ -55,7 +61,7 @@ describe StyleGuide::JavaScript do
     context "when a global variable is ignored" do
       it "returns no violations" do
         repo_config = double("RepoConfig", for: { "predef" => ["myGlobal"] })
-        file = double(:file, content: "$(myGlobal).hide();").as_null_object
+        file = build_file("$(myGlobal).hide();")
 
         violations = violations_in(file, repo_config)
 
@@ -70,8 +76,8 @@ describe StyleGuide::JavaScript do
         configuration_file_path = default_configuration_file(
           StyleGuide::JavaScript
         )
-        file = double(:file, content: "$(myGlobal).hide();").as_null_object
         repo_config = double("RepoConfig", for: {})
+        file = build_file("$(myGlobal).hide();")
 
         violations_in(
           file,
@@ -89,7 +95,7 @@ describe StyleGuide::JavaScript do
       it "uses the thoughtbot hound configuration" do
         spy_on_file_read
         spy_on_jshintrb
-        file = double(:file, content: "$(myGlobal).hide();").as_null_object
+        file = build_file("$(myGlobal).hide();")
         configuration_file_path = thoughtbot_configuration_file(
           StyleGuide::JavaScript
         )
@@ -106,18 +112,15 @@ describe StyleGuide::JavaScript do
     context "with ES6 support enabled" do
       it "respects ES6" do
         repo_config = double("RepoConfig", for: { esnext: true })
-        line = double("Line", patch_position: 1)
-        file = double(
-          "File",
-          filename: "using_es6_syntax.js",
-          line_at: line,
-          content: "import Ember from 'ember'"
-        )
+        file = build_file("import Ember from 'ember'")
 
         violations = violations_in(file, repo_config)
 
         violation = violations.first
-        expect(violation.messages).to match_array(["Missing semicolon."])
+        expect(violation.messages).to match_array([
+          "Missing semicolon.",
+          "'Ember' is defined but never used.",
+        ])
       end
     end
   end
@@ -164,12 +167,18 @@ describe StyleGuide::JavaScript do
     end
   end
 
+  def build_file(content = "foo")
+    filename = "some-file.js"
+    line = double("Line", number: 1, patch_position: 1, changed?: true)
+    double("File", filename: filename, line_at: line, content: content)
+  end
+
   def violations_in(file, repo_config, repository_owner_name: "not_thoughtbot")
     style_guide = StyleGuide::JavaScript.new(
       repo_config,
       repository_owner_name
     )
-    style_guide.violations_in_file(file)
+    style_guide.file_review(file).violations
   end
 
   def default_configuration
