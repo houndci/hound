@@ -1,5 +1,6 @@
 class BuildRunner
-  class ExpiredToken < StandardError; end
+  HOUND_TOKEN = ENV.fetch("HOUND_GITHUB_TOKEN")
+  ExpiredToken = Class.new(StandardError)
 
   pattr_initialize :payload
 
@@ -16,6 +17,11 @@ class BuildRunner
     else
       raise
     end
+  rescue Octokit::NotFound
+    if token != HOUND_TOKEN
+      remove_repo_from_user
+    end
+    raise
   end
 
   private
@@ -53,7 +59,7 @@ class BuildRunner
   end
 
   def token
-    @token ||= user_token || ENV["HOUND_GITHUB_TOKEN"]
+    @token ||= user_token || HOUND_TOKEN
   end
 
   def user_token
@@ -73,9 +79,12 @@ class BuildRunner
   end
 
   def reset_token
-    token_user = repo.users.detect { |user| user.token == token }
-    token_user.update_columns(token: nil)
+    current_token_user.update_columns(token: nil)
+    @token = nil
+  end
 
+  def remove_repo_from_user
+    current_token_user.repos.destroy(repo)
     @token = nil
   end
 
@@ -111,6 +120,10 @@ class BuildRunner
       organization: payload.repository_owner_is_organization?
     )
     repo.update(owner: owner)
+  end
+
+  def current_token_user
+    repo.users.detect { |user| user.token == token }
   end
 
   def github

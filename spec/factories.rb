@@ -33,10 +33,6 @@ FactoryGirl.define do
 
   factory :user do
     github_username { generate(:github_name) }
-
-    ignore do
-      repos []
-    end
   end
 
   factory :membership do

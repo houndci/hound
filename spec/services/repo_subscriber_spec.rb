@@ -56,7 +56,7 @@ describe RepoSubscriber do
 
       it "reports raised exceptions to Sentry" do
         repo = build_stubbed(:repo)
-        user = create(:user, repos: [repo])
+        user = create(:user)
         stub_customer_create_request(user)
         stub_failed_subscription_create_request(repo.plan_type)
         allow(Raven).to receive(:capture_exception)

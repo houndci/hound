@@ -213,6 +213,27 @@ describe BuildRunner, '#run' do
     end
   end
 
+  context "when user's token doesn't have access to the repo" do
+    it "removes the repo from user" do
+      reachable_repo = create(:repo, :active)
+      unreachable_repo = create(:repo, :active)
+      user = create(:user, token: "user_test_token")
+      user.repos += [reachable_repo, unreachable_repo]
+      payload = stubbed_payload(
+        github_repo_id: unreachable_repo.github_id,
+        full_repo_name: unreachable_repo.name,
+      )
+      build_runner = BuildRunner.new(payload)
+      github_api = stubbed_github_api
+      allow(github_api).to receive(:create_pending_status).
+        and_raise(Octokit::NotFound)
+
+      expect { build_runner.run }.to raise_error Octokit::NotFound
+
+      expect(user.reload.repos).to eq [reachable_repo]
+    end
+  end
+
   def make_build_runner(repo: create(:repo, :active, github_id: 123))
     payload = stubbed_payload(github_repo_id: repo.github_id)
     BuildRunner.new(payload)
