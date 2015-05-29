@@ -15,6 +15,10 @@ class Build < ActiveRecord::Base
     end
   end
 
+  def complete?
+    "wat"
+  end
+
   private
 
   def generate_uuid

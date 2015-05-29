@@ -12,46 +12,36 @@ class CompletedReviewJob
   def self.perform(attributes)
     repo = Repo.find_by(full_github_name: attributes.fetch("repo_name"))
     build = repo.builds.find_by(commit_sha: attributes.fetch("commit_sha"))
-    filename = attributes.fetch("filename")
+    file_review = build.file_reviews.find_by(filename: attributes.fetch("filename"))
     file = OpenStruct.new(
-      filename: filename,
+      filename: file_review.filename,
       patch: attributes.fetch("patch")
     )
     commit = Commit.new(repo.full_github_name, build.commit_sha, nil)
     commit_file = CommitFile.new(file, commit)
-    violations = Violations.new
 
     attributes.fetch("violations").each do |violation|
       line = commit_file.line_at(violation.fetch("line"))
-
-      violations.push(
-        # why pass all line info separately?
-        Violation.new(
-          filename: filename,
-          line: line,
-          line_number: line.number,
-          messages: [violation.fetch("message")],
-          patch_position: line.patch_position
-        )
-      )
+      file_review.build_violation(line, line.number, violation.fetch("message"))
     end
 
-    build.violations = violations.to_a
+    file_review.complete
 
     # comment on violations
     # not keeping track of "max comments" made
     # always using Hound token
-    # now saving payload with build
     # TEST ME, PLEASE
+    # don't have payload?
     pull_request = PullRequest.new(build.payload, ENV["HOUND_GITHUB_TOKEN"])
     commenter = Commenter.new(pull_request)
-    commenter.comment_on_violations(violations)
+    commenter.comment_on_violations(file_review.violations)
 
-    # update GitHub status if build is complete
-    # github.create_success_status(
-    #   payload.full_repo_name,
-    #   payload.head_sha,
-    #   I18n.t(:success_status, count: violation_count)
-    # )
+    if build.complete?
+      github.create_success_status(
+        repo.full_github_name,
+        build.commit_sha,
+        I18n.t(:success_status, count: build.violations.count)
+      )
+    end
   end
 end
