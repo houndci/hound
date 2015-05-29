@@ -18,4 +18,8 @@ module ConfigurationHelper
   def scss_config_url
     "https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/scss.yml"
   end
+
+  def haml_config_url
+    "https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml"
+  end
 end

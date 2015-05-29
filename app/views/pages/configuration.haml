@@ -13,6 +13,8 @@
         = link_to "Javascript config", "#javascript"
       %li
         = link_to "SCSS config", "#scss"
+      %li
+        = link_to "Haml config", "#haml"
 
   %section.doc-content
     %article
@@ -206,6 +208,37 @@
         %code.code-block
           :preserve
             scss:
+              enabled: false
+
+    %article#haml
+      %h3 Haml
+
+      %p
+        Hound uses
+        #{link_to "haml-lint", "https://github.com/brigade/haml-lint", target: :blank}
+        with this
+        #{link_to "config", haml_config_url, target: :blank}.
+
+      %p
+        If you need to change the way Hound is configured, simply copy the
+        #{link_to "default config", haml_config_url, target: :blank}.
+        into your project, make changes and reference the file in your
+        %em.code .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            haml:
+              config_file: .haml-style.yml
+
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to disable Haml style checking.
+
+        %code.code-block
+          :preserve
+            haml:
               enabled: false
 
     %article
