@@ -348,6 +348,7 @@ DEPENDENCIES
   angularjs-rails
   attr_extras
   bourbon
+  bundler (~> 1.10)
   byebug
   capybara (~> 2.4.0)
   capybara-webkit (~> 1.5.1)
@@ -390,3 +391,6 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   webmock
+
+BUNDLED WITH
+   1.10.2
