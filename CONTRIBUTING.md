@@ -15,6 +15,7 @@ Here are a few technical guidelines to follow:
 1. Open a Pull Request.
 1. [Squash your commits][squash] after receiving feedback.
 1. Party!
+1. Close!!
 
 [issues]: https://github.com/thoughtbot/hound/issues
 [squash]: https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature
