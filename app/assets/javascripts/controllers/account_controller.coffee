@@ -1,9 +1,10 @@
 App.controller "accountController", [
   "$scope",
   "$window",
+  "Account",
   "StripeCheckout",
   "CreditCard",
-  ($scope, $window, StripeCheckout, CreditCard) ->
+  ($scope, $window, Account, StripeCheckout, CreditCard) ->
     updateCustomer = (stripeToken) ->
       user = new CreditCard(card_token: stripeToken.id)
       user.$update().catch(->
@@ -14,5 +15,13 @@ App.controller "accountController", [
       StripeCheckout.open(
         buttonText: "Update Card",
         updateCustomer
+      )
+
+    $scope.updateEmail = ->
+      account = new Account(billable_email: $scope.billableEmail)
+      account.$update().then((response)->
+        $scope.updateSucceeded = true
+      ).catch(->
+        $scope.updateFailed = true
       )
 ]

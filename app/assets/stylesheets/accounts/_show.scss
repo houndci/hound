@@ -124,6 +124,10 @@ table {
 .inline-flash {
   margin: 0;
 
+  &--visible {
+    display: block;
+  }
+
   &--success {
     color: darken($green, 20%);
   }
