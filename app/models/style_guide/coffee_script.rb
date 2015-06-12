@@ -17,6 +17,10 @@ module StyleGuide
       end
     end
 
+    def file_included?(*)
+      true
+    end
+
     private
 
     def lint(content)

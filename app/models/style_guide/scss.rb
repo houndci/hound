@@ -1,15 +1,15 @@
+require "scss_lint"
+
 module StyleGuide
   class Scss < Base
     DEFAULT_CONFIG_FILENAME = "scss.yml"
 
     def file_review(file)
-      require "scss_lint"
+      perform_file_review(file)
+    end
 
-      if config.excluded_file?(file.filename)
-        FileReview.new(filename: file.filename)
-      else
-        perform_file_review(file)
-      end
+    def file_included?(file)
+      !config.excluded_file?(file.filename)
     end
 
     private

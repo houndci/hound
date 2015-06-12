@@ -2,6 +2,13 @@ require "rails_helper"
 
 describe StyleGuide::Haml do
   describe "#file_review" do
+    it "returns complete file review" do
+      style_guide = build_style_guide({})
+      file = build_file("")
+
+      expect(style_guide.file_review(file)).to be_completed
+    end
+
     context "with default configuration" do
       context "with an implicit %div violation" do
         it "does not return violations" do

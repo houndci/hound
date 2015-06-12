@@ -1,4 +1,3 @@
-# Base to contain common style guide logic
 module StyleGuide
   class Base
     pattr_initialize :repo_config, :repository_owner_name
@@ -8,8 +7,10 @@ module StyleGuide
       repo_config.enabled_for?(name)
     end
 
-    def file_included?(_file)
-      true
+    def file_included?(*)
+      raise StandardError.new(
+        "Implement #file_included? in your StyleGuide class"
+      )
     end
 
     private

@@ -11,7 +11,12 @@ module StyleGuide
 
           file_review.build_violation(line, violation.message)
         end
+        file_review.complete
       end
+    end
+
+    def file_included?(*)
+      true
     end
 
     private

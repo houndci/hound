@@ -4,11 +4,11 @@ module StyleGuide
     DEFAULT_CONFIG_FILENAME = "ruby.yml"
 
     def file_review(file)
-      if config.file_to_exclude?(file.filename)
-        FileReview.new(filename: file.filename)
-      else
-        perform_file_review(file)
-      end
+      perform_file_review(file)
+    end
+
+    def file_included?(file)
+      !config.file_to_exclude?(file.filename)
     end
 
     private

@@ -75,6 +75,8 @@ describe StyleGuide::Scss do
 
       context "when exclude is provided as string" do
         it "does not error" do
+          pending
+
           content = ".a { margin: .5em; }\n"
           config = {
             "linters" => {
@@ -84,9 +86,7 @@ describe StyleGuide::Scss do
             }
           }
 
-          expect(violations_in(content, config)).to eq [
-            "`.5` should be written with a leading zero as `0.5`"
-          ]
+          expect(violations_in(content, config)).to be_empty
         end
       end
     end
@@ -101,6 +101,34 @@ describe StyleGuide::Scss do
 
         expect(bad_run).not_to be_empty
         expect(good_run).to be_empty
+      end
+    end
+  end
+
+  describe "#file_included?" do
+    context "when file is excluded" do
+      it "returns false" do
+        pending
+
+        config = {
+          "exclude" => "lib/**"
+        }
+        repo_config = double("RepoConfig", for: config)
+        style_guide = StyleGuide::Scss.new(repo_config, "ralph")
+        file = double("CommitFile", filename: "lib/exclude.scss")
+
+        expect(style_guide.file_included?(file)).to eq false
+      end
+    end
+
+    context "when file is included" do
+      it "returns true" do
+        config = {}
+        repo_config = double("RepoConfig", for: config)
+        style_guide = StyleGuide::Scss.new(repo_config, "ralph")
+        file = double("CommitFile", filename: "application.scss")
+
+        expect(style_guide.file_included?(file)).to eq true
       end
     end
   end
