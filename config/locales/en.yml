@@ -13,7 +13,7 @@ en:
     "Error parsing your config file. Click \"details\" for
     assistance."
   build_error_status:
-    one: "Make the world better! Squash this last one style violation!"
+    one: "Make the world better! Squash the last style violation!"
     other: "Please fix all %{count} style violations to make hound happy"
 
   account:
