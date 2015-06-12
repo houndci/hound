@@ -4,30 +4,30 @@ describe StyleGuide::Haml do
   describe "#violations_in_file" do
     context "with default configuration" do
       context "with an implicit %div violation" do
-        it "returns violations" do
+        it "does not return violations" do
           content = "%div#container Hello"
 
-          expect(violations_in(content)).to include(
-            "`%div#container` can be written as `#container` since `%div` is " +
-            "implicit"
-          )
+          expect(violations_in(content)).to be_empty
         end
       end
     end
 
-    context "with configuration excluding implicit div linter" do
+    context "with configuration including implicit div linter" do
       context "for implicit %div violation" do
         it "returns violations" do
           content = "%div#container Hello"
           config = {
             "linters" => {
               "ImplicitDiv" => {
-                "enabled" => false
+                "enabled" => true
               }
             }
           }
 
-          expect(violations_in(content, config)).to be_empty
+          expect(violations_in(content, config)).to include(
+            "`%div#container` can be written as `#container` since `%div` is " +
+            "implicit"
+          )
         end
       end
     end

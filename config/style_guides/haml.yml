@@ -7,64 +7,64 @@ linters:
     enabled: false
 
   ClassAttributeWithStaticValue:
-    enabled: true
+    enabled: false
 
   ClassesBeforeIds:
-    enabled: true
+    enabled: false
 
   ConsecutiveComments:
-    enabled: true
+    enabled: false
 
   ConsecutiveSilentScripts:
-    enabled: true
+    enabled: false
     max_consecutive: 2
 
   EmptyScript:
-    enabled: true
+    enabled: false
 
   HtmlAttributes:
-    enabled: true
+    enabled: false
 
   ImplicitDiv:
-    enabled: true
+    enabled: false
 
   LeadingCommentSpace:
-    enabled: true
+    enabled: false
 
   LineLength:
-    enabled: true
+    enabled: false
     max: 80
 
   MultilinePipe:
-    enabled: true
+    enabled: false
 
   MultilineScript:
-    enabled: true
+    enabled: false
 
   ObjectReferenceAttributes:
-    enabled: true
+    enabled: false
 
   RuboCop:
     enabled: false
 
   RubyComments:
-    enabled: true
+    enabled: false
 
   SpaceBeforeScript:
-    enabled: true
+    enabled: false
 
   SpaceInsideHashAttributes:
-    enabled: true
+    enabled: false
     style: space
 
   TagName:
-    enabled: true
+    enabled: false
 
   TrailingWhitespace:
-    enabled: true
+    enabled: false
 
   UnnecessaryInterpolation:
-    enabled: true
+    enabled: false
 
   UnnecessaryStringOutput:
-    enabled: true
+    enabled: false

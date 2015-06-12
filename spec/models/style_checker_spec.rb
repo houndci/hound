@@ -189,16 +189,14 @@ describe StyleChecker, "#violations" do
 
   context "for a Haml file" do
     context "with style violations" do
-      it "returns violations" do
+      it "returns no violations" do
         file = stub_commit_file("test.haml", "%div.message 123")
         pull_request = stub_pull_request(pull_request_files: [file])
 
         violations = StyleChecker.new(pull_request).violations
         messages = violations.flat_map(&:messages)
 
-        expect(messages).to include(
-          "`%div.message` can be written as `.message` since `%div` is implicit"
-        )
+        expect(messages).to be_empty
       end
     end
 
