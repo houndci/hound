@@ -14,7 +14,11 @@ class BuildRunner
         commit_sha: payload.head_sha,
       )
       commenter.comment_on_violations(priority_violations)
-      create_success_status
+      if violations.empty?
+        create_success_status
+      else
+        create_failed_status
+      end
       track_subscribed_build_completed
     end
   rescue RepoConfig::ParserError
@@ -90,6 +94,14 @@ class BuildRunner
       payload.full_repo_name,
       payload.head_sha,
       I18n.t(:success_status, count: violation_count)
+    )
+  end
+
+  def create_failed_status
+    github.create_error_status(
+      payload.full_repo_name,
+      payload.head_sha,
+      I18n.t(:build_error_status, count: violation_count)
     )
   end
 
