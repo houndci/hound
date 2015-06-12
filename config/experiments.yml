@@ -1,5 +1,5 @@
 auth_button:
   alternatives:
     - "Sign In with GitHub"
-    - "Get Started"
+    - "Set Up Hound"
   resettable: false
