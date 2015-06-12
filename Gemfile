@@ -45,7 +45,6 @@ group :development, :test do
   gem "dotenv-rails"
   gem "foreman"
   gem "jasmine-rails"
-  gem "konacha"
   gem "poltergeist"
   gem "rspec-rails", ">= 3.2"
 end

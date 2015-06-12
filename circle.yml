@@ -1,0 +1,5 @@
+test:
+  pre:
+    - cp .sample.env .env
+  override:
+    - bundle exec rake

@@ -83,7 +83,6 @@ GEM
       coffee-script
       execjs
       json
-    colorize (0.7.5)
     columnize (0.8.9)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
@@ -139,12 +138,6 @@ GEM
     json (1.8.2)
     jwt (1.0.0)
     kgio (2.9.2)
-    konacha (3.2.4)
-      actionpack (>= 3.1, < 5)
-      capybara
-      colorize
-      railties (>= 3.1, < 5)
-      sprockets
     launchy (2.4.2)
       addressable (~> 2.3)
     loofah (2.0.1)
@@ -370,7 +363,6 @@ DEPENDENCIES
   jasmine-rails
   jquery-rails
   jshintrb
-  konacha
   launchy
   neat
   newrelic_rpm
