@@ -26,7 +26,8 @@ class SessionsController < ApplicationController
   def create_user
     user = User.create!(
       github_username: github_username,
-      email_address: github_email_address
+      email_address: github_email_address,
+      utm_source: session[:campaign_params].try(:[], :utm_source),
     )
     flash[:signed_up] = true
     user
