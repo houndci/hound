@@ -72,23 +72,6 @@ describe StyleGuide::Scss do
           expect(violations_in(content, config)).to eq []
         end
       end
-
-      context "when exclude is provided as string" do
-        it "does not error" do
-          pending
-
-          content = ".a { margin: .5em; }\n"
-          config = {
-            "linters" => {
-              "LeadingZero" => {
-                "exclude" => "lib/**",
-              }
-            }
-          }
-
-          expect(violations_in(content, config)).to be_empty
-        end
-      end
     end
 
     context "over multiple runs" do
@@ -108,11 +91,7 @@ describe StyleGuide::Scss do
   describe "#file_included?" do
     context "when file is excluded" do
       it "returns false" do
-        pending
-
-        config = {
-          "exclude" => "lib/**"
-        }
+        config = { "exclude" => "lib/**" }
         repo_config = double("RepoConfig", for: config)
         style_guide = StyleGuide::Scss.new(repo_config, "ralph")
         file = double("CommitFile", filename: "lib/exclude.scss")

@@ -1,4 +1,5 @@
 require "scss_lint"
+require "lib/ext/scss-lint/config"
 
 module StyleGuide
   class Scss < Base
