@@ -265,7 +265,7 @@ module GithubApiHelper
   def stub_orgs_request(token)
     stub_request(
       :get,
-      'https://api.github.com/user/orgs'
+      "https://api.github.com/user/orgs?per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(

@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/octokit/octokit.rb.git
+  revision: 703d8587665e8ed6279847a69095f79996b027ec
+  specs:
+    octokit (4.0.0)
+      sawyer (~> 0.6.0, >= 0.5.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -164,8 +171,6 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    octokit (3.8.0)
-      sawyer (~> 0.6.0, >= 0.5.3)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
@@ -369,7 +374,7 @@ DEPENDENCIES
   launchy
   neat
   newrelic_rpm
-  octokit
+  octokit!
   omniauth-github
   paranoia (~> 2.0)
   pg
