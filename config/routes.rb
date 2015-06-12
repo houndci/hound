@@ -8,7 +8,7 @@ Houndapp::Application.routes.draw do
   get "/configuration", to: "pages#configuration"
   get "/faq", to: "pages#show", id: "faq"
 
-  resource :account, only: [:show]
+  resource :account, only: [:show, :update]
   resources :builds, only: [:create]
 
   resources :repos, only: [:index] do

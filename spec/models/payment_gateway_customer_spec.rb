@@ -7,11 +7,39 @@ describe PaymentGatewayCustomer do
       user = build(:user, stripe_customer_id: stripe_customer_id)
       customer = PaymentGatewayCustomer.new(user)
       stub_customer_find_request
-      update_request = stub_customer_update_request(new_card_token)
+      update_request = stub_customer_update_request(card: new_card_token)
 
       customer.update_card(new_card_token)
 
       expect(update_request).to have_been_requested
+    end
+  end
+
+  describe "#update_email" do
+    it "updates customer email" do
+      new_email = "new-email@example.com"
+      user = build(:user, stripe_customer_id: stripe_customer_id)
+      customer = PaymentGatewayCustomer.new(user)
+      stub_customer_find_request
+      update_request = stub_customer_update_request(email: new_email)
+
+      customer.update_email(new_email)
+
+      expect(update_request).to have_been_requested
+    end
+
+    context "when update request fails" do
+      it "returns false" do
+        new_email = "new-email@example.com"
+        user = build(:user, stripe_customer_id: stripe_customer_id)
+        customer = PaymentGatewayCustomer.new(user)
+        stub_customer_find_request
+        stub_failed_customer_update_request(email: new_email)
+
+        customer = customer.update_email(new_email)
+
+        expect(customer).to eq false
+      end
     end
   end
 

@@ -24,6 +24,14 @@ class PaymentGatewayCustomer
     customer.save
   end
 
+  def update_email(email)
+    customer.email = email
+    customer.save
+  rescue Stripe::APIError => e
+    Raven.capture_exception(e)
+    false
+  end
+
   private
 
   def default_card

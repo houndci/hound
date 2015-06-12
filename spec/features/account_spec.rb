@@ -11,7 +11,9 @@ feature "Account" do
   end
 
   scenario "user with Stripe Customer ID" do
-    user = create(:user, stripe_customer_id: "123")
+    stripe_customer_id = "123"
+    user = create(:user, stripe_customer_id: stripe_customer_id)
+    stub_customer_find_request(stripe_customer_id)
 
     sign_in_as(user)
     visit account_path

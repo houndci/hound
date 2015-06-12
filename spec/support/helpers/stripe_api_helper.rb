@@ -23,10 +23,10 @@ module StripeApiHelper
     )
   end
 
-  def stub_customer_find_request
+  def stub_customer_find_request(customer_id = stripe_customer_id)
     stub_request(
       :get,
-      "#{stripe_base_url}/#{stripe_customer_id}"
+      "#{stripe_base_url}/#{customer_id}"
     ).with(
       headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
     ).to_return(
@@ -35,16 +35,34 @@ module StripeApiHelper
     )
   end
 
-  def stub_customer_update_request(card_token = "cardtoken")
+  def stub_customer_update_request(attrs = { card: "card-token" })
     stub_request(
       :post,
       "#{stripe_base_url}/#{stripe_customer_id}"
     ).with(
-      body: { "card" => card_token },
+      body: attrs,
       headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
     ).to_return(
       status: 200,
       body: File.read("spec/support/fixtures/stripe_customer_update.json"),
+    )
+  end
+
+  def stub_failed_customer_update_request(attrs = { email: "email@foo.com" })
+    stub_request(
+      :post,
+      "#{stripe_base_url}/#{stripe_customer_id}"
+    ).with(
+      body: attrs,
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
+    ).to_return(
+      status: 500,
+      body: {
+        error: {
+          message: "Something went wrong",
+          type: "api_error"
+        }
+      }.to_json
     )
   end
 

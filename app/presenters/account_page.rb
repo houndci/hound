@@ -1,9 +1,10 @@
 class AccountPage
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :repos
+  attr_reader :billable_email, :repos
 
-  def initialize(repos)
+  def initialize(repos:, billable_email:)
+    @billable_email = billable_email
     @repos = repos
   end
 
