@@ -11,6 +11,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
+  - pip install flake8
   - psql -c 'create database "hound_test";' -U postgres
   - cp .sample.env .env.test
 
