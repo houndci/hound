@@ -4,12 +4,13 @@ module StyleGuide
 
     def violations_in_file(file)
       require "scss_lint"
+      tempfile = create_tempfile(file)
 
       if config.excluded_file?(file.filename)
         []
       else
         runner = build_runner
-        runner.run([file.content])
+        runner.run([tempfile.path])
 
         runner.lints.map do |violation|
           line = file.line_at(violation.location.line)
@@ -23,12 +24,21 @@ module StyleGuide
           )
         end
       end
+    ensure
+      tempfile.close
     end
 
     private
 
     def build_runner
       SCSSLint::Runner.new(config)
+    end
+
+    def create_tempfile(file)
+      Tempfile.create("").tap do |tempfile|
+        tempfile.write(file.content)
+        tempfile.rewind
+      end
     end
 
     def config
