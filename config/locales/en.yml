@@ -18,6 +18,8 @@ en:
       "If you'd like to pay for Hound in bulk on a monthly or annual
       basis we're happy to make that happen. Email %{mail_to} with your
       GitHub org name and the number of repos you'd like to activate."
+    billable_email:
+      invalid: "Email is invalid"
 
   onboarding:
     title: "Let's keep that code in style:"

@@ -3,13 +3,31 @@ require "rails_helper"
 describe AccountsController do
   context "updating billable email" do
     context "when email is not provided" do
-      it "raises" do
+      it "returns 422 Unprocessable Entity" do
         user = create(:user, stripe_customer_id: "customer-id")
         stub_sign_in(user)
 
-        expect do
-          patch :update, billable_email: "", format: :json
-        end.to raise_error(ActionController::ParameterMissing)
+        patch :update, billable_email: "", format: :json
+
+        response_body = JSON.parse(response.body)
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response_body["errors"].first).
+          to eq I18n.t("account.billable_email.invalid")
+      end
+
+      context "when email is not valid" do
+        it "returns 422 Unprocessable Entity" do
+          user = create(:user, stripe_customer_id: "customer-id")
+          invalid_email = "newemail"
+          stub_sign_in(user)
+
+          patch :update, billable_email: invalid_email, format: :json
+
+          response_body = JSON.parse(response.body)
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response_body["errors"].first).
+            to eq I18n.t("account.billable_email.invalid")
+        end
       end
     end
 

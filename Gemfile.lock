@@ -92,6 +92,8 @@ GEM
     dotenv (2.0.1)
     dotenv-rails (2.0.1)
       dotenv (= 2.0.1)
+    email_validator (1.6.0)
+      activemodel
     erubis (2.7.0)
     execjs (2.3.0)
     factory_girl (4.4.0)
@@ -353,6 +355,7 @@ DEPENDENCIES
   coffeelint
   database_cleaner
   dotenv-rails
+  email_validator
   factory_girl_rails
   faraday
   font-awesome-rails
