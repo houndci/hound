@@ -2,10 +2,14 @@ class SessionsController < ApplicationController
   skip_before_action :authenticate, only: [:create]
 
   def create
-    user = find_user || create_user
-    create_session_for(user)
-    finished("auth_button")
-    redirect_to repos_path
+    if ensure_org
+      user = find_user || create_user
+      create_session_for(user)
+      finished("auth_button")
+      redirect_to repos_path
+    else
+      redirect_to root_path
+    end
   end
 
   def destroy
@@ -30,6 +34,14 @@ class SessionsController < ApplicationController
     )
     flash[:signed_up] = true
     user
+  end
+
+  def ensure_org
+    return true unless ENV['LIMIT_ACCESS_TO_ORG']
+
+    client = GithubApi.new(github_token)
+    org_names = client.orgs.map { |org_hash| org_hash[:login] }
+    org_names.include?(ENV['LIMIT_ACCESS_TO_ORG'])
   end
 
   def create_session_for(user)

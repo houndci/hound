@@ -172,6 +172,10 @@ class GithubApi
   def update_team(team_id, options)
     client.update_team(team_id, options)
   end
+  
+  def orgs
+    client.orgs
+  end
 
   private
 
@@ -187,10 +191,6 @@ class GithubApi
 
   def org_repos(name)
     authorized_repos(client.org_repos(name))
-  end
-
-  def orgs
-    client.orgs
   end
 
   def authorized_repos(repos)
