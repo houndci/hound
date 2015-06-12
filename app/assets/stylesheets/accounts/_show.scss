@@ -102,8 +102,8 @@ table {
   input[type="text"],
   input[type="email"] {
     font-weight: 300;
-    padding: 0.5em;
     min-width: 20em;
+    padding: 0.5em;
   }
 
   .form-group {
@@ -123,6 +123,10 @@ table {
 
 .inline-flash {
   margin: 0;
+
+  &--visible {
+    display: block;
+  }
 
   &--success {
     color: darken($green, 20%);

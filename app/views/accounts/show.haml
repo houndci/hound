@@ -45,18 +45,18 @@
     %article.account-details
       %h3
         Update account settings
-      %form
+      %form{ 'ng-controller' => 'accountController' }
         .form-group
           %label Email address for receipts
-          %input{type: 'email', value: current_user.email_address}
-          %p.inline-flash.inline-flash--success
+          %input{ type: 'email', placeholder: "#{@account_page.billable_email}", 'ng-model' => 'account.billable_email' }
+          %p.inline-flash.inline-flash--success{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'successMessage' }
             %i.fa.fa-check
-            Email address updated!
-          %p.inline-flash.inline-flash--error
+              {{successMessage}}
+          %p.inline-flash.inline-flash--error{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'failureMessage' }
             %i.fa.fa-exclamation-circle
-            There was a problem updating your email. Please try again.
+              {{failureMessage}}
         .form-actions
-          %button.button-small{disabled: "disabled"} Update Email
+          %button.button-small{ 'ng-click' => 'update()' } Update Email
 
     %article.active-private-repos
       - if @account_page.repos.any?
