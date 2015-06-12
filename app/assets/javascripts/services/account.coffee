@@ -1,5 +1,5 @@
 App.factory 'Account', ['$resource', ($resource) ->
-  $resource '/account', null, {
+  $resource '/account.json', null, {
     'update': { method: 'PUT' }
   }
 ]

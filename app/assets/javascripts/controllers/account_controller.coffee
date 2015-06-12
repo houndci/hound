@@ -21,7 +21,10 @@ App.controller "accountController", [
       account = new Account(billable_email: $scope.billableEmail)
       account.$update().then((response)->
         $scope.updateSucceeded = true
-      ).catch(->
+        $scope.updateFailed = false
+      ).catch((response) ->
+        console.log(response)
+        $scope.updateSucceeded = false
         $scope.updateFailed = true
       )
 ]
