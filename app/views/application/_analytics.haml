@@ -13,6 +13,17 @@
       #{raw identify_hash.to_json},
       #{raw intercom_hash.to_json}
     );
+- else
+  :javascript
+    var links = document.getElementsByClassName("auth");
+
+    for (var i = 0; i < links.length; i++) {
+      window.analytics.trackLink(
+        links[i],
+        "Clicked Sign In",
+        { variation: "#{ab_test("auth_button")}" }
+      );
+    }
 
 - if flash[:signed_up]
   :javascript

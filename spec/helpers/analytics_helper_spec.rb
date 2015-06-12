@@ -1,16 +1,16 @@
 require "rails_helper"
 
-describe AnalyticsHelper, '#analytics?' do
-  it "is true when ENV['ANALYTICS'] is present" do
-    ENV['ANALYTICS'] = 'anything'
+describe AnalyticsHelper, "#analytics?" do
+  it 'is true when ENV["SEGMENT_KEY"] is present' do
+    ENV["SEGMENT_KEY"] = "anything"
 
     expect(analytics?).to be_truthy
 
-    ENV['ANALYTICS'] = nil
+    ENV["SEGMENT_KEY"] = nil
   end
 
-  it "is false when ENV['ANALYTICS'] is not present" do
-    ENV['ANALYTICS'] = nil
+  it 'is false when ENV["SEGMENT_KEY"] is not present' do
+    ENV["SEGMENT_KEY"] = nil
 
     expect(analytics?).to be_falsy
   end
