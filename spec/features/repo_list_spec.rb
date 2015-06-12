@@ -1,7 +1,7 @@
 require "rails_helper"
 
 feature "Repo list", js: true do
-  let(:username) { 'houndci' }
+  let(:username) { ENV.fetch("HOUND_GITHUB_USERNAME") }
 
   scenario "user views landing page" do
     user = create(:user)
