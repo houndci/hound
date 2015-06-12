@@ -21,7 +21,7 @@
 :javascript
   window.analytics.page(
     "#{j content_for(:page_title)}",
-    #{raw campaign_hash.to_json}"
+    #{raw campaign_hash.to_json}
   );
 
 = yield :analytics
