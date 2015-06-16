@@ -15,7 +15,7 @@ describe RepoSubscriber do
           update_request = stub_customer_update_request
           subscription_request = stub_subscription_create_request(
             plan: repo.plan_type,
-            repo_ids: [repo.id],
+            repo_ids: repo.id,
           )
 
           RepoSubscriber.subscribe(repo, user, "cardtoken")
@@ -37,14 +37,13 @@ describe RepoSubscriber do
             repos: [repo],
           )
           stub_customer_find_request_with_subscriptions
-          repo_ids = [repo.id]
           subscription_update_request = stub_subscription_update_request(
             quantity: 2,
-            repo_ids: repo_ids,
+            repo_ids: repo.id,
           )
           subscription_create_request = stub_subscription_create_request(
             plan: repo.plan_type,
-            repo_ids: repo_ids,
+            repo_ids: repo.id,
           )
 
           RepoSubscriber.subscribe(repo, user, "cardtoken")
@@ -63,10 +62,9 @@ describe RepoSubscriber do
         repo = create(:repo)
         user = create(:user, repos: [repo], stripe_customer_id: "",)
         customer_request = stub_customer_create_request(user)
-        subscription_request =
-          stub_subscription_create_request(
-            plan: repo.plan_type,
-            repo_ids: [repo.id],
+        subscription_request = stub_subscription_create_request(
+          plan: repo.plan_type,
+          repo_ids: repo.id,
         )
 
         RepoSubscriber.subscribe(repo, user, "cardtoken")
@@ -111,7 +109,7 @@ describe RepoSubscriber do
         stub_customer_create_request(user)
         stub_subscription_create_request(
           plan: repo.plan_type,
-          repo_ids: [repo.id],
+          repo_ids: repo.id,
         )
         stripe_delete_request = stub_subscription_delete_request
         allow(repo).to receive(:create_subscription!).and_raise(StandardError)
@@ -172,7 +170,7 @@ describe RepoSubscriber do
         stub_subscription_find_request(subscription, quantity: 2)
         stripe_delete_request = stub_subscription_delete_request
         subscription_update_request = stub_subscription_update_request(
-          quantity: 1
+          quantity: 1,
         )
 
         RepoSubscriber.unsubscribe(subscription.repo, subscription.user)

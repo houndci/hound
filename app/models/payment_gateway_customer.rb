@@ -26,7 +26,7 @@ class PaymentGatewayCustomer
 
   def find_or_create_subscription(plan:, repo_id:)
     subscriptions.detect { |subscription| subscription.plan == plan } ||
-      create_subscription(plan: plan, metadata: { repo_ids: [repo_id] })
+      create_subscription(plan: plan, metadata: { repo_ids: repo_id })
   end
 
   def subscriptions

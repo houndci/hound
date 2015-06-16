@@ -45,7 +45,11 @@ class PaymentGatewaySubscription
   private
 
   def current_repo_ids
-    Array(metadata["repo_ids"] || metadata["repo_id"])
+    if metadata["repo_ids"]
+      metadata["repo_ids"].split(",")
+    else
+      Array(metadata["repo_id"])
+    end
   end
 
   def append_repo_id_to_metadata(repo_id)
@@ -55,12 +59,16 @@ class PaymentGatewaySubscription
       metadata["repo_id"] = nil
     end
 
-    metadata["repo_ids"] = repo_ids.map(&:to_s)
+    metadata["repo_ids"] = repo_ids.join(",")
   end
 
   def remove_repo_id_from_metadata(repo_id)
-    metadata["repo_ids"] = current_repo_ids.reject do |id|
-      id.to_s == repo_id.to_s
+    repo_ids = current_repo_ids.reject { |id| id.to_s == repo_id.to_s }
+
+    if repo_ids.empty?
+      metadata["repo_ids"] = nil
+    else
+      metadata["repo_ids"] = repo_ids.join(",")
     end
   end
 end

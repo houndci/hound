@@ -77,10 +77,10 @@ module StripeApiHelper
     )
   end
 
-  def stub_subscription_create_request(plan: "free", repo_ids: [])
+  def stub_subscription_create_request(plan: "free", repo_ids: "")
     body = {
       "plan" => plan,
-      "metadata" => { "repo_ids" => repo_ids.map(&:to_s) }
+      "metadata" => { "repo_ids" => repo_ids.to_s }
     }
     stub_request(
       :post,
@@ -95,11 +95,12 @@ module StripeApiHelper
   end
 
   def stub_subscription_update_request(quantity: 1, repo_ids: nil)
-    body = { "quantity" => quantity.to_s }
-
-    if repo_ids.present?
-      body["metadata"] = { repo_ids: repo_ids.map(&:to_s) }
-    end
+    body = {
+      quantity: quantity.to_s,
+      metadata: {
+        repo_ids: repo_ids.to_s,
+      },
+    }
 
     stub_request(
       :post,
@@ -146,7 +147,7 @@ module StripeApiHelper
       "#{stripe_base_url}/#{stripe_customer_id}/"\
         "subscriptions/#{stripe_subscription_id}"
     ).with(
-      body: "metadata[repo_ids][]=#{subscription.repo_id}",
+      body: { metadata: { repo_ids: subscription.repo_id.to_s } },
       headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
     ).to_return(
       status: 200,

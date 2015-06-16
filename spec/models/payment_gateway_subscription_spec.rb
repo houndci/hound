@@ -7,11 +7,11 @@ describe PaymentGatewaySubscription do
         stripe_subscription = MockStripeSubscription.new(repo_ids: [1])
         subscription = PaymentGatewaySubscription.new(stripe_subscription)
 
-        expect(stripe_subscription.metadata["repo_ids"]).to eq ["1"]
+        expect(stripe_subscription.metadata["repo_ids"]).to eq "1"
 
         subscription.subscribe(2)
 
-        expect(stripe_subscription.metadata["repo_ids"]).to eq ["1", "2"]
+        expect(stripe_subscription.metadata["repo_ids"]).to eq "1,2"
       end
 
       it "converts legacy format to new format" do
@@ -23,7 +23,7 @@ describe PaymentGatewaySubscription do
         subscription.subscribe(2)
 
         expect(legacy_subscription.metadata["repo_id"]).to be_nil
-        expect(legacy_subscription.metadata["repo_ids"]).to eq ["1", "2"]
+        expect(legacy_subscription.metadata["repo_ids"]).to eq "1,2"
       end
     end
   end
@@ -37,7 +37,7 @@ describe PaymentGatewaySubscription do
 
       subscription.unsubscribe(2)
 
-      expect(stripe_subscription.metadata["repo_ids"]).to eq ["1"]
+      expect(stripe_subscription.metadata["repo_ids"]).to eq "1"
       expect(stripe_subscription).not_to have_received(:delete)
       expect(stripe_subscription).to have_received(:save)
     end
@@ -60,7 +60,7 @@ describe PaymentGatewaySubscription do
 
     def initialize(repo_ids:)
       @quantity = repo_ids.count
-      @metadata = { "repo_ids" => repo_ids.map(&:to_s) }
+      @metadata = { "repo_ids" => repo_ids.join(",") }
     end
 
     def save; end
