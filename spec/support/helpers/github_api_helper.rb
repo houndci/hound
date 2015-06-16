@@ -21,12 +21,6 @@ module GithubApiHelper
     )
   end
 
-  def stub_repo_requests(user_token)
-    stub_paginated_repo_requests(user_token)
-    stub_orgs_request(user_token)
-    stub_paginated_org_repo_requests(user_token)
-  end
-
   def stub_repo_request(repo_name, token)
     stub_request(
       :get,
@@ -262,20 +256,7 @@ module GithubApiHelper
 
   private
 
-  def stub_orgs_request(token)
-    stub_request(
-      :get,
-      "https://api.github.com/user/orgs?per_page=100"
-    ).with(
-      headers: { "Authorization" => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: File.read('spec/support/fixtures/github_orgs_response.json'),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
-  end
-
-  def stub_paginated_repo_requests(token)
+  def stub_repos_requests(token)
     repos_url = "https://api.github.com/user/repos"
 
     stub_request(
@@ -309,49 +290,6 @@ module GithubApiHelper
     stub_request(
       :get,
       "#{repos_url}?page=3&per_page=100"
-    ).with(
-      headers: { "Authorization" => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: '[]',
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
-  end
-
-  def stub_paginated_org_repo_requests(token)
-    org_repos_url = "https://api.github.com/orgs/thoughtbot/repos"
-
-    stub_request(
-      :get,
-      "#{org_repos_url}?per_page=100"
-    ).with(
-      headers: { "Authorization" => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: File.read("spec/support/fixtures/github_repos_response_for_jimtom_org.json"),
-      headers: {
-        "Link" => %(<#{org_repos_url}?page=2&per_page=100>; rel="next"),
-        "Content-Type" => "application/json; charset=utf-8",
-      }
-    )
-
-    stub_request(
-      :get,
-      "#{org_repos_url}?page=2&per_page=100"
-    ).with(
-      headers: { "Authorization" => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: File.read("spec/support/fixtures/github_repos_response_for_jimtom_org_page2.json"),
-      headers: {
-        "Link" => %(<#{org_repos_url}?page=3&per_page=100>; rel="next"),
-        "Content-Type" => "application/json; charset=utf-8",
-      }
-    )
-
-    stub_request(
-      :get,
-      "#{org_repos_url}?page=3&per_page=100"
     ).with(
       headers: { "Authorization" => "token #{token}" }
     ).to_return(

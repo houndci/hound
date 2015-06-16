@@ -9,7 +9,7 @@ describe GithubApi do
     it "fetches all repos from Github" do
       token = "something"
       api = GithubApi.new(token)
-      stub_repo_requests(token)
+      stub_repos_requests(token)
 
       repos = api.repos
 

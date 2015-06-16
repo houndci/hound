@@ -62,7 +62,7 @@ feature "Repo list", js: true do
     user = create(:user)
     repo = create(:repo, full_github_name: "user1/test-repo")
     user.repos << repo
-    stub_repo_requests(token)
+    stub_repos_requests(token)
 
     sign_in_as(user, token)
     visit repos_path

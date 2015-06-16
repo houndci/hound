@@ -1,11 +1,10 @@
 require "attr_extras"
 require "octokit"
 require "base64"
-require "active_support/core_ext/object/with_options"
 
 class GithubApi
   ORGANIZATION_TYPE = "Organization"
-  PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon-preview+json"
+  PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon+json"
 
   attr_reader :file_cache, :token
 
@@ -20,7 +19,8 @@ class GithubApi
   end
 
   def repos
-    user_repos + repos_from_all_orgs
+    all_repos = client.repos(nil, accept: PREVIEW_MEDIA_TYPE)
+    authorized_repos(all_repos)
   end
 
   def repo(repo_name)
@@ -175,30 +175,8 @@ class GithubApi
 
   private
 
-  def user_repos
-    authorized_repos(client.repos)
-  end
-
-  def repos_from_all_orgs
-    orgs.flat_map do |org|
-      org_repos(org[:login])
-    end
-  end
-
-  def org_repos(name)
-    authorized_repos(client.org_repos(name))
-  end
-
-  def orgs
-    client.orgs
-  end
-
   def authorized_repos(repos)
     repos.select { |repo| repo.permissions.admin }
-  end
-
-  def with_preview_client(&block)
-    client.with_options(accept: PREVIEW_MEDIA_TYPE, &block)
   end
 
   def create_status(repo:, sha:, state:, description:, target_url: nil)
