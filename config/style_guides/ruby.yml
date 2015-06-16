@@ -18,6 +18,7 @@ AllCops:
   Exclude:
   - "vendor/**/*"
   - "db/schema.rb"
+  - "db/migrate/*"
   RunRailsCops: false
   DisplayCopNames: false
   StyleGuideCopsOnly: false
