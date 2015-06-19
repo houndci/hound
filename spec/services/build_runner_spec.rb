@@ -3,7 +3,7 @@ require "rails_helper"
 describe BuildRunner, '#run' do
   context 'with active repo and opened pull request' do
     it 'creates a build record with violations' do
-      repo = create(:repo, :active, github_id: 123)
+      repo = create(:repo, :active)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
         pull_request_number: 5,
@@ -52,7 +52,7 @@ describe BuildRunner, '#run' do
     end
 
     it 'initializes PullRequest with payload and Hound token' do
-      repo = create(:repo, :active, github_id: 123)
+      repo = create(:repo, :active)
       user = create(:user, token: "user_token")
       user.repos << repo
       payload = stubbed_payload(github_repo_id: repo.github_id)
@@ -68,7 +68,7 @@ describe BuildRunner, '#run' do
     end
 
     it "creates GitHub statuses" do
-      repo = create(:repo, :active, github_id: 123)
+      repo = create(:repo, :active)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
         full_repo_name: "test/repo",
@@ -96,7 +96,7 @@ describe BuildRunner, '#run' do
     it "upserts repository owner" do
       owner_github_id = 56789
       owner_name = "john"
-      repo = create(:repo, :active, github_id: 123)
+      repo = create(:repo, :active)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
         full_repo_name: "test/repo",
@@ -123,7 +123,7 @@ describe BuildRunner, '#run' do
     end
 
     it "fails the GitHub status with invalid config" do
-      repo = create(:repo, :active, github_id: 123)
+      repo = create(:repo, :active)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
         full_repo_name: "test/repo",
@@ -176,7 +176,7 @@ describe BuildRunner, '#run' do
 
   context "with subscribed private repo and opened pull request" do
     it "tracks build events" do
-      repo = create(:repo, :active, github_id: 123, private: true)
+      repo = create(:repo, :active, private: true)
       create(:subscription, repo: repo)
       payload = stubbed_payload(
         github_repo_id: repo.github_id,
@@ -234,7 +234,7 @@ describe BuildRunner, '#run' do
     end
   end
 
-  def make_build_runner(repo: create(:repo, :active, github_id: 123))
+  def make_build_runner(repo: create(:repo, :active))
     payload = stubbed_payload(github_repo_id: repo.github_id)
     BuildRunner.new(payload)
   end
