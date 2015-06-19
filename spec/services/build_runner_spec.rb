@@ -25,6 +25,7 @@ describe BuildRunner, '#run' do
       expect(build.violations.count).to be >= 1
       expect(build.pull_request_number).to eq 5
       expect(build.commit_sha).to eq payload.head_sha
+      expect(build.payload).to eq ({ payload_stuff: "test" }).to_json
     end
 
     it "runs the BuildReport to finalize the build" do
@@ -248,6 +249,7 @@ describe BuildRunner, '#run' do
       repository_owner_id: 456,
       repository_owner_name: "foo",
       repository_owner_is_organization?: true,
+      build_data: { payload_stuff: "test" }
     }
     double("Payload", defaults.merge(options))
   end

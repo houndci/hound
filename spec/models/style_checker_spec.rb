@@ -149,33 +149,13 @@ describe StyleChecker, "#file_reviews" do
   end
 
   context "for a SCSS file" do
-    context "with style violations" do
-      it "returns violations" do
-        file = stub_commit_file(
-          "test.scss",
-          ".table p.inner table td { background: red; }"
-        )
-        pull_request = stub_pull_request(pull_request_files: [file])
+    it "does not immediately return violations" do
+      file = stub_commit_file("test.scss", "* { color: red; }")
+      pull_request = stub_pull_request(pull_request_files: [file])
 
-        violation_messages = pull_request_violations(pull_request)
+      violation_messages = pull_request_violations(pull_request)
 
-        expect(violation_messages).to include(
-          "Selector should have depth of applicability no greater than 2, but was 4"
-        )
-      end
-    end
-
-    context "without style violations" do
-      it "returns no violations" do
-        file = stub_commit_file("test.scss", "table td { color: green; }")
-        pull_request = stub_pull_request(pull_request_files: [file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).not_to include(
-          "Selector should have depth of applicability no greater than 3"
-        )
-      end
+      expect(violation_messages).to be_empty
     end
   end
 
@@ -238,10 +218,12 @@ describe StyleChecker, "#file_reviews" do
     line ||= Line.new(content: "foo", number: 1, patch_position: 2)
     formatted_contents = "#{contents}\n"
     double(
-      filename.split(".").first,
+      "CommitFile",
       filename: filename,
       content: formatted_contents,
       line_at: line,
+      sha: "abc123",
+      patch_body: "patchbody"
     )
   end
 

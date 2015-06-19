@@ -11,8 +11,11 @@ class BuildReport
 
   def run
     commenter.comment_on_violations(priority_violations)
-    create_success_status
-    track_subscribed_build_completed
+
+    if build.completed?
+      create_success_status
+      track_subscribed_build_completed
+    end
   end
 
   private

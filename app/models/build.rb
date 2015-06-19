@@ -7,6 +7,10 @@ class Build < ActiveRecord::Base
 
   validates :repo, presence: true
 
+  def completed?
+    file_reviews.where(completed_at: nil).empty?
+  end
+
   private
 
   def generate_uuid

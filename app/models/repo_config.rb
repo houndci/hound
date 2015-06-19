@@ -33,6 +33,16 @@ class RepoConfig
     end
   end
 
+  def raw_for(language)
+    config_file_path = config_path_for(language)
+
+    if config_file_path
+      load_file(config_file_path, FILE_TYPES.fetch(language))
+    else
+      ""
+    end
+  end
+
   def ignored_javascript_files
     ignore_file_content = load_javascript_ignore
 

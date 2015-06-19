@@ -19,19 +19,42 @@ describe BuildReport do
           with(file_review.violations.take(BuildReport::MAX_COMMENTS))
       end
 
-      it "creates GitHub statuses" do
-        file_review = create(:file_review, violations: [build(:violation)])
-        stubbed_commenter
-        github_api = stubbed_github_api
-        pull_request = stubbed_pull_request
+      context "when the build is complete" do
+        it "sets GitHub status to complete" do
+          file_review = create(
+            :file_review,
+            completed_at: Time.current,
+            violations: [build(:violation)],
+          )
+          stubbed_commenter
+          github_api = stubbed_github_api
+          pull_request = stubbed_pull_request
 
-        BuildReport.run(pull_request, file_review.build)
+          BuildReport.run(pull_request, file_review.build)
 
-        expect(github_api).to have_received(:create_success_status).with(
-          "test/repo",
-          "headsha",
-          "1 violation found."
-        )
+          expect(github_api).to have_received(:create_success_status).with(
+            "test/repo",
+            "headsha",
+            "1 violation found."
+          )
+        end
+      end
+
+      context "when the build is not complete" do
+        it "does not set GitHub status to compelte" do
+          file_review = create(
+            :file_review,
+            completed_at: nil,
+            violations: [build(:violation)],
+          )
+          stubbed_commenter
+          github_api = stubbed_github_api
+          pull_request = stubbed_pull_request
+
+          BuildReport.run(pull_request, file_review.build)
+
+          expect(github_api).not_to have_received(:create_success_status)
+        end
       end
     end
 

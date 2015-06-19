@@ -51,6 +51,7 @@ class BuildRunner
       file_reviews: file_reviews,
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
+      payload: payload.build_data.to_json,
     )
   end
 

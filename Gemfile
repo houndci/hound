@@ -30,7 +30,6 @@ gem "resque-scheduler"
 gem "resque-sentry"
 gem "rubocop", "0.29.1"
 gem "sass-rails"
-gem "scss-lint", "0.34.0", require: false
 gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 1.0.3"
