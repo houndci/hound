@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612231322) do
+ActiveRecord::Schema.define(version: 20150620061219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,16 @@ ActiveRecord::Schema.define(version: 20150612231322) do
   end
 
   add_index "file_reviews", ["build_id"], name: "index_file_reviews_on_build_id", using: :btree
+
+  create_table "identities", force: :cascade do |t|
+    t.string   "username",   limit: 255, null: false
+    t.string   "provider",   limit: 255, null: false
+    t.integer  "user_id",                null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "identities", ["user_id", "provider"], name: "index_identities_on_user_id_and_provider", unique: true, using: :btree
 
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -103,7 +113,6 @@ ActiveRecord::Schema.define(version: 20150612231322) do
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.string   "github_username",    limit: 255,                 null: false
     t.string   "remember_token",     limit: 255,                 null: false
     t.boolean  "refreshing_repos",               default: false
     t.string   "email_address",      limit: 255
@@ -126,6 +135,7 @@ ActiveRecord::Schema.define(version: 20150612231322) do
   add_index "violations", ["file_review_id"], name: "index_violations_on_file_review_id", using: :btree
 
   add_foreign_key "file_reviews", "builds"
+  add_foreign_key "identities", "users"
   add_foreign_key "memberships", "repos"
   add_foreign_key "memberships", "users"
   add_foreign_key "repos", "owners"
