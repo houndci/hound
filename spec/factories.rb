@@ -32,7 +32,18 @@ FactoryGirl.define do
   end
 
   factory :user do
-    github_username { generate(:github_name) }
+    ignore do
+      github_username { generate(:github_name) }
+    end
+
+    after(:build) do |record, e|
+      record.identities << build(:identity, username: e.github_username)
+    end
+  end
+
+  factory :identity do
+    username { generate(:github_name) }
+    provider "github"
   end
 
   factory :membership do

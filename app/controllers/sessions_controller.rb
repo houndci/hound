@@ -16,41 +16,47 @@ class SessionsController < ApplicationController
   private
 
   def find_user
-    if user = User.where(github_username: github_username).first
-      Analytics.new(user).track_signed_in
-    end
+    user =
+      User.includes(:identities).where(identities: { username: username }).first
+
+    Analytics.new(user).track_signed_in if user
 
     user
   end
 
   def create_user
     user = User.create!(
-      github_username: github_username,
-      email_address: github_email_address,
+      email_address: email_address,
       utm_source: session[:campaign_params].try(:[], :utm_source),
-    )
+    ) do |record|
+      record.identities.build(username: username, provider: provider)
+    end
     flash[:signed_up] = true
     user
   end
 
   def create_session_for(user)
     session[:remember_token] = user.remember_token
-    session[:github_token] = github_token
+    session["#{provider}_token".to_sym] = token
   end
 
   def destroy_session
     session[:remember_token] = nil
   end
 
-  def github_username
+  def username
     request.env["omniauth.auth"]["info"]["nickname"]
   end
 
-  def github_email_address
+  def email_address
     request.env["omniauth.auth"]["info"]["email"]
   end
 
-  def github_token
+  def token
     request.env["omniauth.auth"]["credentials"]["token"]
+  end
+
+  def provider
+    request.env["omniauth.auth"]["provider"]
   end
 end

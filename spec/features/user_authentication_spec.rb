@@ -15,7 +15,7 @@ feature 'User authentication' do
   scenario "new user signs in" do
     token = "usergithubtoken"
     github_username = "croaky"
-    user = build(:user, github_username: github_username)
+    user = create(:user, github_username: github_username)
     stub_repo_requests(token)
 
     sign_in_as(user, token)
@@ -23,7 +23,7 @@ feature 'User authentication' do
     expect(page).to have_content(github_username)
   end
 
-  scenario 'user signs out' do
+  scenario "user signs out" do
     token = "usergithubtoken"
     user = create(:user)
     stub_repo_requests(token)

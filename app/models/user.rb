@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
+  has_many :identities, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :repos, through: :memberships
   has_many :subscribed_repos, through: :subscriptions, source: :repo
@@ -11,7 +12,7 @@ class User < ActiveRecord::Base
     to: :payment_gateway_customer
   )
 
-  validates :github_username, presence: true
+  validates :identities, presence: true
 
   before_create :generate_remember_token
 
@@ -25,6 +26,10 @@ class User < ActiveRecord::Base
 
   def github_repo(github_id)
     repos.where(github_id: github_id).first
+  end
+
+  def github_username
+    identities.where(provider: "github").pluck("username").first
   end
 
   def create_github_repo(attributes)

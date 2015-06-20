@@ -4,6 +4,9 @@ Houndapp::Application.routes.draw do
   mount Split::Dashboard, at: "split"
 
   get "/auth/github/callback", to: "sessions#create"
+  if ENV.fetch("BITBUCKET_ENABLED", false)
+    get "/auth/bitbucket/callback", to: "sessions#create"
+  end
   get "/sign_out", to: "sessions#destroy"
   get "/configuration", to: "pages#configuration"
   get "/faq", to: "pages#show", id: "faq"
