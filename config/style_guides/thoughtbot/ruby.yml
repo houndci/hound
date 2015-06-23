@@ -171,6 +171,8 @@ PerlBackrefs:
 PredicateName:
   NamePrefixBlacklist:
     - is_
+  Exclude:
+    - spec/**/*
 
 Proc:
   Enabled: false
