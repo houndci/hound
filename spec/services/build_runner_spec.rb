@@ -37,7 +37,11 @@ describe BuildRunner, '#run' do
 
       build_runner.run
 
-      expect(BuildReport).to have_received(:run).with(pull_request, Build.last)
+      expect(BuildReport).to have_received(:run).with(
+        build: Build.last,
+        pull_request: pull_request,
+        token: Hound::GITHUB_TOKEN,
+      )
     end
 
     it 'initializes StyleChecker with modified files and config' do
@@ -90,7 +94,12 @@ describe BuildRunner, '#run' do
       expect(github_api).to have_received(:create_pending_status).with(
         "test/repo",
         "headsha",
-        "Hound is busy reviewing changes..."
+        I18n.t(:pending_status),
+      )
+      expect(github_api).to have_received(:create_success_status).with(
+        "test/repo",
+        "headsha",
+        I18n.t(:success_status, count: 3),
       )
     end
 
@@ -259,7 +268,7 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_style_checker(violations:)
-    file_review = build(:file_review, violations: violations)
+    file_review = build(:file_review, :completed, violations: violations)
     style_checker = double("StyleChecker", file_reviews: [file_review])
     allow(StyleChecker).to receive(:new).and_return(style_checker)
 

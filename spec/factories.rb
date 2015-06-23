@@ -3,6 +3,7 @@ FactoryGirl.define do
   sequence(:github_name) { |n| "github_name#{n}" }
 
   factory :build do
+    commit_sha "somesha"
     repo
   end
 

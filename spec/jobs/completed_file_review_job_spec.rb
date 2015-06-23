@@ -24,7 +24,11 @@ describe CompletedFileReviewJob do
 
       CompletedFileReviewJob.perform(attributes)
 
-      expect(BuildReport).to have_received(:run).with(pull_request, build)
+      expect(BuildReport).to have_received(:run).with(
+        pull_request: pull_request,
+        build: build,
+        token: Hound::GITHUB_TOKEN,
+      )
       expect(Payload).to have_received(:new).with(build.payload)
       expect(PullRequest).to(
         have_received(:new).with(payload, ENV.fetch("HOUND_GITHUB_TOKEN"))
@@ -78,8 +82,9 @@ describe CompletedFileReviewJob do
         CompletedFileReviewJob.perform(attributes)
 
         expect(BuildReport).to have_received(:run).with(
-          pull_request,
-          correct_build
+          pull_request: pull_request,
+          build: correct_build,
+          token: Hound::GITHUB_TOKEN,
         )
       end
     end

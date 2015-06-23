@@ -13,9 +13,8 @@ describe BuildReport do
             violations: build_list(:violation, 2),
           )
           stubbed_github_api
-          pull_request = stubbed_pull_request
 
-          BuildReport.run(pull_request, file_review.build)
+          run_service(file_review.build)
 
           expect(commenter).to have_received(:comment_on_violations).
             with(file_review.violations.take(BuildReport::MAX_COMMENTS))
@@ -29,13 +28,12 @@ describe BuildReport do
           )
           stubbed_commenter
           github_api = stubbed_github_api
-          pull_request = stubbed_pull_request
 
-          BuildReport.run(pull_request, file_review.build)
+          run_service(file_review.build)
 
           expect(github_api).to have_received(:create_success_status).with(
-            "test/repo",
-            "headsha",
+            file_review.build.repo_name,
+            file_review.build.commit_sha,
             "1 violation found."
           )
         end
@@ -50,9 +48,8 @@ describe BuildReport do
             completed_at: nil,
           )
           stubbed_github_api
-          pull_request = stubbed_pull_request
 
-          BuildReport.run(pull_request, file_review.build)
+          run_service(file_review.build)
 
           expect(commenter).not_to have_received(:comment_on_violations)
         end
@@ -65,9 +62,8 @@ describe BuildReport do
           )
           stubbed_commenter
           github_api = stubbed_github_api
-          pull_request = stubbed_pull_request
 
-          BuildReport.run(pull_request, file_review.build)
+          run_service(file_review.build)
 
           expect(github_api).not_to have_received(:create_success_status)
         end
@@ -81,9 +77,8 @@ describe BuildReport do
         create(:subscription, repo: repo)
         stubbed_commenter
         stubbed_github_api
-        pull_request = stubbed_pull_request
 
-        BuildReport.run(pull_request, build)
+        run_service(build)
 
         expect(analytics).to have_tracked("Build Completed").
           for_user(repo.subscription.user).
@@ -98,34 +93,16 @@ describe BuildReport do
       commenter
     end
 
-    def stubbed_pull_request
-      head_commit = double(
-        "HeadCommit",
-        sha: "headsha",
-        repo_name: "test/repo",
-      )
-      pull_request = double(
-        :pull_request,
-        commit_files: [double("CommitFile")],
-        config: double(:config),
-        opened?: true,
-        head_commit: head_commit,
-      )
-      allow(PullRequest).to receive(:new).and_return(pull_request)
-
-      pull_request
-    end
-
     def stubbed_github_api
-      github_api = double(
-        "GithubApi",
-        create_pending_status: nil,
-        create_success_status: nil,
-        create_error_status: nil
-      )
+      github_api = double("GithubApi", create_success_status: nil)
       allow(GithubApi).to receive(:new).and_return(github_api)
 
       github_api
+    end
+
+    def run_service(build)
+      pull_request = double("PullRequest")
+      BuildReport.run(pull_request: pull_request, build: build, token: "abc123")
     end
   end
 end
