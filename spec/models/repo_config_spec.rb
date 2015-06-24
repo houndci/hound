@@ -56,7 +56,7 @@ describe RepoConfig do
       end
     end
 
-    context "when all languages are disabled" do
+    context "when all languages are disabled using lowercase" do
       it "returns false for all languages" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           ruby:
@@ -66,6 +66,8 @@ describe RepoConfig do
           javascript:
             enabled: false
           scss:
+            enabled: false
+          haml:
             enabled: false
         EOS
         repo_config = RepoConfig.new(commit)
@@ -117,7 +119,7 @@ describe RepoConfig do
         end
       end
 
-      context "when all languages are disabled" do
+      context "when all languages are disabled using uppercase" do
         it "returns false for all languages" do
           commit = double("Commit", file_content: <<-EOS.strip_heredoc)
             LineLength:
@@ -131,6 +133,8 @@ describe RepoConfig do
             CoffeeScript:
               Enabled: false
             Scss:
+              Enabled: false
+            Haml:
               Enabled: false
           EOS
           repo_config = RepoConfig.new(commit)
@@ -356,6 +360,27 @@ describe RepoConfig do
       end
     end
 
+    context "with HAML config" do
+      it "returns parsed config" do
+        config_text = <<-EOS.strip_heredoc
+          linters:
+            ImplicitDiv:
+              enabled: true
+        EOS
+        config = config_for_file(".haml.yml", config_text)
+
+        result = config.for("haml")
+
+        expect(result).to eq(
+          "linters" => {
+            "ImplicitDiv" => {
+              "enabled" => true
+            }
+          }
+        )
+      end
+    end
+
     context "when there is no Hound config file" do
       it "returns empty config for all style guides" do
         commit = double("Commit", file_content: nil)
@@ -472,6 +497,10 @@ describe RepoConfig do
           config_file: #{file_path}
 
         scss:
+          enabled: true
+          config_file: #{file_path}
+
+        haml:
           enabled: true
           config_file: #{file_path}
       EOS
