@@ -22,7 +22,11 @@ class Repo < ActiveRecord::Base
       find_by(github_id: attributes[:github_id]) ||
       Repo.new
 
-    repo.update!(attributes)
+    begin
+      repo.update!(attributes)
+    rescue ActiveRecord::RecordInvalid => error
+      report_update_failure(error, attributes)
+    end
 
     repo
   end
@@ -73,4 +77,15 @@ class Repo < ActiveRecord::Base
       full_github_name.split("/").first
     end
   end
+
+  def self.report_update_failure(error, attributes)
+    Raven.capture_exception(
+      error,
+      extra: {
+        github_id: attributes[:github_id],
+        full_github_name: attributes[:full_github_name],
+      }
+    )
+  end
+  private_class_method :report_update_failure
 end

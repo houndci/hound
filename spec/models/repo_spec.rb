@@ -144,6 +144,24 @@ describe Repo do
         expect(repo.reload).to be_present
       end
     end
+
+    context "when one repo has taken the github name and another taken id" do
+      it "repors update failure" do
+        github_name = "foo/bar"
+        github_id = 40023
+        _repo_with_id = create(:repo, github_id: github_id)
+        _repo_with_name = create(:repo, full_github_name: github_name)
+        new_attributes = { github_id: github_id, full_github_name: github_name }
+        allow(Raven).to receive(:capture_exception)
+
+        Repo.find_or_create_with(new_attributes)
+
+        expect(Raven).to have_received(:capture_exception).with(
+          instance_of(ActiveRecord::RecordInvalid),
+          extra: { github_id: github_id, full_github_name: github_name }
+        )
+      end
+    end
   end
 
   describe ".find_and_update" do
