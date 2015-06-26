@@ -33,7 +33,7 @@ class CompletedFileReviewJob
     pull_request = PullRequest.new(payload, ENV.fetch("HOUND_GITHUB_TOKEN"))
 
     BuildReport.run(pull_request, build)
-  rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound, Resque::TermException
     Resque.enqueue(self, attributes)
   end
 end

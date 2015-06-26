@@ -42,6 +42,21 @@ describe CompletedFileReviewJob do
         )
       end
     end
+
+    context "when Resque process is killed" do
+      it "enqueues job" do
+        allow(Build).to(
+          receive(:find_by!).and_raise(Resque::TermException.new(1))
+        )
+        allow(Resque).to receive(:enqueue)
+
+        CompletedFileReviewJob.perform(attributes)
+
+        expect(Resque).to(
+          have_received(:enqueue).with(CompletedFileReviewJob, attributes)
+        )
+      end
+    end
   end
 
   def attributes
