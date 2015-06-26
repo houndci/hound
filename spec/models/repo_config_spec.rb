@@ -466,51 +466,24 @@ describe RepoConfig do
         end
       end
     end
+  end
 
-    def stub_commit(configuration)
-      commit = double("Commit")
-      hound_config = configuration.delete(:hound_config)
-      allow(commit).to receive(:file_content)
-      allow(commit).to receive(:file_content).
-        with(RepoConfig::HOUND_CONFIG).and_return(hound_config)
+  describe "#raw_for" do
+    context "when Ruby config file is specified" do
+      it "returns raw config" do
+        raw_config = <<-CONFIG
+          StringLiterals:
+            EnforcedStyle: single_quotes
 
-      configuration.each do |filename, contents|
-        allow(commit).to receive(:file_content).
-          with(filename).and_return(contents)
+          LineLength:
+            Max: 90
+        CONFIG
+        config = config_for_file("config/rubocop.yml", raw_config)
+
+        result = config.raw_for("ruby")
+
+        expect(result).to eq raw_config
       end
-
-      commit
-    end
-
-    def config_for_file(file_path, content)
-      hound_config = <<-EOS.strip_heredoc
-        ruby:
-          enabled: true
-          config_file: config/rubocop.yml
-
-        coffeescript:
-          enabled: true
-          config_file: coffeelint.json
-
-        javascript:
-          enabled: true
-          config_file: #{file_path}
-
-        scss:
-          enabled: true
-          config_file: #{file_path}
-
-        haml:
-          enabled: true
-          config_file: #{file_path}
-      EOS
-
-      commit = stub_commit(
-        hound_config: hound_config,
-        "#{file_path}" => content
-      )
-
-      RepoConfig.new(commit)
     end
   end
 
@@ -532,5 +505,51 @@ describe RepoConfig do
     repo_config = RepoConfig.new(commit)
 
     expect(repo_config).not_to be_enabled_for("javascript")
+  end
+
+  def config_for_file(file_path, content)
+    hound_config = <<-EOS.strip_heredoc
+      ruby:
+        enabled: true
+        config_file: config/rubocop.yml
+
+      coffeescript:
+        enabled: true
+        config_file: coffeelint.json
+
+      javascript:
+        enabled: true
+        config_file: #{file_path}
+
+      scss:
+        enabled: true
+        config_file: #{file_path}
+
+      haml:
+        enabled: true
+        config_file: #{file_path}
+    EOS
+
+    commit = stub_commit(
+      hound_config: hound_config,
+      "#{file_path}" => content
+    )
+
+    RepoConfig.new(commit)
+  end
+
+  def stub_commit(configuration)
+    commit = double("Commit")
+    hound_config = configuration.delete(:hound_config)
+    allow(commit).to receive(:file_content)
+    allow(commit).to receive(:file_content).
+      with(RepoConfig::HOUND_CONFIG).and_return(hound_config)
+
+    configuration.each do |filename, contents|
+      allow(commit).to receive(:file_content).
+        with(filename).and_return(contents)
+    end
+
+    commit
   end
 end

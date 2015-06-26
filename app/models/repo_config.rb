@@ -37,7 +37,7 @@ class RepoConfig
     config_file_path = config_path_for(language)
 
     if config_file_path
-      load_file(config_file_path, FILE_TYPES.fetch(language))
+      commit.file_content(config_file_path)
     else
       ""
     end
