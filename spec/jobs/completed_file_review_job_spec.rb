@@ -30,6 +30,18 @@ describe CompletedFileReviewJob do
         have_received(:new).with(payload, ENV.fetch("HOUND_GITHUB_TOKEN"))
       )
     end
+
+    context "when build doesn't exist" do
+      it "enqueues job" do
+        allow(Resque).to receive(:enqueue)
+
+        CompletedFileReviewJob.perform(attributes)
+
+        expect(Resque).to(
+          have_received(:enqueue).with(CompletedFileReviewJob, attributes)
+        )
+      end
+    end
   end
 
   def attributes
