@@ -281,7 +281,7 @@ describe BuildRunner, '#run' do
     )
     pull_request = double(
       :pull_request,
-      pull_request_files: [double(:file)],
+      commit_files: [double("CommitFile")],
       config: double(:config),
       opened?: true,
       head_commit: head_commit,
@@ -292,11 +292,11 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_pull_request_with_file(filename, file_content)
-    file = double_file(filename, file_content)
-    double_pull_request_with_files([file])
+    commit_file = commit_file_double(filename, file_content)
+    double_pull_request_with_files([commit_file])
   end
 
-  def double_file(filename, file_content)
+  def commit_file_double(filename, file_content)
     double(
       "CommitFile",
       filename: filename,
@@ -305,10 +305,10 @@ describe BuildRunner, '#run' do
     )
   end
 
-  def double_pull_request_with_files(files)
+  def double_pull_request_with_files(commit_files)
     double(
       "PullRequest",
-      pull_request_files: files,
+      commit_files: commit_files,
       opened?: true,
       repository_owner_name: "test"
     )

@@ -4,12 +4,12 @@ module StyleGuide
     DEFAULT_CONFIG_FILENAME = "coffeescript.json"
     ERB_TAGS = /<%.*%>/
 
-    def file_review(file)
-      FileReview.new(filename: file.filename) do |file_review|
-        content = content_for_file(file)
+    def file_review(commit_file)
+      FileReview.new(filename: commit_file.filename) do |file_review|
+        content = content_for_file(commit_file)
 
         lint(content).each do |violation|
-          line = file.line_at(violation["lineNumber"])
+          line = commit_file.line_at(violation["lineNumber"])
           file_review.build_violation(line, violation["message"])
         end
 

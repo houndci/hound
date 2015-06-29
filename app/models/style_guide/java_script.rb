@@ -2,18 +2,20 @@ module StyleGuide
   class JavaScript < Base
     DEFAULT_CONFIG_FILENAME = "javascript.json"
 
-    def file_review(file)
-      FileReview.new(filename: file.filename) do |file_review|
-        Jshintrb.lint(file.content, config).compact.each do |violation|
-          line = file.line_at(violation["line"])
+    def file_review(commit_file)
+      FileReview.new(filename: commit_file.filename) do |file_review|
+        Jshintrb.lint(commit_file.content, config).compact.each do |violation|
+          line = commit_file.line_at(violation["line"])
           file_review.build_violation(line, violation["reason"])
         end
         file_review.complete
       end
     end
 
-    def file_included?(file)
-      !excluded_files.any? { |pattern| File.fnmatch?(pattern, file.filename) }
+    def file_included?(commit_file)
+      !excluded_files.any? do |pattern|
+        File.fnmatch?(pattern, commit_file.filename)
+      end
     end
 
     private

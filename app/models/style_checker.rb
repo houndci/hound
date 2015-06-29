@@ -8,8 +8,8 @@ class StyleChecker
   end
 
   def file_reviews
-    files_to_check.map do |file|
-      style_guide(file.filename).file_review(file)
+    commit_files_to_check.map do |commit_file|
+      style_guide(commit_file.filename).file_review(commit_file)
     end
   end
 
@@ -17,8 +17,8 @@ class StyleChecker
 
   attr_reader :pull_request, :style_guides
 
-  def files_to_check
-    pull_request.pull_request_files.select do |file|
+  def commit_files_to_check
+    pull_request.commit_files.select do |file|
       file_style_guide = style_guide(file.filename)
       file_style_guide.enabled? && file_style_guide.file_included?(file)
     end

@@ -4,9 +4,9 @@ describe StyleGuide::Scss do
   describe "#file_review" do
     it "returns an incompleted file review" do
       style_guide = build_style_guide
-      file = build_file
+      commit_file = build_commit_file
 
-      result = style_guide.file_review(file)
+      result = style_guide.file_review(commit_file)
 
       expect(result).not_to be_completed
     end
@@ -14,16 +14,17 @@ describe StyleGuide::Scss do
     it "schedules a review job" do
       allow(Resque).to receive(:enqueue)
       style_guide = build_style_guide("config")
-      file = build_file
+      commit_file = build_commit_file
 
-      style_guide.file_review(file)
+      style_guide.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
         ScssReviewJob,
-        filename: file.filename,
-        commit_sha: file.sha,
-        patch: file.patch_body,
-        content: file.content,
+        filename: commit_file.filename,
+        commit_sha: commit_file.sha,
+        pull_request_number: commit_file.pull_request_number,
+        patch: commit_file.patch,
+        content: commit_file.content,
         config: "config"
       )
     end
@@ -44,7 +45,7 @@ describe StyleGuide::Scss do
     StyleGuide::Scss.new(repo_config, "ralph")
   end
 
-  def build_file
+  def build_commit_file
     line = double(
       "Line",
       changed?: true,
@@ -58,7 +59,8 @@ describe StyleGuide::Scss do
       filename: "lib/a.scss",
       line_at: line,
       sha: "abc123",
-      patch_body: "patchbody"
+      patch: "patch",
+      pull_request_number: 123
     )
   end
 end

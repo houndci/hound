@@ -3,20 +3,20 @@ module StyleGuide
   class Ruby < Base
     DEFAULT_CONFIG_FILENAME = "ruby.yml"
 
-    def file_review(file)
-      perform_file_review(file)
+    def file_review(commit_file)
+      perform_file_review(commit_file)
     end
 
-    def file_included?(file)
-      !config.file_to_exclude?(file.filename)
+    def file_included?(commit_file)
+      !config.file_to_exclude?(commit_file.filename)
     end
 
     private
 
-    def perform_file_review(file)
-      FileReview.new(filename: file.filename) do |file_review|
-        team.inspect_file(parsed_source(file)).each do |violation|
-          line = file.line_at(violation.line)
+    def perform_file_review(commit_file)
+      FileReview.new(filename: commit_file.filename) do |file_review|
+        team.inspect_file(parsed_source(commit_file)).each do |violation|
+          line = commit_file.line_at(violation.line)
           file_review.build_violation(line, violation.message)
         end
         file_review.complete
@@ -27,9 +27,9 @@ module StyleGuide
       RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config, rubocop_options)
     end
 
-    def parsed_source(file)
-      absolute_filepath = File.expand_path(file.filename)
-      RuboCop::ProcessedSource.new(file.content, absolute_filepath)
+    def parsed_source(commit_file)
+      absolute_filepath = File.expand_path(commit_file.filename)
+      RuboCop::ProcessedSource.new(commit_file.content, absolute_filepath)
     end
 
     def config

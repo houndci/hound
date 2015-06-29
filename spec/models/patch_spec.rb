@@ -5,8 +5,8 @@ require 'app/models/line'
 describe Patch do
   describe "#changed_lines" do
     it 'returns lines that were modified' do
-      patch_body = File.read('spec/support/fixtures/patch.diff')
-      patch = Patch.new(patch_body)
+      patch_text = File.read('spec/support/fixtures/patch.diff')
+      patch = Patch.new(patch_text)
 
       expect(patch.changed_lines.size).to eq(3)
       expect(patch.changed_lines.map(&:number)).to eq [14, 22, 54]

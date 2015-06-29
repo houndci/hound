@@ -1,12 +1,12 @@
 class CommitFile
-  pattr_initialize :file, :commit
+  attr_reader :filename, :content, :patch, :pull_request_number, :sha
 
-  def filename
-    file.filename
-  end
-
-  def content
-    @content ||= commit.file_content(filename)
+  def initialize(filename:, content:, patch:, pull_request_number:, sha:)
+    @filename = filename
+    @content = content
+    @patch = patch
+    @pull_request_number = pull_request_number
+    @sha = sha
   end
 
   def line_at(line_number)
@@ -14,21 +14,9 @@ class CommitFile
       UnchangedLine.new
   end
 
-  def sha
-    commit.sha
-  end
-
-  def patch_body
-    file.patch
-  end
-
   private
 
   def changed_lines
-    @changed_lines ||= patch.changed_lines
-  end
-
-  def patch
-    Patch.new(file.patch)
+    @changed_lines ||= Patch.new(patch).changed_lines
   end
 end

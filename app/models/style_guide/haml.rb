@@ -2,12 +2,12 @@ module StyleGuide
   class Haml < Base
     DEFAULT_CONFIG_FILENAME = "haml.yml"
 
-    def file_review(file)
-      @file = file
+    def file_review(commit_file)
+      @commit_file = commit_file
 
-      FileReview.new(filename: file.filename) do |file_review|
+      FileReview.new(filename: commit_file.filename) do |file_review|
         run_linters.map do |violation|
-          line = file.line_at(violation.line)
+          line = commit_file.line_at(violation.line)
 
           file_review.build_violation(line, violation.message)
         end
@@ -21,10 +21,10 @@ module StyleGuide
 
     private
 
-    attr_reader :file
+    attr_reader :commit_file
 
     def parser
-      @parser ||= HamlLint::Parser.new(file.content, {})
+      @parser ||= HamlLint::Parser.new(commit_file.content, {})
     end
 
     def run_linters

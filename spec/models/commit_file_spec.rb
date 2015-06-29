@@ -28,22 +28,43 @@ describe CommitFile do
     end
   end
 
-  describe "#content" do
-    it "returns content string" do
-      commit_file = commit_file(status: "modified")
+  describe "#filename" do
+    it "returns filename" do
+      expect(commit_file.filename).to eq "test.rb"
+    end
+  end
 
-      expect(commit_file.content).to eq "some content"
+  describe "#content" do
+    it "returns content" do
+      expect(commit_file.content).to eq "content"
+    end
+  end
+
+  describe "#patch" do
+    it "returns patch" do
+      expect(commit_file.patch).to eq "patch"
+    end
+  end
+
+  describe "#pull_request_number" do
+    it "returns pull request number" do
+      expect(commit_file.pull_request_number).to eq 123
+    end
+  end
+
+  describe "#sha" do
+    it "returns sha" do
+      expect(commit_file.sha).to eq "abc123"
     end
   end
 
   def commit_file(options = {})
-    file = double(:file, options.reverse_merge(patch: "", filename: "test.rb"))
-    commit = double(
-      :commit,
-      repo_name: "test/test",
-      sha: "abc",
-      file_content: "some content"
+    CommitFile.new(
+      filename: "test.rb",
+      content: "content",
+      patch: "patch",
+      pull_request_number: 123,
+      sha: "abc123"
     )
-    CommitFile.new(file, commit)
   end
 end

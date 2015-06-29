@@ -80,20 +80,36 @@ describe PullRequest do
     end
   end
 
-  describe "#pull_request_files" do
+  describe "#commit_files" do
     it "does not include removed files" do
-      added_file = double(filename: "foo.rb", status: "added")
-      modified_file = double(filename: "baz.rb", status: "modified")
-      removed_file = double(filename: "bar.rb", status: "removed")
-      all_pull_request_files = [added_file, removed_file, modified_file]
-      github = double(:github, pull_request_files: all_pull_request_files)
+      added_github_file = double(
+        filename: "foo.rb",
+        status: "added",
+        patch: "patch"
+      )
+      modified_github_file = double(
+        filename: "baz.rb",
+        status: "modified",
+        patch: "patch"
+      )
+      removed_github_file = double(
+        filename: "bar.rb",
+        status: "removed"
+      )
+      all_github_files = [
+        added_github_file,
+        removed_github_file,
+        modified_github_file
+      ]
+      github = double(:github, pull_request_files: all_github_files)
       pull_request = pull_request_stub(github)
+      commit = double("Commit", file_content: "content", sha: "abc123")
+      allow(Commit).to receive(:new).and_return(commit)
 
-      files = pull_request.pull_request_files
-      file_names = files.map(&:filename)
+      commit_files = pull_request.commit_files
 
-      expect(file_names).to match_array(
-        [added_file.filename, modified_file.filename]
+      expect(commit_files.map(&:filename)).to match_array(
+        [added_github_file.filename, modified_github_file.filename]
       )
     end
   end

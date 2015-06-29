@@ -7,8 +7,8 @@ class PullRequest
     @comments ||= user_github.pull_request_comments(full_repo_name, number)
   end
 
-  def pull_request_files
-    @pull_request_files ||= changed_pull_request_files
+  def commit_files
+    @commit_files ||= modified_commit_files
   end
 
   def comment_on_violation(violation)
@@ -39,15 +39,24 @@ class PullRequest
 
   private
 
-  def build_commit_file(file)
-    CommitFile.new(file, head_commit)
+  def modified_commit_files
+    modified_github_files.map do |github_file|
+      CommitFile.new(
+        filename: github_file.filename,
+        content: head_commit.file_content(github_file.filename),
+        patch: github_file.patch,
+        pull_request_number: number,
+        sha: head_commit.sha
+      )
+    end
   end
 
-  def changed_pull_request_files
-    user_github.
-      pull_request_files(full_repo_name, number).
-      reject { |file| file.status == FILE_REMOVED_STATUS }.
-      map { |file| build_commit_file(file) }
+  def modified_github_files
+    github_files = user_github.pull_request_files(full_repo_name, number)
+
+    github_files.select do |github_file|
+      github_file.status != FILE_REMOVED_STATUS
+    end
   end
 
   def user_github

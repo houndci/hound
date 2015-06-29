@@ -90,7 +90,7 @@ describe BuildReport do
       )
       pull_request = double(
         :pull_request,
-        pull_request_files: [double(:file)],
+        commit_files: [double("CommitFile")],
         config: double(:config),
         opened?: true,
         head_commit: head_commit,

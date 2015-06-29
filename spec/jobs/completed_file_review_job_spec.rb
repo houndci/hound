@@ -57,12 +57,39 @@ describe CompletedFileReviewJob do
         )
       end
     end
+
+    context "when there are two builds with the same commit_sha" do
+      it "finds the correct build by pull request number" do
+        create(:build, commit_sha: "abc123", pull_request_number: 1)
+        correct_build = create(
+          :build,
+          commit_sha: "abc123",
+          pull_request_number: 123
+        )
+        create(
+          :file_review,
+          build: correct_build,
+          filename: attributes.fetch("filename")
+        )
+        stub_build_report_run
+        pull_request = stub_pull_request
+        stub_payload
+
+        CompletedFileReviewJob.perform(attributes)
+
+        expect(BuildReport).to have_received(:run).with(
+          pull_request,
+          correct_build
+        )
+      end
+    end
   end
 
   def attributes
     @attributes ||= {
       "filename" => "test.scss",
       "commit_sha" => "abc123",
+      "pull_request_number" => 123,
       "patch" => File.read("spec/support/fixtures/patch.diff"),
       "violations" => [
         { "line" => 14, "message" => "woohoo" }
@@ -70,12 +97,12 @@ describe CompletedFileReviewJob do
     }
   end
 
-  def create_build
-    @build ||= build(:build, commit_sha: attributes.fetch("commit_sha"))
-  end
-
   def create_file_review
-    build = build(:build, commit_sha: attributes.fetch("commit_sha"))
+    build = build(
+      :build,
+      commit_sha: attributes.fetch("commit_sha"),
+      pull_request_number: attributes.fetch("pull_request_number")
+    )
     create(:file_review, build: build, filename: attributes.fetch("filename"))
   end
 

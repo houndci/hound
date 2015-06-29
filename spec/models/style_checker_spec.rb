@@ -2,10 +2,11 @@ require "rails_helper"
 
 describe StyleChecker, "#file_reviews" do
   it "returns a collection of file reviews with violations" do
-    stylish_file = stub_commit_file("good.rb", "def good; end")
-    violated_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
-    pull_request =
-      stub_pull_request(pull_request_files: [stylish_file, violated_file])
+    stylish_commit_file = stub_commit_file("good.rb", "def good; end")
+    violated_commit_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
+    pull_request = stub_pull_request(
+      commit_files: [stylish_commit_file, violated_commit_file]
+    )
     expected_violations = [
       "Unnecessary spacing detected.",
       "Space inside parentheses detected.",
@@ -20,8 +21,8 @@ describe StyleChecker, "#file_reviews" do
   context "for a Ruby file" do
     context "with style violations" do
       it "returns violations" do
-        file = stub_commit_file("ruby.rb", "puts 123    ")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("ruby.rb", "puts 123    ")
+        pull_request = stub_pull_request(commit_files: [commit_file])
         expected_violations = [
           "Unnecessary spacing detected.",
           "Trailing whitespace detected.",
@@ -35,8 +36,12 @@ describe StyleChecker, "#file_reviews" do
 
     context "with style violation on unchanged line" do
       it "returns no violations" do
-        file = stub_commit_file("foo.rb", "'wrong quotes'", UnchangedLine.new)
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file(
+          "foo.rb",
+          "'wrong quotes'",
+          UnchangedLine.new
+        )
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -46,8 +51,8 @@ describe StyleChecker, "#file_reviews" do
 
     context "without style violations" do
       it "returns no violations" do
-        file = stub_commit_file("ruby.rb", "puts 123")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("ruby.rb", "puts 123")
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -58,8 +63,8 @@ describe StyleChecker, "#file_reviews" do
 
   context "for a CoffeeScript file" do
     it "is processed with a coffee.js extension" do
-      file = stub_commit_file("test.coffee.js", "foo ->")
-      pull_request = stub_pull_request(pull_request_files: [file])
+      commit_file = stub_commit_file("test.coffee.js", "foo ->")
+      pull_request = stub_pull_request(commit_files: [commit_file])
       allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
 
       violation_messages = pull_request_violations(pull_request)
@@ -68,8 +73,11 @@ describe StyleChecker, "#file_reviews" do
     end
 
     it "is processed with a coffee.erb extension" do
-      file = stub_commit_file("test.coffee.erb", "class strange_ClassNAME")
-      pull_request = stub_pull_request(pull_request_files: [file])
+      commit_file = stub_commit_file(
+        "test.coffee.erb",
+        "class strange_ClassNAME"
+      )
+      pull_request = stub_pull_request(commit_files: [commit_file])
       allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
 
       violation_messages = pull_request_violations(pull_request)
@@ -79,8 +87,8 @@ describe StyleChecker, "#file_reviews" do
 
     context "with style violations" do
       it "returns violations" do
-        file = stub_commit_file("test.coffee", "foo: ->")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("test.coffee", "foo: ->")
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -90,8 +98,8 @@ describe StyleChecker, "#file_reviews" do
 
     context "without style violations" do
       it "returns no violations" do
-        file = stub_commit_file("test.coffee", "alert('Hello World')")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("test.coffee", "alert('Hello World')")
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -103,8 +111,8 @@ describe StyleChecker, "#file_reviews" do
   context "for a JavaScript file" do
     context "with style violations" do
       it "returns violations" do
-        file = stub_commit_file("test.js", "var test = 'test'")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("test.js", "var test = 'test'")
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -114,8 +122,8 @@ describe StyleChecker, "#file_reviews" do
 
     context "without style violations" do
       it "returns no violations" do
-        file = stub_commit_file("test.js", "var test = 'test';")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("test.js", "var test = 'test';")
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -135,10 +143,10 @@ describe StyleChecker, "#file_reviews" do
           ".jshintignore" => "test.js"
         )
 
-        file = stub_commit_file("test.js", "var test = 'test'")
+        commit_file = stub_commit_file("test.js", "var test = 'test'")
         pull_request = stub_pull_request(
           head_commit: head_commit,
-          pull_request_files: [file]
+          commit_files: [commit_file]
         )
 
         violation_messages = pull_request_violations(pull_request)
@@ -150,8 +158,8 @@ describe StyleChecker, "#file_reviews" do
 
   context "for a SCSS file" do
     it "does not immediately return violations" do
-      file = stub_commit_file("test.scss", "* { color: red; }")
-      pull_request = stub_pull_request(pull_request_files: [file])
+      commit_file = stub_commit_file("test.scss", "* { color: red; }")
+      pull_request = stub_pull_request(commit_files: [commit_file])
 
       violation_messages = pull_request_violations(pull_request)
 
@@ -162,8 +170,8 @@ describe StyleChecker, "#file_reviews" do
   context "for a Haml file" do
     context "with style violations" do
       it "returns no violations" do
-        file = stub_commit_file("test.haml", "%div.message 123")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("test.haml", "%div.message 123")
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -173,8 +181,8 @@ describe StyleChecker, "#file_reviews" do
 
     context "without style violations" do
       it "returns no violations" do
-        file = stub_commit_file("test.haml", ".message 123")
-        pull_request = stub_pull_request(pull_request_files: [file])
+        commit_file = stub_commit_file("test.haml", ".message 123")
+        pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -187,8 +195,11 @@ describe StyleChecker, "#file_reviews" do
 
   context "with unsupported file type" do
     it "uses unsupported style guide" do
-      file = stub_commit_file("fortran.f", %{PRINT *, "Hello World!"\nEND})
-      pull_request = stub_pull_request(pull_request_files: [file])
+      commit_file = stub_commit_file(
+        "fortran.f",
+        %{PRINT *, "Hello World!"\nEND}
+      )
+      pull_request = stub_pull_request(commit_files: [commit_file])
 
       violation_messages = pull_request_violations(pull_request)
 
@@ -207,7 +218,7 @@ describe StyleChecker, "#file_reviews" do
     defaults = {
       file_content: "",
       head_commit: head_commit,
-      pull_request_files: [],
+      commit_files: [],
       repository_owner_name: "some_org"
     }
 
@@ -223,7 +234,8 @@ describe StyleChecker, "#file_reviews" do
       content: formatted_contents,
       line_at: line,
       sha: "abc123",
-      patch_body: "patchbody"
+      patch: "patch",
+      pull_request_number: 123
     )
   end
 
