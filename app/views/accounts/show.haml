@@ -42,21 +42,22 @@
             %th.total-amount
               %label= @account_page.total_monthly_cost
 
-    %article.account-details
-      %h3
-        Update account settings
-      %form{ 'ng-controller' => 'accountController' }
-        .form-group
-          %label Email address for receipts
-          %input{ type: 'email', placeholder: "#{@account_page.billable_email}", 'ng-model' => 'account.billable_email' }
-          %p.inline-flash.inline-flash--success{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'successMessage' }
-            %i.fa.fa-check
-              {{successMessage}}
-          %p.inline-flash.inline-flash--error{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'failureMessage' }
-            %i.fa.fa-exclamation-circle
-              {{failureMessage}}
-        .form-actions
-          %button.button-small{ 'ng-click' => 'update()' } Update Email
+    - if current_user.stripe_customer_id.present?
+      %article.account-details
+        %h3
+          Update account settings
+        %form{ 'ng-controller' => 'accountController' }
+          .form-group
+            %label Email address for receipts
+            %input{ type: 'email', placeholder: "#{@account_page.billable_email}", 'ng-model' => 'account.billable_email' }
+            %p.inline-flash.inline-flash--success{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'successMessage' }
+              %i.fa.fa-check
+                {{successMessage}}
+            %p.inline-flash.inline-flash--error{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'failureMessage' }
+              %i.fa.fa-exclamation-circle
+                {{failureMessage}}
+          .form-actions
+            %button.button-small{ 'ng-click' => 'update()' } Update Email
 
     %article.active-private-repos
       - if @account_page.repos.any?
