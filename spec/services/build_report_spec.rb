@@ -3,23 +3,24 @@ require "rails_helper"
 describe BuildReport do
   describe ".run" do
     context "when build has violations" do
-      it "comments a maximum number of times" do
-        stub_const("::BuildReport::MAX_COMMENTS", 1)
-        commenter = stubbed_commenter(comment_on_violations: true)
-        file_review = create(
-          :file_review,
-          violations: build_list(:violation, 2),
-        )
-        stubbed_github_api
-        pull_request = stubbed_pull_request
-
-        BuildReport.run(pull_request, file_review.build)
-
-        expect(commenter).to have_received(:comment_on_violations).
-          with(file_review.violations.take(BuildReport::MAX_COMMENTS))
-      end
-
       context "when the build is complete" do
+        it "comments a maximum number of times" do
+          stub_const("::BuildReport::MAX_COMMENTS", 1)
+          commenter = stubbed_commenter(comment_on_violations: true)
+          file_review = create(
+            :file_review,
+            :completed,
+            violations: build_list(:violation, 2),
+          )
+          stubbed_github_api
+          pull_request = stubbed_pull_request
+
+          BuildReport.run(pull_request, file_review.build)
+
+          expect(commenter).to have_received(:comment_on_violations).
+            with(file_review.violations.take(BuildReport::MAX_COMMENTS))
+        end
+
         it "sets GitHub status to complete" do
           file_review = create(
             :file_review,
@@ -41,6 +42,21 @@ describe BuildReport do
       end
 
       context "when the build is not complete" do
+        it "does not comment" do
+          commenter = stubbed_commenter(comment_on_violations: true)
+          file_review = create(
+            :file_review,
+            violations: build_list(:violation, 2),
+            completed_at: nil,
+          )
+          stubbed_github_api
+          pull_request = stubbed_pull_request
+
+          BuildReport.run(pull_request, file_review.build)
+
+          expect(commenter).not_to have_received(:comment_on_violations)
+        end
+
         it "does not set GitHub status to compelte" do
           file_review = create(
             :file_review,

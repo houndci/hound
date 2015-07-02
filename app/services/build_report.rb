@@ -10,9 +10,8 @@ class BuildReport
   pattr_initialize :pull_request, :build
 
   def run
-    commenter.comment_on_violations(priority_violations)
-
     if build.completed?
+      commenter.comment_on_violations(priority_violations)
       create_success_status
       track_subscribed_build_completed
     end
