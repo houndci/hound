@@ -424,8 +424,8 @@ Style/TrailingBlankLines:
 Style/TrailingComma:
   Description: Checks for trailing comma in parameter lists and literals.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas
-  Enabled: false
-  EnforcedStyleForMultiline: no_comma
+  Enabled: true
+  EnforcedStyleForMultiline: comma
   SupportedStyles:
   - comma
   - no_comma

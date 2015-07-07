@@ -620,6 +620,30 @@ describe StyleGuide::Ruby do
         end
       end
 
+      describe "when ommitting trailing commas" do
+        it "returns violations" do
+          violations = ["Put a comma after the last item of a multiline hash."]
+
+          expect(thoughtbot_violations_in(<<-CODE)).to eq violations
+            {
+              a: 1,
+              b: 2
+            }
+          CODE
+        end
+      end
+
+      describe "when trailing commas are present" do
+        it "returns no violations" do
+          expect(thoughtbot_violations_in(<<-CODE)).to eq []
+            {
+              a: 1,
+              b: 2,
+            }
+          CODE
+        end
+      end
+
       def thoughtbot_violations_in(content)
         violations_in(content, repository_owner_name: "thoughtbot")
       end

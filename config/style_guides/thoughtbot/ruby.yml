@@ -202,7 +202,10 @@ StringLiterals:
   EnforcedStyle: double_quotes
 
 TrailingComma:
-  Enabled: false
+  EnforcedStyleForMultiline: comma
+  SupportedStyles:
+    - comma
+    - no_comma
 
 TrivialAccessors:
   Enabled: false
