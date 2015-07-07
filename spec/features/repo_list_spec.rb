@@ -2,6 +2,7 @@ require "rails_helper"
 
 feature "Repo list", js: true do
   let(:username) { ENV.fetch("HOUND_GITHUB_USERNAME") }
+  let(:token) { ENV.fetch("HOUND_GITHUB_TOKEN") }
 
   scenario "user views landing page" do
     user = create(:user)
@@ -16,6 +17,8 @@ feature "Repo list", js: true do
 
   scenario "user sees onboarding" do
     user = create(:user)
+
+    stub_repos_requests(token)
     sign_in_as(user)
 
     visit repos_path
@@ -58,7 +61,6 @@ feature "Repo list", js: true do
   end
 
   scenario "user syncs repos" do
-    token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, full_github_name: "user1/test-repo")
     user.repos << repo
@@ -78,13 +80,13 @@ feature "Repo list", js: true do
   scenario "user signs up" do
     user = create(:user)
 
+    stub_repos_requests(token)
     sign_in_as(user)
 
     expect(page).to have_content I18n.t("syncing_repos")
   end
 
   scenario "user activates repo" do
-    token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, private: false)
     repo.users << user
@@ -113,7 +115,6 @@ feature "Repo list", js: true do
     repo.users << user
     hook_url = "http://#{ENV["HOST"]}/builds"
     team_id = 4567 # from fixture
-    token = "usergithubtoken"
     stub_repo_with_org_request(repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
     stub_repo_teams_request(repo.full_github_name, token)
@@ -135,7 +136,6 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates repo" do
-    token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, :active)
     repo.users << user
@@ -157,7 +157,6 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates private repo without subscription" do
-    token = "usergithubtoken"
     user = create(:user)
     repo = create(:repo, :active, private: true)
     repo.users << user

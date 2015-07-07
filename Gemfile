@@ -24,6 +24,7 @@ gem "octokit", github: "octokit/octokit.rb"
 gem "omniauth-github"
 gem "paranoia", "~> 2.0"
 gem "pg"
+gem "puma"
 gem "rails", "4.2.3"
 gem "resque", "~> 1.25.0"
 gem "resque-scheduler"
@@ -33,9 +34,9 @@ gem "sass-rails"
 gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 1.0.3"
-gem "unicorn"
 
 group :staging, :production do
+  gem "rack-timeout"
   gem "rails_12factor"
   gem "sentry-raven"
 end
