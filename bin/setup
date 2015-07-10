@@ -6,12 +6,6 @@ bundle install
 # Add binstubs to PATH via export PATH=".git/safe/../../bin:$PATH" in ~/.zshenv
 mkdir -p .git/safe
 
-# Set up development environment config
-if [ ! -f .env ]; then
-  cp .sample.env .env
-  cp .sample.env .env.test
-fi
-
 # Set up database
 bundle exec rake db:setup
 
@@ -28,10 +22,9 @@ if ! grep -qs 'port' .foreman; then
 fi
 
 # Stripe credentials
-if ! grep -qs 'STRIPE' .env; then
-  heroku config --app hound-staging | grep "STRIPE" > .env
-  sed -i '' 's/\:/=/' .env
-  sed -i '' 's/ //g' .env
+if ! grep -qs 'STRIPE' .env.local; then
+  heroku config:get STRIPE_API_KEY --remote staging --shell >> .env.local
+  heroku config:get STRIPE_PUBLISHABLE_KEY --remote staging --shell >> .env.local
 fi
 
 # GitHub

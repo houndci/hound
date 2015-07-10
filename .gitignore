@@ -1,5 +1,4 @@
-.env
-.env.test
+.env.local
 .foreman
 /.bundle
 /db/*.sqlite3
