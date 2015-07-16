@@ -264,7 +264,7 @@ describe StyleGuide::Ruby do
 
       context "for operator without surrounding spaces" do
         it "returns violations" do
-          violations = ["Surrounding space missing for operator '+'."]
+          violations = ["Surrounding space missing for operator `+`."]
           expect(violations_in(<<-CODE)).to eq violations
   1+1
           CODE
@@ -306,7 +306,7 @@ describe StyleGuide::Ruby do
 
       context "for opening brace without leading space" do
         it "returns violations" do
-          violations = ["Surrounding space missing for operator '='."]
+          violations = ["Surrounding space missing for operator `=`."]
 
           expect(violations_in(<<-CODE)).to eq violations
   a ={ one: 1 }
