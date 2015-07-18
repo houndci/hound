@@ -174,14 +174,7 @@ describe StyleGuide::CoffeeScript do
     end
 
     def build_file(content, filename = "test.coffee")
-      line = double(
-        "Line",
-        changed?: true,
-        content: "blah",
-        number: 1,
-        patch_position: 2,
-      )
-      double("GithubFile", content: content, filename: filename, line_at: line)
+      build_commit_file(filename: filename, content: content)
     end
 
     def build_style_guide

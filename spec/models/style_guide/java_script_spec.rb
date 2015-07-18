@@ -7,7 +7,7 @@ describe StyleGuide::JavaScript do
     it "returns a completed file review" do
       repo_config = double("RepoConfig", enabled_for?: true, for: {})
       style_guide = StyleGuide::JavaScript.new(repo_config, "bob")
-      commit_file = build_commit_file
+      commit_file = build_js_file
 
       result = style_guide.file_review(commit_file)
 
@@ -18,7 +18,7 @@ describe StyleGuide::JavaScript do
       context "when semicolon is missing" do
         it "returns a collection of violation objects" do
           repo_config = double("RepoConfig", for: {})
-          commit_file = build_commit_file("var foo = 'bar'")
+          commit_file = build_js_file("var foo = 'bar'")
 
           violations = violations_in(
             commit_file: commit_file,
@@ -40,7 +40,7 @@ describe StyleGuide::JavaScript do
       context "when semicolon is missing" do
         it "returns no violation" do
           repo_config = double("RepoConfig", for: { "asi" => true })
-          commit_file = build_commit_file("parseFloat('1')")
+          commit_file = build_js_file("parseFloat('1')")
 
           violations = violations_in(
             commit_file: commit_file,
@@ -70,7 +70,7 @@ describe StyleGuide::JavaScript do
     context "when a global variable is ignored" do
       it "returns no violations" do
         repo_config = double("RepoConfig", for: { "predef" => ["myGlobal"] })
-        commit_file = build_commit_file("$(myGlobal).hide();")
+        commit_file = build_js_file("$(myGlobal).hide();")
 
         violations = violations_in(
           commit_file: commit_file,
@@ -89,7 +89,7 @@ describe StyleGuide::JavaScript do
           StyleGuide::JavaScript
         )
         repo_config = double("RepoConfig", for: {})
-        commit_file = build_commit_file("$(myGlobal).hide();")
+        commit_file = build_js_file("$(myGlobal).hide();")
 
         violations_in(
           commit_file: commit_file,
@@ -107,7 +107,7 @@ describe StyleGuide::JavaScript do
       it "uses the thoughtbot hound configuration" do
         spy_on_file_read
         spy_on_jshintrb
-        commit_file = build_commit_file("$(myGlobal).hide();")
+        commit_file = build_js_file("$(myGlobal).hide();")
         configuration_file_path = thoughtbot_configuration_file(
           StyleGuide::JavaScript
         )
@@ -128,7 +128,7 @@ describe StyleGuide::JavaScript do
     context "with ES6 support enabled" do
       it "respects ES6" do
         repo_config = double("RepoConfig", for: { esnext: true })
-        commit_file = build_commit_file("import Ember from 'ember'")
+        commit_file = build_js_file("import Ember from 'ember'")
 
         violations = violations_in(
           commit_file: commit_file,
@@ -192,10 +192,8 @@ describe StyleGuide::JavaScript do
     end
   end
 
-  def build_commit_file(content = "foo")
-    filename = "some-file.js"
-    line = double("Line", number: 1, patch_position: 1, changed?: true)
-    double("CommitFile", filename: filename, line_at: line, content: content)
+  def build_js_file(content = "foo")
+    build_commit_file(filename: "some-file.js", content: content)
   end
 
   def violations_in(

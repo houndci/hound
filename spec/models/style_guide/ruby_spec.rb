@@ -693,15 +693,7 @@ describe StyleGuide::Ruby do
     end
 
     def build_file(content)
-      filename = "app/models/user.rb"
-      line = double(
-        "Line",
-        changed?: true,
-        content: "blah",
-        number: 1,
-        patch_position: 2,
-      )
-      double("CommitFile", content: content, line_at: line, filename: filename)
+      build_commit_file(filename: "app/models/user.rb", content: content)
     end
 
     def default_configuration

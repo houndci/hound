@@ -44,6 +44,8 @@ class StyleChecker
       StyleGuide::Haml
     when /.+\.scss\z/
       StyleGuide::Scss
+    when /.+\.go\z/
+      StyleGuide::Go
     else
       StyleGuide::Unsupported
     end

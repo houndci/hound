@@ -54,14 +54,7 @@ describe StyleGuide::Haml do
     StyleGuide::Haml.new(repo_config, repository_owner_name)
   end
 
-  def build_file(text)
-    line = double(
-      "Line",
-      changed?: true,
-      content: "blah",
-      number: 1,
-      patch_position: 2,
-    )
-    double("CommitFile", content: text, filename: "a/b.haml", line_at: line)
+  def build_file(content)
+    build_commit_file(filename: "a/b.haml", content: content)
   end
 end

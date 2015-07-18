@@ -15,6 +15,8 @@
         = link_to "SCSS config", "#scss"
       %li
         = link_to "Haml config", "#haml"
+      %li
+        = link_to "Go config", "#go"
 
   %section.doc-content
     %article
@@ -240,6 +242,19 @@
           :preserve
             haml:
               enabled: false
+
+    %article#go
+      %h3 Go
+
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to enable Go style checking.
+
+        %code.code-block
+          :preserve
+            go:
+              enabled: true
 
     %article
       %h3 Didn't find what you where looking for?

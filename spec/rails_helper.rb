@@ -20,6 +20,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.include AnalyticsHelper
   config.include AuthenticationHelper
+  config.include CommitFileHelper
   config.include Features, type: :feature
   config.include HttpsHelper
   config.include OauthHelper

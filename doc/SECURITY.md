@@ -197,6 +197,7 @@ that we use to check the style of the code in each pull request notification:
 * CoffeeScript: [CoffeeLint](http://www.coffeelint.org/)
 * JavaScript: [JSHint](https://github.com/jshint/jshint/)
 * SCSS: [SCSS-Lint](https://github.com/brigade/scss-lint)
+* Go: [golint](https://github.com/golang/lint)
 
 Those libraries find style violations
 and pass them back up through `StyleGuide` and `BuildRunner`.

@@ -1,7 +1,8 @@
 # Load and parse config files from GitHub repo
 class RepoConfig
   HOUND_CONFIG = ".hound.yml"
-  LANGUAGES = %w(ruby coffeescript javascript scss haml)
+  BETA_LANGUAGES = %w(go)
+  LANGUAGES = %w(ruby coffeescript javascript scss haml go)
   FILE_TYPES = {
     "ruby" => "yaml",
     "javascript" => "json",
@@ -15,8 +16,7 @@ class RepoConfig
   pattr_initialize :commit
 
   def enabled_for?(language)
-    options = options_for(language)
-    options.nil? || !disabled?(language)
+    !disabled?(language)
   end
 
   def for(language)
@@ -55,8 +55,18 @@ class RepoConfig
 
   private
 
+  def beta?(language)
+    BETA_LANGUAGES.include?(language)
+  end
+
+  def defualt_options_for(language)
+    { "enabled" => !beta?(language) }
+  end
+
   def options_for(language)
-    hound_config[language] || hound_config[language_camelize(language)]
+    hound_config[language] ||
+      hound_config[language_camelize(language)] ||
+      defualt_options_for(language)
   end
 
   def disabled?(language)

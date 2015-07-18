@@ -6,20 +6,31 @@ require "app/models/repo_config"
 describe RepoConfig do
   describe "#enabled_for?" do
     context "with invalid config" do
-      it "returns true for all languages" do
+      it "returns true for all default languages" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           hello world!
         EOS
         repo_config = RepoConfig.new(commit)
 
-        RepoConfig::LANGUAGES.each do |language|
+        default_languages.each do |language|
           expect(repo_config).to be_enabled_for(language)
+        end
+      end
+
+      it "returns false for all beta languages" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          hello world!
+        EOS
+        repo_config = RepoConfig.new(commit)
+
+        beta_languages.each do |language|
+          expect(repo_config).not_to be_enabled_for(language)
         end
       end
     end
 
     context "when all languages are enabled" do
-      it "returns false for all languages" do
+      it "returns true for all languages" do
         commit = double("Commit", file_content: <<-EOS.strip_heredoc)
           ruby:
             enabled: true
@@ -29,28 +40,12 @@ describe RepoConfig do
             enabled: true
           scss:
             enabled: true
-        EOS
-        repo_config = RepoConfig.new(commit)
-
-        RepoConfig::LANGUAGES.each do |language|
-          expect(repo_config).to be_enabled_for(language)
-        end
-      end
-
-      it "returns false for all languages" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          ruby:
-            enabled: true
-          coffeescript:
-            enabled: true
-          javascript:
-            enabled: true
-          scss:
+          go:
             enabled: true
         EOS
         repo_config = RepoConfig.new(commit)
 
-        RepoConfig::LANGUAGES.each do |language|
+        all_languages.each do |language|
           expect(repo_config).to be_enabled_for(language)
         end
       end
@@ -69,10 +64,12 @@ describe RepoConfig do
             enabled: false
           haml:
             enabled: false
+          go:
+            enabled: false
         EOS
         repo_config = RepoConfig.new(commit)
 
-        RepoConfig::LANGUAGES.each do |language|
+        all_languages.each do |language|
           expect(repo_config).not_to be_enabled_for(language)
         end
       end
@@ -80,7 +77,7 @@ describe RepoConfig do
 
     context "with legacy config file" do
       context "when no language is enabled or disabled" do
-        it "returns true for all languages" do
+        it "returns true for all default languages" do
           commit = double("Commit", file_content: <<-EOS.strip_heredoc)
             LineLength:
               Max: 80
@@ -89,8 +86,22 @@ describe RepoConfig do
           EOS
           repo_config = RepoConfig.new(commit)
 
-          RepoConfig::LANGUAGES.each do |language|
+          default_languages.each do |language|
             expect(repo_config).to be_enabled_for(language)
+          end
+        end
+
+        it "returns false for all beta languages" do
+          commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+            LineLength:
+              Max: 80
+            DotPosition:
+              EnforcedStyle: trailing
+          EOS
+          repo_config = RepoConfig.new(commit)
+
+          beta_languages.each do |language|
+            expect(repo_config).not_to be_enabled_for(language)
           end
         end
       end
@@ -110,10 +121,12 @@ describe RepoConfig do
               Enabled: true
             SCSS:
               Enabled: true
+            Go:
+              Enabled: true
           EOS
           repo_config = RepoConfig.new(commit)
 
-          RepoConfig::LANGUAGES.each do |language|
+          all_languages.each do |language|
             expect(repo_config).to be_enabled_for(language)
           end
         end
@@ -136,10 +149,12 @@ describe RepoConfig do
               Enabled: false
             Haml:
               Enabled: false
+            Go:
+              Enabled: false
           EOS
           repo_config = RepoConfig.new(commit)
 
-          RepoConfig::LANGUAGES.each do |language|
+          all_languages.each do |language|
             expect(repo_config).not_to be_enabled_for(language)
           end
         end
@@ -147,12 +162,21 @@ describe RepoConfig do
     end
 
     context "when there is no Hound config file" do
-      it "returns true for all languages" do
+      it "returns true for all default languages" do
         commit = double("Commit", file_content: nil)
         repo_config = RepoConfig.new(commit)
 
-        RepoConfig::LANGUAGES.each do |language|
+        default_languages.each do |language|
           expect(repo_config).to be_enabled_for(language)
+        end
+      end
+
+      it "returns false for all beta languages" do
+        commit = double("Commit", file_content: nil)
+        repo_config = RepoConfig.new(commit)
+
+        beta_languages.each do |language|
+          expect(repo_config).not_to be_enabled_for(language)
         end
       end
     end
@@ -386,7 +410,7 @@ describe RepoConfig do
         commit = double("Commit", file_content: nil)
         config = RepoConfig.new(commit)
 
-        RepoConfig::LANGUAGES.each do |language|
+        all_languages.each do |language|
           expect(config.for(language)).to eq({})
         end
       end
@@ -505,6 +529,18 @@ describe RepoConfig do
     repo_config = RepoConfig.new(commit)
 
     expect(repo_config).not_to be_enabled_for("javascript")
+  end
+
+  def all_languages
+    RepoConfig::LANGUAGES
+  end
+
+  def default_languages
+    all_languages - beta_languages
+  end
+
+  def beta_languages
+    RepoConfig::BETA_LANGUAGES
   end
 
   def config_for_file(file_path, content)
