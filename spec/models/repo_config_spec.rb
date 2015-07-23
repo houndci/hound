@@ -511,6 +511,39 @@ describe RepoConfig do
     end
   end
 
+  describe "#fail_on_violations?" do
+    context "when fail on violations is not present" do
+      it "returns false" do
+        commit = double("Commit", file_content: "")
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config).not_to be_fail_on_violations
+      end
+    end
+
+    context "when fail on violations is disabled" do
+      it "returns false" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          fail_on_violations: false
+        EOS
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config).not_to be_fail_on_violations
+      end
+    end
+
+    context "when fail on violations is enabled" do
+      it "returns true" do
+        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+          fail_on_violations: true
+        EOS
+        repo_config = RepoConfig.new(commit)
+
+        expect(repo_config).to be_fail_on_violations
+      end
+    end
+  end
+
   it "converts legacy coffee_script key to coffeescript" do
     commit = double("Commit", file_content: <<-EOS.strip_heredoc)
       coffee_script:

@@ -53,6 +53,10 @@ class RepoConfig
     ignore_file_content.split("\n")
   end
 
+  def fail_on_violations?
+    hound_config["fail_on_violations"]
+  end
+
   private
 
   def beta?(language)

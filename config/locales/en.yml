@@ -5,7 +5,7 @@ en:
   active_repos: "Active repos"
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."
-  success_status:
+  complete_status:
     zero: "No violations found. Woof!"
     one: "1 violation found."
     other: "%{count} violations found."

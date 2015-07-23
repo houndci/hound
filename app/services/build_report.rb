@@ -14,7 +14,7 @@ class BuildReport
   def run
     if build.completed?
       Commenter.new(pull_request).comment_on_violations(priority_violations)
-      commit_status.set_success(build.violation_count)
+      set_commit_status
       track_subscribed_build_completed
     end
   end
@@ -33,6 +33,22 @@ class BuildReport
       analytics = Analytics.new(user)
       analytics.track_build_completed(build.repo)
     end
+  end
+
+  def set_commit_status
+    if fail_build?
+      commit_status.set_failure(build.violation_count)
+    else
+      commit_status.set_success(build.violation_count)
+    end
+  end
+
+  def fail_build?
+    repo_config.fail_on_violations? && build.violation_count > 0
+  end
+
+  def repo_config
+    RepoConfig.new(pull_request.head_commit)
   end
 
   def commit_status

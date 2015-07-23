@@ -99,7 +99,7 @@ describe BuildRunner, '#run' do
       expect(github_api).to have_received(:create_success_status).with(
         "test/repo",
         "headsha",
-        I18n.t(:success_status, count: 3),
+        I18n.t(:complete_status, count: 3),
       )
     end
 
@@ -287,6 +287,7 @@ describe BuildRunner, '#run' do
       "HeadCommit",
       sha: "headsha",
       repo_name: "test/repo",
+      file_content: "",
     )
     pull_request = double(
       :pull_request,

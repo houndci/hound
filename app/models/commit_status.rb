@@ -10,11 +10,16 @@ class CommitStatus
   end
 
   def set_success(violation_count)
-    message = I18n.t(:success_status, count: violation_count)
+    message = I18n.t(:complete_status, count: violation_count)
     github.create_success_status(repo_name, sha, message)
   end
 
-  def set_failure
+  def set_failure(violation_count)
+    message = I18n.t(:complete_status, count: violation_count)
+    github.create_error_status(repo_name, sha, message)
+  end
+
+  def set_config_error
     message = I18n.t(:config_error_status)
     github.create_error_status(repo_name, sha, message, configuration_url)
   end
