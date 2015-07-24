@@ -13,10 +13,10 @@ describe StyleGuide::Haml do
 
     context "with default configuration" do
       context "with an implicit %div violation" do
-        it "does not return violations" do
-          content = "%div#container Hello\n"
+        it "returns violations" do
+          content = "%div#container Hello"
 
-          expect(violations_in(content)).to be_empty
+          expect(violations_in(content)).not_to be_empty
         end
       end
     end
@@ -33,7 +33,7 @@ describe StyleGuide::Haml do
         }
         content = "%div#bar.foo\n"
 
-        expect(violations_in(content, config)).to be_empty
+        expect(violations_in(content, config)).not_to be_empty
       end
     end
 
@@ -57,6 +57,7 @@ describe StyleGuide::Haml do
         }
 
         expect(violations_in(content, config)).to match_array [
+          "Avoid defining `class` in attributes hash for static class names",
           "`%div#foo` can be written as `#foo` since `%div` is implicit",
           "Hash attribute should end with no space before the closing brace",
         ]

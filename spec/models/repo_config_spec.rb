@@ -40,6 +40,8 @@ describe RepoConfig do
             enabled: true
           scss:
             enabled: true
+          haml:
+            enabled: true
           go:
             enabled: true
         EOS
@@ -120,6 +122,8 @@ describe RepoConfig do
             CoffeeScript:
               Enabled: true
             SCSS:
+              Enabled: true
+            Haml:
               Enabled: true
             Go:
               Enabled: true
