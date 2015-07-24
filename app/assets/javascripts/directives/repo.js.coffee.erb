@@ -29,9 +29,9 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
         createSubscriptionWithNewCard
       )
 
-    createSubscription = (user) ->
+    createSubscription = ->
       if scope.repo.price_in_cents > 0
-        if user.card_exists
+        if scope.userCardExists
           createSubscriptionWithExistingCard()
         else
           showCreditCardForm()
@@ -83,5 +83,5 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
         else
           deactivateRepo()
       else
-        User.get().$promise.then(createSubscription)
+        createSubscription()
 ]

@@ -13,6 +13,12 @@ App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User
         alert('Your repos failed to load.')
       )
 
+    loadUserPaymentInfo = ->
+      user = User.get()
+      user.$promise
+        .then (result) -> scope.userCardExists = result.card_exists
+        .catch -> alert("Failed to load current user.")
+
     pollSyncStatus = ->
       successfulSync = (user) ->
         if user.refreshing_repos
@@ -46,6 +52,7 @@ App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User
         scope.syncButtonText = '<%= I18n.t('sync_repos') %>'
 
     loadRepos().then ->
-      if scope.repos.length < 1
-        scope.sync()
+      loadUserPaymentInfo().then ->
+        if scope.repos.length < 1
+          scope.sync()
 ]
