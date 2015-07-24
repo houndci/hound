@@ -10,7 +10,7 @@ en:
     one: "1 violation found."
     other: "%{count} violations found."
   config_error_status:
-    "Error parsing your config file. Click \"details\" for
+    "Error parsing config file: %{filename}. Click \"details\" for
     assistance."
 
   account:

@@ -11,8 +11,6 @@ class RepoConfig
     "haml" => "yaml"
   }
 
-  class ParserError < StandardError; end
-
   pattr_initialize :commit
 
   def enabled_for?(language)
@@ -118,7 +116,7 @@ class RepoConfig
     config_file_content = commit.file_content(file_path)
 
     if config_file_content.present?
-      send("parse_#{file_type}", config_file_content)
+      send("parse_#{file_type}", file_path, config_file_content)
     else
       {}
     end
@@ -131,21 +129,21 @@ class RepoConfig
     commit.file_content(ignore_file)
   end
 
-  def parse_yaml(content)
+  def parse_yaml(file_path, content)
     YAML.safe_load(content, [Regexp])
   rescue Psych::Exception => e
-    raise_repo_config_parser_error(e)
+    raise_repo_config_parser_error(e, file_path)
   end
 
-  def parse_json(content)
+  def parse_json(file_path, content)
     JSON.parse(content)
   rescue JSON::ParserError => e
-    raise_repo_config_parser_error(e)
+    raise_repo_config_parser_error(e, file_path)
   end
 
-  def raise_repo_config_parser_error(e)
+  def raise_repo_config_parser_error(e, file_path)
     message = "#{e.class}: #{e.message}"
-    raise RepoConfig::ParserError.new(message)
+    raise RepoConfig::ParserError.new(message, filename: file_path)
   end
 
   def convert_legacy_keys(config)

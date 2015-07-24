@@ -287,7 +287,10 @@ describe RepoConfig do
               ;foo:
           EOS
 
-          expect { config.for("ruby") }.to raise_error(RepoConfig::ParserError)
+          expect { config.for("ruby") }.to raise_error do |error|
+            expect(error).to be_a RepoConfig::ParserError
+            expect(error.filename).to eq "config/rubocop.yml"
+          end
         end
       end
 

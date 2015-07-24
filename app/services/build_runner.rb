@@ -7,8 +7,8 @@ class BuildRunner
     if repo && relevant_pull_request?
       review_pull_request
     end
-  rescue RepoConfig::ParserError
-    commit_status.set_config_error
+  rescue RepoConfig::ParserError => e
+    commit_status.set_config_error(e.filename)
   rescue Octokit::Unauthorized
     if users_with_token.any?
       reset_token

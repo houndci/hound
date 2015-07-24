@@ -153,7 +153,7 @@ describe BuildRunner, '#run' do
       expect(github_api).to have_received(:create_error_status).with(
         "test/repo",
         "headsha",
-        I18n.t(:config_error_status),
+        I18n.t(:config_error_status, filename: "javascript.json"),
         configuration_url
       )
     end
