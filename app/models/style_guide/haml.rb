@@ -15,35 +15,36 @@ module StyleGuide
       end
     end
 
-    def file_included?(*)
-      true
+    def file_included?(filename)
+      !file_excluded?(filename)
     end
 
     private
 
+    def file_excluded?(filename)
+      HamlLint::Utils.any_glob_matches?(config["exclude"], filename)
+    end
+
     attr_reader :commit_file
 
-    def parser
-      @parser ||= HamlLint::Parser.new(commit_file.content, {})
+    def content
+      HamlLint::Document.new(
+        commit_file.content,
+        file: commit_file.filename,
+        config: config,
+      )
     end
 
     def run_linters
       linters.reduce([]) do |results, linter|
-        linter.run(parser)
+        linter.run(content)
         results + linter.lints
       end
     end
 
     def linters
-      included_linters = HamlLint::LinterRegistry.linters
-
-      @linters ||= included_linters.map do |linter_class|
-        linter_config = config.for_linter(linter_class)
-
-        if linter_config.fetch("enabled", false)
-          linter_class.new(linter_config)
-        end
-      end.compact
+      HamlLint::LinterSelector.new(config, {}).
+        linters_for_file(commit_file.filename)
     end
 
     def config
