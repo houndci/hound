@@ -1,7 +1,5 @@
 $: << File.expand_path("../..", __FILE__)
 
-ENV["EXEMPT_ORGS"] = "thoughtbot,billybob"
-
 require "attr_extras"
 require "byebug"
 require "webmock/rspec"

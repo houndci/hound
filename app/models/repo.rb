@@ -59,8 +59,9 @@ class Repo < ActiveRecord::Base
     end
   end
 
-  def exempt?
-    ENV["EXEMPT_ORGS"] && ENV["EXEMPT_ORGS"].split(",").include?(organization)
+  def bulk?
+    BulkCustomer.where(org: organization).any? ||
+      ENV.fetch("EXEMPT_ORGS", "").split(",").include?(organization)
   end
 
   def total_violations

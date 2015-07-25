@@ -14,30 +14,21 @@ describe Repo do
     expect(subject).to validate_uniqueness_of(:github_id)
   end
 
-  describe "#exempt?" do
-    context "when repo is exempt" do
+  describe "#bulk?" do
+    context "when repo is bulk" do
       it "returns true" do
+        create(:bulk_customer, org: "thoughtbot")
         repo = Repo.new(full_github_name: "thoughtbot/hound")
 
-        expect(repo).to be_exempt
+        expect(repo).to be_bulk
       end
     end
 
-    context "when repo is not exempt" do
+    context "when repo is not bulk" do
       it "returns false" do
         repo = Repo.new(full_github_name: "jimbob/hound")
 
-        expect(repo).not_to be_exempt
-      end
-    end
-
-    context "without exempt organizations" do
-      it "returns false" do
-        without_exempt_organizations
-
-        repo = Repo.new(full_github_name: "jimbob/hound")
-
-        expect(repo).not_to be_exempt
+        expect(repo).not_to be_bulk
       end
     end
 
@@ -45,7 +36,7 @@ describe Repo do
       it "returns false" do
         repo = Repo.new(full_github_name: nil)
 
-        expect(repo).not_to be_exempt
+        expect(repo).not_to be_bulk
       end
     end
   end
@@ -176,9 +167,5 @@ describe Repo do
         expect(repo.full_github_name).to eq new_repo_name
       end
     end
-  end
-
-  def without_exempt_organizations
-    allow(ENV).to receive(:[]).with("EXEMPT_ORGS")
   end
 end

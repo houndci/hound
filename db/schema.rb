@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150710220040) do
+ActiveRecord::Schema.define(version: 20150725013530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,19 @@ ActiveRecord::Schema.define(version: 20150710220040) do
 
   add_index "builds", ["repo_id"], name: "index_builds_on_repo_id", using: :btree
   add_index "builds", ["uuid"], name: "index_builds_on_uuid", unique: true, using: :btree
+
+  create_table "bulk_customers", force: :cascade do |t|
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "org",                            null: false
+    t.string   "description"
+    t.string   "interval",                       null: false
+    t.integer  "repo_limit",                     null: false
+    t.integer  "current_repos",      default: 0, null: false
+    t.string   "subscription_token"
+  end
+
+  add_index "bulk_customers", ["org"], name: "index_bulk_customers_on_org", unique: true, using: :btree
 
   create_table "file_reviews", force: :cascade do |t|
     t.integer  "build_id",     null: false

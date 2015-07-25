@@ -63,4 +63,10 @@ FactoryGirl.define do
     github_id
     name { generate(:github_name) }
   end
+
+  factory :bulk_customer do
+    org "bulk_org"
+    interval "monthly"
+    repo_limit 5
+  end
 end
