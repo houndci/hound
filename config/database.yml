@@ -2,8 +2,13 @@ development: &default
   adapter: postgresql
   encoding: unicode
   database: hound_development
-  pool: 5
+  pool: <%= ENV.fetch("DB_POOL", 5) %>
+  reaping_frequency: <%= ENV.fetch("DB_REAPING_FREQUENCY", 10) %>
 
 test:
   <<: *default
   database: hound_test
+
+production:
+  pool: <%= [ENV.fetch("MAX_THREADS", 5), ENV.fetch("DB_POOL", 5)].max %>
+  url:  <%= ENV.fetch("DATABASE_URL") %>
