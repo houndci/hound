@@ -42,6 +42,8 @@ describe RepoConfig do
             enabled: true
           go:
             enabled: true
+          python:
+            enabled: true
         EOS
         repo_config = RepoConfig.new(commit)
 
@@ -122,6 +124,8 @@ describe RepoConfig do
             SCSS:
               Enabled: true
             Go:
+              Enabled: true
+            Python:
               Enabled: true
           EOS
           repo_config = RepoConfig.new(commit)

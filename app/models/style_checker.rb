@@ -46,6 +46,8 @@ class StyleChecker
       StyleGuide::Scss
     when /.+\.go\z/
       StyleGuide::Go
+    when /.+\.py\z/
+      StyleGuide::Python
     else
       StyleGuide::Unsupported
     end
