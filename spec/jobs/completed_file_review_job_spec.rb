@@ -36,13 +36,13 @@ describe CompletedFileReviewJob do
     end
 
     context "when build doesn't exist" do
-      it "enqueues job" do
-        allow(Resque).to receive(:enqueue)
+      it "enqueues job in medium queue" do
+        allow(Resque).to receive(:enqueue_to)
 
         CompletedFileReviewJob.perform(attributes)
 
         expect(Resque).to(
-          have_received(:enqueue).with(CompletedFileReviewJob, attributes)
+          have_received(:enqueue_to).with("medium", CompletedFileReviewJob, attributes)
         )
       end
     end

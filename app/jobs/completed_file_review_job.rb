@@ -40,7 +40,9 @@ class CompletedFileReviewJob
       build: build,
       token: build.user_token,
     )
-  rescue ActiveRecord::RecordNotFound, Resque::TermException
+  rescue ActiveRecord::RecordNotFound
+    Resque.enqueue_to("medium", self, attributes)
+  rescue Resque::TermException
     Resque.enqueue(self, attributes)
   end
 end
