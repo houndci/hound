@@ -167,6 +167,17 @@ describe StyleChecker, "#file_reviews" do
     end
   end
 
+  context "for a Python file" do
+    it "does not immediately return violations" do
+      commit_file = stub_commit_file("test.py", "import this")
+      pull_request = stub_pull_request(commit_files: [commit_file])
+
+      violation_messages = pull_request_violations(pull_request)
+
+      expect(violation_messages).to be_empty
+    end
+  end
+
   context "for a Haml file" do
     context "with style violations" do
       it "returns no violations" do
