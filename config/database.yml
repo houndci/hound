@@ -11,4 +11,4 @@ test:
 
 production:
   pool: <%= [ENV.fetch("MAX_THREADS", 5), ENV.fetch("DB_POOL", 5)].max %>
-  url:  <%= ENV.fetch("DATABASE_URL") %>
+  url:  <%= ENV.fetch("DATABASE_URL") if Rails.env.production? %>
