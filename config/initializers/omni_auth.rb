@@ -3,6 +3,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     :github,
     ENV['GITHUB_CLIENT_ID'],
     ENV['GITHUB_CLIENT_SECRET'],
-    scope: 'user:email,repo'
+    setup: ->(env) {
+      options = GithubAuthOptions.new(env)
+      env["omniauth.strategy"].options.merge!(options.to_hash)
+    }
   )
 end

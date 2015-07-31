@@ -1,7 +1,9 @@
 en:
   sync_repos: "Refresh repo list"
-  syncing_repos: "Loading repos..."
+  include_private_repos: "Include private repos"
+  syncing_repos: "Loading..."
   authenticate: "Sign In with GitHub"
+  sign_out: "Sign Out"
   active_repos: "Active repos"
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."

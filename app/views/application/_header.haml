@@ -17,7 +17,7 @@
             .avatar(style="background-image: url('#{avatar_url(current_user)}')")
           %span #{current_user.github_username}
       %li
-        = link_to "Sign Out", sign_out_path, class: "sign-out"
+        = link_to t("sign_out"), sign_out_path, class: "sign-out"
     - else
       %li
         = link_to "Pricing", "#pricing", class: "pricing"

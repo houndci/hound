@@ -3,6 +3,8 @@ App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User
   templateUrl: '/templates/repo_list'
 
   link: (scope, element, attributes) ->
+    scope.includePrivateReposButtonText = '<%= I18n.t('include_private_repos') %>'
+
     loadRepos = ->
       scope.syncingRepos = false
 

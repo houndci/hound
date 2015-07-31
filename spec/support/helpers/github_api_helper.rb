@@ -254,6 +254,21 @@ module GithubApiHelper
     )
   end
 
+  def stub_scopes_request(token: "token", scopes: "user:email")
+    stub_request(:get, "https://api.github.com/user").
+      with(
+        headers: {
+          "Accept" => "application/vnd.github.v3+json",
+          "Authorization" => "token #{token}",
+          "Content-Type" => "application/json",
+          "User-Agent" => "Octokit Ruby Gem 4.0.0"
+        }
+      ).
+      to_return(
+        status: 200, body: "", headers: { "X-OAuth-Scopes" => scopes }
+      )
+  end
+
   private
 
   def stub_repos_requests(token)
