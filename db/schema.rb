@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150725013530) do
+ActiveRecord::Schema.define(version: 20150731212842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20150725013530) do
     t.string   "org",                            null: false
     t.string   "description"
     t.string   "interval",                       null: false
-    t.integer  "repo_limit",                     null: false
+    t.integer  "repo_limit"
     t.integer  "current_repos",      default: 0, null: false
     t.string   "subscription_token"
   end
