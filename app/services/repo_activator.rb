@@ -70,20 +70,12 @@ class RepoActivator
     end
   end
 
-  def builds_url
-    URI.join("#{protocol}://#{ENV["HOST"]}", "builds").to_s
-  end
-
-  def protocol
-    if ENV.fetch("ENABLE_HTTPS") == "yes"
-      "https"
-    else
-      "http"
-    end
-  end
-
   def add_error(error)
     error_message = ErrorMessageTranslation.from_error_response(error)
     errors.push(error_message).compact!
+  end
+
+  def builds_url
+    Rails.application.routes.url_helpers.builds_url
   end
 end

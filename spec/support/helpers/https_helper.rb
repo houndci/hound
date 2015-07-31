@@ -1,7 +1,7 @@
 module HttpsHelper
   def with_https_enabled
-    ENV['ENABLE_HTTPS'] = 'yes'
+    Rails.application.routes.default_url_options[:protocol] = "https"
     yield
-    ENV['ENABLE_HTTPS'] = 'no'
+    Rails.application.routes.default_url_options[:protocol] = "http"
   end
 end
