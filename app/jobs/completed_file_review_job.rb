@@ -1,14 +1,14 @@
-class CompletedFileReviewJob
-  @queue = :high
+class CompletedFileReviewJob < ApplicationJob
+  queue_as :high
 
-  def self.perform(attributes)
-    # filename
-    # commit_sha
-    # pull_request_number
-    # patch
-    # violations
-    #   [{ line: 123, message: "WAT" }]
-
+  # attributes is a hash with the following required keys:
+  # - filename
+  # - commit_sha
+  # - pull_request_number
+  # - patch
+  # - violations (an array)
+  #   Example: [{ line: 123, message: "WAT" }]
+  def perform(attributes)
     build = Build.find_by!(
       pull_request_number: attributes.fetch("pull_request_number"),
       commit_sha: attributes.fetch("commit_sha")
@@ -40,9 +40,5 @@ class CompletedFileReviewJob
       build: build,
       token: build.user_token,
     )
-  rescue ActiveRecord::RecordNotFound
-    Resque.enqueue_in(30, self, attributes)
-  rescue Resque::TermException
-    Resque.enqueue(self, attributes)
   end
 end
