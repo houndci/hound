@@ -244,6 +244,29 @@ describe BuildRunner, '#run' do
     end
   end
 
+  context "when build creation fails" do
+    it "does not schedule review job" do
+      repo = create(:repo, :active)
+      build_runner = make_build_runner(repo: repo)
+      stubbed_github_api
+      stubbed_pull_request_with_file("test.scss", "")
+      force_fail_build_creation
+      allow(Resque).to receive(:enqueue)
+
+      begin
+        build_runner.run
+      rescue ActiveRecord::StatementInvalid
+        # noop
+      end
+
+      expect(Resque).not_to have_received(:enqueue)
+    end
+
+    def force_fail_build_creation
+      allow(SecureRandom).to receive(:uuid)
+    end
+  end
+
   def make_build_runner(repo: create(:repo, :active))
     payload = stubbed_payload(github_repo_id: repo.github_id)
     BuildRunner.new(payload)
@@ -282,7 +305,7 @@ describe BuildRunner, '#run' do
     commenter
   end
 
-  def stubbed_pull_request
+  def stubbed_pull_request(files = [double("CommitFile")])
     head_commit = double(
       "HeadCommit",
       sha: "headsha",
@@ -290,11 +313,12 @@ describe BuildRunner, '#run' do
       file_content: "",
     )
     pull_request = double(
-      :pull_request,
-      commit_files: [double("CommitFile")],
+      "PullRequest",
+      commit_files: files,
       config: double(:config),
       opened?: true,
       head_commit: head_commit,
+      repository_owner_name: "test",
     )
     allow(PullRequest).to receive(:new).and_return(pull_request)
 
@@ -302,25 +326,19 @@ describe BuildRunner, '#run' do
   end
 
   def stubbed_pull_request_with_file(filename, file_content)
-    commit_file = commit_file_double(filename, file_content)
-    double_pull_request_with_files([commit_file])
+    commit_file = commit_file_stub(filename, file_content)
+    stubbed_pull_request([commit_file])
   end
 
-  def commit_file_double(filename, file_content)
+  def commit_file_stub(filename, file_content)
     double(
       "CommitFile",
       filename: filename,
       content: file_content,
-      removed?: false
-    )
-  end
-
-  def double_pull_request_with_files(commit_files)
-    double(
-      "PullRequest",
-      commit_files: commit_files,
-      opened?: true,
-      repository_owner_name: "test"
+      removed?: false,
+      sha: "abcd1234",
+      pull_request_number: 1,
+      patch: "sometext",
     )
   end
 

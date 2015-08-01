@@ -30,6 +30,7 @@ class BuildRunner
     commit_status.set_pending
     upsert_owner
     build = create_build
+    review_files(build)
     BuildReport.run(pull_request: pull_request, build: build, token: token)
   end
 
@@ -43,12 +44,15 @@ class BuildRunner
 
   def create_build
     repo.builds.create!(
-      file_reviews: style_checker.file_reviews,
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       payload: payload.build_data.to_json,
       user: current_user_with_token,
     )
+  end
+
+  def review_files(build)
+    build.update!(file_reviews: style_checker.file_reviews)
   end
 
   def pull_request
