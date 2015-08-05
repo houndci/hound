@@ -176,6 +176,11 @@ common: &default_settings
   # implications if your memcached keys are sensitive
   # capture_memcache_keys: true
 
+  # Ignore assets path so New Relic won't report asset request times that might
+  # bring down averages and be misleading.
+  rules:
+    ignore_url_regexes: ["^/assets"]
+
 # Application Environments
 # ------------------------------------------
 # Environment-specific settings are in this section.
