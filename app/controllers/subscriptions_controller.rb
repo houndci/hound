@@ -37,7 +37,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def github_token
-    session.fetch(:github_token)
+    current_user.token
   end
 
   def create_subscription

@@ -1,6 +1,4 @@
 class ReposController < ApplicationController
-  before_action :save_token
-
   def index
     respond_to do |format|
       format.html
@@ -17,14 +15,6 @@ class ReposController < ApplicationController
 
         render json: repos
       end
-    end
-  end
-
-  private
-
-  def save_token
-    if current_user.token.blank?
-      current_user.update!(token: session[:github_token])
     end
   end
 end

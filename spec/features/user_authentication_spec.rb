@@ -6,7 +6,7 @@ feature 'User authentication' do
     user = create(:user)
     stub_repos_requests(token)
 
-    sign_in_as(user)
+    sign_in_as(user, token)
 
     expect(page).to have_content user.github_username
     expect(analytics).to have_tracked("Signed In").for_user(user)

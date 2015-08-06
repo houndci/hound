@@ -1,5 +1,5 @@
 class RepoSynchronization
-  pattr_initialize :user, :github_token
+  pattr_initialize :user
   attr_reader :user
 
   def start
@@ -17,7 +17,7 @@ class RepoSynchronization
   private
 
   def api
-    @api ||= GithubApi.new(github_token)
+    @api ||= GithubApi.new(user.token)
   end
 
   def repo_attributes(attributes)

@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = find_user || create_user
     create_session_for(user)
+    user.update(token: github_token)
     finished("auth_button")
     redirect_to repos_path
   end
@@ -35,7 +36,6 @@ class SessionsController < ApplicationController
 
   def create_session_for(user)
     session[:remember_token] = user.remember_token
-    session[:github_token] = github_token
   end
 
   def destroy_session

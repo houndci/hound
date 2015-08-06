@@ -2,9 +2,8 @@ require "rails_helper"
 
 feature "Repo list", js: true do
   let(:username) { ENV.fetch("HOUND_GITHUB_USERNAME") }
-  let(:token) { ENV.fetch("HOUND_GITHUB_TOKEN") }
 
-  scenario "user views landing page" do
+  scenario "signed in user views repo list" do
     user = create(:user)
     repo = create(:repo, full_github_name: "thoughtbot/my-repo")
     repo.users << user
@@ -15,7 +14,19 @@ feature "Repo list", js: true do
     expect(page).to have_content repo.full_github_name
   end
 
+  scenario "signed out user views repo list" do
+    user = create(:user)
+    repo = create(:repo, full_github_name: "thoughtbot/my-repo")
+    repo.users << user
+    sign_in_as(user, nil)
+
+    visit root_path
+
+    expect(page).not_to have_content repo.full_github_name
+  end
+
   scenario "user sees onboarding" do
+    token = "letmein"
     user = create(:user)
 
     stub_repos_requests(token)
@@ -61,6 +72,7 @@ feature "Repo list", js: true do
   end
 
   scenario "user syncs repos" do
+    token = "letmein"
     user = create(:user)
     repo = create(:repo, full_github_name: "user1/test-repo")
     user.repos << repo
@@ -78,6 +90,7 @@ feature "Repo list", js: true do
   end
 
   scenario "user signs up" do
+    token = "letmein"
     user = create(:user)
 
     stub_repos_requests(token)
@@ -87,6 +100,7 @@ feature "Repo list", js: true do
   end
 
   scenario "user activates repo" do
+    token = "letmein"
     user = create(:user)
     repo = create(:repo, private: false)
     repo.users << user
@@ -110,6 +124,7 @@ feature "Repo list", js: true do
   end
 
   scenario "user with admin access activates organization repo" do
+    token = "letmein"
     user = create(:user)
     repo = create(:repo, private: false, full_github_name: "testing/repo")
     repo.users << user
@@ -136,6 +151,7 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates repo" do
+    token = "letmein"
     user = create(:user)
     repo = create(:repo, :active)
     repo.users << user
@@ -157,6 +173,7 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates private repo without subscription" do
+    token = "letmein"
     user = create(:user)
     repo = create(:repo, :active, private: true)
     repo.users << user

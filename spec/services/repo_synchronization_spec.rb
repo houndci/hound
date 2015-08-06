@@ -10,7 +10,7 @@ describe RepoSynchronization do
         repo_name: "user/newrepo"
       )
       user = create(:user)
-      synchronization = RepoSynchronization.new(user, "githubtoken")
+      synchronization = RepoSynchronization.new(user)
 
       synchronization.start
 
@@ -26,7 +26,7 @@ describe RepoSynchronization do
         repo_name: "user/newrepo"
       )
       user = create(:user)
-      synchronization = RepoSynchronization.new(user, "githubtoken")
+      synchronization = RepoSynchronization.new(user)
 
       synchronization.start
 
@@ -43,7 +43,7 @@ describe RepoSynchronization do
       )
       membership = create(:membership)
       user = membership.user
-      synchronization = RepoSynchronization.new(user, "githubtoken")
+      synchronization = RepoSynchronization.new(user)
 
       synchronization.start
 
@@ -61,7 +61,7 @@ describe RepoSynchronization do
         owner_name: "thoughtbot",
         repo_name: repo_name
       )
-      synchronization = RepoSynchronization.new(membership.user, "githubtoken")
+      synchronization = RepoSynchronization.new(membership.user)
 
       synchronization.start
 
@@ -80,7 +80,7 @@ describe RepoSynchronization do
           owner_name: "thoughtbot"
         )
         second_user = create(:user)
-        synchronization = RepoSynchronization.new(second_user, "githubtoken")
+        synchronization = RepoSynchronization.new(second_user)
 
         synchronization.start
 
@@ -100,7 +100,7 @@ describe RepoSynchronization do
             owner_id: owner_github_id,
             owner_name: owner_name
           )
-          synchronization = RepoSynchronization.new(user, "githubtoken")
+          synchronization = RepoSynchronization.new(user)
 
           synchronization.start
 
@@ -120,7 +120,7 @@ describe RepoSynchronization do
             owner_id: owner.github_id,
             owner_name: owner.name
           )
-          synchronization = RepoSynchronization.new(user, "githubtoken")
+          synchronization = RepoSynchronization.new(user)
 
           synchronization.start
 

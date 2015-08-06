@@ -3,13 +3,12 @@ require "rails_helper"
 describe SubscriptionsController, "#create" do
   context "when subscription succeeds" do
     it "subscribes the user to the repo" do
-      token = "usergithubtoken"
       repo = create(:repo, private: true)
       membership = create(:membership, repo: repo)
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-      stub_sign_in(membership.user, token)
+      stub_sign_in(membership.user)
 
       post(
         :create,
@@ -21,7 +20,7 @@ describe SubscriptionsController, "#create" do
 
       expect(activator).to have_received(:activate)
       expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: token)
+        with(repo: repo, github_token: membership.user.token)
       expect(RepoSubscriber).to have_received(:subscribe).
         with(repo, membership.user, "cardtoken")
       expect(analytics).to have_tracked("Repo Activated").
@@ -81,7 +80,7 @@ describe SubscriptionsController, "#destroy" do
       create(:membership, repo: repo, user: current_user)
       activator = double("RepoActivator", deactivate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
-      stub_sign_in(current_user, "usertoken")
+      stub_sign_in(current_user)
 
       delete(
         :destroy,
@@ -99,7 +98,6 @@ describe SubscriptionsController, "#destroy" do
 
   context "when there is a subscription" do
     it "deletes subscription associated with subscribing user" do
-      token = "usertoken"
       current_user = create(:user)
       subscribed_user = create(:user)
       repo = create(:repo, private: true)
@@ -108,7 +106,7 @@ describe SubscriptionsController, "#destroy" do
       activator = double("RepoActivator", deactivate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:unsubscribe).and_return(true)
-      stub_sign_in(current_user, token)
+      stub_sign_in(current_user)
 
       delete(
         :destroy,
@@ -119,7 +117,7 @@ describe SubscriptionsController, "#destroy" do
 
       expect(activator).to have_received(:deactivate)
       expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: token)
+        with(repo: repo, github_token: current_user.token)
       expect(RepoSubscriber).to have_received(:unsubscribe).
         with(repo, subscribed_user)
       expect(analytics).to have_tracked("Repo Deactivated").

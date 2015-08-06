@@ -24,7 +24,7 @@ class DeactivationsController < ApplicationController
   end
 
   def github_token
-    session.fetch(:github_token)
+    current_user.token
   end
 
   def check_for_subscription
