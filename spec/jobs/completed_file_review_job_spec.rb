@@ -30,9 +30,8 @@ describe CompletedFileReviewJob do
         token: Hound::GITHUB_TOKEN,
       )
       expect(Payload).to have_received(:new).with(build.payload)
-      expect(PullRequest).to(
-        have_received(:new).with(payload, ENV.fetch("HOUND_GITHUB_TOKEN"))
-      )
+      expect(PullRequest).
+        to(have_received(:new).with(payload, Hound::GITHUB_TOKEN))
     end
 
     context "when build doesn't exist" do

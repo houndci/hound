@@ -33,7 +33,7 @@ class CompletedFileReviewJob
     file_review.save!
 
     payload = Payload.new(build.payload)
-    pull_request = PullRequest.new(payload, ENV.fetch("HOUND_GITHUB_TOKEN"))
+    pull_request = PullRequest.new(payload, Hound::GITHUB_TOKEN)
 
     BuildReport.run(
       pull_request: pull_request,
