@@ -26,6 +26,7 @@ RSpec.configure do |config|
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
   DatabaseCleaner.strategy = :deletion
+  ActiveJob::Base.queue_adapter = :resque
 end
 
 Capybara.configure do |config|

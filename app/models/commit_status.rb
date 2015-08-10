@@ -24,6 +24,11 @@ class CommitStatus
     github.create_error_status(repo_name, sha, message, configuration_url)
   end
 
+  def set_internal_error
+    message = I18n.t(:hound_error_status)
+    github.create_error_status(repo_name, sha, message)
+  end
+
   private
 
   attr_reader :repo_name, :sha, :token

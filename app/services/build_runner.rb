@@ -23,6 +23,10 @@ class BuildRunner
     raise
   end
 
+  def set_internal_error
+    commit_status.set_internal_error
+  end
+
   private
 
   def review_pull_request
