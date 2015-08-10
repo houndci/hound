@@ -4,4 +4,10 @@ module Buildable
     build_runner = BuildRunner.new(payload)
     build_runner.run
   end
+
+  def after_retry_exhausted
+    payload = Payload.new(*arguments)
+    build_runner = BuildRunner.new(payload)
+    build_runner.set_internal_error
+  end
 end

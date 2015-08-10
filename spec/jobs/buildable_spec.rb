@@ -1,4 +1,5 @@
 require "spec_helper"
+require "active_job"
 require "app/jobs/buildable"
 require "app/models/payload"
 require "app/services/build_runner"
@@ -11,19 +12,31 @@ describe Buildable do
 
   describe "perform" do
     it 'runs build runner' do
-      stub_const("Owner", "foo")
       build_runner = double(:build_runner, run: nil)
-      payload_data = "some data"
       payload = double("Payload")
       allow(Payload).to receive(:new).with(payload_data).and_return(payload)
       allow(BuildRunner).to receive(:new).and_return(build_runner)
-      allow(Owner).to receive(:upsert)
 
       BuildableTestJob.perform_now(payload_data)
 
       expect(Payload).to have_received(:new).with(payload_data)
       expect(BuildRunner).to have_received(:new).with(payload)
       expect(build_runner).to have_received(:run)
+    end
+  end
+
+  describe "#after_retry_exhausted" do
+    it "sets internal server error on github" do
+      build_runner = double(:build_runner, set_internal_error: nil)
+      payload = double("Payload")
+      allow(Payload).to receive(:new).with(payload_data).and_return(payload)
+      allow(BuildRunner).to receive(:new).and_return(build_runner)
+
+      BuildableTestJob.new(payload_data).after_retry_exhausted
+
+      expect(Payload).to have_received(:new).with(payload_data)
+      expect(BuildRunner).to have_received(:new).with(payload)
+      expect(build_runner).to have_received(:set_internal_error)
     end
   end
 

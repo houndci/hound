@@ -14,6 +14,7 @@ en:
   config_error_status:
     "Error parsing config file: %{filename}. Click \"details\" for
     assistance."
+  hound_error_status: "We've encountered an error while reviewing your code."
 
   account:
     bulk_pricing:
