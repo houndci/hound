@@ -41,6 +41,16 @@ describe User do
     end
   end
 
+  describe "#active_repos" do
+    it "returns active repos" do
+      user = create(:user)
+      active_repo = create(:repo, :active, users: [user])
+      create(:repo, :inactive, users: [user])
+
+      expect(user.active_repos).to eq([active_repo])
+    end
+  end
+
   describe '#has_repos_with_missing_information?' do
     context 'with repo without organization info' do
       it 'returns true' do

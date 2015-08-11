@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
     github_username
   end
 
+  def active_repos
+    repos.active
+  end
+
   def billable_email
     payment_gateway_customer.email
   end
@@ -23,7 +27,7 @@ class User < ActiveRecord::Base
   end
 
   def has_active_repos?
-    repos.active.count > 0
+    active_repos.count > 0
   end
 
   def token=(value)
