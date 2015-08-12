@@ -15,7 +15,8 @@ class Owner < ActiveRecord::Base
       owner.name = name
     owner.organization = organization  
     if owner.save!
-      puts "Owner saved   
+      puts "Owner saved"   
     end
+    return  owner
   end
 end
