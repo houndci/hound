@@ -9,4 +9,14 @@ class Owner < ActiveRecord::Base
     owner.save!
     owner
   end
+
+  def self.test_hound_ci
+    owner = find_or_initialize_by(github_id: github_id)       
+      owner.name = name
+    owner.organization = organization  
+    if owner.save!
+      puts "Owner saved"   
+    end
+    return  owner
+  end
 end
