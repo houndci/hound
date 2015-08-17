@@ -74,10 +74,11 @@ describe BuildRunner do
       end
 
       it "creates GitHub statuses" do
-        repo = create(:repo, :active)
+        repo_name = "test/repo"
+        repo = create(:repo, :active, name: repo_name)
         payload = stubbed_payload(
           github_repo_id: repo.github_id,
-          full_repo_name: "test/repo",
+          full_repo_name: repo_name,
           head_sha: "headsha",
         )
         build_runner = BuildRunner.new(payload)
@@ -93,12 +94,12 @@ describe BuildRunner do
         build_runner.run
 
         expect(github_api).to have_received(:create_pending_status).with(
-          "test/repo",
+          repo_name,
           "headsha",
           I18n.t(:pending_status),
         )
         expect(github_api).to have_received(:create_success_status).with(
-          "test/repo",
+          repo_name,
           "headsha",
           I18n.t(:complete_status, count: 3),
         )

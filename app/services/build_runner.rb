@@ -76,10 +76,7 @@ class BuildRunner
   end
 
   def repo
-    @repo ||= Repo.active.find_and_update(
-      payload.github_repo_id,
-      payload.full_repo_name,
-    )
+    @repo ||= Repo.active.find_by(github_id: payload.github_repo_id)
   end
 
   def reset_token

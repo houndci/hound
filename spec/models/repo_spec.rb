@@ -154,18 +154,4 @@ describe Repo do
       end
     end
   end
-
-  describe ".find_and_update" do
-    context "when repo name doesn't match db record" do
-      it "updates the record" do
-        new_repo_name = "new/name"
-        repo = create(:repo, name: "foo/bar")
-
-        Repo.find_and_update(repo.github_id, new_repo_name)
-        repo.reload
-
-        expect(repo.full_github_name).to eq new_repo_name
-      end
-    end
-  end
 end

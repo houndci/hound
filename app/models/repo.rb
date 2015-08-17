@@ -31,16 +31,6 @@ class Repo < ActiveRecord::Base
     repo
   end
 
-  def self.find_and_update(github_id, repo_name)
-    repo = find_by(github_id: github_id)
-
-    if repo && repo.full_github_name != repo_name
-      repo.update(full_github_name: repo_name)
-    end
-
-    repo
-  end
-
   def activate
     update(active: true)
   end

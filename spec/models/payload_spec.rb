@@ -150,6 +150,34 @@ describe Payload do
     end
   end
 
+  describe "#private_repo?" do
+    context "when repo is private" do
+      it "returns true" do
+        payload_json = {
+          "repository" => {
+            "private" => true,
+          }
+        }
+        payload = Payload.new(payload_json)
+
+        expect(payload.private_repo?).to eq(true)
+      end
+    end
+
+    context "when repo is public" do
+      it "returns false" do
+        payload_json = {
+          "repository" => {
+            "private" => false,
+          }
+        }
+        payload = Payload.new(payload_json)
+
+        expect(payload.private_repo?).to eq(false)
+      end
+    end
+  end
+
   describe "#build_data" do
     it "returns a subset of original data" do
       payload_data = File.read(
@@ -170,6 +198,7 @@ describe Payload do
           "repository" => {
             "id" => 2937493,
             "full_name" => "salbertson/life",
+            "private" => false,
             "owner" => {
               "id" => 154463,
               "login" => "salbertson",

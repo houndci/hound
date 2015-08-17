@@ -62,6 +62,7 @@ class Payload
       "repository" => {
         "id" => github_repo_id,
         "full_name" => full_repo_name,
+        "private" => private_repo?,
         "owner" => {
           "id" => repository_owner_id,
           "login" => repository_owner_name,
@@ -69,6 +70,10 @@ class Payload
         }
       }
     }
+  end
+
+  def private_repo?
+    repository["private"]
   end
 
   private
