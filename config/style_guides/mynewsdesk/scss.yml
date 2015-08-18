@@ -73,7 +73,7 @@ linters:
     include_nested: false
     max_properties: 10
   PropertySortOrder:
-    enabled: true
+    enabled: false
     ignore_unspecified: false
     severity: warning
     separate_groups: false
