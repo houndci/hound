@@ -10,5 +10,5 @@ test:
   database: hound_test
 
 production:
-  pool: <%= [ENV.fetch("MAX_THREADS", 5), ENV.fetch("DB_POOL", 5)].max %>
+  pool: <%= [Integer(ENV.fetch("MAX_THREADS", 5)), Integer(ENV.fetch("DB_POOL", 5))].max %>
   url:  <%= ENV.fetch("DATABASE_URL") if Rails.env.production? %>
