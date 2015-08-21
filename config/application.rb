@@ -17,7 +17,5 @@ module Houndapp
       "RedirectToConfiguration"
     )
     config.exceptions_app = routes
-
-    Rails.application.routes.default_url_options[:host] = ENV.fetch("HOST")
   end
 end

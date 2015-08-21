@@ -1,12 +1,25 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  before_action :force_https
   before_action :capture_campaign_params
   before_action :authenticate
 
   helper_method :current_user, :signed_in?
 
   private
+
+  def force_https
+    if ENV['ENABLE_HTTPS'] == 'yes'
+      if !request.ssl? && force_https?
+        redirect_to protocol: "https://", status: :moved_permanently
+      end
+    end
+  end
+
+  def force_https?
+    true
+  end
 
   def capture_campaign_params
     session[:campaign_params] ||= {
