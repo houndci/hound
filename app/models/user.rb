@@ -18,11 +18,11 @@ class User < ActiveRecord::Base
     payment_gateway_customer.email
   end
 
-  def has_repos_with_missing_information?
-    repos.where("in_organization IS NULL OR private IS NULL").count > 0
+  def repos_with_missing_information?
+    repos.where('in_organization IS NULL OR private IS NULL').count > 0
   end
 
-  def has_active_repos?
+  def active_repos?
     repos.active.count > 0
   end
 
@@ -33,14 +33,12 @@ class User < ActiveRecord::Base
 
   def token
     encrypted_token = read_attribute(:token)
-    unless encrypted_token.nil?
-      crypt.decrypt_and_verify(encrypted_token)
-    end
+    crypt.decrypt_and_verify(encrypted_token) unless encrypted_token.nil?
   end
 
   def access_to_private_repos?
     if token_scopes
-      token_scopes.split(",").include? "repo"
+      token_scopes.split(',').include? 'repo'
     else
       false
     end

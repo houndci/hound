@@ -15,9 +15,11 @@ describe StyleGuide::Ruby do
 
     context "with default configuration" do
       describe "for { and } as %r literal delimiters" do
-        it "returns no violations" do
-          expect(violations_in(<<-CODE)).to eq []
-            "test" =~ %r|test|
+        it "returns violations" do
+          violations = ["Use `//` around regular expression."]
+
+          expect(violations_in(<<-CODE)).to eq violations
+'test' =~ %r{|test|}
           CODE
         end
       end
@@ -25,45 +27,59 @@ describe StyleGuide::Ruby do
       describe "for private prefix" do
         it "returns no violations" do
           expect(violations_in(<<-CODE)).to eq []
-            private def foo
-              bar
-            end
+private def foo
+  bar
+end
           CODE
         end
       end
 
       describe "for trailing commas" do
-        it "returns no violations" do
-          expect(violations_in(<<-CODE)).to eq []
-            _one = [
-              1,
-            ]
-            _two(
-              1,
-            )
-            _three = {
-              one: 1,
-            }
+        it "returns violations" do
+          violations = [
+            "Avoid comma after the last item of an array.",
+            "Avoid comma after the last parameter of a method call.",
+            "Avoid comma after the last item of a hash."
+          ]
+
+          expect(violations_in(<<-CODE)).to eq violations
+_one = [
+  1,
+]
+_two(
+  1,
+)
+_three = {
+  one: 1,
+}
           CODE
         end
       end
 
       describe "for single line conditional" do
-        it "returns no violations" do
-          expect(violations_in(<<-CODE)).to eq []
-  if signed_in? then redirect_to dashboard_path end
+        it "returns violations" do
+          violations = [
+            "Favor modifier `if` usage when having a single-line body. "\
+            "Another good alternative is the usage of control flow `&&`/`||`.",
+            "Favor modifier `while` usage when having a single-line body."
+          ]
 
-  while signed_in? do something end
+          expect(violations_in(<<-CODE)).to eq violations
+if signed_in? then redirect_to dashboard_path end
+
+while signed_in? do something end
           CODE
         end
       end
 
       describe "for has_* method name" do
-        it "returns no violations" do
-          expect(violations_in(<<-CODE)).to eq []
-  def has_something?
-    "something"
-  end
+        it "returns violations" do
+          violations = ["Rename `has_something?` to `something?`."]
+
+          expect(violations_in(<<-CODE)).to eq violations
+def has_something?
+  'something'
+end
           CODE
         end
       end
@@ -73,9 +89,9 @@ describe StyleGuide::Ruby do
           violations = ["Rename `is_something?` to `something?`."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  def is_something?
-    "something"
-  end
+def is_something?
+  'something'
+end
           CODE
         end
       end
@@ -83,17 +99,15 @@ describe StyleGuide::Ruby do
       describe "when using detect" do
         it "returns no violations" do
           expect(violations_in(<<-CODE)).to eq []
-  users.detect(&:active?)
+users.detect(&:active?)
           CODE
         end
       end
 
       describe "when using find" do
-        it "returns violations" do
-          violations = ["Prefer `detect` over `find`."]
-
-          expect(violations_in(<<-CODE)).to eq violations
-  users.find(&:active?)
+        it "returns no violations" do
+          expect(violations_in(<<-CODE)).to eq []
+users.find(&:active?)
           CODE
         end
       end
@@ -101,17 +115,15 @@ describe StyleGuide::Ruby do
       describe "when using select" do
         it "returns no violations" do
           expect(violations_in(<<-CODE)).to eq []
-  users.select(&:active?)
+users.select(&:active?)
           CODE
         end
       end
 
       describe "when using find_all" do
-        it "returns violations" do
-          violations = ["Prefer `select` over `find_all`."]
-
-          expect(violations_in(<<-CODE)).to eq violations
-  users.find_all(&:active?)
+        it "returns no violations" do
+          expect(violations_in(<<-CODE)).to eq []
+users.find_all(&:active?)
           CODE
         end
       end
@@ -119,17 +131,15 @@ describe StyleGuide::Ruby do
       describe "when using map" do
         it "returns no violations" do
           expect(violations_in(<<-CODE)).to eq []
-  users.map(&:active?)
+users.map(&:active?)
           CODE
         end
       end
 
       describe "when using collect" do
-        it "returns violations" do
-          violations = ["Prefer `map` over `collect`."]
-
-          expect(violations_in(<<-CODE)).to eq violations
-  users.collect(&:active?)
+        it "returns no violations" do
+          expect(violations_in(<<-CODE)).to eq []
+users.collect(&:active?)
           CODE
         end
       end
@@ -137,21 +147,19 @@ describe StyleGuide::Ruby do
       describe "when using inject" do
         it "returns no violations" do
           expect(violations_in(<<-CODE)).to eq []
-            users.inject(0) do |sum, user|
-              sum + user.age
-            end
+users.inject(0) do |sum, user|
+  sum + user.age
+end
           CODE
         end
       end
 
       describe "when using reduce" do
-        it "returns violations" do
-          violations = ["Prefer `inject` over `reduce`."]
-
-          expect(violations_in(<<-CODE)).to eq violations
-  users.reduce(0) do |_, user|
-    user.age
-  end
+        it "returns no violations" do
+          expect(violations_in(<<-CODE)).to eq []
+users.reduce(0) do |sum, user|
+  sum + user.age
+end
           CODE
         end
       end
@@ -177,7 +185,7 @@ describe StyleGuide::Ruby do
           violations = ["Space inside parentheses detected."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  logger( "test")
+logger( 'test')
           CODE
         end
       end
@@ -187,7 +195,7 @@ describe StyleGuide::Ruby do
           violations = ["Space inside parentheses detected."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  logger("test" )
+logger('test' )
           CODE
         end
       end
@@ -197,7 +205,7 @@ describe StyleGuide::Ruby do
           violations = ["Space inside square brackets detected."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  a["test" ]
+a['test' ]
           CODE
         end
       end
@@ -207,27 +215,27 @@ describe StyleGuide::Ruby do
           violations = ["Inconsistent indentation detected."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  def one
-    1
+def one
+  1
+end
+
+private
+
+  def two
+    2
   end
-
-  private
-
-    def two
-      2
-    end
           CODE
         end
       end
 
       context "for leading dot used for multi-line method chain" do
         it "returns violations" do
-          violations = ["Place the . on the previous line, together with the "\
-                        "method call receiver."]
+          violations = ["Place the . on the next line, together with the "\
+                        "method name."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  one
-    .two
+one.
+  two
           CODE
         end
       end
@@ -240,9 +248,9 @@ describe StyleGuide::Ruby do
           ]
 
           expect(violations_in(<<-CODE)).to eq violations
-  def test
-  \tlogger "test"
-  end
+def test
+\tlogger 'test'
+end
           CODE
         end
       end
@@ -252,12 +260,12 @@ describe StyleGuide::Ruby do
           violations = ["Use empty lines between defs."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  def one
-    1
-  end
-  def two
-    2
-  end
+def one
+  1
+end
+def two
+  2
+end
           CODE
         end
       end
@@ -266,7 +274,7 @@ describe StyleGuide::Ruby do
         it "returns violations" do
           violations = ["Surrounding space missing for operator `+`."]
           expect(violations_in(<<-CODE)).to eq violations
-  1+1
+1+1
           CODE
         end
       end
@@ -276,7 +284,7 @@ describe StyleGuide::Ruby do
           violations = ["Space missing after comma."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  logger :one,:two
+logger :one,:two
           CODE
         end
       end
@@ -288,7 +296,7 @@ describe StyleGuide::Ruby do
                         "Space inside } missing."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  {one:1}
+{one:1}
           CODE
         end
       end
@@ -299,7 +307,7 @@ describe StyleGuide::Ruby do
                         "Space missing after semicolon."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  logger :one;logger :two
+logger :one;logger :two
           CODE
         end
       end
@@ -309,8 +317,8 @@ describe StyleGuide::Ruby do
           violations = ["Surrounding space missing for operator `=`."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  a ={ one: 1 }
-  a
+a ={ one: 1 }
+a
           CODE
         end
       end
@@ -320,8 +328,8 @@ describe StyleGuide::Ruby do
           violations = ["Space inside { missing."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  a = {one: 1 }
-  a
+a = {one: 1 }
+a
           CODE
         end
       end
@@ -331,8 +339,8 @@ describe StyleGuide::Ruby do
           violations = ["Space inside } missing."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  a = { one: 1}
-  a
+a = { one: 1}
+a
           CODE
         end
       end
@@ -340,9 +348,9 @@ describe StyleGuide::Ruby do
       context "for method definitions with optional named arguments" do
         it "does not return violations" do
           expect(violations_in(<<-CODE)).to be_empty
-  def register_email(email:)
-    register(email)
-  end
+def register_email(email:)
+  register(email)
+end
           CODE
         end
       end
@@ -351,14 +359,14 @@ describe StyleGuide::Ruby do
         context "when each argument is not on its own line" do
           it "returns violations" do
             code = <<-CODE.strip_heredoc
-              validates :name,
-                presence: true,
-                uniqueness: true
+validates :name,
+  presence: true,
+  uniqueness: true
             CODE
 
             expect(violations_in(code)).to eq [
-              "Align the parameters of a method call if they span more than " +
-                "one line."
+"Align the parameters of a method call if they span more than " +
+  "one line."
             ]
           end
         end
@@ -366,11 +374,11 @@ describe StyleGuide::Ruby do
         context "when each argument is on its own line" do
           it "returns no violations" do
             code = <<-CODE.strip_heredoc
-              validates(
-                :name,
-                presence: true,
-                uniqueness: true
-              )
+validates(
+  :name,
+  presence: true,
+  uniqueness: true
+)
             CODE
 
             expect(violations_in(code)).to be_empty
@@ -382,10 +390,10 @@ describe StyleGuide::Ruby do
         context "without space after arguments" do
           it "returns no violations" do
             code = <<-CODE.strip_heredoc
-              def initialize(name:, age:)
-                @name = name
-                @age = age
-              end
+def initialize(name:, age:)
+  @name = name
+  @age = age
+end
             CODE
 
             expect(violations_in(code)).to be_empty
@@ -395,10 +403,10 @@ describe StyleGuide::Ruby do
         context "with spaces after arguments" do
           it "returns violations" do
             code = <<-CODE.strip_heredoc
-              def initialize(name: , age: )
-                @name = name
-                @age = age
-              end
+def initialize(name: , age: )
+  @name = name
+  @age = age
+end
             CODE
 
             violations = violations_in(code)
@@ -414,11 +422,11 @@ describe StyleGuide::Ruby do
       context "when continued lines are not aligned with operand" do
         it "returns violations" do
           code = <<-CODE.strip_heredoc
-            def foo
-              user = User.where(email: "user@example.com").
-                assign_attributes(name: "User")
-              user.save!
-            end
+def foo
+  user = User.where(email: 'user@example.com')
+    .assign_attributes(name: 'User')
+  user.save!
+end
           CODE
 
           violations = violations_in(code)
@@ -434,11 +442,11 @@ describe StyleGuide::Ruby do
         context "with thoughtbot repo" do
           it "returns violations" do
             code = <<-CODE.strip_heredoc
-              def foo
-                user = User.where(email: "user@example.com").
-                       assign_attributes(name: "User")
-                user.save!
-              end
+def foo
+  user = User.where(email: "user@example.com").
+         assign_attributes(name: "User")
+  user.save!
+end
             CODE
 
             violations = violations_in(code, repository_owner_name: "thoughtbot")
@@ -471,7 +479,9 @@ describe StyleGuide::Ruby do
         violations = violations_with_config(config)
 
         expect(violations).to eq [
-          "Style/HashSyntax: Use the new Ruby 1.9 hash syntax."
+          "Style/HashSyntax: Use the new Ruby 1.9 hash syntax.",
+          "Style/StringLiterals: Prefer single-quoted strings when " +
+          "you don't need string interpolation or special symbols."
         ]
       end
 
@@ -501,9 +511,9 @@ describe StyleGuide::Ruby do
                         "instead of a block."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  users.map do |user|
-    user.name
-  end
+users.map do |user|
+  user.name
+end
           CODE
         end
       end
@@ -513,7 +523,7 @@ describe StyleGuide::Ruby do
           violations = ["Remove debugger entry point `binding.pry`."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  binding.pry
+binding.pry
           CODE
         end
       end
@@ -524,11 +534,11 @@ describe StyleGuide::Ruby do
                         "Extra empty line detected at block body end."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  block do |hoge|
+block do |hoge|
 
-    hoge
+  hoge
 
-  end
+end
           CODE
         end
       end
@@ -538,8 +548,8 @@ describe StyleGuide::Ruby do
           violations = ["Unnecessary spacing detected."]
 
           expect(violations_in(<<-CODE)).to eq violations
-  hoge  = "https://github.com/bbatsov/rubocop"
-  hoge
+hoge  = 'https://github.com/bbatsov/rubocop'
+hoge
           CODE
         end
       end
@@ -561,9 +571,9 @@ describe StyleGuide::Ruby do
         spy_on_rubocop_configuration_loader
         config_file = default_configuration_file(StyleGuide::Ruby)
         code = <<-CODE
-          private def foo
-            bar
-          end
+private def foo
+  bar
+end
         CODE
 
         violations_in(code, repository_owner_name: "not_thoughtbot")
@@ -601,9 +611,9 @@ describe StyleGuide::Ruby do
       describe "when using reduce" do
         it "returns no violations" do
           expect(thoughtbot_violations_in(<<-CODE)).to eq []
-            users.reduce(0) do |sum, user|
-              sum + user.age
-            end
+users.reduce(0) do |sum, user|
+  sum + user.age
+end
           CODE
         end
       end
@@ -613,9 +623,9 @@ describe StyleGuide::Ruby do
           violations = ["Prefer `reduce` over `inject`."]
 
           expect(thoughtbot_violations_in(<<-CODE)).to eq violations
-            users.inject(0) do |_, user|
-              user.age
-            end
+users.inject(0) do |_, user|
+  user.age
+end
           CODE
         end
       end
@@ -625,10 +635,10 @@ describe StyleGuide::Ruby do
           violations = ["Put a comma after the last item of a multiline hash."]
 
           expect(thoughtbot_violations_in(<<-CODE)).to eq violations
-            {
-              a: 1,
-              b: 2
-            }
+{
+  a: 1,
+  b: 2
+}
           CODE
         end
       end
@@ -636,10 +646,10 @@ describe StyleGuide::Ruby do
       describe "when trailing commas are present" do
         it "returns no violations" do
           expect(thoughtbot_violations_in(<<-CODE)).to eq []
-            {
-              a: 1,
-              b: 2,
-            }
+{
+  a: 1,
+  b: 2,
+}
           CODE
         end
       end

@@ -2,7 +2,7 @@
   .inner-wrapper
     %h1= t("onboarding.title")
     %ol.onboarding-steps
-      - if current_user.has_active_repos?
+      - if current_user.active_repos?
         %li.step
           %h4= t("onboarding.step_one_alt_title", count: current_user.repos.active.count )
           %p= t("onboarding.step_one_desc")
