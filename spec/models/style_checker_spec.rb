@@ -8,7 +8,7 @@ describe StyleChecker, "#file_reviews" do
       commit_files: [stylish_commit_file, violated_commit_file]
     )
     expected_violations = [
-      "Unnecessary spacing detected.",
+      "Avoid single-line method definitions.",
       "Space inside parentheses detected.",
       "Trailing whitespace detected.",
     ]
@@ -24,7 +24,6 @@ describe StyleChecker, "#file_reviews" do
         commit_file = stub_commit_file("ruby.rb", "puts 123    ")
         pull_request = stub_pull_request(commit_files: [commit_file])
         expected_violations = [
-          "Unnecessary spacing detected.",
           "Trailing whitespace detected.",
         ]
 

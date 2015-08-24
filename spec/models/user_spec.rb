@@ -41,14 +41,14 @@ describe User do
     end
   end
 
-  describe '#has_repos_with_missing_information?' do
+  describe '#repos_with_missing_information?' do
     context 'with repo without organization info' do
       it 'returns true' do
         user = create(:user)
         repo = create(:repo, in_organization: nil)
         user.repos << repo
 
-        expect(user).to have_repos_with_missing_information
+        expect(user).to be_repos_with_missing_information
       end
     end
 
@@ -58,7 +58,7 @@ describe User do
         repo = create(:repo, private: nil)
         user.repos << repo
 
-        expect(user).to have_repos_with_missing_information
+        expect(user).to be_repos_with_missing_information
       end
     end
 
@@ -68,7 +68,7 @@ describe User do
         repo = create(:repo, in_organization: nil, private: nil)
         user.repos << repo
 
-        expect(user).to have_repos_with_missing_information
+        expect(user).to be_repos_with_missing_information
       end
     end
 
@@ -78,7 +78,7 @@ describe User do
         repo = create(:repo, in_organization: true, private: true)
         user.repos << repo
 
-        expect(user).not_to have_repos_with_missing_information
+        expect(user).not_to be_repos_with_missing_information
       end
     end
   end
