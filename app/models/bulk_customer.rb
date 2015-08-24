@@ -18,4 +18,8 @@ class BulkCustomer < ActiveRecord::Base
 
     update(current_repos: repo_count)
   end
+
+  def to_s
+    org
+  end
 end

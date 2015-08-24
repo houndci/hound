@@ -46,6 +46,12 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.7)
+    administrate (0.0.8)
+      neat (~> 1.1)
+      normalize-rails (~> 3.0)
+      rails (~> 4.2)
+      sass (~> 3.4)
+      selectize-rails (~> 0.6)
     analytics-ruby (2.0.6)
     angular_rails_csrf (1.0.3)
       rails (>= 3, < 5)
@@ -158,6 +164,7 @@ GEM
     newrelic_rpm (3.9.9.275)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    normalize-rails (3.0.3)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -282,6 +289,7 @@ GEM
     sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
+    selectize-rails (0.12.1)
     sentry-raven (0.9.4)
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
@@ -332,6 +340,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (= 0.8.3)
+  administrate (~> 0.0.8)
   analytics-ruby (~> 2.0.0)
   angular_rails_csrf
   angularjs-rails

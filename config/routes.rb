@@ -1,4 +1,16 @@
 Houndapp::Application.routes.draw do
+  namespace :admin do
+    DashboardManifest::DASHBOARDS.each do |dashboard_resource|
+      resources(
+        dashboard_resource,
+        controller: "application",
+        resource_class: dashboard_resource,
+      )
+    end
+
+    root to: "application#index", resource_class: :bulk_customers
+  end
+
   mount Resque::Server, at: "/queue"
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
   mount Split::Dashboard, at: "split"
