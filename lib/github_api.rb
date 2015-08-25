@@ -8,6 +8,7 @@ class GithubApi
 
   attr_reader :file_cache, :token
 
+  # doesn't look like we need a default token
   def initialize(token)
     @token = token
     @file_cache = {}
@@ -15,10 +16,6 @@ class GithubApi
 
   def client
     @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
-  end
-
-  def scopes
-    client.scopes(token).join(",")
   end
 
   def repos

@@ -10,7 +10,6 @@ module AuthenticationHelper
       email: user.email_address,
       token: token
     )
-    stub_scopes_request(token: token)
     visit root_path(SPLIT_DISABLE: "true")
     click_link(I18n.t('authenticate'), match: :first)
   end

@@ -4,11 +4,9 @@ describe SessionsController do
   describe "#create" do
     context "with valid new user" do
       it "creates new user" do
-        stub_scopes_request(token: "letmein")
         request.env["omniauth.auth"] = stub_oauth(
           username: "jimtom",
-          email: "jimtom@example.com",
-          token: "letmein"
+          email: "jimtom@example.com"
         )
 
         expect { post :create }.to change { User.count }.by(1)

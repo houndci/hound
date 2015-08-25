@@ -38,14 +38,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def access_to_private_repos?
-    if token_scopes
-      token_scopes.split(",").include? "repo"
-    else
-      false
-    end
-  end
-
   private
 
   def crypt

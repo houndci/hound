@@ -2,13 +2,9 @@ class SessionsController < ApplicationController
   skip_before_action :authenticate, only: [:create]
 
   def create
-    create_session
-
-    if github_token
-      update_token
-      update_scopes
-    end
-
+    user = find_user || create_user
+    create_session_for(user)
+    user.update(token: github_token)
     finished("auth_button")
     redirect_to repos_path
   end
@@ -19,10 +15,6 @@ class SessionsController < ApplicationController
   end
 
   private
-
-  def user
-    @user ||= find_user || create_user
-  end
 
   def find_user
     if user = User.where(github_username: github_username).first
@@ -42,16 +34,12 @@ class SessionsController < ApplicationController
     user
   end
 
-  def create_session
+  def create_session_for(user)
     session[:remember_token] = user.remember_token
   end
 
   def destroy_session
     session[:remember_token] = nil
-  end
-
-  def github
-    GithubApi.new(github_token)
   end
 
   def github_username
@@ -64,24 +52,5 @@ class SessionsController < ApplicationController
 
   def github_token
     request.env["omniauth.auth"]["credentials"]["token"]
-  end
-
-  def scopes_changed?
-    user.token_scopes != token_scopes
-  end
-
-  def token_scopes
-    @token_scopes ||= github.scopes
-  end
-
-  def update_token
-    user.update!(token: github_token)
-  end
-
-  def update_scopes
-    if scopes_changed?
-      user.update!(token_scopes: token_scopes)
-      user.repos.clear
-    end
   end
 end
