@@ -48,6 +48,8 @@ class StyleChecker
       StyleGuide::Go
     when /.+\.py\z/
       StyleGuide::Python
+    when /.+\.swift\z/
+      StyleGuide::Swift
     else
       StyleGuide::Unsupported
     end

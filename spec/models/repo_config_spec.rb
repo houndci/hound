@@ -46,6 +46,8 @@ describe RepoConfig do
             enabled: true
           python:
             enabled: true
+          swift:
+            enabled: true
         EOS
         repo_config = RepoConfig.new(commit)
 
@@ -130,6 +132,8 @@ describe RepoConfig do
             Go:
               Enabled: true
             Python:
+              Enabled: true
+            Swift:
               Enabled: true
           EOS
           repo_config = RepoConfig.new(commit)
