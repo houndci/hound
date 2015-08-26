@@ -8,7 +8,13 @@ class RepoActivator
   end
 
   def activate
-    activate_repo.tap { enqueue_org_invitation }
+    activated = activate_repo
+
+    if activated
+      enqueue_org_invitation
+    end
+
+    activated
   end
 
   def deactivate
@@ -21,13 +27,20 @@ class RepoActivator
 
   def activate_repo
     change_repository_state_quietly do
-      add_hound_to_repo && create_webhook && repo.activate
+      if repo.private?
+        add_hound_to_repo && create_webhook && repo.activate
+      else
+        create_webhook && repo.activate
+      end
     end
   end
 
   def deactivate_repo
     change_repository_state_quietly do
-      remove_hound_from_repo
+      if repo.private?
+        remove_hound_from_repo
+      end
+
       delete_webhook && repo.deactivate
     end
   end
@@ -59,7 +72,7 @@ class RepoActivator
   end
 
   def enqueue_org_invitation
-    if repo.in_organization?
+    if repo.private? && repo.in_organization?
       AcceptOrgInvitationsJob.perform_later
     end
   end

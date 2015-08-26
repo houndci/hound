@@ -2,69 +2,194 @@ require "rails_helper"
 
 describe RepoActivator do
   describe "#activate" do
-    context "with org repo" do
-      it "will enqueue org invitation job" do
-        allow(AcceptOrgInvitationsJob).to receive(:perform_later)
-        repo = create(:repo, in_organization: true)
-        stub_github_api
-        activator = build_activator(repo: repo)
+    context "when repo is public" do
+      context "when repo belongs to an org" do
+        it "will not add Hound to repo" do
+          allow(AddHoundToRepo).to receive(:run)
+          repo = create(:repo, private: false, in_organization: true)
+          stub_github_api
+          activator = build_activator(repo: repo)
 
-        activator.activate
+          activator.activate
 
-        expect(AcceptOrgInvitationsJob).to have_received(:perform_later)
+          expect(AddHoundToRepo).not_to have_received(:run)
+        end
+
+        it "will not enqueue org invitation job" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, private: false, in_organization: true)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(AcceptOrgInvitationsJob).not_to have_received(:perform_later)
+        end
+
+        it "marks repo as active" do
+          repo = create(:repo, private: false, in_organization: true)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(repo.reload).to be_active
+        end
+
+        it "returns true" do
+          repo = create(:repo, private: false, in_organization: true)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          result = activator.activate
+
+          expect(result).to be_truthy
+        end
       end
 
-      it "marks repo as active" do
-        repo = create(:repo, in_organization: true)
-        github = stub_github_api
-        allow(github).to receive(:accept_pending_invitations)
-        activator = build_activator(repo: repo)
+      context "when repo belongs to a user" do
+        it "will not add Hound to repo" do
+          allow(AddHoundToRepo).to receive(:run)
+          repo = create(:repo, private: false, in_organization: false)
+          stub_github_api
+          activator = build_activator(repo: repo)
 
-        result = activator.activate
+          activator.activate
 
-        expect(result).to be_truthy
-        expect(repo.reload).to be_active
+          expect(AddHoundToRepo).not_to have_received(:run)
+        end
+
+        it "will not enqueue org invitation job" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, private: false, in_organization: false)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(AcceptOrgInvitationsJob).not_to have_received(:perform_later)
+        end
+
+        it "marks repo as active" do
+          repo = create(:repo, private: false, in_organization: false)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(repo.reload).to be_active
+        end
+
+        it "returns true" do
+          repo = create(:repo, private: false, in_organization: false)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          result = activator.activate
+
+          expect(result).to be_truthy
+        end
       end
     end
 
-    context "without org repo" do
-      it "will not enqueue org invitation job" do
-        allow(AcceptOrgInvitationsJob).to receive(:perform_later)
-        repo = create(:repo)
-        stub_github_api
-        activator = build_activator(repo: repo)
+    context "when repo is private" do
+      context "when repo belongs to an org" do
+        it "will enqueue org invitation job" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, :in_private_org)
+          stub_github_api
+          activator = build_activator(repo: repo)
 
-        activator.activate
+          activator.activate
 
-        expect(repo.in_organization).to be_falsy
-        expect(AcceptOrgInvitationsJob).not_to have_received(:perform_later)
+          expect(AcceptOrgInvitationsJob).to have_received(:perform_later)
+        end
+
+        it "adds Hound to repo" do
+          allow(AddHoundToRepo).to receive(:run)
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, :in_private_org)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(AddHoundToRepo).to have_received(:run)
+        end
+
+        it "marks repo as active" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, :in_private_org)
+          github = stub_github_api
+          allow(github).to receive(:accept_pending_invitations)
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(repo.reload).to be_active
+        end
+
+        it "returns true" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, :in_private_org)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          result = activator.activate
+
+          expect(result).to be_truthy
+        end
       end
 
-      it "marks repo as active" do
-        repo = create(:repo, in_organization: false)
-        stub_github_api
-        activator = build_activator(repo: repo)
+      context "when repo belongs to a user" do
+        it "will not enqueue org invitation job" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, private: true, in_organization: false)
+          stub_github_api
+          activator = build_activator(repo: repo)
 
-        result = activator.activate
+          activator.activate
 
-        expect(result).to be_truthy
-        expect(repo.reload).to be_active
+          expect(AcceptOrgInvitationsJob).not_to have_received(:perform_later)
+        end
+
+        it "adds Hound to repo" do
+          allow(AddHoundToRepo).to receive(:run)
+          repo = create(:repo, private: true, in_organization: false)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(AddHoundToRepo).to have_received(:run)
+        end
+
+        it "marks repo as active" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, private: true, in_organization: false)
+          github = stub_github_api
+          allow(github).to receive(:accept_pending_invitations)
+          activator = build_activator(repo: repo)
+
+          activator.activate
+
+          expect(repo.reload).to be_active
+        end
+
+        it "returns true" do
+          allow(AcceptOrgInvitationsJob).to receive(:perform_later)
+          repo = create(:repo, private: true, in_organization: false)
+          stub_github_api
+          activator = build_activator(repo: repo)
+
+          result = activator.activate
+
+          expect(result).to be_truthy
+        end
       end
     end
 
     context "when repo activation succeeds" do
-      it "adds Hound to the repo" do
-        token = "some_token"
-        repo = build(:repo, name: "foo/bar")
-        github = stub_github_api
-        activator = build_activator(repo: repo, token: token)
-
-        activator.activate
-
-        expect(GithubApi).to have_received(:new).with(token)
-        expect(AddHoundToRepo).to have_received(:run).with(repo.name, github)
-      end
-
       context "when https is enabled" do
         it "creates GitHub hook using secure build URL" do
           github = stub_github_api
@@ -100,7 +225,8 @@ describe RepoActivator do
 
     context "when adding hound to repo results in an error" do
       it "returns false" do
-        activator = build_activator
+        repo = build(:repo, private: true)
+        activator = build_activator(repo: repo)
         allow(AddHoundToRepo).to receive(:run).and_raise(Octokit::Error.new)
 
         result = activator.activate
@@ -109,7 +235,8 @@ describe RepoActivator do
       end
 
       it "adds an error" do
-        activator = build_activator
+        repo = build(:repo, private: true)
+        activator = build_activator(repo: repo)
         error_message = "error"
         allow(AddHoundToRepo).to receive(:run).and_raise(Octokit::Forbidden.new)
         allow(ErrorMessageTranslation).to receive(:from_error_response).
@@ -121,7 +248,8 @@ describe RepoActivator do
       end
 
       it "reports raised exception to Sentry" do
-        activator = build_activator
+        repo = build(:repo, private: true)
+        activator = build_activator(repo: repo)
         error = Octokit::Error.new
         allow(AddHoundToRepo).to receive(:run).and_raise(error)
         allow(Raven).to receive(:capture_exception)
@@ -132,7 +260,8 @@ describe RepoActivator do
       end
 
       it "only swallows Octokit errors" do
-        activator = build_activator
+        repo = build(:repo, private: true)
+        activator = build_activator(repo: repo)
         allow(AddHoundToRepo).to receive(:run).and_raise(StandardError.new)
 
         expect { activator.activate }.to raise_error(StandardError)
@@ -141,7 +270,8 @@ describe RepoActivator do
 
     context "hook already exists" do
       it "does not raise" do
-        activator = build_activator
+        repo = build(:repo, private: true)
+        activator = build_activator(repo: repo)
         github = double("GithubApi", create_hook: nil)
         allow(GithubApi).to receive(:new).and_return(github)
 
@@ -151,6 +281,31 @@ describe RepoActivator do
   end
 
   describe "#deactivate" do
+    context "when repo is public" do
+      it "does not remove Hound from the repo" do
+        repo = create(:repo, private: false)
+        activator = build_activator(repo: repo)
+        stub_github_api
+
+        activator.deactivate
+
+        expect(RemoveHoundFromRepo).not_to have_received(:run)
+      end
+    end
+
+    context "when repo is private" do
+      it "removes Hound from the repo" do
+        repo = create(:repo, private: true)
+        activator = build_activator(repo: repo)
+        github_api = stub_github_api
+
+        activator.deactivate
+
+        expect(RemoveHoundFromRepo).to have_received(:run).
+          with(repo.full_github_name, github_api)
+      end
+    end
+
     context "when repo deactivation succeeds" do
       it "marks repo as deactivated" do
         repo = create(:repo)
@@ -171,17 +326,6 @@ describe RepoActivator do
 
         expect(github_api).to have_received(:remove_hook)
         expect(repo.hook_id).to be_nil
-      end
-
-      it "removes hound from repo" do
-        repo = create(:repo)
-        activator = build_activator(repo: repo)
-        github_api = stub_github_api
-
-        activator.deactivate
-
-        expect(RemoveHoundFromRepo).to have_received(:run).
-          with(repo.full_github_name, github_api)
       end
 
       it "returns true" do
@@ -215,7 +359,8 @@ describe RepoActivator do
 
     context "when removing houndci user from org fails" do
       it "returns true" do
-        activator = build_activator
+        repo = build(:repo, private: true)
+        activator = build_activator(repo: repo)
         stub_github_api
         allow(RemoveHoundFromRepo).to receive(:run).and_return(false)
 

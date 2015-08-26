@@ -82,4 +82,22 @@ describe User do
       end
     end
   end
+
+  describe "#has_access_to_private_repos?" do
+    context "when token scopes include repo" do
+      it "returns true" do
+        user = User.new(token_scopes: "repo,user:email")
+
+        expect(user).to have_access_to_private_repos
+      end
+    end
+
+    context "when token scopes don't include repo" do
+      it "returns false" do
+        user = User.new(token_scopes: "public_repo,user:email")
+
+        expect(user).not_to have_access_to_private_repos
+      end
+    end
+  end
 end

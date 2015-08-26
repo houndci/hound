@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 20150731212842) do
     t.string   "stripe_customer_id", limit: 255
     t.string   "token"
     t.string   "utm_source"
+    t.string   "token_scopes"
   end
 
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree

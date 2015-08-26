@@ -2,6 +2,10 @@
   .search-wrapper
     %i.fa.fa-search
     %input.search{'type' => 'text', 'placeholder' => t('search_placeholder'), 'ng-model' => 'search.full_github_name'}
+  - unless current_user.has_access_to_private_repos?
+    .include-private-repos-wrapper
+      = button_to "/auth/github?access=full", class: "include-private-repos", "ng-disabled" => "syncingRepos" do
+        %span {{ includePrivateReposButtonText }}
   .refresh-wrapper
     %button{'class' => 'refresh', 'ng-click' => 'sync()', 'ng-disabled' => 'syncingRepos'}
       %span {{ syncButtonText }}
