@@ -25,8 +25,11 @@ Here are a few technical guidelines to follow:
 
     `./bin/setup`
 
-1. Sign up for a free [ngrok] account and create a `~/.ngrok` file with the
-   following:
+    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 2-5.  
+    Designers, you don't need ngrok for the purpose of making css changes and running the app locally.
+
+1. Ngrok allows GitHub to make requests via webhook to start a build. Sign up
+for a free [ngrok] account and create a `~/.ngrok` file with the following:
 
     `auth_token: <your-token>`
 
@@ -46,8 +49,12 @@ Here are a few technical guidelines to follow:
    application" and fill in the details:
 
     * Application Name: Hound Development
-    * Homepage URL: `https://<your-initials>-hound.ngrok.com`
-    * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`
+    * Homepage URL: `https://<your-initials>-hound.ngrok.com`  
+      **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
+    * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`  
+      **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
+
+      **NOTE:** If you did not set up ngrok, skip to the last step.
 
 1. On the confirmation screen, copy the `Client ID` and `Client Secret` to
    `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in the `.env` file.
