@@ -20,7 +20,12 @@ describe SessionsController do
       it "raises and does not save user" do
         request.env["omniauth.auth"] = stub_oauth(username: nil)
 
-        expect { post :create }.to raise_error
+        expect do
+          post :create
+        end.to raise_error(
+          ActiveRecord::RecordInvalid,
+          "Validation failed: Github username can't be blank",
+        )
         expect(User.count).to be_zero
       end
     end
