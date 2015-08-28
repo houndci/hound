@@ -1,6 +1,6 @@
 :javascript
   Namespaced.declare("Hound.settings");
   Hound.settings = {
-    stripePublishableKey: '#{ENV['STRIPE_PUBLISHABLE_KEY']}',
-    userEmailAddress: '#{current_user.email_address}'
+    stripePublishableKey: "#{Hound::STRIPE_PUBLISHABLE_KEY}",
+    userEmailAddress: "#{current_user.email_address}",
   };

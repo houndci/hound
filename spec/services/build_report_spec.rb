@@ -5,7 +5,7 @@ describe BuildReport do
     context "when build has violations" do
       context "when the build is complete" do
         it "comments a maximum number of times" do
-          stub_const("::BuildReport::MAX_COMMENTS", 1)
+          stub_const("Hound::MAX_COMMENTS", 1)
           commenter = stubbed_commenter(comment_on_violations: true)
           file_review = create(
             :file_review,

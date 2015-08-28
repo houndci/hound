@@ -1,7 +1,7 @@
 module HttpsHelper
   def with_https_enabled
-    ENV['ENABLE_HTTPS'] = 'yes'
+    stub_const("Hound::HTTPS_ENABLED", "yes")
     yield
-    ENV['ENABLE_HTTPS'] = 'no'
+    stub_const("Hound::HTTPS_ENABLED", "no")
   end
 end

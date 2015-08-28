@@ -1,6 +1,6 @@
 module AnalyticsHelper
   def analytics?
-    ENV["SEGMENT_KEY"]
+    Hound::SEGMENT_KEY.present?
   end
 
   def identify_hash(user = current_user)
@@ -17,7 +17,7 @@ module AnalyticsHelper
       "Intercom" => {
         userHash: OpenSSL::HMAC.hexdigest(
           "sha256",
-          ENV["INTERCOM_API_SECRET"],
+          Hound::INTERCOM_API_SECRET,
           user.id.to_s
         )
       }

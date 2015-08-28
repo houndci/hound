@@ -1,6 +1,4 @@
 class BuildReport
-  MAX_COMMENTS = ENV.fetch("MAX_COMMENTS").to_i
-
   def self.run(pull_request:, build:, token:)
     new(pull_request: pull_request, build: build, token: token).run
   end
@@ -24,7 +22,7 @@ class BuildReport
   attr_reader :build, :token, :pull_request
 
   def priority_violations
-    build.violations.take(MAX_COMMENTS)
+    build.violations.take(Hound::MAX_COMMENTS)
   end
 
   def track_subscribed_build_completed

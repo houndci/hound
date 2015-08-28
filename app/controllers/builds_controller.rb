@@ -23,7 +23,7 @@ class BuildsController < ApplicationController
   end
 
   def build_job_class
-    if payload.changed_files < ENV['CHANGED_FILES_THRESHOLD'].to_i
+    if payload.changed_files < Hound::CHANGED_FILES_THRESHOLD
       SmallBuildJob
     else
       LargeBuildJob

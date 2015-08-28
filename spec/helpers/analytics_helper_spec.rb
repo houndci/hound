@@ -1,17 +1,21 @@
 require "rails_helper"
 
-describe AnalyticsHelper, "#analytics?" do
-  it 'is true when ENV["SEGMENT_KEY"] is present' do
-    ENV["SEGMENT_KEY"] = "anything"
+describe AnalyticsHelper do
+  describe "#analytics?" do
+    context "when SEGMENT_KEY is present" do
+      it "returns true" do
+        stub_const("Hound::SEGMENT_KEY", "anything")
 
-    expect(analytics?).to be_truthy
+        expect(analytics?).to eq true
+      end
+    end
 
-    ENV["SEGMENT_KEY"] = nil
-  end
+    context "when SEGMENT_KEY is not present" do
+      it "returns false" do
+        stub_const("Hound::SEGMENT_KEY", "")
 
-  it 'is false when ENV["SEGMENT_KEY"] is not present' do
-    ENV["SEGMENT_KEY"] = nil
-
-    expect(analytics?).to be_falsy
+        expect(analytics?).to eq false
+      end
+    end
   end
 end

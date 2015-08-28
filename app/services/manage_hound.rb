@@ -16,7 +16,7 @@ class ManageHound
   end
 
   def github_username
-    ENV.fetch("HOUND_GITHUB_USERNAME")
+    Hound::GITHUB_USERNAME
   end
 
   def decorated_services_team

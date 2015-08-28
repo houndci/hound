@@ -61,7 +61,7 @@ class Repo < ActiveRecord::Base
 
   def bulk?
     BulkCustomer.where(org: organization).any? ||
-      ENV.fetch("EXEMPT_ORGS", "").split(",").include?(organization)
+      Hound::EXEMPT_ORGS.split(",").include?(organization)
   end
 
   def total_violations

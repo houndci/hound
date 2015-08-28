@@ -84,11 +84,11 @@ class RepoActivator
   end
 
   def builds_url
-    URI.join("#{protocol}://#{ENV["HOST"]}", "builds").to_s
+    URI.join("#{protocol}://#{Hound::HOST}", "builds").to_s
   end
 
   def protocol
-    if ENV.fetch("ENABLE_HTTPS") == "yes"
+    if Hound::HTTPS_ENABLED
       "https"
     else
       "http"
