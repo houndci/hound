@@ -5,6 +5,7 @@ describe StyleGuide::Scss do
     it "returns an incompleted file review" do
       style_guide = build_style_guide
       commit_file = build_commit_file(filename: "lib/a.scss")
+      stub_review_run
 
       result = style_guide.file_review(commit_file)
 
@@ -12,14 +13,13 @@ describe StyleGuide::Scss do
     end
 
     it "schedules a review job" do
-      allow(Resque).to receive(:enqueue)
       style_guide = build_style_guide("config")
       commit_file = build_commit_file(filename: "lib/a.scss")
+      stub_review_run
 
       style_guide.file_review(commit_file)
 
-      expect(Resque).to have_received(:enqueue).with(
-        ScssReviewJob,
+      expect(ScssReviewJob).to have_received(:perform_later).with(
         filename: commit_file.filename,
         commit_sha: commit_file.sha,
         pull_request_number: commit_file.pull_request_number,
@@ -39,6 +39,10 @@ describe StyleGuide::Scss do
   end
 
   private
+
+  def stub_review_run
+    allow(ScssReviewJob).to receive(:perform_later)
+  end
 
   def build_style_guide(config = "config")
     repo_config = double("RepoConfig", raw_for: config)

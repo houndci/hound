@@ -1,3 +1,3 @@
-class GoReviewJob
-  @queue = :go_review
+class GoReviewJob < ApplicationJob
+  queue_as :go_review
 end

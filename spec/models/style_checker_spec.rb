@@ -160,6 +160,7 @@ describe StyleChecker, "#file_reviews" do
     it "does not immediately return violations" do
       commit_file = stub_commit_file("test.scss", "* { color: red; }")
       pull_request = stub_pull_request(commit_files: [commit_file])
+      stub_scss_review_run
 
       violation_messages = pull_request_violations(pull_request)
 
@@ -268,5 +269,9 @@ describe StyleChecker, "#file_reviews" do
       for: {},
       ignored_javascript_files: []
     )
+  end
+
+  def stub_scss_review_run
+    allow(ScssReviewJob).to receive(:perform_later)
   end
 end
