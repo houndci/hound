@@ -1,8 +1,9 @@
 # Determine CoffeeScript style guide violations per-line.
-module StyleGuide
+module Linter
   class CoffeeScript < Base
     DEFAULT_CONFIG_FILENAME = "coffeescript.json"
     ERB_TAGS = /<%.*%>/
+    FILE_REGEXP = /.+\.coffee(\.js)?(\.erb)?\z/
 
     def file_review(commit_file)
       FileReview.create!(filename: commit_file.filename) do |file_review|

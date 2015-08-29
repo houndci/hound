@@ -1,6 +1,24 @@
 require "rails_helper"
 
-describe StyleGuide::Ruby do
+describe Linter::Ruby do
+  describe ".can_lint?" do
+    context "given a .rb file" do
+      it "returns true" do
+        result = Linter::Ruby.can_lint?("foo.rb")
+
+        expect(result).to eq true
+      end
+    end
+
+    context "given a non-ruby file" do
+      it "returns false" do
+        result = Linter::Ruby.can_lint?("foo.js")
+
+        expect(result).to eq false
+      end
+    end
+  end
+
   describe "#file_review" do
     include ConfigurationHelper
 
@@ -559,7 +577,7 @@ describe StyleGuide::Ruby do
       it "uses a default configuration for rubocop" do
         spy_on_rubocop_team
         spy_on_rubocop_configuration_loader
-        config_file = default_configuration_file(StyleGuide::Ruby)
+        config_file = default_configuration_file(Linter::Ruby)
         code = <<-CODE
           private def foo
             bar
@@ -581,7 +599,7 @@ describe StyleGuide::Ruby do
       it "uses the thoughtbot configuration for rubocop" do
         spy_on_rubocop_team
         spy_on_rubocop_configuration_loader
-        config_file = thoughtbot_configuration_file(StyleGuide::Ruby)
+        config_file = thoughtbot_configuration_file(Linter::Ruby)
         code = <<-CODE
           private def foo
             bar
@@ -700,7 +718,7 @@ describe StyleGuide::Ruby do
       repo_config: build_repo_config,
       repository_owner_name: "not_thoughtbot"
     )
-      StyleGuide::Ruby.new(
+      Linter::Ruby.new(
         repo_config: repo_config,
         build: build(:build),
         repository_owner_name: repository_owner_name,
@@ -716,12 +734,12 @@ describe StyleGuide::Ruby do
     end
 
     def default_configuration
-      config_file = default_configuration_file(StyleGuide::Ruby)
+      config_file = default_configuration_file(Linter::Ruby)
       RuboCop::ConfigLoader.configuration_from_file(config_file)
     end
 
     def thoughtbot_configuration
-      config_file = thoughtbot_configuration_file(StyleGuide::Ruby)
+      config_file = thoughtbot_configuration_file(Linter::Ruby)
       RuboCop::ConfigLoader.configuration_from_file(config_file)
     end
 

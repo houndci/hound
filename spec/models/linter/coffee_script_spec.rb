@@ -1,7 +1,41 @@
 require "rails_helper"
 
-describe StyleGuide::CoffeeScript do
+describe Linter::CoffeeScript do
   include ConfigurationHelper
+
+  describe ".can_lint?" do
+    context "given a .coffee file" do
+      it "returns true" do
+        result = Linter::CoffeeScript.can_lint?("foo.coffee")
+
+        expect(result).to eq true
+      end
+    end
+
+    context "given a .coffee.erb file" do
+      it "returns true" do
+        result = Linter::CoffeeScript.can_lint?("foo.coffee.erb")
+
+        expect(result).to eq true
+      end
+    end
+
+    context "given a .coffee.js file" do
+      it "returns true" do
+        result = Linter::CoffeeScript.can_lint?("foo.coffee.js")
+
+        expect(result).to eq true
+      end
+    end
+
+    context "given a non-coffee file" do
+      it "returns false" do
+        result = Linter::CoffeeScript.can_lint?("foo.js")
+
+        expect(result).to eq false
+      end
+    end
+  end
 
   describe "enabled?" do
     context "with legacy coffee_script key" do
@@ -122,7 +156,7 @@ describe StyleGuide::CoffeeScript do
       it "uses the default thoughtbot configuration" do
         spy_on_coffee_lint
         spy_on_file_read
-        config_file = thoughtbot_configuration_file(StyleGuide::CoffeeScript)
+        config_file = thoughtbot_configuration_file(Linter::CoffeeScript)
 
         violations_in("var foo = 'bar'", repository_owner_name: "thoughtbot")
 
@@ -136,7 +170,7 @@ describe StyleGuide::CoffeeScript do
       it "uses the default hound configuration" do
         spy_on_coffee_lint
         spy_on_file_read
-        config_file = default_configuration_file(StyleGuide::CoffeeScript)
+        config_file = default_configuration_file(Linter::CoffeeScript)
 
         violations_in("var foo = 'bar'", repository_owner_name: "foo")
 
@@ -187,13 +221,13 @@ describe StyleGuide::CoffeeScript do
     end
 
     def default_configuration
-      config_file = default_configuration_file(StyleGuide::CoffeeScript)
+      config_file = default_configuration_file(Linter::CoffeeScript)
       config = File.read(config_file)
       JSON.parse(config)
     end
 
     def thoughtbot_configuration
-      config_file = thoughtbot_configuration_file(StyleGuide::CoffeeScript)
+      config_file = thoughtbot_configuration_file(Linter::CoffeeScript)
       config = File.read(config_file)
       JSON.parse(config)
     end
@@ -207,7 +241,7 @@ describe StyleGuide::CoffeeScript do
     repo_config: default_repo_config,
     repository_owner_name: "RalphJoe"
   )
-    StyleGuide::CoffeeScript.new(
+    Linter::CoffeeScript.new(
       repo_config: repo_config,
       build: build(:build),
       repository_owner_name: repository_owner_name,

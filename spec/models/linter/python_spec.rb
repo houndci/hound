@@ -1,6 +1,24 @@
 require "rails_helper"
 
-describe StyleGuide::Python do
+describe Linter::Python do
+  describe ".can_lint?" do
+    context "given a .python file" do
+      it "returns true" do
+        result = Linter::Python.can_lint?("foo.py")
+
+        expect(result).to eq true
+      end
+    end
+
+    context "given a non-python file" do
+      it "returns false" do
+        result = Linter::Python.can_lint?("foo.rb")
+
+        expect(result).to eq false
+      end
+    end
+  end
+
   describe "#file_review" do
     it "returns a saved, incomplete file review" do
       style_guide = build_style_guide

@@ -1,7 +1,11 @@
 # Returns empty set of violations.
-module StyleGuide
+module Linter
   class Unsupported < Base
     class CannotReviewUnsupportedFile < StandardError; end
+
+    def self.can_lint?(*)
+      true
+    end
 
     def file_review(commit_file)
       raise CannotReviewUnsupportedFile.new(commit_file.filename)

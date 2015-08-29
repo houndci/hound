@@ -1,6 +1,7 @@
-module StyleGuide
+module Linter
   class Haml < Base
     DEFAULT_CONFIG_FILENAME = "haml.yml"
+    FILE_REGEXP = /.+\.haml\z/
 
     def file_review(commit_file)
       @commit_file = commit_file

@@ -1,24 +1,32 @@
 require "rails_helper"
 
-describe StyleGuide::Unsupported do
+describe Linter::Unsupported do
+  describe ".can_lint?" do
+    it "returns true" do
+      result = Linter::Unsupported.can_lint?(double)
+
+      expect(result).to eq true
+    end
+  end
+
   describe "#file_review" do
     it "raises" do
-      style_guide = StyleGuide::Unsupported.new(
+      style_guide = Linter::Unsupported.new(
         repo_config: double,
         build: double,
         repository_owner_name: "foo",
       )
       commit_file = double("CommitFile", filename: "unsupported.f95")
 
-      expect { style_guide.file_review(commit_file) }.to raise_error(
-        StyleGuide::Unsupported::CannotReviewUnsupportedFile
-      )
+      expect do
+        style_guide.file_review(commit_file)
+      end.to raise_error(Linter::Unsupported::CannotReviewUnsupportedFile)
     end
   end
 
   describe "#file_included?" do
     it "return false" do
-      style_guide = StyleGuide::Unsupported.new(
+      style_guide = Linter::Unsupported.new(
         repo_config: double,
         build: double,
         repository_owner_name: "foo",

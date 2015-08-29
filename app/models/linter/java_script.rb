@@ -1,6 +1,7 @@
-module StyleGuide
+module Linter
   class JavaScript < Base
     DEFAULT_CONFIG_FILENAME = "javascript.json"
+    FILE_REGEXP = /.+(?<!\.coffee)\.js\z/
 
     def file_review(commit_file)
       FileReview.create!(filename: commit_file.filename) do |file_review|

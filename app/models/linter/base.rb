@@ -1,5 +1,9 @@
-module StyleGuide
+module Linter
   class Base
+    def self.can_lint?(filename)
+      self::FILE_REGEXP === filename
+    end
+
     def initialize(repo_config:, build:, repository_owner_name:)
       @repo_config = repo_config
       @build = build
@@ -33,7 +37,7 @@ module StyleGuide
     def build_review_job_attributes(commit_file)
       {
         commit_sha: build.commit_sha,
-        config: repo_config.raw_for(language),
+        config: repo_config.raw_for(linter_name),
         content: commit_file.content,
         filename: commit_file.filename,
         patch: commit_file.patch,
@@ -41,16 +45,16 @@ module StyleGuide
       }
     end
 
-    def job_class
-      "#{language.capitalize}ReviewJob".constantize
-    end
-
     def enqueue_job(attributes)
       Resque.enqueue(job_class, attributes)
     end
 
-    def language
-      self.class::LANGUAGE
+    def job_class
+      "#{linter_name.classify}ReviewJob".constantize
+    end
+
+    def linter_name
+      self.class::NAME
     end
 
     def name

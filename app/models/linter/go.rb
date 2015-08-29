@@ -1,6 +1,7 @@
-module StyleGuide
+module Linter
   class Go < Base
-    LANGUAGE = "go"
+    FILE_REGEXP = /.+\.go\z/
+    NAME = "go"
 
     def file_included?(commit_file)
       !vendored?(commit_file.filename)

@@ -1,7 +1,25 @@
 require "rails_helper"
 
-describe StyleGuide::Haml do
+describe Linter::Haml do
   let(:filename) { "app/views/show.html.haml" }
+
+  describe ".can_lint?" do
+    context "given a .haml file" do
+      it "returns true" do
+        result = Linter::Haml.can_lint?("foo.haml")
+
+        expect(result).to eq true
+      end
+    end
+
+    context "given a non-haml file" do
+      it "returns false" do
+        result = Linter::Haml.can_lint?("foo.rb")
+
+        expect(result).to eq false
+      end
+    end
+  end
 
   describe "#file_review" do
     it "returns a saved and completed file review" do
@@ -98,7 +116,7 @@ describe StyleGuide::Haml do
 
   def build_style_guide(config)
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    StyleGuide::Haml.new(
+    Linter::Haml.new(
       repo_config: repo_config,
       build: build(:build),
       repository_owner_name: "ralph",

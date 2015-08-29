@@ -1,6 +1,7 @@
-module StyleGuide
+module Linter
   class Python < Base
-    LANGUAGE = "python"
+    FILE_REGEXP = /.+\.py\z/
+    NAME = "python"
 
     private
 
