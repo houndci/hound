@@ -1,7 +1,12 @@
 module StyleGuide
   class Base
-    pattr_initialize :repo_config, :repository_owner_name
     attr_implement :file_review
+
+    def initialize(repo_config:, build:, repository_owner_name:)
+      @repo_config = repo_config
+      @build = build
+      @repository_owner_name = repository_owner_name
+    end
 
     def enabled?
       repo_config.enabled_for?(name)
@@ -14,6 +19,8 @@ module StyleGuide
     end
 
     private
+
+    attr_reader :repo_config, :build, :repository_owner_name
 
     def name
       self.class.name.demodulize.underscore

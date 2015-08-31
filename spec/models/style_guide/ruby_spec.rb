@@ -4,12 +4,12 @@ describe StyleGuide::Ruby do
   describe "#file_review" do
     include ConfigurationHelper
 
-    it "returns a completed file review" do
-      repo_config = double("RepoConfig", enabled_for?: true, for: config)
-      style_guide = StyleGuide::Ruby.new(repo_config, "bob")
+    it "returns a saved and completed file review" do
+      style_guide = build_style_guide
 
       result = style_guide.file_review(build_file("test"))
 
+      expect(result).to be_persisted
       expect(result).to be_completed
     end
 
@@ -659,7 +659,7 @@ describe StyleGuide::Ruby do
           }
           repo_config = double("RepoConfig", for: config)
           file = double("CommitFile", filename: "ignore.rb")
-          style_guide = StyleGuide::Ruby.new(repo_config, "ralph")
+          style_guide = build_style_guide(repo_config: repo_config)
 
           expect(style_guide.file_included?(file)).to eq false
         end
@@ -674,7 +674,7 @@ describe StyleGuide::Ruby do
           }
           repo_config = double("RepoConfig", for: config)
           file = double("CommitFile", filename: "app.rb")
-          style_guide = StyleGuide::Ruby.new(repo_config, "ralph")
+          style_guide = build_style_guide(repo_config: repo_config)
 
           expect(style_guide.file_included?(file)).to eq true
         end
@@ -683,13 +683,32 @@ describe StyleGuide::Ruby do
 
     private
 
-    def violations_in(content, config: nil, repository_owner_name: "ralph")
-      repo_config = double("RepoConfig", enabled_for?: true, for: config)
-      style_guide = StyleGuide::Ruby.new(repo_config, repository_owner_name)
+    def violations_in(content, config: nil, repository_owner_name: "joe")
+      repo_config = build_repo_config(config)
+      style_guide = build_style_guide(
+        repo_config: repo_config,
+        repository_owner_name: repository_owner_name,
+      )
+
       style_guide.
         file_review(build_file(content)).
         violations.
         flat_map(&:messages)
+    end
+
+    def build_style_guide(
+      repo_config: build_repo_config,
+      repository_owner_name: "not_thoughtbot"
+    )
+      StyleGuide::Ruby.new(
+        repo_config: repo_config,
+        build: build(:build),
+        repository_owner_name: repository_owner_name,
+      )
+    end
+
+    def build_repo_config(config = "")
+      double("RepoConfig", enabled_for?: true, for: config)
     end
 
     def build_file(content)

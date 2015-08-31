@@ -11,7 +11,7 @@ describe StyleGuide::CoffeeScript do
             enabled: false
         EOS
         repo_config = RepoConfig.new(commit)
-        style_guide = StyleGuide::CoffeeScript.new(repo_config, "RalphJoe")
+        style_guide = build_style_guide(repo_config: repo_config)
 
         expect(style_guide).not_to be_enabled
       end
@@ -24,7 +24,7 @@ describe StyleGuide::CoffeeScript do
             enabled: false
         EOS
         repo_config = RepoConfig.new(commit)
-        style_guide = StyleGuide::CoffeeScript.new(repo_config, "RalphJoe")
+        style_guide = build_style_guide(repo_config: repo_config)
 
         expect(style_guide).not_to be_enabled
       end
@@ -32,12 +32,13 @@ describe StyleGuide::CoffeeScript do
   end
 
   describe "#file_review" do
-    it "returns a completed file review" do
+    it "returns a saved and completed file review" do
       style_guide = build_style_guide
       file = build_file("foo")
 
       result = style_guide.file_review(file)
 
+      expect(result).to be_persisted
       expect(result).to be_completed
     end
 
@@ -110,8 +111,7 @@ describe StyleGuide::CoffeeScript do
 
         violations_in("var foo = 'bar'", repository_owner_name: "thoughtbot")
 
-        expect(File).to have_received(:read).
-          with(config_file)
+        expect(File).to have_received(:read).with(config_file)
         expect(Coffeelint).to have_received(:lint).
           with(anything, thoughtbot_configuration)
       end
@@ -148,8 +148,7 @@ describe StyleGuide::CoffeeScript do
       end
 
       it "removes the ERB tags from the file" do
-        repo_config = double("RepoConfig", enabled_for?: true, for: {})
-        style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
+        style_guide = build_style_guide
         content = "leonidasLastWords = <%= raise 'hell' %>"
         file = build_file(content, "test.coffee.erb")
 
@@ -162,12 +161,7 @@ describe StyleGuide::CoffeeScript do
     private
 
     def violations_in(content, repository_owner_name: "ralph")
-      repo_config = double("RepoConfig", enabled_for?: true, for: {})
-      style_guide = StyleGuide::CoffeeScript.new(
-        repo_config,
-        repository_owner_name
-      )
-      style_guide.
+      build_style_guide(repository_owner_name: repository_owner_name).
         file_review(build_file(content)).
         violations.
         flat_map(&:messages)
@@ -175,11 +169,6 @@ describe StyleGuide::CoffeeScript do
 
     def build_file(content, filename = "test.coffee")
       build_commit_file(filename: filename, content: content)
-    end
-
-    def build_style_guide
-      repo_config = double("RepoConfig", enabled_for?: true, for: {})
-      StyleGuide::CoffeeScript.new(repo_config, "RalphJoe")
     end
 
     def default_configuration
@@ -197,5 +186,20 @@ describe StyleGuide::CoffeeScript do
     def spy_on_coffee_lint
       allow(Coffeelint).to receive(:lint).and_return([])
     end
+  end
+
+  def build_style_guide(
+    repo_config: default_repo_config,
+    repository_owner_name: "RalphJoe"
+  )
+    StyleGuide::CoffeeScript.new(
+      repo_config: repo_config,
+      build: build(:build),
+      repository_owner_name: repository_owner_name,
+    )
+  end
+
+  def default_repo_config
+    double("RepoConfig", enabled_for?: true, for: {})
   end
 end

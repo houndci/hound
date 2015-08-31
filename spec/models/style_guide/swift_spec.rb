@@ -2,12 +2,13 @@ require "rails_helper"
 
 describe StyleGuide::Swift do
   describe "#file_review" do
-    it "returns an incompleted file review" do
+    it "returns a saved, incomplete file review" do
       style_guide = build_style_guide
       commit_file = build_commit_file(filename: "a.swift")
 
       result = style_guide.file_review(commit_file)
 
+      expect(result).to be_persisted
       expect(result).not_to be_completed
     end
 
@@ -42,6 +43,10 @@ describe StyleGuide::Swift do
 
   def build_style_guide(config = "config")
     repo_config = double("RepoConfig", raw_for: config)
-    StyleGuide::Swift.new(repo_config, "ralph")
+    StyleGuide::Swift.new(
+      repo_config: repo_config,
+      build: build(:build),
+      repository_owner_name: "ralph",
+    )
   end
 end

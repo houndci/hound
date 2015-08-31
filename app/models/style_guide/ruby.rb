@@ -14,11 +14,13 @@ module StyleGuide
     private
 
     def perform_file_review(commit_file)
-      FileReview.new(filename: commit_file.filename) do |file_review|
+      FileReview.create!(filename: commit_file.filename) do |file_review|
         team.inspect_file(parsed_source(commit_file)).each do |violation|
           line = commit_file.line_at(violation.line)
           file_review.build_violation(line, violation.message)
         end
+
+        file_review.build = build
         file_review.complete
       end
     end

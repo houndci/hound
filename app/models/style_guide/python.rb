@@ -3,6 +3,11 @@ module StyleGuide
     LANGUAGE = "python"
 
     def file_review(commit_file)
+      file_review = FileReview.create!(
+        build: build,
+        filename: commit_file.filename,
+      )
+
       Resque.push(
         "python_review",
         {
@@ -18,7 +23,7 @@ module StyleGuide
         }
       )
 
-      FileReview.new(filename: commit_file.filename)
+      file_review
     end
 
     def file_included?(_)

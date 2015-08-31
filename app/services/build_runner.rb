@@ -38,8 +38,8 @@ class BuildRunner
     pull_request.opened? || pull_request.synchronize?
   end
 
-  def style_checker
-    StyleChecker.new(pull_request)
+  def review_files(build)
+    StyleChecker.new(pull_request, build).review_files
   end
 
   def create_build
@@ -49,10 +49,6 @@ class BuildRunner
       payload: payload.build_data.to_json,
       user: current_user_with_token,
     )
-  end
-
-  def review_files(build)
-    build.update!(file_reviews: style_checker.file_reviews)
   end
 
   def pull_request

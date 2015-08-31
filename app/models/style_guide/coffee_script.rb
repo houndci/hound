@@ -5,7 +5,7 @@ module StyleGuide
     ERB_TAGS = /<%.*%>/
 
     def file_review(commit_file)
-      FileReview.new(filename: commit_file.filename) do |file_review|
+      FileReview.create!(filename: commit_file.filename) do |file_review|
         content = content_for_file(commit_file)
 
         lint(content).each do |violation|
@@ -13,6 +13,7 @@ module StyleGuide
           file_review.build_violation(line, violation["message"])
         end
 
+        file_review.build = build
         file_review.complete
       end
     end

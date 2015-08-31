@@ -3,6 +3,11 @@ module StyleGuide
     LANGUAGE = "swift"
 
     def file_review(commit_file)
+      file_review = FileReview.create!(
+        filename: commit_file.filename,
+        build: build,
+      )
+
       Resque.enqueue(
         SwiftReviewJob,
         filename: commit_file.filename,
@@ -13,7 +18,7 @@ module StyleGuide
         config: repo_config.raw_for(LANGUAGE),
       )
 
-      FileReview.new(filename: commit_file.filename)
+      file_review
     end
 
     def file_included?(_)

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe StyleChecker, "#file_reviews" do
+describe StyleChecker, "#review_files" do
   it "returns a collection of file reviews with violations" do
     stylish_commit_file = stub_commit_file("good.rb", "def good; end")
     violated_commit_file = stub_commit_file("bad.rb", "def bad( a ); a; end  ")
@@ -219,9 +219,10 @@ describe StyleChecker, "#file_reviews" do
   end
 
   def pull_request_violations(pull_request)
-    StyleChecker.new(pull_request).file_reviews.
-      flat_map(&:violations).
-      flat_map(&:messages)
+    build = build(:build)
+    StyleChecker.new(pull_request, build).review_files
+
+    build.violations.flat_map(&:messages)
   end
 
   def stub_pull_request(options = {})

@@ -11,7 +11,7 @@ describe BuildRunner, '#run' do
         full_repo_name: repo.name
       )
       build_runner = BuildRunner.new(payload)
-      stubbed_style_checker_with_violations
+      stubbed_style_checker(violations: [build(:violation)])
       stubbed_commenter
       stubbed_pull_request
       stubbed_github_api
@@ -22,7 +22,7 @@ describe BuildRunner, '#run' do
 
       expect(builds.size).to eq 1
       expect(build).to eq repo.builds.last
-      expect(build.violations.count).to be >= 1
+      expect(build.violations.count).to eq 1
       expect(build.pull_request_number).to eq 5
       expect(build.commit_sha).to eq payload.head_sha
       expect(build.payload).to eq ({ payload_stuff: "test" }).to_json
@@ -32,7 +32,7 @@ describe BuildRunner, '#run' do
       build_runner = make_build_runner
       stubbed_github_api
       pull_request = stubbed_pull_request
-      stubbed_style_checker_with_violations
+      stubbed_style_checker
       allow(BuildReport).to receive(:run)
 
       build_runner.run
@@ -44,16 +44,16 @@ describe BuildRunner, '#run' do
       )
     end
 
-    it 'initializes StyleChecker with modified files and config' do
+    it "reviews files via style checker" do
       build_runner = make_build_runner
       pull_request = stubbed_pull_request
-      stubbed_style_checker_with_violations
+      style_checker = stubbed_style_checker
       stubbed_commenter
       stubbed_github_api
 
       build_runner.run
 
-      expect(StyleChecker).to have_received(:new).with(pull_request)
+      expect(style_checker).to have_received(:review_files)
     end
 
     it 'initializes PullRequest with payload and Hound token' do
@@ -63,7 +63,7 @@ describe BuildRunner, '#run' do
       payload = stubbed_payload(github_repo_id: repo.github_id)
       build_runner = BuildRunner.new(payload)
       stubbed_pull_request
-      stubbed_style_checker_with_violations
+      stubbed_style_checker
       stubbed_commenter
       stubbed_github_api
 
@@ -117,7 +117,7 @@ describe BuildRunner, '#run' do
       )
       build_runner = BuildRunner.new(payload)
       stubbed_pull_request
-      stubbed_style_checker_with_violations
+      stubbed_style_checker
       stubbed_commenter
       stubbed_github_api
 
@@ -144,8 +144,8 @@ describe BuildRunner, '#run' do
       style_checker = stubbed_style_checker_with_invalid_javascript_config(
         pull_request
       )
-      allow(build_runner).to receive(:style_checker).and_return(style_checker)
-      allow(build_runner).to receive(:pull_request).and_return(pull_request)
+      allow(StyleChecker).to receive(:new).and_return(style_checker)
+      allow(PullRequest).to receive(:new).and_return(pull_request)
       github_api = stubbed_github_api
 
       build_runner.run
@@ -193,7 +193,7 @@ describe BuildRunner, '#run' do
         full_repo_name: repo.name
       )
       build_runner = BuildRunner.new(payload)
-      stubbed_style_checker_with_violations
+      stubbed_style_checker
       stubbed_commenter
       stubbed_pull_request
       stubbed_github_api
@@ -286,14 +286,13 @@ describe BuildRunner, '#run' do
     double("Payload", defaults.merge(options))
   end
 
-  def stubbed_style_checker_with_violations
-    stubbed_style_checker(violations: [build(:violation)])
-  end
-
-  def stubbed_style_checker(violations:)
+  def stubbed_style_checker(violations: [])
     file_review = build(:file_review, :completed, violations: violations)
-    style_checker = double("StyleChecker", file_reviews: [file_review])
-    allow(StyleChecker).to receive(:new).and_return(style_checker)
+    style_checker = double("StyleChecker", review_files: nil)
+    allow(StyleChecker).to receive(:new) do |*args|
+      build = args[1]
+      build.file_reviews << file_review
+    end.and_return(style_checker)
 
     style_checker
   end
@@ -344,7 +343,7 @@ describe BuildRunner, '#run' do
 
   def stubbed_style_checker_with_config_file(pull_request, filename, content)
     config = config_for_file(filename, content)
-    style_checker = StyleChecker.new(pull_request)
+    style_checker = StyleChecker.new(pull_request, build(:build))
     allow(style_checker).to receive(:config).and_return(config)
 
     style_checker

@@ -13,7 +13,7 @@ class CompletedFileReviewJob
       pull_request_number: attributes.fetch("pull_request_number"),
       commit_sha: attributes.fetch("commit_sha")
     )
-    file_review = build.file_reviews.find_by(
+    file_review = build.file_reviews.find_by!(
       filename: attributes.fetch("filename")
     )
     commit_file = CommitFile.new(

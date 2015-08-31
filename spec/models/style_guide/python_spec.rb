@@ -2,12 +2,13 @@ require "rails_helper"
 
 describe StyleGuide::Python do
   describe "#file_review" do
-    it "returns an incompleted file review" do
+    it "returns a saved, incomplete file review" do
       style_guide = build_style_guide
       commit_file = build_commit_file
 
       result = style_guide.file_review(commit_file)
 
+      expect(result).to be_persisted
       expect(result).not_to be_completed
     end
 
@@ -47,7 +48,11 @@ describe StyleGuide::Python do
 
   def build_style_guide(config = "config")
     repo_config = double("RepoConfig", raw_for: config)
-    StyleGuide::Python.new(repo_config, "ralph")
+    StyleGuide::Python.new(
+      repo_config: repo_config,
+      build: build(:build),
+      repository_owner_name: "ralph",
+    )
   end
 
   def build_commit_file

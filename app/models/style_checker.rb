@@ -2,20 +2,21 @@
 # Builds style guide based on file extension.
 # Delegates to style guide for line violations.
 class StyleChecker
-  def initialize(pull_request)
+  def initialize(pull_request, build)
     @pull_request = pull_request
+    @build = build
     @style_guides = {}
   end
 
-  def file_reviews
-    commit_files_to_check.map do |commit_file|
+  def review_files
+    commit_files_to_check.each do |commit_file|
       style_guide(commit_file.filename).file_review(commit_file)
     end
   end
 
   private
 
-  attr_reader :pull_request, :style_guides
+  attr_reader :build, :pull_request, :style_guides
 
   def commit_files_to_check
     pull_request.commit_files.select do |file|
@@ -27,8 +28,9 @@ class StyleChecker
   def style_guide(filename)
     style_guide_class = style_guide_class(filename)
     style_guides[style_guide_class] ||= style_guide_class.new(
-      config,
-      pull_request.repository_owner_name
+      repo_config: config,
+      build: build,
+      repository_owner_name: pull_request.repository_owner_name,
     )
   end
 

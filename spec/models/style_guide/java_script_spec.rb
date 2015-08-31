@@ -4,26 +4,22 @@ describe StyleGuide::JavaScript do
   include ConfigurationHelper
 
   describe "#file_review" do
-    it "returns a completed file review" do
-      repo_config = double("RepoConfig", enabled_for?: true, for: {})
-      style_guide = StyleGuide::JavaScript.new(repo_config, "bob")
+    it "returns a saved and completed file review" do
+      style_guide = build_style_guide
       commit_file = build_js_file
 
       result = style_guide.file_review(commit_file)
 
+      expect(result).to be_persisted
       expect(result).to be_completed
     end
 
     context "with default config" do
       context "when semicolon is missing" do
         it "returns a collection of violation objects" do
-          repo_config = double("RepoConfig", for: {})
           commit_file = build_js_file("var foo = 'bar'")
 
-          violations = violations_in(
-            commit_file: commit_file,
-            repo_config: repo_config
-          )
+          violations = violations_in(commit_file: commit_file)
 
           violation = violations.first
           expect(violation.filename).to eq commit_file.filename
@@ -54,14 +50,10 @@ describe StyleGuide::JavaScript do
 
     context "when jshintrb returns nil violation" do
       it "returns no violations" do
-        repo_config = double("RepoConfig", for: {})
         commit_file = double("CommitFile").as_null_object
         allow(Jshintrb).to receive_messages(lint: [nil])
 
-        violations = violations_in(
-          commit_file: commit_file,
-          repo_config: repo_config
-        )
+        violations = violations_in(commit_file: commit_file)
 
         expect(violations).to be_empty
       end
@@ -88,12 +80,10 @@ describe StyleGuide::JavaScript do
         configuration_file_path = default_configuration_file(
           StyleGuide::JavaScript
         )
-        repo_config = double("RepoConfig", for: {})
         commit_file = build_js_file("$(myGlobal).hide();")
 
         violations_in(
           commit_file: commit_file,
-          repo_config: repo_config,
           repository_owner_name: "not_thoughtbot"
         )
 
@@ -111,11 +101,9 @@ describe StyleGuide::JavaScript do
         configuration_file_path = thoughtbot_configuration_file(
           StyleGuide::JavaScript
         )
-        repo_config = double("RepoConfig", for: {})
 
         violations_in(
           commit_file: commit_file,
-          repo_config: repo_config,
           repository_owner_name: "thoughtbot"
         )
 
@@ -148,7 +136,7 @@ describe StyleGuide::JavaScript do
     context "file is in excluded file list" do
       it "returns false" do
         repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
-        style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
+        style_guide = build_style_guide(repo_config: repo_config)
         commit_file = double("CommitFile", filename: "foo.js")
 
         included = style_guide.file_included?(commit_file)
@@ -160,7 +148,7 @@ describe StyleGuide::JavaScript do
     context "file is not excluded" do
       it "returns true" do
         repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
-        style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
+        style_guide = build_style_guide(repo_config: repo_config)
         commit_file = double("CommitFile", filename: "bar.js")
 
         included = style_guide.file_included?(commit_file)
@@ -177,7 +165,7 @@ describe StyleGuide::JavaScript do
           "vendor/*",
         ]
       )
-      style_guide = StyleGuide::JavaScript.new(repo_config, "ralph")
+      style_guide = build_style_guide(repo_config: repo_config)
       commit_file1 = double(
         "CommitFile",
         filename: "app/assets/javascripts/bar.js"
@@ -198,14 +186,29 @@ describe StyleGuide::JavaScript do
 
   def violations_in(
     commit_file:,
-    repo_config:,
+    repo_config: default_repo_config,
+    repository_owner_name: "foo"
+  )
+    style_guide = build_style_guide(
+      repo_config: repo_config,
+      repository_owner_name: repository_owner_name,
+    )
+    style_guide.file_review(commit_file).violations
+  end
+
+  def build_style_guide(
+    repo_config: default_repo_config,
     repository_owner_name: "not_thoughtbot"
   )
     style_guide = StyleGuide::JavaScript.new(
-      repo_config,
-      repository_owner_name
+      repo_config: repo_config,
+      build: build(:build),
+      repository_owner_name: repository_owner_name,
     )
-    style_guide.file_review(commit_file).violations
+  end
+
+  def default_repo_config
+    double("RepoConfig", enabled_for?: true, for: {})
   end
 
   def default_configuration

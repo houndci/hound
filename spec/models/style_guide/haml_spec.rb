@@ -4,11 +4,14 @@ describe StyleGuide::Haml do
   let(:filename) { "app/views/show.html.haml" }
 
   describe "#file_review" do
-    it "returns complete file review" do
+    it "returns a saved and completed file review" do
       style_guide = build_style_guide({})
       file = build_file("")
 
-      expect(style_guide.file_review(file)).to be_completed
+      result = style_guide.file_review(file)
+
+      expect(result).to be_persisted
+      expect(result).to be_completed
     end
 
     context "with default configuration" do
@@ -95,8 +98,11 @@ describe StyleGuide::Haml do
 
   def build_style_guide(config)
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    repository_owner_name = "ralph"
-    StyleGuide::Haml.new(repo_config, repository_owner_name)
+    StyleGuide::Haml.new(
+      repo_config: repo_config,
+      build: build(:build),
+      repository_owner_name: "ralph",
+    )
   end
 
   def build_file(content)
