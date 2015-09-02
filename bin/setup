@@ -18,7 +18,7 @@ heroku join --app hound-production
 
 # Set a default port for Foreman to run the server
 if ! grep -qs 'port' .foreman; then
-  printf 'port: 5000\n' >> .foreman
+  printf 'port: 5000\nenv: .env.local\n' >> .foreman
 fi
 
 # Stripe credentials
