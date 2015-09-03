@@ -14,7 +14,8 @@ describe StyleGuide::Python do
 
     it "schedules a review job" do
       allow(Resque).to receive(:push)
-      style_guide = build_style_guide("config")
+      build = build(:build, commit_sha: "foo", pull_request_number: 123)
+      style_guide = build_style_guide("config", build)
       commit_file = build_commit_file
 
       style_guide.file_review(commit_file)
@@ -25,8 +26,8 @@ describe StyleGuide::Python do
           class: "review.PythonReviewJob",
           args: [
             commit_file.filename,
-            commit_file.sha,
-            commit_file.pull_request_number,
+            build.commit_sha,
+            build.pull_request_number,
             commit_file.patch,
             commit_file.content,
             "config",
@@ -44,17 +45,6 @@ describe StyleGuide::Python do
     end
   end
 
-  private
-
-  def build_style_guide(config = "config")
-    repo_config = double("RepoConfig", raw_for: config)
-    StyleGuide::Python.new(
-      repo_config: repo_config,
-      build: build(:build),
-      repository_owner_name: "ralph",
-    )
-  end
-
   def build_commit_file
     line = double(
       "Line",
@@ -68,9 +58,7 @@ describe StyleGuide::Python do
       content: "codes",
       filename: "lib/a.py",
       line_at: line,
-      sha: "abc123",
       patch: "patch",
-      pull_request_number: 123,
     )
   end
 end

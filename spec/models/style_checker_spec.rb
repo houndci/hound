@@ -18,6 +18,22 @@ describe StyleChecker, "#review_files" do
     expect(violation_messages).to eq expected_violations
   end
 
+  it "only fetches content for supported files" do
+    ruby_file = double("GithubFile", filename: "ruby.rb", patch: "foo")
+    bogus_file = double("GithubFile", filename: "[:facebook]", patch: "bar")
+    head_commit = double("Commit", file_content: "foo bar")
+    pull_request = PullRequest.new(payload_stub, "anything")
+    allow(pull_request).to receive(:head_commit).and_return(head_commit)
+    allow(pull_request).to receive(:modified_github_files).
+      and_return([bogus_file, ruby_file])
+
+    pull_request_violations(pull_request)
+
+    expect(head_commit).to have_received(:file_content).with(ruby_file.filename)
+    expect(head_commit).not_to have_received(:file_content).
+      with(bogus_file.filename)
+  end
+
   context "for a Ruby file" do
     context "with style violations" do
       it "returns violations" do
@@ -268,6 +284,15 @@ describe StyleChecker, "#review_files" do
       enabled_for?: true,
       for: {},
       ignored_javascript_files: []
+    )
+  end
+
+  def payload_stub
+    double(
+      "Payload",
+      full_repo_name: "foo/bar",
+      head_sha: "abc",
+      repository_owner_name: "ralph",
     )
   end
 end

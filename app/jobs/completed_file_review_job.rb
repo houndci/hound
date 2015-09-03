@@ -17,11 +17,9 @@ class CompletedFileReviewJob
       filename: attributes.fetch("filename")
     )
     commit_file = CommitFile.new(
-      filename: file_review.filename,
-      content: "",
       patch: attributes.fetch("patch"),
-      pull_request_number: attributes.fetch("pull_request_number"),
-      sha: build.commit_sha
+      filename: nil,
+      commit: nil,
     )
 
     attributes.fetch("violations").each do |violation|

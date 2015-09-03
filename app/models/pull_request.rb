@@ -43,10 +43,8 @@ class PullRequest
     modified_github_files.map do |github_file|
       CommitFile.new(
         filename: github_file.filename,
-        content: head_commit.file_content(github_file.filename),
         patch: github_file.patch,
-        pull_request_number: number,
-        sha: head_commit.sha
+        commit: head_commit,
       )
     end
   end

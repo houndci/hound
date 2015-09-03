@@ -1,12 +1,14 @@
 class CommitFile
-  attr_reader :filename, :content, :patch, :pull_request_number, :sha
+  attr_reader :filename, :commit, :patch
 
-  def initialize(filename:, content:, patch:, pull_request_number:, sha:)
+  def initialize(filename:, commit:, patch:)
     @filename = filename
-    @content = content
+    @commit = commit
     @patch = patch
-    @pull_request_number = pull_request_number
-    @sha = sha
+  end
+
+  def content
+    commit.file_content(filename)
   end
 
   def line_at(line_number)

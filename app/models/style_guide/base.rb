@@ -36,12 +36,12 @@ module StyleGuide
 
     def build_review_job_attributes(commit_file)
       {
-        filename: commit_file.filename,
-        commit_sha: commit_file.sha,
-        pull_request_number: commit_file.pull_request_number,
-        patch: commit_file.patch,
-        content: commit_file.content,
+        commit_sha: build.commit_sha,
         config: repo_config.raw_for(language),
+        content: commit_file.content,
+        filename: commit_file.filename,
+        patch: commit_file.patch,
+        pull_request_number: build.pull_request_number,
       }
     end
 

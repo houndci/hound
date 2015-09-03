@@ -14,8 +14,8 @@ module StyleGuide
           class: "review.PythonReviewJob",
           args: [
             commit_file.filename,
-            commit_file.sha,
-            commit_file.pull_request_number,
+            build.commit_sha,
+            build.pull_request_number,
             commit_file.patch,
             commit_file.content,
             repo_config.raw_for(LANGUAGE),

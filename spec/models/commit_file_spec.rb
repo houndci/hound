@@ -46,25 +46,8 @@ describe CommitFile do
     end
   end
 
-  describe "#pull_request_number" do
-    it "returns pull request number" do
-      expect(commit_file.pull_request_number).to eq 123
-    end
-  end
-
-  describe "#sha" do
-    it "returns sha" do
-      expect(commit_file.sha).to eq "abc123"
-    end
-  end
-
   def commit_file(options = {})
-    CommitFile.new(
-      filename: "test.rb",
-      content: "content",
-      patch: "patch",
-      pull_request_number: 123,
-      sha: "abc123"
-    )
+    commit = double("Commit", file_content: "content")
+    CommitFile.new(filename: "test.rb", patch: "patch", commit: commit)
   end
 end

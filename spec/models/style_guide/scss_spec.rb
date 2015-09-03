@@ -13,7 +13,8 @@ describe StyleGuide::Scss do
     end
 
     it "schedules a review job" do
-      style_guide = build_style_guide("config")
+      build = build(:build, commit_sha: "foo", pull_request_number: 123)
+      style_guide = build_style_guide("config", build)
       commit_file = build_commit_file(filename: "lib/a.scss")
       allow(Resque).to receive(:enqueue)
 
@@ -22,8 +23,8 @@ describe StyleGuide::Scss do
       expect(Resque).to have_received(:enqueue).with(
         ScssReviewJob,
         filename: commit_file.filename,
-        commit_sha: commit_file.sha,
-        pull_request_number: commit_file.pull_request_number,
+        commit_sha: build.commit_sha,
+        pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
         config: "config"
@@ -37,17 +38,5 @@ describe StyleGuide::Scss do
 
       expect(style_guide.file_included?(double)).to eq true
     end
-  end
-
-  private
-
-  def build_style_guide(config = "config")
-    repo_config = double("RepoConfig", raw_for: config)
-    build = build(:build)
-    StyleGuide::Scss.new(
-      repo_config: repo_config,
-      build: build,
-      repository_owner_name: "ralph",
-    )
   end
 end
