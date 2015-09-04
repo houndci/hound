@@ -61,14 +61,14 @@ class RepoConfig
     BETA_LANGUAGES.include?(language)
   end
 
-  def defualt_options_for(language)
+  def default_options_for(language)
     { "enabled" => !beta?(language) }
   end
 
   def options_for(language)
     hound_config[language] ||
       hound_config[language_camelize(language)] ||
-      defualt_options_for(language)
+      default_options_for(language)
   end
 
   def disabled?(language)
