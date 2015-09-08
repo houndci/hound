@@ -25,9 +25,5 @@ module StyleGuide
 
       file_review
     end
-
-    def file_included?(_)
-      true
-    end
   end
 end

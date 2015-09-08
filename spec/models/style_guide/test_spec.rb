@@ -7,18 +7,14 @@ end
 
 describe StyleGuide::Test do
   describe "#file_included?" do
-    context "when #file_included? is not defined" do
-      it "raises with a helpful message" do
-        style_guide = StyleGuide::Test.new(
-          repo_config: double,
-          build: double,
-          repository_owner_name: "foo",
-        )
+    it "returns true" do
+      style_guide = StyleGuide::Test.new(
+        repo_config: double,
+        build: double,
+        repository_owner_name: "foo",
+      )
 
-        expect { style_guide.file_included?(double) }.to raise_error(
-          "Implement #file_included? in your StyleGuide class"
-        )
-      end
+      expect(style_guide.file_included?(double)).to eq true
     end
   end
 end

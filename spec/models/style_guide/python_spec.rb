@@ -37,14 +37,6 @@ describe StyleGuide::Python do
     end
   end
 
-  describe "#file_included?" do
-    it "returns true" do
-      style_guide = build_style_guide
-
-      expect(style_guide.file_included?(double)).to eq true
-    end
-  end
-
   def build_commit_file
     line = double(
       "Line",

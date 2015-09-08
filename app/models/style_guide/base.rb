@@ -1,7 +1,5 @@
 module StyleGuide
   class Base
-    attr_implement :file_review
-
     def initialize(repo_config:, build:, repository_owner_name:)
       @repo_config = repo_config
       @build = build
@@ -25,9 +23,7 @@ module StyleGuide
     end
 
     def file_included?(*)
-      raise StandardError.new(
-        "Implement #file_included? in your StyleGuide class"
-      )
+      true
     end
 
     private
