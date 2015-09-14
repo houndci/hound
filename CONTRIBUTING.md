@@ -102,6 +102,42 @@ To test Stripe payments on staging use this fake credit card number.
   </tbody>
 </table>
 
+## Linters
+
+To better understand the architecture of Hound, here is a list of the linters
+being used and the default configs for each linter.
+
+1. Ruby
+ * [RuboCop](https://github.com/bbatsov/rubocop)
+ * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/ruby.yml)
+
+1. CoffeeScript
+ * [CoffeeLint](https://github.com/clutchski/coffeelint)
+ * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/coffeescript.json)
+
+1. JavaScript
+ * [JSHint](https://github.com/jshint/jshint)
+ * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/javascript.json)
+
+1. SCSS
+ * [hound-scss](https://github.com/thoughtbot/hound-scss)
+ * [config](https://raw.githubusercontent.com/thoughtbot/hound-scss/master/config/default.yml)
+
+1. Markdown (beta)
+ * [hound-markdown](https://github.com/thoughtbot/hound-markdown)
+ * [config](https://github.com/mivok/markdownlint/blob/master/lib/mdl/rules.rb)
+
+1. Haml (beta)
+ * [haml-lint](https://github.com/brigade/haml-lint)
+ * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml)
+
+1. Swift (beta)
+ * [hound-swift](https://github.com/thoughtbot/hound-swift)
+ * [config](https://github.com/thoughtbot/hound-swift/blob/master/config/default.yml)
+
+1. Go (beta)
+ * [hound-go](https://github.com/thoughtbot/hound-go)
+
 ## Contributor License Agreement
 
 If you submit a Contribution to this application's source code, you hereby grant
