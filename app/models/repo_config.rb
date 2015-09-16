@@ -1,14 +1,31 @@
 # Load and parse config files from GitHub repo
 class RepoConfig
   HOUND_CONFIG = ".hound.yml"
-  BETA_LANGUAGES = %w(go haml python swift)
-  LANGUAGES = %w(ruby coffeescript javascript scss haml go python swift)
+  BETA_LANGUAGES = %w(
+    go
+    haml
+    markdown
+    python
+    swift
+  )
+  LANGUAGES = %w(
+    coffeescript
+    go
+    haml
+    javascript
+    markdown
+    python
+    ruby
+    scss
+    swift
+  )
   FILE_TYPES = {
-    "ruby" => "yaml",
-    "javascript" => "json",
     "coffeescript" => "json",
+    "haml" => "yaml",
+    "javascript" => "json",
+    "markdown" => "rb",
+    "ruby" => "yaml",
     "scss" => "yaml",
-    "haml" => "yaml"
   }
 
   pattr_initialize :commit
