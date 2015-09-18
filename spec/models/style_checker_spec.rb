@@ -100,7 +100,9 @@ describe StyleChecker do
 
         violation_messages = pull_request_violations(pull_request)
 
-        expect(violation_messages).to eq ["Class names should be camel cased"]
+        expect(violation_messages).to eq [
+          "Class name should be UpperCamelCased",
+        ]
       end
 
       context "with style violations" do

@@ -83,7 +83,7 @@ describe StyleGuide::CoffeeScript do
         it "returns file review with violation" do
           result = violations_in("class strange_ClassNAME")
 
-          expect(result).to be_any { |m| m =~ /camel cased/ }
+          expect(result).to eq(["Class name should be UpperCamelCased"])
         end
       end
     end
@@ -157,9 +157,9 @@ describe StyleGuide::CoffeeScript do
 
         expect(violations.size).to eq 1
         expect(violation.filename).to eq "test.coffee.erb"
-        expect(violation.messages).to match_array(
-          ["Class names should be camel cased"]
-        )
+        expect(violation.messages).to match_array [
+          "Class name should be UpperCamelCased",
+        ]
       end
 
       it "removes the ERB tags from the file" do
