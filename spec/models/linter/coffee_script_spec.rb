@@ -85,54 +85,33 @@ describe Linter::CoffeeScript do
           violations = linter.file_review(file).violations
           violation = violations.first
 
-          expect(violations.size).to eq 1
-          expect(violation.filename).to eq "test.coffee"
-          expect(violation.patch_position).to eq 2
           expect(violation.line_number).to eq 1
-          expect(violation.messages).to match_array(
-            ["Line exceeds maximum allowed length"]
+          expect(violation.messages).to(
+            include("Line exceeds maximum allowed length")
           )
-        end
-      end
-
-      context "for trailing whitespace" do
-        it "returns file review with violation" do
-          expect(violations_in("1   ").first).to match(/trailing whitespace/)
-        end
-      end
-
-      context "for inconsistent indentation" do
-        it "returns file review with violation" do
-          code = <<-CODE.strip_heredoc
-            class FooBar
-              foo: ->
-                  "bar"
-          CODE
-
-          expect(violations_in(code)).to be_any { |m| m =~ /inconsistent/ }
-        end
-      end
-
-      context "for non-PascalCase classes" do
-        it "returns file review with violation" do
-          result = violations_in("class strange_ClassNAME")
-
-          expect(result).to eq(["Class name should be UpperCamelCased"])
         end
       end
     end
 
-    context "with thoughtbot configuration" do
-      context "for an empty function" do
-        it "returns a file review without violations" do
-          code = <<-CODE.strip_heredoc
-            class FooBar
-              foo: ->
-          CODE
+    context "with custom configuration" do
+      context "when line length is configured" do
+        it "does not find line length violation" do
+          repo_config = double(
+            "RepoConfig",
+            enabled_for?: true,
+            for: {
+              "max_line_length": {
+                "value": 81
+              }
+            }
+          )
+          linter = build_linter(repo_config: repo_config)
+          file = build_file("1" * 81)
 
-          violations = violations_in(code, repository_owner_name: "thoughtbot")
+          violations = linter.file_review(file).violations
 
-          expect(violations).to be_empty
+          messages = violations.flat_map(&:messages)
+          expect(messages).not_to include("Line exceeds maximum allowed length")
         end
       end
     end
@@ -152,35 +131,6 @@ describe Linter::CoffeeScript do
       end
     end
 
-    context "thoughtbot pull request" do
-      it "uses the default thoughtbot configuration" do
-        spy_on_coffee_lint
-        spy_on_file_read
-        config_file = thoughtbot_configuration_file(Linter::CoffeeScript)
-
-        violations_in("var foo = 'bar'", repository_owner_name: "thoughtbot")
-
-        expect(File).to have_received(:read).with(config_file)
-        expect(Coffeelint).to have_received(:lint).
-          with(anything, thoughtbot_configuration)
-      end
-    end
-
-    context "non-thoughtbot pull request" do
-      it "uses the default hound configuration" do
-        spy_on_coffee_lint
-        spy_on_file_read
-        config_file = default_configuration_file(Linter::CoffeeScript)
-
-        violations_in("var foo = 'bar'", repository_owner_name: "foo")
-
-        expect(File).to have_received(:read).
-          with(config_file)
-        expect(Coffeelint).to have_received(:lint).
-          with(anything, default_configuration)
-      end
-    end
-
     context "given a `coffee.erb` file" do
       it "lints the file" do
         linter = build_linter
@@ -189,11 +139,10 @@ describe Linter::CoffeeScript do
         violations = linter.file_review(file).violations
         violation = violations.first
 
-        expect(violations.size).to eq 1
-        expect(violation.filename).to eq "test.coffee.erb"
-        expect(violation.messages).to match_array [
-          "Class name should be UpperCamelCased",
-        ]
+        expect(violation.line_number).to eq 1
+        expect(violation.messages).to(
+          include("Class name should be UpperCamelCased")
+        )
       end
 
       it "removes the ERB tags from the file" do
@@ -218,22 +167,6 @@ describe Linter::CoffeeScript do
 
     def build_file(content, filename = "test.coffee")
       build_commit_file(filename: filename, content: content)
-    end
-
-    def default_configuration
-      config_file = default_configuration_file(Linter::CoffeeScript)
-      config = File.read(config_file)
-      JSON.parse(config)
-    end
-
-    def thoughtbot_configuration
-      config_file = thoughtbot_configuration_file(Linter::CoffeeScript)
-      config = File.read(config_file)
-      JSON.parse(config)
-    end
-
-    def spy_on_coffee_lint
-      allow(Coffeelint).to receive(:lint).and_return([])
     end
   end
 

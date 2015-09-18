@@ -36,8 +36,47 @@ describe Linter::Haml do
       context "with an implicit %div violation" do
         it "returns violations" do
           content = "%div#container Hello"
+          message = "`%div#container` can be written as `#container` since "\
+            "`%div` is implicit"
 
-          expect(violations_in(content)).not_to be_empty
+          expect(violations_in(content)).to include message
+        end
+      end
+    end
+
+    context "with custom configuration" do
+      context "when explicit div is allowed" do
+        it "does not find violations" do
+          content = "%div#container Hello"
+          config = {
+            "linters" => {
+              "ImplicitDiv" => {
+                "enabled" => false
+              }
+            }
+          }
+          message = "`%div#container` can be written as `#container` since "\
+            "`%div` is implicit"
+
+          expect(violations_in(content, config)).not_to include message
+        end
+      end
+
+      context "when explicit div is not allowed" do
+        it "finds violations" do
+          content = "%div#container Hello"
+          config = {
+            "linters" => {
+              "ImplicitDiv" => {
+                "enabled" => true
+              }
+            }
+          }
+
+          message = "`%div#container` can be written as `#container` since "\
+            "`%div` is implicit"
+
+          expect(violations_in(content, config)).to include message
         end
       end
     end
@@ -55,33 +94,6 @@ describe Linter::Haml do
         content = "%div#bar.foo\n"
 
         expect(violations_in(content, config)).not_to be_empty
-      end
-    end
-
-    context "with violations in file" do
-      it "returns violations" do
-        content = <<-EOS.strip_heredoc
-          .main
-            %div#foo
-              %span{class: "sky" } Hello
-        EOS
-        config = {
-          "linters" => {
-            "SpaceInsideHashAttributes" => {
-              "enabled" => true,
-              "style" => "no_space",
-            },
-            "ImplicitDiv" => {
-              "enabled" => true,
-            },
-          },
-        }
-
-        expect(violations_in(content, config)).to match_array [
-          "Avoid defining `class` in attributes hash for static class names",
-          "`%div#foo` can be written as `#foo` since `%div` is implicit",
-          "Hash attribute should end with no space before the closing brace",
-        ]
       end
     end
   end

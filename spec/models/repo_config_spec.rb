@@ -171,6 +171,30 @@ describe RepoConfig do
           end
         end
       end
+
+      context "when legacy coffee_script key is used to disable" do
+        it "returns false" do
+          commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+            coffee_script:
+              enabled: false
+          EOS
+          repo_config = RepoConfig.new(commit)
+
+          expect(repo_config.enabled_for?("coffeescript")).to eq false
+        end
+      end
+
+      context "when coffeescript key is used to disable" do
+        it "returns false" do
+          commit = double("Commit", file_content: <<-EOS.strip_heredoc)
+            coffeescript:
+              enabled: false
+          EOS
+          repo_config = RepoConfig.new(commit)
+
+          expect(repo_config.enabled_for?("coffeescript")).to eq false
+        end
+      end
     end
 
     context "when there is no Hound config file" do
@@ -449,13 +473,6 @@ describe RepoConfig do
     end
 
     describe "#jshint_ignore_file" do
-      it "return default paths" do
-        commit = stub_commit(hound_config: "")
-        ignored_files = RepoConfig.new(commit).ignored_javascript_files
-
-        expect(ignored_files).to eq ["vendor/*"]
-      end
-
       context "no specific configuration is present" do
         it "attempts to load a .jshintignore file" do
           ignored_files = <<-EOIGNORE.strip_heredoc
