@@ -13,7 +13,7 @@ module StyleGuide
         filename: commit_file.filename,
       )
 
-      Resque.enqueue(job_class, attributes)
+      enqueue_job(attributes)
 
       file_review
     end
@@ -43,6 +43,10 @@ module StyleGuide
 
     def job_class
       "#{language.capitalize}ReviewJob".constantize
+    end
+
+    def enqueue_job(attributes)
+      Resque.enqueue(job_class, attributes)
     end
 
     def language

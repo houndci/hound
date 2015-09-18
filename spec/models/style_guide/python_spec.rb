@@ -25,12 +25,12 @@ describe StyleGuide::Python do
         {
           class: "review.PythonReviewJob",
           args: [
-            commit_file.filename,
-            build.commit_sha,
-            build.pull_request_number,
-            commit_file.patch,
-            commit_file.content,
-            "config",
+            filename: commit_file.filename,
+            commit_sha: build.commit_sha,
+            pull_request_number: build.pull_request_number,
+            patch: commit_file.patch,
+            content: commit_file.content,
+            config: "config",
           ],
         }
       )
