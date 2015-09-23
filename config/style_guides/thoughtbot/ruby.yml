@@ -39,6 +39,9 @@ ClassAndModuleChildren:
 ClassLength:
   Enabled: false
 
+ModuleLength:
+  Enabled: false
+
 ClassVars:
   Enabled: false
 
@@ -233,19 +236,34 @@ AmbiguousRegexpLiteral:
 AssignmentInCondition:
   Enabled: false
 
+CircularArgumentReference:
+  Enabled: false
+
 ConditionPosition:
   Enabled: false
 
 DeprecatedClassMethods:
   Enabled: false
 
+DuplicatedKey:
+  Enabled: false
+
+EachWithObjectArgument:
+  Enabled: false
+
 ElseLayout:
+  Enabled: false
+
+FormatParameterMismatch:
   Enabled: false
 
 HandleExceptions:
   Enabled: false
 
 InvalidCharacterLiteral:
+  Enabled: false
+
+InitialIndentation:
   Enabled: false
 
 LiteralInCondition:
@@ -257,6 +275,12 @@ LiteralInInterpolation:
 Loop:
   Enabled: false
 
+NestedMethodDefinition:
+  Enabled: false
+
+NonLocalExitFromIterator:
+  Enabled: false
+
 ParenthesesAsGroupedExpression:
   Enabled: false
 
@@ -266,5 +290,69 @@ RequireParentheses:
 UnderscorePrefixedVariableName:
   Enabled: false
 
+UnneededDisable:
+  Enabled: false
+
 Void:
+  Enabled: false
+
+# Performance
+
+CaseWhenSplat:
+  Enabled: false
+
+Count:
+  Enabled: false
+
+Detect:
+  Enabled: false
+
+FlatMap:
+  Enabled: false
+
+ReverseEach:
+  Enabled: false
+
+Sample:
+  Enabled: false
+
+Size:
+  Enabled: false
+
+StringReplacement:
+  Enabled: false
+
+# Rails
+
+ActionFilter:
+  Enabled: false
+
+Date:
+  Enabled: false
+
+DefaultScope:
+  Enabled: false
+
+FindBy:
+  Enabled: false
+
+FindEach:
+  Enabled: false
+
+HasAndBelongsToMany:
+  Enabled: false
+
+Output:
+  Enabled: false
+
+ReadWriteAttribute:
+  Enabled: false
+
+ScopeArgs:
+  Enabled: false
+
+TimeZone:
+  Enabled: false
+
+Validation:
   Enabled: false

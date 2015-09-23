@@ -8,15 +8,10 @@ describe StyleChecker do
       pull_request = stub_pull_request(
         commit_files: [stylish_commit_file, violated_commit_file],
       )
-      expected_violations = [
-        "Unnecessary spacing detected.",
-        "Space inside parentheses detected.",
-        "Trailing whitespace detected.",
-      ]
 
       violation_messages = pull_request_violations(pull_request)
 
-      expect(violation_messages).to eq expected_violations
+      expect(violation_messages).to include "Trailing whitespace detected."
     end
 
     it "only fetches content for supported files" do
@@ -41,14 +36,10 @@ describe StyleChecker do
         it "returns violations" do
           commit_file = stub_commit_file("ruby.rb", "puts 123    ")
           pull_request = stub_pull_request(commit_files: [commit_file])
-          expected_violations = [
-            "Unnecessary spacing detected.",
-            "Trailing whitespace detected.",
-          ]
 
           violation_messages = pull_request_violations(pull_request)
 
-          expect(violation_messages).to eq expected_violations
+          expect(violation_messages).to include "Trailing whitespace detected."
         end
       end
 
