@@ -123,20 +123,20 @@ being used and the default configs for each linter.
  * [hound-scss](https://github.com/thoughtbot/hound-scss)
  * [config](https://raw.githubusercontent.com/thoughtbot/hound-scss/master/config/default.yml)
 
+1. Haml
+ * [haml-lint](https://github.com/brigade/haml-lint)
+ * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml)
+
+1. Go
+ * [hound-go](https://github.com/thoughtbot/hound-go)
+
 1. Markdown (beta)
  * [hound-markdown](https://github.com/thoughtbot/hound-markdown)
  * [config](https://github.com/mivok/markdownlint/blob/master/lib/mdl/rules.rb)
 
-1. Haml (beta)
- * [haml-lint](https://github.com/brigade/haml-lint)
- * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml)
-
 1. Swift (beta)
  * [hound-swift](https://github.com/thoughtbot/hound-swift)
  * [config](https://github.com/thoughtbot/hound-swift/blob/master/config/default.yml)
-
-1. Go (beta)
- * [hound-go](https://github.com/thoughtbot/hound-go)
 
 ## Contributor License Agreement
 
