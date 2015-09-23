@@ -2,8 +2,6 @@
 class RepoConfig
   HOUND_CONFIG = ".hound.yml"
   BETA_LANGUAGES = %w(
-    go
-    haml
     markdown
     python
     swift
