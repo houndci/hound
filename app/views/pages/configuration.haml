@@ -17,6 +17,8 @@
         = link_to "Haml config", "#haml"
       %li
         = link_to "Go config", "#go"
+      %li
+        = link_to "Markdown config", "#markdown"
 
   %section.doc-content
     %article
@@ -253,6 +255,40 @@
           :preserve
             go:
               enabled: true
+
+    %article#markdown
+      %h3 Markdown (beta)
+
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to enable Markdown style checking.
+
+        %code.code-block
+          :preserve
+            markdown:
+              enabled: true
+
+      %p
+        Hound uses
+        #{link_to "mdl", "https://github.com/mivok/markdownlint", target: :blank}
+        with its
+        #{link_to "default config", "https://github.com/mivok/markdownlint/blob/master/docs/configuration.md", target: :blank}.
+
+      %p
+        If you need to change the way Hound is configured, create a
+        %em.code .rb
+        file with your
+        #{link_to "custom configuration", "https://github.com/mivok/markdownlint/blob/master/docs/configuration.md#specifying-which-rules-mdl-processes", target: :blank }
+        and reference the file in
+        %em.code .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            markdown:
+              enabled: true
+              config_file: .mdl.rb
 
     %article
       %h3 Didn't find what you where looking for?
