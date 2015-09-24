@@ -52,8 +52,6 @@ class StyleChecker
       StyleGuide::Python
     when /.+\.swift\z/
       StyleGuide::Swift
-    when /.+(?:\.md|\.markdown)\z/
-      StyleGuide::Markdown
     else
       StyleGuide::Unsupported
     end

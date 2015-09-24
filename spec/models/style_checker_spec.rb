@@ -226,17 +226,6 @@ describe StyleChecker do
       end
     end
 
-    context "for a Markdown file" do
-      it "does not immediately return violations" do
-        commit_file = stub_commit_file("README.md", "#Hello world")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to be_empty
-      end
-    end
-
     context "with unsupported file type" do
       it "uses unsupported style guide" do
         commit_file = stub_commit_file(

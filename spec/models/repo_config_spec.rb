@@ -48,8 +48,6 @@ describe RepoConfig do
             enabled: true
           swift:
             enabled: true
-          markdown:
-            enabled: true
         EOS
         repo_config = RepoConfig.new(commit)
 
@@ -136,8 +134,6 @@ describe RepoConfig do
             Python:
               Enabled: true
             Swift:
-              Enabled: true
-            Markdown:
               Enabled: true
           EOS
           repo_config = RepoConfig.new(commit)
@@ -528,20 +524,6 @@ describe RepoConfig do
         expect(result).to eq raw_config
       end
     end
-
-    context "with Markdown config" do
-      it "returns parsed config" do
-        config_text = <<-EOS.strip_heredoc
-          rule 'MD030', :ol_multi => 2
-          rule 'MD036'
-        EOS
-        config = config_for_file(".mdl.rb", config_text)
-
-        result = config.raw_for("markdown")
-
-        expect(result).to eq("rule 'MD030', :ol_multi => 2\nrule 'MD036'\n")
-      end
-    end
   end
 
   describe "#fail_on_violations?" do
@@ -630,12 +612,12 @@ describe RepoConfig do
       haml:
         enabled: true
         config_file: #{file_path}
-
-      markdown:
-        enabled: true
-        config_file: #{file_path}
     EOS
-    commit = stub_commit(hound_config: hound_config, "#{file_path}" => content)
+
+    commit = stub_commit(
+      hound_config: hound_config,
+      "#{file_path}" => content
+    )
 
     RepoConfig.new(commit)
   end

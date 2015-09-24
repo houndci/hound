@@ -2,7 +2,6 @@
 class RepoConfig
   HOUND_CONFIG = ".hound.yml"
   BETA_LANGUAGES = %w(
-    markdown
     python
     swift
   )
@@ -11,7 +10,6 @@ class RepoConfig
     go
     haml
     javascript
-    markdown
     python
     ruby
     scss
@@ -21,7 +19,6 @@ class RepoConfig
     "coffeescript" => "json",
     "haml" => "yaml",
     "javascript" => "json",
-    "markdown" => "rb",
     "ruby" => "yaml",
     "scss" => "yaml",
   }
