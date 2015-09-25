@@ -27,6 +27,10 @@ module ConfigurationHelper
     "https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml"
   end
 
+  def swift_config_url
+    config_url("thoughtbot/hound-swift", "config/default.yml")
+  end
+
   private
 
   def config_url(slug, config_file)
