@@ -66,6 +66,20 @@
         pointing Hound to a custom config file for Ruby style checking and
         an ignore file for JavaScript.
 
+      %p
+        Hound can be configured to use
+        = link_to "GitHub's Status API",
+          "https://github.com/blog/1935-see-results-from-all-pull-request-status-checks",
+          target: :blank
+        to mark a pull request as failed if any violations are found. To do so,
+        add the following to your
+        %em.code .hound.yml
+        file:
+
+      %code.code-block
+        :preserve
+          fail_on_violations: true
+
     %article#ruby
       %h3 Ruby
       %p
