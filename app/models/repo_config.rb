@@ -54,12 +54,7 @@ class RepoConfig
   end
 
   def ignored_javascript_files
-    ignore_file_content = load_javascript_ignore
-
-    if ignore_file_content.blank?
-      ignore_file_content = File.read("config/style_guides/.jshintignore")
-    end
-
+    ignore_file_content = load_javascript_ignore || ""
     ignore_file_content.split("\n")
   end
 

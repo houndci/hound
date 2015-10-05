@@ -71,39 +71,47 @@ describe StyleChecker do
     end
 
     context "for a CoffeeScript file" do
-      it "is processed with a coffee.js extension" do
-        commit_file = stub_commit_file("test.coffee.js", "foo ->")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-        allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to eq ["Empty function"]
-      end
-
-      it "is processed with a coffee.erb extension" do
-        commit_file = stub_commit_file(
-          "test.coffee.erb",
-          "class strange_ClassNAME",
-        )
-        pull_request = stub_pull_request(commit_files: [commit_file])
-        allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to eq [
-          "Class name should be UpperCamelCased",
-        ]
-      end
-
-      context "with style violations" do
-        it "returns violations" do
-          commit_file = stub_commit_file("test.coffee", "foo: ->")
+      context "with .coffee extension" do
+        it "finds violations" do
+          commit_file = stub_commit_file("test.coffee", "debugger")
           pull_request = stub_pull_request(commit_files: [commit_file])
 
           violation_messages = pull_request_violations(pull_request)
 
-          expect(violation_messages).to eq ["Empty function"]
+          expect(violation_messages).to include(
+            "Found debugging code",
+          )
+        end
+      end
+
+      context "with .coffee.js extension" do
+        it "finds violations" do
+          commit_file = stub_commit_file("test.coffee.js", "debugger")
+          pull_request = stub_pull_request(commit_files: [commit_file])
+          allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
+
+          violation_messages = pull_request_violations(pull_request)
+
+          expect(violation_messages).to include(
+            "Found debugging code",
+          )
+        end
+      end
+
+      context "with .coffee.erb extension" do
+        it "finds violations" do
+          commit_file = stub_commit_file(
+            "test.coffee.erb",
+            "class strange_ClassNAME",
+          )
+          pull_request = stub_pull_request(commit_files: [commit_file])
+          allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
+
+          violation_messages = pull_request_violations(pull_request)
+
+          expect(violation_messages).to include(
+            "Class name should be UpperCamelCased",
+          )
         end
       end
 

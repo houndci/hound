@@ -1,6 +1,5 @@
 module Linter
   class Haml < Base
-    DEFAULT_CONFIG_FILENAME = "haml.yml"
     FILE_REGEXP = /.+\.haml\z/
 
     def file_review(commit_file)
@@ -51,22 +50,12 @@ module Linter
     end
 
     def config
-      default_config.merge(custom_config)
+      HamlLint::ConfigurationLoader.default_configuration.
+        merge(custom_config)
     end
 
     def custom_config
       HamlLint::Configuration.new(repo_config.for(name))
-    end
-
-    def default_config
-      HamlLint::ConfigurationLoader.load_file(default_config_file)
-    end
-
-    def default_config_file
-      DefaultConfigFile.new(
-        DEFAULT_CONFIG_FILENAME,
-        repository_owner_name
-      ).path
     end
   end
 end

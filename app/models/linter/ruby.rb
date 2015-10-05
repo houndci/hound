@@ -1,7 +1,5 @@
-# Determine Ruby style guide violations per-line.
 module Linter
   class Ruby < Base
-    DEFAULT_CONFIG_FILENAME = "ruby.yml"
     FILE_REGEXP = /.+\.rb\z/
 
     def file_review(commit_file)
@@ -36,17 +34,7 @@ module Linter
     end
 
     def config
-      @config ||= RuboCop::Config.new(merged_config, "")
-    end
-
-    def merged_config
-      RuboCop::ConfigLoader.merge(default_config, custom_config)
-    rescue TypeError
-      default_config
-    end
-
-    def default_config
-      RuboCop::ConfigLoader.configuration_from_file(default_config_file)
+      @config ||= RuboCop::ConfigLoader.merge_with_default(custom_config, "")
     end
 
     def custom_config
@@ -65,13 +53,6 @@ module Linter
         Analytics.new(repository_owner_name).track_show_cop_names
         { debug: true }
       end
-    end
-
-    def default_config_file
-      DefaultConfigFile.new(
-        DEFAULT_CONFIG_FILENAME,
-        repository_owner_name
-      ).path
     end
   end
 end
