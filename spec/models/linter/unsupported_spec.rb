@@ -11,7 +11,7 @@ describe Linter::Unsupported do
 
   describe "#file_review" do
     it "raises" do
-      style_guide = Linter::Unsupported.new(
+      linter = Linter::Unsupported.new(
         repo_config: double,
         build: double,
         repository_owner_name: "foo",
@@ -19,20 +19,20 @@ describe Linter::Unsupported do
       commit_file = double("CommitFile", filename: "unsupported.f95")
 
       expect do
-        style_guide.file_review(commit_file)
+        linter.file_review(commit_file)
       end.to raise_error(Linter::Unsupported::CannotReviewUnsupportedFile)
     end
   end
 
   describe "#file_included?" do
     it "return false" do
-      style_guide = Linter::Unsupported.new(
+      linter = Linter::Unsupported.new(
         repo_config: double,
         build: double,
         repository_owner_name: "foo",
       )
 
-      expect(style_guide.file_included?(double)).to eq false
+      expect(linter.file_included?(double)).to eq false
     end
   end
 end

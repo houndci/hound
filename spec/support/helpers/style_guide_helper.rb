@@ -1,5 +1,5 @@
 module LinterHelper
-  def build_style_guide(config = "config", build = build(:build))
+  def build_linter(config = "config", build = build(:build))
     repo_config = double("RepoConfig", raw_for: config)
     described_class.new(
       repo_config: repo_config,

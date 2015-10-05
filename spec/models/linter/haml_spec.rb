@@ -23,10 +23,10 @@ describe Linter::Haml do
 
   describe "#file_review" do
     it "returns a saved and completed file review" do
-      style_guide = build_style_guide({})
+      linter = build_linter({})
       file = build_file("")
 
-      result = style_guide.file_review(file)
+      result = linter.file_review(file)
 
       expect(result).to be_persisted
       expect(result).to be_completed
@@ -90,18 +90,18 @@ describe Linter::Haml do
     context "with excluded file" do
       it "returns false" do
         config = { "exclude" => filename }
-        style_guide = build_style_guide(config)
+        linter = build_linter(config)
 
-        expect(style_guide.file_included?(filename)).to eq false
+        expect(linter.file_included?(filename)).to eq false
       end
     end
 
     context "with non-excluded file" do
       it "returns true" do
         config = { "exclude" => "app/views/clearance/**" }
-        style_guide = build_style_guide(config)
+        linter = build_linter(config)
 
-        expect(style_guide.file_included?(filename)).to eq true
+        expect(linter.file_included?(filename)).to eq true
       end
     end
   end
@@ -109,12 +109,12 @@ describe Linter::Haml do
   private
 
   def violations_in(content, config = {})
-    style_guide = build_style_guide(config)
-    style_guide.file_review(build_file(content)).violations.
+    linter = build_linter(config)
+    linter.file_review(build_file(content)).violations.
       flat_map(&:messages)
   end
 
-  def build_style_guide(config)
+  def build_linter(config)
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
     Linter::Haml.new(
       repo_config: repo_config,

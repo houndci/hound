@@ -21,10 +21,10 @@ describe Linter::Scss do
 
   describe "#file_review" do
     it "returns a saved and incomplete file review" do
-      style_guide = build_style_guide
+      linter = build_linter
       commit_file = build_commit_file(filename: "lib/a.scss")
 
-      result = style_guide.file_review(commit_file)
+      result = linter.file_review(commit_file)
 
       expect(result).to be_persisted
       expect(result).not_to be_completed
@@ -32,11 +32,11 @@ describe Linter::Scss do
 
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      style_guide = build_style_guide("config", build)
+      linter = build_linter("config", build)
       commit_file = build_commit_file(filename: "lib/a.scss")
       allow(Resque).to receive(:enqueue)
 
-      style_guide.file_review(commit_file)
+      linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
         ScssReviewJob,

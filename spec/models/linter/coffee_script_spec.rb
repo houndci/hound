@@ -45,9 +45,9 @@ describe Linter::CoffeeScript do
             enabled: false
         EOS
         repo_config = RepoConfig.new(commit)
-        style_guide = build_style_guide(repo_config: repo_config)
+        linter = build_linter(repo_config: repo_config)
 
-        expect(style_guide).not_to be_enabled
+        expect(linter).not_to be_enabled
       end
     end
 
@@ -58,19 +58,19 @@ describe Linter::CoffeeScript do
             enabled: false
         EOS
         repo_config = RepoConfig.new(commit)
-        style_guide = build_style_guide(repo_config: repo_config)
+        linter = build_linter(repo_config: repo_config)
 
-        expect(style_guide).not_to be_enabled
+        expect(linter).not_to be_enabled
       end
     end
   end
 
   describe "#file_review" do
     it "returns a saved and completed file review" do
-      style_guide = build_style_guide
+      linter = build_linter
       file = build_file("foo")
 
-      result = style_guide.file_review(file)
+      result = linter.file_review(file)
 
       expect(result).to be_persisted
       expect(result).to be_completed
@@ -79,10 +79,10 @@ describe Linter::CoffeeScript do
     context "with default configuration" do
       context "for long line" do
         it "returns file review with violations" do
-          style_guide = build_style_guide
+          linter = build_linter
           file = build_file("1" * 81)
 
-          violations = style_guide.file_review(file).violations
+          violations = linter.file_review(file).violations
           violation = violations.first
 
           expect(violations.size).to eq 1
@@ -183,10 +183,10 @@ describe Linter::CoffeeScript do
 
     context "given a `coffee.erb` file" do
       it "lints the file" do
-        style_guide = build_style_guide
+        linter = build_linter
         file = build_file("class strange_ClassNAME", "test.coffee.erb")
 
-        violations = style_guide.file_review(file).violations
+        violations = linter.file_review(file).violations
         violation = violations.first
 
         expect(violations.size).to eq 1
@@ -197,11 +197,11 @@ describe Linter::CoffeeScript do
       end
 
       it "removes the ERB tags from the file" do
-        style_guide = build_style_guide
+        linter = build_linter
         content = "leonidasLastWords = <%= raise 'hell' %>"
         file = build_file(content, "test.coffee.erb")
 
-        violations = style_guide.file_review(file).violations
+        violations = linter.file_review(file).violations
 
         expect(violations).to be_empty
       end
@@ -210,7 +210,7 @@ describe Linter::CoffeeScript do
     private
 
     def violations_in(content, repository_owner_name: "ralph")
-      build_style_guide(repository_owner_name: repository_owner_name).
+      build_linter(repository_owner_name: repository_owner_name).
         file_review(build_file(content)).
         violations.
         flat_map(&:messages)
@@ -237,7 +237,7 @@ describe Linter::CoffeeScript do
     end
   end
 
-  def build_style_guide(
+  def build_linter(
     repo_config: default_repo_config,
     repository_owner_name: "RalphJoe"
   )

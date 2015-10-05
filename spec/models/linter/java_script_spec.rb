@@ -31,10 +31,10 @@ describe Linter::JavaScript do
 
   describe "#file_review" do
     it "returns a saved and completed file review" do
-      style_guide = build_style_guide
+      linter = build_linter
       commit_file = build_js_file
 
-      result = style_guide.file_review(commit_file)
+      result = linter.file_review(commit_file)
 
       expect(result).to be_persisted
       expect(result).to be_completed
@@ -162,10 +162,10 @@ describe Linter::JavaScript do
     context "file is in excluded file list" do
       it "returns false" do
         repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
-        style_guide = build_style_guide(repo_config: repo_config)
+        linter = build_linter(repo_config: repo_config)
         commit_file = double("CommitFile", filename: "foo.js")
 
-        included = style_guide.file_included?(commit_file)
+        included = linter.file_included?(commit_file)
 
         expect(included).to be false
       end
@@ -174,10 +174,10 @@ describe Linter::JavaScript do
     context "file is not excluded" do
       it "returns true" do
         repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
-        style_guide = build_style_guide(repo_config: repo_config)
+        linter = build_linter(repo_config: repo_config)
         commit_file = double("CommitFile", filename: "bar.js")
 
-        included = style_guide.file_included?(commit_file)
+        included = linter.file_included?(commit_file)
 
         expect(included).to be true
       end
@@ -191,7 +191,7 @@ describe Linter::JavaScript do
           "vendor/*",
         ]
       )
-      style_guide = build_style_guide(repo_config: repo_config)
+      linter = build_linter(repo_config: repo_config)
       commit_file1 = double(
         "CommitFile",
         filename: "app/assets/javascripts/bar.js"
@@ -201,8 +201,8 @@ describe Linter::JavaScript do
         filename: "vendor/assets/javascripts/foo.js"
       )
 
-      expect(style_guide.file_included?(commit_file1)).to be false
-      expect(style_guide.file_included?(commit_file2)).to be false
+      expect(linter.file_included?(commit_file1)).to be false
+      expect(linter.file_included?(commit_file2)).to be false
     end
   end
 
@@ -215,14 +215,14 @@ describe Linter::JavaScript do
     repo_config: default_repo_config,
     repository_owner_name: "foo"
   )
-    style_guide = build_style_guide(
+    linter = build_linter(
       repo_config: repo_config,
       repository_owner_name: repository_owner_name,
     )
-    style_guide.file_review(commit_file).violations
+    linter.file_review(commit_file).violations
   end
 
-  def build_style_guide(
+  def build_linter(
     repo_config: default_repo_config,
     repository_owner_name: "not_thoughtbot"
   )

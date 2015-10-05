@@ -23,9 +23,9 @@ describe Linter::Ruby do
     include ConfigurationHelper
 
     it "returns a saved and completed file review" do
-      style_guide = build_style_guide
+      linter = build_linter
 
-      result = style_guide.file_review(build_file("test"))
+      result = linter.file_review(build_file("test"))
 
       expect(result).to be_persisted
       expect(result).to be_completed
@@ -679,9 +679,9 @@ describe Linter::Ruby do
           }
           repo_config = double("RepoConfig", for: config)
           file = double("CommitFile", filename: "ignore.rb")
-          style_guide = build_style_guide(repo_config: repo_config)
+          linter = build_linter(repo_config: repo_config)
 
-          expect(style_guide.file_included?(file)).to eq false
+          expect(linter.file_included?(file)).to eq false
         end
       end
 
@@ -694,9 +694,9 @@ describe Linter::Ruby do
           }
           repo_config = double("RepoConfig", for: config)
           file = double("CommitFile", filename: "app.rb")
-          style_guide = build_style_guide(repo_config: repo_config)
+          linter = build_linter(repo_config: repo_config)
 
-          expect(style_guide.file_included?(file)).to eq true
+          expect(linter.file_included?(file)).to eq true
         end
       end
     end
@@ -705,18 +705,18 @@ describe Linter::Ruby do
 
     def violations_in(content, config: nil, repository_owner_name: "joe")
       repo_config = build_repo_config(config)
-      style_guide = build_style_guide(
+      linter = build_linter(
         repo_config: repo_config,
         repository_owner_name: repository_owner_name,
       )
 
-      style_guide.
+      linter.
         file_review(build_file(content)).
         violations.
         flat_map(&:messages)
     end
 
-    def build_style_guide(
+    def build_linter(
       repo_config: build_repo_config,
       repository_owner_name: "not_thoughtbot"
     )

@@ -47,7 +47,7 @@ describe PullRequest do
 
   describe "#comments" do
     it "returns comments on pull request" do
-      filename = "spec/models/style_guide_spec.rb"
+      filename = "spec/models/linter_spec.rb"
       comment = double(:comment, position: 7, path: filename)
       github = double(:github, pull_request_comments: [comment])
       pull_request = pull_request_stub(github)
