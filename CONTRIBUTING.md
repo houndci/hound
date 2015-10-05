@@ -25,7 +25,7 @@ Here are a few technical guidelines to follow:
 
     `./bin/setup`
 
-    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 2-5.  
+    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 2-5.
     Designers, you don't need ngrok for the purpose of making css changes and running the app locally.
 
 1. Ngrok allows GitHub to make requests via webhook to start a build. Sign up
@@ -49,9 +49,9 @@ for a free [ngrok] account and create a `~/.ngrok` file with the following:
    application" and fill in the details:
 
     * Application Name: Hound Development
-    * Homepage URL: `https://<your-initials>-hound.ngrok.com`  
+    * Homepage URL: `https://<your-initials>-hound.ngrok.com`
       **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
-    * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`  
+    * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`
       **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
 
       **NOTE:** If you did not set up ngrok, skip to the last step.
@@ -137,6 +137,41 @@ being used and the default configs for each linter.
 1. Swift (beta)
  * [hound-swift](https://github.com/thoughtbot/hound-swift)
  * [config](https://github.com/thoughtbot/hound-swift/blob/master/config/default.yml)
+
+### Writing a Linter
+
+Linters check code snippets for style violations. They operate by polling a
+Resque queue.
+
+Linter jobs are created with the following arguments:
+
+* `config` - The configuration for the linter. This will be linter specific.
+* `content` - The source code to check for violations.
+* `filename` - The name of the source file for the code snippet. This should be
+  passed through to the outbound queue.
+* `commit_sha` - The git commit SHA of the code snippet. This should be passed
+  through to the outbound queue.
+* `pull_request_number` - The GitHub pull request number. This should be passed
+  through to the outbound queue.
+* `patch` - The patch content from GitHub for the file being reviewed. This
+  should be passed through to the outbound queue.
+
+Once linting is complete, resulting violations should be posted to the outbound
+"CompletedFileReviewJob" queue:
+
+* `violations` - An array of violation objects. Each violation requires the
+  following:
+  * `line` - The line number where the violation occurred.
+  * `message` - A message describing the violation. This will be the contents
+    of the Pull Request comment.
+* `filename` - The name of the source file for the code snippet. This is
+  provided by the inbound queue.
+* `commit_sha` - The git commit SHA of the code snippet. This is provided by the
+  inbound queue.
+* `pull_request_number` - The GitHub pull request number. This is provided by the
+  inbound queue.
+* `patch` - The patch content from GitHub for the file being reviewed. This is
+  provided by the inbound queue.
 
 ## Contributor License Agreement
 
