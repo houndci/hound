@@ -32,14 +32,6 @@ describe Linter::Ruby do
     end
 
     context "with default configuration" do
-      describe "for { and } as %r literal delimiters" do
-        it "returns no violations" do
-          expect(violations_in(<<-CODE.strip_heredoc)).to eq []
-            "test" =~ %r|test|
-          CODE
-        end
-      end
-
       describe "for private prefix" do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
@@ -70,8 +62,6 @@ describe Linter::Ruby do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
             if signed_in? then redirect_to dashboard_path end
-
-            while signed_in? do something end
           CODE
         end
       end
@@ -282,9 +272,9 @@ describe Linter::Ruby do
 
       context "for operator without surrounding spaces" do
         it "returns violations" do
-          violations = ["Surrounding space missing for operator `+`."]
-          expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-            1+1
+          violation = "Surrounding space missing for operator `+`."
+          expect(violations_in(<<-CODE.strip_heredoc)).to include violation
+            two = 1+1
           CODE
         end
       end
