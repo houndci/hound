@@ -38,7 +38,7 @@ gem "stripe"
 gem "uglifier", ">= 2.7.2"
 gem 'therubyracer', platforms: :ruby
 
-# gem 'rb-readline', '~> 0.5.3'
+gem 'rb-readline', '~> 0.5.3'
 
 group :staging, :production do
   gem "rack-timeout"
