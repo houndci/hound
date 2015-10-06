@@ -1,0 +1,1 @@
+require 'raven/base'

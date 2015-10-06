@@ -1,0 +1,16 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Include:
+  - Gemfile
+  - '**/Rakefile'
+  - resque-scheduler.gemspec
+  - bin/resque-scheduler
+
+Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false

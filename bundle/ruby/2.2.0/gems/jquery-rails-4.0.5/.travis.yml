@@ -1,0 +1,21 @@
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1
+  - 2.2
+  - jruby
+  - ruby-head
+matrix:
+  fast_finish: true
+notifications:
+  email: false
+  irc:
+    on_success: change
+    on_failure: always
+    channels:
+      - "irc.freenode.org#rails-contrib"
+  campfire:
+    on_success: change
+    on_failure: always
+    rooms:
+      - secure: ""

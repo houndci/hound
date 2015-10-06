@@ -1,0 +1,9 @@
+*.swp
+test.db
+factory_girl-*.gem
+doc
+.yardoc
+coverage
+.bundle
+tmp
+bin

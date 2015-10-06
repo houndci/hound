@@ -1,0 +1,4 @@
+---
+development: localhost:6379
+test: localhost:6379:1
+production: localhost:6379 # or wherever your redis-server is in production

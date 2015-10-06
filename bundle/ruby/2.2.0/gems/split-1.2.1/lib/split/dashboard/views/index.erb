@@ -1,0 +1,17 @@
+<% if @experiments.any? %>
+  <p class="intro">The list below contains all the registered experiments along with the number of test participants, completed and conversion rate currently in the system.</p>
+
+  <% @experiments.each do |experiment| %>
+    <% if experiment.goals.empty? %>
+      <%= erb :_experiment, :locals => {:goal => nil, :experiment => experiment} %>
+    <% else %>
+      <%= erb :_experiment_with_goal_header, :locals => {:experiment => experiment} %>
+      <% experiment.goals.each do |g| %>
+        <%= erb :_experiment, :locals => {:goal => g, :experiment => experiment} %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  <p class="intro">No experiments have started yet, you need to define them in your code and introduce them to your users.</p>
+  <p class="intro">Check out the <a href='https://github.com/splitrb/split#readme'>Readme</a> for more help getting started.</p>
+<% end %>

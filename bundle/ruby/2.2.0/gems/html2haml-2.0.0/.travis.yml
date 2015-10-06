@@ -1,0 +1,16 @@
+language: ruby
+rvm:
+  - 2.1.0
+  - 2.0.0
+  - 1.9.3
+  - rbx-2
+  - jruby-19mode
+
+gemfile:
+  - Gemfile
+
+branches:
+  only:
+    - master
+
+script: "bundle exec rake test"

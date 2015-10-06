@@ -1,0 +1,9 @@
+capybara-webkit hits 1.0.0 when:
+
+* All shared examples from capybara are implemented. See
+  capybara:lib/capybara/spec/**/*rb for the shared example groups.
+* Test failures are a result of issues in the developer's code and not
+  capybara-webkit.
+* Test failures lead to clear explanations for what failed and what can
+  be done to resolve them.
+* It handles iframes, cookies, page loading, and other oddities.

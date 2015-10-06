@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+
+eval Pathname.new(__FILE__).join("../../Gemfile").read
+
+gem "rails", "~> 3.2.21"

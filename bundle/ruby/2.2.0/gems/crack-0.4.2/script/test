@@ -1,0 +1,25 @@
+#!/bin/sh
+#/ Usage: test [individual test file]
+#/
+#/ Bootstrap and run all tests or an individual test.
+#/
+#/ Examples:
+#/
+#/   # run all tests
+#/   test
+#/
+#/   # run individual test
+#/   test test/controller_instrumentation_test.rb
+#/
+
+set -e
+cd $(dirname "$0")/..
+
+[ "$1" = "--help" -o "$1" = "-h" -o "$1" = "help" ] && {
+    grep '^#/' <"$0"| cut -c4-
+    exit 0
+}
+
+script/bootstrap && ruby -I lib -I test -r rubygems \
+  -e 'require "bundler/setup"' \
+  -e '(ARGV.empty? ? Dir["test/**/*_test.rb"] : ARGV).each { |f| load f }' -- "$@"

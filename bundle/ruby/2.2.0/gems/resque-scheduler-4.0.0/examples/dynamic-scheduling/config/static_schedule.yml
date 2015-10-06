@@ -1,0 +1,7 @@
+---
+FixSchedulesJob:
+  description: 'Add any missing email sending schedules'
+  queue: send_emails
+  every:
+    - '1h'
+    - :first_in: '10s'

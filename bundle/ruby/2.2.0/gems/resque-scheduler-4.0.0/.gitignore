@@ -1,0 +1,17 @@
+/.bundle/
+/.idea/
+/.yardoc/
+
+/doc/
+/pkg/
+nbproject
+/Gemfile.lock
+/.rvmrc
+*.swp
+
+/coverage/
+/.vagrant/
+/dump.rdb
+
+.env
+.env.*

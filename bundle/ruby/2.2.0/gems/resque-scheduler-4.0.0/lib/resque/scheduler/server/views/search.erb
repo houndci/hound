@@ -1,0 +1,73 @@
+<h1>Search Results</h1>
+<%= render_partial File.read(File.join(File.dirname(__FILE__), 'server/views/search_form.erb')) %>
+<hr>
+<% delayed = @jobs.select { |j| j['where_at'] == 'delayed' } %>
+<h1>Delayed jobs</h1>
+<table class='jobs'>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Timestamp</th>
+    <th>Class</th>
+    <th>Args</th>
+  </tr>
+  <% delayed.each do |job| %>
+      <tr>
+        <td>
+          <form action="<%= u "/delayed/queue_now" %>" method="post">
+            <input type="hidden" name="timestamp" value="<%= job['timestamp'].to_i %>">
+            <input type="submit" value="Queue now">
+          </form>
+        </td>
+        <td>
+          <form action="<%= u "/delayed/cancel_now" %>" method="post">
+            <input type="hidden" name="timestamp" value="<%= job['timestamp'].to_i %>">
+            <input type="hidden" name="klass" value="<%= job['class'] %>">
+            <input type="hidden" name="args" value="<%= Resque.encode job['args'] %>">
+            <input type="submit" value="Cancel Job">
+          </form>
+        </td>
+        <td class='args'><%= format_time(Time.at(job['timestamp'])) %></td>
+        <td class='class'><%= job['class'] %></td>
+        <td class='args'><%= h job['args'].inspect %></td>
+      </tr>
+  <% end %>
+</table>
+</h1>
+
+<% queued = @jobs.select { |j| j['where_at'] == 'queued' } %>
+<h1>Queued jobs</h1>
+<table class='jobs'>
+  <tr>
+    <th>Queue</th>
+    <th>Class</th>
+    <th>Args</th>
+  </tr>
+  <% queued.each do |job| %>
+  <tr>
+    <td class='class'><%= job['queue'] %></td>
+    <td class='class'><%= job['class'] %></td>
+    <td class='args'><%= h job['args'].inspect %></td>
+  </tr>
+  <% end %>
+</table>
+
+<% working = @jobs.select { |j| j['where_at'] == 'working' } %>
+<h1>Working jobs</h1>
+<table class='jobs'>
+  <tr>
+    <th>Queue</th>
+    <th>Class</th>
+    <th>Args</th>
+  </tr>
+  <% working.each do |job| %>
+  <tr>
+    <td class='class'><%= job['queue'] %></td>
+    <td class='class'><%= job['class'] %></td>
+    <td class='args'><%= h job['args'].inspect %></td>
+  </tr>
+  <% end %>
+</table>
+
+
+

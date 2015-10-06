@@ -1,0 +1,38 @@
+language: ruby
+sudo: false
+rvm:
+- 1.9.3
+- 2.1.5
+- jruby-19mode
+- rbx
+env:
+  global:
+  - RESQUE_SCHEDULER_DISABLE_TEST_REDIS_SERVER=1
+  - JRUBY_OPTS='-Xcext.enabled=true'
+matrix:
+  allow_failures:
+  - rvm: jruby-19mode
+  - rvm: rbx
+services:
+- redis-server
+notifications:
+  email:
+    recipients:
+    - daniel.buch+resque-scheduler@gmail.com
+    on_success: change
+    on_failure: change
+  irc:
+    channels:
+    - 'chat.freenode.net#resque'
+    on_success: change
+    on_failure: change
+deploy:
+  provider: rubygems
+  api_key:
+    secure: dM97lL/jTu14mEHD2Ih/vQfZ8cWJWb+DQ8UKZjkD2JfYtvwEAlkPG9RrrDkSHb5qkYxG2VAhjyx/0MZJ0TsVL6wrLMC9gcJb3yomw2Sch2Noj68tEndiSUHnxrB9gKzbhHbjLQXDqYf4Hco9/PHHQp4piFPJhLzNZRehIuTJPcA=
+  gem: resque-scheduler
+  on:
+    tags: true
+    repo: resque/resque-scheduler
+    rvm: 2.1.5
+    all_branches: true

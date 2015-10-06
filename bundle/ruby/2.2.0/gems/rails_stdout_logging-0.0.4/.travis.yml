@@ -1,0 +1,29 @@
+language: ruby
+rvm:
+  - 2.2
+  - 2.1
+  - 2.0.0
+  - 1.9.3
+
+gemfile:
+  - gemfiles/rails_3.0.x.gemfile
+  - gemfiles/rails_3.1.x.gemfile
+  - gemfiles/rails_3.2.x.gemfile
+  - gemfiles/rails_4.0.x.gemfile
+  - gemfiles/rails_4.1.x.gemfile
+  - gemfiles/rails_4.2.x.gemfile
+
+matrix:
+  exclude:
+    - rvm: 2.1
+      gemfile: gemfiles/rails_3.0.x.gemfile
+    - rvm: 2.1
+      gemfile: gemfiles/rails_3.1.x.gemfile
+    - rvm: 2.1
+      gemfile: gemfiles/rails_3.2.x.gemfile
+    - rvm: 2.2
+      gemfile: gemfiles/rails_3.0.x.gemfile
+    - rvm: 2.2
+      gemfile: gemfiles/rails_3.1.x.gemfile
+    - rvm: 2.2
+      gemfile: gemfiles/rails_3.2.x.gemfile

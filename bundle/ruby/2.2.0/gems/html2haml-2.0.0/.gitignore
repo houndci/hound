@@ -1,0 +1,10 @@
+/.yardoc
+/coverage
+/doc
+/pkg
+*.rbc
+.rbenv-version
+Gemfile.lock
+.rvmrc
+.rbx
+tmp

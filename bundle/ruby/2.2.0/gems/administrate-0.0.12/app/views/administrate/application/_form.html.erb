@@ -1,0 +1,28 @@
+<%= form_for([Administrate::NAMESPACE, @page.resource], class: "form") do |f| %>
+  <% if @page.resource.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@page.resource.errors.count, "error") %>
+        prohibited this <%= @page.resource_name %> from being saved:
+      </h2>
+
+      <ul>
+        <% @page.resource.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-inputs">
+    <% @page.attributes.each do |attribute| -%>
+      <div class="form-field form-field-<%= attribute.html_class %>">
+        <%= render_field attribute, f: f %>
+      </div>
+    <% end -%>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit %>
+  </div>
+<% end %>

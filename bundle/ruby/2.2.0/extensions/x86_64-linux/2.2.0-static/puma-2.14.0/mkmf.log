@@ -1,0 +1,127 @@
+have_library: checking for BIO_read() in -lcrypto... -------------------- yes
+
+"gcc -o conftest -I/usr/local/include/ruby-2.2.0/x86_64-linux -I/usr/local/include/ruby-2.2.0/ruby/backward -I/usr/local/include/ruby-2.2.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -L/usr/local/lib -Wl,-R/usr/local/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-R/usr/local/lib -L/usr/local/lib -lruby-static  -lpthread -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"gcc -o conftest -I/usr/local/include/ruby-2.2.0/x86_64-linux -I/usr/local/include/ruby-2.2.0/ruby/backward -I/usr/local/include/ruby-2.2.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -L/usr/local/lib -Wl,-R/usr/local/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-R/usr/local/lib -L/usr/local/lib -lruby-static -lcrypto  -lpthread -ldl -lcrypt -lm   -lc"
+conftest.c: In function 't':
+conftest.c:13:57: error: 'BIO_read' undeclared (first use in this function)
+ int t(void) { void ((*volatile p)()); p = (void ((*)()))BIO_read; return 0; }
+                                                         ^
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable 'p' set but not used [-Wunused-but-set-variable]
+ int t(void) { void ((*volatile p)()); p = (void ((*)()))BIO_read; return 0; }
+                                ^
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))BIO_read; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/include/ruby-2.2.0/x86_64-linux -I/usr/local/include/ruby-2.2.0/ruby/backward -I/usr/local/include/ruby-2.2.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -L/usr/local/lib -Wl,-R/usr/local/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-R/usr/local/lib -L/usr/local/lib -lruby-static -lcrypto  -lpthread -ldl -lcrypt -lm   -lc"
+conftest.c: In function 't':
+conftest.c:13:1: warning: implicit declaration of function 'BIO_read' [-Wimplicit-function-declaration]
+ int t(void) { BIO_read(); return 0; }
+ ^
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { BIO_read(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for SSL_CTX_new() in -lssl... -------------------- yes
+
+"gcc -o conftest -I/usr/local/include/ruby-2.2.0/x86_64-linux -I/usr/local/include/ruby-2.2.0/ruby/backward -I/usr/local/include/ruby-2.2.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -L/usr/local/lib -Wl,-R/usr/local/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic    -lcrypto  -Wl,-R/usr/local/lib -L/usr/local/lib -lruby-static -lssl -lcrypto  -lpthread -ldl -lcrypt -lm   -lc"
+conftest.c: In function 't':
+conftest.c:13:57: error: 'SSL_CTX_new' undeclared (first use in this function)
+ int t(void) { void ((*volatile p)()); p = (void ((*)()))SSL_CTX_new; return 0; }
+                                                         ^
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable 'p' set but not used [-Wunused-but-set-variable]
+ int t(void) { void ((*volatile p)()); p = (void ((*)()))SSL_CTX_new; return 0; }
+                                ^
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))SSL_CTX_new; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/include/ruby-2.2.0/x86_64-linux -I/usr/local/include/ruby-2.2.0/ruby/backward -I/usr/local/include/ruby-2.2.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -L/usr/local/lib -Wl,-R/usr/local/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic    -lcrypto  -Wl,-R/usr/local/lib -L/usr/local/lib -lruby-static -lssl -lcrypto  -lpthread -ldl -lcrypt -lm   -lc"
+conftest.c: In function 't':
+conftest.c:13:1: warning: implicit declaration of function 'SSL_CTX_new' [-Wimplicit-function-declaration]
+ int t(void) { SSL_CTX_new(); return 0; }
+ ^
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { SSL_CTX_new(); return 0; }
+/* end */
+
+--------------------
+
+have_header: checking for openssl/bio.h... -------------------- yes
+
+"gcc -E -I/usr/local/include/ruby-2.2.0/x86_64-linux -I/usr/local/include/ruby-2.2.0/ruby/backward -I/usr/local/include/ruby-2.2.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <openssl/bio.h>
+/* end */
+
+--------------------
+

@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+require "raven"
+require "raven/cli"
+require "optparse"
+
+parser = OptionParser.new do |opt|
+  opt.banner = "Usage: raven COMMAND [OPTIONS]"
+  opt.separator  ""
+  opt.separator  "Commands"
+  opt.separator  "     test: send a test event"
+  opt.separator  ""
+  opt.separator  "Options"
+
+  # opt.on("-e","--environment ENVIRONMENT","which environment you want server run") do |environment|
+  #   options[:environment] = environment
+  # end
+
+  # opt.on("-d","--daemon","runing on daemon mode?") do
+  #   options[:daemon] = true
+  # end
+
+  opt.on("-h","--help","help") do
+    puts parser
+  end
+end
+
+parser.parse!
+
+case ARGV[0]
+  when "test"
+    dsn = ARGV[1] if ARGV.length > 1
+    if !dsn
+      puts "Usage: raven test <dsn>"
+    else
+      Raven::CLI::test(dsn)
+    end
+  else
+    puts parser
+end

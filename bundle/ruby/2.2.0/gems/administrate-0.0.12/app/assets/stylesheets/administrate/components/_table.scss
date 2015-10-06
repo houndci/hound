@@ -1,0 +1,15 @@
+.table__row {
+  background-color: $white;
+  border-left: 2px solid transparent;
+  transition: $base-transition;
+
+  &:hover {
+    background-color: $base-background-color;
+    border-left-color: $blue;
+    cursor: pointer;
+  }
+}
+
+.table__action--destroy {
+  color: $error-color;
+}

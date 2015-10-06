@@ -1,6 +1,5 @@
 .env.local
 .foreman
-/.bundle
 /db/*.sqlite3
 /log/*.log
 /tmp

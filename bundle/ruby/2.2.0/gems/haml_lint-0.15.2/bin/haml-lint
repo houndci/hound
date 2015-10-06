@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'haml_lint'
+require 'haml_lint/cli'
+
+logger = HamlLint::Logger.new(STDOUT)
+exit HamlLint::CLI.new(logger).run(ARGV)

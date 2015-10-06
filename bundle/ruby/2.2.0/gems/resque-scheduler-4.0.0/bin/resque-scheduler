@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# vim:fileencoding=utf-8
+
+require 'resque-scheduler'
+Resque::Scheduler::Cli.run!

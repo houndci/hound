@@ -1,0 +1,19 @@
+en:
+  administrate:
+    actions:
+      show: Show
+      edit: Edit
+      destroy: Destroy
+      confirm: Are you sure?
+    fields:
+      has_many:
+        none: None
+      polymorphic:
+        not_supported: "Polymorphic relationship forms are not supported yet. Sorry!"
+    controller:
+      create:
+        success: "%{resource} was successfully created."
+      update:
+        success: "%{resource} was successfully updated."
+      destroy:
+        success: "%{resource} was successfully destroyed."

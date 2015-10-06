@@ -1,0 +1,23 @@
+<h1><%= @job_name %></h1>
+
+<p class='intro'>
+   This job requires parameters:
+</p>
+
+<form style="float:left" action="<%= u "/schedule/requeue_with_params" %>" method="post">
+  <table>
+  <% @parameters.each do |key, value| %>
+  <% value ||= {} %>
+    <tr>
+      <td>
+        <%= key %>
+        <% if value['description'] || value[:description] %>
+          <span style="border-bottom:1px dotted;" title="<%=value ['description'] || value[:description] %>">(?)</span>
+        <% end %>:
+      </td>
+      <td><input type="text" name="<%= key %>" value="<%= value['default'] || value[:default] %>"></td>
+  <% end %>
+  </table>
+  <input type="hidden" name="job_name" value="<%= @job_name %>">
+  <input type="submit" value="Queue now">
+</form>
