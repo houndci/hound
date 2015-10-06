@@ -196,21 +196,75 @@ describe RepoConfig do
 
   describe "#for" do
     context "when Ruby config file is specified" do
-      it "returns parsed config" do
-        config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
-          StringLiterals:
-            EnforcedStyle: single_quotes
+      context "when config is a path" do
+        it "returns parsed config from GitHub" do
+          config = config_for_file("config/rubocop.yml", <<-EOS.strip_heredoc)
+            StringLiterals:
+              EnforcedStyle: single_quotes
 
-          LineLength:
-            Max: 90
-        EOS
+            LineLength:
+              Max: 90
+          EOS
 
-        result = config.for("ruby")
+          result = config.for("ruby")
 
-        expect(result).to eq(
-          "StringLiterals" => { "EnforcedStyle" => "single_quotes" },
-          "LineLength" => { "Max" => 90 },
-        )
+          expect(result).to eq(
+            "StringLiterals" => { "EnforcedStyle" => "single_quotes" },
+            "LineLength" => { "Max" => 90 },
+          )
+        end
+      end
+
+      context "when config is a valid URL" do
+        it "returns parsed config at URL" do
+          hound_config = <<-EOS.strip_heredoc
+            ruby:
+              enabled: true
+              config_file: http://example.com/rubocop.yml
+          EOS
+          repo_config = RepoConfig.new(stub_commit(hound_config: hound_config))
+          config = <<-CONFIG.strip_heredoc
+            LineLength:
+              Max: 90
+          CONFIG
+
+          stub_request(
+            :get,
+            "http://example.com/rubocop.yml",
+          ).to_return(
+            status: 200,
+            body: config,
+          )
+
+          result = repo_config.for("ruby")
+
+          expect(result).to eq("LineLength" => { "Max" => 90 })
+        end
+      end
+
+      context "when config is an invalid URL" do
+        it "raises ParserError" do
+          hound_config = <<-EOS.strip_heredoc
+            ruby:
+              enabled: true
+              config_file: http://example.com/rubocop.yml
+          EOS
+          repo_config = RepoConfig.new(stub_commit(hound_config: hound_config))
+
+          stub_request(
+            :get,
+            "http://example.com/rubocop.yml",
+          ).to_return(
+            status: 404,
+            body: "Not Found",
+          )
+
+          expect { repo_config.for("ruby") }.to raise_error do |error|
+            expect(error).to be_a RepoConfig::ParserError
+            expect(error.message).to eq "404 Not Found"
+            expect(error.filename).to eq "http://example.com/rubocop.yml"
+          end
+        end
       end
 
       context "with a list of inherit_from files" do

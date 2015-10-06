@@ -125,12 +125,27 @@ class RepoConfig
   end
 
   def load_file(file_path, file_type)
-    config_file_content = commit.file_content(file_path)
+    config_file_content = get_file_content(file_path)
 
     if config_file_content.present?
       send("parse_#{file_type}", file_path, config_file_content)
     else
       {}
+    end
+  end
+
+  def get_file_content(file_path_or_url)
+    if file_path_or_url.match("^http")
+      response = Faraday.new.get(file_path_or_url)
+
+      if response.success?
+        response.body
+      else
+        message = "#{response.status} #{response.body}"
+        raise RepoConfig::ParserError.new(message, filename: file_path_or_url)
+      end
+    else
+      commit.file_content(file_path_or_url)
     end
   end
 
