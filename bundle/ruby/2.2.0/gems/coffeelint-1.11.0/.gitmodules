@@ -1,3 +1,0 @@
-[submodule "coffeelint"]
-	path = coffeelint
-	url = git://github.com/clutchski/coffeelint.git

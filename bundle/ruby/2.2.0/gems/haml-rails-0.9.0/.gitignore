@@ -1,6 +1,0 @@
-*.gem
-.bundle/
-*.lock
-gemfiles/*.lock
-tmp/
-/vendor/bundle

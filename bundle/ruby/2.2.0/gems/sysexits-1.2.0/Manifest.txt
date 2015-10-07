@@ -1,8 +1,0 @@
-ChangeLog
-History.rdoc
-LICENSE
-Manifest.txt
-README.rdoc
-Rakefile
-lib/sysexits.rb
-spec/sysexits_spec.rb

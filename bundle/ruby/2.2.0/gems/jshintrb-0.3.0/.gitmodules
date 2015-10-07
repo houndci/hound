@@ -1,3 +1,0 @@
-[submodule "vendor/jshint"]
-	path = vendor/jshint
-	url = https://github.com/jshint/jshint.git

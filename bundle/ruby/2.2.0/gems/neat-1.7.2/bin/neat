@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require "neat"
-
-Neat::Generator.new(ARGV).run

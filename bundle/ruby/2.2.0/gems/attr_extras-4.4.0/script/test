@@ -1,8 +1,0 @@
-#!/usr/bin/env ruby
-
-# Script used to have one way to run single tests in any project,
-# in this case we need to work around test unit a bit.
-
-# Test unit does not support line numbers :(
-file = ARGV.first.split(":").first
-system("bundle exec ruby #{file}") || exit(1)

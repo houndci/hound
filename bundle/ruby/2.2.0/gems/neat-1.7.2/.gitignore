@@ -1,7 +1,0 @@
-.DS_store
-.sass-cache
-*gem
-*swp
-Gemfile.lock
-public
-tmp

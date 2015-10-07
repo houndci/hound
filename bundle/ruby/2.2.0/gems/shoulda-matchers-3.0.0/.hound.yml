@@ -1,3 +1,0 @@
-ruby:
-  enabled: true
-  config_file: .hound_config/ruby.yml

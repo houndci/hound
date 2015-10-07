@@ -1,7 +1,0 @@
-.bundle/
-log/*.log
-pkg/
-*.swp
-*.gem
-gemfiles/*.lock
-spec/fixtures/log/*.log

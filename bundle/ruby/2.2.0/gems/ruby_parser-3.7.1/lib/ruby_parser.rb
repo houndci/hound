@@ -1,6 +1,0 @@
-require 'ruby18_parser'
-require 'ruby19_parser'
-require 'ruby20_parser'
-require 'ruby21_parser'
-require 'ruby22_parser'
-require 'ruby_parser_extras'
