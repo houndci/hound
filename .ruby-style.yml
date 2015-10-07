@@ -757,10 +757,6 @@ Style/ModuleFunction:
   Description: Checks for usage of `extend self` in modules.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#module-function
   Enabled: false
-Style/MultilineBlockChain:
-  Description: Avoid multi-line chains of blocks.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#single-line-blocks
-  Enabled: true
 Style/MultilineBlockLayout:
   Description: Ensures newlines after multiline block do statements.
   Enabled: true
