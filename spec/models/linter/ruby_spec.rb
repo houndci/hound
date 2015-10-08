@@ -91,9 +91,9 @@ describe Linter::Ruby do
           violations = ["Rename `is_something?` to `something?`."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  def is_something?
-    "something"
-  end
+            def is_something?
+              "something"
+            end
           CODE
         end
       end
@@ -101,7 +101,7 @@ describe Linter::Ruby do
       describe "when using detect" do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
-  users.detect(&:active?)
+            users.detect(&:active?)
           CODE
         end
       end
@@ -111,7 +111,7 @@ describe Linter::Ruby do
           violations = ["Prefer `detect` over `find`."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  users.find(&:active?)
+            users.find(&:active?)
           CODE
         end
       end
@@ -119,7 +119,7 @@ describe Linter::Ruby do
       describe "when using select" do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
-  users.select(&:active?)
+            users.select(&:active?)
           CODE
         end
       end
@@ -129,7 +129,7 @@ describe Linter::Ruby do
           violations = ["Prefer `select` over `find_all`."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  users.find_all(&:active?)
+            users.find_all(&:active?)
           CODE
         end
       end
@@ -137,7 +137,7 @@ describe Linter::Ruby do
       describe "when using map" do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
-  users.map(&:active?)
+            users.map(&:active?)
           CODE
         end
       end
@@ -147,7 +147,7 @@ describe Linter::Ruby do
           violations = ["Prefer `map` over `collect`."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  users.collect(&:active?)
+            users.collect(&:active?)
           CODE
         end
       end
@@ -167,9 +167,9 @@ describe Linter::Ruby do
           violations = ["Prefer `inject` over `reduce`."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  users.reduce(0) do |_, user|
-    user.age
-  end
+            users.reduce(0) do |_, user|
+              user.age
+            end
           CODE
         end
       end
@@ -195,7 +195,7 @@ describe Linter::Ruby do
           violations = ["Space inside parentheses detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  logger( "test")
+            logger( "test")
           CODE
         end
       end
@@ -205,7 +205,7 @@ describe Linter::Ruby do
           violations = ["Space inside parentheses detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  logger("test" )
+            logger("test" )
           CODE
         end
       end
@@ -215,7 +215,7 @@ describe Linter::Ruby do
           violations = ["Space inside square brackets detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  a["test" ]
+            a["test" ]
           CODE
         end
       end
@@ -225,15 +225,15 @@ describe Linter::Ruby do
           violations = ["Inconsistent indentation detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  def one
-    1
-  end
+            def one
+              1
+            end
 
-  private
+            private
 
-    def two
-      2
-    end
+              def two
+                2
+              end
           CODE
         end
       end
@@ -244,8 +244,8 @@ describe Linter::Ruby do
                         "method call receiver."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  one
-    .two
+            one
+              .two
           CODE
         end
       end
@@ -258,9 +258,9 @@ describe Linter::Ruby do
           ]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  def test
-  \tlogger "test"
-  end
+            def test
+            \tlogger "test"
+            end
           CODE
         end
       end
@@ -270,12 +270,12 @@ describe Linter::Ruby do
           violations = ["Use empty lines between method definitions."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  def one
-    1
-  end
-  def two
-    2
-  end
+            def one
+              1
+            end
+            def two
+              2
+            end
           CODE
         end
       end
@@ -284,7 +284,7 @@ describe Linter::Ruby do
         it "returns violations" do
           violations = ["Surrounding space missing for operator `+`."]
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  1+1
+            1+1
           CODE
         end
       end
@@ -294,7 +294,7 @@ describe Linter::Ruby do
           violations = ["Space missing after comma."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  logger :one,:two
+            logger :one,:two
           CODE
         end
       end
@@ -306,7 +306,7 @@ describe Linter::Ruby do
                         "Space inside } missing."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  {one:1}
+            {one:1}
           CODE
         end
       end
@@ -317,7 +317,7 @@ describe Linter::Ruby do
                         "Space missing after semicolon."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  logger :one;logger :two
+            logger :one;logger :two
           CODE
         end
       end
@@ -327,8 +327,8 @@ describe Linter::Ruby do
           violations = ["Surrounding space missing for operator `=`."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  a ={ one: 1 }
-  a
+            a ={ one: 1 }
+            a
           CODE
         end
       end
@@ -338,8 +338,8 @@ describe Linter::Ruby do
           violations = ["Space inside { missing."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  a = {one: 1 }
-  a
+            a = {one: 1 }
+            a
           CODE
         end
       end
@@ -349,8 +349,8 @@ describe Linter::Ruby do
           violations = ["Space inside } missing."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  a = { one: 1}
-  a
+            a = { one: 1}
+            a
           CODE
         end
       end
@@ -358,9 +358,9 @@ describe Linter::Ruby do
       context "for method definitions with optional named arguments" do
         it "does not return violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to be_empty
-  def register_email(email:)
-    register(email)
-  end
+            def register_email(email:)
+              register(email)
+            end
           CODE
         end
       end
@@ -519,9 +519,9 @@ describe Linter::Ruby do
                         "instead of a block."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  users.map do |user|
-    user.name
-  end
+            users.map do |user|
+              user.name
+            end
           CODE
         end
       end
@@ -531,7 +531,7 @@ describe Linter::Ruby do
           violations = ["Remove debugger entry point `binding.pry`."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  binding.pry
+            binding.pry
           CODE
         end
       end
@@ -542,11 +542,11 @@ describe Linter::Ruby do
                         "Extra empty line detected at block body end."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  block do |hoge|
+            block do |hoge|
 
-    hoge
+              hoge
 
-  end
+            end
           CODE
         end
       end
@@ -556,8 +556,8 @@ describe Linter::Ruby do
           violations = ["Unnecessary spacing detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-  hoge  = "https://github.com/bbatsov/rubocop"
-  hoge
+            hoge  = "https://github.com/bbatsov/rubocop"
+            hoge
           CODE
         end
       end
