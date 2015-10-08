@@ -60,8 +60,7 @@ class Repo < ActiveRecord::Base
   end
 
   def bulk?
-    BulkCustomer.where(org: organization).any? ||
-      Hound::EXEMPT_ORGS.split(",").include?(organization)
+    BulkCustomer.where(org: organization).any?
   end
 
   def total_violations
