@@ -1,46 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
-    <title>python</title>
-    <desc>Created with Sketch.</desc>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>
+        python
+    </title>
     <defs>
-        <ellipse id="path-1" cx="50" cy="50" rx="50" ry="50"></ellipse>
-        <linearGradient x1="12.9593594%" y1="11.6996305%" x2="79.6388325%" y2="78.4532626%" id="linearGradient-3">
-            <stop stop-color="#387EB8" offset="0%"></stop>
-            <stop stop-color="#366994" offset="100%"></stop>
+        <ellipse id="a" cx="50" cy="50" rx="50" ry="50"/>
+        <linearGradient x1="12.959%" y1="11.7%" x2="79.639%" y2="78.453%" id="d">
+            <stop stop-color="#387EB8" offset="0%"/>
+            <stop stop-color="#366994" offset="100%"/>
         </linearGradient>
-        <path d="M29.030365,0.244089392 C14.4335684,0.244090434 15.3450865,6.57414096 15.3450865,6.57414096 L15.3613591,13.1320093 L29.2907271,13.1320093 L29.2907271,15.1009971 L9.82866619,15.1009971 C9.82866619,15.1009971 0.488178784,14.0417006 0.488178784,28.770003 C0.488177743,43.4983023 8.64076448,42.9760056 8.64076448,42.9760056 L13.5062797,42.9760056 L13.5062797,36.1415027 C13.5062797,36.1415027 13.244016,27.988917 21.5286844,27.988917 L35.344144,27.988917 C35.344144,27.988917 43.1061866,28.1143906 43.1061866,20.4872363 L43.1061866,7.87595105 C43.1061866,7.87595001 44.2846789,0.244089392 29.030365,0.244089392 L29.030365,0.244089392 Z M21.3496855,4.65397108 C22.7355555,4.65397003 23.8556699,5.77408545 23.8556699,7.1599555 C23.855671,8.54582555 22.7355555,9.66593993 21.3496855,9.66593993 C19.9638154,9.66594097 18.8437011,8.54582555 18.8437011,7.1599555 C18.8437,5.77408545 19.9638154,4.65397108 21.3496855,4.65397108 L21.3496855,4.65397108 Z" id="path-4"></path>
-        <linearGradient x1="19.127525%" y1="20.315846%" x2="90.7415328%" y2="88.7730019%" id="linearGradient-6">
-            <stop stop-color="#FFE052" offset="0%"></stop>
-            <stop stop-color="#FFC331" offset="100%"></stop>
+        <path d="M29.03.244c-14.596 0-13.685 6.33-13.685 6.33l.016 6.558h13.93v1.97H9.83S.487 14.04.487 28.77 8.64 42.976 8.64 42.976h4.866v-6.834s-.262-8.153 8.023-8.153h13.814s7.762.124 7.762-7.503V7.877S44.286.243 29.03.243zm-7.68 4.41c1.386 0 2.506 1.12 2.506 2.506 0 1.386-1.12 2.506-2.506 2.506-1.386 0-2.506-1.12-2.506-2.506 0-1.386 1.12-2.506 2.506-2.506z" id="c"/>
+        <linearGradient x1="19.128%" y1="20.316%" x2="90.742%" y2="88.773%" id="g">
+            <stop stop-color="#FFE052" offset="0%"/>
+            <stop stop-color="#FFC331" offset="100%"/>
         </linearGradient>
-        <path d="M29.4449134,57.443594 C44.0417142,57.443594 43.130192,51.1135424 43.130192,51.1135424 L43.1139194,44.5556741 L29.1845514,44.5556741 L29.1845514,42.5866863 L48.6466123,42.5866863 C48.6466123,42.5866863 57.9870997,43.6459796 57.9870997,28.9176751 C57.9871049,14.1893775 49.834514,14.7116741 49.834514,14.7116741 L44.9689988,14.7116741 L44.9689988,21.5461755 C44.9689988,21.5461755 45.2312666,29.6987612 36.9465941,29.6987612 L23.1311335,29.6987612 C23.1311335,29.6987612 15.3690908,29.5732875 15.3690908,37.2004471 L15.3690908,49.8117323 C15.3690908,49.8117323 14.1905986,57.443594 29.4449134,57.443594 L29.4449134,57.443594 Z M37.125593,53.0337123 C35.7397224,53.0337123 34.6196086,51.9135984 34.6196086,50.5277279 C34.6196086,49.1418573 35.7397224,48.0217434 37.125593,48.0217434 C38.5114636,48.0217434 39.6315774,49.1418573 39.6315774,50.5277279 C39.6315826,51.9135984 38.5114636,53.0337123 37.125593,53.0337123 L37.125593,53.0337123 Z" id="path-7"></path>
+        <path d="M29.445 57.444c14.597 0 13.685-6.33 13.685-6.33l-.016-6.558h-13.93v-1.97h19.463s9.34 1.06 9.34-13.668c0-14.73-8.152-14.206-8.152-14.206H44.97v6.834s.26 8.153-8.023 8.153H23.13s-7.76-.127-7.76 7.5v12.612s-1.18 7.632 14.075 7.632zm7.68-4.41c-1.385 0-2.505-1.12-2.505-2.506 0-1.386 1.12-2.506 2.506-2.506 1.385 0 2.506 1.12 2.506 2.506 0 1.386-1.12 2.506-2.506 2.506z" id="f"/>
     </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="python" sketch:type="MSLayerGroup">
-            <mask id="mask-2" sketch:name="mask" fill="white">
-                <use xlink:href="#path-1"></use>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#3777AC" xlink:href="#a"/>
+        <g transform="translate(20.64 22.5)" mask="url(#b)">
+            <mask id="e" fill="#fff">
+                <use xlink:href="#c"/>
             </mask>
-            <use id="mask" fill="#3777AC" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
-            <g id="symbol" mask="url(#mask-2)">
-                <g transform="translate(20.639120, 22.500000)" id="g1894">
-                    <g>
-                        <mask id="mask-5" sketch:name="Mask" fill="white">
-                            <use xlink:href="#path-4"></use>
-                        </mask>
-                        <use id="Mask" fill="url(#linearGradient-3)" sketch:type="MSShapeGroup" xlink:href="#path-4"></use>
-                        <rect id="Rectangle-1-Copy" fill="#FFFFFF" sketch:type="MSShapeGroup" mask="url(#mask-5)" x="-17.6093919" y="-30.3512401" width="104.498389" height="112.768045"></rect>
-                        <mask id="mask-8" sketch:name="Mask" fill="white">
-                            <use xlink:href="#path-7"></use>
-                        </mask>
-                        <g id="Mask">
-                            <use fill="url(#linearGradient-6)" fill-rule="evenodd" sketch:type="MSShapeGroup" xlink:href="#path-7"></use>
-                            <use fill="none" xlink:href="#path-7"></use>
-                        </g>
-                        <rect id="Rectangle-1" fill="#FFFFFF" sketch:type="MSShapeGroup" mask="url(#mask-8)" x="-17.6093919" y="-30.3512401" width="104.498389" height="112.768045"></rect>
-                    </g>
-                </g>
-            </g>
+            <use fill="url(#d)" xlink:href="#c"/>
+            <path fill="#FFF" mask="url(#e)" d="M-17.61-30.35h104.5V82.416h-104.5z"/>
+            <mask id="h" fill="#fff">
+                <use xlink:href="#f"/>
+            </mask>
+            <use fill="url(#g)" xlink:href="#f"/>
+            <use xlink:href="#f"/>
+            <path fill="#FFF" mask="url(#h)" d="M-17.61-30.35h104.5V82.416h-104.5z"/>
         </g>
     </g>
 </svg>

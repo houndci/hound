@@ -162,7 +162,6 @@ section.intro {
       width: 75%;
 
       @include media($medium-screen) {
-        float: none;
         margin: 0;
         width: 100%;
       }
