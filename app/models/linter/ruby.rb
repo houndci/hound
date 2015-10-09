@@ -9,7 +9,7 @@ module Linter
     end
 
     def file_included?(commit_file)
-      !config.file_to_exclude?(commit_file.filename)
+      !linter_config.file_to_exclude?(commit_file.filename)
     end
 
     private
@@ -27,7 +27,11 @@ module Linter
     end
 
     def team
-      RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config, rubocop_options)
+      RuboCop::Cop::Team.new(
+        RuboCop::Cop::Cop.all,
+        linter_config,
+        rubocop_options,
+      )
     end
 
     def parsed_source(commit_file)
@@ -35,8 +39,8 @@ module Linter
       RuboCop::ProcessedSource.new(commit_file.content, absolute_filepath)
     end
 
-    def config
-      @config ||= RuboCop::Config.new(merged_config, "")
+    def linter_config
+      @linter_config ||= RuboCop::Config.new(merged_config, "")
     end
 
     def merged_config
@@ -50,9 +54,9 @@ module Linter
     end
 
     def custom_config
-      RuboCop::Config.new(repo_config.for(name), "").tap do |config|
-        config.add_missing_namespaces
-        config.make_excludes_absolute
+      RuboCop::Config.new(config.content, "").tap do |custom_config|
+        custom_config.add_missing_namespaces
+        custom_config.make_excludes_absolute
       end
     rescue NoMethodError
       RuboCop::Config.new
@@ -61,7 +65,7 @@ module Linter
     # This is deprecated in favor of RuboCop's DisplayCopNames option.
     # Let's track how often we see this and remove it if we see fit.
     def rubocop_options
-      if config.delete("ShowCopNames")
+      if linter_config.delete("ShowCopNames")
         Analytics.new(repository_owner_name).track_show_cop_names
         { debug: true }
       end

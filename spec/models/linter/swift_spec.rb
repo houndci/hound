@@ -33,7 +33,8 @@ describe Linter::Swift do
     it "schedules a review job" do
       allow(Resque).to receive(:enqueue)
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      linter = build_linter("config", build)
+      linter = build_linter(build)
+      stub_swift_config("config")
       commit_file = build_commit_file(filename: "a.swift")
 
       linter.file_review(commit_file)
@@ -48,5 +49,12 @@ describe Linter::Swift do
         config: "config",
       )
     end
+  end
+
+  def stub_swift_config(config = "config")
+    stubbed_swift_config = double("SwiftConfig", content: config)
+    allow(Config::Swift).to receive(:new).and_return(stubbed_swift_config)
+
+    stubbed_swift_config
   end
 end

@@ -38,27 +38,19 @@ describe Linter::CoffeeScript do
   end
 
   describe "enabled?" do
-    context "with legacy coffee_script key" do
-      it "is not enabled" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          coffee_script:
-            enabled: false
-        EOS
-        repo_config = RepoConfig.new(commit)
-        linter = build_linter(repo_config: repo_config)
+    context "when configuration is enabled" do
+      it "is enabled" do
+        hound_config = double("HoundConfig", enabled_for?: true)
+        linter = build_linter(hound_config: hound_config)
 
-        expect(linter).not_to be_enabled
+        expect(linter).to be_enabled
       end
     end
 
-    context "with coffeescript key" do
+    context "when the config has enabled_for to false" do
       it "is not enabled" do
-        commit = double("Commit", file_content: <<-EOS.strip_heredoc)
-          coffeescript:
-            enabled: false
-        EOS
-        repo_config = RepoConfig.new(commit)
-        linter = build_linter(repo_config: repo_config)
+        hound_config = double("HoundConfig", enabled_for?: false)
+        linter = build_linter(hound_config: hound_config)
 
         expect(linter).not_to be_enabled
       end
@@ -238,17 +230,29 @@ describe Linter::CoffeeScript do
   end
 
   def build_linter(
-    repo_config: default_repo_config,
+    hound_config: default_hound_config,
+    config: stub_coffeescript_config,
     repository_owner_name: "RalphJoe"
   )
+    config
     Linter::CoffeeScript.new(
-      repo_config: repo_config,
+      hound_config: hound_config,
       build: build(:build),
       repository_owner_name: repository_owner_name,
     )
   end
 
-  def default_repo_config
-    double("RepoConfig", enabled_for?: true, for: {})
+  def stub_coffeescript_config(content: {}, excluded_files: [])
+    config = double(
+      "CoffeeScriptConfig",
+      content: content,
+      excluded_files: excluded_files,
+    )
+    allow(Config::CoffeeScript).to receive(:new).and_return(config)
+    config
+  end
+
+  def default_hound_config
+    double("HoundConfig", enabled_for?: true, content: {})
   end
 end

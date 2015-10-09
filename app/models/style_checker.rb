@@ -34,7 +34,7 @@ class StyleChecker
   def build_linter(filename)
     linter_class = find_linter_class(filename)
     linters[linter_class] ||= linter_class.new(
-      repo_config: config,
+      hound_config: hound_config,
       build: build,
       repository_owner_name: pull_request.repository_owner_name,
     )
@@ -44,7 +44,7 @@ class StyleChecker
     LINTERS.detect { |linter_class| linter_class.can_lint?(filename) }
   end
 
-  def config
-    @config ||= RepoConfig.new(pull_request.head_commit)
+  def hound_config
+    @hound_config ||= HoundConfig.new(pull_request.head_commit)
   end
 end

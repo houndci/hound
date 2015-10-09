@@ -5,7 +5,10 @@ module Linter
 
     def file_review(commit_file)
       FileReview.create!(filename: commit_file.filename) do |file_review|
-        Jshintrb.lint(commit_file.content, config).compact.each do |violation|
+        Jshintrb.lint(
+          commit_file.content,
+          linter_config,
+        ).compact.each do |violation|
           line = commit_file.line_at(violation["line"])
           file_review.build_violation(line, violation["reason"])
         end
@@ -23,8 +26,8 @@ module Linter
 
     private
 
-    def config
-      custom_config = repo_config.for(name)
+    def linter_config
+      custom_config = config.content
       if custom_config["predef"].present?
         custom_config["predef"] |= default_config["predef"]
       end
@@ -32,12 +35,12 @@ module Linter
     end
 
     def excluded_files
-      repo_config.ignored_javascript_files
+      config.excluded_files
     end
 
     def default_config
       config_file = File.read(default_config_file)
-      JSON.parse(config_file)
+      Config::Parser.json(config_file)
     end
 
     def default_config_file
@@ -45,10 +48,6 @@ module Linter
         DEFAULT_CONFIG_FILENAME,
         repository_owner_name
       ).path
-    end
-
-    def name
-      "javascript"
     end
   end
 end

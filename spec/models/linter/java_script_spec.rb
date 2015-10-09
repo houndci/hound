@@ -61,12 +61,12 @@ describe Linter::JavaScript do
     context "when semicolon check is disabled in config" do
       context "when semicolon is missing" do
         it "returns no violation" do
-          repo_config = double("RepoConfig", for: { "asi" => true })
           commit_file = build_js_file("parseFloat('1')")
+          config = stub_javascript_config(content: { "asi" => true })
 
           violations = violations_in(
             commit_file: commit_file,
-            repo_config: repo_config
+            config: config,
           )
 
           expect(violations).to be_empty
@@ -87,12 +87,12 @@ describe Linter::JavaScript do
 
     context "when a global variable is ignored" do
       it "returns no violations" do
-        repo_config = double("RepoConfig", for: { "predef" => ["myGlobal"] })
+        config = stub_javascript_config(content: { "predef" => ["myGlobal"] })
         commit_file = build_js_file("$(myGlobal).hide();")
 
         violations = violations_in(
           commit_file: commit_file,
-          repo_config: repo_config
+          config: config,
         )
 
         expect(violations).to be_empty
@@ -130,7 +130,7 @@ describe Linter::JavaScript do
 
         violations_in(
           commit_file: commit_file,
-          repository_owner_name: "thoughtbot"
+          repository_owner_name: "thoughtbot",
         )
 
         expect(File).to have_received(:read).with(configuration_file_path)
@@ -141,12 +141,12 @@ describe Linter::JavaScript do
 
     context "with ES6 support enabled" do
       it "respects ES6" do
-        repo_config = double("RepoConfig", for: { esnext: true })
+        config = stub_javascript_config(content: { "esnext" => true })
         commit_file = build_js_file("import Ember from 'ember'")
 
         violations = violations_in(
           commit_file: commit_file,
-          repo_config: repo_config
+          config: config,
         )
 
         violation = violations.first
@@ -161,48 +161,43 @@ describe Linter::JavaScript do
   describe "#file_included?" do
     context "file is in excluded file list" do
       it "returns false" do
-        repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
-        linter = build_linter(repo_config: repo_config)
+        config = stub_javascript_config(excluded_files: ["foo.js"])
+        linter = build_linter(config: config)
         commit_file = double("CommitFile", filename: "foo.js")
 
-        included = linter.file_included?(commit_file)
-
-        expect(included).to be false
+        expect(linter.file_included?(commit_file)).to eq false
       end
     end
 
     context "file is not excluded" do
       it "returns true" do
-        repo_config = double("RepoConfig", ignored_javascript_files: ["foo.js"])
-        linter = build_linter(repo_config: repo_config)
+        config = stub_javascript_config(excluded_files: ["foo.js"])
+        linter = build_linter(config: config)
         commit_file = double("CommitFile", filename: "bar.js")
 
-        included = linter.file_included?(commit_file)
-
-        expect(included).to be true
+        expect(linter.file_included?(commit_file)).to eq true
       end
-    end
 
-    it "matches a glob pattern" do
-      repo_config = double(
-        "RepoConfig",
-        ignored_javascript_files: [
-          "app/assets/javascripts/*.js",
-          "vendor/*",
-        ]
-      )
-      linter = build_linter(repo_config: repo_config)
-      commit_file1 = double(
-        "CommitFile",
-        filename: "app/assets/javascripts/bar.js"
-      )
-      commit_file2 = double(
-        "CommitFile",
-        filename: "vendor/assets/javascripts/foo.js"
-      )
+      it "matches a glob pattern" do
+        config = stub_javascript_config(
+          excluded_files: [
+            "app/assets/javascripts/*.js",
+            "vendor/*",
+          ],
+        )
+        linter = build_linter(config: config)
+        commit_file1 = double(
+          "CommitFile",
+          filename: "app/assets/javascripts/bar.js",
+        )
+        commit_file2 = double(
+          "CommitFile",
+          filename: "vendor/assets/javascripts/foo.js",
+        )
 
-      expect(linter.file_included?(commit_file1)).to be false
-      expect(linter.file_included?(commit_file2)).to be false
+        expect(linter.file_included?(commit_file1)).to be false
+        expect(linter.file_included?(commit_file2)).to be false
+      end
     end
   end
 
@@ -212,29 +207,41 @@ describe Linter::JavaScript do
 
   def violations_in(
     commit_file:,
-    repo_config: default_repo_config,
-    repository_owner_name: "foo"
+    repository_owner_name: "foo",
+    config: stub_javascript_config
   )
     linter = build_linter(
-      repo_config: repo_config,
+      config: config,
       repository_owner_name: repository_owner_name,
     )
     linter.file_review(commit_file).violations
   end
 
   def build_linter(
-    repo_config: default_repo_config,
-    repository_owner_name: "not_thoughtbot"
+    hound_config: default_hound_config,
+    repository_owner_name: "not_thoughtbot",
+    config: stub_javascript_config
   )
+    config
     Linter::JavaScript.new(
-      repo_config: repo_config,
+      hound_config: hound_config,
       build: build(:build),
       repository_owner_name: repository_owner_name,
     )
   end
 
-  def default_repo_config
-    double("RepoConfig", enabled_for?: true, for: {})
+  def stub_javascript_config(content: {}, excluded_files: [])
+    config = double(
+      "JavaScriptConfig",
+      content: content,
+      excluded_files: excluded_files,
+    )
+    allow(Config::JavaScript).to receive(:new).and_return(config)
+    config
+  end
+
+  def default_hound_config
+    double("HoundConfig", enabled_for?: true, content: {})
   end
 
   def default_configuration

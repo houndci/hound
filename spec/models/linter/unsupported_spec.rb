@@ -12,7 +12,7 @@ describe Linter::Unsupported do
   describe "#file_review" do
     it "raises" do
       linter = Linter::Unsupported.new(
-        repo_config: double,
+        hound_config: double,
         build: double,
         repository_owner_name: "foo",
       )
@@ -27,7 +27,7 @@ describe Linter::Unsupported do
   describe "#file_included?" do
     it "return false" do
       linter = Linter::Unsupported.new(
-        repo_config: double,
+        hound_config: double,
         build: double,
         repository_owner_name: "foo",
       )

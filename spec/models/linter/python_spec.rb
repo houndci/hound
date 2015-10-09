@@ -23,6 +23,7 @@ describe Linter::Python do
     it "returns a saved, incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file
+      stub_python_config
 
       result = linter.file_review(commit_file)
 
@@ -33,7 +34,8 @@ describe Linter::Python do
     it "schedules a review job" do
       allow(Resque).to receive(:push)
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      linter = build_linter("config", build)
+      linter = build_linter(build)
+      stub_python_config("config")
       commit_file = build_commit_file
 
       linter.file_review(commit_file)
@@ -70,5 +72,12 @@ describe Linter::Python do
       line_at: line,
       patch: "patch",
     )
+  end
+
+  def stub_python_config(config = "config")
+    stubbed_python_config = double("PythonConfig", content: config)
+    allow(Config::Python).to receive(:new).and_return(stubbed_python_config)
+
+    stubbed_python_config
   end
 end

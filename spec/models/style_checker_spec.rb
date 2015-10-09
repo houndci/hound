@@ -17,7 +17,7 @@ describe StyleChecker do
     it "only fetches content for supported files" do
       ruby_file = double("GithubFile", filename: "ruby.rb", patch: "foo")
       bogus_file = double("GithubFile", filename: "[:facebook]", patch: "bar")
-      head_commit = double("Commit", file_content: "foo bar")
+      head_commit = stub_head_commit(ruby_file.filename => "")
       pull_request = PullRequest.new(payload_stub, "anything")
       allow(pull_request).to receive(:head_commit).and_return(head_commit)
       allow(pull_request).to receive(:modified_github_files).
@@ -74,7 +74,6 @@ describe StyleChecker do
       it "is processed with a coffee.js extension" do
         commit_file = stub_commit_file("test.coffee.js", "foo ->")
         pull_request = stub_pull_request(commit_files: [commit_file])
-        allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -87,7 +86,6 @@ describe StyleChecker do
           "class strange_ClassNAME",
         )
         pull_request = stub_pull_request(commit_files: [commit_file])
-        allow(RepoConfig).to receive(:new).and_return(stub_repo_config)
 
         violation_messages = pull_request_violations(pull_request)
 
@@ -240,15 +238,22 @@ describe StyleChecker do
   end
 
   def stub_pull_request(options = {})
-    head_commit = double("Commit", file_content: "")
     defaults = {
       file_content: "",
-      head_commit: head_commit,
+      head_commit: stubbed_head_commit,
       commit_files: [],
       repository_owner_name: "some_org"
     }
 
     double("PullRequest", defaults.merge(options))
+  end
+
+  def stubbed_head_commit
+    head_commit = double("Commit", file_content: "{}")
+    allow(head_commit).to receive(:file_content).with(".hound.yml").
+      and_return(raw_hound_config)
+
+    head_commit
   end
 
   def stub_commit_file(filename, contents, line = nil)
@@ -265,24 +270,18 @@ describe StyleChecker do
     )
   end
 
-  def stub_head_commit(options)
+  def stub_head_commit(options = {})
+    default_options = {
+      HoundConfig::CONFIG_FILE => raw_hound_config,
+    }
     head_commit = double("Commit", file_content: nil)
 
-    options.each do |filename, file_contents|
+    default_options.merge(options).each do |filename, file_contents|
       allow(head_commit).to receive(:file_content).
         with(filename).and_return(file_contents)
     end
 
     head_commit
-  end
-
-  def stub_repo_config
-    double(
-      "RepoConfig",
-      enabled_for?: true,
-      for: {},
-      ignored_javascript_files: []
-    )
   end
 
   def payload_stub
