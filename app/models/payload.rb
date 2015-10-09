@@ -75,7 +75,7 @@ class Payload
 
   def parse_data
     if unparsed_data.is_a? String
-      JSON.parse(unparsed_data)
+      Config::Parser.json(unparsed_data)
     else
       unparsed_data
     end

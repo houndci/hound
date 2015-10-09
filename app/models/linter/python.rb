@@ -1,7 +1,6 @@
 module Linter
   class Python < Base
     FILE_REGEXP = /.+\.py\z/
-    NAME = "python"
 
     private
 

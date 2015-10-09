@@ -69,9 +69,9 @@ describe Linter::Ruby do
       describe "for single line conditional" do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
-  if signed_in? then redirect_to dashboard_path end
+            if signed_in? then redirect_to dashboard_path end
 
-  while signed_in? do something end
+            while signed_in? do something end
           CODE
         end
       end
@@ -79,9 +79,9 @@ describe Linter::Ruby do
       describe "for has_* method name" do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
-  def has_something?
-    "something"
-  end
+            def has_something?
+              "something"
+            end
           CODE
         end
       end
@@ -459,7 +459,10 @@ describe Linter::Ruby do
               end
             CODE
 
-            violations = violations_in(code, repository_owner_name: "thoughtbot")
+            violations = violations_in(
+              code,
+              repository_owner_name: "thoughtbot",
+            )
 
             expect(violations).to eq [
               "Use 2 (not 7) spaces for indenting an expression " +
@@ -472,19 +475,21 @@ describe Linter::Ruby do
 
     context "with custom configuration" do
       it "finds only one violation" do
-        config = {
+        config = stub_ruby_config(
           "StringLiterals" => {
             "EnforcedStyle" => "double_quotes"
           }
-        }
+        )
 
-        violations = violations_with_config(config)
+        violations = violations_with_config(config: config)
 
         expect(violations).to eq ["Use the new Ruby 1.9 hash syntax."]
       end
 
       it "can use custom configuration to display rubocop cop names" do
-        config = { "AllCops" => { "DisplayCopNames" => "true" } }
+        config = stub_ruby_config(
+          "AllCops" => { "DisplayCopNames" => "true" },
+        )
 
         violations = violations_with_config(config)
 
@@ -495,14 +500,14 @@ describe Linter::Ruby do
 
       context "with old-style syntax" do
         it "has one violation" do
-          config = {
+          config = stub_ruby_config(
             "StringLiterals" => {
-              "EnforcedStyle" => "single_quotes"
+              "EnforcedStyle" => "single_quotes",
             },
             "HashSyntax" => {
-              "EnforcedStyle" => "hash_rockets"
+              "EnforcedStyle" => "hash_rockets",
             },
-          }
+          )
 
           violations = violations_with_config(config)
 
@@ -561,16 +566,6 @@ describe Linter::Ruby do
           CODE
         end
       end
-
-      def violations_with_config(config)
-        content = <<-TEXT.strip_heredoc
-          def test_method
-            { :foo => "hello world" }
-          end
-        TEXT
-
-        violations_in(content, config: config)
-      end
     end
 
     context "default configuration" do
@@ -599,7 +594,6 @@ describe Linter::Ruby do
       it "uses the thoughtbot configuration for rubocop" do
         spy_on_rubocop_team
         spy_on_rubocop_configuration_loader
-        config_file = thoughtbot_configuration_file(Linter::Ruby)
         code = <<-CODE.strip_heredoc
           private def foo
             bar
@@ -609,11 +603,15 @@ describe Linter::Ruby do
         thoughtbot_violations_in(code)
 
         expect(RuboCop::ConfigLoader).to(
-          have_received(:configuration_from_file).with(config_file)
+          have_received(:configuration_from_file).with(
+            thoughtbot_configuration_file(Linter::Ruby),
+          ).at_least(:once),
         )
-
-        expect(RuboCop::Cop::Team).to have_received(:new).
-          with(anything, thoughtbot_configuration, anything)
+        expect(RuboCop::Cop::Team).to have_received(:new).with(
+          anything,
+          thoughtbot_configuration,
+          anything,
+        )
       end
 
       describe "when using reduce" do
@@ -628,13 +626,13 @@ describe Linter::Ruby do
 
       describe "when using inject" do
         it "returns violations" do
-          violations = ["Prefer `reduce` over `inject`."]
           code = <<-CODE.strip_heredoc
             users.inject(0) do |_, user|
               user.age
             end
           CODE
 
+          violations = ["Prefer `reduce` over `inject`."]
           expect(thoughtbot_violations_in(code)).to eq violations
         end
       end
@@ -665,21 +663,22 @@ describe Linter::Ruby do
       end
 
       def thoughtbot_violations_in(content)
-        violations_in(content, repository_owner_name: "thoughtbot")
+        violations_in(
+          content,
+          repository_owner_name: "thoughtbot",
+          config: stub_ruby_config(thoughtbot_configuration),
+        )
       end
     end
 
     describe "#file_included?" do
       context "with excluded file" do
         it "returns false" do
-          config = {
-            "AllCops" => {
-              "Exclude" => ["ignore.rb"]
-            }
-          }
-          repo_config = double("RepoConfig", for: config)
+          config = stub_ruby_config(
+            "AllCops" => { "Exclude" => ["ignore.rb"] },
+          )
           file = double("CommitFile", filename: "ignore.rb")
-          linter = build_linter(repo_config: repo_config)
+          linter = build_linter(config: config)
 
           expect(linter.file_included?(file)).to eq false
         end
@@ -687,14 +686,9 @@ describe Linter::Ruby do
 
       context "with included file" do
         it "returns true" do
-          config = {
-            "AllCops" => {
-              "Exclude" => []
-            }
-          }
-          repo_config = double("RepoConfig", for: config)
+          config = stub_ruby_config("AllCops" => { "Exclude" => [] })
           file = double("CommitFile", filename: "app.rb")
-          linter = build_linter(repo_config: repo_config)
+          linter = build_linter(config: config)
 
           expect(linter.file_included?(file)).to eq true
         end
@@ -703,10 +697,15 @@ describe Linter::Ruby do
 
     private
 
-    def violations_in(content, config: nil, repository_owner_name: "joe")
-      repo_config = build_repo_config(config)
+    def violations_in(
+      content,
+      config: stub_ruby_config,
+      repository_owner_name: "joe"
+    )
+      hound_config = build_hound_config
       linter = build_linter(
-        repo_config: repo_config,
+        hound_config: hound_config,
+        config: config,
         repository_owner_name: repository_owner_name,
       )
 
@@ -716,19 +715,36 @@ describe Linter::Ruby do
         flat_map(&:messages)
     end
 
+    def violations_with_config(config = stub_ruby_config)
+      content = <<-CODE.strip_heredoc
+        { :foo => "hello world" }
+      CODE
+
+      violations_in(content, config: config)
+    end
+
     def build_linter(
-      repo_config: build_repo_config,
+      hound_config: build_hound_config,
+      config: stub_ruby_config,
       repository_owner_name: "not_thoughtbot"
     )
+      config
       Linter::Ruby.new(
-        repo_config: repo_config,
+        hound_config: hound_config,
         build: build(:build),
         repository_owner_name: repository_owner_name,
       )
     end
 
-    def build_repo_config(config = "")
-      double("RepoConfig", enabled_for?: true, for: config)
+    def stub_ruby_config(config = "config")
+      stubbed_ruby_config = double("RubyConfig", content: config)
+      allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
+
+      stubbed_ruby_config
+    end
+
+    def build_hound_config
+      double("HoundConfig", enabled_for?: true, content: "")
     end
 
     def build_file(content)

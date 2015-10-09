@@ -21,7 +21,7 @@ describe Linter::Base do
   describe "#file_included?" do
     it "returns true" do
       linter = Linter::Test.new(
-        repo_config: double,
+        hound_config: double,
         build: double,
         repository_owner_name: "foo",
       )

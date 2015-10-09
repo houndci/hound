@@ -22,7 +22,7 @@ module Linter
     private
 
     def lint(content)
-      Coffeelint.lint(content, config)
+      Coffeelint.lint(content, linter_config)
     end
 
     def content_for_file(file)
@@ -37,13 +37,13 @@ module Linter
       file.filename.ends_with? ".erb"
     end
 
-    def config
-      default_config.merge(repo_config.for(name))
+    def linter_config
+      default_config.merge(config.content)
     end
 
     def default_config
       config = File.read(default_config_file)
-      JSON.parse(config)
+      Config::Parser.json(config)
     end
 
     def default_config_file
@@ -51,10 +51,6 @@ module Linter
         DEFAULT_CONFIG_FILENAME,
         repository_owner_name
       ).path
-    end
-
-    def name
-      "coffeescript"
     end
   end
 end

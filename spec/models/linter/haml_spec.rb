@@ -115,12 +115,19 @@ describe Linter::Haml do
   end
 
   def build_linter(config)
-    repo_config = double("RepoConfig", enabled_for?: true, for: config)
+    hound_config = double("HoundConfig", enabled_for?: true, content: config)
+    stub_haml_config(config)
     Linter::Haml.new(
-      repo_config: repo_config,
+      hound_config: hound_config,
       build: build(:build),
       repository_owner_name: "ralph",
     )
+  end
+
+  def stub_haml_config(content)
+    config = double("HamlConfig", content: content)
+    allow(Config::Haml).to receive(:new).and_return(config)
+    config
   end
 
   def build_file(content)

@@ -154,7 +154,7 @@ describe BuildRunner do
         expect(github_api).to have_received(:create_error_status).with(
           "test/repo",
           "headsha",
-          I18n.t(:config_error_status, filename: "javascript.json"),
+          I18n.t(:config_error_status, filename: "config/javascript.json"),
           configuration_url,
         )
       end
@@ -293,6 +293,7 @@ describe BuildRunner do
         repo_name: "test/repo",
         file_content: "",
       )
+      stub_commit_to_return_hound_config(head_commit)
       pull_request = double(
         "PullRequest",
         commit_files: files,
@@ -323,8 +324,12 @@ describe BuildRunner do
       )
     end
 
-    def stubbed_style_checker_with_config_file(pull_request, filename, content)
-      config = config_for_file(filename, content)
+    def stubbed_style_checker_with_config_file(pull_request, file_path, content)
+      config = config_for_file(
+        file_path: file_path,
+        content: content,
+        commit: pull_request.head_commit,
+      )
       style_checker = StyleChecker.new(pull_request, build(:build))
       allow(style_checker).to receive(:config).and_return(config)
 
@@ -334,16 +339,16 @@ describe BuildRunner do
     def stubbed_style_checker_with_invalid_javascript_config(pull_request)
       stubbed_style_checker_with_config_file(
         pull_request,
-        "javascript.json",
+        "config/javascript.json",
         invalid_json,
       )
     end
 
     def invalid_json
       <<-EOS.strip_heredoc
-      {
-        "predef": ["myGlobal",]
-      }
+        {
+          "predef": ["myGlobal",]
+        }
       EOS
     end
 
@@ -352,7 +357,7 @@ describe BuildRunner do
       hound_config = configuration.delete(:hound_config)
       allow(commit).to receive(:file_content)
       allow(commit).to receive(:file_content).
-        with(RepoConfig::HOUND_CONFIG).and_return(hound_config)
+        with(HoundConfig::CONFIG_FILE).and_return(hound_config)
       stub_configuration_for_commit(configuration, commit)
 
       commit
@@ -365,19 +370,17 @@ describe BuildRunner do
       end
     end
 
-    def config_for_file(file_path, content)
+    def config_for_file(file_path:, content:, commit: double("Commit"))
       hound_config = <<-EOS.strip_heredoc
-      java_script:
-        enabled: true
-        config_file: #{file_path}
+        java_script:
+          enabled: true
+          config_file: #{file_path}
       EOS
 
-      commit = stub_commit(
-        hound_config: hound_config,
-        "#{file_path}" => content,
-      )
+      allow(commit).to receive(:file_content).with(file_path).
+        and_return(content)
 
-      RepoConfig.new(commit)
+      HoundConfig.new(commit)
     end
 
     def configuration_url

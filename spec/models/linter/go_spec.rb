@@ -32,7 +32,7 @@ describe Linter::Go do
 
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      linter = build_linter("config", build)
+      linter = build_linter(build)
       commit_file = build_commit_file(filename: "a.go")
       allow(Resque).to receive(:enqueue)
 
@@ -45,7 +45,7 @@ describe Linter::Go do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "config",
+        config: Config::Go::DEFAULT_CONFIG,
       )
     end
   end

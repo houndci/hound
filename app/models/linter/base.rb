@@ -4,8 +4,8 @@ module Linter
       self::FILE_REGEXP === filename
     end
 
-    def initialize(repo_config:, build:, repository_owner_name:)
-      @repo_config = repo_config
+    def initialize(hound_config:, build:, repository_owner_name:)
+      @hound_config = hound_config
       @build = build
       @repository_owner_name = repository_owner_name
     end
@@ -23,21 +23,25 @@ module Linter
     end
 
     def enabled?
-      repo_config.enabled_for?(name)
+      hound_config.enabled_for?(name)
     end
 
     def file_included?(*)
       true
     end
 
+    def name
+      self.class.name.demodulize.underscore
+    end
+
     private
 
-    attr_reader :repo_config, :build, :repository_owner_name
+    attr_reader :hound_config, :build, :repository_owner_name
 
     def build_review_job_attributes(commit_file)
       {
         commit_sha: build.commit_sha,
-        config: repo_config.raw_for(linter_name),
+        config: config.content,
         content: commit_file.content,
         filename: commit_file.filename,
         patch: commit_file.patch,
@@ -50,15 +54,15 @@ module Linter
     end
 
     def job_class
-      "#{linter_name.classify}ReviewJob".constantize
+      "#{name.classify}ReviewJob".constantize
     end
 
-    def linter_name
-      self.class::NAME
+    def config
+      @config ||= config_class.new(hound_config, name)
     end
 
-    def name
-      self.class.name.demodulize.underscore
+    def config_class
+      "Config::#{name.classify}".constantize
     end
   end
 end

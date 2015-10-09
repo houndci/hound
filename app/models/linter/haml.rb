@@ -25,7 +25,7 @@ module Linter
     private
 
     def file_excluded?(filename)
-      HamlLint::Utils.any_glob_matches?(config["exclude"], filename)
+      HamlLint::Utils.any_glob_matches?(linter_config["exclude"], filename)
     end
 
     attr_reader :commit_file
@@ -34,7 +34,7 @@ module Linter
       HamlLint::Document.new(
         commit_file.content,
         file: commit_file.filename,
-        config: config,
+        config: linter_config,
       )
     end
 
@@ -46,16 +46,16 @@ module Linter
     end
 
     def linters
-      HamlLint::LinterSelector.new(config, {}).
+      HamlLint::LinterSelector.new(linter_config, {}).
         linters_for_file(commit_file.filename)
     end
 
-    def config
+    def linter_config
       default_config.merge(custom_config)
     end
 
     def custom_config
-      HamlLint::Configuration.new(repo_config.for(name))
+      HamlLint::Configuration.new(config.content)
     end
 
     def default_config

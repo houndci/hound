@@ -30,7 +30,7 @@ describe BuildReport do
               violations: [build(:violation)],
             )
             stubbed_commenter
-            stubbed_repo_config(fail_on_violations?: false)
+            stubbed_hound_config(fail_on_violations?: false)
             github_api = stubbed_github_api
 
             run_service(file_review.build)
@@ -51,7 +51,7 @@ describe BuildReport do
               violations: [build(:violation)],
             )
             stubbed_commenter
-            stubbed_repo_config(fail_on_violations?: true)
+            stubbed_hound_config(fail_on_violations?: true)
             github_api = stubbed_github_api
 
             run_service(file_review.build)
@@ -104,7 +104,7 @@ describe BuildReport do
           violations: [],
         )
         stubbed_commenter
-        stubbed_repo_config(fail_on_violations?: false)
+        stubbed_hound_config(fail_on_violations?: false)
         github_api = stubbed_github_api
 
         run_service(file_review.build)
@@ -151,11 +151,11 @@ describe BuildReport do
       github_api
     end
 
-    def stubbed_repo_config(options = {})
-      repo_config = double("RepoConfig", options)
-      allow(RepoConfig).to receive(:new).and_return(repo_config)
+    def stubbed_hound_config(options = {})
+      hound_config = double("HoundConfig", options)
+      allow(HoundConfig).to receive(:new).and_return(hound_config)
 
-      repo_config
+      hound_config
     end
 
     def run_service(build)

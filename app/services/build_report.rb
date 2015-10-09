@@ -42,11 +42,11 @@ class BuildReport
   end
 
   def fail_build?
-    repo_config.fail_on_violations? && build.violation_count > 0
+    hound_config.fail_on_violations? && build.violation_count > 0
   end
 
-  def repo_config
-    RepoConfig.new(pull_request.head_commit)
+  def hound_config
+    HoundConfig.new(pull_request.head_commit)
   end
 
   def commit_status
