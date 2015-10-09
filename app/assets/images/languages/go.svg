@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
+    <title>version 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="50" cy="50" r="50"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Go-Gopher-variations" sketch:type="MSLayerGroup" transform="translate(-241.000000, 0.000000)">
+            <g id="version-3" transform="translate(241.000000, 0.000000)">
+                <mask id="mask-2" sketch:name="Mask" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#61CFDD" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
+                <g id="gopher-v4-copy-2" mask="url(#mask-2)">
+                    <g transform="translate(16.000000, 20.000000)">
+                        <path d="M0.817764706,50.8932994 C0.952588235,53.6816121 3.72935294,52.3914576 4.98705882,51.5197891 C6.18088235,50.6921996 6.52994118,51.3801168 6.63476471,49.7468889 C6.70341176,48.6734124 6.82676471,47.599936 6.76605882,46.5222109 C4.96076471,46.3581092 2.99717647,46.7893409 1.51711765,47.867951 C0.754764706,48.4236309 -0.674647059,50.1972392 0.817764706,50.8932994" id="Shape" stroke="#178391" stroke-width="1.5" fill="#97EBF5" sketch:type="MSShapeGroup"></path>
+                        <path d="M0.817764706,50.8932994 C1.05560764,50.7592718 2.08612858,50.2174346 2.24752941,49.8916466" id="Shape" stroke="#178391" stroke-width="1" fill="#C6B198" sketch:type="MSShapeGroup"></path>
+                        <path d="M7.23476471,17.6764256 C-3.40588235,14.6747985 4.50635294,1.09560452 13.0510588,6.68090395 L7.23476471,17.6764256 L7.23476471,17.6764256 Z" id="Shape" stroke="#178391" stroke-width="1.5" fill="#97EBF5" sketch:type="MSShapeGroup"></path>
+                        <path d="M54.5108824,5.66195104 C62.9332941,-0.272440678 70.5442941,13.116629 60.7558235,16.4854049 L54.5108824,5.66195104 L54.5108824,5.66195104 Z" id="Shape" stroke="#178391" stroke-width="1.5" fill="#97EBF5" sketch:type="MSShapeGroup"></path>
+                        <path d="M7.67876471,13.9259849 C6.27494118,13.1810659 5.24505882,12.169371 6.10376471,10.5405687 C6.89876471,9.0326742 8.37564706,9.19642185 9.77964706,9.94134087 L7.67876471,13.9259849 L7.67876471,13.9259849 Z" id="Shape" stroke="none" fill="#178391" sketch:type="MSShapeGroup"></path>
+                        <path d="M59.5381176,12.5097891 C60.9419412,11.7648701 61.9718235,10.7531751 61.1131176,9.12437288 C60.3181176,7.61647834 58.8412353,7.78022599 57.4372353,8.52514501 L59.5381176,12.5097891 L59.5381176,12.5097891 Z" id="Shape" stroke="none" fill="#178391" sketch:type="MSShapeGroup"></path>
+                        <path d="M68.2014706,50.5392505 C68.0666471,53.3275631 65.2898824,52.0374087 64.0321765,51.1657401 C62.8383529,50.3381507 62.4892941,51.0260678 62.3844706,49.3928399 C62.3158235,48.3193635 62.1924706,47.245887 62.2531765,46.168162 C64.0584706,46.0040603 66.0220588,46.4352919 67.5021176,47.5139021 C68.2642941,48.0695819 69.6938824,49.8431902 68.2014706,50.5392505" id="Shape" stroke="#178391" stroke-width="1.5" fill="#97EBF5" sketch:type="MSShapeGroup"></path>
+                        <path d="M68.2014706,50.5392505 C67.7973529,50.3884256 66.523747,49.9042154 66.2495117,49.5375977" id="Shape" stroke="#178391" stroke-width="1" fill="#C6B198" sketch:type="MSShapeGroup"></path>
+                        <path d="M59.2877647,11.8169153 C63.9603529,23.3245687 62.2987059,35.7336309 63.0112941,47.8955669 C63.6232941,58.3385951 64.9801765,70.4033446 60.1507059,80.080742 C55.0701176,90.2621281 42.3748235,92.8233183 31.9154118,92.4482034 C23.6998235,92.1532806 13.7752941,89.4646328 9.13852941,81.9348964 C3.69864706,73.1013748 6.27405882,59.9665122 6.66917647,50.1374049 C7.13717647,38.4943277 3.52535294,26.8158456 7.33835294,15.4227269 C11.2939412,3.60404143 21.9619412,0.933096045 33.4432941,0.0219510358 C44.0959412,0.0219510358 54.0820588,1.55020339 59.2877647,11.8169153 Z" id="Shape" stroke="#178391" stroke-width="1.5" fill="#97EBF6" sketch:type="MSShapeGroup"></path>
+                        <path d="M35.3239412,16.367307 C37.2365294,27.5203804 55.4101765,24.5715066 52.7998235,13.3230169 C50.4591176,3.23616196 34.6882941,6.02819209 35.3239412,16.367307" id="Shape" stroke="#178391" stroke-width="1" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <path d="M13.6064118,18.1711864 C16.0852941,27.8809793 31.5824118,25.3950245 30.9982941,15.6551375 C30.2984118,3.99010923 11.2364118,6.24097552 13.6064118,18.1711864" id="Shape" stroke="#178391" stroke-width="1" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <path d="M37.5165882,30.7507119 C37.5247059,32.2007194 37.845,33.8286365 37.5716471,35.3712279 C37.2026471,36.0708286 36.4787647,36.1448249 35.8547647,36.427533 C34.9918235,36.2917552 34.2661765,35.7233296 33.9201176,34.9136196 C33.6986471,33.1529341 34.0027059,31.4481883 34.0586471,29.6867947 L37.5165882,30.7507119 L37.5165882,30.7507119 Z" id="Shape" stroke="#178391" stroke-width="1" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <g id="Group" stroke="none" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(15.580002, 13.683616)">
+                            <ellipse id="Oval" fill="#178391" sketch:type="MSShapeGroup" cx="2.70423529" cy="2.9039096" rx="2.61688235" ry="2.84336723"></ellipse>
+                            <ellipse id="Oval" fill="#FFFFFF" sketch:type="MSShapeGroup" cx="3.89452941" cy="3.54562335" rx="0.616941176" ry="0.722613936"></ellipse>
+                        </g>
+                        <g id="Group" stroke="none" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(37.559998, 12.975518)">
+                            <ellipse id="Oval" fill="#178391" sketch:type="MSShapeGroup" cx="2.74782353" cy="2.9039096" rx="2.57329412" ry="2.84336723"></ellipse>
+                            <ellipse id="Oval" fill="#FFFFFF" sketch:type="MSShapeGroup" cx="3.91835294" cy="3.54562335" rx="0.606705882" ry="0.722613936"></ellipse>
+                        </g>
+                        <path d="M30.0382941,30.592806 C28.8965294,33.3685499 30.675,38.9191525 33.7729412,34.8251073 C33.5514706,33.0644218 33.8555294,31.3596761 33.9114706,29.5982825 L30.0382941,30.592806 L30.0382941,30.592806 Z" id="Shape" stroke="#178391" stroke-width="1" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <g id="Group" stroke="none" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(27.176471, 21.941620)">
+                            <path d="M3.25252941,3.30557815 C1.12447059,3.48755932 -0.615,6.02573635 0.491470588,8.03372505 C1.95670588,10.6933409 5.22723529,7.79845951 7.26423529,8.06966102 C9.60864706,8.11781168 11.5295294,10.5563239 13.4124706,8.51045198 C15.5066471,6.23497928 12.5108824,4.01880979 10.1694706,3.02800377 L3.25252941,3.30557815 L3.25252941,3.30557815 Z" id="Shape" stroke="#178391" stroke-width="1.2" fill="#97EBF5" sketch:type="MSShapeGroup"></path>
+                            <path d="M2.98464706,3.19440678 C2.82705882,-0.503811676 9.85605882,-0.966199623 10.6861765,2.1294275 C11.5141765,5.21779661 3.33070588,5.93509981 2.98464706,3.19440678 C2.70847059,1.00585311 2.98464706,3.19440678 2.98464706,3.19440678 L2.98464706,3.19440678 Z" id="Shape" fill="#168391" sketch:type="MSShapeGroup"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
