@@ -118,49 +118,75 @@ describe StyleChecker do
     end
 
     context "for a JavaScript file" do
-      context "with style violations" do
-        it "returns violations" do
+      context "when Eslint is enabled" do
+        it "does not immediately return violations" do
           commit_file = stub_commit_file("test.js", "var test = 'test'")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to include "Missing semicolon."
-        end
-      end
-
-      context "without style violations" do
-        it "returns no violations" do
-          commit_file = stub_commit_file("test.js", "var test = 'test';")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).not_to include "Missing semicolon."
-        end
-      end
-
-      context "an excluded file" do
-        it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-            javascript:
-              ignore_file: '.jshintignore'
-          YAML
-
           head_commit = stub_head_commit(
-            ".hound.yml" => config,
-            ".jshintignore" => "test.js",
+            HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
+              eslint:
+                enabled: true
+                config_file: config/.eslintrc
+            EOS
           )
-
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
           pull_request = stub_pull_request(
-            head_commit: head_commit,
             commit_files: [commit_file],
+            head_commit: head_commit,
           )
 
           violation_messages = pull_request_violations(pull_request)
 
-          expect(violation_messages).to be_empty
+          expect(violation_messages).to eq [
+            "Missing semicolon.",
+            "'test' is defined but never used.",
+          ]
+        end
+      end
+
+      context "when eslint is disabled or unconfigured" do
+        context "with style violations" do
+          it "returns violations" do
+            commit_file = stub_commit_file("test.js", "var test = 'test'")
+            pull_request = stub_pull_request(commit_files: [commit_file])
+
+            violation_messages = pull_request_violations(pull_request)
+
+            expect(violation_messages).to include "Missing semicolon."
+          end
+        end
+
+        context "without style violations" do
+          it "returns no violations" do
+            commit_file = stub_commit_file("test.js", "var test = 'test';")
+            pull_request = stub_pull_request(commit_files: [commit_file])
+
+            violation_messages = pull_request_violations(pull_request)
+
+            expect(violation_messages).not_to include "Missing semicolon."
+          end
+        end
+
+        context "an excluded file" do
+          it "returns no violations" do
+            config = <<-YAML.strip_heredoc
+              javascript:
+                ignore_file: '.jshintignore'
+            YAML
+
+            head_commit = stub_head_commit(
+              ".hound.yml" => config,
+              ".jshintignore" => "test.js",
+            )
+
+            commit_file = stub_commit_file("test.js", "var test = 'test'")
+            pull_request = stub_pull_request(
+              head_commit: head_commit,
+              commit_files: [commit_file],
+            )
+
+            violation_messages = pull_request_violations(pull_request)
+
+            expect(violation_messages).to be_empty
+          end
         end
       end
     end

@@ -2,6 +2,7 @@ module Linter
   class Collection
     LINTERS = [
       Linter::CoffeeScript,
+      Linter::Eslint,
       Linter::Go,
       Linter::Haml,
       Linter::JavaScript,
