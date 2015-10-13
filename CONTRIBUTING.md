@@ -147,6 +147,8 @@ Linter jobs are created with the following arguments:
 
 * `config` - The configuration for the linter. This will be linter specific.
 * `content` - The source code to check for violations.
+* `excluded_files` - A comma-separated list of with patterns that should be
+  ignored by the linter. i.e `vendor/assets/stylesheets/*`
 * `filename` - The name of the source file for the code snippet. This should be
   passed through to the outbound queue.
 * `commit_sha` - The git commit SHA of the code snippet. This should be passed
