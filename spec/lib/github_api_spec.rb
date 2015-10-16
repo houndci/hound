@@ -2,7 +2,6 @@ require "spec_helper"
 require "attr_extras"
 require "lib/github_api"
 require "json"
-require "app/models/github_user"
 
 describe GithubApi do
   describe "#repos" do
@@ -216,32 +215,6 @@ describe GithubApi do
     end
   end
 
-  describe "#accept_pending_invitations" do
-    it "finds and accepts pending org invitations" do
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
-      memberships_request = stub_memberships_request
-      membership_update_request = stub_membership_update_request
-
-      api.accept_pending_invitations
-
-      expect(memberships_request).to have_been_requested
-      expect(membership_update_request).to have_been_requested
-    end
-  end
-
-  describe "#user_teams" do
-    it "returns user's teams" do
-      teams = ["thoughtbot"]
-      client = double(user_teams: teams)
-      allow(Octokit::Client).to receive(:new).and_return(client)
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
-
-      user_teams = api.user_teams
-
-      expect(user_teams).to eq teams
-    end
-  end
-
   describe "#create_pending_status" do
     it "makes request to GitHub for creating a pending status" do
       api = GithubApi.new(Hound::GITHUB_TOKEN)
@@ -307,56 +280,6 @@ describe GithubApi do
     end
   end
 
-  describe "#add_user_to_team" do
-    it "makes a request to GitHub" do
-      token = "some_token"
-      username = "houndci"
-      team_id = 123
-      api = GithubApi.new(token)
-      request = stub_add_user_to_team_request(team_id, username, token)
-
-      api.add_user_to_team(team_id, username)
-
-      expect(request).to have_been_requested
-    end
-  end
-
-  describe "#add_repo_to_team" do
-    it "makes a request to GitHub" do
-      token = "some_token"
-      team_id = 123
-      api = GithubApi.new(token)
-      request = stub_add_repo_to_team_request(full_repo_name, team_id, token)
-
-      api.add_repo_to_team(team_id, full_repo_name)
-
-      expect(request).to have_been_requested
-    end
-  end
-
-  describe "#create_team" do
-    it "makes a request to GitHub" do
-      token = "some_token"
-      org_name = "foo"
-      team_name = "TestTeam"
-      api = GithubApi.new(token)
-      request = stub_create_team_request(
-        org_name,
-        team_name,
-        full_repo_name,
-        token,
-      )
-
-      api.create_team(
-        org_name: org_name,
-        team_name: team_name,
-        repo_name: full_repo_name
-      )
-
-      expect(request).to have_been_requested
-    end
-  end
-
   describe "#add_collaborator" do
     it "makes a request to GitHub" do
       username = "houndci"
@@ -364,18 +287,6 @@ describe GithubApi do
       request = stub_add_collaborator_request(username, full_repo_name, token)
 
       api.add_collaborator(full_repo_name, username)
-
-      expect(request).to have_been_requested
-    end
-  end
-
-  describe "#update_team" do
-    it "makes a request" do
-      team_id = 123
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
-      request = stub_update_team_permission_request(team_id)
-
-      api.update_team(team_id, permissions: "push")
 
       expect(request).to have_been_requested
     end
@@ -392,49 +303,6 @@ describe GithubApi do
       )
 
       api.remove_collaborator(full_repo_name, username)
-
-      expect(request).to have_been_requested
-    end
-  end
-
-  describe "#team_repos" do
-    it "makes a request to get repos in a team" do
-      team_id = 222
-      api = GithubApi.new(token)
-      request = stub_team_repos_request(
-        team_id, token
-      )
-
-      api.team_repos(team_id)
-
-      expect(request).to have_been_requested
-    end
-  end
-
-  describe "#remove_repo_from_team" do
-    it "makes a request to remove repo from team" do
-      team_id = 222
-      api = GithubApi.new(token)
-      request = stub_remove_repo_from_team_request(
-        team_id, full_repo_name, token
-      )
-
-      api.remove_repo_from_team(team_id, full_repo_name)
-
-      expect(request).to have_been_requested
-    end
-  end
-
-  describe "#remove_user_from_team" do
-    it "makes a request to remove a user from a team" do
-      username = "houndci"
-      team_id = 222
-      api = GithubApi.new(token)
-      request = stub_remove_user_from_team_request(
-        team_id, username, token
-      )
-
-      api.remove_user_from_team(team_id, username)
 
       expect(request).to have_been_requested
     end

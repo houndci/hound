@@ -8,24 +8,6 @@ class RepoActivator
   end
 
   def activate
-    activated = activate_repo
-
-    if activated
-      enqueue_org_invitation
-    end
-
-    activated
-  end
-
-  def deactivate
-    deactivate_repo
-  end
-
-  private
-
-  attr_reader :github_token, :repo
-
-  def activate_repo
     change_repository_state_quietly do
       if repo.private?
         add_hound_to_repo && create_webhook && repo.activate
@@ -35,7 +17,7 @@ class RepoActivator
     end
   end
 
-  def deactivate_repo
+  def deactivate
     change_repository_state_quietly do
       if repo.private?
         remove_hound_from_repo
@@ -44,6 +26,10 @@ class RepoActivator
       delete_webhook && repo.deactivate
     end
   end
+
+  private
+
+  attr_reader :github_token, :repo
 
   def change_repository_state_quietly
     yield
@@ -54,11 +40,11 @@ class RepoActivator
   end
 
   def remove_hound_from_repo
-    RemoveHoundFromRepo.run(repo.full_github_name, github)
+    github.remove_collaborator(repo.full_github_name, Hound::GITHUB_USERNAME)
   end
 
   def add_hound_to_repo
-    AddHoundToRepo.run(repo.full_github_name, github)
+    github.add_collaborator(repo.full_github_name, Hound::GITHUB_USERNAME)
   end
 
   def github
@@ -68,12 +54,6 @@ class RepoActivator
   def create_webhook
     github.create_hook(repo.full_github_name, builds_url) do |hook|
       repo.update(hook_id: hook.id)
-    end
-  end
-
-  def enqueue_org_invitation
-    if repo.private? && repo.in_organization?
-      AcceptOrgInvitationsJob.perform_later
     end
   end
 

@@ -85,16 +85,6 @@ class GithubApi
       client.contents(full_repo_name, path: filename, ref: sha)
   end
 
-  def accept_pending_invitations
-    pending_memberships = client.organization_memberships(state: "pending")
-    pending_memberships.each do |pending_membership|
-      client.update_organization_membership(
-        pending_membership["organization"]["login"],
-        state: "active"
-      )
-    end
-  end
-
   def create_pending_status(full_repo_name, sha, description)
     create_status(
       repo: full_repo_name,
@@ -124,56 +114,20 @@ class GithubApi
   end
 
   def add_collaborator(repo_name, username)
-    client.add_collaborator(repo_name, username)
+    client.add_collaborator(
+      repo_name,
+      username,
+      accept: "application/vnd.github.ironman-preview+json",
+    )
   end
 
   def remove_collaborator(repo_name, username)
-    client.remove_collaborator(repo_name, username)
-  end
-
-  def user_teams
-    client.user_teams
-  end
-
-  def repo_teams(repo_name)
-    client.repository_teams(repo_name)
-  end
-
-  def org_teams(org_name)
-    client.org_teams(org_name)
-  end
-
-  def team_repos(team_id)
-    client.team_repos(team_id)
-  end
-
-  def create_team(team_name:, org_name:, repo_name:)
-    team_options = {
-      name: team_name,
-      repo_names: [repo_name],
-      permission: "push"
-    }
-    client.create_team(org_name, team_options)
-  end
-
-  def add_repo_to_team(team_id, repo_name)
-    client.add_team_repository(team_id, repo_name)
-  end
-
-  def remove_repo_from_team(team_id, repo_name)
-    client.remove_team_repository(team_id, repo_name)
-  end
-
-  def add_user_to_team(team_id, username)
-    client.add_team_membership(team_id, username)
-  end
-
-  def remove_user_from_team(team_id, username)
-    client.remove_team_membership(team_id, username)
-  end
-
-  def update_team(team_id, options)
-    client.update_team(team_id, options)
+    # not sure if we need the accept header
+    client.remove_collaborator(
+      repo_name,
+      username,
+      accept: "application/vnd.github.ironman-preview+json",
+    )
   end
 
   private

@@ -90,8 +90,6 @@ feature "Repo list", js: true do
     stub_repo_request(repo.full_github_name, token)
     stub_add_collaborator_request(username, repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
-    stub_memberships_request
-    stub_membership_update_request
 
     sign_in_as(user, token)
     find("li.repo .toggle").click
@@ -110,14 +108,8 @@ feature "Repo list", js: true do
     repo = create(:repo, private: false, full_github_name: "testing/repo")
     repo.users << user
     hook_url = "http://#{ENV["HOST"]}/builds"
-    team_id = 4567 # from fixture
     stub_repo_with_org_request(repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
-    stub_repo_teams_request(repo.full_github_name, token)
-    stub_user_teams_request(token)
-    stub_add_user_to_team_request(team_id, username, token)
-    stub_memberships_request
-    stub_membership_update_request
 
     sign_in_as(user, token)
     find(".repos .toggle").click
