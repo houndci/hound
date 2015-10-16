@@ -133,32 +133,6 @@ describe BuildRunner do
         )
         expect(repo.reload.owner).to eq Owner.first
       end
-
-      it "fails the GitHub status with invalid config" do
-        repo = create(:repo, :active)
-        payload = stubbed_payload(
-          github_repo_id: repo.github_id,
-          full_repo_name: "test/repo",
-          head_sha: "headsha",
-        )
-        build_runner = BuildRunner.new(payload)
-        pull_request = stubbed_pull_request_with_file("random.js", "")
-        style_checker = stubbed_style_checker_with_invalid_javascript_config(
-          pull_request,
-        )
-        allow(StyleChecker).to receive(:new).and_return(style_checker)
-        allow(PullRequest).to receive(:new).and_return(pull_request)
-        github_api = stubbed_github_api
-
-        build_runner.run
-
-        expect(github_api).to have_received(:create_error_status).with(
-          "test/repo",
-          "headsha",
-          I18n.t(:config_error_status, filename: "config/javascript.json"),
-          configuration_url,
-        )
-      end
     end
 
     context "when the repo is not active" do

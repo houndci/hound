@@ -13,7 +13,21 @@ end
 
 describe Config::Base do
   describe "#content" do
-    context "when there is not specified filepath" do
+    context "when there is no config content for the given linter" do
+      it "does not raise" do
+        commit = double("Commit")
+        hound_config = double(
+          "HoundConfig",
+          commit: commit,
+          content: {},
+        )
+        config = Config::Test.new(hound_config, "unconfigured_linter")
+
+        expect { config.content }.not_to raise_error
+      end
+    end
+
+    context "when there is no specified filepath" do
       it "returns a default value" do
         commit = double("Commit")
         hound_config = double(

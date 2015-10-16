@@ -61,7 +61,7 @@ module Config
     end
 
     def file_path
-      linter_config["config_file"]
+      linter_config && linter_config["config_file"]
     end
 
     def linter_config
