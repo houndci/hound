@@ -7,8 +7,8 @@ class BuildRunner
     if repo && relevant_pull_request?
       review_pull_request
     end
-  rescue Config::ParserError => e
-    commit_status.set_config_error(e.filename)
+  rescue Config::ParserError => exception
+    report_config_file_as_invalid(exception.filename)
   rescue Octokit::Unauthorized
     if users_with_token.any?
       reset_token
@@ -111,6 +111,14 @@ class BuildRunner
       repo_name: payload.full_repo_name,
       sha: payload.head_sha,
       token: token,
+    )
+  end
+
+  def report_config_file_as_invalid(filename)
+    ReportInvalidConfig.run(
+      pull_request_number: payload.pull_request_number,
+      commit_sha: payload.head_sha,
+      filename: filename,
     )
   end
 end

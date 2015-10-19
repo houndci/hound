@@ -182,6 +182,28 @@ describe BuildRunner do
       end
     end
 
+    context "when the config is invalid" do
+      it "marks the config file as invalid" do
+        build_runner = make_build_runner
+        pull_request = stubbed_pull_request(
+          [double("CommitFile", filename: "foo.rb")],
+        )
+        payload = stubbed_payload(commit_sha: "commitsha123")
+        invalid_config_file(pull_request, "config/rubocop.yml" => "!")
+        stubbed_github_api
+        stubbed_commenter
+        allow(ReportInvalidConfig).to receive(:run)
+
+        build_runner.run
+
+        expect(ReportInvalidConfig).to have_received(:run).with(
+          pull_request_number: payload.pull_request_number,
+          commit_sha: payload.head_sha,
+          filename: "config/rubocop.yml",
+        )
+      end
+    end
+
     context "with expired token" do
       it "removes the expired token" do
         repo = create(:repo, :active)
@@ -311,22 +333,6 @@ describe BuildRunner do
       style_checker
     end
 
-    def stubbed_style_checker_with_invalid_javascript_config(pull_request)
-      stubbed_style_checker_with_config_file(
-        pull_request,
-        "config/javascript.json",
-        invalid_json,
-      )
-    end
-
-    def invalid_json
-      <<-EOS.strip_heredoc
-        {
-          "predef": ["myGlobal",]
-        }
-      EOS
-    end
-
     def stub_commit(configuration)
       commit = double("Commit")
       hound_config = configuration.delete(:hound_config)
@@ -411,5 +417,13 @@ describe BuildRunner do
     allow(GithubApi).to receive(:new).and_return(github_api)
 
     github_api
+  end
+
+  def invalid_config_file(pull_request, stubs = {})
+    stubs.each do |filename, content|
+      allow(pull_request.head_commit).to receive(:file_content).
+        with(filename).
+        and_return(content)
+    end
   end
 end
