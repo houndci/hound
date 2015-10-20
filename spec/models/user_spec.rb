@@ -31,6 +31,27 @@ describe User do
     end
   end
 
+  describe "#token" do
+    it "generates saves encrypted token in database" do
+      user = build(:user)
+      user.token = "original-token"
+
+      user.save
+
+      expect(user["token"]).to_not eq(user.token)
+      expect(user["token"]).to_not eq("original-token")
+    end
+
+    it "returns original value of token on call" do
+      user = build(:user)
+      user.token = "original-token"
+
+      user.save
+
+      expect(user.reload.token).to eq("original-token")
+    end
+  end
+
   describe '#to_s' do
     it 'returns GitHub username' do
       user = build(:user)

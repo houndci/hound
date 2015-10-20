@@ -15,6 +15,7 @@ describe SessionsController do
         user = User.last
         expect(user.github_username).to eq "jimtom"
         expect(user.email_address).to eq "jimtom@example.com"
+        expect(user.token).to eq "letmein"
       end
     end
 
