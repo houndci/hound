@@ -43,6 +43,7 @@ end
 
 group :development, :test do
   gem "byebug"
+  gem "bundler-audit", require: false
   gem "dotenv-rails"
   gem "foreman"
   gem "jasmine-rails"
