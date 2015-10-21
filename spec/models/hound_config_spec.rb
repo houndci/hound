@@ -50,6 +50,20 @@ describe HoundConfig do
       end
     end
 
+    context "when the given language is supported but unconfigured" do
+      it "returns true" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            scss:
+              config_file: config/.scss_lint.yml
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
+
+        expect(hound_config).to be_enabled_for("scss")
+      end
+    end
+
     context "given a language in beta" do
       context "when the given language is enabled" do
         it "returns true" do

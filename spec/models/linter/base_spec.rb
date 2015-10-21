@@ -29,4 +29,45 @@ describe Linter::Base do
       expect(linter.file_included?(double)).to eq true
     end
   end
+
+  describe "#enabled?" do
+    context "when the hound config is enabled for the given language" do
+      it "returns true" do
+        hound_config = double("HoundConfig", enabled_for?: true)
+        linter = Linter::Test.new(
+          hound_config: hound_config,
+          build: double,
+          repository_owner_name: "foo",
+        )
+
+        expect(linter.enabled?).to eq true
+      end
+    end
+
+    context "when the hound config is disabled for the given language" do
+      it "returns false" do
+        hound_config = double("HoundConfig", enabled_for?: false)
+        linter = Linter::Test.new(
+          hound_config: hound_config,
+          build: double,
+          repository_owner_name: "foo",
+        )
+
+        expect(linter.enabled?).to eq false
+      end
+    end
+
+    context "when the hound config is disabled for the given language" do
+      it "returns false" do
+        hound_config = double("HoundConfig", enabled_for?: false)
+        linter = Linter::Test.new(
+          hound_config: hound_config,
+          build: double,
+          repository_owner_name: "foo",
+        )
+
+        expect(linter.enabled?).to eq false
+      end
+    end
+  end
 end

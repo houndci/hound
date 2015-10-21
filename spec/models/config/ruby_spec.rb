@@ -71,7 +71,6 @@ describe Config::Ruby do
       commit: commit,
       content: {
         "ruby" => {
-          "enabled" => true,
           "config_file" => "config/rubocop.yml",
         },
       },

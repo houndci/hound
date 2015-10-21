@@ -47,9 +47,8 @@ class HoundConfig
   end
 
   def options_for(name)
-    key = normalize_key(name)
-
-    content[key] || default_options_for(key)
+    config = content[name] || {}
+    default_options_for(name).merge(config)
   end
 
   def default_options_for(name)
