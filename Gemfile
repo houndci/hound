@@ -49,6 +49,7 @@ group :development, :test do
   gem "jasmine-rails"
   gem "poltergeist"
   gem "rspec-rails", ">= 3.2"
+  gem "bundler-audit", require: false
 end
 
 group :test do
