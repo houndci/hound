@@ -261,7 +261,7 @@ module GithubApiHelper
           "Accept" => "application/vnd.github.v3+json",
           "Authorization" => "token #{token}",
           "Content-Type" => "application/json",
-          "User-Agent" => "Octokit Ruby Gem 4.0.0",
+          "User-Agent" => "Octokit Ruby Gem 4.1.1",
         }
       ).
       to_return(
