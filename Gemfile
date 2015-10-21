@@ -17,7 +17,7 @@ gem "font-awesome-rails"
 gem "haml-rails"
 gem "haml_lint"
 gem "high_voltage"
-gem "jquery-rails"
+gem "jquery-rails", "~> 3.1.3"
 gem "jshintrb"
 gem "neat"
 gem "octokit"
@@ -33,12 +33,13 @@ gem "rubocop", "0.34.2"
 gem "sass-rails"
 gem "split", require: "split/dashboard"
 gem "stripe"
-gem "uglifier", ">= 1.0.3"
+gem "uglifier", ">= 2.7.2"
+gem "rest-client", ">= 1.8.0"
 
 group :staging, :production do
   gem "rack-timeout"
   gem "rails_12factor"
-  gem "sentry-raven"
+  gem "sentry-raven", ">= 0.12.2"
 end
 
 group :development, :test do

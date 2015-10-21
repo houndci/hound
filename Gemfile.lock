@@ -92,6 +92,8 @@ GEM
     database_cleaner (1.3.0)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
+    domain_name (0.5.25)
+      unf (>= 0.0.5, < 1.0.0)
     dotenv (2.0.1)
     dotenv-rails (2.0.1)
       dotenv (= 2.0.1)
@@ -123,8 +125,10 @@ GEM
       haml (~> 4.0)
       rubocop (>= 0.25.0)
       sysexits (~> 1.1)
-    hashie (3.2.0)
+    hashie (3.4.2)
     high_voltage (2.2.1)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jasmine-core (2.1.3)
     jasmine-rails (0.10.6)
@@ -132,7 +136,7 @@ GEM
       phantomjs
       railties (>= 3.1.0)
       sprockets-rails
-    jquery-rails (3.1.1)
+    jquery-rails (3.1.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jshintrb (0.3.0)
@@ -157,7 +161,7 @@ GEM
     neat (1.7.2)
       bourbon (>= 4.0)
       sass (>= 3.3)
-    netrc (0.7.7)
+    netrc (0.10.3)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     normalize-rails (3.0.3)
@@ -247,7 +251,8 @@ GEM
     resque-sentry (1.2.0)
       resque (>= 1.18.0)
       sentry-raven (>= 0.4.6)
-    rest-client (1.7.2)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rspec-core (3.3.2)
@@ -288,10 +293,8 @@ GEM
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
     selectize-rails (0.12.1)
-    sentry-raven (0.9.4)
+    sentry-raven (0.15.2)
       faraday (>= 0.7.6)
-      hashie (>= 1.1.0)
-      uuidtools
     shoulda-matchers (2.6.2)
       activesupport (>= 3.0.0)
     simple-random (1.0.0)
@@ -320,10 +323,12 @@ GEM
     tilt (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (2.5.3)
+    uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    uuidtools (2.1.5)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
     vegas (0.1.11)
       rack (>= 1.0.0)
     webmock (1.18.0)
@@ -360,7 +365,7 @@ DEPENDENCIES
   haml_lint
   high_voltage
   jasmine-rails
-  jquery-rails
+  jquery-rails (~> 3.1.3)
   jshintrb
   launchy
   neat
@@ -376,14 +381,15 @@ DEPENDENCIES
   resque (~> 1.25.0)
   resque-scheduler
   resque-sentry
+  rest-client (>= 1.8.0)
   rspec-rails (>= 3.2)
   rubocop (= 0.34.2)
   sass-rails
-  sentry-raven
+  sentry-raven (>= 0.12.2)
   shoulda-matchers
   split
   stripe
-  uglifier (>= 1.0.3)
+  uglifier (>= 2.7.2)
   webmock
 
 BUNDLED WITH
