@@ -4,7 +4,8 @@ module Config
       if legacy?
         hound_config.content
       else
-        super
+        result = super
+        parse_inherit_from(result)
       end
     end
 
@@ -14,6 +15,18 @@ module Config
       result = Parser.yaml(file_content)
 
       ensure_correct_type(result)
+    end
+
+    def parse_inherit_from(config)
+      inherit_from = Array(config.fetch("inherit_from", []))
+
+      inherited_config = inherit_from.reduce({}) do |result, ancestor_file_path|
+        raw_ancestor_config = commit.file_content(ancestor_file_path)
+        ancestor_config = parse(raw_ancestor_config)
+        result.merge(ancestor_config)
+      end
+
+      inherited_config.merge(config.except("inherit_from"))
     end
 
     def legacy?

@@ -30,6 +30,40 @@ describe Config::Ruby do
     end
   end
 
+  context "when the configuration uses `inherit_from`" do
+    it "returns the merged configuration using `inherit_from`" do
+      rubocop = <<-EOS.strip_heredoc
+        inherit_from:
+          - config/base.yml
+          - config/overrides.yml
+        Style/Encoding:
+          Enabled: true
+      EOS
+      base = <<-EOS.strip_heredoc
+        LineLength:
+          Max: 40
+      EOS
+      overrides = <<-EOS.strip_heredoc
+        Style/HashSyntax:
+          EnforcedStyle: hash_rockets
+        Style/Encoding:
+          Enabled: false
+      EOS
+      commit = stubbed_commit(
+        "config/rubocop.yml" => rubocop,
+        "config/base.yml" => base,
+        "config/overrides.yml" => overrides,
+      )
+      config = build_config(commit)
+
+      expect(config.content).to eq(
+        "LineLength" => { "Max" => 40 },
+        "Style/HashSyntax" => { "EnforcedStyle" => "hash_rockets" },
+        "Style/Encoding" => { "Enabled" => true },
+      )
+    end
+  end
+
   context "when the given content is invalid" do
     context "when the result is not a hash" do
       it "raises a type exception" do
