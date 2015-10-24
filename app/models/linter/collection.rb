@@ -6,6 +6,7 @@ module Linter
       Linter::Go,
       Linter::Haml,
       Linter::JavaScript,
+      Linter::Jscs,
       Linter::Python,
       Linter::Ruby,
       Linter::Scss,

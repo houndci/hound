@@ -2,6 +2,7 @@ class HoundConfig
   CONFIG_FILE = ".hound.yml"
   BETA_LANGUAGES = %w(
     eslint
+    jscs
     python
     swift
   )
