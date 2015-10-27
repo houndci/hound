@@ -37,13 +37,13 @@ for a free [ngrok] account and create a `~/.ngrok` file with the following:
 
     `ngrok -subdomain=<your-initials>-hound 5000`
 
-1. Set the `HOST` variable in your `.env` to your ngrok host, e.g.
+1. Set the `HOST` variable in your `.env.local` to your ngrok host, e.g.
    `<your-initials>.ngrok.com`.
 
-1. Change `ENABLE_HTTPS` to 'yes' in the .env file.
+1. Change `ENABLE_HTTPS` to 'yes' in the `.env.local` file.
 
 1. Log into your GitHub account and go to your
-   [application settings].
+   [developer application settings].
 
 1. Under the Developer applications panel - Click on "Register new
    application" and fill in the details:
@@ -51,30 +51,33 @@ for a free [ngrok] account and create a `~/.ngrok` file with the following:
     * Application Name: Hound Development
     * Homepage URL: `https://<your-initials>-hound.ngrok.com`
       **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
-    * Authorization Callback URL: `http://<your-initials>-hound.ngrok.com`
+    * Authorization Callback URL: `https://<your-initials>-hound.ngrok.com`
       **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
 
       **NOTE:** If you did not set up ngrok, skip to the last step.
 
 1. On the confirmation screen, copy the `Client ID` and `Client Secret` to
-   `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in the `.env` file.
+   `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in the `.env.local` file.
 
-1. Back on the [application settings] page, click "Generate new token" and fill
+1. On the [personal access token] page, click "Generate new token" and fill
    in token details:
 
     * Token description: Hound Development
     * Select scopes: `repo` and `user:email`
 
 1. On the confirmation screen, copy the generated token to `HOUND_GITHUB_TOKEN`
-   in the `.env` file. Also update `HOUND_GITHUB_USERNAME` to be your username.
+   in the `.env.local` file. Also update `HOUND_GITHUB_USERNAME` to be your username.
 
 1. Run `foreman start`. Foreman will start the web server and
    the resque background job queue. NOTE: `rails server` will not load the
    appropriate environment variables and you'll get a "Missing `secret_key_base`
    for 'development' environment" error.
 
+1. Open `https://<your-initials>-hound.ngrok.com` in a browser.
+
 [ngrok]: https://ngrok.com
-[application settings]: https://github.com/settings/applications
+[personal access token]: https://github.com/settings/tokens
+[developer application settings]: https://github.com/settings/developers
 
 ## Testing
 
