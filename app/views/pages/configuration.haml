@@ -12,6 +12,8 @@
       %li
         = link_to "Javascript config", "#javascript"
       %li
+        = link_to "JSCS config", "#jscs"
+      %li
         = link_to "SCSS config", "#scss"
       %li
         = link_to "Haml config", "#haml"
@@ -181,6 +183,49 @@
           :preserve
             javascript:
               enabled: false
+
+    %article#jscs
+      %h3 JSCS (beta)
+
+      %p
+        Add the following code to your
+        %em.code .hound.yml
+        to enable JSCS style checking.
+
+        %code.code-block
+          :preserve
+            jscs:
+              enabled: true
+
+      %p
+        Hound uses
+        = link_to "JSCS",
+          "http://jscs.info/",
+          target: :blank
+        with this
+        = link_to "config", jscs_config_url, target: :blank
+
+      %p
+        If you need to change the way Hound is configured, simply copy the
+        #{link_to "default config", jscs_config_url, target: :blank}.
+        into your project, make changes and reference the file in your
+        %em.code .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            jscs:
+              enabled: true
+              config_file: .jscsrc
+
+      %p
+        For more information on the available rules in your
+        %em.code config_file
+        , you can read about them on the
+        = link_to "JSCS Rules Documentation",
+          "http://jscs.info/rules",
+          target: :blank
+
 
     %article#scss
       %h3 SCSS

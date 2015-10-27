@@ -15,11 +15,21 @@ module ConfigurationHelper
     "https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/.jshintignore"
   end
 
+  def jscs_config_url
+    config_url("thoughtbot/guides", "style/javascript/.jscsrc")
+  end
+
   def scss_config_url
     "https://raw.githubusercontent.com/thoughtbot/hound-scss/master/config/default.yml"
   end
 
   def haml_config_url
     "https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml"
+  end
+
+  private
+
+  def config_url(slug, config_file)
+    "https://raw.githubusercontent.com/#{slug}/master/#{config_file}"
   end
 end
