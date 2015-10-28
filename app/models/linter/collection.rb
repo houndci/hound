@@ -7,6 +7,7 @@ module Linter
       Linter::Haml,
       Linter::JavaScript,
       Linter::Jscs,
+      Linter::Jshint,
       Linter::Mdast,
       Linter::Python,
       Linter::Ruby,

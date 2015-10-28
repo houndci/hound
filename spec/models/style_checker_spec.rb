@@ -166,7 +166,30 @@ describe StyleChecker do
         end
       end
 
-      context "when eslint is disabled or unconfigured" do
+      context "when JSHint is enabled" do
+        it "does not immediately return violations" do
+          commit_file = stub_commit_file("test.js", "var test = 'test'")
+          head_commit = stub_head_commit(
+            HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
+              jshint:
+                enabled: true
+                config_file: config/.jshintrc
+              javascript:
+                enabled: false
+            EOS
+          )
+          pull_request = stub_pull_request(
+            commit_files: [commit_file],
+            head_commit: head_commit,
+          )
+
+          violation_messages = pull_request_violations(pull_request)
+
+          expect(violation_messages).to eq []
+        end
+      end
+
+      context "when a specifc linter is disabled or unconfigured" do
         context "with style violations" do
           it "returns violations" do
             commit_file = stub_commit_file("test.js", "var test = 'test'")
