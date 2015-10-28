@@ -62,6 +62,28 @@ describe Config::Ruby do
         "Style/Encoding" => { "Enabled" => true },
       )
     end
+
+    context "with an empty `inherit_from`" do
+      it "returns the merged configuration using `inherit_from`" do
+        rubocop = <<-EOS.strip_heredoc
+          inherit_from: config/rubocop_todo.yml
+          Style/Encoding:
+            Enabled: true
+        EOS
+        rubocop_todo = <<-EOS.strip_heredoc
+          # this is an empty file
+        EOS
+        commit = stubbed_commit(
+          "config/rubocop.yml" => rubocop,
+          "config/rubocop_todo.yml" => rubocop_todo,
+        )
+        config = build_config(commit)
+
+        expect(config.content).to eq(
+          "Style/Encoding" => { "Enabled" => true },
+        )
+      end
+    end
   end
 
   context "when the given content is invalid" do
