@@ -39,8 +39,12 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    administrate (0.0.9)
-      autoprefixer-rails
+    administrate (0.1.0)
+      autoprefixer-rails (~> 6.0)
+      datetime_picker_rails (~> 0.0.5)
+      inline_svg (~> 0.6)
+      kaminari (~> 0.16)
+      momentjs-rails (~> 2.8)
       neat (~> 1.1)
       normalize-rails (~> 3.0)
       rails (~> 4.2)
@@ -55,7 +59,7 @@ GEM
     astrolabe (1.3.1)
       parser (~> 2.2)
     attr_extras (4.4.0)
-    autoprefixer-rails (5.2.1.3)
+    autoprefixer-rails (6.0.3)
       execjs
       json
     bourbon (4.2.4)
@@ -93,6 +97,8 @@ GEM
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.3.0)
+    datetime_picker_rails (0.0.5)
+      momentjs-rails (>= 2.8.1)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
     domain_name (0.5.25)
@@ -133,6 +139,10 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
+    inline_svg (0.6.1)
+      activesupport (>= 4.0.4)
+      loofah (>= 2.0)
+      nokogiri (~> 1.6)
     jasmine-core (2.1.3)
     jasmine-rails (0.10.6)
       jasmine-core (>= 1.3, < 3.0)
@@ -148,6 +158,9 @@ GEM
       rake
     json (1.8.3)
     jwt (1.0.0)
+    kaminari (0.16.3)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     launchy (2.4.2)
       addressable (~> 2.3)
     loofah (2.0.3)
@@ -157,6 +170,8 @@ GEM
     mime-types (2.6.2)
     mini_portile2 (2.0.0)
     minitest (5.8.1)
+    momentjs-rails (2.10.6)
+      railties (>= 3.1)
     mono_logger (1.1.0)
     multi_json (1.11.1)
     multi_xml (0.5.5)
@@ -346,7 +361,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (= 0.8.3)
-  administrate (~> 0.0.8)
+  administrate (~> 0.1.0)
   analytics-ruby (~> 2.0.0)
   angular_rails_csrf
   angularjs-rails
