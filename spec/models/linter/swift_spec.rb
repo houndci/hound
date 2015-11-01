@@ -34,25 +34,33 @@ describe Linter::Swift do
       allow(Resque).to receive(:enqueue)
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
-      stub_swift_config("config")
+      stub_swift_config(content: "config")
       commit_file = build_commit_file(filename: "a.swift")
 
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
         SwiftReviewJob,
-        filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        pull_request_number: build.pull_request_number,
-        patch: commit_file.patch,
-        content: commit_file.content,
         config: "config",
+        content: commit_file.content,
+        excluded_files: "",
+        filename: commit_file.filename,
+        patch: commit_file.patch,
+        pull_request_number: build.pull_request_number,
       )
     end
   end
 
-  def stub_swift_config(config = "config")
-    stubbed_swift_config = double("SwiftConfig", content: config)
+  def stub_swift_config(options = {})
+    default_options = {
+      content: "",
+      excluded_files: [],
+    }
+    stubbed_swift_config = double(
+      "SwiftConfig",
+      default_options.merge(options),
+    )
     allow(Config::Swift).to receive(:new).and_return(stubbed_swift_config)
 
     stubbed_swift_config

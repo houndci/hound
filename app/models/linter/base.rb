@@ -43,6 +43,7 @@ module Linter
         commit_sha: build.commit_sha,
         config: config.content,
         content: commit_file.content,
+        excluded_files: config.excluded_files.join(", "),
         filename: commit_file.filename,
         patch: commit_file.patch,
         pull_request_number: build.pull_request_number,

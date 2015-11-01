@@ -40,12 +40,13 @@ describe Linter::Go do
 
       expect(Resque).to have_received(:enqueue).with(
         GoReviewJob,
-        filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        pull_request_number: build.pull_request_number,
-        patch: commit_file.patch,
-        content: commit_file.content,
         config: Config::Go::DEFAULT_CONFIG,
+        content: commit_file.content,
+        excluded_files: "",
+        filename: commit_file.filename,
+        patch: commit_file.patch,
+        pull_request_number: build.pull_request_number,
       )
     end
   end

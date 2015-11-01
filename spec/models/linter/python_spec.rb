@@ -35,7 +35,7 @@ describe Linter::Python do
       allow(Resque).to receive(:push)
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
-      stub_python_config("config")
+      stub_python_config(content: "config")
       commit_file = build_commit_file
 
       linter.file_review(commit_file)
@@ -45,12 +45,13 @@ describe Linter::Python do
         {
           class: "review.PythonReviewJob",
           args: [
-            filename: commit_file.filename,
             commit_sha: build.commit_sha,
-            pull_request_number: build.pull_request_number,
-            patch: commit_file.patch,
-            content: commit_file.content,
             config: "config",
+            content: commit_file.content,
+            excluded_files: "",
+            filename: commit_file.filename,
+            patch: commit_file.patch,
+            pull_request_number: build.pull_request_number,
           ],
         }
       )
@@ -74,8 +75,15 @@ describe Linter::Python do
     )
   end
 
-  def stub_python_config(config = "config")
-    stubbed_python_config = double("PythonConfig", content: config)
+  def stub_python_config(options = {})
+    default_options = {
+      content: "",
+      excluded_files: [],
+    }
+    stubbed_python_config = double(
+      "PythonConfig",
+      default_options.merge(options),
+    )
     allow(Config::Python).to receive(:new).and_return(stubbed_python_config)
 
     stubbed_python_config
