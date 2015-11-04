@@ -70,7 +70,7 @@ describe Linter::Ruby do
         it "returns no violations" do
           expect(violations_in(<<-CODE.strip_heredoc)).to eq []
             def has_something?
-              "something"
+              'something'
             end
           CODE
         end
@@ -82,7 +82,7 @@ describe Linter::Ruby do
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
             def is_something?
-              "something"
+              'something'
             end
           CODE
         end
@@ -185,7 +185,7 @@ describe Linter::Ruby do
           violations = ["Space inside parentheses detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-            logger( "test")
+            logger( 'test')
           CODE
         end
       end
@@ -195,7 +195,7 @@ describe Linter::Ruby do
           violations = ["Space inside parentheses detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-            logger("test" )
+            logger('test' )
           CODE
         end
       end
@@ -205,7 +205,7 @@ describe Linter::Ruby do
           violations = ["Space inside square brackets detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-            a["test" ]
+            a['test' ]
           CODE
         end
       end
@@ -249,7 +249,7 @@ describe Linter::Ruby do
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
             def test
-            \tlogger "test"
+            \tlogger 'test'
             end
           CODE
         end
@@ -423,8 +423,8 @@ describe Linter::Ruby do
         it "returns violations" do
           code = <<-CODE.strip_heredoc
             def foo
-              user = User.where(email: "user@example.com").
-                assign_attributes(name: "User")
+              user = User.where(email: 'user@example.com').
+                assign_attributes(name: 'User')
               user.save!
             end
           CODE
@@ -484,7 +484,8 @@ describe Linter::Ruby do
         violations = violations_with_config(config)
 
         expect(violations).to eq [
-          "Style/HashSyntax: Use the new Ruby 1.9 hash syntax."
+          "Style/HashSyntax: Use the new Ruby 1.9 hash syntax.",
+          "Prefer single-quoted strings when you don't need string interpolation or special symbols.", "Tab detected."
         ]
       end
 
@@ -551,7 +552,7 @@ describe Linter::Ruby do
           violations = ["Unnecessary spacing detected."]
 
           expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
-            hoge  = "https://github.com/bbatsov/rubocop"
+            hoge  = 'https://github.com/bbatsov/rubocop'
             hoge
           CODE
         end
