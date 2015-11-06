@@ -28,7 +28,7 @@ describe Linter::Eslint do
 
     context "given a non-eslint file" do
       it "returns false" do
-        result = Linter::Eslint.can_lint?("foo.coffee.js")
+        result = Linter::Eslint.can_lint?("foo.js.coffee")
 
         expect(result).to eq false
       end

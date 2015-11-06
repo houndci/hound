@@ -12,17 +12,9 @@ describe Linter::JavaScript do
       end
     end
 
-    context "given a .coffee.js file" do
-      it "returns false" do
-        result = Linter::JavaScript.can_lint?("foo.coffee.js")
-
-        expect(result).to eq false
-      end
-    end
-
     context "given a non-js file" do
       it "returns false" do
-        result = Linter::JavaScript.can_lint?("foo.rb")
+        result = Linter::JavaScript.can_lint?("foo.js.coffee")
 
         expect(result).to eq false
       end

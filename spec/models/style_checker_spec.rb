@@ -72,7 +72,7 @@ describe StyleChecker do
 
     context "for a CoffeeScript file" do
       it "is processed with a coffee.js extension" do
-        commit_file = stub_commit_file("test.coffee.js", "foo ->")
+        commit_file = stub_commit_file("test.js.coffee", "foo ->")
         pull_request = stub_pull_request(commit_files: [commit_file])
 
         violation_messages = pull_request_violations(pull_request)

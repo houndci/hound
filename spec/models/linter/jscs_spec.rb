@@ -28,7 +28,7 @@ describe Linter::Jscs do
 
     context "given a non-jscs file" do
       it "returns false" do
-        result = Linter::Jscs.can_lint?("foo.coffee.js")
+        result = Linter::Jscs.can_lint?("foo.js.coffee")
 
         expect(result).to eq false
       end
