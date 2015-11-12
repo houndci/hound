@@ -48,7 +48,7 @@ group :development, :test do
   gem "foreman"
   gem "jasmine-rails"
   gem "poltergeist"
-  gem "rspec-rails", ">= 3.2"
+  gem "rspec-rails", ">= 3.4"
   gem "bundler-audit", require: false
 end
 
