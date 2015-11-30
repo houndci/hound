@@ -16,7 +16,7 @@ module Linter
 
     def perform_file_review(commit_file)
       FileReview.create!(filename: commit_file.filename) do |file_review|
-        team.inspect_file(parsed_source(commit_file)).each do |violation|
+        permitted_rubocop_offenses(commit_file).each do |violation|
           line = commit_file.line_at(violation.line)
           file_review.build_violation(line, violation.message)
         end
@@ -24,6 +24,10 @@ module Linter
         file_review.build = build
         file_review.complete
       end
+    end
+
+    def permitted_rubocop_offenses(commit_file)
+      team.inspect_file(parsed_source(commit_file)).reject(&:disabled?)
     end
 
     def team

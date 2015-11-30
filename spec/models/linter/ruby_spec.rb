@@ -580,6 +580,26 @@ describe Linter::Ruby do
       end
     end
 
+    context "with inline configuration" do
+      context "disabling a cop" do
+        it "does not return a violation" do
+          config = stub_ruby_config(
+            "StringLiterals" => {
+              "EnforcedStyle" => "double_quotes",
+            },
+          )
+          code = <<-CODE.strip_heredoc
+            # rubocop:disable Style/StringLiterals
+            'hello world'
+          CODE
+
+          violations = violations_in(code, config: config)
+
+          expect(violations).to be_empty
+        end
+      end
+    end
+
     context "thoughtbot organization PR" do
       it "uses the thoughtbot configuration for rubocop" do
         spy_on_rubocop_team
