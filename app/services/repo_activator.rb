@@ -10,9 +10,12 @@ class RepoActivator
   def activate
     change_repository_state_quietly do
       if repo.private?
-        add_hound_to_repo && create_webhook && repo.activate
+        add_hound_to_repo &&
+          create_webhook &&
+          notify_collaborators &&
+          repo.activate
       else
-        create_webhook && repo.activate
+        create_webhook && notify_collaborators && repo.activate
       end
     end
   end
@@ -54,6 +57,24 @@ class RepoActivator
   def create_webhook
     github.create_hook(repo.full_github_name, builds_url) do |hook|
       repo.update(hook_id: hook.id)
+    end
+  end
+
+  def notify_collaborators
+    github.repo_collaborators(repo.full_github_name).each do |collaborator|
+      user = User.find_by_github_username(collaborator[:login])
+
+      if user
+        if user.token != github_token
+          Mailer.repo_activation_notification(repo, user.email_address)
+        end
+      else
+        github_user = github.user(collaborator[:login])
+
+        if github_user[:email].present?
+          Mailer.repo_activation_notification(repo, github_user[:email])
+        end
+      end
     end
   end
 

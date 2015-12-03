@@ -154,4 +154,14 @@ describe Repo do
       end
     end
   end
+
+  describe "#subscriber" do
+    it "returns user on subscription" do
+      user = build_stubbed(:user)
+      subscription = build_stubbed(:subscription, user: user)
+      repo = build(:repo, subscription: subscription)
+
+      expect(repo.subscriber).to eq user
+    end
+  end
 end

@@ -84,12 +84,19 @@ feature "Repo list", js: true do
 
   scenario "user activates repo" do
     token = "letmein"
+    collaborator_username = generate(:github_name)
     repo = create(:repo, private: false)
     repo.users << user
     hook_url = "http://#{ENV["HOST"]}/builds"
     stub_repo_request(repo.full_github_name, token)
     stub_add_collaborator_request(username, repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
+    stub_repo_collaborators_request(
+      repo.full_github_name,
+      token,
+      collaborator_username
+    )
+    stub_user_request(collaborator_username, token)
 
     sign_in_as(user, token)
     find("li.repo .toggle").click
@@ -105,11 +112,18 @@ feature "Repo list", js: true do
 
   scenario "user with admin access activates organization repo" do
     token = "letmein"
+    collaborator_username = generate(:github_name)
     repo = create(:repo, private: false, full_github_name: "testing/repo")
     repo.users << user
     hook_url = "http://#{ENV["HOST"]}/builds"
     stub_repo_with_org_request(repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
+    stub_repo_collaborators_request(
+      repo.full_github_name,
+      token,
+      collaborator_username
+    )
+    stub_user_request(collaborator_username, token)
 
     sign_in_as(user, token)
     find(".repos .toggle").click

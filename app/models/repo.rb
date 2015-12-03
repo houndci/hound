@@ -60,6 +60,10 @@ class Repo < ActiveRecord::Base
       count
   end
 
+  def subscriber
+    subscription.try(:user)
+  end
+
   private
 
   def organization

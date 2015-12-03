@@ -130,6 +130,14 @@ class GithubApi
     )
   end
 
+  def repo_collaborators(repo_name)
+    client.collaborators(repo_name)
+  end
+
+  def user(username)
+    client.user(username)
+  end
+
   private
 
   def authorized_repos(repos)

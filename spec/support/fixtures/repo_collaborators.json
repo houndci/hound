@@ -1,0 +1,22 @@
+[
+  {
+    "login": "salbertson",
+    "id": 154463,
+    "avatar_url": "https://avatars.githubusercontent.com/u/154463?v=3",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/salbertson",
+    "html_url": "https://github.com/salbertson",
+    "followers_url": "https://api.github.com/users/salbertson/followers",
+    "following_url": "https://api.github.com/users/salbertson/following{/other_user}",
+    "gists_url": "https://api.github.com/users/salbertson/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/salbertson/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/salbertson/subscriptions",
+    "organizations_url": "https://api.github.com/users/salbertson/orgs",
+    "repos_url": "https://api.github.com/users/salbertson/repos",
+    "events_url": "https://api.github.com/users/salbertson/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/salbertson/received_events",
+    "type": "User",
+    "site_admin": false,
+    "contributions": 232
+  }
+]
