@@ -25,8 +25,12 @@ Here are a few technical guidelines to follow:
 
     `./bin/setup`
 
-    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 2-5.
+    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 3-6.
     Designers, you don't need ngrok for the purpose of making css changes and running the app locally.
+
+1. Install redis server
+
+    `brew install redis`
 
 1. Ngrok allows GitHub to make requests via webhook to start a build. Sign up
 for a free [ngrok] account and create a `~/.ngrok` file with the following:
@@ -67,6 +71,10 @@ for a free [ngrok] account and create a `~/.ngrok` file with the following:
 
 1. On the confirmation screen, copy the generated token to `HOUND_GITHUB_TOKEN`
    in the `.env.local` file. Also update `HOUND_GITHUB_USERNAME` to be your username.
+
+1. Run `redis`. The redis service will start. NOTE: `foreman start` does not
+   start this service, and you will get errors after running `foreman start`
+   if redis is not already running.
 
 1. Run `foreman start`. Foreman will start the web server and
    the resque background job queue. NOTE: `rails server` will not load the
