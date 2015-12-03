@@ -194,12 +194,13 @@ describe RepoActivator do
         let(:repo) { build(:repo) }
         let(:api) { stub_github_api }
         let(:activator) { build_activator(repo: repo) }
+        let(:mail) { double(deliver_later: true) }
 
         before do
           allow(api).to receive(:repo_collaborators).
             and_return([{ login: "salbertson" }])
           allow(Mailer).to receive(:repo_activation_notification).
-            and_return(double(deliver_later: true))
+            and_return(mail)
         end
 
         context "when collaborator is on Hound" do
@@ -209,6 +210,7 @@ describe RepoActivator do
 
             expect(Mailer).to have_received(:repo_activation_notification).
               with(repo, user.email_address)
+            expect(mail).to have_received(:deliver_later)
           end
         end
 
@@ -223,6 +225,7 @@ describe RepoActivator do
               expect(api).to have_received(:user).with("salbertson")
               expect(Mailer).to have_received(:repo_activation_notification).
                 with(repo, "user@example.com")
+              expect(mail).to have_received(:deliver_later)
             end
           end
 

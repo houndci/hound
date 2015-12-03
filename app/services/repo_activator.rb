@@ -66,13 +66,17 @@ class RepoActivator
 
       if user
         if user.token != github_token
-          Mailer.repo_activation_notification(repo, user.email_address)
+          Mailer.
+            repo_activation_notification(repo, user.email_address).
+            deliver_later
         end
       else
         github_user = github.user(collaborator[:login])
 
         if github_user[:email].present?
-          Mailer.repo_activation_notification(repo, github_user[:email])
+          Mailer.
+            repo_activation_notification(repo, github_user[:email]).
+            deliver_later
         end
       end
     end
