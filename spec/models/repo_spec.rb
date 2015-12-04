@@ -156,7 +156,7 @@ describe Repo do
   end
 
   describe "#subscriber" do
-    it "returns user on subscription" do
+    it "return the subscribed user" do
       user = build_stubbed(:user)
       subscription = build_stubbed(:subscription, user: user)
       repo = build(:repo, subscription: subscription)
