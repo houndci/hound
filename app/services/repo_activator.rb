@@ -12,10 +12,10 @@ class RepoActivator
       if repo.private?
         add_hound_to_repo &&
           create_webhook &&
-          notify_collaborators &&
-          repo.activate
+          repo.activate &&
+          notify_collaborators
       else
-        create_webhook && notify_collaborators && repo.activate
+        create_webhook && repo.activate && notify_collaborators
       end
     end
   end
