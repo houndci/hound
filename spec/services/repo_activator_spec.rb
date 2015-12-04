@@ -231,7 +231,7 @@ describe RepoActivator do
 
           context "when collaborator has no public GitHub email address" do
             it "does nothing" do
-              allow(api).to receive(:user).and_return({ email: nil })
+              allow(api).to receive(:user).and_return(email: nil)
 
               activator.activate
 
@@ -243,11 +243,7 @@ describe RepoActivator do
 
         context "when the collaborator and activator is the same person" do
           it "does not send a notification to that user" do
-            user = create(
-              :user,
-              github_username: "salbertson",
-              token: "githubtoken"
-            )
+            create(:user, github_username: "salbertson", token: "githubtoken")
             activator.activate
 
             expect(Mailer).not_to have_received(:repo_activation_notification)
