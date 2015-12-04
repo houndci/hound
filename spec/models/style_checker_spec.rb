@@ -119,7 +119,7 @@ describe StyleChecker do
 
     context "for a JavaScript file" do
       context "when Eslint is enabled" do
-        it "does not immediately return violations" do
+        it "creates violations" do
           commit_file = stub_commit_file("test.js", "var test = 'test'")
           head_commit = stub_head_commit(
             HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
@@ -143,7 +143,7 @@ describe StyleChecker do
       end
 
       context "when JSCS is enabled" do
-        it "does not immediately return violations" do
+        it "creates violations" do
           commit_file = stub_commit_file("test.js", "var test = 'test'")
           head_commit = stub_head_commit(
             HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
@@ -167,7 +167,7 @@ describe StyleChecker do
       end
 
       context "when JSHint is enabled" do
-        it "does not immediately return violations" do
+        it "creates violations" do
           commit_file = stub_commit_file("test.js", "var test = 'test'")
           head_commit = stub_head_commit(
             HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
@@ -239,7 +239,7 @@ describe StyleChecker do
     end
 
     context "for a SCSS file" do
-      it "does not immediately return violations" do
+      it "creates violations" do
         commit_file = stub_commit_file("test.scss", "* { color: red; }")
         pull_request = stub_pull_request(commit_files: [commit_file])
 
@@ -250,7 +250,7 @@ describe StyleChecker do
     end
 
     context "for a Python file" do
-      it "does not immediately return violations" do
+      it "creates violations" do
         commit_file = stub_commit_file("test.py", "import this")
         pull_request = stub_pull_request(commit_files: [commit_file])
 
@@ -289,7 +289,7 @@ describe StyleChecker do
     end
 
     context "for a Markdown file" do
-      it "does not immediately return violations" do
+      it "creates violations" do
         commit_file = stub_commit_file("test.md", "# Hello!")
         pull_request = stub_pull_request(commit_files: [commit_file])
 
