@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Mailer do
   describe "#repo_activation_notification" do
-    context "private repository" do
+    context "given a private repository" do
       it "builds correct email for sending" do
         subscription = create(:subscription)
         repo = subscription.repo
@@ -26,7 +26,7 @@ RSpec.describe Mailer do
       end
     end
 
-    context "public repository" do
+    context "given a public repository" do
       it "builds correct email for sending" do
         repo = create(:repo)
 
