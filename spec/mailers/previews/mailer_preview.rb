@@ -3,7 +3,7 @@ class MailerPreview < ActionMailer::Preview
     Mailer.repo_activation_notification(
       Repo.first,
       "github_username",
-      "user@example.com"
+      "user@example.com",
     )
   end
 end

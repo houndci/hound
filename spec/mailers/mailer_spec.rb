@@ -10,13 +10,13 @@ RSpec.describe Mailer do
         mail = Mailer.repo_activation_notification(
           repo,
           "github_username",
-          "user@example.com"
+          "user@example.com",
         )
 
         expect(mail.from).to eq ["hound@thoughtbot.com"]
         expect(mail.to).to eq ["user@example.com"]
         expect(mail.subject).to eq(
-          "Hound is now enabled on #{repo.full_github_name} repository"
+          "Hound is now enabled on #{repo.full_github_name} repository",
         )
         expect(mail.body).to include "github_username"
         expect(mail.body).to include repo.full_github_name
@@ -33,13 +33,13 @@ RSpec.describe Mailer do
         mail = Mailer.repo_activation_notification(
           repo,
           "github_username",
-          "user@example.com"
+          "user@example.com",
         )
 
         expect(mail.from).to eq ["hound@thoughtbot.com"]
         expect(mail.to).to eq ["user@example.com"]
         expect(mail.subject).to eq(
-          "Hound is now enabled on #{repo.full_github_name} repository"
+          "Hound is now enabled on #{repo.full_github_name} repository",
         )
         expect(mail.body).to include "github_username"
         expect(mail.body).to include repo.full_github_name
