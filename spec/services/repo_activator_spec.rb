@@ -209,7 +209,7 @@ describe RepoActivator do
             activator.activate
 
             expect(Mailer).to have_received(:repo_activation_notification).
-              with(repo, user.email_address)
+              with(repo, user.github_username, user.email_address)
             expect(mail).to have_received(:deliver_later)
           end
         end
@@ -218,13 +218,13 @@ describe RepoActivator do
           context "when collaborator has public GitHub email address" do
             it "sends a notification using their GitHub public email address" do
               allow(api).to receive(:user).
-                and_return({ email: "user@example.com" })
+                and_return(login: "user", email: "user@example.com")
 
               activator.activate
 
               expect(api).to have_received(:user).with("salbertson")
               expect(Mailer).to have_received(:repo_activation_notification).
-                with(repo, "user@example.com")
+                with(repo, "user", "user@example.com")
               expect(mail).to have_received(:deliver_later)
             end
           end
