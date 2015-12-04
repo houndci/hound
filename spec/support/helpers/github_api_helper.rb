@@ -51,14 +51,14 @@ module GithubApiHelper
   def stub_repo_collaborators_request(repo_name, token, username = "username")
     stub_request(
       :get,
-      "https://api.github.com/repos/#{repo_name}/collaborators?per_page=100"
+      "https://api.github.com/repos/#{repo_name}/collaborators?per_page=100",
     ).with(
-      headers: { 'Authorization' => "token #{token}" }
+      headers: { "Authorization" => "token #{token}" },
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/repo_collaborators.json').
+      body: File.read("spec/support/fixtures/repo_collaborators.json").
         gsub("salbertson", username),
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+      headers: { "Content-Type" => 'application/json; charset=utf-8' },
     )
   end
 
@@ -177,13 +177,13 @@ module GithubApiHelper
       with(
         headers: {
           "Accept" => "application/vnd.github.v3+json",
-          "Authorization" => "token #{token}"
-        }
+          "Authorization" => "token #{token}",
+        },
       ).
       to_return(
         status: 200,
-        body: File.read('spec/support/fixtures/github_user_response.json'),
-        headers: { 'Content-Type' => 'application/json; charset=utf-8' }
+        body: File.read("spec/support/fixtures/github_user_response.json"),
+        headers: { "Content-Type" => "application/json; charset=utf-8" },
       )
   end
 
