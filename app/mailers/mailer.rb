@@ -8,8 +8,7 @@ class Mailer < ActionMailer::Base
 
     mail(
       to: email,
-      subject:
-        "[Hound] Hound is now enabled on #{repo.full_github_name} repository"
+      subject: "Hound is now enabled on #{repo.full_github_name} repository"
     )
   end
 end
