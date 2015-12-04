@@ -94,7 +94,7 @@ feature "Repo list", js: true do
     stub_repo_collaborators_request(
       repo.full_github_name,
       token,
-      collaborator_username
+      collaborator_username,
     )
     stub_user_request(collaborator_username, token)
 
@@ -121,7 +121,7 @@ feature "Repo list", js: true do
     stub_repo_collaborators_request(
       repo.full_github_name,
       token,
-      collaborator_username
+      collaborator_username,
     )
     stub_user_request(collaborator_username, token)
 
