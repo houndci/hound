@@ -58,7 +58,7 @@ module GithubApiHelper
       status: 200,
       body: File.read("spec/support/fixtures/repo_collaborators.json").
         gsub("salbertson", username),
-      headers: { "Content-Type" => 'application/json; charset=utf-8' },
+      headers: { "Content-Type" => "application/json; charset=utf-8" },
     )
   end
 
