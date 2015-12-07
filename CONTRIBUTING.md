@@ -70,10 +70,6 @@ for a free [ngrok] account and create a `~/.ngrok` file with the following:
 1. On the confirmation screen, copy the generated token to `HOUND_GITHUB_TOKEN`
    in the `.env.local` file. Also update `HOUND_GITHUB_USERNAME` to be your username.
 
-1. Run `redis`. The redis service will start. NOTE: `foreman start` does not
-   start this service, and you will get errors after running `foreman start`
-   if redis is not already running.
-
 1. Run `foreman start`. Foreman will start the web server and
    the resque background job queue. NOTE: `rails server` will not load the
    appropriate environment variables and you'll get a "Missing `secret_key_base`
