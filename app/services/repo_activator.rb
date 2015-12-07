@@ -61,30 +61,10 @@ class RepoActivator
   end
 
   def notify_collaborators
+    notifier = CollaboratorNotifier.new(github_token: github_token, repo: repo)
+
     github.repo_collaborators(repo.full_github_name).each do |collaborator|
-      user = User.find_by_github_username(collaborator[:login])
-
-      if user
-        if user.token != github_token
-          Mailer.
-            repo_activation_notification(
-              repo,
-              user.github_username,
-              user.email_address,
-            ).deliver_later
-        end
-      else
-        github_user = github.user(collaborator[:login])
-
-        if github_user[:email].present?
-          Mailer.
-            repo_activation_notification(
-              repo,
-              github_user[:login],
-              github_user[:email],
-            ).deliver_later
-        end
-      end
+      notifier.notify(collaborator)
     end
   end
 

@@ -28,11 +28,16 @@ describe RepoActivator do
           repo = create(:repo, private: false, in_organization: true)
           api = stub_github_api
           activator = build_activator(repo: repo)
+          notifier = build_notifier
 
           activator.activate
 
           expect(api).
             to have_received(:repo_collaborators).with(repo.full_github_name)
+          expect(CollaboratorNotifier).
+            to have_received(:new).
+              with(github_token: "githubtoken", repo: repo)
+          expect(notifier).to have_received(:notify).with(login: "salbertson")
         end
 
         it "returns true" do
@@ -71,11 +76,16 @@ describe RepoActivator do
           repo = create(:repo, private: false, in_organization: true)
           api = stub_github_api
           activator = build_activator(repo: repo)
+          notifier = build_notifier
 
           activator.activate
 
           expect(api).
             to have_received(:repo_collaborators).with(repo.full_github_name)
+          expect(CollaboratorNotifier).
+            to have_received(:new).
+              with(github_token: "githubtoken", repo: repo)
+          expect(notifier).to have_received(:notify).with(login: "salbertson")
         end
 
         it "returns true" do
@@ -187,67 +197,6 @@ describe RepoActivator do
             repo.full_github_name,
             URI.join("http://#{ENV["HOST"]}", "builds").to_s
           )
-        end
-      end
-
-      context "activation notification" do
-        let(:repo) { build(:repo) }
-        let(:api) { stub_github_api }
-        let(:activator) { build_activator(repo: repo) }
-        let(:mail) { double(deliver_later: true) }
-
-        before do
-          allow(api).to receive(:repo_collaborators).
-            and_return([{ login: "salbertson" }])
-          allow(Mailer).to receive(:repo_activation_notification).
-            and_return(mail)
-        end
-
-        context "when collaborator is on Hound" do
-          it "sends a notification using their email address" do
-            user = create(:user, github_username: "salbertson")
-            activator.activate
-
-            expect(Mailer).to have_received(:repo_activation_notification).
-              with(repo, user.github_username, user.email_address)
-            expect(mail).to have_received(:deliver_later)
-          end
-        end
-
-        context "when collaborator is not on Hound" do
-          context "when collaborator has public GitHub email address" do
-            it "sends a notification using their GitHub public email address" do
-              allow(api).to receive(:user).
-                and_return(login: "user", email: "user@example.com")
-
-              activator.activate
-
-              expect(api).to have_received(:user).with("salbertson")
-              expect(Mailer).to have_received(:repo_activation_notification).
-                with(repo, "user", "user@example.com")
-              expect(mail).to have_received(:deliver_later)
-            end
-          end
-
-          context "when collaborator has no public GitHub email address" do
-            it "does nothing" do
-              allow(api).to receive(:user).and_return(email: nil)
-
-              activator.activate
-
-              expect(api).to have_received(:user).with("salbertson")
-              expect(Mailer).not_to have_received(:repo_activation_notification)
-            end
-          end
-        end
-
-        context "when the collaborator and activator is the same person" do
-          it "does not send a notification to that user" do
-            create(:user, github_username: "salbertson", token: "githubtoken")
-            activator.activate
-
-            expect(Mailer).not_to have_received(:repo_activation_notification)
-          end
         end
       end
     end
@@ -410,13 +359,22 @@ describe RepoActivator do
     RepoActivator.new(github_token: token, repo: repo)
   end
 
+  def build_notifier
+    notifier = double(notify: true)
+    allow(CollaboratorNotifier).to receive(:new).and_return(notifier)
+    notifier
+  end
+
   def stub_github_api
     hook = double(:hook, id: 1)
     api = double(:github_api, remove_hook: true)
     allow(api).to receive(:create_hook).and_yield(hook)
     allow(api).to receive(:add_collaborator).and_return(true)
     allow(api).to receive(:remove_collaborator).and_return(true)
-    allow(api).to receive(:repo_collaborators).and_return([])
+    allow(api).to receive(:repo_collaborators).and_return(
+      [login: "salbertson"]
+    )
+    allow(api).to receive(:user).and_return(login: "salbertson", email: nil)
     allow(GithubApi).to receive(:new).and_return(api)
     api
   end
