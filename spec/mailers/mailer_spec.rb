@@ -22,7 +22,6 @@ RSpec.describe Mailer do
         expect(mail.body).to include repo.full_github_name
         expect(mail.body).to include "@#{repo.subscriber.github_username}"
         expect(mail.body).to include subscription.user.email_address
-        expect(mail.body).to include repo.subscription_price
       end
     end
 
@@ -43,7 +42,7 @@ RSpec.describe Mailer do
         )
         expect(mail.body).to include "github_username"
         expect(mail.body).to include repo.full_github_name
-        expect(mail.body).not_to include "subscription"
+        expect(mail.body).not_to include "purchased the subscription"
       end
     end
   end
