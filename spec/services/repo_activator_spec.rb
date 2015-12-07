@@ -36,7 +36,7 @@ describe RepoActivator do
             to have_received(:repo_collaborators).with(repo.full_github_name)
           expect(CollaboratorNotifier).
             to have_received(:new).
-              with(github_token: "githubtoken", repo: repo)
+            with(github_token: "githubtoken", repo: repo)
           expect(notifier).to have_received(:notify).with(login: "salbertson")
         end
 
@@ -84,7 +84,7 @@ describe RepoActivator do
             to have_received(:repo_collaborators).with(repo.full_github_name)
           expect(CollaboratorNotifier).
             to have_received(:new).
-              with(github_token: "githubtoken", repo: repo)
+            with(github_token: "githubtoken", repo: repo)
           expect(notifier).to have_received(:notify).with(login: "salbertson")
         end
 
@@ -371,9 +371,8 @@ describe RepoActivator do
     allow(api).to receive(:create_hook).and_yield(hook)
     allow(api).to receive(:add_collaborator).and_return(true)
     allow(api).to receive(:remove_collaborator).and_return(true)
-    allow(api).to receive(:repo_collaborators).and_return(
-      [login: "salbertson"]
-    )
+    allow(api).to receive(:repo_collaborators).
+      and_return([login: "salbertson"])
     allow(api).to receive(:user).and_return(login: "salbertson", email: nil)
     allow(GithubApi).to receive(:new).and_return(api)
     api
