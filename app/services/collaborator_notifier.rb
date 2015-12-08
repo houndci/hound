@@ -1,10 +1,7 @@
 class CollaboratorNotifier
-  def initialize(repo:, github_token:)
-    @repo = repo
-    @github_token = github_token
-  end
+  pattr_initialize [:repo!, :github_token!]
 
-  def notify(collaborator)
+  def run(collaborator)
     user = User.find_by_github_username(collaborator[:login])
 
     if user

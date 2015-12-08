@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe CollaboratorNotifier do
-  describe "#notify" do
+  describe "#run" do
     let(:repo) { build(:repo) }
     let(:mail) { double(deliver_later: true) }
     let(:github_token) { "github_token" }
@@ -19,7 +19,7 @@ describe CollaboratorNotifier do
       it "sends a notification using their email address" do
         user = create(:user, github_username: "salbertson")
 
-        notifier.notify login: "salbertson"
+        notifier.run login: "salbertson"
 
         expect(Mailer).to have_received(:repo_activation_notification).
           with(repo, user.github_username, user.email_address)
@@ -33,7 +33,7 @@ describe CollaboratorNotifier do
           allow(github_api).to receive(:user).
             and_return(login: "salbertson", email: "salbertson@example.com")
 
-          notifier.notify login: "salbertson"
+          notifier.run login: "salbertson"
 
           expect(github_api).to have_received(:user).with("salbertson")
           expect(Mailer).to have_received(:repo_activation_notification).
@@ -46,7 +46,7 @@ describe CollaboratorNotifier do
         it "does nothing" do
           allow(github_api).to receive(:user).and_return(email: nil)
 
-          notifier.notify login: "salbertson"
+          notifier.run login: "salbertson"
 
           expect(github_api).to have_received(:user).with("salbertson")
           expect(Mailer).not_to have_received(:repo_activation_notification)
@@ -58,7 +58,7 @@ describe CollaboratorNotifier do
       it "does not send a notification to that user" do
         create(:user, github_username: "salbertson", token: github_token)
 
-        notifier.notify login: "salbertson"
+        notifier.run login: "salbertson"
 
         expect(Mailer).not_to have_received(:repo_activation_notification)
       end

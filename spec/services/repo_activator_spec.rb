@@ -37,7 +37,7 @@ describe RepoActivator do
           expect(CollaboratorNotifier).
             to have_received(:new).
             with(github_token: "githubtoken", repo: repo)
-          expect(notifier).to have_received(:notify).with(login: "salbertson")
+          expect(notifier).to have_received(:run).with(login: "salbertson")
         end
 
         it "returns true" do
@@ -85,7 +85,7 @@ describe RepoActivator do
           expect(CollaboratorNotifier).
             to have_received(:new).
             with(github_token: "githubtoken", repo: repo)
-          expect(notifier).to have_received(:notify).with(login: "salbertson")
+          expect(notifier).to have_received(:run).with(login: "salbertson")
         end
 
         it "returns true" do
@@ -360,7 +360,7 @@ describe RepoActivator do
   end
 
   def build_notifier
-    notifier = double(notify: true)
+    notifier = double(run: true)
     allow(CollaboratorNotifier).to receive(:new).and_return(notifier)
     notifier
   end

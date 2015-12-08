@@ -64,7 +64,7 @@ class RepoActivator
     notifier = CollaboratorNotifier.new(github_token: github_token, repo: repo)
 
     github.repo_collaborators(repo.full_github_name).each do |collaborator|
-      notifier.notify(collaborator)
+      notifier.run(collaborator)
     end
   end
 
