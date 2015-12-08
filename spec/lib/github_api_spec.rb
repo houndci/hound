@@ -309,7 +309,7 @@ describe GithubApi do
   end
 
   describe "#collaborators" do
-    it "returns a list of collaborators" do
+    it "makes a request to GitHub" do
       api = GithubApi.new(token)
       request = stub_repo_collaborators_request(full_repo_name, token)
 
@@ -320,7 +320,7 @@ describe GithubApi do
   end
 
   describe "#user" do
-    it "returns user information" do
+    it "makes a request to GitHub" do
       username = "houndci"
       api = GithubApi.new(token)
       request = stub_user_request(username, token)
