@@ -88,8 +88,8 @@ GEM
     coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.9.1.1)
-    coffeelint (1.11.0)
+    coffee-script-source (1.10.0)
+    coffeelint (1.14.0)
       coffee-script
       execjs
       json
