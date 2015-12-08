@@ -2,22 +2,13 @@ require "rails_helper"
 
 describe CollaboratorNotifier do
   describe "#run" do
-    let(:repo) { build(:repo) }
-    let(:mail) { double(deliver_later: true) }
-    let(:github_token) { "github_token" }
-    let(:github_api) { double.as_null_object }
-    let(:notifier) do
-      CollaboratorNotifier.new(repo: repo, github_token: github_token)
-    end
-
-    before do
-      allow(GithubApi).to receive(:new).and_return(github_api)
-      allow(Mailer).to receive(:repo_activation_notification).and_return(mail)
-    end
-
     context "when collaborator is on Hound" do
       it "sends a notification using their email address" do
+        repo = build_stubbed(:repo)
+        mail = double(deliver_later: true)
+        allow(Mailer).to receive(:repo_activation_notification).and_return(mail)
         user = create(:user, github_username: "salbertson")
+        notifier = CollaboratorNotifier.new(repo: repo, github_token: "token")
 
         notifier.run login: "salbertson"
 
@@ -30,8 +21,18 @@ describe CollaboratorNotifier do
     context "when collaborator is not on Hound" do
       context "when collaborator has public GitHub email address" do
         it "sends a notification using their GitHub public email address" do
-          allow(github_api).to receive(:user).
-            and_return(login: "salbertson", email: "salbertson@example.com")
+          repo = build_stubbed(:repo)
+          github_api = double(
+            user: {
+              login: "salbertson",
+              email: "salbertson@example.com",
+            },
+          )
+          allow(GithubApi).to receive(:new).and_return(github_api)
+          mail = double(deliver_later: true)
+          allow(Mailer).
+            to receive(:repo_activation_notification).and_return(mail)
+          notifier = CollaboratorNotifier.new(repo: repo, github_token: "token")
 
           notifier.run login: "salbertson"
 
@@ -44,7 +45,11 @@ describe CollaboratorNotifier do
 
       context "when collaborator has no public GitHub email address" do
         it "does nothing" do
-          allow(github_api).to receive(:user).and_return(email: nil)
+          repo = build_stubbed(:repo)
+          github_api = double(user: { email: nil })
+          allow(GithubApi).to receive(:new).and_return(github_api)
+          allow(Mailer).to receive(:repo_activation_notification)
+          notifier = CollaboratorNotifier.new(repo: repo, github_token: "token")
 
           notifier.run login: "salbertson"
 
@@ -56,7 +61,10 @@ describe CollaboratorNotifier do
 
     context "when the collaborator and activator is the same person" do
       it "does not send a notification to that user" do
-        create(:user, github_username: "salbertson", token: github_token)
+        repo = build_stubbed(:repo)
+        create(:user, github_username: "salbertson", token: "token")
+        allow(Mailer).to receive(:repo_activation_notification)
+        notifier = CollaboratorNotifier.new(repo: repo, github_token: "token")
 
         notifier.run login: "salbertson"
 
