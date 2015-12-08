@@ -156,12 +156,22 @@ describe Repo do
   end
 
   describe "#subscriber" do
-    it "return the subscribed user" do
-      user = build_stubbed(:user)
-      subscription = build_stubbed(:subscription, user: user)
-      repo = build(:repo, subscription: subscription)
+    context "when subscription is not nil" do
+      it "return the subscribed user" do
+        user = build_stubbed(:user)
+        subscription = build_stubbed(:subscription, user: user)
+        repo = build(:repo, subscription: subscription)
 
-      expect(repo.subscriber).to eq user
+        expect(repo.subscriber).to eq user
+      end
+    end
+
+    context "when subscription is nil" do
+      it "returns nil" do
+        repo = build(:repo, subscription: nil)
+
+        expect(repo.subscriber).to be_nil
+      end
     end
   end
 end
