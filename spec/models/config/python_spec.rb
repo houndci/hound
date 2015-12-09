@@ -20,4 +20,19 @@ describe Config::Python do
       }
     end
   end
+
+  describe "#content" do
+    context "when there is no config content for the given linter" do
+      it "returns the empty string" do
+        hound_config = double(
+          "HoundConfig",
+          commit: double("Commit"),
+          content: {},
+        )
+        config = Config::Python.new(hound_config, "unconfigured_linter")
+
+        expect(config.content).to eq ""
+      end
+    end
+  end
 end

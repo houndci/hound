@@ -14,8 +14,6 @@ module Config
 
     private
 
-    DEFAULT_CONTENT = "{}"
-
     attr_implement :parse, [:file_content]
 
     def ensure_correct_type(result)
@@ -38,7 +36,7 @@ module Config
           commit.file_content(file_path)
         end
       else
-        DEFAULT_CONTENT
+        default_content
       end
     end
 
@@ -54,6 +52,10 @@ module Config
 
     def url?
       URI::regexp(%w(http https)).match(file_path)
+    end
+
+    def default_content
+      "{}"
     end
 
     def raise_parse_error(message)
