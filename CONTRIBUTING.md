@@ -25,8 +25,10 @@ Here are a few technical guidelines to follow:
 
     `./bin/setup`
 
-    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 2-5.
+    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 3-6.
     Designers, you don't need ngrok for the purpose of making css changes and running the app locally.
+
+1. Make sure that postgres, and redis, are both installed and running locally.
 
 1. Ngrok allows GitHub to make requests via webhook to start a build. Sign up
 for a free [ngrok] account and create a `~/.ngrok` file with the following:
