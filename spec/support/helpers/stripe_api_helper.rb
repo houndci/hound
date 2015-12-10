@@ -14,6 +14,7 @@ module StripeApiHelper
     ).with(
       body: {
         "card" => "cardtoken",
+        "email" => user.email_address,
         "metadata" => { "user_id" => "#{user.id}" }
       },
       headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }

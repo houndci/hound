@@ -48,6 +48,20 @@ module GithubApiHelper
     )
   end
 
+  def stub_repo_collaborators_request(repo_name, token, username = "username")
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo_name}/collaborators?per_page=100",
+    ).with(
+      headers: { "Authorization" => "token #{token}" },
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/repo_collaborators.json").
+        gsub("salbertson", username),
+      headers: { "Content-Type" => "application/json; charset=utf-8" },
+    )
+  end
+
   def stub_hook_creation_request(full_repo_name, callback_endpoint, token)
     stub_request(
       :post,
@@ -155,6 +169,21 @@ module GithubApiHelper
       ).
       to_return(
         status: 200, body: "", headers: { "X-OAuth-Scopes" => scopes }
+      )
+  end
+
+  def stub_user_request(username, token)
+    stub_request(:get, "https://api.github.com/users/#{username}").
+      with(
+        headers: {
+          "Accept" => "application/vnd.github.v3+json",
+          "Authorization" => "token #{token}",
+        },
+      ).
+      to_return(
+        status: 200,
+        body: File.read("spec/support/fixtures/github_user_response.json"),
+        headers: { "Content-Type" => "application/json; charset=utf-8" },
       )
   end
 

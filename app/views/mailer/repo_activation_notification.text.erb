@@ -1,0 +1,12 @@
+Hi <%= @username %>,
+
+Hound is now enabled on https://github.com/<%= @repo.full_github_name %>. When it finds Ruby style guide violations, it will comment inline on pull requests.
+
+You can configure which guidelines Hound should consider a violation. Find out more about configuring Hound at https://houndci.com/configure.
+<% if @subscriber %>
+
+@<%= @subscriber.github_username %> purchased the subscription for <%= @repo.full_github_name %> with a billing email address of <%= @subscriber.email_address %>.
+<% end %>
+
+Thanks,
+The Hound Team

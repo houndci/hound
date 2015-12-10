@@ -10,9 +10,12 @@ class RepoActivator
   def activate
     change_repository_state_quietly do
       if repo.private?
-        add_hound_to_repo && create_webhook && repo.activate
+        add_hound_to_repo &&
+          create_webhook &&
+          repo.activate &&
+          notify_collaborators
       else
-        create_webhook && repo.activate
+        create_webhook && repo.activate && notify_collaborators
       end
     end
   end
@@ -54,6 +57,14 @@ class RepoActivator
   def create_webhook
     github.create_hook(repo.full_github_name, builds_url) do |hook|
       repo.update(hook_id: hook.id)
+    end
+  end
+
+  def notify_collaborators
+    notifier = CollaboratorNotifier.new(github_token: github_token, repo: repo)
+
+    github.repo_collaborators(repo.full_github_name).each do |collaborator|
+      notifier.run(collaborator)
     end
   end
 

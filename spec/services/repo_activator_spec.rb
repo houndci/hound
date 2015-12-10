@@ -24,6 +24,22 @@ describe RepoActivator do
           expect(repo.reload).to be_active
         end
 
+        it "sends notifications to collaborators" do
+          repo = create(:repo, private: false, in_organization: true)
+          api = stub_github_api
+          activator = build_activator(repo: repo)
+          notifier = build_notifier
+
+          activator.activate
+
+          expect(api).
+            to have_received(:repo_collaborators).with(repo.full_github_name)
+          expect(CollaboratorNotifier).
+            to have_received(:new).
+            with(github_token: "githubtoken", repo: repo)
+          expect(notifier).to have_received(:run).with(login: "salbertson")
+        end
+
         it "returns true" do
           repo = create(:repo, private: false, in_organization: true)
           stub_github_api
@@ -54,6 +70,22 @@ describe RepoActivator do
           activator.activate
 
           expect(repo.reload).to be_active
+        end
+
+        it "sends notifications to collaborators" do
+          repo = create(:repo, private: false, in_organization: true)
+          api = stub_github_api
+          activator = build_activator(repo: repo)
+          notifier = build_notifier
+
+          activator.activate
+
+          expect(api).
+            to have_received(:repo_collaborators).with(repo.full_github_name)
+          expect(CollaboratorNotifier).
+            to have_received(:new).
+            with(github_token: "githubtoken", repo: repo)
+          expect(notifier).to have_received(:run).with(login: "salbertson")
         end
 
         it "returns true" do
@@ -327,12 +359,21 @@ describe RepoActivator do
     RepoActivator.new(github_token: token, repo: repo)
   end
 
+  def build_notifier
+    notifier = double(run: true)
+    allow(CollaboratorNotifier).to receive(:new).and_return(notifier)
+    notifier
+  end
+
   def stub_github_api
     hook = double(:hook, id: 1)
     api = double(:github_api, remove_hook: true)
     allow(api).to receive(:create_hook).and_yield(hook)
     allow(api).to receive(:add_collaborator).and_return(true)
     allow(api).to receive(:remove_collaborator).and_return(true)
+    allow(api).to receive(:repo_collaborators).
+      and_return([login: "salbertson"])
+    allow(api).to receive(:user).and_return(login: "salbertson", email: nil)
     allow(GithubApi).to receive(:new).and_return(api)
     api
   end

@@ -34,6 +34,7 @@ FactoryGirl.define do
 
   factory :user do
     github_username { generate(:github_name) }
+    email_address { "#{github_username}@example.com" }
   end
 
   factory :membership do

@@ -1,5 +1,5 @@
-require "spec_helper"
 require "attr_extras"
+require "config/initializers/constants"
 require "lib/github_api"
 require "json"
 
@@ -303,6 +303,29 @@ describe GithubApi do
       )
 
       api.remove_collaborator(full_repo_name, username)
+
+      expect(request).to have_been_requested
+    end
+  end
+
+  describe "#collaborators" do
+    it "makes a request to GitHub" do
+      api = GithubApi.new(token)
+      request = stub_repo_collaborators_request(full_repo_name, token)
+
+      api.repo_collaborators(full_repo_name)
+
+      expect(request).to have_been_requested
+    end
+  end
+
+  describe "#user" do
+    it "makes a request to GitHub" do
+      username = "houndci"
+      api = GithubApi.new(token)
+      request = stub_user_request(username, token)
+
+      api.user(username)
 
       expect(request).to have_been_requested
     end
