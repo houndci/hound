@@ -3,8 +3,7 @@ require "octokit"
 require "base64"
 
 class GithubApi
-  ORGANIZATION_TYPE = "Organization"
-  PREVIEW_MEDIA_TYPE = "application/vnd.github.moondragon+json"
+  ORGANIZATION_TYPE = "Organization".freeze
 
   attr_reader :file_cache, :token
 
@@ -22,7 +21,7 @@ class GithubApi
   end
 
   def repos
-    all_repos = client.repos(nil, accept: PREVIEW_MEDIA_TYPE)
+    all_repos = client.repos
     authorized_repos(all_repos)
   end
 
