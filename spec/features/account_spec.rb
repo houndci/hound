@@ -77,9 +77,9 @@ feature "Account" do
   scenario "user sees paid repo usage" do
     user = create(:user)
     paid_repo = create(:repo, users: [user])
-    paid_repo.builds << create_failed_build
-    paid_repo.builds << create_failed_build
-    paid_repo.builds << create(:build)
+    create_failed_build(paid_repo)
+    create_failed_build(paid_repo)
+    create(:build, repo: paid_repo)
     create(:subscription, repo: paid_repo, user: user)
 
     sign_in_as(user)
@@ -92,9 +92,10 @@ feature "Account" do
 
   private
 
-  def create_failed_build
-    file_review = build(:file_review, violations: build_list(:violation, 1))
-    create(:build, file_reviews: [file_review])
+  def create_failed_build(repo)
+    build = create(:build, repo: repo)
+    file_review = create(:file_review, build: build)
+    create(:violation, file_review: file_review)
   end
 
   def stub_customer_find_request_with_subscriptions(customer_id, subscriptions)

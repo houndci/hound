@@ -154,4 +154,14 @@ describe Repo do
       end
     end
   end
+
+  describe "#total_violations" do
+    it "returns a sum of all the violations for the repo" do
+      repo = create(:repo)
+      create(:build, violations_count: 5, repo: repo)
+      create(:build, violations_count: 3, repo: repo)
+
+      expect(repo.total_violations).to eq 8
+    end
+  end
 end
