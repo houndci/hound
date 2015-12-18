@@ -1,6 +1,7 @@
 class HoundConfig
   CONFIG_FILE = ".hound.yml"
-  LANGUAGES = %w(
+  # Only used in Config::Ruby
+  LINTERS = %w(
     coffeescript
     eslint
     go

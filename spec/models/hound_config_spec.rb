@@ -29,7 +29,7 @@ describe HoundConfig do
           commit = stubbed_commit(".hound.yml" => "")
           hound_config = HoundConfig.new(commit)
 
-          HoundConfig::LANGUAGES.each do |language|
+          HoundConfig::LINTERS.each do |language|
             expect(hound_config).not_to be_enabled_for(language)
           end
         end
