@@ -57,10 +57,11 @@ ActiveRecord::Schema.define(version: 20151216235118) do
   add_index "file_reviews", ["build_id"], name: "index_file_reviews_on_build_id", using: :btree
 
   create_table "memberships", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "repo_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id",                    null: false
+    t.integer  "repo_id",                    null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "admin",      default: false, null: false
   end
 
   add_index "memberships", ["repo_id"], name: "index_memberships_on_repo_id", using: :btree

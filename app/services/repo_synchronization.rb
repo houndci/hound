@@ -9,7 +9,11 @@ class RepoSynchronization
     Repo.transaction do
       repos.each do |resource|
         attributes = repo_attributes(resource.to_hash)
-        user.repos << Repo.find_or_create_with(attributes)
+        repo = Repo.find_or_create_with(attributes)
+        user.memberships.create!(
+          repo: repo,
+          admin: resource.to_hash[:permissions][:admin],
+        )
       end
     end
   end

@@ -8,11 +8,16 @@ describe DeactivationsController, "#create" do
       activator = double(:repo_activator, deactivate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user)
+      expected_repo_json = RepoSerializer.new(
+        repo,
+        scope_name: :current_user,
+        scope: membership.user,
+      ).to_json
 
       post :create, repo_id: repo.id, format: :json
 
-      expect(response.code).to eq "201"
-      expect(response.body).to eq RepoSerializer.new(repo).to_json
+      expect(response).to have_http_status(:created)
+      expect(response.body).to eq expected_repo_json
       expect(activator).to have_received(:deactivate)
       expect(RepoActivator).to have_received(:new).
         with(repo: repo, github_token: membership.user.token)

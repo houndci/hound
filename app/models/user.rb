@@ -54,6 +54,12 @@ class User < ActiveRecord::Base
     @payment_gateway_subscriptions ||= payment_gateway_customer.subscriptions
   end
 
+  def repos_by_activation_ability
+    repos.
+      order("memberships.admin DESC").
+      order(active: :desc, full_github_name: :asc)
+  end
+
   private
 
   def crypt

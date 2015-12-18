@@ -7,6 +7,7 @@ en:
   active_repos: "Active repos"
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."
+  cannot_activate_repo: "Only repo admins can activate"
   complete_status:
     zero: "No violations found. Woof!"
     one: "1 violation found."

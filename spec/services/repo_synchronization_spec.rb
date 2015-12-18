@@ -14,7 +14,7 @@ describe RepoSynchronization do
 
       synchronization.start
 
-      expect(user.repos.first).to be_private
+      expect(user.reload.repos.first).to be_private
     end
 
     it "saves organization flag" do
@@ -30,7 +30,43 @@ describe RepoSynchronization do
 
       synchronization.start
 
-      expect(user.repos.first).to be_in_organization
+      expect(user.reload.repos.first).to be_in_organization
+    end
+
+    context "when the user is a repo admin" do
+      it "the memberships admin flag is true" do
+        stub_github_api_repos(
+          repo_id: 456,
+          owner_id: 1,
+          owner_name: "thoughtbot",
+          repo_name: "user/newrepo",
+          admin: true,
+        )
+        user = create(:user)
+        synchronization = RepoSynchronization.new(user)
+
+        synchronization.start
+
+        expect(user.memberships.first).to be_admin
+      end
+    end
+
+    context "when the user is not a repo admin" do
+      it "the membership admin flag is false" do
+        stub_github_api_repos(
+          repo_id: 456,
+          owner_id: 1,
+          owner_name: "thoughtbot",
+          repo_name: "user/newrepo",
+          admin: false,
+        )
+        user = create(:user)
+        synchronization = RepoSynchronization.new(user)
+
+        synchronization.start
+
+        expect(user.memberships.first).not_to be_admin
+      end
     end
 
     it "replaces existing repos" do
@@ -47,6 +83,7 @@ describe RepoSynchronization do
 
       synchronization.start
 
+      user.reload
       expect(user.repos.size).to eq(1)
       expect(user.repos.first.full_github_name).to eq "user/newrepo"
       expect(user.repos.first.github_id).to eq 456
@@ -54,9 +91,11 @@ describe RepoSynchronization do
 
     it "renames an existing repo if updated on github" do
       membership = create(:membership)
+      user = membership.user
+      repo = membership.repo
       repo_name = "user/newrepo"
       stub_github_api_repos(
-        repo_id: membership.repo.github_id,
+        repo_id: repo.github_id,
         owner_id: 1,
         owner_name: "thoughtbot",
         repo_name: repo_name
@@ -65,9 +104,9 @@ describe RepoSynchronization do
 
       synchronization.start
 
-      expect(membership.user.repos.first.full_github_name).to eq repo_name
-      expect(membership.user.repos.first.github_id).
-        to eq membership.repo.github_id
+      user.reload
+      expect(user.repos.first.full_github_name).to eq repo_name
+      expect(user.repos.first.github_id).to eq repo.github_id
     end
 
     describe "when a repo membership already exists" do
@@ -135,7 +174,8 @@ describe RepoSynchronization do
       owner_id:,
       owner_name:,
       private_repo: true,
-      repo_name: "thoughtbot/newrepo"
+      repo_name: "thoughtbot/newrepo",
+      admin: false
     )
       attributes = {
         full_name: repo_name,
@@ -145,6 +185,9 @@ describe RepoSynchronization do
           id: owner_id,
           login: owner_name,
           type: "Organization",
+        },
+        permissions: {
+          admin: admin,
         }
       }
       resource = double(:resource, to_hash: attributes)

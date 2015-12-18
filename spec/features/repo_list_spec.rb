@@ -4,13 +4,24 @@ feature "Repo list", js: true do
   let(:username) { ENV.fetch("HOUND_GITHUB_USERNAME") }
   let(:user) { create(:user, token_scopes: "public_repo,user:email") }
 
-  scenario "signed in user views repo list" do
-    repo = create(:repo, full_github_name: "thoughtbot/my-repo")
-    repo.users << user
+  scenario "user views list of repos" do
+    user = create(:user, token_scopes: "public_repo,user:email")
+    restricted_repo = create(:repo, full_github_name: "inaccessible-repo")
+    activatable_repo = create(:repo, full_github_name: "thoughtbot/my-repo")
+    create(:membership, repo: activatable_repo, user: user, admin: true)
+    create(:membership, repo: restricted_repo, user: user, admin: false)
 
     sign_in_as(user)
 
-    expect(page).to have_content repo.full_github_name
+    within ".repo:nth-of-type(1)" do
+      expect(page).to have_text activatable_repo.full_github_name
+      expect(page).to have_css ".toggle"
+    end
+    within ".repo:nth-of-type(2)" do
+      expect(page).to have_text restricted_repo.full_github_name
+      expect(page).to have_text I18n.t("cannot_activate_repo")
+      expect(page).not_to have_css ".toggle"
+    end
   end
 
   scenario "signed out user views repo list" do
@@ -38,29 +49,20 @@ feature "Repo list", js: true do
     expect(page).to_not have_content I18n.t("onboarding.title")
   end
 
-  scenario "user views list" do
-    repo = create(:repo, full_github_name: "thoughtbot/my-repo")
-    repo.users << user
-
-    sign_in_as(user)
-
-    expect(page).to have_content repo.full_github_name
-  end
-
   scenario "user filters list" do
-    repo = create(:repo, full_github_name: "thoughtbot/my-repo")
-    repo.users << user
+    repo1 = create_repo(full_github_name: "foo")
+    repo2 = create_repo(full_github_name: "bar")
 
     sign_in_as(user)
-    find(".search").set(repo.full_github_name)
+    find(".search").set("fo")
 
-    expect(page).to have_content repo.full_github_name
+    expect(page).to have_text repo1.full_github_name
+    expect(page).not_to have_text repo2.full_github_name
   end
 
   scenario "user syncs repos" do
     token = "letmein"
-    repo = create(:repo, full_github_name: "user1/test-repo")
-    user.repos << repo
+    repo = create_repo(full_github_name: "user1/test-repo")
     stub_repos_requests(token)
 
     sign_in_as(user, token)
@@ -84,8 +86,7 @@ feature "Repo list", js: true do
 
   scenario "user activates repo" do
     token = "letmein"
-    repo = create(:repo, private: false)
-    repo.users << user
+    repo = create_repo(private: false)
     hook_url = "http://#{ENV["HOST"]}/builds"
     stub_repo_request(repo.full_github_name, token)
     stub_add_collaborator_request(username, repo.full_github_name, token)
@@ -105,8 +106,7 @@ feature "Repo list", js: true do
 
   scenario "user with admin access activates organization repo" do
     token = "letmein"
-    repo = create(:repo, private: false, full_github_name: "testing/repo")
-    repo.users << user
+    repo = create_repo(private: false, full_github_name: "testing/repo")
     hook_url = "http://#{ENV["HOST"]}/builds"
     stub_repo_with_org_request(repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
@@ -125,8 +125,7 @@ feature "Repo list", js: true do
 
   scenario "user deactivates repo" do
     token = "letmein"
-    repo = create(:repo, :active)
-    repo.users << user
+    repo = create_repo(:active)
     stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
     stub_remove_collaborator_request(username, repo.full_github_name, token)
@@ -145,8 +144,7 @@ feature "Repo list", js: true do
 
   scenario "user deactivates private repo without subscription" do
     token = "letmein"
-    repo = create(:repo, :active, private: true)
-    repo.users << user
+    repo = create_repo(:active, private: true)
     stub_repo_request(repo.full_github_name, token)
     stub_hook_removal_request(repo.full_github_name, repo.hook_id)
     stub_remove_collaborator_request(username, repo.full_github_name, token)
@@ -160,5 +158,12 @@ feature "Repo list", js: true do
     visit current_path
 
     expect(user.repos.active.count).to eq(0)
+  end
+
+  def create_repo(*options)
+    repo = create(:repo, *options)
+    create(:membership, repo: repo, user: user, admin: true)
+
+    repo
   end
 end

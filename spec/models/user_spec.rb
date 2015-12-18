@@ -6,7 +6,7 @@ describe User do
   it { should validate_presence_of :github_username }
   it { should have_many(:memberships).dependent(:destroy) }
 
-  describe ".subscribed_repos" do
+  describe "#subscribed_repos" do
     it "returns subscribed repos" do
       user = create(:user)
       _unsubscribed_repo = create(:repo, users: [user])
@@ -16,6 +16,22 @@ describe User do
       repos = user.subscribed_repos
 
       expect(repos).to eq [active_subscription.repo]
+    end
+  end
+
+  describe "#repos_by_activation_ability" do
+    it "orders active repos with admin permissions first then by name" do
+      repo1 = create(:repo, name: "foo", active: false)
+      repo2 = create(:repo, name: "bar", active: false)
+      repo3 = create(:repo, name: "baz", active: true)
+      user = create(:user)
+      create(:membership, user: user, repo: repo1, admin: false)
+      create(:membership, user: user, repo: repo2, admin: true)
+      create(:membership, user: user, repo: repo3, admin: true)
+
+      results = user.repos_by_activation_ability
+
+      expect(results).to eq [repo3, repo2, repo1]
     end
   end
 

@@ -22,8 +22,7 @@ class GithubApi
   end
 
   def repos
-    all_repos = client.repos(nil, accept: PREVIEW_MEDIA_TYPE)
-    authorized_repos(all_repos)
+    client.repos(accept: PREVIEW_MEDIA_TYPE)
   end
 
   def repo(repo_name)
