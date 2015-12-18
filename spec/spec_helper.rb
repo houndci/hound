@@ -13,4 +13,8 @@ RSpec.configure do |config|
   config.include GithubApiHelper
   config.include StripeApiHelper
   WebMock.disable_net_connect!(allow_localhost: true)
+
+  config.define_derived_metadata do |meta|
+    meta[:aggregate_failures] = true
+  end
 end
