@@ -199,7 +199,7 @@ describe BuildRunner do
         expect(ReportInvalidConfig).to have_received(:run).with(
           pull_request_number: payload.pull_request_number,
           commit_sha: payload.head_sha,
-          filename: "config/rubocop.yml",
+          linter_name: "ruby",
         )
       end
     end

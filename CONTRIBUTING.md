@@ -182,9 +182,8 @@ If the given `config` is invalid, the invalid file should be posted to the
 outbound `ReportInvalidConfigJob` queue:
 
 * `commit_sha` - The git commit SHA of the code snippet. This is provided by the
-  inbound queue..
-* `filename` - The name of the source file for the code snippet. This is
-  provided by the inbound queue.
+  inbound queue.
+* `linter_name` - The name of the linter that received an invalid config file.
 * `pull_request_number` - The GitHub pull request number. This is provided by
   the inbound queue.
 

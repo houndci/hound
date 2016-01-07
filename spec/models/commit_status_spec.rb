@@ -75,19 +75,19 @@ describe CommitStatus do
       repo_name = "thoughtbot/hound"
       sha = "abc123"
       token = "token"
-      filename = "config/.rubocop.yml"
+      linter_name = "ruby"
       commit_status = CommitStatus.new(
         repo_name: repo_name,
         sha: sha,
         token: token,
       )
 
-      commit_status.set_config_error(filename)
+      commit_status.set_config_error(linter_name)
 
       expect(github_api).to have_received(:create_error_status).with(
         repo_name,
         sha,
-        I18n.t(:config_error_status, filename: filename),
+        I18n.t(:config_error_status, linter_name: linter_name),
         configuration_url,
       )
     end

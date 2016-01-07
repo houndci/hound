@@ -3,19 +3,19 @@ class ReportInvalidConfig
     new(**args).run
   end
 
-  def initialize(pull_request_number:, commit_sha:, filename:)
+  def initialize(pull_request_number:, commit_sha:, linter_name:)
     @pull_request_number = pull_request_number
     @commit_sha = commit_sha
-    @filename = filename
+    @linter_name = linter_name
   end
 
   def run
-    commit_status.set_config_error(filename)
+    commit_status.set_config_error(linter_name)
   end
 
   private
 
-  attr_reader :pull_request_number, :commit_sha, :filename
+  attr_reader :pull_request_number, :commit_sha, :linter_name
 
   def commit_status
     @commit_status ||= CommitStatus.new(

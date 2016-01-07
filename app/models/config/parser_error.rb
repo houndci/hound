@@ -1,10 +1,10 @@
 module Config
   class ParserError < StandardError
-    attr_reader :filename
+    attr_reader :linter_name
 
-    def initialize(message, filename:)
+    def initialize(message, linter_name:)
       super(message)
-      @filename = filename
+      @linter_name = linter_name
     end
   end
 end

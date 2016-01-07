@@ -8,15 +8,16 @@ describe ReportInvalidConfig do
       stubbed_build(repo_name: "thoughtbot/hound")
       pull_request_number = "42"
       commit_sha = "abc123"
-      filename = "config/.rubocop.yml"
+      linter_name = "ruby"
 
       ReportInvalidConfig.run(
         pull_request_number: pull_request_number,
         commit_sha: commit_sha,
-        filename: filename,
+        linter_name: linter_name,
       )
 
-      expect(commit_status).to have_received(:set_config_error).with(filename)
+      expect(commit_status).to have_received(:set_config_error).
+        with(linter_name)
       expect(Build).to have_received(:find_by!).with(
         pull_request_number: pull_request_number,
         commit_sha: commit_sha,

@@ -59,7 +59,7 @@ module Config
     end
 
     def raise_parse_error(message)
-      raise Config::ParserError.new(message, filename: file_path)
+      raise Config::ParserError.new(message, linter_name: linter_name)
     end
 
     def file_path
