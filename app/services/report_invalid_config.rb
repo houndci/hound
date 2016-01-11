@@ -21,7 +21,7 @@ class ReportInvalidConfig
     @commit_status ||= CommitStatus.new(
       repo_name: build.repo_name,
       sha: commit_sha,
-      token: Hound::GITHUB_TOKEN,
+      token: build.user_token,
     )
   end
 
