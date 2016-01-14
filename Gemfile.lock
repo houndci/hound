@@ -290,12 +290,11 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubocop (0.34.2)
-      astrolabe (~> 1.3)
-      parser (>= 2.2.2.5, < 3.0)
+    rubocop (0.36.0)
+      parser (>= 2.3.0.0, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
-      ruby-progressbar (~> 1.4)
+      ruby-progressbar (~> 1.7)
     ruby-progressbar (1.7.5)
     rufus-scheduler (3.0.9)
       tzinfo
@@ -365,6 +364,7 @@ DEPENDENCIES
   analytics-ruby (~> 2.0.0)
   angular_rails_csrf
   angularjs-rails
+  astrolabe
   attr_extras
   bourbon
   bundler-audit
@@ -402,7 +402,7 @@ DEPENDENCIES
   resque-sentry
   rest-client (>= 1.8.0)
   rspec-rails (>= 3.4)
-  rubocop (= 0.34.2)
+  rubocop (= 0.36)
   sass-rails
   sentry-raven (>= 0.12.2)
   shoulda-matchers

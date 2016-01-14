@@ -3,6 +3,7 @@ module Linter
   class Ruby < Base
     DEFAULT_CONFIG_FILENAME = "ruby.yml"
     FILE_REGEXP = /.+\.rb\z/
+    RUBY_PARSER_VERSION = 2.3
 
     def file_review(commit_file)
       perform_file_review(commit_file)
@@ -39,8 +40,7 @@ module Linter
     end
 
     def parsed_source(commit_file)
-      absolute_filepath = File.expand_path(commit_file.filename)
-      RuboCop::ProcessedSource.new(commit_file.content, absolute_filepath)
+      RuboCop::ProcessedSource.new(commit_file.content, RUBY_PARSER_VERSION)
     end
 
     def linter_config
