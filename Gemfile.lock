@@ -290,12 +290,13 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubocop (0.34.2)
+    rubocop (0.35.1)
       astrolabe (~> 1.3)
-      parser (>= 2.2.2.5, < 3.0)
+      parser (>= 2.2.3.0, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
-      ruby-progressbar (~> 1.4)
+      ruby-progressbar (~> 1.7)
+      tins (<= 1.6.0)
     ruby-progressbar (1.7.5)
     rufus-scheduler (3.0.9)
       tzinfo
@@ -339,6 +340,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    tins (1.6.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -402,7 +404,7 @@ DEPENDENCIES
   resque-sentry
   rest-client (>= 1.8.0)
   rspec-rails (>= 3.4)
-  rubocop (= 0.34.2)
+  rubocop (= 0.35.1)
   sass-rails
   sentry-raven (>= 0.12.2)
   shoulda-matchers
