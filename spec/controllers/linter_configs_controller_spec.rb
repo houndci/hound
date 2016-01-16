@@ -4,6 +4,8 @@ describe LinterConfigsController do
   context "requesting ruby" do
     it "returns the merged RuboCop config" do
       user = create(:user)
+      owner = create(:owner, name: "thoughtbot")
+      repo = create(:repo, full_github_name: "thoughtbot/hound", owner: owner)
       stub_sign_in(user)
       our_config = {
         "Style/OptionHash" => {
@@ -25,7 +27,7 @@ describe LinterConfigsController do
       )
       stub_encoded_contents_request(
         sha: "master",
-        repo_name: "thoughtbot/hound",
+        repo_name: repo.name,
         file: "ruby.yml",
         body: YAML.dump(our_config),
         token: user.token,
