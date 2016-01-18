@@ -25,12 +25,11 @@ module Config
       commit.file_content(ignore_file).to_s.split("\n")
     end
 
-    def linter_config
-      super || hound_config.content[alternate_linter_name]
-    end
-
-    def alternate_linter_name
-      linter_name.sub("_", "")
+    def linter_names
+      [
+        linter_name,
+        linter_name.sub("_", ""),
+      ]
     end
   end
 end
