@@ -121,8 +121,8 @@ being used and the default configs for each linter.
  * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/coffeescript.json)
 
 1. JavaScript
- * [JSHint](https://github.com/jshint/jshint)
- * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/javascript.json)
+ * [JSHint](https://github.com/thoughtbot/hound-jshint)
+ * [config](https://raw.githubusercontent.com/thoughtbot/hound-jshint/master/config/.jshintrc)
 
 1. SCSS
  * [hound-scss](https://github.com/thoughtbot/hound-scss)

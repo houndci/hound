@@ -8,7 +8,7 @@ module ConfigurationHelper
   end
 
   def javascript_config_url
-    config_url("thoughtbot/hound", "config/style_guides/javascript.json")
+    config_url("thoughtbot/hound-jshint", "config/.jshintrc")
   end
 
   def javascript_ignore_url

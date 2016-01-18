@@ -3,7 +3,6 @@ class HoundConfig
   BETA_LANGUAGES = %w(
     eslint
     jscs
-    jshint
     mdast
     python
     swift
