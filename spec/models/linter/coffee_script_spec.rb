@@ -231,25 +231,13 @@ describe Linter::CoffeeScript do
 
   def build_linter(
     hound_config: default_hound_config,
-    config: stub_coffeescript_config,
     repository_owner_name: "RalphJoe"
   )
-    config
     Linter::CoffeeScript.new(
       hound_config: hound_config,
       build: build(:build),
       repository_owner_name: repository_owner_name,
     )
-  end
-
-  def stub_coffeescript_config(content: {}, excluded_files: [])
-    config = double(
-      "CoffeeScriptConfig",
-      content: content,
-      excluded_files: excluded_files,
-    )
-    allow(Config::CoffeeScript).to receive(:new).and_return(config)
-    config
   end
 
   def default_hound_config

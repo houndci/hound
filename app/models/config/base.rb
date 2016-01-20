@@ -12,6 +12,10 @@ module Config
       []
     end
 
+    def linter_names
+      [linter_name]
+    end
+
     private
 
     attr_implement :parse, [:file_content]
@@ -68,10 +72,6 @@ module Config
 
     def linter_config
       hound_config.content.slice(*linter_names).values.first
-    end
-
-    def linter_names
-      [linter_name]
     end
 
     def commit

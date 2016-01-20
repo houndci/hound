@@ -8,18 +8,18 @@ module Config
       )
     end
 
-    private
-
-    def parse(file_content)
-      Parser.raw(file_content)
-    end
-
     def linter_names
       [
         "javascript",
         "java_script",
         linter_name,
       ]
+    end
+
+    private
+
+    def parse(file_content)
+      Parser.raw(file_content)
     end
 
     def load_javascript_ignore

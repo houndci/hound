@@ -14,5 +14,9 @@ module Linter
     def file_included?(*)
       false
     end
+
+    def config
+      Config::Base.new(hound_config, "unsupported")
+    end
   end
 end

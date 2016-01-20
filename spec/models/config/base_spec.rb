@@ -128,4 +128,12 @@ describe Config::Base do
       expect(config.excluded_files).to eq []
     end
   end
+
+  describe "#linter_names" do
+    it "returns a list of names the linter is accessible under" do
+      config = Config::Test.new(double, "test")
+
+      expect(config.linter_names).to eq ["test"]
+    end
+  end
 end

@@ -23,7 +23,9 @@ module Linter
     end
 
     def enabled?
-      hound_config.enabled_for?(name)
+      config.linter_names.any? do |linter_name|
+        hound_config.enabled_for?(linter_name)
+      end
     end
 
     def file_included?(*)

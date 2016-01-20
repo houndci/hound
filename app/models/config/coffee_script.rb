@@ -7,12 +7,5 @@ module Config
 
       ensure_correct_type(result)
     end
-
-    def linter_names
-      [
-        linter_name,
-        linter_name.sub("_", ""),
-      ]
-    end
   end
 end
