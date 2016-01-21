@@ -40,7 +40,11 @@ module Linter
     end
 
     def parsed_source(commit_file)
-      RuboCop::ProcessedSource.new(commit_file.content, RUBY_PARSER_VERSION)
+      RuboCop::ProcessedSource.new(
+        commit_file.content,
+        RUBY_PARSER_VERSION,
+        File.join(Rails.root, commit_file.filename),
+      )
     end
 
     def linter_config
