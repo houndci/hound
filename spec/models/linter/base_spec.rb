@@ -1,5 +1,8 @@
 require "spec_helper"
 require "app/models/linter/base"
+require "app/models/config_builder"
+require "app/models/config/base"
+require "app/models/config/unsupported"
 
 module Linter
   class Test < Base

@@ -60,11 +60,7 @@ module Linter
     end
 
     def config
-      @config ||= config_class.new(hound_config, name)
-    end
-
-    def config_class
-      "Config::#{name.classify}".constantize
+      @config ||= ConfigBuilder.for(hound_config, name)
     end
   end
 end
