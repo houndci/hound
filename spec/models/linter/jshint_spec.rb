@@ -41,7 +41,7 @@ describe Linter::Jshint do
     context "file is not excluded" do
       it "returns true" do
         stub_jshint_config(excluded_files: ["foo.js"])
-        linter = build_linter(config: config)
+        linter = build_linter
         commit_file = double("CommitFile", filename: "bar.js")
 
         expect(linter.file_included?(commit_file)).to eq true
@@ -51,7 +51,7 @@ describe Linter::Jshint do
         stub_jshint_config(
           excluded_files: ["app/assets/javascripts/*.js", "vendor/*"],
         )
-        linter = build_linter(config: config)
+        linter = build_linter
         commit_file1 = double(
           "CommitFile",
           filename: "app/assets/javascripts/bar.js",

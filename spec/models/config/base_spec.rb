@@ -15,13 +15,7 @@ describe Config::Base do
   describe "#content" do
     context "when there is no config content for the given linter" do
       it "does not raise" do
-        commit = double("Commit")
-        hound_config = double(
-          "HoundConfig",
-          commit: commit,
-          content: {},
-        )
-        config = Config::Test.new(hound_config, "unconfigured_linter")
+        config = build_config(linter_name: "unconfigured_linter")
 
         expect { config.content }.not_to raise_error
       end
@@ -29,15 +23,14 @@ describe Config::Base do
 
     context "when there is no specified filepath" do
       it "returns a default value" do
-        commit = double("Commit")
         hound_config = double(
           "HoundConfig",
-          commit: commit,
+          commit: double("Commit"),
           content: {
-            "linter" => {},
+            "test" => {},
           },
         )
-        config = Config::Test.new(hound_config, "linter")
+        config = build_config(hound_config: hound_config)
 
         expect(config.content).to eq("{}")
       end
@@ -46,12 +39,11 @@ describe Config::Base do
     context "when the filepath is a url" do
       context "when url exists" do
         it "returns the content of the url" do
-          commit = double("Commit")
           hound_config = double(
             "HoundConfig",
-            commit: commit,
+            commit: double("Commit"),
             content: {
-              "linter" => {
+              "test" => {
                 "config_file" => "http://example.com/rubocop.yml",
               },
             },
@@ -67,7 +59,7 @@ describe Config::Base do
             status: 200,
             body: response,
           )
-          config = Config::Test.new(hound_config, "linter")
+          config = build_config(hound_config: hound_config)
 
           expect(config.content).to eq response
         end
@@ -75,12 +67,11 @@ describe Config::Base do
 
       context "when the url does not exist" do
         it "raises an exception" do
-          commit = double("Commit")
           hound_config = double(
             "HoundConfig",
-            commit: commit,
+            commit: double("Commit"),
             content: {
-              "linter" => {
+              "test" => {
                 "config_file" => "http://example.com/rubocop.yml",
               },
             },
@@ -92,7 +83,7 @@ describe Config::Base do
             status: 404,
             body: "Could not find resource",
           )
-          config = Config::Test.new(hound_config, "linter")
+          config = build_config(hound_config: hound_config)
 
           expect { config.content }.to raise_error do |exception|
             expect(exception).to be_a Config::ParserError
@@ -106,7 +97,7 @@ describe Config::Base do
       it "raises an exception" do
         hound_config = double(
           "HoundConfig",
-          commit: double("Commit", file_content: "config"),
+          commit: double("Commit", file_content: ""),
           content: {
             "linter" => { "config_file" => "config-file.txt" },
           },
@@ -123,7 +114,7 @@ describe Config::Base do
 
   describe "#excluded_files" do
     it "returns an empty array" do
-      config = Config::Test.new(double, double)
+      config = build_config
 
       expect(config.excluded_files).to eq []
     end
@@ -131,9 +122,23 @@ describe Config::Base do
 
   describe "#linter_names" do
     it "returns a list of names the linter is accessible under" do
-      config = Config::Test.new(double, "test")
+      config = build_config(linter_name: "test")
 
       expect(config.linter_names).to eq ["test"]
     end
+  end
+
+  def build_config(hound_config: build_hound_config, linter_name: "test")
+    Config::Test.new(hound_config, linter_name)
+  end
+
+  def build_hound_config
+    double(
+      "HoundConfig",
+      commit: double("Commit", file_content: ""),
+      content: {
+        "test" => { "config_file" => "config-file.txt" },
+      },
+    )
   end
 end
