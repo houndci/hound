@@ -19,8 +19,7 @@ class CommitStatus
     github.create_error_status(repo_name, sha, message)
   end
 
-  def set_config_error(linter_name)
-    message = I18n.t(:config_error_status, linter_name: linter_name)
+  def set_config_error(message)
     github.create_error_status(repo_name, sha, message, configuration_url)
   end
 

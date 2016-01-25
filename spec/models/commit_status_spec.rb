@@ -75,19 +75,19 @@ describe CommitStatus do
       repo_name = "thoughtbot/hound"
       sha = "abc123"
       token = "token"
-      linter_name = "ruby"
+      message = "invalid config"
       commit_status = CommitStatus.new(
         repo_name: repo_name,
         sha: sha,
         token: token,
       )
 
-      commit_status.set_config_error(linter_name)
+      commit_status.set_config_error(message)
 
       expect(github_api).to have_received(:create_error_status).with(
         repo_name,
         sha,
-        I18n.t(:config_error_status, linter_name: linter_name),
+        message,
         configuration_url,
       )
     end
