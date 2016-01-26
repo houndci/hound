@@ -186,30 +186,6 @@ describe StyleChecker do
           expect(violation_messages).to be_empty
         end
       end
-
-      context "an excluded file" do
-        it "returns no violations" do
-          config = <<-YAML.strip_heredoc
-              javascript:
-                ignore_file: '.jshintignore'
-          YAML
-
-          head_commit = stub_head_commit(
-            ".hound.yml" => config,
-            ".jshintignore" => "test.js",
-          )
-
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          pull_request = stub_pull_request(
-            head_commit: head_commit,
-            commit_files: [commit_file],
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
     end
 
     context "for a SCSS file" do
