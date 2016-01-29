@@ -128,6 +128,9 @@ being used and the default configs for each linter.
  * [hound-scss](https://github.com/thoughtbot/hound-scss)
  * [config](https://raw.githubusercontent.com/thoughtbot/hound-scss/master/config/default.yml)
 
+ *Note:* for more information on the SCSS configuration options, please refer to
+ the [scss-lint documentation](https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md).
+
 1. Haml
  * [haml-lint](https://github.com/brigade/haml-lint)
  * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml)
