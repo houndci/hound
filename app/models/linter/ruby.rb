@@ -1,7 +1,6 @@
 # Determine Ruby style guide violations per-line.
 module Linter
   class Ruby < Base
-    DEFAULT_CONFIG_FILENAME = "ruby.yml"
     FILE_REGEXP = /.+\.rb\z/
     RUBY_PARSER_VERSION = 2.3
 

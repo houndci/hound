@@ -569,26 +569,6 @@ describe Linter::Ruby do
       end
     end
 
-    context "default configuration" do
-      it "uses a default configuration for rubocop" do
-        spy_on_rubocop_team
-        spy_on_rubocop_configuration_loader
-        config_file = default_configuration_file(Linter::Ruby)
-        code = <<-CODE.strip_heredoc
-          private def foo
-            bar
-          end
-        CODE
-
-        violations_in(code, repository_owner_name: "not_thoughtbot")
-
-        expect(RuboCop::ConfigLoader).
-          to have_received(:configuration_from_file).with(config_file)
-        expect(RuboCop::Cop::Team).to have_received(:new).
-          with(anything, default_configuration, anything)
-      end
-    end
-
     context "with inline configuration" do
       context "disabling a cop" do
         it "does not return a violation" do
@@ -610,29 +590,6 @@ describe Linter::Ruby do
     end
 
     context "thoughtbot organization PR" do
-      it "uses the thoughtbot configuration for rubocop" do
-        spy_on_rubocop_team
-        spy_on_rubocop_configuration_loader
-        code = <<-CODE.strip_heredoc
-          private def foo
-            bar
-          end
-        CODE
-
-        thoughtbot_violations_in(code)
-
-        expect(RuboCop::ConfigLoader).to(
-          have_received(:configuration_from_file).with(
-            thoughtbot_configuration_file(Linter::Ruby),
-          ).at_least(:once),
-        )
-        expect(RuboCop::Cop::Team).to have_received(:new).with(
-          anything,
-          thoughtbot_configuration,
-          anything,
-        )
-      end
-
       describe "when using reduce" do
         it "returns no violations" do
           expect(thoughtbot_violations_in(<<-CODE.strip_heredoc)).to eq []
@@ -682,11 +639,7 @@ describe Linter::Ruby do
       end
 
       def thoughtbot_violations_in(content)
-        violations_in(
-          content,
-          repository_owner_name: "thoughtbot",
-          config: stub_ruby_config(thoughtbot_configuration),
-        )
+        violations_in(content, repository_owner_name: "thoughtbot")
       end
     end
 
@@ -747,7 +700,6 @@ describe Linter::Ruby do
       config: stub_ruby_config,
       repository_owner_name: "not_thoughtbot"
     )
-      config
       Linter::Ruby.new(
         hound_config: hound_config,
         build: build(:build),
@@ -768,25 +720,6 @@ describe Linter::Ruby do
 
     def build_file(content)
       build_commit_file(filename: "app/models/user.rb", content: content)
-    end
-
-    def default_configuration
-      config_file = default_configuration_file(Linter::Ruby)
-      RuboCop::ConfigLoader.configuration_from_file(config_file)
-    end
-
-    def thoughtbot_configuration
-      config_file = thoughtbot_configuration_file(Linter::Ruby)
-      RuboCop::ConfigLoader.configuration_from_file(config_file)
-    end
-
-    def spy_on_rubocop_team
-      allow(RuboCop::Cop::Team).to receive(:new).and_call_original
-    end
-
-    def spy_on_rubocop_configuration_loader
-      allow(RuboCop::ConfigLoader).to receive(:configuration_from_file).
-        and_call_original
     end
   end
 end
