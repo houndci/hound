@@ -1,10 +1,11 @@
 require "spec_helper"
-require "config/initializers/constants"
 require "attr_extras"
 require "lib/github_api"
 require "json"
 
 describe GithubApi do
+  before { stub_const("Hound::GITHUB_TOKEN", "token") }
+
   describe "#repos" do
     it "fetches all repos from Github" do
       token = "something"
