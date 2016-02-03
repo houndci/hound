@@ -8,6 +8,10 @@ module Config
       JSON.parse(content)
     end
 
+    def self.ini(content)
+      IniFile.new(content: content).to_h
+    end
+
     def self.raw(content)
       content
     end

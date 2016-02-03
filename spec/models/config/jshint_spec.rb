@@ -1,24 +1,21 @@
 require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/jshint"
+require "app/models/config/parser"
+require "app/models/config/serializer"
 
 describe Config::Jshint do
-  it_behaves_like "a service based linter" do
-    let(:raw_config) do
-      <<-EOS.strip_heredoc
+  describe "#content" do
+    it "parses the configuration using JSON" do
+      raw_config = <<-EOS.strip_heredoc
         {
-          "maxlen": 80,
+          "maxlen": 80
         }
       EOS
-    end
+      commit = stubbed_commit("config/jshint.json" => raw_config)
+      config = build_config(commit)
 
-    let(:hound_config_content) do
-      {
-        "jshint" => {
-          "enabled" => true,
-          "config_file" => "config/.jshintrc",
-        },
-      }
+      expect(config.content).to eq("maxlen" => 80)
     end
   end
 
@@ -43,6 +40,20 @@ describe Config::Jshint do
 
         expect(config.excluded_files).to eq ["app/javascript/vendor/*"]
       end
+    end
+  end
+
+  describe "#serialize" do
+    it "serializes the parsed content into JSON" do
+      raw_config = <<-EOS.strip_heredoc
+        {
+          "maxlen": 80
+        }
+      EOS
+      commit = stubbed_commit("config/jshint.json" => raw_config)
+      config = build_config(commit)
+
+      expect(config.serialize).to eq "{\"maxlen\":80}"
     end
   end
 

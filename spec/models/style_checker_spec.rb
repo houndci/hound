@@ -22,7 +22,6 @@ describe StyleChecker do
           enabled: true
       HOUND
       head_commit = stub_head_commit(
-        ruby_file.filename => "",
         ".hound.yml" => config,
       )
       pull_request = PullRequest.new(payload_stub, "anything")
@@ -308,7 +307,7 @@ describe StyleChecker do
     default_options = {
       HoundConfig::CONFIG_FILE => raw_hound_config,
     }
-    head_commit = double("Commit", file_content: nil)
+    head_commit = double("Commit", file_content: "")
 
     default_options.merge(options).each do |filename, file_contents|
       allow(head_commit).to receive(:file_content).

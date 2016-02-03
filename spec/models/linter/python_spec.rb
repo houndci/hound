@@ -75,7 +75,11 @@ describe Linter::Python do
   end
 
   def stub_python_config(config = "config")
-    stubbed_python_config = double("PythonConfig", content: config)
+    stubbed_python_config = double(
+      "PythonConfig",
+      content: config,
+      serialize: config,
+    )
     allow(Config::Python).to receive(:new).and_return(stubbed_python_config)
 
     stubbed_python_config

@@ -1,23 +1,48 @@
 require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/eslint"
+require "app/models/config/parser"
+require "app/models/config/serializer"
+require "yaml"
 
 describe Config::Eslint do
-  it_behaves_like "a service based linter" do
-    let(:raw_config) do
-      <<-EOS.strip_heredoc
+  describe "#content" do
+    it "parses the configuration using YAML" do
+      raw_config = <<-EOS.strip_heredoc
         rules:
-            quotes: [2, "double"]
+          quotes: [2, "double"]
       EOS
-    end
+      commit = stubbed_commit("config/.eslintrc" => raw_config)
+      config = build_config(commit)
 
-    let(:hound_config_content) do
-      {
-        "eslint" => {
-          "enabled" => true,
-          "config_file" => "config/.eslintrc",
-        },
-      }
+      expect(config.content).to eq("rules" => { "quotes" => [2, "double"] })
     end
+  end
+
+  describe "#serialize" do
+    it "serializes the content into JSON" do
+      raw_config = <<-EOS.strip_heredoc
+        rules:
+          quotes: [2, "double"]
+      EOS
+      commit = stubbed_commit("config/.eslintrc" => raw_config)
+      config = build_config(commit)
+
+      expect(config.serialize).to eq(
+        "{\"rules\":{\"quotes\":[2,\"double\"]}}",
+      )
+    end
+  end
+
+  def build_config(commit)
+    hound_config = double(
+      "HoundConfig",
+      commit: commit,
+      content: {
+        "eslint" => { "enabled": true, "config_file" => "config/.eslintrc" },
+      },
+    )
+
+    Config::Eslint.new(hound_config, "eslint")
   end
 end

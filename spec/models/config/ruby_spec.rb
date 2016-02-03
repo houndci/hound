@@ -2,6 +2,7 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/ruby"
 require "app/models/hound_config"
+require "app/models/config/parser"
 require "app/models/config/parser_error"
 
 describe Config::Ruby do
@@ -149,6 +150,7 @@ describe Config::Ruby do
         },
       },
     )
+
     Config::Ruby.new(hound_config, "ruby")
   end
 end

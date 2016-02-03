@@ -16,6 +16,10 @@ module Config
       [linter_name]
     end
 
+    def serialize(data = content)
+      data
+    end
+
     private
 
     attr_implement :parse, [:file_content]

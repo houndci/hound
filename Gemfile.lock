@@ -141,6 +141,7 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
+    inifile (3.0.0)
     jasmine-core (2.1.3)
     jasmine-rails (0.10.6)
       jasmine-core (>= 1.3, < 3.0)
@@ -381,6 +382,7 @@ DEPENDENCIES
   haml-rails
   haml_lint
   high_voltage
+  inifile
   jasmine-rails
   jquery-rails (~> 4.0.0)
   launchy

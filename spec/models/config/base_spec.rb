@@ -2,8 +2,13 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/parser_error"
 require "faraday"
+require "yaml"
 
 class Config::Test < Config::Base
+  def serialize(content)
+    ensure_correct_type(content).to_yaml
+  end
+
   private
 
   def parse(file_content)

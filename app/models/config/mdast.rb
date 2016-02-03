@@ -1,9 +1,13 @@
 module Config
   class Mdast < Base
+    def serialize(data = content)
+      Serializer.json(data)
+    end
+
     private
 
     def parse(file_content)
-      Parser.raw(file_content)
+      Parser.json(file_content)
     end
   end
 end

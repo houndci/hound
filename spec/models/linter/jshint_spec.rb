@@ -80,7 +80,7 @@ describe Linter::Jshint do
 
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      stub_jshint_config(content: "config")
+      stub_jshint_config(content: {})
       commit_file = build_commit_file(filename: "lib/a.js")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
@@ -94,15 +94,16 @@ describe Linter::Jshint do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "config",
+        config: "{}",
       )
     end
   end
 
   def stub_jshint_config(options = {})
     default_options = {
-      content: "",
+      content: {},
       excluded_files: [],
+      serialize: "{}",
     }
     stubbed_jshint_config = double(
       "JshintConfig",

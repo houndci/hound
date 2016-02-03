@@ -40,7 +40,7 @@ describe Linter::Mdast do
 
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      stub_mdast_config(content: "config")
+      stub_mdast_config(content: {})
       commit_file = build_commit_file(filename: "lib/a.md")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
@@ -54,13 +54,17 @@ describe Linter::Mdast do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "config",
+        config: "{}",
       )
     end
   end
 
-  def stub_mdast_config(content: "")
-    stubbed_mdast_config = double("MdastConfig", content: content)
+  def stub_mdast_config(content: {})
+    stubbed_mdast_config = double(
+      "MdastConfig",
+      content: content,
+      serialize: content.to_s,
+    )
     allow(Config::Mdast).to receive(:new).and_return(stubbed_mdast_config)
 
     stubbed_mdast_config

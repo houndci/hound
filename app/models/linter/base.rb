@@ -41,7 +41,7 @@ module Linter
     def build_review_job_attributes(commit_file)
       {
         commit_sha: build.commit_sha,
-        config: config.content,
+        config: config.serialize,
         content: commit_file.content,
         filename: commit_file.filename,
         patch: commit_file.patch,

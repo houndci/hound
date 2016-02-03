@@ -48,7 +48,7 @@ describe Linter::Eslint do
 
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      stub_eslint_config(content: "config")
+      stub_eslint_config(content: {})
       commit_file = build_commit_file(filename: "lib/a.js")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
@@ -62,13 +62,17 @@ describe Linter::Eslint do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "config",
+        config: "{}",
       )
     end
   end
 
-  def stub_eslint_config(content: "")
-    stubbed_eslint_config = double("EslintConfig", content: content)
+  def stub_eslint_config(content: {})
+    stubbed_eslint_config = double(
+      "EslintConfig",
+      content: content,
+      serialize: content.to_s,
+    )
     allow(Config::Eslint).to receive(:new).and_return(stubbed_eslint_config)
 
     stubbed_eslint_config

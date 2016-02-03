@@ -16,10 +16,14 @@ module Config
       ]
     end
 
+    def serialize(data = content)
+      Serializer.json(data)
+    end
+
     private
 
     def parse(file_content)
-      Parser.raw(file_content)
+      Parser.json(file_content)
     end
 
     def load_javascript_ignore
