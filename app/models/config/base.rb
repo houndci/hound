@@ -1,6 +1,6 @@
 module Config
   class Base
-    pattr_initialize :hound_config, :linter_name
+    attr_reader_initialize :hound_config, :linter_name
 
     def content
       @content ||= parse(load_content)
