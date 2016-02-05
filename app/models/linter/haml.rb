@@ -2,6 +2,7 @@ module Linter
   class Haml < Base
     DEFAULT_CONFIG_FILENAME = "haml.yml"
     FILE_REGEXP = /.+\.haml\z/
+    HamlViolation = Struct.new(:line, :message)
 
     def file_review(commit_file)
       @commit_file = commit_file
@@ -43,6 +44,8 @@ module Linter
         linter.run(content)
         results + linter.lints
       end
+    rescue HamlLint::Exceptions::ParseError => haml_error
+      [HamlViolation.new(haml_error.line + 1, haml_error.message)]
     end
 
     def linters
