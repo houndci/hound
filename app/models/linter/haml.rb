@@ -32,11 +32,7 @@ module Linter
     attr_reader :commit_file
 
     def content
-      HamlLint::Document.new(
-        commit_file.content,
-        file: commit_file.filename,
-        config: linter_config,
-      )
+      HamlLint::Document.new(commit_file.content, config: linter_config)
     end
 
     def run_linters

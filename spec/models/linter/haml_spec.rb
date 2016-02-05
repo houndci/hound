@@ -115,6 +115,26 @@ describe Linter::Haml do
         end
       end
     end
+
+    context "when RuboCop linter is enabled" do
+      it "does not raise missing dir for Tempfile error" do
+        content = <<-EOS.strip_heredoc
+          %div
+        EOS
+        commit_file = build_commit_file(
+          filename: "/does/not/exist/foo.haml",
+          content: content,
+        )
+        config = {
+          "linters" => {
+            "RuboCop" => { "enabled" => true },
+          },
+        }
+        linter = build_linter(config)
+
+        expect { linter.file_review(commit_file) }.not_to raise_error
+      end
+    end
   end
 
   describe "#file_included?" do
