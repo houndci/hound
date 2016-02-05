@@ -400,17 +400,8 @@
               config_file: .flake8.ini
 
     %article#swift
-      %h3 Swift (beta)
+      %h3 Swift
 
-      %p
-        Add the following code to your
-        %em.code .hound.yml
-        to enable Swift style checking.
-
-        %code.code-block
-          :preserve
-            swift:
-              enabled: true
       %p
         Hound uses
         = link_to "SwiftLint",
@@ -429,8 +420,18 @@
         %code.code-block
           :preserve
             swift:
-              enabled: true
               config_file: .swiftlint.yml
+
+      %p
+        If you would like to disable Swift style checking,
+        add the following code to your
+        %em.code .hound.yml
+        file.
+
+        %code.code-block
+          :preserve
+            swift:
+              enabled: false
 
       %p
         For more information on the available configuration in your

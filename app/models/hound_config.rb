@@ -6,7 +6,6 @@ class HoundConfig
     jshint
     mdast
     python
-    swift
   )
   LANGUAGES = %w(
     coffeescript
