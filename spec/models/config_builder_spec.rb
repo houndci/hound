@@ -1,4 +1,8 @@
-require "rails_helper"
+require "spec_helper"
+require "app/models/config_builder"
+require "app/models/config/base"
+require "app/models/config/ruby"
+require "app/models/config/unsupported"
 
 describe ConfigBuilder do
   describe ".for" do
