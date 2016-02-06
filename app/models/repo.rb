@@ -57,6 +57,14 @@ class Repo < ActiveRecord::Base
     builds.sum(:violations_count)
   end
 
+  def remove_membership(user)
+    users.destroy(user)
+  end
+
+  def users_with_token
+    users.where.not(token: nil)
+  end
+
   private
 
   def organization

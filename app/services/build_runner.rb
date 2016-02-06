@@ -1,6 +1,4 @@
 class BuildRunner
-  ExpiredToken = Class.new(StandardError)
-
   pattr_initialize :payload
 
   def run
@@ -9,17 +7,8 @@ class BuildRunner
     end
   rescue Config::ParserError => exception
     report_config_file_as_invalid(exception)
-  rescue Octokit::Unauthorized
-    if users_with_token.any?
-      reset_token
-      raise ExpiredToken
-    else
-      raise
-    end
   rescue Octokit::NotFound
-    if token != Hound::GITHUB_TOKEN
-      remove_repo_from_user
-    end
+    remove_current_user_membership
     raise
   end
 
@@ -35,7 +24,7 @@ class BuildRunner
     upsert_owner
     build = create_build
     review_files(build)
-    BuildReport.run(pull_request: pull_request, build: build, token: token)
+    report_on_build(build)
   end
 
   def relevant_pull_request?
@@ -51,42 +40,32 @@ class BuildRunner
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       payload: payload.build_data.to_json,
-      user: current_user_with_token,
+      user: user_token.user,
     )
   end
 
+  def remove_current_user_membership
+    repo.remove_membership(user_token.user)
+  end
+
   def pull_request
-    @pull_request ||= PullRequest.new(payload, token)
+    @pull_request ||= PullRequest.new(payload, user_token.token)
   end
 
-  def token
-    @token ||= current_user_with_token.try(:token) || Hound::GITHUB_TOKEN
-  end
-
-  def current_user_with_token
-    @current_user_with_token ||= users_with_token.sample
-  end
-
-  def users_with_token
-    repo.users.where.not(token: nil)
-  end
-
-  def last_token_user
-    repo.users.detect { |user| user.token == token }
+  def user_token
+    @user_token ||= UserToken.new(repo)
   end
 
   def repo
     @repo ||= Repo.active.find_by(github_id: payload.github_repo_id)
   end
 
-  def reset_token
-    last_token_user.update_columns(token: nil)
-    @token = nil
-  end
-
-  def remove_repo_from_user
-    last_token_user.repos.destroy(repo)
-    @token = nil
+  def report_on_build(build)
+    BuildReport.run(
+      pull_request: pull_request,
+      build: build,
+      token: user_token.token,
+    )
   end
 
   def track_subscribed_build_started
@@ -110,7 +89,7 @@ class BuildRunner
     @commit_status ||= CommitStatus.new(
       repo_name: payload.full_repo_name,
       sha: payload.head_sha,
-      token: token,
+      token: user_token.token,
     )
   end
 

@@ -19,8 +19,7 @@ class ReportInvalidConfig
   attr_reader :pull_request_number, :commit_sha, :linter_name
 
   def message
-    @message.presence ||
-      I18n.t(:config_error_status, linter_name: linter_name)
+    @message.presence || I18n.t(:config_error_status, linter_name: linter_name)
   end
 
   def commit_status
