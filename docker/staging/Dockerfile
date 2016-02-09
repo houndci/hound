@@ -1,5 +1,10 @@
 FROM quay.io/netguru/ng-ruby:2.3.0
 
+# this app uses passenger
+RUN /opt/passenger/install
+# this app uses nodejs for assets precompilation
+RUN /opt/node/install
+
 ENV APP_HOME /var/www/app
 ENV RAILS_ENV=staging
 ENV REDIS_URL=redis://redis:6379/0
