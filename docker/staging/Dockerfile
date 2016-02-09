@@ -5,6 +5,8 @@ RUN /opt/passenger/install
 # this app uses nodejs for assets precompilation
 RUN /opt/node/install
 
+RUN apt-get update && apt-get install -y libpq-dev
+
 ENV APP_HOME /var/www/app
 ENV RAILS_ENV=staging
 ENV REDIS_URL=redis://redis:6379/0
