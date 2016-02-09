@@ -2,7 +2,7 @@ class Plan
   PRICES = {
     bulk: 0,
     public: 0,
-    private: 12
+    private: 0
   }
 
   TYPES = {
