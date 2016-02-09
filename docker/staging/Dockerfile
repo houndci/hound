@@ -21,7 +21,7 @@ RUN bundle install --jobs=8 --retry=3  --without development test --deployment
 ADD . $APP_HOME/
 ADD docker/staging/entrypoint.sh /entrypoint.sh
 
-ADD docker/staging/service/rescue /etc/service/rescue/run
+ADD docker/staging/service/resque /etc/service/resque/run
 
 EXPOSE 3000
 
