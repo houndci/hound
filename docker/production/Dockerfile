@@ -8,7 +8,7 @@ RUN /opt/node/install
 RUN apt-get update && apt-get install -y libpq-dev
 
 ENV APP_HOME /var/www/app
-ENV RAILS_ENV=staging
+ENV RAILS_ENV=production
 ENV REDIS_URL=redis://redis:6379/0
 
 # throw errors if Gemfile has been modified since Gemfile.lock
