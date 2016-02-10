@@ -136,8 +136,8 @@ being used and the default configs for each linter.
  * [hound-go](https://github.com/thoughtbot/hound-go)
 
 1. Markdown (beta)
- * [hound-markdown](https://github.com/thoughtbot/hound-markdown)
- * [config](https://github.com/mivok/markdownlint/blob/master/lib/mdl/rules.rb)
+ * [hound-mdast](https://github.com/thoughtbot/hound-mdast)
+ * [config](https://github.com/wooorm/remark-lint#rules)
 
 1. Swift (beta)
  * [hound-swift](https://github.com/thoughtbot/hound-swift)
