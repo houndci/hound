@@ -8,4 +8,4 @@ set :docker_volumes, [
   "#{shared_path}/log:/var/www/app/log",
   "#{shared_path}/assets:/var/www/app/public/assets"
 ]
-set :docker_dockerfile, "docker/staging/Dockerfile"
+set :docker_dockerfile, "docker/production/Dockerfile"
