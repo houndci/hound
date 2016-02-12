@@ -360,3 +360,6 @@ Style/MultilineBlockChain:
   Description: 'Avoid multi-line chains of blocks.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#single-line-blocks'
   Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
