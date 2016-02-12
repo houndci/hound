@@ -1,10 +1,10 @@
 require "spec_helper"
 require "app/models/config/base"
-require "app/models/config/mdast"
+require "app/models/config/remark"
 require "app/models/config/parser"
 require "app/models/config/serializer"
 
-describe Config::Mdast do
+describe Config::Remark do
   describe "#content" do
     it "parses the configuration using JSON" do
       raw_config = <<-EOS.strip_heredoc
@@ -12,7 +12,7 @@ describe Config::Mdast do
           "heading-style": "setext"
         }
       EOS
-      commit = stubbed_commit("config/.mdastrc" => raw_config)
+      commit = stubbed_commit("config/.remarkrc" => raw_config)
       config = build_config(commit)
 
       expect(config.content).to eq Config::Parser.json(raw_config)
@@ -20,13 +20,13 @@ describe Config::Mdast do
   end
 
   describe "#serialize" do
-    it "serializes the content into YAML" do
+    it "serializes the content into JSON" do
       raw_config = <<-EOS.strip_heredoc
         {
-        "heading-style": "setext"
+          "heading-style": "setext"
         }
       EOS
-      commit = stubbed_commit("config/.mdastrc" => raw_config)
+      commit = stubbed_commit("config/.remarkrc" => raw_config)
       config = build_config(commit)
 
       expect(config.serialize).to eq "{\"heading-style\":\"setext\"}"
@@ -38,10 +38,10 @@ describe Config::Mdast do
       "HoundConfig",
       commit: commit,
       content: {
-        "mdast" => { "enabled": true, "config_file" => "config/.mdastrc" },
+        "remark" => { "enabled": true, "config_file" => "config/.remarkrc" },
       },
     )
 
-    Config::Mdast.new(hound_config, "mdast")
+    Config::Remark.new(hound_config, "remark")
   end
 end

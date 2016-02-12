@@ -1,5 +1,5 @@
 module Config
-  class Mdast < Base
+  class Remark < Base
     def serialize(data = content)
       Serializer.json(data)
     end

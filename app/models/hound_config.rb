@@ -4,7 +4,7 @@ class HoundConfig
     eslint
     jscs
     jshint
-    mdast
+    remark
     python
   )
   LANGUAGES = %w(

@@ -1,10 +1,10 @@
 require "rails_helper"
 
-describe Linter::Mdast do
+describe Linter::Remark do
   describe ".can_lint?" do
     context "given an .md file" do
       it "returns true" do
-        result = Linter::Mdast.can_lint?("foo.md")
+        result = Linter::Remark.can_lint?("foo.md")
 
         expect(result).to eq true
       end
@@ -12,7 +12,7 @@ describe Linter::Mdast do
 
     context "given an .markdown file" do
       it "returns true" do
-        result = Linter::Mdast.can_lint?("foo.markdown")
+        result = Linter::Remark.can_lint?("foo.markdown")
 
         expect(result).to eq true
       end
@@ -20,7 +20,7 @@ describe Linter::Mdast do
 
     context "given a non-markdown file" do
       it "returns false" do
-        result = Linter::Mdast.can_lint?("foo.txt")
+        result = Linter::Remark.can_lint?("foo.txt")
 
         expect(result).to eq false
       end
@@ -40,7 +40,7 @@ describe Linter::Mdast do
 
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      stub_mdast_config(content: {})
+      stub_remark_config(content: {})
       commit_file = build_commit_file(filename: "lib/a.md")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
@@ -48,7 +48,7 @@ describe Linter::Mdast do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        MdastReviewJob,
+        RemarkReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
         pull_request_number: build.pull_request_number,
@@ -59,22 +59,22 @@ describe Linter::Mdast do
     end
   end
 
-  def stub_mdast_config(content: {})
-    stubbed_mdast_config = double(
-      "MdastConfig",
+  def stub_remark_config(content: "")
+    stubbed_remark_config = double(
+      "RemarkConfig",
       content: content,
       serialize: content.to_s,
     )
-    allow(Config::Mdast).to receive(:new).and_return(stubbed_mdast_config)
+    allow(Config::Remark).to receive(:new).and_return(stubbed_remark_config)
 
-    stubbed_mdast_config
+    stubbed_remark_config
   end
 
   def raw_hound_config
     <<-EOS.strip_heredoc
-      mdast:
+      remark:
         enabled: true
-        config_file: config/.mdastrc
+        config_file: config/.remarkrc
     EOS
   end
 end

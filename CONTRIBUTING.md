@@ -136,7 +136,7 @@ being used and the default configs for each linter.
  * [hound-go](https://github.com/thoughtbot/hound-go)
 
 1. Markdown (beta)
- * [hound-mdast](https://github.com/thoughtbot/hound-mdast)
+ * [hound-remark](https://github.com/houndci/hound-remark)
  * [config](https://github.com/wooorm/remark-lint#rules)
 
 1. Swift (beta)
