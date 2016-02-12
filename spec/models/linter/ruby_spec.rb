@@ -172,9 +172,9 @@ describe Linter::Ruby do
 
       context "for long line" do
         it "returns violation" do
-          violations = ["Line is too long. [81/80]"]
+          violations = ["Line is too long. [101/100]"]
 
-          expect(violations_in("a" * 81 + "\n")).to eq violations
+          expect(violations_in("a" * 101 + "\n")).to eq violations
         end
       end
 
