@@ -169,6 +169,17 @@ Metrics/PerceivedComplexity:
     reader.
   Enabled: false
   Max: 7
+Metrics/LineLength:
+  Description: Limit lines to 100 characters.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#80-character-limits
+  Enabled: true
+  Max: 100
+  AllowURI: true
+  URISchemes:
+  - http
+  - https
+  Exclude:
+  - db/seeds.rb
 Lint/AssignmentInCondition:
   Description: Don't use assignment in conditions.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#safe-assignment-in-condition
