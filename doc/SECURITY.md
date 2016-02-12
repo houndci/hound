@@ -9,7 +9,7 @@ Because [Hound is open source][oss],
 in this document we refer to portions of the application code and its dependent
 libraries, frameworks, and programming languages.
 
-[oss]: https://github.com/thoughtbot/hound
+[oss]: https://github.com/houndci/hound
 
 Vulnerability Reporting
 -----------------------

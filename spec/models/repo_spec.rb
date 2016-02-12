@@ -18,7 +18,7 @@ describe Repo do
     context "when repo is bulk" do
       it "returns true" do
         create(:bulk_customer, org: "thoughtbot")
-        repo = Repo.new(full_github_name: "thoughtbot/hound")
+        repo = Repo.new(full_github_name: "thoughtbot/hub")
 
         expect(repo).to be_bulk
       end

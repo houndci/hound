@@ -1,13 +1,13 @@
 [
   {
     "additions": 22,
-    "blob_url": "https://github.com/thoughtbot/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
+    "blob_url": "https://github.com/houndci/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
     "changes": 22,
-    "contents_url": "https://api.github.com/repos/thoughtbot/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc",
+    "contents_url": "https://api.github.com/repos/houndci/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc",
     "deletions": 0,
     "filename": "config/unicorn.rb",
     "patch": "@@ -0,0 +1,22 @@\n+worker_processes Integer(ENV[\"WEB_CONCURRENCY\"] || 3)\n+timeout 15\n+preload_app true\n+\n+before_fork do |server, worker|\n+  Signal.trap 'TERM' do\n+    puts 'Unicorn master intercepting TERM and sending myself QUIT instead'\n+    Process.kill 'QUIT', Process.pid\n+  end\n+\n+  defined?(ActiveRecord::Base) and\n+    ActiveRecord::Base.connection.disconnect!\n+end\n+\n+after_fork do |server, worker|\n+  Signal.trap 'TERM' do\n+    puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'\n+  end\n+\n+  defined?(ActiveRecord::Base) and\n+    ActiveRecord::Base.establish_connection\n+end",
-    "raw_url": "https://github.com/thoughtbot/hound/raw/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
+    "raw_url": "https://github.com/houndci/hound/raw/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
     "sha": "f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
     "status": "added"
   }

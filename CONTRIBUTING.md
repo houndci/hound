@@ -16,7 +16,7 @@ Here are a few technical guidelines to follow:
 1. [Squash your commits][squash] after receiving feedback.
 1. Party!
 
-[issues]: https://github.com/thoughtbot/hound/issues
+[issues]: https://github.com/houndci/hound/issues
 [squash]: https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature
 
 ## Configure Hound on Your Local Development Environment
@@ -110,38 +110,38 @@ To test Stripe payments on staging use this fake credit card number.
 ## Linters
 
 To better understand the architecture of Hound, here is a list of the linters
-being used and the default configs for each linter.
+and services being used, and the default configuration for each linter.
 
 1. Ruby
  * [RuboCop](https://github.com/bbatsov/rubocop)
- * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/ruby.yml)
+ * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/ruby.yml)
 
 1. CoffeeScript
  * [CoffeeLint](https://github.com/clutchski/coffeelint)
- * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/coffeescript.json)
+ * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/coffeescript.json)
 
-1. JavaScript
- * [JSHint](https://github.com/thoughtbot/hound-jshint)
- * [config](https://raw.githubusercontent.com/thoughtbot/hound-jshint/master/config/.jshintrc)
+1. JavaScript (JSHint)
+ * [houndci/jshint](https://github.com/houndci/jshint)
+ * [config](https://raw.githubusercontent.com/houndci/jshint/master/config/.jshintrc)
 
 1. SCSS
- * [hound-scss](https://github.com/thoughtbot/hound-scss)
- * [config](https://raw.githubusercontent.com/thoughtbot/hound-scss/master/config/default.yml)
+ * [houndci/scss](https://github.com/houndci/scss)
+ * [config](https://raw.githubusercontent.com/houndci/scss/master/config/default.yml)
 
 1. Haml
  * [haml-lint](https://github.com/brigade/haml-lint)
- * [config](https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/haml.yml)
+ * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/haml.yml)
 
 1. Go
- * [hound-go](https://github.com/thoughtbot/hound-go)
+ * [houndci/go](https://github.com/houndci/go)
 
 1. Markdown (beta)
- * [hound-remark](https://github.com/houndci/hound-remark)
+ * [houndci/remark](https://github.com/houndci/remark)
  * [config](https://github.com/wooorm/remark-lint#rules)
 
 1. Swift (beta)
- * [hound-swift](https://github.com/thoughtbot/hound-swift)
- * [config](https://github.com/thoughtbot/hound-swift/blob/master/config/default.yml)
+ * [houndci/swift](https://github.com/houndci/swift)
+ * [config](https://github.com/houndci/swift/blob/master/config/default.yml)
 
 ### Writing a Linter
 

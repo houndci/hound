@@ -36,7 +36,7 @@ Source Code
 
 * Hound does not store GitHub credentials.
 
-* Hound&#8217;s [source code](https://github.com/thoughtbot/hound) is openly available. Browse the code and [email](mailto:hound@thoughtbot.com) us with questions.
+* Hound&#8217;s [source code](https://github.com/houndci/hound) is openly available. Browse the code and [email](mailto:hound@thoughtbot.com) us with questions.
 
 Disclosure
 ----------

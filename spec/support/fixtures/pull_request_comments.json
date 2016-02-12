@@ -1,6 +1,6 @@
 [
   {
-    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195368",
+    "url": "https://api.github.com/repos/houndci/hound/pulls/comments/12195368",
     "id": 12195368,
     "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
     "path": "spec/models/style_guide_spec.rb",
@@ -30,22 +30,22 @@
     "body": "inline if's and while's are not violations?",
     "created_at": "2014-05-01T16:57:49Z",
     "updated_at": "2014-05-01T17:17:03Z",
-    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195368",
-    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "html_url": "https://github.com/houndci/hound/pull/253#discussion_r12195368",
+    "pull_request_url": "https://api.github.com/repos/houndci/hound/pulls/253",
     "_links": {
       "self": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195368"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/comments/12195368"
       },
       "html": {
-        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195368"
+        "href": "https://github.com/houndci/hound/pull/253#discussion_r12195368"
       },
       "pull_request": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/253"
       }
     }
   },
   {
-    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195668",
+    "url": "https://api.github.com/repos/houndci/hound/pulls/comments/12195668",
     "id": 12195668,
     "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
     "path": "spec/models/style_guide_spec.rb",
@@ -75,22 +75,22 @@
     "body": "Can Rubocop detect `do_something if something`?",
     "created_at": "2014-05-01T17:05:09Z",
     "updated_at": "2014-05-01T17:17:03Z",
-    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195668",
-    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "html_url": "https://github.com/houndci/hound/pull/253#discussion_r12195668",
+    "pull_request_url": "https://api.github.com/repos/houndci/hound/pulls/253",
     "_links": {
       "self": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195668"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/comments/12195668"
       },
       "html": {
-        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195668"
+        "href": "https://github.com/houndci/hound/pull/253#discussion_r12195668"
       },
       "pull_request": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/253"
       }
     }
   },
   {
-    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195672",
+    "url": "https://api.github.com/repos/houndci/hound/pulls/comments/12195672",
     "id": 12195672,
     "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
     "path": "spec/models/style_guide_spec.rb",
@@ -120,22 +120,22 @@
     "body": "They are, but this change is to avoid suggesting them. I will follow up with a rule that comments on them or overrides the description from RuboCop to suggest what we prefer.",
     "created_at": "2014-05-01T17:05:22Z",
     "updated_at": "2014-05-01T17:17:03Z",
-    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195672",
-    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "html_url": "https://github.com/houndci/hound/pull/253#discussion_r12195672",
+    "pull_request_url": "https://api.github.com/repos/houndci/hound/pulls/253",
     "_links": {
       "self": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195672"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/comments/12195672"
       },
       "html": {
-        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195672"
+        "href": "https://github.com/houndci/hound/pull/253#discussion_r12195672"
       },
       "pull_request": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/253"
       }
     }
   },
   {
-    "url": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195842",
+    "url": "https://api.github.com/repos/houndci/hound/pulls/comments/12195842",
     "id": 12195842,
     "diff_hunk": "@@ -15,6 +15,16 @@\n       end\n     end\n \n+    describe 'for single line conditional' do\n+      it 'returns no violations' do\n+        expect(violations_in(<<-CODE)).to eq []\n+if signed_in? then redirect_to dashboard_path end",
     "path": "spec/models/style_guide_spec.rb",
@@ -165,17 +165,17 @@
     "body": "@gylaz, not sure yet. I think `IfUnlessModifier` will do it, but the description is way off and violates our guide. I'm planning on using that cop and changing the description, or creating our own, in a separate pull request.",
     "created_at": "2014-05-01T17:09:52Z",
     "updated_at": "2014-05-01T17:17:03Z",
-    "html_url": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195842",
-    "pull_request_url": "https://api.github.com/repos/thoughtbot/hound/pulls/253",
+    "html_url": "https://github.com/houndci/hound/pull/253#discussion_r12195842",
+    "pull_request_url": "https://api.github.com/repos/houndci/hound/pulls/253",
     "_links": {
       "self": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/comments/12195842"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/comments/12195842"
       },
       "html": {
-        "href": "https://github.com/thoughtbot/hound/pull/253#discussion_r12195842"
+        "href": "https://github.com/houndci/hound/pull/253#discussion_r12195842"
       },
       "pull_request": {
-        "href": "https://api.github.com/repos/thoughtbot/hound/pulls/253"
+        "href": "https://api.github.com/repos/houndci/hound/pulls/253"
       }
     }
   }
