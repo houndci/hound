@@ -1,5 +1,6 @@
 server ENV['STAGING_SERVER'], user: ENV['STAGING_USER'], roles: %w{web app db}
 set :branch, "master"
+set :application, "hound-pr"
 
 set :deploy_to, ENV['STAGING_DEPLOY_PATH']
 

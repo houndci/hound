@@ -1,5 +1,6 @@
 server ENV['PROD_SERVER'], user: ENV['PROD_USER'], roles: %w{web app db}
 set :branch, "production"
+set :application, "hound"
 
 set :deploy_to, ENV['PROD_DEPLOY_PATH']
 

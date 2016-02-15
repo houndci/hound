@@ -1,7 +1,6 @@
 # config valid only for current version of Capistrano
 lock '3.4.0'
 
-set :application, 'hound-pr'
 set :repo_url, 'git@github.com:netguru/hound.git'
 
 set :docker_additional_options, -> { "--env-file #{shared_path}/.env" }
