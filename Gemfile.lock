@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/netguru/capistrano-docker.git
+  remote: https://github.com/netguru/capistrano-docker.git
   revision: c06f0102ea82b7658496131bc1212a880b04daf8
   tag: v0.2.7
   specs:
@@ -283,6 +283,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rollbar (2.8.0)
+      multi_json
     rspec-core (3.4.1)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -416,6 +418,7 @@ DEPENDENCIES
   resque-scheduler
   resque-sentry
   rest-client (>= 1.8.0)
+  rollbar
   rspec-rails (>= 3.4)
   rubocop (= 0.36)
   sass-rails

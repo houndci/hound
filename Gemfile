@@ -37,12 +37,13 @@ gem "stripe"
 gem "uglifier", ">= 2.7.2"
 
 gem 'capistrano', '~> 3.4.0'
-gem 'capistrano-docker', github: 'netguru/capistrano-docker', tag: 'v0.2.7'
+gem 'capistrano-docker', git: 'https://github.com/netguru/capistrano-docker.git', tag: 'v0.2.7'
 
 group :staging, :production do
   gem "rack-timeout"
   gem "rails_12factor"
   gem "sentry-raven", ">= 0.12.2"
+  gem 'rollbar'
 end
 
 group :development, :test do
