@@ -235,11 +235,9 @@ describe Linter::Ruby do
       end
 
       context "for leading dot used for multi-line method chain" do
-        it "returns violations" do
-          violations = ["Place the . on the previous line, together with the "\
-                        "method call receiver."]
+        it "does not return violations" do
 
-          expect(violations_in(<<-CODE.strip_heredoc)).to eq violations
+          expect(violations_in(<<-CODE.strip_heredoc)).to eq []
             one
               .two
           CODE
@@ -429,8 +427,8 @@ describe Linter::Ruby do
         it "returns violations" do
           code = <<-CODE.strip_heredoc
             def user_names
-              user = User.order(:name).
-                limit(10)
+              user = User.order(:name)
+                .limit(10)
               user.pluck(:name)
             end
           CODE
@@ -438,7 +436,7 @@ describe Linter::Ruby do
           violations = violations_in(code)
 
           expect(violations).to eq [
-            "Align `limit` with `User.order(:name).` on line 2.",
+            "Align `.limit` with `.order` on line 2.",
           ]
         end
       end
