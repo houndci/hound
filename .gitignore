@@ -5,3 +5,4 @@
 /log/*.log
 /tmp
 dump.rdb
+*.swp
