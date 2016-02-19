@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /var/www/app
-exec TERM_CHILD=1 RESQUE_TERM_TIMEOUT=8 QUEUE=low,medium bundle exec rake resque:work
+TERM_CHILD=1 RESQUE_TERM_TIMEOUT=8 QUEUE=low,medium exec bundle exec rake resque:work
