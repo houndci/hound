@@ -3,9 +3,7 @@ module Config
     attr_reader_initialize :hound_config, :linter_name
 
     def content
-      @content ||= parse(load_content)
-    rescue JSON::ParserError, Psych::Exception => exception
-      raise_parse_error(exception.message)
+      @content ||= ensure_correct_type(safe_parse(load_content))
     end
 
     def excluded_files
@@ -24,16 +22,22 @@ module Config
 
     attr_implement :parse, [:file_content]
 
-    def ensure_correct_type(result)
-      if result.is_a? Hash
-        result
+    def safe_parse(content)
+      parse(content)
+    rescue JSON::ParserError, Psych::Exception => exception
+      raise_parse_error(exception.message)
+    end
+
+    def ensure_correct_type(config)
+      if config.is_a? Hash
+        config
       else
         raise_type_error
       end
     end
 
     def raise_type_error
-      raise_parse_error("`#{file_path}` must be a Hash")
+      raise_parse_error(%{"#{file_path}" must be a Hash})
     end
 
     def load_content

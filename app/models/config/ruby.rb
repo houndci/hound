@@ -4,9 +4,7 @@ module Config
       if legacy?
         hound_config.content
       else
-        result = super
-        ensure_correct_type(result)
-        parse_inherit_from(result)
+        parse_inherit_from(super)
       end
     end
 
@@ -21,7 +19,7 @@ module Config
 
       inherited_config = inherit_from.reduce({}) do |result, ancestor_file_path|
         raw_ancestor_config = commit.file_content(ancestor_file_path)
-        ancestor_config = parse(raw_ancestor_config) || {}
+        ancestor_config = safe_parse(raw_ancestor_config) || {}
         result.merge(ancestor_config)
       end
 

@@ -2,6 +2,7 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/python"
 require "app/models/config/parser"
+require "app/models/config/parser_error"
 require "app/models/config/serializer"
 require "inifile"
 

@@ -1,7 +1,7 @@
 module Config
   class Python < Base
     def content
-      @content ||= super || default_content
+      @content ||= super.presence || default_content
     end
 
     def serialize(data = content)
@@ -11,7 +11,7 @@ module Config
     private
 
     def parse(file_content)
-      Parser.ini(file_content).presence
+      Parser.ini(file_content)
     end
 
     def default_content

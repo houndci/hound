@@ -36,7 +36,7 @@ describe Config::Haml do
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            %r(`config/haml\.yml` must be a Hash),
+            %r("config/haml\.yml" must be a Hash),
           )
         end
       end
