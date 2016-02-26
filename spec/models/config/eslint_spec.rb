@@ -2,7 +2,9 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/eslint"
 require "app/models/config/parser"
+require "app/models/config/parser_error"
 require "app/models/config/serializer"
+require "app/models/config/json_with_comments"
 require "yaml"
 
 describe Config::Eslint do
@@ -16,6 +18,21 @@ describe Config::Eslint do
       config = build_config(commit)
 
       expect(config.content).to eq("rules" => { "quotes" => [2, "double"] })
+    end
+
+    context "when configuration is linter-flavored JSON format" do
+      it "parses the configuration" do
+        raw_config = <<-EOS.strip_heredoc
+          {
+            "foo": 1, // eslint JSON flavor can have comments
+            "bar": 2,
+          }
+        EOS
+        commit = stubbed_commit("config/.eslintrc" => raw_config)
+        config = build_config(commit)
+
+        expect(config.content).to eq("foo" => 1, "bar" => 2)
+      end
     end
   end
 
