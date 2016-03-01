@@ -3,6 +3,7 @@
 [![Build Status](https://circleci.com/gh/houndci/hound.svg?style=svg)](https://circleci.com/gh/houndci/hound)
 [![Code Climate](https://codeclimate.com/repos/526ab75ff3ea007df603b773/badges/32cb8e64b2e265d8cad6/gpa.svg)](https://codeclimate.com/repos/526ab75ff3ea007df603b773/feed)
 [![Slack](http://slack.houndci.com/badge.svg)](http://slack.houndci.com)
+[![codebeat](https://codebeat.co/badges/4d0a821d-1f2c-4e68-90ec-597e533802a4)](https://codebeat.co/projects/github-com-thoughtbot-hound)
 
 This codebase is the Rails app for
 [Hound](http://houndci.com),
