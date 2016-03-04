@@ -256,6 +256,32 @@ describe RepoActivator do
         expect(api).to have_received(:remove_collaborator).
           with(repo.full_github_name, Hound::GITHUB_USERNAME)
       end
+
+      context "when the subscribed user does not have a membership" do
+        it "deactivates the repo" do
+          user = create(:user)
+          repo = create(:repo, :active, private: true)
+          create(:subscription, user: user, repo: repo)
+          activator = build_activator(repo: repo)
+
+          activator.deactivate
+
+          expect(repo.reload).not_to be_active
+        end
+
+        it "does not interact with GitHub" do
+          user = create(:user)
+          repo = create(:repo, :active, private: true)
+          create(:subscription, user: user, repo: repo)
+          activator = build_activator(repo: repo)
+          api = stub_github_api
+
+          activator.deactivate
+
+          expect(api).not_to have_received(:remove_collaborator)
+          expect(api).not_to have_received(:remove_hook)
+        end
+      end
     end
 
     context "when repo deactivation succeeds" do
