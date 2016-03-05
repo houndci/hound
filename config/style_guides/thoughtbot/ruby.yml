@@ -361,5 +361,10 @@ Style/MultilineBlockChain:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#single-line-blocks'
   Enabled: false
 
+Style/MultilineOperationIndentation:
+  Description: Checks indentation of binary operations that span multiple lines.
+  Enabled: true
+  EnforcedStyle: indented
+
 Metrics/AbcSize:
   Enabled: false
