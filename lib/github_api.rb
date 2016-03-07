@@ -143,7 +143,5 @@ class GithubApi
       description: description,
       target_url: target_url
     )
-  rescue Octokit::NotFound
-    # noop
   end
 end
