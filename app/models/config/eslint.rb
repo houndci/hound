@@ -11,9 +11,5 @@ module Config
       content_without_comments = json_with_comments.without_comments
       Parser.yaml(content_without_comments)
     end
-
-    def default_content
-      {}
-    end
   end
 end
