@@ -93,6 +93,7 @@ describe Linter::Jshint do
         JshintReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
+        linter_name: "jshint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,

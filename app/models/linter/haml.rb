@@ -7,7 +7,10 @@ module Linter
     def file_review(commit_file)
       @commit_file = commit_file
 
-      FileReview.create!(filename: commit_file.filename) do |file_review|
+      FileReview.create!(
+        filename: commit_file.filename,
+        linter_name: name,
+      ) do |file_review|
         run_linters.map do |violation|
           line = commit_file.line_at(violation.line)
 

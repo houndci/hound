@@ -6,7 +6,10 @@ module Linter
     FILE_REGEXP = /.+\.coffee(\.js)?(\.erb)?\z/
 
     def file_review(commit_file)
-      FileReview.create!(filename: commit_file.filename) do |file_review|
+      FileReview.create!(
+        filename: commit_file.filename,
+        linter_name: name,
+      ) do |file_review|
         content = content_for_file(commit_file)
 
         lint(content).each do |violation|

@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20160513002940) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "filename",     null: false
+    t.string   "linter_name",  null: false
   end
 
   add_index "file_reviews", ["build_id"], name: "index_file_reviews_on_build_id", using: :btree

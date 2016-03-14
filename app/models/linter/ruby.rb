@@ -15,7 +15,10 @@ module Linter
     private
 
     def perform_file_review(commit_file)
-      FileReview.create!(filename: commit_file.filename) do |file_review|
+      FileReview.create!(
+        filename: commit_file.filename,
+        linter_name: name,
+      ) do |file_review|
         permitted_rubocop_offenses(commit_file).each do |violation|
           line = commit_file.line_at(violation.line)
           file_review.build_violation(line, violation.message)

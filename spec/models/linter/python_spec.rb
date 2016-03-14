@@ -47,6 +47,7 @@ describe Linter::Python do
           args: [
             filename: commit_file.filename,
             commit_sha: build.commit_sha,
+            linter_name: "python",
             pull_request_number: build.pull_request_number,
             patch: commit_file.patch,
             content: commit_file.content,
