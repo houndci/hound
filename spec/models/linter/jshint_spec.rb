@@ -30,8 +30,8 @@ describe Linter::Jshint do
   describe "#file_included?" do
     context "file is in excluded file list" do
       it "returns false" do
-        stub_jshint_config(excluded_files: ["foo.js"])
-        linter = build_linter
+        stub_jshint_config
+        linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
         commit_file = double("CommitFile", filename: "foo.js")
 
         expect(linter.file_included?(commit_file)).to eq false
@@ -40,25 +40,27 @@ describe Linter::Jshint do
 
     context "file is not excluded" do
       it "returns true" do
-        stub_jshint_config(excluded_files: ["foo.js"])
-        linter = build_linter
+        stub_jshint_config
+        linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
         commit_file = double("CommitFile", filename: "bar.js")
 
         expect(linter.file_included?(commit_file)).to eq true
       end
 
       it "matches a glob pattern" do
-        stub_jshint_config(
-          excluded_files: ["app/assets/javascripts/*.js", "vendor/*"],
+        stub_jshint_config
+
+        linter = build_linter(
+          nil,
+          Linter::Jshint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
         )
-        linter = build_linter
         commit_file1 = double(
           "CommitFile",
-          filename: "app/assets/javascripts/bar.js",
+          filename: "app/javascripts/bar.js",
         )
         commit_file2 = double(
           "CommitFile",
-          filename: "vendor/assets/javascripts/foo.js",
+          filename: "vendor/javascripts/foo.js",
         )
 
         expect(linter.file_included?(commit_file1)).to be false
@@ -102,7 +104,6 @@ describe Linter::Jshint do
   def stub_jshint_config(options = {})
     default_options = {
       content: {},
-      excluded_files: [],
       serialize: "{}",
     }
     stubbed_jshint_config = double(
@@ -110,15 +111,5 @@ describe Linter::Jshint do
       default_options.merge(options),
     )
     allow(Config::Jshint).to receive(:new).and_return(stubbed_jshint_config)
-
-    stubbed_jshint_config
-  end
-
-  def raw_hound_config
-    <<-EOS.strip_heredoc
-      jshint:
-        enabled: true
-        config_file: config/.jshintrc
-    EOS
   end
 end
