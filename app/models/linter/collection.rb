@@ -9,6 +9,7 @@ module Linter
       Linter::Jshint,
       Linter::Remark,
       Linter::Python,
+      Linter::Cane,
       Linter::Ruby,
       Linter::Scss,
       Linter::Swift,
