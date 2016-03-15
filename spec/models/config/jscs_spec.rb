@@ -18,7 +18,7 @@ describe Config::Jscs do
   end
 
   describe "#serialize" do
-    it "serializes the parsed content into YAML" do
+    it "serializes the parsed content into JSON" do
       raw_config = <<-EOS.strip_heredoc
         { "disallowKeywordsInComments": true }
       EOS
