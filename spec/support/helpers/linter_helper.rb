@@ -1,7 +1,8 @@
 module LinterHelper
-  def build_linter(build = build(:build))
+  def build_linter(build = build(:build), extra_files = {})
     head_commit = double("Commit", file_content: "{}")
     stub_commit_to_return_hound_config(head_commit)
+    stub_commit_to_return_extra_files(head_commit, extra_files)
     described_class.new(
       hound_config: HoundConfig.new(head_commit),
       build: build,
@@ -44,6 +45,13 @@ module LinterHelper
   def stub_commit_to_return_hound_config(commit)
     allow(commit).to receive(:file_content).with(HoundConfig::CONFIG_FILE).
       and_return(raw_hound_config)
+  end
+
+  def stub_commit_to_return_extra_files(commit, configuration)
+    configuration.each do |filename, contents|
+      allow(commit).to receive(:file_content).with(filename).
+        and_return(contents)
+    end
   end
 
   def stubbed_commit(configuration)
