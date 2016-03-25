@@ -1,11 +1,16 @@
 module Linter
   class Jshint < Base
     FILE_REGEXP = /.+\.js\z/
+    IGNORE_FILENAME = ".jshintignore".freeze
 
     def file_included?(commit_file)
-      config.excluded_files.none? do |pattern|
-        File.fnmatch?(pattern, commit_file.filename)
-      end
+      jsignore.file_included?(commit_file)
+    end
+
+    private
+
+    def jsignore
+      @jsignore ||= JsIgnore.new(hound_config, IGNORE_FILENAME)
     end
   end
 end
