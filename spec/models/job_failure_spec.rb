@@ -1,5 +1,6 @@
-require 'resque'
-require 'app/models/job_failure'
+require "resque"
+require "active_model/naming"
+require "app/models/job_failure"
 
 describe JobFailure do
   describe ".all" do

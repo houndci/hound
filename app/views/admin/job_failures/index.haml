@@ -12,11 +12,16 @@
         Error message
       %td.cell-label.cell-label--string.cell-label--false
         Job indexes
+      %td
 
   %tbody
     - resources.each do |error_message, job_failures|
-      %tr.table__row{ role: "link", tabindex: 0, "data-url": "" }
-        %td.cell-data.cell-data--string
+      %tr
+        %td.cell-data.cell-data--string.preserve-whitespace
           = error_message
         %td.cell-data.cell-data--array
           = job_failures.map(&:index).join(", ")
+        %td
+          = link_to "Remove failures",
+            admin_job_failure_path(job_failures.map(&:index).join(",")),
+            method: :delete
