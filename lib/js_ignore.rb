@@ -1,10 +1,7 @@
 class JsIgnore
   DEFAULT_EXCLUDED_PATHS = %w(vendor/*).freeze
 
-  def initialize(hound_config, ignore_filename)
-    @hound_config = hound_config
-    @ignore_filename = ignore_filename
-  end
+  attr_private_initialize :linter_name, :hound_config, :default_filename
 
   def file_included?(commit_file)
     excluded_paths.none? do |pattern|
@@ -13,8 +10,6 @@ class JsIgnore
   end
 
   private
-
-  attr_reader :hound_config, :ignore_filename
 
   def excluded_paths
     ignored_paths.presence || DEFAULT_EXCLUDED_PATHS
@@ -31,7 +26,7 @@ class JsIgnore
   def ignore_filename
     @ignore_filename ||= hound_config.
       content.
-      fetch("javascript", {}).
-      fetch("ignore_file", ignore_filename)
+      fetch(linter_name, {}).
+      fetch("ignore_file", default_filename)
   end
 end

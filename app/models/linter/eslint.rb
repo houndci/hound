@@ -10,7 +10,7 @@ module Linter
     private
 
     def jsignore
-      @jsignore ||= JsIgnore.new(hound_config, IGNORE_FILENAME)
+      @jsignore ||= JsIgnore.new(name, hound_config, IGNORE_FILENAME)
     end
   end
 end
