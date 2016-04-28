@@ -209,7 +209,7 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     powerpack (0.1.1)
-    puma (2.12.2)
+    puma (3.4.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
