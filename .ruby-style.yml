@@ -251,6 +251,14 @@ Style/MethodName:
   SupportedStyles:
   - snake_case
   - camelCase
+Style/MultilineMethodCallIndentation:
+  Description: Checks indentation of method calls with the dot operator
+    that span more than one line.
+  Enabled: true
+  EnforcedStyle: indented
+  SupportedStyles:
+    - aligned
+    - indented
 Style/MultilineOperationIndentation:
   Description: Checks indentation of binary operations that span more than one line.
   Enabled: true
