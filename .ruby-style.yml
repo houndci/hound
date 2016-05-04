@@ -6,9 +6,10 @@ AllCops:
   Exclude:
   - "vendor/**/*"
   - "db/**/*"
-  RunRailsCops: true
   DisplayCopNames: false
   StyleGuideCopsOnly: false
+Rails:
+  Enabled: true
 Style/AccessModifierIndentation:
   Description: Check indentation of private/protected visibility modifiers.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#indent-public-private-protected
@@ -429,7 +430,15 @@ Style/TrailingBlankLines:
   SupportedStyles:
   - final_newline
   - final_blank_line
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
+  Description: Checks for trailing comma in parameter lists and literals.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+  SupportedStyles:
+  - comma
+  - no_comma
+Style/TrailingCommaInArguments:
   Description: Checks for trailing comma in parameter lists and literals.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas
   Enabled: true
@@ -637,7 +646,7 @@ Style/BlockComments:
 Style/BlockEndNewline:
   Description: Put end statement of multiline block on its own line.
   Enabled: true
-Style/Blocks:
+Style/BlockDelimiters:
   Description: Avoid using {...} for multi-line blocks (multiline chaining is always
     ugly). Prefer {...} over do...end for single-line blocks.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#single-line-blocks
@@ -828,7 +837,7 @@ Style/SelfAssignment:
     used.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#self-assignment
   Enabled: false
-Style/SingleSpaceBeforeFirstArg:
+Style/SpaceBeforeFirstArg:
   Description: Checks that exactly one space is used between a method name and the
     first argument for method calls without parentheses.
   Enabled: true
@@ -840,7 +849,7 @@ Style/SpaceAfterComma:
   Description: Use spaces after commas.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#spaces-operators
   Enabled: true
-Style/SpaceAfterControlKeyword:
+Style/SpaceAroundKeyword:
   Description: Use spaces after if/elsif/unless/while/until/case/when.
   Enabled: true
 Style/SpaceAfterMethodName:
@@ -869,7 +878,7 @@ Style/SpaceAroundOperators:
   Description: Use spaces around operators.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#spaces-operators
   Enabled: true
-Style/SpaceBeforeModifierKeyword:
+Style/SpaceAroundKeyword:
   Description: Put a space before the modifier keyword.
   Enabled: true
 Style/SpaceInsideBrackets:
@@ -911,7 +920,7 @@ Style/UnneededPercentQ:
   Description: Checks for %q/%Q when single quotes or double quotes would do.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-q
   Enabled: true
-Style/UnneededPercentX:
+Style/CommandLiteral:
   Description: Checks for %x when `` would do.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-x
   Enabled: true
