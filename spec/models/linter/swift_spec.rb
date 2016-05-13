@@ -43,6 +43,7 @@ describe Linter::Swift do
         SwiftReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
+        linter_name: "swift",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,

@@ -150,16 +150,18 @@ Resque queue.
 
 Linter jobs are created with the following arguments:
 
+* `commit_sha` - The git commit SHA of the code snippet. This should be passed
+  through to the outbound queue.
 * `config` - The configuration for the linter. This will be linter specific.
 * `content` - The source code to check for violations.
 * `filename` - The name of the source file for the code snippet. This should be
   passed through to the outbound queue.
-* `commit_sha` - The git commit SHA of the code snippet. This should be passed
-  through to the outbound queue.
-* `pull_request_number` - The GitHub pull request number. This should be passed
-  through to the outbound queue.
+* `linter_name` - A string that identifies which linter is assigned to this
+  linter job. This must be passed through to the outbound queue unmodified.
 * `patch` - The patch content from GitHub for the file being reviewed. This
   should be passed through to the outbound queue.
+* `pull_request_number` - The GitHub pull request number. This should be passed
+  through to the outbound queue.
 
 Once linting is complete, resulting violations should be posted to the outbound
 "CompletedFileReviewJob" queue:
@@ -173,8 +175,8 @@ Once linting is complete, resulting violations should be posted to the outbound
   provided by the inbound queue.
 * `commit_sha` - The git commit SHA of the code snippet. This is provided by the
   inbound queue.
-* `pull_request_number` - The GitHub pull request number. This is provided by the
-  inbound queue.
+* `linter_name` - A string that identifies which linter is assigned to this
+  linter job. This is provided by the inbound queue.
 * `patch` - The patch content from GitHub for the file being reviewed. This is
   provided by the inbound queue.
 

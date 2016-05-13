@@ -59,6 +59,7 @@ describe Linter::Jscs do
         JscsReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
+        linter_name: "jscs",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,

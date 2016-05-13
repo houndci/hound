@@ -15,6 +15,7 @@ FactoryGirl.define do
     build
 
     filename "the_thing.rb"
+    linter_name "ruby"
   end
 
   factory :repo do

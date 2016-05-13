@@ -43,6 +43,7 @@ describe Linter::Scss do
         ScssReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
+        linter_name: "scss",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,

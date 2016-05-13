@@ -47,8 +47,21 @@ class CompleteFileReview
   end
 
   def file_review
-    @file_review ||= build.file_reviews.
-      find_by!(filename: attributes.fetch("filename"))
+    @file_review ||= build.file_reviews.find_by!(file_review_properties)
+  end
+
+  def file_review_properties
+    if attributes.has_key?("linter_name")
+      legacy_file_review_search_properties.merge(
+        linter_name: attributes.fetch("linter_name"),
+      )
+    else
+      legacy_file_review_search_properties
+    end
+  end
+
+  def legacy_file_review_search_properties
+    { filename: attributes.fetch("filename") }
   end
 
   def commit_file
