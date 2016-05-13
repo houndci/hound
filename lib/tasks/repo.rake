@@ -13,21 +13,4 @@ namespace :repo do
       )
     SQL
   end
-
-  desc "Delete repos with duplicate github_ids"
-  task remove_duplicate_github_ids: :environment do
-    ActiveRecord::Base.connection.execute <<-SQL
-      WITH del AS (
-        SELECT
-          id,
-          row_number() OVER (
-            PARTITION BY github_id ORDER BY active desc, id desc
-          ) as rn
-        FROM repos
-      )
-      DELETE FROM repos
-      USING del
-      WHERE repos.id = del.id AND del.rn > 1
-    SQL
-  end
 end
