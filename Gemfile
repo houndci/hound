@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby "2.3.1"
 
-gem "active_model_serializers", "0.8.3"
+gem "active_model_serializers", "0.9.5"
 gem "administrate", ">= 0.1.3"
 gem "analytics-ruby", "~> 2.0.0", require: "segment/analytics"
 gem "angular_rails_csrf"
