@@ -89,27 +89,30 @@ describe RepoSynchronization do
       expect(user.repos.first.github_id).to eq 456
     end
 
-    it "renames an existing repo if updated on github" do
-      membership = create(:membership)
-      user = membership.user
-      repo = membership.repo
-      repo_name = "user/newrepo"
-      stub_github_api_repos(
-        repo_id: repo.github_id,
-        owner_id: 1,
-        owner_name: "thoughtbot",
-        repo_name: repo_name
-      )
-      synchronization = RepoSynchronization.new(membership.user)
+    context "when repo was renamed to an existing repo" do
+      it "updates the repo names" do
+        user = create(:user)
+        repo1 = create(:repo, name: "main")
+        repo2 = create(:repo, name: "backup")
+        create(:membership, user: user, repo: repo1)
+        create(:membership, user: user, repo: repo2)
+        github_repo1 = build_github_repo(id: repo1.github_id, name: "backup")
+        github_repo2 = build_github_repo(id: repo2.github_id, name: "site")
+        api = instance_double("GithubApi", repos: [github_repo1, github_repo2])
+        allow(GithubApi).to receive(:new).and_return(api)
+        synchronization = RepoSynchronization.new(user)
 
-      synchronization.start
+        synchronization.start
 
-      user.reload
-      expect(user.repos.first.full_github_name).to eq repo_name
-      expect(user.repos.first.github_id).to eq repo.github_id
+        user.reload
+        expect(user.repos.pluck(:id, :name)).to match_array [
+          [repo1.id, "backup"],
+          [repo2.id, "site"],
+        ]
+      end
     end
 
-    describe "when a repo membership already exists" do
+    context "when a repo membership already exists" do
       it "creates another membership" do
         first_membership = create(:membership)
         repo = first_membership.repo
@@ -193,6 +196,22 @@ describe RepoSynchronization do
       resource = double(:resource, to_hash: attributes)
       api = double("GithubApi", repos: [resource])
       allow(GithubApi).to receive(:new).and_return(api)
+    end
+
+    def build_github_repo(id:, name:)
+      {
+        full_name: name,
+        id: id,
+        private: true,
+        owner: {
+          id: 123,
+          login: "thoughtbot",
+          type: "Organization",
+        },
+        permissions: {
+          admin: false,
+        },
+      }
     end
   end
 end

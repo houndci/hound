@@ -2,7 +2,6 @@ require "rails_helper"
 
 describe Repo do
   it { should have_many :builds }
-  it { should validate_presence_of :full_github_name }
   it { should validate_presence_of :github_id }
   it { should belong_to :owner }
   it { should have_many(:users).through(:memberships) }
@@ -137,20 +136,16 @@ describe Repo do
     end
 
     context "when one repo has taken the github name and another taken id" do
-      it "repors update failure" do
+      it "updates relying on github_id as the source of truth" do
         github_name = "foo/bar"
         github_id = 40023
-        _repo_with_id = create(:repo, github_id: github_id)
+        repo_with_id = create(:repo, github_id: github_id)
         _repo_with_name = create(:repo, full_github_name: github_name)
         new_attributes = { github_id: github_id, full_github_name: github_name }
-        allow(Raven).to receive(:capture_exception)
 
         Repo.find_or_create_with(new_attributes)
 
-        expect(Raven).to have_received(:capture_exception).with(
-          instance_of(ActiveRecord::RecordInvalid),
-          extra: { github_id: github_id, full_github_name: github_name }
-        )
+        expect(repo_with_id.reload.name).to eq github_name
       end
     end
   end

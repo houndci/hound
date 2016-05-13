@@ -10,7 +10,6 @@ class Repo < ActiveRecord::Base
   delegate :type, :price, to: :plan, prefix: true
   delegate :price, to: :subscription, prefix: true
 
-  validates :full_github_name, uniqueness: true, presence: true
   validates :github_id, uniqueness: true, presence: true
 
   def self.active
@@ -18,8 +17,8 @@ class Repo < ActiveRecord::Base
   end
 
   def self.find_or_create_with(attributes)
-    repo = find_by(full_github_name: attributes[:full_github_name]) ||
-      find_by(github_id: attributes[:github_id]) ||
+    repo = find_by(github_id: attributes[:github_id]) ||
+      find_by(full_github_name: attributes[:full_github_name]) ||
       Repo.new
 
     begin
