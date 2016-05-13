@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513002940) do
+ActiveRecord::Schema.define(version: 20160513205551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20160513002940) do
     t.integer  "violations_count"
   end
 
+  add_index "builds", ["commit_sha", "pull_request_number"], name: "index_builds_on_commit_sha_and_pull_request_number", using: :btree
   add_index "builds", ["repo_id"], name: "index_builds_on_repo_id", using: :btree
   add_index "builds", ["uuid"], name: "index_builds_on_uuid", unique: true, using: :btree
 
