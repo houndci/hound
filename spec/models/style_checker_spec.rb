@@ -166,29 +166,6 @@ describe StyleChecker do
           expect(violation_messages).to be_empty
         end
       end
-
-      context "when JSCS is enabled" do
-        it "creates violations" do
-          hound_config_content = <<-EOS.strip_heredoc
-            jscs:
-              enabled: true
-              config_file: config/.jscsrc
-          EOS
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => hound_config_content,
-            "config/.jscsrc" => "{}",
-          )
-          pull_request = stub_pull_request(
-            commit_files: [commit_file],
-            head_commit: head_commit,
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
     end
 
     context "for a SCSS file" do
