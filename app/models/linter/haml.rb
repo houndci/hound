@@ -44,7 +44,11 @@ module Linter
         results + linter.lints
       end
     rescue HamlLint::Exceptions::ParseError => haml_error
-      [HamlViolation.new(haml_error.line + 1, haml_error.message)]
+      if haml_error.line
+        [HamlViolation.new(haml_error.line + 1, haml_error.message)]
+      else
+        []
+      end
     end
 
     def linters
