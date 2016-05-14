@@ -9,7 +9,7 @@ describe StyleChecker do
         commit_files: [stylish_commit_file, violated_commit_file],
       )
 
-      violation_messages = pull_request_violations(pull_request)
+      violation_messages = pull_request_violation_messages(pull_request)
 
       expect(violation_messages).to include "Trailing whitespace detected."
     end
@@ -29,7 +29,7 @@ describe StyleChecker do
       allow(pull_request).to receive(:modified_github_files).
         and_return([bogus_file, ruby_file])
 
-      pull_request_violations(pull_request)
+      pull_request_violation_messages(pull_request)
 
       expect(head_commit).to have_received(:file_content).
         with(ruby_file.filename)
@@ -43,7 +43,7 @@ describe StyleChecker do
           commit_file = stub_commit_file("ruby.rb", "puts 123    ")
           pull_request = stub_pull_request(commit_files: [commit_file])
 
-          violation_messages = pull_request_violations(pull_request)
+          violation_messages = pull_request_violation_messages(pull_request)
 
           expect(violation_messages).to include "Trailing whitespace detected."
         end
@@ -58,7 +58,7 @@ describe StyleChecker do
           )
           pull_request = stub_pull_request(commit_files: [commit_file])
 
-          violation_messages = pull_request_violations(pull_request)
+          violation_messages = pull_request_violation_messages(pull_request)
 
           expect(violation_messages).to be_empty
         end
@@ -69,7 +69,7 @@ describe StyleChecker do
           commit_file = stub_commit_file("ruby.rb", "puts 123")
           pull_request = stub_pull_request(commit_files: [commit_file])
 
-          violation_messages = pull_request_violations(pull_request)
+          violation_messages = pull_request_violation_messages(pull_request)
 
           expect(violation_messages).to be_empty
         end
@@ -81,7 +81,7 @@ describe StyleChecker do
         commit_file = stub_commit_file("test.js.coffee", "foo ->")
         pull_request = stub_pull_request(commit_files: [commit_file])
 
-        violation_messages = pull_request_violations(pull_request)
+        violation_messages = pull_request_violation_messages(pull_request)
 
         expect(violation_messages).to eq ["Empty function"]
       end
@@ -93,7 +93,7 @@ describe StyleChecker do
         )
         pull_request = stub_pull_request(commit_files: [commit_file])
 
-        violation_messages = pull_request_violations(pull_request)
+        violation_messages = pull_request_violation_messages(pull_request)
 
         expect(violation_messages).to eq [
           "Class name should be UpperCamelCased",
@@ -105,7 +105,7 @@ describe StyleChecker do
           commit_file = stub_commit_file("test.coffee", "foo: ->")
           pull_request = stub_pull_request(commit_files: [commit_file])
 
-          violation_messages = pull_request_violations(pull_request)
+          violation_messages = pull_request_violation_messages(pull_request)
 
           expect(violation_messages).to eq ["Empty function"]
         end
@@ -116,139 +116,10 @@ describe StyleChecker do
           commit_file = stub_commit_file("test.coffee", "alert('Hello World')")
           pull_request = stub_pull_request(commit_files: [commit_file])
 
-          violation_messages = pull_request_violations(pull_request)
+          violation_messages = pull_request_violation_messages(pull_request)
 
           expect(violation_messages).to be_empty
         end
-      end
-    end
-
-    context "for a JavaScript file" do
-      context "when the default javascript linter JSHint is enabled" do
-        it "creates violations" do
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
-              javascript:
-                enabled: true
-            EOS
-          )
-          pull_request = stub_pull_request(
-            commit_files: [commit_file],
-            head_commit: head_commit,
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-
-      context "when Eslint is enabled" do
-        it "creates violations" do
-          hound_config_content = <<-EOS.strip_heredoc
-            eslint:
-              enabled: true
-              config_file: config/.eslintrc
-          EOS
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => hound_config_content,
-            "config/.eslintrc" => "{}",
-          )
-          pull_request = stub_pull_request(
-            commit_files: [commit_file],
-            head_commit: head_commit,
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-
-      context "when JSCS is enabled" do
-        it "creates violations" do
-          hound_config_content = <<-EOS.strip_heredoc
-            jscs:
-              enabled: true
-              config_file: config/.jscsrc
-          EOS
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => hound_config_content,
-            "config/.jscsrc" => "{}",
-          )
-          pull_request = stub_pull_request(
-            commit_files: [commit_file],
-            head_commit: head_commit,
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-    end
-
-    context "for a SCSS file" do
-      it "creates violations" do
-        commit_file = stub_commit_file("test.scss", "* { color: red; }")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to be_empty
-      end
-    end
-
-    context "for a Python file" do
-      it "creates violations" do
-        commit_file = stub_commit_file("test.py", "import this")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to be_empty
-      end
-    end
-
-    context "for a Haml file" do
-      context "with style violations" do
-        it "returns violations" do
-          commit_file = stub_commit_file("test.haml", "%div.message 123")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-          message = "`%div.message` can be written as `.message` since `%div` "\
-            "is implicit"
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to include message
-        end
-      end
-
-      context "without style violations" do
-        it "returns no violations" do
-          commit_file = stub_commit_file("test.haml", ".foo 123")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).not_to include(
-            "`%div.foo` can be written as `.foo` since `%div` is implicit",
-          )
-        end
-      end
-    end
-
-    context "for a Markdown file" do
-      it "creates violations" do
-        commit_file = stub_commit_file("test.md", "# Hello!")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to be_empty
       end
     end
 
@@ -260,14 +131,14 @@ describe StyleChecker do
         )
         pull_request = stub_pull_request(commit_files: [commit_file])
 
-        violation_messages = pull_request_violations(pull_request)
+        violation_messages = pull_request_violation_messages(pull_request)
 
         expect(violation_messages).to be_empty
       end
     end
   end
 
-  def pull_request_violations(pull_request)
+  def pull_request_violation_messages(pull_request)
     build = build(:build)
     StyleChecker.new(pull_request, build).review_files
 
