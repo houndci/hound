@@ -204,23 +204,6 @@ describe BuildRunner do
       end
     end
 
-    context "with expired token" do
-      it "removes the expired token" do
-        repo = create(:repo, :active)
-        user = create(:user, token: "expired_token")
-        repo.users << user
-        build_runner = make_build_runner(repo: repo)
-        github_api = stubbed_github_api
-        allow(github_api).to receive(:create_pending_status).
-          and_raise(Octokit::Unauthorized)
-
-        expect { build_runner.run }.to raise_error BuildRunner::ExpiredToken
-        expect(user.reload.token).to be_nil
-
-        expect { build_runner.run }.to raise_error Octokit::Unauthorized
-      end
-    end
-
     context "when user's token doesn't have access to the repo" do
       it "removes the repo from user" do
         reachable_repo = create(:repo, :active)
@@ -251,12 +234,8 @@ describe BuildRunner do
         force_fail_build_creation
         allow(Resque).to receive(:enqueue)
 
-        begin
-          build_runner.run
-        rescue ActiveRecord::StatementInvalid
-          # noop
-        end
-
+        expect { build_runner.run }.
+          to raise_error ActiveRecord::StatementInvalid
         expect(Resque).not_to have_received(:enqueue)
       end
 

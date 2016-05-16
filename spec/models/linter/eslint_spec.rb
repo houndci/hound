@@ -48,7 +48,7 @@ describe Linter::Eslint do
 
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      stub_eslint_config(content: "config")
+      stub_eslint_config(content: {})
       commit_file = build_commit_file(filename: "lib/a.js")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
@@ -59,16 +59,63 @@ describe Linter::Eslint do
         EslintReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
+        linter_name: "eslint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "config",
+        config: "{}",
       )
     end
   end
 
-  def stub_eslint_config(content: "")
-    stubbed_eslint_config = double("EslintConfig", content: content)
+  describe "#file_included?" do
+    context "file is in excluded file list" do
+      it "returns false" do
+        stub_eslint_config
+        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
+        commit_file = double("CommitFile", filename: "foo.js")
+
+        expect(linter.file_included?(commit_file)).to eq false
+      end
+    end
+
+    context "file is not excluded" do
+      it "returns true" do
+        stub_eslint_config
+        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
+        commit_file = double("CommitFile", filename: "bar.js")
+
+        expect(linter.file_included?(commit_file)).to eq true
+      end
+
+      it "matches a glob pattern" do
+        stub_eslint_config
+        linter = build_linter(
+          nil,
+          Linter::Eslint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
+        )
+        commit_file1 = double(
+          "CommitFile",
+          filename: "app/javascripts/bar.js",
+        )
+        commit_file2 = double(
+          "CommitFile",
+          filename: "vendor/javascripts/foo.js",
+        )
+
+        expect(linter.file_included?(commit_file1)).to be false
+        expect(linter.file_included?(commit_file2)).to be false
+      end
+    end
+  end
+
+  def stub_eslint_config(content: {}, excluded_paths: [])
+    stubbed_eslint_config = double(
+      "EslintConfig",
+      content: content,
+      excluded_paths: excluded_paths,
+      serialize: content.to_s,
+    )
     allow(Config::Eslint).to receive(:new).and_return(stubbed_eslint_config)
 
     stubbed_eslint_config

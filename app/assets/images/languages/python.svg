@@ -1,7 +1,4 @@
 <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>
-        python
-    </title>
     <defs>
         <ellipse id="a" cx="50" cy="50" rx="50" ry="50"/>
         <linearGradient x1="12.959%" y1="11.7%" x2="79.639%" y2="78.453%" id="d">
@@ -15,23 +12,25 @@
         </linearGradient>
         <path d="M29.445 57.444c14.597 0 13.685-6.33 13.685-6.33l-.016-6.558h-13.93v-1.97h19.463s9.34 1.06 9.34-13.668c0-14.73-8.152-14.206-8.152-14.206H44.97v6.834s.26 8.153-8.023 8.153H23.13s-7.76-.127-7.76 7.5v12.612s-1.18 7.632 14.075 7.632zm7.68-4.41c-1.385 0-2.505-1.12-2.505-2.506 0-1.386 1.12-2.506 2.506-2.506 1.385 0 2.506 1.12 2.506 2.506 0 1.386-1.12 2.506-2.506 2.506z" id="f"/>
     </defs>
-    <g fill="none" fill-rule="evenodd">
-        <mask id="b" fill="#fff">
+    <g fill="none">
+        <mask id="b">
             <use xlink:href="#a"/>
         </mask>
         <use fill="#3777AC" xlink:href="#a"/>
-        <g transform="translate(20.64 22.5)" mask="url(#b)">
-            <mask id="e" fill="#fff">
+        <g transform="translate(20.639 22.5)" mask="url(#b)">
+            <mask id="e">
                 <use xlink:href="#c"/>
             </mask>
-            <use fill="url(#d)" xlink:href="#c"/>
-            <path fill="#FFF" mask="url(#e)" d="M-17.61-30.35h104.5V82.416h-104.5z"/>
-            <mask id="h" fill="#fff">
+            <use id="Mask" fill="url(#d)" xlink:href="#c"/>
+            <path fill="#fff" mask="url(#e)" d="M-17.61-30.35h104.5V82.416h-104.5z"/>
+            <mask id="h">
                 <use xlink:href="#f"/>
             </mask>
-            <use fill="url(#g)" xlink:href="#f"/>
-            <use xlink:href="#f"/>
-            <path fill="#FFF" mask="url(#h)" d="M-17.61-30.35h104.5V82.416h-104.5z"/>
+            <g>
+                <use fill="url(#g)" xlink:href="#f"/>
+                <use xlink:href="#f"/>
+            </g>
+            <path fill="#fff" mask="url(#h)" d="M-17.61-30.35h104.5V82.416h-104.5z"/>
         </g>
     </g>
 </svg>

@@ -10,9 +10,7 @@ module Config
     private
 
     def parse(file_content)
-      result = Parser.json(file_content)
-
-      ensure_correct_type(result)
+      Parser.json(file_content)
     end
   end
 end

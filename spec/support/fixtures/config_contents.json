@@ -1,17 +1,17 @@
 {
   "_links": {
-    "git": "https://api.github.com/repos/thoughtbot/hound/git/blobs/f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
-    "html": "https://github.com/thoughtbot/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
-    "self": "https://api.github.com/repos/thoughtbot/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc"
+    "git": "https://api.github.com/repos/houndci/hound/git/blobs/f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
+    "html": "https://github.com/houndci/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
+    "self": "https://api.github.com/repos/houndci/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc"
   },
   "content": "U3RyaW5nTGl0ZXJhbHM6CiAgRW5hYmxlZDogZmFsc2UK\n",
   "encoding": "base64",
-  "git_url": "https://api.github.com/repos/thoughtbot/hound/git/blobs/f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
-  "html_url": "https://github.com/thoughtbot/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
+  "git_url": "https://api.github.com/repos/houndci/hound/git/blobs/f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
+  "html_url": "https://github.com/houndci/hound/blob/55ec63080d30509e148b78d50a2f39fb239c41bc/config/unicorn.rb",
   "name": "unicorn.rb",
   "path": "config/unicorn.rb",
   "sha": "f6e59b8f27c8c5d92403f62b79cc1644c0fa2f73",
   "size": 582,
   "type": "file",
-  "url": "https://api.github.com/repos/thoughtbot/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc"
+  "url": "https://api.github.com/repos/houndci/hound/contents/config/unicorn.rb?ref=55ec63080d30509e148b78d50a2f39fb239c41bc"
 }

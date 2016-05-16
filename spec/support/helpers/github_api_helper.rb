@@ -76,24 +76,6 @@ module GithubApiHelper
     )
   end
 
-  def stub_failed_status_creation_request(repo_name, sha, state, description)
-    stub_request(
-      :post,
-      "https://api.github.com/repos/#{repo_name}/statuses/#{sha}"
-    ).with(
-      headers: { "Authorization" => "token #{hound_token}" },
-      body: {
-        context: "hound",
-        description: description,
-        state: state,
-        target_url: nil
-      }
-    ).to_return(
-      status: 404,
-      headers: { "Content-Type" => "application/json; charset=utf-8" }
-    )
-  end
-
   def stub_hook_removal_request(full_repo_name, hook_id)
     url = "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
     stub_request(:delete, url).

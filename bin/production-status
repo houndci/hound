@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby --disable-gems
+
+require "pathname"
+
+parent_directory = File.expand_path("../../..", __FILE__)
+Dir.chdir(parent_directory)
+child_directories = `ls -d */`.split
+git_directories = child_directories.select do |child_directory|
+  Dir.exists?(File.join(child_directory, ".git"))
+end
+
+git_directories.each do |git_directory|
+  puts git_directory
+
+  Dir.chdir(File.join(parent_directory, git_directory))
+  remotes = `git remote`.split
+
+  if remotes.include?("origin") && remotes.include?("production")
+    `git fetch origin > /dev/null`
+    `git fetch production > /dev/null`
+
+    commits_not_on_production = `git log --graph --pretty='format:%C(yellow)%h %C(green)%ar %C(cyan)%an %C(reset)%s' production/master..origin/master`
+    if commits_not_on_production.empty?
+      puts "up-to-date!"
+    else
+      puts commits_not_on_production
+    end
+  else
+    missing_remotes = %w{origin production} - remotes
+    puts "missing remotes: #{missing_remotes.join(", ")}"
+  end
+
+  puts
+end

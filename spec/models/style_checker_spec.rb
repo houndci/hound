@@ -22,7 +22,6 @@ describe StyleChecker do
           enabled: true
       HOUND
       head_commit = stub_head_commit(
-        ruby_file.filename => "",
         ".hound.yml" => config,
       )
       pull_request = PullRequest.new(payload_stub, "anything")
@@ -147,13 +146,15 @@ describe StyleChecker do
 
       context "when Eslint is enabled" do
         it "creates violations" do
+          hound_config_content = <<-EOS.strip_heredoc
+            eslint:
+              enabled: true
+              config_file: config/.eslintrc
+          EOS
           commit_file = stub_commit_file("test.js", "var test = 'test'")
           head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
-              eslint:
-                enabled: true
-                config_file: config/.eslintrc
-            EOS
+            HoundConfig::CONFIG_FILE => hound_config_content,
+            "config/.eslintrc" => "{}",
           )
           pull_request = stub_pull_request(
             commit_files: [commit_file],
@@ -168,13 +169,15 @@ describe StyleChecker do
 
       context "when JSCS is enabled" do
         it "creates violations" do
+          hound_config_content = <<-EOS.strip_heredoc
+            jscs:
+              enabled: true
+              config_file: config/.jscsrc
+          EOS
           commit_file = stub_commit_file("test.js", "var test = 'test'")
           head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
-              jscs:
-                enabled: true
-                config_file: config/.jscsrc
-            EOS
+            HoundConfig::CONFIG_FILE => hound_config_content,
+            "config/.jscsrc" => "{}",
           )
           pull_request = stub_pull_request(
             commit_files: [commit_file],
@@ -308,7 +311,7 @@ describe StyleChecker do
     default_options = {
       HoundConfig::CONFIG_FILE => raw_hound_config,
     }
-    head_commit = double("Commit", file_content: nil)
+    head_commit = double("Commit", file_content: "")
 
     default_options.merge(options).each do |filename, file_contents|
       allow(head_commit).to receive(:file_content).

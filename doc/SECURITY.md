@@ -9,7 +9,7 @@ Because [Hound is open source][oss],
 in this document we refer to portions of the application code and its dependent
 libraries, frameworks, and programming languages.
 
-[oss]: https://github.com/thoughtbot/hound
+[oss]: https://github.com/houndci/hound
 
 Vulnerability Reporting
 -----------------------
@@ -18,7 +18,7 @@ For security inquiries or vulnerability reports, please email
 <security@thoughtbot.com>.
 If you'd like, you can use our [PGP key] when reporting vulnerabilities.
 
-[PGP key]: http://pgp.thoughtbot.com
+[PGP key]: https://thoughtbot.com/thoughtbot.asc
 
 thoughtbot
 ----------

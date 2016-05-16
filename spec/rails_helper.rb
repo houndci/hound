@@ -25,7 +25,7 @@ RSpec.configure do |config|
   config.include HttpsHelper
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
-  DatabaseCleaner.strategy = :deletion
+  DatabaseCleaner.strategy = :truncation
   ActiveJob::Base.queue_adapter = :resque
 end
 

@@ -2,6 +2,7 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/ruby"
 require "app/models/hound_config"
+require "app/models/config/parser"
 require "app/models/config/parser_error"
 
 describe Config::Ruby do
@@ -88,9 +89,7 @@ describe Config::Ruby do
           Style/Encoding:
             Enabled: true
         EOS
-        rubocop_todo = <<-EOS.strip_heredoc
-          # this is an empty file
-        EOS
+        rubocop_todo = "# this is an empty file"
         commit = stubbed_commit(
           "config/rubocop.yml" => rubocop,
           "config/rubocop_todo.yml" => rubocop_todo,
@@ -102,21 +101,31 @@ describe Config::Ruby do
         )
       end
     end
+
+    context "with invalid `inherit_from` content" do
+      it "raises a parser error" do
+        rubocop = "inherit_from: config/rubocop_todo.yml"
+        rubocop_todo = "foo: bar: "
+        commit = stubbed_commit(
+          "config/rubocop.yml" => rubocop,
+          "config/rubocop_todo.yml" => rubocop_todo,
+        )
+        config = build_config(commit)
+
+        expect { config.content }.to raise_error(Config::ParserError)
+      end
+    end
   end
 
   context "when the given content is invalid" do
     context "when the result is not a hash" do
       it "raises a type exception" do
-        commit = stubbed_commit(
-          "config/rubocop.yml" => <<-EOS.strip_heredoc
-            !
-          EOS
-        )
+        commit = stubbed_commit("config/rubocop.yml" => "[]")
         config = build_config(commit)
 
         expect { config.content }.to raise_error(
           Config::ParserError,
-          %r(`config/rubocop.yml` must be a Hash),
+          %r("config/rubocop\.yml" must be a Hash),
         )
       end
     end
@@ -149,6 +158,7 @@ describe Config::Ruby do
         },
       },
     )
+
     Config::Ruby.new(hound_config, "ruby")
   end
 end

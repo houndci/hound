@@ -15,6 +15,7 @@ module Linter
       file_review = FileReview.create!(
         build: build,
         filename: commit_file.filename,
+        linter_name: name,
       )
 
       enqueue_job(attributes)
@@ -23,9 +24,7 @@ module Linter
     end
 
     def enabled?
-      config.linter_names.any? do |linter_name|
-        hound_config.enabled_for?(linter_name)
-      end
+      CheckEnabledLinter.run(config)
     end
 
     def file_included?(*)
@@ -43,9 +42,10 @@ module Linter
     def build_review_job_attributes(commit_file)
       {
         commit_sha: build.commit_sha,
-        config: config.content,
+        config: config.serialize,
         content: commit_file.content,
         filename: commit_file.filename,
+        linter_name: name,
         patch: commit_file.patch,
         pull_request_number: build.pull_request_number,
       }

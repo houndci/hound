@@ -2,12 +2,17 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/parser_error"
 require "faraday"
+require "yaml"
 
 class Config::Test < Config::Base
+  def serialize(content)
+    ensure_correct_type(content).to_yaml
+  end
+
   private
 
   def parse(file_content)
-    file_content
+    YAML.load(file_content)
   end
 end
 
@@ -23,16 +28,17 @@ describe Config::Base do
 
     context "when there is no specified filepath" do
       it "returns a default value" do
-        hound_config = double(
+        config_content = {}
+        hound_config = instance_double(
           "HoundConfig",
           commit: double("Commit"),
           content: {
-            "test" => {},
+            "test" => config_content,
           },
         )
         config = build_config(hound_config: hound_config)
 
-        expect(config.content).to eq("{}")
+        expect(config.content).to eq(config_content)
       end
     end
 
@@ -52,16 +58,12 @@ describe Config::Base do
             LineLength:
               Max: 90
           EOS
-          stub_request(
-            :get,
-            "http://example.com/rubocop.yml",
-          ).to_return(
-            status: 200,
-            body: response,
-          )
+          parsed_result = { "LineLength" => { "Max" => 90 } }
+          stub_request(:get, "http://example.com/rubocop.yml").
+            to_return(status: 200, body: response)
           config = build_config(hound_config: hound_config)
 
-          expect(config.content).to eq response
+          expect(config.content).to eq parsed_result
         end
       end
 

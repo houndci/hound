@@ -5,7 +5,7 @@ describe ReportInvalidConfig do
     context "given a custom message" do
       it "reports the file as an invalid config file to Github" do
         commit_status = stubbed_commit_status(:set_config_error)
-        stubbed_build(repo_name: "thoughtbot/hound")
+        stubbed_build(repo_name: "houndci/hound")
         pull_request_number = "42"
         commit_sha = "abc123"
         linter_name = "ruby"
@@ -29,7 +29,7 @@ describe ReportInvalidConfig do
     context "not given a custom message" do
       it "reports the file as an invalid config file to Github" do
         commit_status = stubbed_commit_status(:set_config_error)
-        stubbed_build(repo_name: "thoughtbot/hound")
+        stubbed_build(repo_name: "houndci/hound")
         pull_request_number = "42"
         commit_sha = "abc123"
         linter_name = "ruby"

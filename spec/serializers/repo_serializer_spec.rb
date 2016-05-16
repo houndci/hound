@@ -27,5 +27,36 @@ describe RepoSerializer do
         expect(serializer.admin).to eq false
       end
     end
+
+    context "when the current user is not a member of the repo" do
+      context "and does not have a subscription for the repo" do
+        it "returns false" do
+          user = create(:user)
+          repo = create(:repo)
+          serializer = RepoSerializer.new(
+            repo,
+            scope: user,
+            scope_name: :current_user,
+          )
+
+          expect(serializer.admin).to eq false
+        end
+      end
+
+      context "and has a subscription for the repo" do
+        it "returns true" do
+          user = create(:user)
+          repo = create(:repo)
+          create(:subscription, user: user, repo: repo)
+          serializer = RepoSerializer.new(
+            repo,
+            scope: user,
+            scope_name: :current_user,
+          )
+
+          expect(serializer.admin).to eq true
+        end
+      end
+    end
   end
 end

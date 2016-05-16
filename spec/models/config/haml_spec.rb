@@ -1,7 +1,9 @@
 require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/haml"
+require "app/models/config/parser"
 require "app/models/config/parser_error"
+require "app/models/config/serializer"
 
 describe Config::Haml do
   describe "#content" do
@@ -34,7 +36,7 @@ describe Config::Haml do
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            %r(`config/haml\.yml` must be a Hash),
+            %r("config/haml\.yml" must be a Hash),
           )
         end
       end

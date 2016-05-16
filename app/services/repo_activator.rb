@@ -18,12 +18,10 @@ class RepoActivator
   end
 
   def deactivate
-    change_repository_state_quietly do
-      if repo.private?
-        remove_hound_from_repo
-      end
-
-      delete_webhook && repo.deactivate
+    if skip_github?
+      repo.deactivate
+    else
+      deactivate_with_github
     end
   end
 
@@ -37,6 +35,24 @@ class RepoActivator
     add_error(error)
     Raven.capture_exception(error)
     false
+  end
+
+  def skip_github?
+    repo.subscription.present? && missing_membership?
+  end
+
+  def missing_membership?
+    Membership.where(repo: repo, user: repo.subscription.user).empty?
+  end
+
+  def deactivate_with_github
+    change_repository_state_quietly do
+      if repo.private?
+        remove_hound_from_repo
+      end
+
+      delete_webhook && repo.deactivate
+    end
   end
 
   def remove_hound_from_repo

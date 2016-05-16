@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151216235118) do
+ActiveRecord::Schema.define(version: 20160513205551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20151216235118) do
     t.integer  "violations_count"
   end
 
+  add_index "builds", ["commit_sha", "pull_request_number"], name: "index_builds_on_commit_sha_and_pull_request_number", using: :btree
   add_index "builds", ["repo_id"], name: "index_builds_on_repo_id", using: :btree
   add_index "builds", ["uuid"], name: "index_builds_on_uuid", unique: true, using: :btree
 
@@ -52,6 +53,7 @@ ActiveRecord::Schema.define(version: 20151216235118) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "filename",     null: false
+    t.string   "linter_name",  null: false
   end
 
   add_index "file_reviews", ["build_id"], name: "index_file_reviews_on_build_id", using: :btree
@@ -91,8 +93,8 @@ ActiveRecord::Schema.define(version: 20151216235118) do
   end
 
   add_index "repos", ["active"], name: "index_repos_on_active", using: :btree
-  add_index "repos", ["full_github_name"], name: "index_repos_on_full_github_name", unique: true, using: :btree
-  add_index "repos", ["github_id"], name: "index_repos_on_github_id", using: :btree
+  add_index "repos", ["full_github_name"], name: "index_repos_on_full_github_name", using: :btree
+  add_index "repos", ["github_id"], name: "index_repos_on_github_id", unique: true, using: :btree
   add_index "repos", ["owner_id"], name: "index_repos_on_owner_id", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|

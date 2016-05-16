@@ -1,10 +1,11 @@
 require "spec_helper"
-require "config/initializers/constants"
 require "attr_extras"
 require "lib/github_api"
 require "json"
 
 describe GithubApi do
+  before { stub_const("Hound::GITHUB_TOKEN", "token") }
+
   describe "#repos" do
     it "fetches all repos from Github" do
       token = "something"
@@ -229,23 +230,6 @@ describe GithubApi do
       api.create_pending_status("test/repo", "sha", "description")
 
       expect(request).to have_been_requested
-    end
-
-    describe "when setting the status returns 404" do
-      it "does not crash" do
-        sha = "abc"
-        api = GithubApi.new(Hound::GITHUB_TOKEN)
-        stub_failed_status_creation_request(
-          full_repo_name,
-          sha,
-          "pending",
-          "description"
-        )
-
-        expect do
-          api.create_pending_status(full_repo_name, sha, "description")
-        end.not_to raise_error
-      end
     end
   end
 
