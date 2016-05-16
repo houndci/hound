@@ -1,4 +1,4 @@
-FROM quay.io/netguru/ng-ruby:2.3.0
+FROM quay.io/netguru/ng-ruby:2.3.1
 
 # this app uses passenger
 RUN /opt/passenger/install
