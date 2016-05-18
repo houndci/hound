@@ -83,36 +83,53 @@ describe Linter::Haml do
           "Hash attribute should end with no space before the closing brace",
         ]
       end
+    end
 
-      context "with an invalid HAML format" do
-        it "returns the violation with the line number" do
-          content = <<-EOS.strip_heredoc
+    context "with an invalid HAML format" do
+      it "returns the violation with the line number" do
+        content = <<-EOS.strip_heredoc
+          .main
+            %div
+                %span
+        EOS
+        patch = <<-EOS.strip_heredoc
+          @@ -1,1 +1,3 @@
             .main
-              %div
-                  %span
-          EOS
-          patch = <<-EOS.strip_heredoc
-            @@ -1,1 +1,3 @@
-              .main
-            +   %div
-            +       %span
-          EOS
-          commit_file = CommitFile.new(
-            filename: "foo.haml",
-            commit: nil,
-            patch: patch,
-          )
-          linter = build_linter({})
-          allow(commit_file).to receive(:content).and_return(content)
+          +   %div
+          +       %span
+        EOS
+        commit_file = CommitFile.new(
+          filename: "foo.haml",
+          commit: nil,
+          patch: patch,
+        )
+        linter = build_linter({})
+        allow(commit_file).to receive(:content).and_return(content)
 
-          violations = linter.file_review(commit_file).violations
+        violations = linter.file_review(commit_file).violations
 
-          expect(violations.count).to eq 1
-          expect(violations.first.line_number).to eq 3
-          expect(violations.first.messages).to eq [
-            "The line was indented 2 levels deeper than the previous line.",
-          ]
-        end
+        expect(violations.count).to eq 1
+        expect(violations.first.line_number).to eq 3
+        expect(violations.first.messages).to eq [
+          "The line was indented 2 levels deeper than the previous line.",
+        ]
+      end
+    end
+
+    context "with HAML format that cannot be parsed" do
+      it "does not error and returns no violations" do
+        content = <<-EOS.strip_heredoc
+          %div
+            Hello
+            .
+        EOS
+        commit_file = CommitFile.new(filename: "a.haml", commit: "", patch: "")
+        linter = build_linter({})
+        allow(commit_file).to receive(:content).and_return(content)
+
+        violations = linter.file_review(commit_file).violations
+
+        expect(violations).to eq []
       end
     end
 
