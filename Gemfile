@@ -37,7 +37,7 @@ gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 2.7.2"
 gem 'therubyracer', platforms: :ruby
-
+gem "administrate-field-image"
 gem 'rb-readline', '~> 0.5.3'
 
 group :staging, :production do
