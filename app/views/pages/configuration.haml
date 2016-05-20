@@ -8,7 +8,7 @@
       %li
         = link_to "Ruby", "#ruby"
       %li
-        = link_to "Coffeescript", "#coffeescript"
+        = link_to "CoffeeScript", "#coffeescript"
       %li
         = link_to "JavaScript", "#javascript"
       %li
@@ -167,7 +167,7 @@
           %code.code-block
             :preserve
               jshint:
-                config_file: .javascript-style.json
+                config_file: .jshintrc
 
         %p
           If you would like to ignore certain JavaScript files, simply copy the
@@ -178,7 +178,7 @@
           %code.code-block
             :preserve
               jshint:
-                ignore_file: .javascript_ignore
+                ignore_file: .jsintignore
 
         %p
           Add the following code to your
@@ -303,7 +303,7 @@
       %p
         %code.code-block
           :preserve
-            haml_lint:
+            haml-lint:
               config_file: .haml-style.yml
 
     %article#go

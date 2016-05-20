@@ -36,7 +36,7 @@ describe Config::Swift do
       commit = stubbed_commit({})
       config = build_config(commit)
 
-      expect(config.linter_names).to match_array %w(swift swiftlint swift_lint)
+      expect(config.linter_names).to match_array %w(swift swiftlint)
     end
   end
 

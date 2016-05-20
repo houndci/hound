@@ -3,7 +3,6 @@ module Config
     def linter_names
       [
         "swiftlint",
-        "swift_lint",
         linter_name,
       ]
     end
