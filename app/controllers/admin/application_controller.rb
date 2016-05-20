@@ -12,11 +12,15 @@ module Admin
 
     def github_admin?
       current_user &&
-        Hound::ADMIN_GITHUB_USERNAMES.include?(current_user.github_username)
+        admin_github_handles.include?(current_user.github_username)
     end
 
     def current_user
       @current_user ||= User.find_by(remember_token: session[:remember_token])
+    end
+
+    def admin_github_handles
+      ENV.fetch("ADMIN_GITHUB_USERNAMES", "").split(",")
     end
   end
 end

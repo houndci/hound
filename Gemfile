@@ -21,7 +21,7 @@ gem "high_voltage"
 gem "inifile"
 gem "jquery-rails", "~> 4.0.0"
 gem "neat"
-gem "octokit"
+gem 'octokit', '~> 4.1.0'
 gem "omniauth-github"
 gem "paranoia", "~> 2.0"
 gem "pg"
@@ -36,6 +36,9 @@ gem "sass-rails"
 gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 2.7.2"
+gem 'therubyracer', platforms: :ruby
+gem "administrate-field-image"
+gem 'rb-readline', '~> 0.5.3'
 
 group :staging, :production do
   gem "rack-timeout"
@@ -44,6 +47,7 @@ group :staging, :production do
 end
 
 group :development, :test do
+  gem 'minitest', '~> 5.8.0'
   gem "byebug"
   gem "dotenv-rails"
   gem "foreman"

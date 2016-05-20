@@ -6,8 +6,6 @@ require "attr_extras"
 require "byebug"
 require "webmock/rspec"
 
-ENV["REDIS_URL"] = "redis://localhost:6379/1"
-
 Dir["spec/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|

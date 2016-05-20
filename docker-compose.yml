@@ -1,0 +1,16 @@
+db:
+  image: postgres:9.0.22
+  container_name: hound_db
+redis:
+  image: redis:3.0.4
+  container_name: redis_hound
+web:
+  build: .
+  command: bundle exec foreman start
+  volumes:
+    - .:/myapp
+  ports:
+    - "5000:5000"
+  links:
+    - db
+    - redis

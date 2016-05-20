@@ -17,22 +17,22 @@ describe AnalyticsHelper do
         expect(analytics?).to eq false
       end
     end
-  end
 
-  describe "#identify_hash" do
-    it "includes user data" do
-      user = create(:user)
-      repo = create(:repo, :active, users: [user])
+    describe "#identify_hash" do
+      it "includes user data" do
+        user = create(:user)
+        repo = create(:repo, :active, users: [user])
 
-      identify_hash = identify_hash(user)
+        identify_hash = identify_hash(user)
 
-      expect(identify_hash).to eq(
-        created: user.created_at,
-        email: user.email_address,
-        username: user.github_username,
-        user_id: user.id,
-        active_repo_ids: [repo.id],
-      )
+        expect(identify_hash).to eq(
+          created: user.created_at,
+          email: user.email_address,
+          username: user.github_username,
+          user_id: user.id,
+          active_repo_ids: [repo.id],
+        )
+      end
     end
   end
 end

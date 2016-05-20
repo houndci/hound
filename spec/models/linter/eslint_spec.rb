@@ -10,17 +10,17 @@ describe Linter::Eslint do
       end
     end
 
-    context "given a .js file" do
+    context "given an .es6.js file" do
       it "returns true" do
-        result = Linter::Eslint.can_lint?("foo.js")
+        result = Linter::Eslint.can_lint?("foo.es6.js")
 
         expect(result).to eq true
       end
     end
 
-    context "given a .jsx file" do
+    context "given a .js file" do
       it "returns true" do
-        result = Linter::Eslint.can_lint?("foo.jsx")
+        result = Linter::Eslint.can_lint?("foo.js")
 
         expect(result).to eq true
       end
