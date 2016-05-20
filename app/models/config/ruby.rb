@@ -8,6 +8,13 @@ module Config
       end
     end
 
+    def linter_names
+      [
+        "rubocop",
+        linter_name,
+      ]
+    end
+
     private
 
     def parse(file_content)

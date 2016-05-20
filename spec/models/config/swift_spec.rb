@@ -31,6 +31,15 @@ describe Config::Swift do
     end
   end
 
+  describe "#linter_names" do
+    it "returns the names that the linter is accessible under" do
+      commit = stubbed_commit({})
+      config = build_config(commit)
+
+      expect(config.linter_names).to match_array %w(swift swiftlint swift_lint)
+    end
+  end
+
   def build_config(commit)
     hound_config = double(
       "HoundConfig",

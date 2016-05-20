@@ -148,6 +148,16 @@ describe Config::Ruby do
     end
   end
 
+  describe "#linter_names" do
+    it "returns the names that the linter can be reached as" do
+      commit = double("Commit")
+      config = build_config(commit)
+
+      expect(config.linter_names).
+        to match_array %w(ruby rubocop)
+    end
+  end
+
   def build_config(commit)
     hound_config = double(
       "HoundConfig",

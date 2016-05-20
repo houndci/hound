@@ -1,5 +1,12 @@
 module Config
   class Python < Base
+    def linter_names
+      [
+        "flake8",
+        linter_name,
+      ]
+    end
+
     def content
       @content ||= super.presence || default_content
     end

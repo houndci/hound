@@ -2,6 +2,7 @@ module Config
   class CoffeeScript < Base
     def linter_names
       [
+        "coffeelint",
         linter_name,
         linter_name.sub("_", ""),
       ]

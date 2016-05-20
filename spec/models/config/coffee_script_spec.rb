@@ -62,7 +62,8 @@ describe Config::CoffeeScript do
       commit = double("Commit")
       config = build_config(commit)
 
-      expect(config.linter_names).to eq ["coffee_script", "coffeescript"]
+      expect(config.linter_names).
+        to match_array %w(coffeelint coffee_script coffeescript)
     end
   end
 

@@ -46,6 +46,15 @@ describe Config::Python do
     end
   end
 
+  describe "#linter_names" do
+    it "returns the names that the linter is accessible under" do
+      commit = stubbed_commit({})
+      config = build_config(commit)
+
+      expect(config.linter_names).to match_array %w(python flake8)
+    end
+  end
+
   def build_config(commit)
     hound_config = double(
       "HoundConfig",
