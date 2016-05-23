@@ -20,11 +20,11 @@ module ConfigurationHelper
   end
 
   def scss_config_url
-    config_url("houndci/scss", "config/default.yml")
+    config_url("houndci/linters", "config/scss.yml")
   end
 
   def haml_config_url
-    config_url("houndci/hound", "config/style_guides/haml.yml")
+    config_url("houndci/linters", "config/haml.yml")
   end
 
   def swift_config_url
