@@ -25,44 +25,72 @@ Here are a few technical guidelines to follow:
 
     `./bin/setup`
 
-    **NOTE:** If you don't need Hound to communicate with your local machine, you may skip steps 3-6.
-    Designers, you don't need ngrok for the purpose of making css changes and running the app locally.
-
 1. Make sure that postgres, and redis, are both installed and running locally.
 
-1. Ngrok allows GitHub to make requests via webhook to start a build. Sign up
-for a free [ngrok] account and create a `~/.ngrok` file with the following:
+1. Log into your GitHub account and go to your [developer application settings].
 
-    `auth_token: <your-token>`
+1. Under the Developer applications panel - Click on "Register new application"
+   and fill in the details:
 
-1. Launch ngrok with a custom subdomain on port 5000.
+    * Application Name: Hound Development
+    * Homepage URL: `http://localhost:5000`
+    * Authorization Callback URL: `http://localhost:5000`
 
-    `ngrok -subdomain=<your-initials>-hound 5000`
+1. On the confirmation screen, copy the `Client ID` and `Client Secret` to
+   `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in the `.env.local` file.
+
+1. Run `foreman start`. Foreman will start the web server and the resque
+   background job queue. **NOTE**: `rails server` will not load the appropriate
+   environment variables and you'll get a "Missing `secret_key_base` for
+   'development' environment" error. Similarly, `heroku local` and `forego start`
+   will fail to properly load `.env.local`.
+
+1. Open `localhost:5000` in a browser.
+
+## Setup Ngrok to Allow Webhooks
+
+Ngrok allows Hound to receive webhooks from GitHub. If you'd like to develop or
+test a feature involving GitHub sending a pull request notification to your
+local Hound server you'll need to have ngrok or something similar set up.
+
+To get started with ngrok, sign up for an [ngrok] account and configure ngrok
+locally by installing ngrok and running:
+
+    `ngrok authtoken <your-token>`
+
+1. Launch ngrok on port 5000 (we recommend running ngrok with a custom subdomain
+   for easy and persistent configuration, but this requires a paid ngrok account.
+   You can still run Hound with a free ngrok account, but it will require keeping
+   the GitHub developer application configuration and your  `.env.local` files up
+   to date if your ngrok subdomain changes).
+
+ * If you're using a custom subdomain:
+
+    `ngrok http -subdomain=<your-initials>-hound 5000`
+
+ * If you're using a free ngrok plan:
+
+    `ngrok http 5000`
 
 1. Set the `HOST` variable in your `.env.local` to your ngrok host, e.g.
-   `<your-initials>.ngrok.com`.
+   `<your-subdomain>.ngrok.io`.
 
 1. Change `ENABLE_HTTPS` to 'yes' in the `.env.local` file.
 
-1. Log into your GitHub account and go to your
-   [developer application settings].
+1. Log into your GitHub account and go to your [developer application settings].
 
 1. Under the Developer applications panel - Click on "Register new
    application" and fill in the details:
 
     * Application Name: Hound Development
-    * Homepage URL: `https://<your-initials>-hound.ngrok.com`
-      **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
-    * Authorization Callback URL: `https://<your-initials>-hound.ngrok.com`
-      **NOTE:** If you did not set up ngrok, use `http://localhost:5000`
-
-      **NOTE:** If you did not set up ngrok, skip to the last step.
+    * Homepage URL: `https://<your-subdomain>.ngrok.io`
+    * Authorization Callback URL: `https://<your-subdomain>.ngrok.io`
 
 1. On the confirmation screen, copy the `Client ID` and `Client Secret` to
    `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in the `.env.local` file.
 
-1. On the [personal access token] page, click "Generate new token" and fill
-   in token details:
+1. On the [personal access token] page, click "Generate new token" and fill in
+   token details:
 
     * Token description: Hound Development
     * Select scopes: `repo` and `user:email`
@@ -70,12 +98,13 @@ for a free [ngrok] account and create a `~/.ngrok` file with the following:
 1. On the confirmation screen, copy the generated token to `HOUND_GITHUB_TOKEN`
    in the `.env.local` file. Also update `HOUND_GITHUB_USERNAME` to be your username.
 
-1. Run `foreman start`. Foreman will start the web server and
-   the resque background job queue. NOTE: `rails server` will not load the
-   appropriate environment variables and you'll get a "Missing `secret_key_base`
-   for 'development' environment" error.
+1. Run `foreman start`. Foreman will start the web server and the resque
+   background job queue. **NOTE**: `rails server` will not load the appropriate
+   environment variables and you'll get a "Missing `secret_key_base` for
+   'development' environment" error. Similarly, `heroku local` and `forego start`
+   will fail to properly load `.env.local`.
 
-1. Open `https://<your-initials>-hound.ngrok.com` in a browser.
+1. Open `https://<your-subdomain>.ngrok.io` in a browser.
 
 [ngrok]: https://ngrok.com
 [personal access token]: https://github.com/settings/tokens
