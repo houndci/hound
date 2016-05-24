@@ -6,7 +6,6 @@ class ActivationsController < ApplicationController
 
   def create
     if activator.activate
-      analytics.track_repo_activated(repo)
       render json: repo, status: :created
     else
       analytics.track_repo_activation_failed(repo)

@@ -6,6 +6,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
       scope.processing = true
 
       scope.repo.$activate()
+        .then((repo) -> track_repo_activated(repo))
         .catch((response) -> alert(errorMessage(response.data)))
         .finally(-> scope.processing = false)
 
@@ -54,6 +55,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
 
     saveSubscription = (subscription) ->
       subscription.$save().then((response) ->
+        track_repo_activated(response)
         scope.repo.active = true
         scope.repo.stripe_subscription_id = response.stripe_subscription_id
       ).catch(->
@@ -84,4 +86,14 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
           deactivateRepo()
       else
         createSubscription()
+
+    track_repo_activated = (repo) ->
+      window.analytics.track(
+        "Repo Activated",
+        properties: {
+          name: repo.full_github_name,
+          private: repo.private,
+          revenue: repo.price_in_dollars
+        }
+      )
 ]

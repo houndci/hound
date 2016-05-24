@@ -20,17 +20,6 @@ class Analytics
     )
   end
 
-  def track_repo_activated(repo)
-    track(
-      event: "Repo Activated",
-      properties: {
-        name: repo.full_github_name,
-        private: repo.private,
-        revenue: repo.plan_price,
-      }
-    )
-  end
-
   def track_repo_deactivated(repo)
     track(
       event: "Repo Deactivated",
