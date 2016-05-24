@@ -120,9 +120,13 @@ and services being used, and the default configuration for each linter.
  * [CoffeeLint](https://github.com/clutchski/coffeelint)
  * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/coffeescript.json)
 
-1. JavaScript (JSHint)
- * [houndci/jshint](https://github.com/houndci/jshint)
- * [config](https://raw.githubusercontent.com/houndci/jshint/master/config/.jshintrc)
+1. JavaScript
+  * JSHint
+    * [houndci/jshint](https://github.com/houndci/jshint)
+    * [config](https://raw.githubusercontent.com/houndci/jshint/master/config/.jshintrc)
+  * ESLint
+    * [houndci/eslint](https://github.com/houndci/eslint)
+    * [config](https://raw.githubusercontent.com/houndci/eslint/master/config/.eslintrc)
 
 1. SCSS
  * [houndci/scss](https://github.com/houndci/scss)
