@@ -6,8 +6,6 @@ class SubscriptionsController < ApplicationController
 
   def create
     if activator.activate && create_subscription
-      analytics.track_repo_activated(repo)
-
       render json: repo, status: :created
     else
       activator.deactivate
