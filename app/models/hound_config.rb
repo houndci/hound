@@ -5,7 +5,7 @@ class HoundConfig
     jscs
     remark
     python
-  )
+  ).freeze
   CONFIGURABLE_LINTERS = %w(
     coffeescript
     eslint
@@ -19,7 +19,7 @@ class HoundConfig
     ruby
     scss
     swift
-  )
+  ).freeze
   DEFAULT_LINTERS = CONFIGURABLE_LINTERS - BETA_LINTERS
 
   attr_reader_initialize :commit
@@ -59,7 +59,7 @@ class HoundConfig
   end
 
   def default_options_for(name)
-    { "enabled" => default?(name)  }
+    { "enabled" => default?(name) }
   end
 
   def default?(name)
