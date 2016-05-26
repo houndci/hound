@@ -1,22 +1,26 @@
 class HoundConfig
   CONFIG_FILE = ".hound.yml"
-  BETA_LANGUAGES = %w(
+  BETA_LINTERS = %w(
     eslint
     jscs
-    jshint
     remark
     python
   )
-  LANGUAGES = %w(
+  CONFIGURABLE_LINTERS = %w(
     coffeescript
+    eslint
     go
     haml
     javascript
+    jscs
     python
+    python
+    remark
     ruby
     scss
     swift
   )
+  DEFAULT_LINTERS = CONFIGURABLE_LINTERS - BETA_LINTERS
 
   attr_reader_initialize :commit
 
@@ -55,11 +59,11 @@ class HoundConfig
   end
 
   def default_options_for(name)
-    { "enabled" => !beta?(name) }
+    { "enabled" => default?(name)  }
   end
 
-  def beta?(name)
-    BETA_LANGUAGES.include?(name)
+  def default?(name)
+    DEFAULT_LINTERS.include? name
   end
 
   def normalize_key(key)

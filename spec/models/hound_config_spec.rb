@@ -1,4 +1,5 @@
 require "spec_helper"
+require "app/models/config/parser"
 require "app/models/hound_config"
 
 describe HoundConfig do
@@ -23,16 +24,25 @@ describe HoundConfig do
   end
 
   describe "#enabled_for?" do
-    context "given a supported language" do
+    context "given a default language" do
       it "returns true for all of them" do
         commit = stubbed_commit(".hound.yml" => "")
         hound_config = HoundConfig.new(commit)
 
-        supported_languages =
-          HoundConfig::LANGUAGES - HoundConfig::BETA_LANGUAGES
-        supported_languages.each do |language|
-          expect(hound_config).to be_enabled_for(language)
+        default_linters = HoundConfig::DEFAULT_LINTERS
+        default_linters.each do |linter|
+          expect(hound_config).to be_enabled_for(linter)
         end
+      end
+    end
+
+    context "given an unsupported language" do
+      it "returns true" do
+        commit = stubbed_commit(".hound.yml" => "")
+        hound_config = HoundConfig.new(commit)
+        unsupported_linter = "some_random_linter"
+
+        expect(hound_config).not_to be_enabled_for(unsupported_linter)
       end
     end
 
@@ -54,13 +64,13 @@ describe HoundConfig do
       it "returns false" do
         commit = stubbed_commit(
           ".hound.yml" => <<-EOS.strip_heredoc
-            javascript:
+            jshint:
               enabled: false
           EOS
         )
         hound_config = HoundConfig.new(commit)
 
-        expect(hound_config).not_to be_enabled_for("jshint")
+        expect(hound_config).not_to be_enabled_for("javascript")
       end
     end
 
