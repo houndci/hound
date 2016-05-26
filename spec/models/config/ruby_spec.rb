@@ -13,7 +13,7 @@ describe Config::Ruby do
           "HoundConfig",
           content: { "LineLength" => { "Max" => 90 } },
         )
-        config = Config::Ruby.new(hound_config, "ruby")
+        config = Config::Ruby.new(hound_config)
 
         expect(config.content).to eq("LineLength" => { "Max" => 90 })
       end
@@ -159,6 +159,6 @@ describe Config::Ruby do
       },
     )
 
-    Config::Ruby.new(hound_config, "ruby")
+    Config::Ruby.new(hound_config)
   end
 end

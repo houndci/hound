@@ -26,7 +26,7 @@ describe Config::Python do
           commit: double("Commit"),
           content: {},
         )
-        config = Config::Python.new(hound_config, "unconfigured_linter")
+        config = Config::Python.new(hound_config)
 
         expect(config.content).to eq ""
       end
@@ -55,6 +55,6 @@ describe Config::Python do
       },
     )
 
-    Config::Python.new(hound_config, "python")
+    Config::Python.new(hound_config)
   end
 end

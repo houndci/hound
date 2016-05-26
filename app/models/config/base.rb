@@ -1,6 +1,6 @@
 module Config
   class Base
-    attr_reader_initialize :hound_config, :linter_name
+    attr_reader_initialize :hound_config
 
     def content
       @content ||= ensure_correct_type(safe_parse(load_content))
@@ -21,6 +21,10 @@ module Config
     private
 
     attr_implement :parse, [:file_content]
+
+    def linter_name
+      self.class.name.demodulize.underscore
+    end
 
     def safe_parse(content)
       parse(content)

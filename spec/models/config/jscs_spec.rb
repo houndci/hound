@@ -38,6 +38,6 @@ describe Config::Jscs do
       },
     )
 
-    Config::Jscs.new(hound_config, "jscs")
+    Config::Jscs.new(hound_config)
   end
 end

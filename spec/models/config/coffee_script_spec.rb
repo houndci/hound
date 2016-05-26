@@ -77,6 +77,6 @@ describe Config::CoffeeScript do
         },
       },
     )
-    Config::CoffeeScript.new(hound_config, "coffee_script")
+    Config::CoffeeScript.new(hound_config)
   end
 end
