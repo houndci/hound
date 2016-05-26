@@ -34,15 +34,6 @@ describe Config::Jshint do
     end
   end
 
-  describe "#linter_names" do
-    it "returns the names that the linter is accessible under" do
-      commit = stubbed_commit({})
-      config = build_config(commit)
-
-      expect(config.linter_names).to match_array %w(javascript java_script jshint)
-    end
-  end
-
   def build_config(commit)
     Config::Jshint.new(stubbed_hound_config(commit))
   end
@@ -52,7 +43,7 @@ describe Config::Jshint do
       "HoundConfig",
       commit: commit,
       content: {
-        "javascript" => {
+        "jshint" => {
           "enabled" => true,
           "config_file" => "config/jshint.json",
         },

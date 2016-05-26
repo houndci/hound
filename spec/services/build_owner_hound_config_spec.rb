@@ -3,7 +3,7 @@ require "rails_helper"
 describe BuildOwnerHoundConfig do
   describe "#run" do
     context "when the owner has a configuration set" do
-      it "returns the configuration of that repo" do
+      it "returns the owner's config merged with the default HoundConfig" do
         owner = instance_double(
           "Owner",
           has_config_repo?: true,
@@ -11,7 +11,7 @@ describe BuildOwnerHoundConfig do
         )
         commit = stubbed_commit(
           ".hound.yml" => <<~EOS
-            ruby:
+            remark:
               enabled: true
           EOS
         )
@@ -20,12 +20,13 @@ describe BuildOwnerHoundConfig do
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
-        expect(owner_config.content).to eq("ruby" => { "enabled" => true })
+        expect(owner_config.content).
+          to eq(default_hound_config.merge("remark" => { "enabled" => true }))
       end
     end
 
     context "when the owner does not have a configuration set" do
-      it "returns an empty hound config" do
+      it "returns the default HoundConfig" do
         owner = instance_double(
           "Owner",
           has_config_repo?: false,
@@ -34,12 +35,12 @@ describe BuildOwnerHoundConfig do
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
-        expect(owner_config.content).to eq({})
+        expect(owner_config.content).to eq(default_hound_config)
       end
     end
 
     context "when the owner's configuration is unreachable" do
-      it "returns an empty hound config" do
+      it "returns the default HoundConfig" do
         owner = instance_double(
           "Owner",
           has_config_repo?: true,
@@ -49,12 +50,12 @@ describe BuildOwnerHoundConfig do
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
-        expect(owner_config.content).to eq({})
+        expect(owner_config.content).to eq(default_hound_config)
       end
     end
 
     context "when the owner's configuration is improperly formatted" do
-      it "returns an empty hound config" do
+      it "returns the default HoundConfig" do
         owner = instance_double(
           "Owner",
           has_config_repo?: true,
@@ -63,7 +64,7 @@ describe BuildOwnerHoundConfig do
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
-        expect(owner_config.content).to eq({})
+        expect(owner_config.content).to eq(default_hound_config)
       end
     end
   end
@@ -76,5 +77,9 @@ describe BuildOwnerHoundConfig do
   def stub_success_on_repo(repo_name)
     stub_request(:get, "https://api.github.com/repos/#{repo_name}").
       to_return(status: 200, body: "", headers: {})
+  end
+
+  def default_hound_config
+    HoundConfig.new(EmptyCommit.new).content
   end
 end

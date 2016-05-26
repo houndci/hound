@@ -1,25 +1,23 @@
 require "spec_helper"
-require "spec/support/linters"
 require "app/models/config/parser"
+require "app/services/normalize_config"
+require "app/services/resolve_config_aliases"
 require "app/models/hound_config"
 
 describe HoundConfig do
   describe "#content" do
-    it "returns the content of the .hound.yml file" do
+    it "returns the contents of .hound.yml, merged with the default config" do
       commit = stubbed_commit(
         ".hound.yml" => <<-EOS.strip_heredoc
           ruby:
-            enabled: true
             config_file: config/rubocop.yml
         EOS
       )
       hound_config = HoundConfig.new(commit)
 
-      expect(hound_config.content).to eq(
-        "ruby" => {
-          "enabled" => true,
-          "config_file" => "config/rubocop.yml",
-        },
+      expect(hound_config.content["ruby"]).to eq(
+        "enabled" => true,
+        "config_file" => "config/rubocop.yml",
       )
     end
   end
@@ -42,13 +40,27 @@ describe HoundConfig do
       it "returns false" do
         commit = stubbed_commit(
           ".hound.yml" => <<-EOS.strip_heredoc
-            scss:
+            ruby:
               enabled: false
           EOS
         )
         hound_config = HoundConfig.new(commit)
 
-        expect(hound_config).not_to be_enabled_for("scss")
+        expect(hound_config).not_to be_enabled_for("ruby")
+      end
+    end
+
+    context "when the given language is enabled" do
+      it "returns true" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            remark:
+              enabled: true
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
+
+        expect(hound_config).to be_enabled_for("remark")
       end
     end
 
@@ -56,7 +68,7 @@ describe HoundConfig do
       it "returns false" do
         commit = stubbed_commit(
           ".hound.yml" => <<-EOS.strip_heredoc
-            javascript:
+            java_script:
               enabled: false
           EOS
         )
@@ -66,75 +78,41 @@ describe HoundConfig do
       end
     end
 
-    context "when the given language is supported but unconfigured" do
+    context "given an unsupported language" do
+      it "returns false" do
+        commit = stubbed_commit(".hound.yml" => "")
+        hound_config = HoundConfig.new(commit)
+        unsupported_linter = "some_random_linter"
+
+        expect(hound_config).not_to be_enabled_for(unsupported_linter)
+      end
+    end
+
+    context "when the enabled key is capitalized" do
       it "returns true" do
         commit = stubbed_commit(
           ".hound.yml" => <<-EOS.strip_heredoc
-            scss:
-              config_file: config/.scss_lint.yml
+            python:
+              Enabled: true
           EOS
         )
         hound_config = HoundConfig.new(commit)
 
-        expect(hound_config).to be_enabled_for("scss")
+        expect(hound_config).to be_enabled_for("python")
       end
     end
 
-    context "given a language in beta" do
-      context "when the given language is enabled" do
-        it "returns true" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              python:
-                enabled: true
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
+    context "when the given language has underscores in it" do
+      it "converts them and returns true" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            coffeescript:
+              enabled: true
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
 
-          expect(hound_config).to be_enabled_for("python")
-        end
-      end
-
-      context "when the enabled key is capitalized" do
-        it "returns true" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              python:
-                Enabled: true
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
-
-          expect(hound_config).to be_enabled_for("python")
-        end
-      end
-
-      context "when the given language has underscores in it" do
-        it "converts them and returns true" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              coffeescript:
-                enabled: true
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
-
-          expect(hound_config).to be_enabled_for("coffee_script")
-        end
-      end
-
-      context "when the given language is disabled" do
-        it "returns false" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              python:
-                enabled: false
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
-
-          expect(hound_config).not_to be_enabled_for("python")
-        end
+        expect(hound_config).to be_enabled_for("coffee_script")
       end
     end
   end

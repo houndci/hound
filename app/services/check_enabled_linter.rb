@@ -18,7 +18,7 @@ class CheckEnabledLinter
   private
 
   def linter_names
-    @configs.flat_map(&:linter_names)
+    @configs.flat_map(&:linter_name)
   end
 
   def hound_configs

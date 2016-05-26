@@ -127,14 +127,6 @@ describe Config::Base do
     end
   end
 
-  describe "#linter_names" do
-    it "returns a list of names the linter is accessible under" do
-      config = build_config
-
-      expect(config.linter_names).to eq ["test"]
-    end
-  end
-
   def build_config(hound_config: build_hound_config)
     Config::Test.new(hound_config)
   end

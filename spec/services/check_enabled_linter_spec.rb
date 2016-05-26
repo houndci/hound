@@ -8,7 +8,7 @@ describe CheckEnabledLinter do
         hound_config = double("HoundConfig", linter_enabled?: true)
         config = double(
           "Config",
-          linter_names: ["ruby"],
+          linter_name: ["ruby"],
           hound_config: hound_config,
         )
 
@@ -23,7 +23,7 @@ describe CheckEnabledLinter do
         hound_config = double("HoundConfig", linter_enabled?: false)
         config = double(
           "Config",
-          linter_names: ["ruby"],
+          linter_name: ["ruby"],
           hound_config: hound_config,
         )
 
