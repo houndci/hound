@@ -6,7 +6,7 @@ class HoundConfig
     remark
     python
   ).freeze
-  CONFIGURABLE_LINTERS = Linter::Collection::LINTERS.map do |linter_class| 
+  CONFIGURABLE_LINTERS = Linter::Collection::LINTERS.map do |linter_class|
     linter_class.name.gsub("Linter::", "").underscore
   end.freeze
   DEFAULT_LINTERS = CONFIGURABLE_LINTERS - BETA_LINTERS
