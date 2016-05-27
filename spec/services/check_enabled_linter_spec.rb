@@ -5,7 +5,7 @@ describe CheckEnabledLinter do
   describe ".run" do
     context "when the hound config is enabled for the given language" do
       it "returns true" do
-        hound_config = double("HoundConfig", enabled_for?: true)
+        hound_config = double("HoundConfig", disabled_for?: false, enabled_for?: true)
         config = double(
           "Config",
           linter_names: ["ruby"],
@@ -20,7 +20,22 @@ describe CheckEnabledLinter do
 
     context "when the hound config is disabled for the given language" do
       it "returns false" do
-        hound_config = double("HoundConfig", enabled_for?: false)
+        hound_config = double("HoundConfig", disabled_for?: true)
+        config = double(
+          "Config",
+          linter_names: ["ruby"],
+          hound_config: hound_config,
+        )
+
+        result = CheckEnabledLinter.run(config)
+
+        expect(result).to eq false
+      end
+    end
+
+    context "when the hound config is not enabled or disabled for the given language" do
+      it "returns false" do
+        hound_config = double("HoundConfig", enabled_for?: false, disabled_for?: false)
         config = double(
           "Config",
           linter_names: ["ruby"],

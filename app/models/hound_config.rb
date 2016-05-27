@@ -17,8 +17,18 @@ class HoundConfig
     @content ||= parse(commit.file_content(CONFIG_FILE))
   end
 
+  def disabled_for?(name)
+    key = normalize_key(name)
+    config = options_for(key)
+
+    disabled?(config)
+  end
+
   def enabled_for?(name)
-    configured?(name)
+    key = normalize_key(name)
+    config = options_for(key)
+
+    enabled?(config) || default?(key)
   end
 
   def fail_on_violations?
@@ -31,24 +41,16 @@ class HoundConfig
     Config::Parser.yaml(file_content) || {}
   end
 
-  def configured?(name)
-    key = normalize_key(name)
-    config = options_for(key)
-
-    enabled?(config)
-  end
-
   def enabled?(config)
     config["enabled"] || config["Enabled"]
   end
 
-  def options_for(name)
-    config = content[name] || {}
-    default_options_for(name).merge(config)
+  def disabled?(config)
+    config["enabled"] == false || config["Enabled"] == false
   end
 
-  def default_options_for(name)
-    { "enabled" => default?(name) }
+  def options_for(name)
+    content[name] || {}
   end
 
   def default?(name)

@@ -40,7 +40,11 @@ describe Linter::CoffeeScript do
   describe "enabled?" do
     context "when configuration is enabled" do
       it "is enabled" do
-        hound_config = double("HoundConfig", enabled_for?: true)
+        hound_config = double(
+          "HoundConfig",
+          disabled_for?: false,
+          enabled_for?: true,
+        )
         linter = build_linter(hound_config: hound_config)
 
         expect(linter).to be_enabled
@@ -49,7 +53,11 @@ describe Linter::CoffeeScript do
 
     context "when the config has enabled_for to false" do
       it "is not enabled" do
-        hound_config = double("HoundConfig", enabled_for?: false)
+        hound_config = double(
+          "HoundConfig",
+          disabled_for?: true,
+          enabled_for?: false,
+        )
         linter = build_linter(hound_config: hound_config)
 
         expect(linter).not_to be_enabled

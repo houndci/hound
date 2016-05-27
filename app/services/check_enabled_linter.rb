@@ -8,6 +8,10 @@ class CheckEnabledLinter
   end
 
   def enabled?
+    if disabled?
+      return false
+    end
+
     linter_names.any? do |linter_name|
       hound_configs.any? do |hound_config|
         hound_config.enabled_for?(linter_name)
@@ -16,6 +20,14 @@ class CheckEnabledLinter
   end
 
   private
+
+  def disabled?
+    linter_names.any? do |linter_name|
+      hound_configs.any? do |hound_config|
+        hound_config.disabled_for?(linter_name)
+      end
+    end
+  end
 
   def linter_names
     @configs.flat_map(&:linter_names)
