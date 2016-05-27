@@ -158,7 +158,6 @@ describe HoundConfig do
       end
     end
 
-
     context "when the enabled key is capitalized" do
       it "returns true" do
         commit = stubbed_commit(
