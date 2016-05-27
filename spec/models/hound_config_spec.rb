@@ -38,18 +38,16 @@ describe HoundConfig do
 
   describe "#disabled_for?" do
     context "given a language that is disabled in the config file" do
-      context "given that language is not a default" do
-        it "returns true" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              remark:
-                enabled: false
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
+      it "returns true" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            remark:
+              enabled: false
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
 
-          expect(hound_config).to be_disabled_for("remark")
-        end
+        expect(hound_config).to be_disabled_for("remark")
       end
     end
 
