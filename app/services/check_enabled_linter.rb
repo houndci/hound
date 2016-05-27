@@ -8,23 +8,23 @@ class CheckEnabledLinter
   end
 
   def enabled?
-    if disabled?
-      return false
-    end
-
-    linter_names.any? do |linter_name|
-      hound_configs.any? do |hound_config|
-        hound_config.enabled_for?(linter_name)
-      end
-    end
+    !any_disabled? && any_enabled?
   end
 
   private
 
-  def disabled?
+  def any_disabled?
     linter_names.any? do |linter_name|
       hound_configs.any? do |hound_config|
         hound_config.disabled_for?(linter_name)
+      end
+    end
+  end
+
+  def any_enabled?
+    linter_names.any? do |linter_name|
+      hound_configs.any? do |hound_config|
+        hound_config.enabled_for?(linter_name)
       end
     end
   end
