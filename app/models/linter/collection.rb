@@ -13,7 +13,7 @@ module Linter
       Linter::Scss,
       Linter::Swift,
     ].freeze
-    LINTER_NAMES = Linter::Collection::LINTERS.map do |linter_class|
+    LINTER_NAMES = LINTERS.map do |linter_class|
       linter_class.name.demodulize.downcase
     end
 

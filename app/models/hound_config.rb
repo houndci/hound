@@ -43,6 +43,14 @@ class HoundConfig
   end
 
   def disabled?(config)
+    config_set?(config) && config_false?(config)
+  end
+
+  def config_set?(config)
+    !config["enabled"].nil? || !config["Enabled"].nil?
+  end
+
+  def config_false?(config)
     config["enabled"] == false || config["Enabled"] == false
   end
 
