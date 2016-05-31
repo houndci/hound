@@ -1,0 +1,16 @@
+%header.organization-header
+  %h2.organization-header-title
+    {{ organization.name }}
+  -# .organization-header-toggle
+  -#   %p.organization-header-label
+  -#     Use organization-wide config
+  -#   %input#toggle{ 'class' => 'organization-header-toggle-input',
+  -#     'type' => 'checkbox', 'name' => 'toggle' }
+  -#   %label.organization-header-toggle-switch{ 'for' => 'toggle' }
+  -# .organization-header-config
+  -#   %p.organization-header-label
+  -#     Use hound.yml from
+  -#   %select.organization-header-select
+  -#     %option thoughtbot/hound
+%section.repo_listing{ 'repo-list' => '' }
+= render 'preload_template', template: 'repo_list'

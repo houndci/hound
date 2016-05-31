@@ -1,42 +1,6 @@
-.repo-tools
-  .repo-tools-search
-    %input.repo-search-tools-input{ 'type' => 'text',
-      'placeholder' => t('search_placeholder'),
-      'ng-model' => 'search.full_github_name' }
-  - unless current_user.has_access_to_private_repos?
-    .repo-tools-private
-      = button_to '/auth/github?access=full',
-        class: 'repo-tools-private-button', 'ng-disabled' => 'syncingRepos' do
-        %span {{ includePrivateReposButtonText }}
-  .repo-tools-refresh
-    %button{ 'class' => 'repo-tools-refresh-button',
-      'ng-click' => 'sync()', 'ng-disabled' => 'syncingRepos' }
-      %span {{ syncButtonText }}
-
-.repos-syncing{ 'ng-show' => 'syncingRepos' }
-  .dot
-  .dot
-  .dot
-
-.organization{ 'ng-hide' => 'syncingRepos' }
-  %header.organization-header
-    %h2.organization-header-title
-      Some Organization Name
-    .organization-header-toggle
-      %span.organization-header-label
-        Use organization-wide config
-      %input#toggle{ 'class' => 'organization-header-toggle-input',
-        'type' => 'checkbox', 'name' => 'toggle' }
-      %label.toggle-switch{ 'for' => 'toggle' }
-    .organization-header-config
-      %span.organization-header-label
-        Use hound.yml from
-      %select.organization-header-select
-        %option thoughtbot/hound
-
-  %ul.repos
-    %li.repo{ 'repo' => '',
-      'ng-repeat' => 'repo in repos | filter:search',
-      'ng-class' => '{ "repo--active": repo.active, "repo--processing": processing }' }
-
-  = render 'preload_template', template: 'repo'
+%ul.repos
+  %li.repo{ 'repo' => '',
+    'ng-repeat' => 'repo in repos | filter:search',
+      'ng-class' => '{"repo--active": repo.active, |
+        "repo--processing": processing}' }
+= render 'preload_template', template: 'repo'

@@ -7,6 +7,7 @@ class RepoSerializer < ActiveModel::Serializer
     :github_id,
     :id,
     :in_organization,
+    :owner,
     :price_in_cents,
     :price_in_dollars,
     :private,
