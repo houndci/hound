@@ -21,7 +21,7 @@ class RubyConfigBuilder
   def combined_overrides
     RuboCop::ConfigLoader.merge(normalized_hound_config, normalized_overrides)
   rescue TypeError
-    hound_config
+    normalized_hound_config
   end
 
   def normalized_overrides
