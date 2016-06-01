@@ -48,6 +48,19 @@ RSpec.describe RubyConfigBuilder do
     end
   end
 
+  context "when the custom configuration returns a type error from rubocop" do
+    it "returns the default config" do
+      overrides = { "this isn't parsible" => ["foo", "bar"] }
+      builder = RubyConfigBuilder.new(overrides)
+
+      config = builder.config
+
+      expect(config["Rails/ActionFilter"]).to match enabled_rule
+      expect(config["Style/StringLiterals"]).to match hound_override_rule
+      expect(config["Style/VariableName"]).to match rubocop_default_rule
+    end
+  end
+
   def customer_override_rule
     hash_including("EnforcedStyle" => "camel_case", "Enabled" => true)
   end

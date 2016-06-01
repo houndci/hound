@@ -23,7 +23,13 @@ module Config
         result.merge(ancestor_config)
       end
 
-      inherited_config.merge(config.except("inherit_from"))
+      merged_config = inherited_config.merge(config.except("inherit_from"))
+
+      if merged_config.has_key?("inherit_from")
+        parse_inherit_from(merged_config)
+      else
+        merged_config
+      end
     end
 
     def legacy?

@@ -31,7 +31,7 @@ describe Config::Ruby do
     end
 
     it "dumps the config content to yaml" do
-      rubocop = <<-EOS.strip_heredoc
+      rubocop = <<~EOS
         Style/Encoding:
           Enabled: true
       EOS
@@ -41,7 +41,7 @@ describe Config::Ruby do
 
       config = build_config(commit)
 
-      expect(config.content.to_yaml).to eq <<-YML.strip_heredoc
+      expect(config.content.to_yaml).to eq <<~YML
         ---
         Style/Encoding:
           Enabled: true
@@ -51,18 +51,18 @@ describe Config::Ruby do
 
   context "when the configuration uses `inherit_from`" do
     it "returns the merged configuration using `inherit_from`" do
-      rubocop = <<-EOS.strip_heredoc
+      rubocop = <<~EOS
         inherit_from:
           - config/base.yml
           - config/overrides.yml
         Style/Encoding:
           Enabled: true
       EOS
-      base = <<-EOS.strip_heredoc
+      base = <<~EOS
         LineLength:
           Max: 40
       EOS
-      overrides = <<-EOS.strip_heredoc
+      overrides = <<~EOS
         Style/HashSyntax:
           EnforcedStyle: hash_rockets
         Style/Encoding:
@@ -84,7 +84,7 @@ describe Config::Ruby do
 
     context "with an empty `inherit_from`" do
       it "returns the merged configuration using `inherit_from`" do
-        rubocop = <<-EOS.strip_heredoc
+        rubocop = <<~EOS
           inherit_from: config/rubocop_todo.yml
           Style/Encoding:
             Enabled: true
@@ -115,6 +115,44 @@ describe Config::Ruby do
         expect { config.content }.to raise_error(Config::ParserError)
       end
     end
+
+    context "with nested inherit_froms" do
+      it "returns the merged configuration using `inherit_from`" do
+        rubocop = <<~EOS
+          inherit_from: config/default.yml
+        EOS
+        default = <<~EOS
+          inherit_from:
+            - config/base.yml
+            - config/overrides.yml
+          Style/Encoding:
+            Enabled: true
+        EOS
+        base = <<~EOS
+          LineLength:
+            Max: 40
+        EOS
+        overrides = <<~EOS
+          Style/HashSyntax:
+            EnforcedStyle: hash_rockets
+          Style/Encoding:
+            Enabled: false
+        EOS
+        commit = stubbed_commit(
+          "config/rubocop.yml" => rubocop,
+          "config/default.yml" => default,
+          "config/base.yml" => base,
+          "config/overrides.yml" => overrides,
+        )
+        config = build_config(commit)
+
+        expect(config.content).to eq(
+          "LineLength" => { "Max" => 40 },
+          "Style/HashSyntax" => { "EnforcedStyle" => "hash_rockets" },
+          "Style/Encoding" => { "Enabled" => true },
+        )
+      end
+    end
   end
 
   context "when the given content is invalid" do
@@ -133,7 +171,7 @@ describe Config::Ruby do
     context "when the content is invalid yaml" do
       it "raises an exception" do
         commit = stubbed_commit(
-          "config/rubocop.yml" => <<-EOS.strip_heredoc
+          "config/rubocop.yml" => <<~EOS
             ruby: !ruby/object
               ;foo:
           EOS
