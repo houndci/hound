@@ -1,12 +1,5 @@
 class HoundConfig
   CONFIG_FILE = ".hound.yml"
-  BETA_LINTERS = %w(
-    eslint
-    jscs
-    remark
-    python
-  ).freeze
-  DEFAULT_LINTERS = (Linter::Collection::LINTER_NAMES - BETA_LINTERS).freeze
 
   attr_reader_initialize :commit
 
@@ -18,14 +11,14 @@ class HoundConfig
     key = normalize_key(name)
     config = options_for(key)
 
-    disabled?(config)
+    config_enabled(config) === false
   end
 
   def enabled_for?(name)
     key = normalize_key(name)
     config = options_for(key)
 
-    enabled?(config) || default?(key)
+    config_enabled(config)
   end
 
   def fail_on_violations?
@@ -38,28 +31,12 @@ class HoundConfig
     Config::Parser.yaml(file_content) || {}
   end
 
-  def enabled?(config)
-    config["enabled"] || config["Enabled"]
-  end
-
-  def disabled?(config)
-    config_set?(config) && config_false?(config)
-  end
-
-  def config_set?(config)
-    !config["enabled"].nil? || !config["Enabled"].nil?
-  end
-
-  def config_false?(config)
-    config["enabled"] == false || config["Enabled"] == false
-  end
-
   def options_for(name)
-    content[name] || {}
+    content.fetch(name, {})
   end
 
-  def default?(name)
-    DEFAULT_LINTERS.include? name
+  def config_enabled(config)
+    config.fetch("enabled", config["Enabled"])
   end
 
   def normalize_key(key)

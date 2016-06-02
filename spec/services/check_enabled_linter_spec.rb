@@ -55,21 +55,42 @@ describe CheckEnabledLinter do
     end
 
     context "when the hound config does not contain the given language" do
-      it "returns false" do
-        hound_config = double(
-          "HoundConfig",
-          enabled_for?: false,
-          disabled_for?: false,
-        )
-        config = double(
-          "Config",
-          linter_names: ["ruby"],
-          hound_config: hound_config,
-        )
+      context "when the given language is default" do
+        it "returns true" do
+          hound_config = double(
+            "HoundConfig",
+            enabled_for?: false,
+            disabled_for?: false,
+          )
+          config = double(
+            "Config",
+            linter_names: CheckEnabledLinter::DEFAULT_LINTERS,
+            hound_config: hound_config,
+          )
 
-        result = CheckEnabledLinter.run(config)
+          result = CheckEnabledLinter.run(config)
 
-        expect(result).to eq false
+          expect(result).to eq true
+        end
+      end
+
+      context "when the given language is in beta" do
+        it "returns false" do
+          hound_config = double(
+            "HoundConfig",
+            enabled_for?: false,
+            disabled_for?: false,
+          )
+          config = double(
+            "Config",
+            linter_names: CheckEnabledLinter::BETA_LINTERS,
+            hound_config: hound_config,
+          )
+
+          result = CheckEnabledLinter.run(config)
+
+          expect(result).to eq false
+        end
       end
     end
   end

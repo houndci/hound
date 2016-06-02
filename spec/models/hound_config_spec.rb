@@ -1,17 +1,5 @@
 require "spec_helper"
-require "app/models/linter/base"
-require "app/models/linter/coffee_script"
-require "app/models/linter/eslint"
-require "app/models/linter/go"
-require "app/models/linter/haml"
-require "app/models/linter/jscs"
-require "app/models/linter/jshint"
-require "app/models/linter/remark"
-require "app/models/linter/python"
-require "app/models/linter/ruby"
-require "app/models/linter/scss"
-require "app/models/linter/swift"
-require "app/models/linter/collection"
+require "app/services/check_enabled_linter"
 require "app/models/config/parser"
 require "app/models/hound_config"
 
@@ -91,59 +79,13 @@ describe HoundConfig do
     end
 
     context "given a language that isn't in the config file" do
-      context "given that language is not a default" do
-        it "returns false" do
-          commit = stubbed_commit(".hound.yml" => "")
-          hound_config = HoundConfig.new(commit)
+      it "returns false" do
+        commit = stubbed_commit(".hound.yml" => "")
+        hound_config = HoundConfig.new(commit)
 
-          expect(hound_config).not_to be_enabled_for("remark")
-        end
-      end
-
-      context "given that language is a default" do
-        it "returns true for all of them" do
-          commit = stubbed_commit(".hound.yml" => "")
-          hound_config = HoundConfig.new(commit)
-
-          default_linters = HoundConfig::DEFAULT_LINTERS
-          default_linters.each do |linter|
-            expect(hound_config).to be_enabled_for(linter)
-          end
-        end
-      end
-
-      context "given that language is in beta" do
-        it "returns false for all of them" do
-          commit = stubbed_commit(".hound.yml" => "")
-          hound_config = HoundConfig.new(commit)
-
-          default_linters = HoundConfig::BETA_LINTERS
-          default_linters.each do |linter|
-            expect(hound_config).not_to be_enabled_for(linter)
-          end
-        end
-      end
-    end
-
-    context "given a language that is disabled in the config file" do
-      context "given that language is not a default" do
-        it "returns false" do
-          commit = stubbed_commit(".hound.yml" => "")
-          hound_config = HoundConfig.new(commit)
-
-          expect(hound_config).not_to be_enabled_for("remark")
-        end
-      end
-
-      context "given that language is a default" do
-        it "returns true for all of them" do
-          commit = stubbed_commit(".hound.yml" => "")
-          hound_config = HoundConfig.new(commit)
-
-          default_linters = HoundConfig::DEFAULT_LINTERS
-          default_linters.each do |linter|
-            expect(hound_config).to be_enabled_for(linter)
-          end
+        default_linters =  CheckEnabledLinter::DEFAULT_LINTERS
+        default_linters.each do |linter|
+          expect(hound_config).not_to be_enabled_for(linter)
         end
       end
     end
