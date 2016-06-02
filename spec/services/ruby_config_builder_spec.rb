@@ -1,6 +1,7 @@
 require "rubocop"
 require "app/models/default_config_file"
 require "app/services/ruby_config_builder"
+require "app/models/config/parser"
 
 RSpec.describe RubyConfigBuilder do
   context "when there is no custom configuration" do
@@ -44,6 +45,19 @@ RSpec.describe RubyConfigBuilder do
       expect(config["Style/Tab"]).to match disabled_rule
       expect(config["Style/StringLiterals"]).to match hound_override_rule
       expect(config["Style/VariableName"]).to match customer_override_rule
+    end
+  end
+
+  context "when the custom configuration returns a type error from rubocop" do
+    it "returns the default config" do
+      overrides = { "this isn't parsible" => ["foo", "bar"] }
+      builder = RubyConfigBuilder.new(overrides)
+
+      config = builder.config
+
+      expect(config["Rails/ActionFilter"]).to match enabled_rule
+      expect(config["Style/StringLiterals"]).to match hound_override_rule
+      expect(config["Style/VariableName"]).to match rubocop_default_rule
     end
   end
 
