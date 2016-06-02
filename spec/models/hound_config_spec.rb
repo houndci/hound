@@ -1,4 +1,5 @@
 require "spec_helper"
+require "app/models/config/parser"
 require "app/models/hound_config"
 
 describe HoundConfig do
@@ -22,117 +23,105 @@ describe HoundConfig do
     end
   end
 
-  describe "#enabled_for?" do
-    context "given a supported language" do
-      it "returns true for all of them" do
-        commit = stubbed_commit(".hound.yml" => "")
-        hound_config = HoundConfig.new(commit)
-
-        supported_languages =
-          HoundConfig::LANGUAGES - HoundConfig::BETA_LANGUAGES
-        supported_languages.each do |language|
-          expect(hound_config).to be_enabled_for(language)
-        end
-      end
-    end
-
-    context "when the given language is disabled" do
-      it "returns false" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
-            scss:
-              enabled: false
-          EOS
-        )
-        hound_config = HoundConfig.new(commit)
-
-        expect(hound_config).not_to be_enabled_for("scss")
-      end
-    end
-
-    context "when the given language is an alias, and is disabled" do
-      it "returns false" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
-            javascript:
-              enabled: false
-          EOS
-        )
-        hound_config = HoundConfig.new(commit)
-
-        expect(hound_config).not_to be_enabled_for("jshint")
-      end
-    end
-
-    context "when the given language is supported but unconfigured" do
+  describe "#disabled_for?" do
+    context "given a language that is disabled in the config file" do
       it "returns true" do
         commit = stubbed_commit(
           ".hound.yml" => <<-EOS.strip_heredoc
-            scss:
-              config_file: config/.scss_lint.yml
+            remark:
+              enabled: false
           EOS
         )
         hound_config = HoundConfig.new(commit)
 
-        expect(hound_config).to be_enabled_for("scss")
+        expect(hound_config).to be_disabled_for("remark")
       end
     end
 
-    context "given a language in beta" do
-      context "when the given language is enabled" do
-        it "returns true" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              python:
-                enabled: true
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
+    context "given a language that isn't in the config file" do
+      it "returns false" do
+        commit = stubbed_commit(".hound.yml" => "")
+        hound_config = HoundConfig.new(commit)
 
-          expect(hound_config).to be_enabled_for("python")
-        end
+        expect(hound_config).not_to be_disabled_for("remark")
       end
+    end
 
-      context "when the enabled key is capitalized" do
-        it "returns true" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              python:
-                Enabled: true
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
+    context "given a language that is enabled in the config file" do
+      it "returns false" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            remark:
+              enabled: true
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
 
-          expect(hound_config).to be_enabled_for("python")
-        end
+        expect(hound_config).not_to be_disabled_for("remark")
       end
+    end
+  end
 
-      context "when the given language has underscores in it" do
-        it "converts them and returns true" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              coffeescript:
-                enabled: true
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
+  describe "#enabled_for?" do
+    context "given a language that is enabled in the config file" do
+      it "returns true" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            remark:
+              enabled: true
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
 
-          expect(hound_config).to be_enabled_for("coffee_script")
-        end
+        expect(hound_config).to be_enabled_for("remark")
       end
+    end
 
-      context "when the given language is disabled" do
-        it "returns false" do
-          commit = stubbed_commit(
-            ".hound.yml" => <<-EOS.strip_heredoc
-              python:
-                enabled: false
-            EOS
-          )
-          hound_config = HoundConfig.new(commit)
+    context "given a language that isn't in the config file" do
+      it "returns false" do
+        commit = stubbed_commit(".hound.yml" => "")
+        hound_config = HoundConfig.new(commit)
+        linter = "ruby"
 
-          expect(hound_config).not_to be_enabled_for("python")
-        end
+        expect(hound_config).not_to be_enabled_for(linter)
+      end
+    end
+
+    context "given an unsupported language" do
+      it "returns false" do
+        commit = stubbed_commit(".hound.yml" => "")
+        hound_config = HoundConfig.new(commit)
+        unsupported_linter = "some_random_linter"
+
+        expect(hound_config).not_to be_enabled_for(unsupported_linter)
+      end
+    end
+
+    context "when the enabled key is capitalized" do
+      it "returns true" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            python:
+              Enabled: true
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
+
+        expect(hound_config).to be_enabled_for("python")
+      end
+    end
+
+    context "when the given language has underscores in it" do
+      it "converts them and returns true" do
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            coffeescript:
+              enabled: true
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
+
+        expect(hound_config).to be_enabled_for("coffee_script")
       end
     end
   end

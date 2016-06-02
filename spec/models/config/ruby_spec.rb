@@ -1,4 +1,5 @@
 require "spec_helper"
+require "spec/support/linters"
 require "app/models/config/base"
 require "app/models/config/ruby"
 require "app/models/hound_config"

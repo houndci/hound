@@ -27,7 +27,7 @@ module Config
     end
 
     def legacy?
-      (configured_languages & HoundConfig::LANGUAGES).empty?
+      (configured_languages & Linter::Collection::LINTER_NAMES).empty?
     end
 
     def configured_languages

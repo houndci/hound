@@ -13,6 +13,9 @@ module Linter
       Linter::Scss,
       Linter::Swift,
     ].freeze
+    LINTER_NAMES = LINTERS.map do |linter_class|
+      linter_class.name.demodulize.downcase
+    end
 
     def self.for(filename:, **linter_args)
       linter_classes = LINTERS.
