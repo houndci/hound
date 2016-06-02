@@ -1,5 +1,4 @@
 require "spec_helper"
-require "app/services/check_enabled_linter"
 require "app/models/config/parser"
 require "app/models/hound_config"
 
@@ -82,11 +81,9 @@ describe HoundConfig do
       it "returns false" do
         commit = stubbed_commit(".hound.yml" => "")
         hound_config = HoundConfig.new(commit)
+        linter = "ruby"
 
-        default_linters =  CheckEnabledLinter::DEFAULT_LINTERS
-        default_linters.each do |linter|
-          expect(hound_config).not_to be_enabled_for(linter)
-        end
+        expect(hound_config).not_to be_enabled_for(linter)
       end
     end
 
