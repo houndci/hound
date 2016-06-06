@@ -7,7 +7,7 @@ class BuildRunner
     end
   rescue Config::ParserError => exception
     report_config_file_as_invalid(exception)
-  rescue Octokit::NotFound
+  rescue Octokit::NotFound, Octokit::Unauthorized
     remove_current_user_membership
     raise
   end
