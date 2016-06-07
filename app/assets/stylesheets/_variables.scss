@@ -7,7 +7,8 @@ $red: rgb(255, 123, 123);
 $teal: #379a75;
 $gold: rgb(226, 206, 0);
 $tan: rgb(255, 220, 173);
-$white: #ffffff;
+$white: #fff;
+$black: #000;
 
 $ruby: rgb(193, 30, 29);
 $javascript: rgb(246, 221, 0);
@@ -18,6 +19,7 @@ $inactive-color: #999;
 $active-color: $teal;
 $repo-list-toggle-size: 1.5rem;
 
+$base-background-color: rgb(248, 248, 248);
 $base-border-color: rgb(220, 220, 220);
 $base-font-color: rgb(100, 100, 100);
 $light-font-color: rgb(190, 190, 190);
@@ -32,3 +34,5 @@ $icon-lock: '\f023';
 $small-screen: new-breakpoint(max-width em(540) 2);
 $medium-screen: new-breakpoint(max-width em(760) 4);
 $large-screen: new-breakpoint(max-width em(920) 8);
+
+$base-border-radius: 5px;

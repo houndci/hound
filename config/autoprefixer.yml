@@ -1,0 +1,4 @@
+browsers:
+  - "last 3 versions"
+  - "IE >= 11"
+remove: false
