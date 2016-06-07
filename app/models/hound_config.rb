@@ -1,22 +1,13 @@
+# frozen_string_literal: true
 class HoundConfig
-  CONFIG_FILE = ".hound.yml"
-  BETA_LANGUAGES = %w(
+  BETA_LINTERS = %w(
     eslint
     jscs
     jshint
     remark
     python
-  )
-  LANGUAGES = %w(
-    coffeescript
-    go
-    haml
-    javascript
-    python
-    ruby
-    scss
-    swift
-  )
+  ).freeze
+  CONFIG_FILE = ".hound.yml"
 
   attr_reader_initialize :commit
 
@@ -59,7 +50,7 @@ class HoundConfig
   end
 
   def beta?(name)
-    BETA_LANGUAGES.include?(name)
+    BETA_LINTERS.include?(name)
   end
 
   def normalize_key(key)

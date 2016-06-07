@@ -1,4 +1,6 @@
 require "spec_helper"
+require "spec/support/linters"
+require "app/models/config/parser"
 require "app/models/hound_config"
 
 describe HoundConfig do
@@ -29,7 +31,7 @@ describe HoundConfig do
         hound_config = HoundConfig.new(commit)
 
         supported_languages =
-          HoundConfig::LANGUAGES - HoundConfig::BETA_LANGUAGES
+          Linter::Collection.linter_names - HoundConfig::BETA_LINTERS
         supported_languages.each do |language|
           expect(hound_config).to be_enabled_for(language)
         end
