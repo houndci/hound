@@ -8,4 +8,8 @@ class Owner < ActiveRecord::Base
     owner.save!
     owner
   end
+
+  def has_config_repo?
+    config_enabled? && config_repo.present?
+  end
 end

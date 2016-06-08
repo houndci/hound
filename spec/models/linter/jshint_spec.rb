@@ -105,7 +105,7 @@ describe Linter::Jshint do
   def stub_jshint_config(options = {})
     default_options = {
       content: {},
-      serialize: "{}",
+      merge: "{}",
     }
     stubbed_jshint_config = double(
       "JshintConfig",

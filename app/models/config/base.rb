@@ -14,6 +14,10 @@ module Config
       [linter_name]
     end
 
+    def merge(config)
+      serialize(content.deep_merge(config.content))
+    end
+
     def serialize(data = content)
       data
     end

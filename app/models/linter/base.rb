@@ -42,7 +42,7 @@ module Linter
     def build_review_job_attributes(commit_file)
       {
         commit_sha: build.commit_sha,
-        config: config.serialize,
+        config: merged_config,
         content: commit_file.content,
         filename: commit_file.filename,
         linter_name: name,
@@ -57,6 +57,18 @@ module Linter
 
     def job_class
       "#{name.classify}ReviewJob".constantize
+    end
+
+    def merged_config
+      owner_config.merge(config)
+    end
+
+    def owner_config
+      @owner_config ||= ConfigBuilder.for(owner_hound_config, name)
+    end
+
+    def owner_hound_config
+      OwnerHoundConfigBuilder.run(build.repo, hound_config)
     end
 
     def config

@@ -115,6 +115,7 @@ describe Linter::Eslint do
       content: content,
       excluded_paths: excluded_paths,
       serialize: content.to_s,
+      merge: content.to_s,
     )
     allow(Config::Eslint).to receive(:new).and_return(stubbed_eslint_config)
 

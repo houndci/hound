@@ -57,6 +57,7 @@ describe Linter::Scss do
       "ScssConfig",
       content: config,
       serialize: config.to_s,
+      merge: config.to_s,
     )
     allow(Config::Scss).to receive(:new).and_return(stubbed_scss_config)
 

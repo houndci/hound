@@ -80,6 +80,7 @@ describe Linter::Python do
       "PythonConfig",
       content: config,
       serialize: config,
+      merge: config,
     )
     allow(Config::Python).to receive(:new).and_return(stubbed_python_config)
 
