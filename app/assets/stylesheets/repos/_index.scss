@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 2em;
+  padding: 1em;
   position: relative;
   width: 100%;
 
@@ -12,10 +12,6 @@
     display: block;
     height: auto;
     padding: 1em 0;
-  }
-
-  @include media($large-screen) {
-    padding: 1em;
   }
 }
 
