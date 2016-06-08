@@ -14,6 +14,10 @@ module Linter
       Linter::Swift,
     ].freeze
 
+    def self.linter_names
+      LINTERS.map { |klass| klass.name.demodulize.underscore }
+    end
+
     def self.for(filename:, **linter_args)
       linter_classes = LINTERS.
         select { |linter_class| linter_class.can_lint?(filename) }.
