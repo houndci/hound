@@ -10,7 +10,7 @@ class CheckEnabledLinter
   def enabled?
     linter_names.any? do |linter_name|
       hound_configs.any? do |hound_config|
-        hound_config.enabled_for?(linter_name)
+        hound_config.linter_enabled?(linter_name)
       end
     end
   end

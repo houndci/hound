@@ -22,7 +22,7 @@ describe HoundConfig do
     end
   end
 
-  describe "#enabled_for?" do
+  describe "#linter_enabled?" do
     context "given a supported language" do
       it "returns true for all of them" do
         commit = stubbed_commit(".hound.yml" => "")
@@ -172,5 +172,9 @@ describe HoundConfig do
         expect(hound_config.fail_on_violations?).to eq false
       end
     end
+  end
+
+  def be_enabled_for(linter_name)
+    be_linter_enabled(linter_name)
   end
 end

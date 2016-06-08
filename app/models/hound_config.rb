@@ -24,7 +24,7 @@ class HoundConfig
     @content ||= parse(commit.file_content(CONFIG_FILE))
   end
 
-  def enabled_for?(name)
+  def linter_enabled?(name)
     configured?(name)
   end
 
