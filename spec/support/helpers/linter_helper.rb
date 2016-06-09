@@ -4,9 +4,6 @@ module LinterHelper
     extra_files = {}
   )
     head_commit = double("Commit", file_content: "{}")
-    unless build.nil?
-      stub_build_to_return_repo(build)
-    end
     stub_commit_to_return_hound_config(head_commit)
     stub_commit_to_return_extra_files(head_commit, extra_files)
     described_class.new(
@@ -14,10 +11,6 @@ module LinterHelper
       build: build,
       repository_owner_name: "ralph",
     )
-  end
-
-  def stub_build_to_return_repo(build)
-    allow(build).to receive(:repo).and_return(repo_without_organization_config)
   end
 
   def repo_without_organization_config

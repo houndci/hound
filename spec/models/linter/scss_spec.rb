@@ -50,6 +50,40 @@ describe Linter::Scss do
         config: "{}",
       )
     end
+
+    context "when the owner has a config repo set" do
+      it "schedules a review job with the owner's config" do
+        owner = build(
+          :owner,
+          config_enabled: true,
+          config_repo: "organization/style",
+        )
+        repo = build(:repo, owner: owner)
+        build = build(
+          :build,
+          commit_sha: "foo",
+          pull_request_number: 123,
+          repo: repo,
+        )
+        linter = build_linter(build)
+        stub_scss_config({})
+        commit_file = build_commit_file(filename: "lib/a.scss")
+        allow(Resque).to receive(:enqueue)
+
+        linter.file_review(commit_file)
+
+        expect(Resque).to have_received(:enqueue).with(
+          ScssReviewJob,
+          commit_sha: build.commit_sha,
+          config: "{some_key: some_value}",
+          content: commit_file.content,
+          filename: commit_file.filename,
+          linter_name: "scss",
+          patch: commit_file.patch,
+          pull_request_number: build.pull_request_number,
+        )
+      end
+    end
   end
 
   def stub_scss_config(config = {})

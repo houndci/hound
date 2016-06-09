@@ -15,7 +15,7 @@ module Config
     end
 
     def merge(config)
-      serialize(content.deep_merge(config.content))
+      content.deep_merge(config.content)
     end
 
     def serialize(data = content)

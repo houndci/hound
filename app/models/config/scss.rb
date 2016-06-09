@@ -4,6 +4,10 @@ module Config
       Serializer.yaml(data)
     end
 
+    def merge(config)
+      serialize(content.deep_merge(config.content))
+    end
+
     private
 
     def parse(file_content)
