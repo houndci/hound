@@ -702,13 +702,21 @@ describe Linter::Ruby do
     )
       Linter::Ruby.new(
         hound_config: hound_config,
-        build: build(:build),
+        build: build(:build, repo: repo_without_owner_config),
         repository_owner_name: repository_owner_name,
       )
     end
 
+    def repo_without_owner_config
+      build(:repo, owner: owner_without_config_repo)
+    end
+
+    def owner_without_config_repo
+      build(:owner, config_enabled: false)
+    end
+
     def stub_ruby_config(config = {})
-      stubbed_ruby_config = double("RubyConfig", content: config)
+      stubbed_ruby_config = double("RubyConfig", content: config, merge: config)
       allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
 
       stubbed_ruby_config
