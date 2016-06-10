@@ -20,11 +20,7 @@ describe Config::Base do
   describe "#content" do
     context "when there is no config content for the given linter" do
       it "does not raise" do
-        hound_config = instance_double(
-          "HoundConfig",
-          commit: instance_double("Commit", file_content: ""),
-          content: {},
-        )
+        hound_config = build_hound_config(content: {})
         config = build_config(hound_config: hound_config)
 
         expect { config.content }.not_to raise_error
@@ -34,8 +30,7 @@ describe Config::Base do
     context "when there is no specified filepath" do
       it "returns a default value" do
         config_content = {}
-        hound_config = instance_double(
-          "HoundConfig",
+        hound_config = build_hound_config(
           commit: double("Commit"),
           content: { "test" => config_content },
         )
@@ -48,8 +43,7 @@ describe Config::Base do
     context "when the filepath is a url" do
       context "when url exists" do
         it "returns the content of the url" do
-          hound_config = double(
-            "HoundConfig",
+          hound_config = build_hound_config(
             commit: double("Commit"),
             content: {
               "test" => {
@@ -72,8 +66,7 @@ describe Config::Base do
 
       context "when the url does not exist" do
         it "raises an exception" do
-          hound_config = double(
-            "HoundConfig",
+          hound_config = build_hound_config(
             commit: double("Commit"),
             content: {
               "test" => {
@@ -100,13 +93,7 @@ describe Config::Base do
 
     context "when `parse` is not defined" do
       it "raises an exception" do
-        hound_config = double(
-          "HoundConfig",
-          commit: double("Commit", file_content: ""),
-          content: {
-            "linter" => { "config_file" => "config-file.txt" },
-          },
-        )
+        hound_config = build_hound_config
         config = Config::Base.new(hound_config)
 
         expect { config.content }.to raise_error(
@@ -136,9 +123,7 @@ describe Config::Base do
   describe "#merge" do
     context "when the override contains keys not in the base config" do
       it "returns a hash containing all keys and values" do
-        hound_config = instance_double(
-          "HoundConfig",
-          content: { "test" => { "config_file" => "config-file.txt" } },
+        hound_config = build_hound_config(
           commit: stubbed_commit("config-file.txt" => "some key: some value"),
         )
         base_config = build_config(hound_config: hound_config)
@@ -152,17 +137,12 @@ describe Config::Base do
 
     context "when the override contains keys present in the base config" do
       it "returns a hash containing the values of the override" do
-        base_hound_config = instance_double(
-          "HoundConfig",
-          content: { "test" => { "config_file" => "config-file.txt" } },
-          commit: stubbed_commit("config-file.txt" => "some key: base "),
+        base_hound_config = build_hound_config(
+          commit: stubbed_commit("config-file.txt" => "some key: base ")
         )
-        override_hound_config = instance_double(
-          "HoundConfig",
-          content: { "test" => { "config_file" => "config-file.txt" } },
+        override_hound_config = build_hound_config(
           commit: stubbed_commit("config-file.txt" => "some key: override"),
         )
-
         base_config = build_config(hound_config: base_hound_config)
         override_config = build_config(hound_config: override_hound_config)
 
@@ -177,11 +157,11 @@ describe Config::Base do
     Config::Test.new(hound_config)
   end
 
-  def build_hound_config
-    double(
-      "HoundConfig",
+  def build_hound_config(options = {})
+    default_options = {
       commit: double("Commit", file_content: ""),
       content: { "test" => { "config_file" => "config-file.txt" } },
-    )
+    }
+    instance_double("HoundConfig", default_options.merge(options))
   end
 end

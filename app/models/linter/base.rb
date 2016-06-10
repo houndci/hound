@@ -68,7 +68,7 @@ module Linter
     end
 
     def owner_hound_config
-      OwnerHoundConfigBuilder.run(build.repo, hound_config)
+      BuildOwnerHoundConfig.run(build.repo, hound_config)
     end
 
     def config

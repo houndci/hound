@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe OwnerHoundConfigBuilder do
+describe BuildOwnerHoundConfig do
   describe "#run" do
     context "when the owner has a configuration set" do
       it "returns the configuration of that repo" do

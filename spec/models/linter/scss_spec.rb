@@ -60,6 +60,12 @@ describe Linter::Scss do
           config_enabled: true,
           config_repo: "organization/style",
         )
+        stub_file_on_repo(
+          repo: "organization/style",
+          file: ".hound.yml",
+          contents: "something",
+          user_token: Hound::GITHUB_TOKEN,
+        )
         repo = build(:repo, owner: owner)
         build = build(
           :build,
@@ -98,5 +104,16 @@ describe Linter::Scss do
     allow(Config::Scss).to receive(:new).and_return(stubbed_scss_config)
 
     stubbed_scss_config
+  end
+
+  def stub_file_on_repo(repo:, file: , contents:, user_token:)
+    stub_request(
+      :get,
+      "https://api.github.com/repos/#{repo}/contents/#{file}?ref=HEAD").
+    with(
+      :headers => { 
+        "Authorization"=>"token #{user_token}" 
+      }
+    ).to_return(:status => 200, :body => contents, :headers => {})
   end
 end

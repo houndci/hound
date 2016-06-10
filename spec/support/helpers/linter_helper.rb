@@ -66,7 +66,7 @@ module LinterHelper
   end
 
   def stub_owner_hound_config
-    allow(OwnerHoundConfigBuilder).to receive(:run) do |_repo, default|
+    allow(BuildOwnerHoundConfig).to receive(:run) do |_repo, default|
       default
     end
   end
