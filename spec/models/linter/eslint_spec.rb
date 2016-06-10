@@ -39,6 +39,7 @@ describe Linter::Eslint do
     it "returns a saved and incomplete file review" do
       commit_file = build_commit_file(filename: "lib/a.js")
       linter = build_linter
+      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -49,6 +50,7 @@ describe Linter::Eslint do
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       stub_eslint_config(content: {})
+      stub_owner_hound_config
       commit_file = build_commit_file(filename: "lib/a.js")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)

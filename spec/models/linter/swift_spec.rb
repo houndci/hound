@@ -23,6 +23,7 @@ describe Linter::Swift do
     it "returns a saved, incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file(filename: "a.swift")
+      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -35,6 +36,7 @@ describe Linter::Swift do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
       stub_swift_config({})
+      stub_owner_hound_config
       commit_file = build_commit_file(filename: "a.swift")
 
       linter.file_review(commit_file)

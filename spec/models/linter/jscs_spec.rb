@@ -39,6 +39,7 @@ describe Linter::Jscs do
     it "returns a saved and incomplete file review" do
       commit_file = build_commit_file(filename: "lib/a.js")
       linter = build_linter
+      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -52,6 +53,7 @@ describe Linter::Jscs do
       commit_file = build_commit_file(filename: "lib/a.js")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
+      stub_owner_hound_config
 
       linter.file_review(commit_file)
 

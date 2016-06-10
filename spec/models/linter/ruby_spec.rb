@@ -24,6 +24,7 @@ describe Linter::Ruby do
 
     it "returns a saved and completed file review" do
       linter = build_linter
+      stub_owner_hound_config
 
       result = linter.file_review(build_file("test"))
 
@@ -651,6 +652,7 @@ describe Linter::Ruby do
           )
           file = double("CommitFile", filename: "ignore.rb")
           linter = build_linter(config: config)
+          stub_owner_hound_config
 
           expect(linter.file_included?(file)).to eq false
         end
@@ -661,6 +663,7 @@ describe Linter::Ruby do
           config = stub_ruby_config("AllCops" => { "Exclude" => [] })
           file = double("CommitFile", filename: "app.rb")
           linter = build_linter(config: config)
+          stub_owner_hound_config
 
           expect(linter.file_included?(file)).to eq true
         end
@@ -680,6 +683,7 @@ describe Linter::Ruby do
         config: config,
         repository_owner_name: repository_owner_name,
       )
+      stub_owner_hound_config
 
       linter.
         file_review(build_file(content)).
@@ -702,17 +706,9 @@ describe Linter::Ruby do
     )
       Linter::Ruby.new(
         hound_config: hound_config,
-        build: build(:build, repo: repo_without_owner_config),
+        build: build(:build),
         repository_owner_name: repository_owner_name,
       )
-    end
-
-    def repo_without_owner_config
-      build(:repo, owner: owner_without_config_repo)
-    end
-
-    def owner_without_config_repo
-      build(:owner, config_enabled: false)
     end
 
     def stub_ruby_config(config = {})
