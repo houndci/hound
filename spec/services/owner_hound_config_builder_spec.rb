@@ -21,11 +21,11 @@ describe OwnerHoundConfigBuilder do
 
         owner_config = OwnerHoundConfigBuilder.run(repo, hound_config)
 
-        expect(owner_config.content).to eq("ruby" => {"enabled" => true})
+        expect(owner_config.content).to eq("ruby" => { "enabled" => true })
       end
     end
 
-    context "when the owner does not have a configuration set"
+    context "when the owner does not have a configuration set" do
       it "returns the default it was passed" do
         hound_config = instance_double("HoundConfig")
         owner = instance_double(
@@ -39,5 +39,6 @@ describe OwnerHoundConfigBuilder do
 
         expect(owner_config).to eq(hound_config)
       end
+    end
   end
 end

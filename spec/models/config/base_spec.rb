@@ -37,9 +37,7 @@ describe Config::Base do
         hound_config = instance_double(
           "HoundConfig",
           commit: double("Commit"),
-          content: {
-            "test" => config_content,
-          },
+          content: { "test" => config_content },
         )
         config = build_config(hound_config: hound_config)
 
@@ -140,10 +138,8 @@ describe Config::Base do
       it "returns a hash containing all keys and values" do
         hound_config = instance_double(
           "HoundConfig",
-          content: {
-            "test" => { "config_file" => "config-file.txt" }
-           },
-           commit: stubbed_commit("config-file.txt" => "some key: some value"),
+          content: { "test" => { "config_file" => "config-file.txt" } },
+          commit: stubbed_commit("config-file.txt" => "some key: some value"),
         )
         base_config = build_config(hound_config: hound_config)
         override_config = build_config(hound_config: hound_config)
@@ -158,17 +154,13 @@ describe Config::Base do
       it "returns a hash containing the values of the override" do
         base_hound_config = instance_double(
           "HoundConfig",
-          content: {
-            "test" => { "config_file" => "config-file.txt" }
-           },
-           commit: stubbed_commit("config-file.txt" => "some key: base "),
+          content: { "test" => { "config_file" => "config-file.txt" } },
+          commit: stubbed_commit("config-file.txt" => "some key: base "),
         )
         override_hound_config = instance_double(
           "HoundConfig",
-          content: {
-            "test" => { "config_file" => "config-file.txt" }
-           },
-           commit: stubbed_commit("config-file.txt" => "some key: override"),
+          content: { "test" => { "config_file" => "config-file.txt" } },
+          commit: stubbed_commit("config-file.txt" => "some key: override"),
         )
 
         base_config = build_config(hound_config: base_hound_config)
@@ -189,9 +181,7 @@ describe Config::Base do
     double(
       "HoundConfig",
       commit: double("Commit", file_content: ""),
-      content: {
-        "test" => { "config_file" => "config-file.txt" },
-      },
+      content: { "test" => { "config_file" => "config-file.txt" } },
     )
   end
 end
