@@ -137,7 +137,7 @@ describe Config::Base do
 
   describe "#merge" do
     context "when the override contains keys not in the base config" do
-      it "returns a hash contains all keys and values" do
+      it "returns a hash containing all keys and values" do
         hound_config = instance_double(
           "HoundConfig",
           content: {
@@ -151,6 +151,32 @@ describe Config::Base do
         merged_config = base_config.merge(override_config)
 
         expect(merged_config).to include("some key" => "some value")
+      end
+    end
+
+    context "when the override contains keys present in the base config" do
+      it "returns a hash containing the values of the override" do
+        base_hound_config = instance_double(
+          "HoundConfig",
+          content: {
+            "test" => { "config_file" => "config-file.txt" }
+           },
+           commit: stubbed_commit("config-file.txt" => "some key: base "),
+        )
+        override_hound_config = instance_double(
+          "HoundConfig",
+          content: {
+            "test" => { "config_file" => "config-file.txt" }
+           },
+           commit: stubbed_commit("config-file.txt" => "some key: override"),
+        )
+
+        base_config = build_config(hound_config: base_hound_config)
+        override_config = build_config(hound_config: override_hound_config)
+
+        merged_config = base_config.merge(override_config)
+
+        expect(merged_config).to include("some key" => "override")
       end
     end
   end
