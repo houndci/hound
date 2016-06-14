@@ -2,26 +2,25 @@
 class BuildOwnerHoundConfig
   HEAD = "HEAD"
 
-  def self.run(repo, default)
-    new(repo, default).run
+  def self.run(*args)
+    new(*args).run
   end
 
-  def initialize(repo, default)
-    @repo = repo
-    @default = default
+  def initialize(owner)
+    @owner = owner
   end
 
   def run
-    if repo.owner.has_config_repo?
+    if(owner.has_config_repo?)
       github = GithubApi.new(Hound::GITHUB_TOKEN)
-      commit = Commit.new(repo.owner.config_repo, HEAD, github)
+      commit = Commit.new(owner.config_repo, HEAD, github)
       HoundConfig.new(commit)
     else
-      default
+      false
     end
   end
 
   private
 
-  attr_reader :repo, :default
+  attr_reader :owner
 end

@@ -1,5 +1,8 @@
 module LinterHelper
-  def build_linter(build = build(:build), extra_files = {})
+  def build_linter(
+    build = build(:build, repo: build_repo_without_owner_config),
+    extra_files = {}
+  )
     head_commit = double("Commit", file_content: "{}")
     stub_commit_to_return_hound_config(head_commit)
     stub_commit_to_return_extra_files(head_commit, extra_files)
@@ -8,6 +11,10 @@ module LinterHelper
       build: build,
       repository_owner_name: "ralph",
     )
+  end
+
+  def build_repo_without_owner_config
+    build(:repo, owner: build(:owner, config_enabled: false))
   end
 
   def raw_hound_config
@@ -63,12 +70,6 @@ module LinterHelper
     end
 
     commit
-  end
-
-  def stub_owner_hound_config
-    allow(BuildOwnerHoundConfig).to receive(:run) do |_repo, default|
-      default
-    end
   end
 end
 
