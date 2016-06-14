@@ -140,7 +140,6 @@ describe StyleChecker do
 
   def pull_request_violation_messages(pull_request)
     build = build(:build)
-    stub_owner_hound_config
     StyleChecker.new(pull_request, build).review_files
 
     build.violations.flat_map(&:messages)

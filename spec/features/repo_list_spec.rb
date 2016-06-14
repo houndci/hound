@@ -5,9 +5,18 @@ feature "Repo list", js: true do
   let(:user) { create(:user, token_scopes: "public_repo,user:email") }
 
   scenario "user views list of repos" do
+    owner = create(:owner)
     user = create(:user, token_scopes: "public_repo,user:email")
-    restricted_repo = create(:repo, full_github_name: "inaccessible-repo")
-    activatable_repo = create(:repo, full_github_name: "thoughtbot/my-repo")
+    restricted_repo = create(
+      :repo,
+      full_github_name: "inaccessible-repo",
+      owner: owner,
+    )
+    activatable_repo = create(
+      :repo,
+      full_github_name: "thoughtbot/my-repo",
+      owner: owner,
+    )
     create(:membership, repo: activatable_repo, user: user, admin: true)
     create(:membership, repo: restricted_repo, user: user, admin: false)
 

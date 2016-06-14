@@ -24,7 +24,6 @@ describe Linter::Python do
       linter = build_linter
       commit_file = build_commit_file
       stub_python_config
-      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -37,7 +36,6 @@ describe Linter::Python do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
       stub_python_config("config")
-      stub_owner_hound_config
       commit_file = build_commit_file
 
       linter.file_review(commit_file)

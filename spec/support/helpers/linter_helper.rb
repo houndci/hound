@@ -1,6 +1,6 @@
 module LinterHelper
   def build_linter(
-    build = build(:build, repo: build_repo_without_owner_config),
+    build = FactoryGirl.build(:build),
     extra_files = {}
   )
     head_commit = double("Commit", file_content: "{}")
@@ -11,10 +11,6 @@ module LinterHelper
       build: build,
       repository_owner_name: "ralph",
     )
-  end
-
-  def build_repo_without_owner_config
-    build(:repo, owner: build(:owner, config_enabled: false))
   end
 
   def raw_hound_config

@@ -23,7 +23,6 @@ describe Linter::Scss do
     it "returns a saved and incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file(filename: "lib/a.scss")
-      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -35,7 +34,6 @@ describe Linter::Scss do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
       stub_scss_config({})
-      stub_owner_hound_config
       commit_file = build_commit_file(filename: "lib/a.scss")
       allow(Resque).to receive(:enqueue)
 
@@ -43,13 +41,13 @@ describe Linter::Scss do
 
       expect(Resque).to have_received(:enqueue).with(
         ScssReviewJob,
-        filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "scss",
-        pull_request_number: build.pull_request_number,
-        patch: commit_file.patch,
-        content: commit_file.content,
         config: "{}",
+        content: commit_file.content,
+        filename: commit_file.filename,
+        linter_name: "scss",
+        patch: commit_file.patch,
+        pull_request_number: build.pull_request_number,
       )
     end
 
@@ -107,6 +105,7 @@ describe Linter::Scss do
       "ScssConfig",
       content: config,
       merge: config.to_s,
+      serialize: config.to_s,
     )
     allow(Config::Scss).to receive(:new).and_return(stubbed_scss_config)
 

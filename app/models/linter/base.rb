@@ -24,7 +24,7 @@ module Linter
     end
 
     def enabled?
-      CheckEnabledLinter.run(merged_config)
+      CheckEnabledLinter.run(repo_config)
     end
 
     def file_included?(*)
@@ -72,7 +72,7 @@ module Linter
     end
 
     def owner_hound_config
-      BuildOwnerHoundConfig.run(build.repo, hound_config)
+      BuildOwnerHoundConfig.run(build.repo.owner)
     end
 
     def repo_config

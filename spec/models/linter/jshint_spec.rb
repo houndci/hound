@@ -31,7 +31,10 @@ describe Linter::Jshint do
     context "file is in excluded file list" do
       it "returns false" do
         stub_jshint_config
-        linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Jshint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "foo.js")
 
         expect(linter.file_included?(commit_file)).to eq false
@@ -41,7 +44,10 @@ describe Linter::Jshint do
     context "file is not excluded" do
       it "returns true" do
         stub_jshint_config
-        linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Jshint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "bar.js")
 
         expect(linter.file_included?(commit_file)).to eq true
@@ -51,7 +57,7 @@ describe Linter::Jshint do
         stub_jshint_config
 
         linter = build_linter(
-          nil,
+          build(:build),
           Linter::Jshint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
         )
         commit_file1 = double(
@@ -73,7 +79,6 @@ describe Linter::Jshint do
     it "returns a saved and incomplete file review" do
       commit_file = build_commit_file(filename: "lib/a.js")
       linter = build_linter
-      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -84,7 +89,6 @@ describe Linter::Jshint do
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       stub_jshint_config(content: {})
-      stub_owner_hound_config
       commit_file = build_commit_file(filename: "lib/a.js")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
@@ -108,6 +112,7 @@ describe Linter::Jshint do
     default_options = {
       content: {},
       merge: "{}",
+      serialize: "{}",
     }
     stubbed_jshint_config = double(
       "JshintConfig",

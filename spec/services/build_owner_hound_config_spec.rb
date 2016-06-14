@@ -38,7 +38,7 @@ describe BuildOwnerHoundConfig do
     end
 
     context "when the owner's configuration is unreachable" do
-      it "returns false" do
+      it "returns an empty hound config" do
         owner = instance_double(
           "Owner",
           has_config_repo?: true,
@@ -47,9 +47,8 @@ describe BuildOwnerHoundConfig do
         stub_failure_on_repo(repo: "organization/private_style_guides")
 
         owner_config = BuildOwnerHoundConfig.run(owner)
-        byebug
 
-        expect(owner_config).to eq(false)
+        expect(owner_config.content).to eq({})
       end
     end
   end

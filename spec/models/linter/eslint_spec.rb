@@ -39,7 +39,6 @@ describe Linter::Eslint do
     it "returns a saved and incomplete file review" do
       commit_file = build_commit_file(filename: "lib/a.js")
       linter = build_linter
-      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -50,7 +49,6 @@ describe Linter::Eslint do
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       stub_eslint_config(content: {})
-      stub_owner_hound_config
       commit_file = build_commit_file(filename: "lib/a.js")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)
@@ -74,7 +72,10 @@ describe Linter::Eslint do
     context "file is in excluded file list" do
       it "returns false" do
         stub_eslint_config
-        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Eslint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "foo.js")
 
         expect(linter.file_included?(commit_file)).to eq false
@@ -84,7 +85,10 @@ describe Linter::Eslint do
     context "file is not excluded" do
       it "returns true" do
         stub_eslint_config
-        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Eslint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "bar.js")
 
         expect(linter.file_included?(commit_file)).to eq true
@@ -93,7 +97,7 @@ describe Linter::Eslint do
       it "matches a glob pattern" do
         stub_eslint_config
         linter = build_linter(
-          nil,
+          build(:build),
           Linter::Eslint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
         )
         commit_file1 = double(

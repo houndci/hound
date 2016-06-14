@@ -11,7 +11,7 @@ class BuildOwnerHoundConfig
   end
 
   def run
-    if(owner.has_config_repo?)
+    if owner.has_config_repo?
       github = GithubApi.new(Hound::GITHUB_TOKEN)
       commit = Commit.new(owner.config_repo, HEAD, github)
       HoundConfig.new(commit)

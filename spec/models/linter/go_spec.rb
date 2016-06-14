@@ -23,7 +23,6 @@ describe Linter::Go do
     it "returns a saved and incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file(filename: "a.go")
-      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -35,7 +34,6 @@ describe Linter::Go do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
       commit_file = build_commit_file(filename: "a.go")
-      stub_owner_hound_config
       allow(Resque).to receive(:enqueue)
 
       linter.file_review(commit_file)

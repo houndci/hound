@@ -31,7 +31,6 @@ describe Linter::Remark do
     it "returns a saved and incomplete file review" do
       commit_file = build_commit_file(filename: "lib/a.md")
       linter = build_linter
-      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -42,7 +41,6 @@ describe Linter::Remark do
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       stub_remark_config(content: {})
-      stub_owner_hound_config
       commit_file = build_commit_file(filename: "lib/a.md")
       allow(Resque).to receive(:enqueue)
       linter = build_linter(build)

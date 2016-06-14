@@ -25,7 +25,6 @@ describe Linter::Haml do
     it "returns a saved and incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file(filename: "lib/a.haml")
-      stub_owner_hound_config
 
       result = linter.file_review(commit_file)
 
@@ -37,7 +36,6 @@ describe Linter::Haml do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
       stub_haml_config({})
-      stub_owner_hound_config
       commit_file = build_commit_file(filename: "lib/a.haml")
       allow(Resque).to receive(:enqueue)
 
