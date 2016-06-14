@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class BuildOwnerHoundConfig
-  HEAD = "HEAD".freeze
+  HEAD = "HEAD"
 
   def self.run(repo, default)
     new(repo, default).run
@@ -16,7 +16,6 @@ class BuildOwnerHoundConfig
       github = GithubApi.new(Hound::GITHUB_TOKEN)
       commit = Commit.new(repo.owner.config_repo, HEAD, github)
       HoundConfig.new(commit)
-      byebug
     else
       default
     end

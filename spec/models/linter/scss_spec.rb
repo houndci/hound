@@ -63,7 +63,16 @@ describe Linter::Scss do
         stub_file_on_repo(
           repo: "organization/style",
           file: ".hound.yml",
-          contents: "something",
+          contents: <<~EOF,
+            scss:
+              config_file: .scss.yml
+            EOF
+          user_token: Hound::GITHUB_TOKEN,
+        )
+        stub_file_on_repo(
+          repo: "organization/style",
+          file: ".scss.yml",
+          contents: "some key: some value",
           user_token: Hound::GITHUB_TOKEN,
         )
         repo = build(:repo, owner: owner)
@@ -74,7 +83,6 @@ describe Linter::Scss do
           repo: repo,
         )
         linter = build_linter(build)
-        stub_scss_config({})
         commit_file = build_commit_file(filename: "lib/a.scss")
         allow(Resque).to receive(:enqueue)
 
@@ -83,7 +91,7 @@ describe Linter::Scss do
         expect(Resque).to have_received(:enqueue).with(
           ScssReviewJob,
           commit_sha: build.commit_sha,
-          config: "{some_key: some_value}",
+          config: "---\nsome key: some value\n",
           content: commit_file.content,
           filename: commit_file.filename,
           linter_name: "scss",
@@ -106,14 +114,15 @@ describe Linter::Scss do
     stubbed_scss_config
   end
 
-  def stub_file_on_repo(repo:, file: , contents:, user_token:)
+  def stub_file_on_repo(repo:, file:, contents:, user_token:)
     stub_request(
       :get,
-      "https://api.github.com/repos/#{repo}/contents/#{file}?ref=HEAD").
-    with(
-      :headers => { 
-        "Authorization"=>"token #{user_token}" 
-      }
-    ).to_return(:status => 200, :body => contents, :headers => {})
+      "https://api.github.com/repos/#{repo}/contents/#{file}?ref=HEAD",
+    ).with(headers: { "Authorization" => "token #{user_token}" }).
+      to_return(:status => 200, :body => stub_contents(contents), :headers => {})
+  end
+
+  def stub_contents(contents)
+    double("contents", content: Base64.encode64(contents))
   end
 end

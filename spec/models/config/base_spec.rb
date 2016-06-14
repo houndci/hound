@@ -138,7 +138,7 @@ describe Config::Base do
     context "when the override contains keys present in the base config" do
       it "returns a hash containing the values of the override" do
         base_hound_config = build_hound_config(
-          commit: stubbed_commit("config-file.txt" => "some key: base ")
+          commit: stubbed_commit("config-file.txt" => "some key: base "),
         )
         override_hound_config = build_hound_config(
           commit: stubbed_commit("config-file.txt" => "some key: override"),
