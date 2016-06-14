@@ -24,7 +24,7 @@ module Linter
     end
 
     def enabled?
-      CheckEnabledLinter.run(config)
+      CheckEnabledLinter.run(repo_config)
     end
 
     def file_included?(*)
@@ -42,7 +42,7 @@ module Linter
     def build_review_job_attributes(commit_file)
       {
         commit_sha: build.commit_sha,
-        config: config.serialize,
+        config: merged_config,
         content: commit_file.content,
         filename: commit_file.filename,
         linter_name: name,
@@ -59,8 +59,24 @@ module Linter
       "#{name.classify}ReviewJob".constantize
     end
 
-    def config
-      @config ||= ConfigBuilder.for(hound_config, name)
+    def merged_config
+      if build.repo.owner.has_config_repo?
+        owner_config.merge(repo_config)
+      else
+        repo_config.serialize
+      end
+    end
+
+    def owner_config
+      @owner_config ||= ConfigBuilder.for(owner_hound_config, name)
+    end
+
+    def owner_hound_config
+      BuildOwnerHoundConfig.run(build.repo.owner)
+    end
+
+    def repo_config
+      @repo_config ||= ConfigBuilder.for(hound_config, name)
     end
   end
 end

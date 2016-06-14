@@ -1,5 +1,8 @@
 module LinterHelper
-  def build_linter(build = build(:build), extra_files = {})
+  def build_linter(
+    build = FactoryGirl.build(:build),
+    extra_files = {}
+  )
     head_commit = double("Commit", file_content: "{}")
     stub_commit_to_return_hound_config(head_commit)
     stub_commit_to_return_extra_files(head_commit, extra_files)

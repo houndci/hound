@@ -5,5 +5,9 @@ module Config
     def content
       DEFAULT_CONFIG
     end
+
+    def merge(_config)
+      DEFAULT_CONFIG
+    end
   end
 end

@@ -72,7 +72,10 @@ describe Linter::Eslint do
     context "file is in excluded file list" do
       it "returns false" do
         stub_eslint_config
-        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Eslint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "foo.js")
 
         expect(linter.file_included?(commit_file)).to eq false
@@ -82,7 +85,10 @@ describe Linter::Eslint do
     context "file is not excluded" do
       it "returns true" do
         stub_eslint_config
-        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Eslint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "bar.js")
 
         expect(linter.file_included?(commit_file)).to eq true
@@ -91,7 +97,7 @@ describe Linter::Eslint do
       it "matches a glob pattern" do
         stub_eslint_config
         linter = build_linter(
-          nil,
+          build(:build),
           Linter::Eslint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
         )
         commit_file1 = double(
@@ -115,6 +121,7 @@ describe Linter::Eslint do
       content: content,
       excluded_paths: excluded_paths,
       serialize: content.to_s,
+      merge: content.to_s,
     )
     allow(Config::Eslint).to receive(:new).and_return(stubbed_eslint_config)
 

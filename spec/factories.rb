@@ -31,6 +31,7 @@ FactoryGirl.define do
     github_id
     private false
     in_organization false
+    owner
   end
 
   factory :user do
@@ -62,6 +63,7 @@ FactoryGirl.define do
 
   factory :owner do
     github_id
+    config_enabled false
     name { generate(:github_name) }
   end
 

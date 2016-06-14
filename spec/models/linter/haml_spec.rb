@@ -61,6 +61,7 @@ describe Linter::Haml do
       "HamlConfig",
       content: config,
       serialize: config.to_s,
+      merge: config.to_s,
     )
     allow(Config::Haml).to receive(:new).and_return(stubbed_haml_config)
 

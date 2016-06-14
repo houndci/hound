@@ -31,7 +31,10 @@ describe Linter::Jshint do
     context "file is in excluded file list" do
       it "returns false" do
         stub_jshint_config
-        linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Jshint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "foo.js")
 
         expect(linter.file_included?(commit_file)).to eq false
@@ -41,7 +44,10 @@ describe Linter::Jshint do
     context "file is not excluded" do
       it "returns true" do
         stub_jshint_config
-        linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
+        linter = build_linter(
+          build(:build),
+          Linter::Jshint::IGNORE_FILENAME => "foo.js",
+        )
         commit_file = double("CommitFile", filename: "bar.js")
 
         expect(linter.file_included?(commit_file)).to eq true
@@ -51,7 +57,7 @@ describe Linter::Jshint do
         stub_jshint_config
 
         linter = build_linter(
-          nil,
+          build(:build),
           Linter::Jshint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
         )
         commit_file1 = double(
@@ -105,6 +111,7 @@ describe Linter::Jshint do
   def stub_jshint_config(options = {})
     default_options = {
       content: {},
+      merge: "{}",
       serialize: "{}",
     }
     stubbed_jshint_config = double(

@@ -708,7 +708,12 @@ describe Linter::Ruby do
     end
 
     def stub_ruby_config(config = {})
-      stubbed_ruby_config = double("RubyConfig", content: config)
+      stubbed_ruby_config = double(
+        "RubyConfig",
+        content: config,
+        merge: config,
+        serialize: config,
+      )
       allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
 
       stubbed_ruby_config

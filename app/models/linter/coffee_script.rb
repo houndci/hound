@@ -41,7 +41,7 @@ module Linter
     end
 
     def linter_config
-      default_config.merge(config.content)
+      default_config.merge(repo_config.content)
     end
 
     def default_config

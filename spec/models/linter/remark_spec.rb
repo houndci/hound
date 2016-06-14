@@ -49,13 +49,13 @@ describe Linter::Remark do
 
       expect(Resque).to have_received(:enqueue).with(
         RemarkReviewJob,
-        filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "remark",
-        pull_request_number: build.pull_request_number,
-        patch: commit_file.patch,
-        content: commit_file.content,
         config: "{}",
+        content: commit_file.content,
+        filename: commit_file.filename,
+        linter_name: "remark",
+        patch: commit_file.patch,
+        pull_request_number: build.pull_request_number,
       )
     end
   end
@@ -65,6 +65,7 @@ describe Linter::Remark do
       "RemarkConfig",
       content: content,
       serialize: content.to_s,
+      merge: content.to_s,
     )
     allow(Config::Remark).to receive(:new).and_return(stubbed_remark_config)
 

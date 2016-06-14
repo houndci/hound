@@ -73,6 +73,7 @@ describe Linter::Jscs do
       "JscsConfig",
       content: content,
       serialize: content.to_s,
+      merge: content.to_s,
     )
     allow(Config::Jscs).to receive(:new).and_return(stubbed_jscs_config)
 
