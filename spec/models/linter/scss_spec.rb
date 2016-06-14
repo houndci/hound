@@ -106,7 +106,6 @@ describe Linter::Scss do
     stubbed_scss_config = double(
       "ScssConfig",
       content: config,
-      serialize: config.to_s,
       merge: config.to_s,
     )
     allow(Config::Scss).to receive(:new).and_return(stubbed_scss_config)
@@ -119,10 +118,14 @@ describe Linter::Scss do
       :get,
       "https://api.github.com/repos/#{repo}/contents/#{file}?ref=HEAD",
     ).with(headers: { "Authorization" => "token #{user_token}" }).
-      to_return(:status => 200, :body => stub_contents(contents), :headers => {})
+      to_return(
+        status: 200,
+        body: stub_contents(contents),
+        headers: {},
+      )
   end
 
   def stub_contents(contents)
-    double("contents", content: Base64.encode64(contents))
+    instance_double("Contents", content: Base64.encode64(contents))
   end
 end

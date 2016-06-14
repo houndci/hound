@@ -19,7 +19,7 @@ describe BuildOwnerHoundConfig do
         allow(Commit).to receive(:new).and_return(commit)
         repo = instance_double("Repo", owner: owner)
 
-        owner_config = OwnerHoundConfigBuilder.run(repo, hound_config)
+        owner_config = BuildOwnerHoundConfig.run(repo, hound_config)
 
         expect(owner_config.content).to eq("ruby" => { "enabled" => true })
       end
@@ -35,7 +35,7 @@ describe BuildOwnerHoundConfig do
         )
         repo = instance_double("Repo", owner: owner)
 
-        owner_config = OwnerHoundConfigBuilder.run(repo, hound_config)
+        owner_config = BuildOwnerHoundConfig.run(repo, hound_config)
 
         expect(owner_config).to eq(hound_config)
       end
