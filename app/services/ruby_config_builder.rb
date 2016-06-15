@@ -2,42 +2,29 @@ class RubyConfigBuilder
   HOUND_DEFAULTS_FILENAME = "ruby.yml".freeze
   VIRTUAL_FILENAME = "".freeze
 
-  def initialize(overrides = {}, repository_owner_name = nil)
-    @overrides = overrides
-    @repository_owner_name = repository_owner_name
+  def initialize(content = {})
+    @content = content
   end
 
   def config
     RuboCop::ConfigLoader.merge_with_default(
-      combined_overrides,
+      normalized_content,
       VIRTUAL_FILENAME,
     )
   end
 
+  def merge(overrides)
+    RuboCop::ConfigLoader.merge(content, normalize_config(overrides))
+  rescue NoMethodError, TypeError
+    config
+  end
+
   private
 
-  attr_reader :overrides, :repository_owner_name
+  attr_reader :content
 
-  def combined_overrides
-    RuboCop::ConfigLoader.merge(normalized_hound_config, normalized_overrides)
-  rescue TypeError
-    normalized_hound_config
-  end
-
-  def normalized_overrides
-    normalize_config(overrides)
-  end
-
-  def normalized_hound_config
-    normalize_config(hound_config)
-  end
-
-  def hound_config
-    Config::Parser.yaml(File.read(hound_config_filepath))
-  end
-
-  def hound_config_filepath
-    DefaultConfigFile.new(HOUND_DEFAULTS_FILENAME, repository_owner_name).path
+  def normalized_content
+    normalize_config(content)
   end
 
   def normalize_config(config)
@@ -45,7 +32,7 @@ class RubyConfigBuilder
       new_config.add_missing_namespaces
       new_config.make_excludes_absolute
     end
-  rescue NoMethodError
+  rescue NoMethodError, TypeError
     RuboCop::Config.new
   end
 end
