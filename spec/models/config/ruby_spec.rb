@@ -117,6 +117,43 @@ describe Config::Ruby do
     end
 
     context "with nested inherit_froms" do
+      it "does not infinitely loop when given circular dependencies" do
+        rubocop = <<~EOS
+          inherit_from: config/default.yml
+        EOS
+        default = <<~EOS
+          inherit_from:
+            - config/base.yml
+            - config/overrides.yml
+          Style/Encoding:
+            Enabled: true
+        EOS
+        base = <<~EOS
+          inherit_from: config/default.yml
+          LineLength:
+            Max: 40
+        EOS
+        overrides = <<~EOS
+          Style/HashSyntax:
+            EnforcedStyle: hash_rockets
+          Style/Encoding:
+            Enabled: false
+        EOS
+        commit = stubbed_commit(
+          "config/rubocop.yml" => rubocop,
+          "config/default.yml" => default,
+          "config/base.yml" => base,
+          "config/overrides.yml" => overrides,
+        )
+        config = build_config(commit)
+
+        expect(config.content).to eq(
+          "LineLength" => { "Max" => 40 },
+          "Style/HashSyntax" => { "EnforcedStyle" => "hash_rockets" },
+          "Style/Encoding" => { "Enabled" => true },
+        )
+      end
+
       it "returns the merged configuration using `inherit_from`" do
         rubocop = <<~EOS
           inherit_from: config/default.yml
