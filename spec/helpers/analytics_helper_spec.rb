@@ -35,4 +35,20 @@ describe AnalyticsHelper do
       )
     end
   end
+
+  describe "#intercom_hash" do
+    it "includes user data" do
+      user = build_stubbed(:user)
+
+      expected_intercom_hash = OpenSSL::HMAC.hexdigest(
+        "sha256",
+        Hound::INTERCOM_API_SECRET,
+        user.id.to_s,
+      )
+
+      expect(intercom_hash(user)).to eq(
+        "Intercom" => { userHash: expected_intercom_hash },
+      )
+    end
+  end
 end
