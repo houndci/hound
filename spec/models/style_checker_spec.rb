@@ -139,7 +139,10 @@ describe StyleChecker do
   end
 
   def pull_request_violation_messages(pull_request)
-    build = build(:build)
+    build = build(
+      :build,
+      repo: build(:repo, owner: build(:owner, config_enabled: false)),
+    )
     StyleChecker.new(pull_request, build).review_files
 
     build.violations.flat_map(&:messages)
