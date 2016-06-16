@@ -14,16 +14,27 @@ module Config
       Parser.yaml(file_content)
     end
 
-    def parse_inherit_from(config)
+    def parse_inherit_from(config, parsed_files = [])
       inherit_from = Array(config.fetch("inherit_from", []))
 
       inherited_config = inherit_from.reduce({}) do |result, ancestor_file_path|
-        raw_ancestor_config = commit.file_content(ancestor_file_path)
-        ancestor_config = safe_parse(raw_ancestor_config) || {}
-        result.merge(ancestor_config)
+        if !parsed_files.include? ancestor_file_path
+          parsed_files << ancestor_file_path
+          raw_ancestor_config = commit.file_content(ancestor_file_path)
+          ancestor_config = safe_parse(raw_ancestor_config) || {}
+          result.merge(ancestor_config)
+        else
+          {}
+        end
       end
 
-      inherited_config.merge(config.except("inherit_from"))
+      merged_config = inherited_config.merge(config.except("inherit_from"))
+
+      if merged_config.has_key?("inherit_from")
+        parse_inherit_from(merged_config, parsed_files)
+      else
+        merged_config
+      end
     end
 
     def legacy?
