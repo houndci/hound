@@ -1,7 +1,6 @@
 # Determine CoffeeScript style guide violations per-line.
 module Linter
   class CoffeeScript < Base
-    DEFAULT_CONFIG_FILENAME = "coffeescript.json"
     ERB_TAGS = /<%.*%>/
     FILE_REGEXP = /.+\.coffee(\.js)?(\.erb)?\z/
 
@@ -25,7 +24,7 @@ module Linter
     private
 
     def lint(content)
-      Coffeelint.lint(content, linter_config)
+      Coffeelint.lint(content, merged_config)
     end
 
     def content_for_file(file)
@@ -40,20 +39,24 @@ module Linter
       file.filename.ends_with? ".erb"
     end
 
-    def linter_config
-      default_config.merge(config.content)
+    def merged_config
+      owner_config.merge(repo_config)
     end
 
-    def default_config
-      config = File.read(default_config_file)
-      Config::Parser.json(config)
+    def owner_config
+      ConfigBuilder.for(owner_hound_config, "coffee_script")
     end
 
-    def default_config_file
-      DefaultConfigFile.new(
-        DEFAULT_CONFIG_FILENAME,
-        repository_owner_name
-      ).path
+    def repo_config
+      ConfigBuilder.for(repo_hound_config, "coffee_script")
+    end
+
+    def repo_hound_config
+      hound_config
+    end
+
+    def owner_hound_config
+      BuildOwnerHoundConfig.run(build.repo.owner)
     end
   end
 end

@@ -77,37 +77,33 @@ describe StyleChecker do
     end
 
     context "for a CoffeeScript file" do
-      it "is processed with a coffee.js extension" do
-        commit_file = stub_commit_file("test.js.coffee", "foo ->")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violation_messages(pull_request)
-
-        expect(violation_messages).to eq ["Empty function"]
-      end
-
-      it "is processed with a coffee.erb extension" do
-        commit_file = stub_commit_file(
-          "test.coffee.erb",
-          "class strange_ClassNAME",
-        )
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violation_messages(pull_request)
-
-        expect(violation_messages).to eq [
-          "Class name should be UpperCamelCased",
-        ]
-      end
-
       context "with style violations" do
-        it "returns violations" do
-          commit_file = stub_commit_file("test.coffee", "foo: ->")
+        it "is processed with a coffee.js extension" do
+          commit_file = stub_commit_file(
+            "test.coffee.erb",
+            "class strange_ClassNAME",
+          )
           pull_request = stub_pull_request(commit_files: [commit_file])
 
           violation_messages = pull_request_violation_messages(pull_request)
 
-          expect(violation_messages).to eq ["Empty function"]
+          expect(violation_messages).to eq [
+            "Class name should be UpperCamelCased",
+          ]
+        end
+
+        it "is processed with a coffee.erb extension" do
+          commit_file = stub_commit_file(
+            "test.coffee.erb",
+            "class strange_ClassNAME",
+          )
+          pull_request = stub_pull_request(commit_files: [commit_file])
+
+          violation_messages = pull_request_violation_messages(pull_request)
+
+          expect(violation_messages).to eq [
+            "Class name should be UpperCamelCased",
+          ]
         end
       end
 

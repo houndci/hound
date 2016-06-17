@@ -1,10 +1,6 @@
 module ConfigurationHelper
   def ruby_config_url
-    config_url("houndci/hound", "config/style_guides/ruby.yml")
-  end
-
-  def coffeescript_config_url
-    config_url("houndci/hound", "config/style_guides/coffeescript.json")
+    config_url("bbatsov/rubocop", "config/enabled.yml")
   end
 
   def javascript_config_url

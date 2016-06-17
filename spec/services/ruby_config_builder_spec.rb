@@ -1,5 +1,4 @@
 require "rubocop"
-require "app/models/default_config_file"
 require "app/services/ruby_config_builder"
 require "app/models/config/parser"
 

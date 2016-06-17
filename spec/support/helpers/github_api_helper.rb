@@ -240,6 +240,11 @@ module GithubApiHelper
     ).to_return(status_request_return_value)
   end
 
+  def stub_success_on_repo(repo_name)
+    stub_request(:get, "https://api.github.com/repos/#{repo_name}").
+      to_return(status: 200, body: "", headers: {})
+  end
+
   def status_request_return_value
     {
       status: 201,

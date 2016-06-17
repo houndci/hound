@@ -97,9 +97,9 @@
         = link_to "RuboCop",
           "https://github.com/bbatsov/rubocop",
           target: :blank
-        with this
-        = link_to "config", ruby_config_url, target: :blank
-        by default.
+        with the
+        = link_to "default RuboCop config", ruby_config_url, target: :blank
+        \.
 
       %p
         To change the way RuboCop is configured, copy the
@@ -127,14 +127,11 @@
       %p
         Hound uses
         = link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank
-        with this
-        = link_to "config", coffeescript_config_url, target: :blank
-        by default.
+        with the default configuration.
 
       %p
-        To change the way CoffeeLint is configured, copy the
-        = link_to "default config file", coffeescript_config_url, target: :blank
-        into your project, make changes and reference the file in your
+        To change the way CoffeeLint is configured, add a config file to your
+        project and reference it in your
         %em.code .hound.yml
 
         %code.code-block

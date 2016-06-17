@@ -122,7 +122,10 @@ describe Linter::CoffeeScript do
               foo: ->
           CODE
 
-          violations = violations_in(code, repository_owner_name: "thoughtbot")
+          violations = violations_in(
+            code,
+            config: thoughtbot_configuration_file,
+          )
 
           expect(violations).to be_empty
         end
@@ -148,28 +151,22 @@ describe Linter::CoffeeScript do
       it "uses the default thoughtbot configuration" do
         spy_on_coffee_lint
         spy_on_file_read
-        config_file = thoughtbot_configuration_file(Linter::CoffeeScript)
 
-        violations_in("var foo = 'bar'", repository_owner_name: "thoughtbot")
+        violations_in("var foo = 'bar'", config: thoughtbot_configuration_file)
 
-        expect(File).to have_received(:read).with(config_file)
         expect(Coffeelint).to have_received(:lint).
           with(anything, thoughtbot_configuration)
       end
     end
 
-    context "non-thoughtbot pull request" do
-      it "uses the default hound configuration" do
+    context "a pull request using the legacy configuration repo" do
+      it "uses the legacy hound configuration" do
         spy_on_coffee_lint
-        spy_on_file_read
-        config_file = default_configuration_file(Linter::CoffeeScript)
 
-        violations_in("var foo = 'bar'", repository_owner_name: "foo")
+        violations_in("var foo = 'bar'", config: legacy_configuration_file)
 
-        expect(File).to have_received(:read).
-          with(config_file)
         expect(Coffeelint).to have_received(:lint).
-          with(anything, default_configuration)
+          with(anything, legacy_configuration)
       end
     end
 
@@ -201,8 +198,8 @@ describe Linter::CoffeeScript do
 
     private
 
-    def violations_in(content, repository_owner_name: "ralph")
-      build_linter(repository_owner_name: repository_owner_name).
+    def violations_in(content, config: "{}")
+      build_linter(build: build_with_stubbed_owner_config(config)).
         file_review(build_file(content)).
         violations.
         flat_map(&:messages)
@@ -212,16 +209,20 @@ describe Linter::CoffeeScript do
       build_commit_file(filename: filename, content: content)
     end
 
-    def default_configuration
-      config_file = default_configuration_file(Linter::CoffeeScript)
-      config = File.read(config_file)
-      JSON.parse(config)
+    def legacy_configuration_file
+      File.read("spec/support/fixtures/legacy_coffeescript.json")
+    end
+
+    def legacy_configuration
+      JSON.parse(legacy_configuration_file)
+    end
+
+    def thoughtbot_configuration_file
+      File.read("spec/support/fixtures/thoughtbot_coffeescript.json")
     end
 
     def thoughtbot_configuration
-      config_file = thoughtbot_configuration_file(Linter::CoffeeScript)
-      config = File.read(config_file)
-      JSON.parse(config)
+      JSON.parse(thoughtbot_configuration_file)
     end
 
     def spy_on_coffee_lint
@@ -230,14 +231,35 @@ describe Linter::CoffeeScript do
   end
 
   def build_linter(
-    hound_config: default_hound_config,
-    repository_owner_name: "RalphJoe"
+    build: build_with_stubbed_owner_config("{}"),
+    hound_config: default_hound_config
   )
     Linter::CoffeeScript.new(
       hound_config: hound_config,
-      build: build(:build),
-      repository_owner_name: repository_owner_name,
+      build: build,
     )
+  end
+
+  def build_with_stubbed_owner_config(config)
+    stub_success_on_repo("organization/style")
+    stub_commit_on_repo(
+      repo: "organization/style",
+      sha: "HEAD",
+      files: {
+        ".hound.yml" => <<~EOF,
+          coffeescript:
+            config_file: .coffeescript.json
+        EOF
+        ".coffeescript.json" => config,
+      },
+    )
+    owner = build(
+      :owner,
+      config_enabled: true,
+      config_repo: "organization/style",
+    )
+    repo = build(:repo, owner: owner)
+    build(:build, repo: repo)
   end
 
   def default_hound_config

@@ -74,11 +74,6 @@ describe BuildOwnerHoundConfig do
       to_return(status: 404, headers: {})
   end
 
-  def stub_success_on_repo(repo_name)
-    stub_request(:get, "https://api.github.com/repos/#{repo_name}").
-      to_return(status: 200, body: "", headers: {})
-  end
-
   def default_hound_config
     HoundConfig.new(EmptyCommit.new).content
   end
