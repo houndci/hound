@@ -14,14 +14,16 @@ class RubyConfigBuilder
   end
 
   def merge(overrides)
-    RuboCop::ConfigLoader.merge(content, normalize_config(overrides))
-  rescue NoMethodError, TypeError
-    config
+    normalize_config(merge_hashes(config, overrides))
   end
 
   private
 
   attr_reader :content
+
+  def merge_hashes(a, b)
+    RuboCop::ConfigLoader.merge(a, b)
+  end
 
   def normalized_content
     normalize_config(content)

@@ -47,6 +47,53 @@ RSpec.describe RubyConfigBuilder do
     end
   end
 
+  describe "#merge" do
+    context "when the base and override configurations do not have overlap" do
+      it "returns the contents of both combined" do
+        base = {
+          "AllCops" => {
+            "DisabledByDefault" => true,
+          },
+        }
+        overrides = {
+          "Style/VariableName" => {
+            "Enabled" => true,
+          },
+        }
+        builder = RubyConfigBuilder.new(base)
+
+        merged_config = builder.merge(overrides)
+
+        expect(merged_config["AllCops"]).
+          to match hash_including base["AllCops"]
+        expect(merged_config["Style/VariableName"]).
+          to match hash_including overrides["Style/VariableName"]
+      end
+    end
+
+    context "when the base and override configurations have overlap" do
+      it "returns the contents of the overrides" do
+        base = {
+          "AllCops" => {
+            "DisabledByDefault" => true,
+          },
+          "Style/VariableName" => {
+            "Enabled" => true,
+          },
+        }
+        overrides = {
+          "AllCops" => {
+            "DisabledByDefault" => false,
+          },
+        }
+        builder = RubyConfigBuilder.new(base)
+
+        expect(builder.merge(overrides)["AllCops"]).
+          to match hash_including("DisabledByDefault" => false)
+      end
+    end
+  end
+
   def customer_override_rule
     hash_including("EnforcedStyle" => "camel_case", "Enabled" => true)
   end

@@ -9,7 +9,7 @@ module Linter
     end
 
     def file_included?(commit_file)
-      !linter_config.file_to_exclude?(commit_file.filename)
+      !merged_config.file_to_exclude?(commit_file.filename)
     end
 
     private
@@ -36,7 +36,7 @@ module Linter
     def team
       RuboCop::Cop::Team.new(
         RuboCop::Cop::Cop.all,
-        linter_config,
+        merged_config,
         rubocop_options,
       )
     end
@@ -49,19 +49,41 @@ module Linter
       )
     end
 
-    def linter_config
-      @linter_config ||= config_builder.config
+    def merged_config
+      @merged_config ||=
+        if build.repo.owner.has_config_repo?
+          rubocop_config_builder(owner_config.content).
+            merge(repo_config.content)
+        else
+          rubocop_config_builder(repo_config.content).config
+        end
     end
 
-    def config_builder
-      RubyConfigBuilder.new(config.content, repository_owner_name)
+    def rubocop_config_builder(content)
+      RubyConfigBuilder.new(content)
+    end
+
+    def owner_config
+      ConfigBuilder.for(owner_hound_config, "ruby")
+    end
+
+    def owner_hound_config
+      BuildOwnerHoundConfig.run(build.repo.owner)
+    end
+
+    def repo_config
+      ConfigBuilder.for(repo_hound_config, "ruby")
+    end
+
+    def repo_hound_config
+      hound_config
     end
 
     # This is deprecated in favor of RuboCop's DisplayCopNames option.
     # Let's track how often we see this and remove it if we see fit.
     def rubocop_options
-      if linter_config.delete("ShowCopNames")
-        Analytics.new(repository_owner_name).track_show_cop_names
+      if merged_config.delete("ShowCopNames")
+        Analytics.new(build.full_github_name).track_show_cop_names
         { debug: true }
       end
     end

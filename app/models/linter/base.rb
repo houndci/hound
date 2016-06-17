@@ -4,7 +4,7 @@ module Linter
       self::FILE_REGEXP === filename
     end
 
-    def initialize(hound_config:, build:, repository_owner_name:)
+    def initialize(hound_config:, build:, repository_owner_name: "")
       @hound_config = hound_config
       @build = build
       @repository_owner_name = repository_owner_name
