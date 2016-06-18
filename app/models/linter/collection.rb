@@ -1,17 +1,17 @@
 module Linter
   class Collection
     LINTERS = [
-      Linter::CoffeeScript,
+      Linter::CoffeeLint,
       Linter::Eslint,
-      Linter::Go,
-      Linter::Haml,
+      Linter::GoLint,
+      Linter::HamlLint,
       Linter::Jscs,
       Linter::Jshint,
       Linter::Remark,
-      Linter::Python,
-      Linter::Ruby,
-      Linter::Scss,
-      Linter::Swift,
+      Linter::Flake8,
+      Linter::Rubocop,
+      Linter::ScssLint,
+      Linter::SwiftLint,
     ].freeze
 
     def self.linter_names

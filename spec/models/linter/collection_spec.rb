@@ -18,7 +18,7 @@ describe Linter::Collection do
           repository_owner_name: pull_request.repository_owner_name,
         )
 
-        expect(collection.linters.sample).to be_a Linter::Ruby
+        expect(collection.linters.sample).to be_a Linter::Rubocop
       end
     end
 

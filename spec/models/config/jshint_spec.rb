@@ -39,7 +39,8 @@ describe Config::Jshint do
       commit = stubbed_commit({})
       config = build_config(commit)
 
-      expect(config.linter_names).to match_array %w(javascript java_script jshint)
+      expect(config.linter_names).
+        to match_array %w(javascript java_script jshint)
     end
   end
 
