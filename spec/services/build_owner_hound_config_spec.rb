@@ -15,6 +15,7 @@ describe BuildOwnerHoundConfig do
               enabled: true
           EOS
         )
+        stub_success_on_repo("thoughtbot/guides")
         allow(Commit).to receive(:new).and_return(commit)
 
         owner_config = BuildOwnerHoundConfig.run(owner)
@@ -24,7 +25,7 @@ describe BuildOwnerHoundConfig do
     end
 
     context "when the owner does not have a configuration set" do
-      it "returns nil" do
+      it "returns an empty hound config" do
         owner = instance_double(
           "Owner",
           has_config_repo?: false,
@@ -33,7 +34,7 @@ describe BuildOwnerHoundConfig do
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
-        expect(owner_config).to be_nil
+        expect(owner_config.content).to eq({})
       end
     end
 
@@ -44,7 +45,21 @@ describe BuildOwnerHoundConfig do
           has_config_repo?: true,
           config_repo: "organization/private_style_guides",
         )
-        stub_failure_on_repo(repo: "organization/private_style_guides")
+        stub_failure_on_repo("organization/private_style_guides")
+
+        owner_config = BuildOwnerHoundConfig.run(owner)
+
+        expect(owner_config.content).to eq({})
+      end
+    end
+
+    context "when the owner's configuration is improperly formatted" do
+      it "returns an empty hound config" do
+        owner = instance_double(
+          "Owner",
+          has_config_repo?: true,
+          config_repo: "not/a/valid/repo",
+        )
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
@@ -53,10 +68,13 @@ describe BuildOwnerHoundConfig do
     end
   end
 
-  def stub_failure_on_repo(repo:)
-    stub_request(
-      :get,
-      %r"https://api.github.com/repos/#{repo}/contents/*",
-    ).to_return(status: 404, headers: {})
+  def stub_failure_on_repo(repo_name)
+    stub_request(:get, %r"https://api.github.com/repos/#{repo_name}*").
+      to_return(status: 404, headers: {})
+  end
+
+  def stub_success_on_repo(repo_name)
+    stub_request(:get, "https://api.github.com/repos/#{repo_name}").
+      to_return(status: 200, body: "", headers: {})
   end
 end

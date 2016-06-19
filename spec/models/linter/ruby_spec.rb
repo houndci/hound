@@ -797,6 +797,7 @@ describe Linter::Ruby do
         ".rubocop.yml" => config,
       },
     )
+    stub_repo_request("organization/style", ENV["HOUND_GITHUB_TOKEN"])
     owner = build(
       :owner,
       config_enabled: true,

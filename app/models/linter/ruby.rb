@@ -50,13 +50,8 @@ module Linter
     end
 
     def merged_config
-      @merged_config ||=
-        if build.repo.owner.has_config_repo?
-          rubocop_config_builder(owner_config.content).
-            merge(repo_config.content)
-        else
-          rubocop_config_builder(repo_config.content).config
-        end
+      @merged_config ||= rubocop_config_builder(owner_config.content).
+        merge(repo_config.content)
     end
 
     def rubocop_config_builder(content)
