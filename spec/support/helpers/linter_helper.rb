@@ -12,31 +12,31 @@ module LinterHelper
 
   def raw_hound_config
     <<-EOS.strip_heredoc
-      ruby:
+      rubocop:
         enabled: true
         config_file: config/rubocop.yml
 
-      coffeescript:
+      coffeelint:
         enabled: true
         config_file: coffeelint.json
 
-      javascript:
+      jshint:
         enabled: true
         config_file: config/javascript.json
 
-      scss:
+      scsslint:
         enabled: true
         config_file: config/scss.yml
 
-      haml:
+      haml-lint:
         enabled: true
         config_file: config/haml.json
 
-      go:
+      golint:
         enabled: true
         config_file: config/go.txt
 
-      swift:
+      swiftlint:
         enabled: true
         config_file: config/swift.txt
     EOS

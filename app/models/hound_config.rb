@@ -5,7 +5,7 @@ class HoundConfig
     jscs
     jshint
     remark
-    python
+    flake8
   ).freeze
   CONFIG_FILE = ".hound.yml"
 

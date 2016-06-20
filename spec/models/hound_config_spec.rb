@@ -2,6 +2,7 @@ require "spec_helper"
 require "spec/support/linters"
 require "app/models/config/parser"
 require "app/models/hound_config"
+require "app/models/config/parser"
 
 describe HoundConfig do
   describe "#content" do

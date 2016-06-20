@@ -83,7 +83,7 @@ module Config
     end
 
     def linter_config
-      hound_config.content.slice(*linter_names).values.first
+      hound_config.content.values_at(*linter_names).compact.first
     end
 
     def commit

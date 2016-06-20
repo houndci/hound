@@ -59,7 +59,7 @@ describe Linter::Eslint do
         EslintReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "eslint",
+        linter_name: described_class.name.demodulize.underscore,
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
