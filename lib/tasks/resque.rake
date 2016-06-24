@@ -21,9 +21,9 @@ namespace :resque do
   task remove_failures: :environment do
     all_failures = Resque::Failure.all(0, Resque::Failure.count)
 
-    all_failures.each_with_object.with_index do |(failure, ids), i|
+    ids = all_failures.each_with_object([]).with_index do |(failure, agg), i|
       if failure["failed_at"].to_time < 2.weeks.ago
-        ids << i
+        agg << i
       end
     end
 
