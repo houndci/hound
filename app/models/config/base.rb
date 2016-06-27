@@ -6,10 +6,6 @@ module Config
       @content ||= ensure_correct_type(safe_parse(load_content))
     end
 
-    def excluded_files
-      []
-    end
-
     def serialize(data = content)
       data
     end

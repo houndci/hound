@@ -300,18 +300,6 @@ describe BuildRunner do
       )
     end
 
-    def stubbed_style_checker_with_config_file(pull_request, file_path, content)
-      config = config_for_file(
-        file_path: file_path,
-        content: content,
-        commit: pull_request.head_commit,
-      )
-      style_checker = StyleChecker.new(pull_request, build(:build))
-      allow(style_checker).to receive(:config).and_return(config)
-
-      style_checker
-    end
-
     def stub_commit(configuration)
       commit = double("Commit")
       hound_config = configuration.delete(:hound_config)
@@ -328,19 +316,6 @@ describe BuildRunner do
         allow(commit).to receive(:file_content).
           with(filename).and_return(contents)
       end
-    end
-
-    def config_for_file(file_path:, content:, commit: double("Commit"))
-      hound_config = <<-EOS.strip_heredoc
-        java_script:
-          enabled: true
-          config_file: #{file_path}
-      EOS
-
-      allow(commit).to receive(:file_content).with(file_path).
-        and_return(content)
-
-      HoundConfig.new(commit)
     end
 
     def configuration_url
