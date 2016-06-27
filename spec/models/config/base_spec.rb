@@ -119,14 +119,6 @@ describe Config::Base do
     end
   end
 
-  describe "#excluded_files" do
-    it "returns an empty array" do
-      config = build_config
-
-      expect(config.excluded_files).to eq []
-    end
-  end
-
   def build_config(hound_config: build_hound_config)
     Config::Test.new(hound_config)
   end

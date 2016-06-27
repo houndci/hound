@@ -78,12 +78,4 @@ class RepoSubscriber
 
     PaymentGatewayCustomer.new(user, customer: stripe_customer)
   end
-
-  def create_subscription_record(stripe_subscription_id)
-    repo.create_subscription!(
-      user_id: user.id,
-      stripe_subscription_id: stripe_subscription_id,
-      price: repo.plan_price
-    )
-  end
 end

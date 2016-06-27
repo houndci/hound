@@ -1,5 +1,4 @@
 class RubyConfigBuilder
-  HOUND_DEFAULTS_FILENAME = "ruby.yml".freeze
   VIRTUAL_FILENAME = "".freeze
 
   def initialize(content = {})

@@ -130,10 +130,6 @@ class GithubApi
 
   private
 
-  def authorized_repos(repos)
-    repos.select { |repo| repo.permissions.admin }
-  end
-
   def create_status(repo:, sha:, state:, description:, target_url: nil)
     client.create_status(
       repo,
