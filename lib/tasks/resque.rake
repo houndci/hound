@@ -14,6 +14,8 @@ namespace :resque do
       if time_running > max_time_running
         w.unregister_worker
       end
+
+      Resque.workers.each { |w| w.unregister_worker unless w.working? }
     end
   end
 
