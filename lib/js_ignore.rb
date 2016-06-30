@@ -1,5 +1,8 @@
 class JsIgnore
-  DEFAULT_EXCLUDED_PATHS = %w(vendor/*).freeze
+  DEFAULT_EXCLUDED_PATHS = %w(
+    vendor/*
+    node_modules/*
+  ).freeze
 
   attr_private_initialize :linter_name, :hound_config, :default_filename
 
@@ -12,7 +15,7 @@ class JsIgnore
   private
 
   def excluded_paths
-    ignored_paths.presence || DEFAULT_EXCLUDED_PATHS
+    DEFAULT_EXCLUDED_PATHS + ignored_paths
   end
 
   def ignored_paths

@@ -11,12 +11,8 @@ module ConfigurationHelper
     config_url("houndci/jshint", "config/.jshintrc")
   end
 
-  def javascript_ignore_url
-    config_url("houndci/hound", "config/style_guides/.jshintignore")
-  end
-
   def eslint_config_url
-    config_url("houndci/eslint", "config/.eslintrc")
+    config_url("houndci/linters", "config/eslintrc")
   end
 
   def scss_config_url
