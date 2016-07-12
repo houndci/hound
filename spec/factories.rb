@@ -2,6 +2,11 @@ FactoryGirl.define do
   sequence(:github_id)
   sequence(:github_name) { |n| "github_name#{n}" }
 
+  factory :blacklisted_pull_request do
+    sequence(:full_repo_name) { |n| "user/repo#{n}" }
+    sequence(:pull_request_number)
+  end
+
   factory :build do
     commit_sha "somesha"
     repo

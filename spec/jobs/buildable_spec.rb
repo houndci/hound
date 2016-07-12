@@ -8,8 +8,7 @@ describe Buildable do
   describe "#perform" do
     it 'runs build runner' do
       build_runner = double(:build_runner, run: nil)
-      payload = double("Payload", github_repo_id: 1)
-      allow(Payload).to receive(:new).with(payload_data).and_return(payload)
+      payload = stub_payload(payload_data)
       allow(BuildRunner).to receive(:new).and_return(build_runner)
 
       BuildableTestJob.perform_now(payload_data)
@@ -21,8 +20,7 @@ describe Buildable do
 
     it "runs repo updater" do
       repo_updater = double("RepoUpdater", run: nil)
-      payload = double("Payload", github_repo_id: 1)
-      allow(Payload).to receive(:new).with(payload_data).and_return(payload)
+      payload = stub_payload(payload_data)
       allow(UpdateRepoStatus).to receive(:new).and_return(repo_updater)
 
       BuildableTestJob.perform_now(payload_data)
@@ -30,6 +28,36 @@ describe Buildable do
       expect(Payload).to have_received(:new).with(payload_data)
       expect(UpdateRepoStatus).to have_received(:new).with(payload)
       expect(repo_updater).to have_received(:run)
+    end
+
+    context "when the pull request has been blacklisted" do
+      it "does not set the status" do
+        payload_data = payload_data(full_name: "ignore/me", number: 42)
+        create(
+          :blacklisted_pull_request,
+          full_repo_name: "ignore/me",
+          pull_request_number: 42,
+        )
+        allow(UpdateRepoStatus).to receive(:new)
+
+        BuildableTestJob.perform_now(payload_data)
+
+        expect(UpdateRepoStatus).not_to have_received(:new)
+      end
+
+      it "does not run the build" do
+        payload_data = payload_data(full_name: "ignore/me", number: 42)
+        create(
+          :blacklisted_pull_request,
+          full_repo_name: "ignore/me",
+          pull_request_number: 42,
+        )
+        allow(BuildRunner).to receive(:new)
+
+        BuildableTestJob.perform_now(payload_data)
+
+        expect(BuildRunner).not_to have_received(:new)
+      end
     end
   end
 
@@ -48,9 +76,16 @@ describe Buildable do
     end
   end
 
-  def payload_data(github_id: 1234, name: "test")
+  def payload_data(
+    github_id: 1234,
+    name: "test",
+    full_name: "user/repo",
+    number: 1
+  )
     {
+      "number" => number,
       "repository" => {
+        "full_name" => full_name,
         "owner" => {
           "id" => github_id,
           "login" => name,
@@ -58,5 +93,16 @@ describe Buildable do
         }
       }
     }
+  end
+
+  def stub_payload(payload_data)
+    payload = double(
+      Payload,
+      github_repo_id: 1,
+      full_repo_name: "user/repo",
+      pull_request_number: 1,
+    )
+    allow(Payload).to receive(:new).with(payload_data).and_return(payload)
+    payload
   end
 end
