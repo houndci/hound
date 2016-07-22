@@ -2,6 +2,7 @@ require "spec_helper"
 require "app/models/config/parser"
 require "app/services/normalize_config"
 require "app/services/resolve_config_aliases"
+require "app/services/resolve_config_conflicts"
 require "app/models/hound_config"
 
 describe HoundConfig do
@@ -70,6 +71,21 @@ describe HoundConfig do
           ".hound.yml" => <<-EOS.strip_heredoc
             java_script:
               enabled: false
+          EOS
+        )
+        hound_config = HoundConfig.new(commit)
+
+        expect(hound_config).not_to be_enabled_for("jshint")
+      end
+    end
+
+    context "when the given language conflicts with an enabled linter" do
+      it "returns false" do
+        stub_const("ResolveConfigConflicts::CONFLICTS", "eslint" => "jshint")
+        commit = stubbed_commit(
+          ".hound.yml" => <<-EOS.strip_heredoc
+            eslint:
+              enabled: true
           EOS
         )
         hound_config = HoundConfig.new(commit)

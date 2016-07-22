@@ -3,7 +3,6 @@ class HoundConfig
   BETA_LINTERS = %w(
     eslint
     jscs
-    jshint
     remark
     python
   ).freeze
@@ -12,7 +11,7 @@ class HoundConfig
   attr_reader_initialize :commit
 
   def content
-    @_content ||= default_config.deep_merge(resolved_aliases_config)
+    @_content ||= default_config.deep_merge(resolved_conflicts_config)
   end
 
   def linter_enabled?(name)
@@ -40,6 +39,10 @@ class HoundConfig
 
   def normalized_config
     NormalizeConfig.run(parsed_config)
+  end
+
+  def resolved_conflicts_config
+    ResolveConfigConflicts.run(resolved_aliases_config)
   end
 
   def parsed_config
