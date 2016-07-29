@@ -91,6 +91,7 @@ describe HoundConfig do
         hound_config = HoundConfig.new(commit)
 
         expect(hound_config).not_to be_enabled_for("jshint")
+        expect(hound_config).to be_enabled_for("eslint")
       end
     end
 
