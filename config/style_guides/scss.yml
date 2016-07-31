@@ -38,7 +38,7 @@ linters:
   PlaceholderInExtend:
     severity: warning
   PropertySortOrder:
-    severity: error
+    severity: warning
     order:
       - position
       - top
