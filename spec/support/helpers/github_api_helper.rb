@@ -29,8 +29,7 @@ module GithubApiHelper
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/repo.json').
-        gsub('testing/repo', repo_name),
+      body: read_fixture("repo.json").gsub("testing/repo", repo_name),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -43,7 +42,7 @@ module GithubApiHelper
       headers: { 'Authorization' => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/repo_with_org.json'),
+      body: read_fixture("repo_with_org.json"),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -57,7 +56,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/github_hook_creation_response.json'),
+      body: read_fixture("github_hook_creation_response.json"),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -71,7 +70,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{hound_token}" }
     ).to_return(
       status: 422,
-      body: File.read('spec/support/fixtures/failed_hook.json'),
+      body: read_fixture("failed_hook.json"),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -91,7 +90,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{hound_token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/commit.json'),
+      body: read_fixture("commit.json"),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -104,7 +103,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{hound_token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/pull_request_files.json'),
+      body: read_fixture("pull_request_files.json"),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -120,7 +119,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{hound_token}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/#{fixture}"),
+      body: read_fixture(fixture),
       headers: { 'Content-Type' => 'application/json; charset=utf-8' }
     )
   end
@@ -152,7 +151,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read('spec/support/fixtures/github_repos_response_for_jimtom.json'),
+      body: read_fixture("github_repos_response_for_jimtom.json"),
       headers: {
         "Link" => %(<#{repos_url}?page=2&per_page=100>; rel="next"),
         "Content-Type" => "application/json; charset=utf-8",
@@ -166,7 +165,7 @@ module GithubApiHelper
       headers: { "Authorization" => "token #{token}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/github_repos_response_for_jimtom_page2.json"),
+      body: read_fixture("github_repos_response_for_jimtom_page2.json"),
       headers: {
         "Link" => %(<#{repos_url}?page=3&per_page=100>; rel="next"),
         "Content-Type" => "application/json; charset=utf-8",
@@ -200,8 +199,7 @@ module GithubApiHelper
   end
 
   def stub_pull_request_comments_request(full_repo_name, pull_request_number)
-    comments_body =
-      File.read("spec/support/fixtures/pull_request_comments.json")
+    comments_body = read_fixture("pull_request_comments.json")
     url = "https://api.github.com/repos/#{full_repo_name}/pulls/" +
       "#{pull_request_number}/comments"
     headers = { "Content-Type" => "application/json; charset=utf-8" }
@@ -248,7 +246,7 @@ module GithubApiHelper
   def status_request_return_value
     {
       status: 201,
-      body: File.read("spec/support/fixtures/github_status_response.json"),
+      body: read_fixture("github_status_response.json"),
       headers: { "Content-Type" => "application/json; charset=utf-8" },
     }
   end
@@ -260,6 +258,10 @@ module GithubApiHelper
       state: state,
       target_url: target_url,
     }
+  end
+
+  def read_fixture(filename)
+    File.read(File.join("spec", "support", "fixtures", filename))
   end
 
   def hound_token
