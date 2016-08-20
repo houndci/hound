@@ -368,3 +368,6 @@ Style/MultilineOperationIndentation:
 
 Metrics/AbcSize:
   Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
