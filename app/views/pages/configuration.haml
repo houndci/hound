@@ -97,14 +97,21 @@
         = link_to "RuboCop",
           "https://github.com/bbatsov/rubocop",
           target: :blank
-        with the
-        = link_to "default RuboCop config", ruby_config_url, target: :blank
-        \.
+        to review Ruby code.
 
       %p
-        To change the way RuboCop is configured, copy the
-        = link_to "default config file", ruby_config_url, target: :blank
-        into your project, make changes and reference the file in your
+        By default, Hound uses the
+        = succeed "." do
+          = link_to "default RuboCop config", rubocop_config_url, target: :blank
+        To change the way RuboCop is configured, add a
+        %em.code .rucobop.yml
+        file to your project, configure it as desired
+        (see the
+        = succeed ")," do
+          = link_to("RuboCop docs",
+            "http://rubocop.readthedocs.io/en/latest/",
+            target: :blank)
+        and reference it in
         %em.code .hound.yml
 
         %code.code-block
