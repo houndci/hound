@@ -787,7 +787,7 @@ describe Linter::Ruby do
 
   def build_with_stubbed_owner_config(config)
     stub_commit_on_repo(
-      repo: "organization/style",
+      repo: "org/style",
       sha: "HEAD",
       files: {
         ".hound.yml" => <<~EOF,
@@ -797,23 +797,14 @@ describe Linter::Ruby do
         ".rubocop.yml" => config,
       },
     )
-    stub_repo_request("organization/style", ENV["HOUND_GITHUB_TOKEN"])
-    owner = build(
-      :owner,
-      config_enabled: true,
-      config_repo: "organization/style",
-    )
+    stub_repo_request("org/style", ENV["HOUND_GITHUB_TOKEN"])
+    owner = build(:owner, config_enabled: true, config_repo: "org/style")
     repo = build(:repo, owner: owner)
     build(:build, repo: repo)
   end
 
-  def violations_in(
-    content,
-    config: "{}"
-  )
-    linter = build_linter(
-      build: build_with_stubbed_owner_config(config),
-    )
+  def violations_in(content, config: stub_ruby_config)
+    linter = build_linter(build: build_with_stubbed_owner_config(config))
 
     linter.
       file_review(build_file(content)).
@@ -822,38 +813,26 @@ describe Linter::Ruby do
   end
 
   def legacy_violations_in(content)
-    config = File.open("spec/support/fixtures/legacy_rubocop_config.yml")
-    violations_in(content, config: config)
+    config = YAML.load_file("spec/support/fixtures/legacy_rubocop_config.yml")
+    violations_in(content, config: stub_ruby_config(config))
   end
 
   def thoughtbot_violations_in(content)
-    config = File.open("spec/support/fixtures/thoughtbot_rubocop_config.yml")
-    violations_in(content, config: config)
+    config = YAML.
+      load_file("spec/support/fixtures/thoughtbot_rubocop_config.yml")
+    violations_in(content, config: stub_ruby_config(config))
   end
 
-  def build_linter(
-    build:,
-    hound_config: build_hound_config
-  )
-    Linter::Ruby.new(
-      hound_config: hound_config,
-      build: build,
-    )
+  def build_linter(build:)
+    Linter::Ruby.new(hound_config: "anything", build: build)
   end
 
   def stub_ruby_config(config = {})
+    config["Style/FrozenStringLiteralComment"] = { "Enabled" => false }
     stubbed_ruby_config = double("RubyConfig", content: config)
     allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
 
     stubbed_ruby_config
-  end
-
-  def build_hound_config
-    double(
-      "HoundConfig",
-      enabled_for?: true,
-      content: { "ruby" => { "enabled" => true } },
-    )
   end
 
   def build_file(content)

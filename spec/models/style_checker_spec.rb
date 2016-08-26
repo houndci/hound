@@ -165,7 +165,10 @@ describe StyleChecker do
 
   def stub_commit_file(filename, contents, line = nil)
     line ||= Line.new(content: "foo", number: 1, patch_position: 2)
-    formatted_contents = "#{contents}\n"
+    formatted_contents = <<~EOL
+      # frozen_string_literal: true
+      #{contents}
+    EOL
     double(
       "CommitFile",
       filename: filename,
