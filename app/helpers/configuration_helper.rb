@@ -1,5 +1,5 @@
 module ConfigurationHelper
-  def ruby_config_url
+  def rubocop_config_url
     config_url("bbatsov/rubocop", "config/enabled.yml")
   end
 
