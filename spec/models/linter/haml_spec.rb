@@ -1,8 +1,6 @@
 require "rails_helper"
 
 describe Linter::Haml do
-  let(:filename) { "app/views/show.html.haml" }
-
   describe ".can_lint?" do
     context "given a .haml file" do
       it "returns true" do

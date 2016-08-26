@@ -2,16 +2,16 @@ require "rails_helper"
 
 describe StyleChecker do
   describe "#review_files" do
-    it "returns a collection of file reviews with violations" do
+    it "returns a collection of incomplete file reviews" do
       stylish_commit_file = stub_commit_file("good.rb", "def good; end")
       violated_commit_file = stub_commit_file("bad.rb", "def bad(a ); a; end  ")
       pull_request = stub_pull_request(
         commit_files: [stylish_commit_file, violated_commit_file],
       )
 
-      violation_messages = pull_request_violation_messages(pull_request)
+      file_reviews = pull_request_file_reviews(pull_request)
 
-      expect(violation_messages).to include "Trailing whitespace detected."
+      expect(file_reviews.map(&:filename)).to match_array ["good.rb", "bad.rb"]
     end
 
     it "only fetches content for supported files" do
@@ -35,45 +35,6 @@ describe StyleChecker do
         with(ruby_file.filename)
       expect(head_commit).not_to have_received(:file_content).
         with(bogus_file.filename)
-    end
-
-    context "for a Ruby file" do
-      context "with style violations" do
-        it "returns violations" do
-          commit_file = stub_commit_file("ruby.rb", "puts 123    ")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violation_messages(pull_request)
-
-          expect(violation_messages).to include "Trailing whitespace detected."
-        end
-      end
-
-      context "with style violation on unchanged line" do
-        it "returns no violations" do
-          commit_file = stub_commit_file(
-            "foo.rb",
-            "'wrong quotes'",
-            UnchangedLine.new,
-          )
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violation_messages(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-
-      context "without style violations" do
-        it "returns no violations" do
-          commit_file = stub_commit_file("ruby.rb", "puts 123")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violation_messages(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
     end
 
     context "for a CoffeeScript file" do
@@ -132,6 +93,15 @@ describe StyleChecker do
         expect(violation_messages).to be_empty
       end
     end
+  end
+
+  def pull_request_file_reviews(pull_request)
+    repo = build(:repo, owner: build(:owner, config_enabled: false))
+    build = build(:build, repo: repo)
+
+    StyleChecker.new(pull_request, build).review_files
+
+    build.file_reviews
   end
 
   def pull_request_violation_messages(pull_request)

@@ -55,8 +55,12 @@ module Linter
       Resque.enqueue(job_class, attributes)
     end
 
+    def job_name
+      "#{name.classify}ReviewJob"
+    end
+
     def job_class
-      "#{name.classify}ReviewJob".constantize
+      job_name.constantize
     end
 
     def config
