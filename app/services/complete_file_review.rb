@@ -29,6 +29,10 @@ class CompleteFileReview
 
     file_review.complete
     file_review.save!
+    file_review.build.increment!(
+      :violations_count,
+      file_review.violations.map(&:messages_count).sum,
+    )
   end
 
   def pull_request
