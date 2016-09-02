@@ -9,6 +9,10 @@ module Linter
 
     private
 
+    def config
+      @_config ||= JshintConfigBuilder.for(hound_config)
+    end
+
     def jsignore
       @jsignore ||= JsIgnore.new(name, hound_config, IGNORE_FILENAME)
     end
