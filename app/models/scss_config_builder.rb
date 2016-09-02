@@ -1,0 +1,2 @@
+class ScssConfigBuilder < JshintConfigBuilder
+end
