@@ -7,7 +7,7 @@ module Linter
     end
 
     def owner_config
-      ScssConfigBuilder.for(owner_hound_config)
+      MergeableConfigBuilder.for(owner_hound_config, "scss")
     end
 
     def owner_hound_config
@@ -15,7 +15,7 @@ module Linter
     end
 
     def local_config
-      ScssConfigBuilder.for(hound_config)
+      MergeableConfigBuilder.for(hound_config, "scss")
     end
   end
 end

@@ -1,8 +1,8 @@
 class MergeableConfigBuilder
-  pattr_initialize :hound_config
+  pattr_initialize :hound_config, :name
 
-  def self.for(hound_config)
-    new(hound_config).config
+  def self.for(hound_config, name)
+    new(hound_config, name).config
   end
 
   def config
@@ -48,7 +48,7 @@ class MergeableConfigBuilder
   end
 
   def linter_config
-    hound_config.content.slice(linter_name).values.first
+    hound_config.content.slice(name).values.first
   end
 
   def commit
