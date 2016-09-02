@@ -1,7 +1,7 @@
 body {
   background-color: rgb(255,255,255);
   color: $base-font-color;
-  font: 300 1em/1.4 'Lato';
+  font: $font-weight-light 1em / 1.4 'Lato';
 }
 
 .content {
@@ -34,14 +34,14 @@ h6 {
 
 h1 {
   font-size: 3em;
-  font-weight: 300;
+  font-weight: $font-weight-light;
   letter-spacing: 1px;
   margin: 0 0 0.4em;
 }
 
 h2 {
   font-size: 1.2em;
-  font-weight: 300;
+  font-weight: $font-weight-light;
   letter-spacing: 1px;
 }
 

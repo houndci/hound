@@ -51,15 +51,15 @@
   @include ellipsis;
   color: $medium-font-color;
   font-size: 1.5em;
-  font-weight: 300;
+  font-weight: $font-weight-light;
   height: 100%;
   padding-bottom: 2px;
-  transition: all 0.25s linear;
+  transition: $base-transition;
 
   @include media($small-screen) {
     display: block;
     font-size: 1.2em;
-    font-weight: 400;
+    font-weight: $font-weight-normal;
     letter-spacing: 1px;
     margin-bottom: 0.6em;
   }
@@ -95,7 +95,7 @@
   color: darken($gold, 5%);
   display: none;
   font-size: 0.9em;
-  font-weight: 300;
+  font-weight: $font-weight-light;
   letter-spacing: 1px;
   margin-right: 0.6em;
   padding: 0.2em 0.6em;
@@ -119,7 +119,7 @@
   border-radius: 20px;
   color: $purple;
   display: inline-block;
-  font-weight: 400;
+  font-weight: $font-weight-normal;
   letter-spacing: 1px;
   padding: 0.4em 1em;
   text-align: center;

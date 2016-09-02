@@ -14,8 +14,8 @@
   }
 
   h3 {
-    font-weight: 300;
     font-size: 2.8em;
+    font-weight: $font-weight-light;
     letter-spacing: 1px;
     margin: 0 0 0.4em 0;
 
@@ -63,7 +63,7 @@ section.intro {
 
     h1 {
       font-size: 3.8em;
-      font-weight: 300;
+      font-weight: $font-weight-light;
       letter-spacing: 1px;
       margin: 0 0 0.4em 0;
 
@@ -78,7 +78,7 @@ section.intro {
 
     h2 {
       font-size: 1.2em;
-      font-weight: 300;
+      font-weight: $font-weight-light;
       letter-spacing: 1px;
       margin: 0;
 
@@ -139,12 +139,12 @@ section.intro {
     }
 
     h4 {
-      background: #fff;
+      background: $white;
       display: inline-block;
-      font-weight: 300;
       font-family: $serif;
       font-style: italic;
-      margin: 0 0 3em 0;
+      font-weight: $font-weight-light;
+      margin: 0 0 3em;
       padding: 0 0.8em;
       position: relative;
       z-index: 2;
@@ -374,9 +374,9 @@ section.support {
     margin-bottom: 4em;
 
     h4 {
-      font-weight: 300;
       font-family: $serif;
       font-style: italic;
+      font-weight: $font-weight-light;
     }
   }
 

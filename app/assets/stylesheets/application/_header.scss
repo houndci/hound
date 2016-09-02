@@ -105,7 +105,7 @@ $medium-screen-header: new-breakpoint(max-width em(850) 4);
       a {
         color: $light-font-color;
         display: inline-block;
-        font-weight: 300;
+        font-weight: $font-weight-light;
         letter-spacing: 1px;
 
         &:hover {

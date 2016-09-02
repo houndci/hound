@@ -27,19 +27,19 @@
   box-sizing: border-box;
   color: $light-font-color;
   display: block;
-  font-weight: 400;
+  font-weight: $font-weight-normal;
   height: 60px;
   letter-spacing: 1px;
   margin: 0;
   padding: 0.8em 1em;
-  transition: all 0.25s ease-out;
+  transition: $base-transition;
   width: 100%;
 
   &::placeholder {
     color: $light-font-color;
-    font-weight: 400;
+    font-weight: $font-weight-normal;
     letter-spacing: 1px;
-    transition: color 0.25s ease-out;
+    transition: color $base-transition-timing $base-easing;
   }
 
   &:hover,
@@ -84,13 +84,13 @@
   border-radius: 3px;
   color: $light-font-color;
   font-size: 1em;
-  font-weight: 400;
+  font-weight: $font-weight-normal;
   height: 60px;
   letter-spacing: 1px;
   margin: 0;
   padding: 0.8em 1em;
   text-align: center;
-  transition: all 0.15s linear;
+  transition: $base-transition;
   vertical-align: middle;
   width: 100%;
 

@@ -1,0 +1,19 @@
+- content_for :page_title, "Builds"
+
+%ul.build-list
+  - 10.times do
+    %li.build-list-item
+      .build
+        .build-meta
+          %h2.build-org-repo RaiseMe/raise-ror-webapp
+          %h4.build-time
+            %span
+              = time_ago_in_words(Time.now)
+        .build-meta
+          %h3.build-pull-request
+            %span Pull request
+            %strong #123
+          %h3.build-sha
+            %span Latest commit
+            %strong 6730414
+        .build-button Rerun build

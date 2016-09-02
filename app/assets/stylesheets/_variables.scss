@@ -31,8 +31,24 @@ $icon-dropdown: '\f0d7';
 $icon-dropup: '\f0d8';
 $icon-lock: '\f023';
 
+$medium-screen-size: 47.5em;
+
 $small-screen: new-breakpoint(max-width em(540) 2);
-$medium-screen: new-breakpoint(max-width em(760) 4);
+$medium-screen: new-breakpoint(max-width $medium-screen-size 4);
 $large-screen: new-breakpoint(max-width em(920) 8);
 
 $base-border-radius: 5px;
+
+$base-spacing: 1.25em;
+$xsmall-spacing: $base-spacing * 0.5;
+$small-spacing: $base-spacing * 0.75;
+$medium-spacing: $base-spacing * 1.5;
+$large-spacing: $base-spacing * 3;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+
+// Transition
+$base-transition-timing: 0.2s;
+$base-easing: cubic-bezier(0.39, 0.575, 0.565, 1);
+$base-transition: all $base-transition-timing $base-easing;
