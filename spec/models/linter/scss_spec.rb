@@ -27,7 +27,7 @@ describe Linter::Scss do
           linters:
             Indentation:
               width: 2
-          CFG
+        CFG
         linter = build_linter(build, "config/scss.yml" => config_content)
         commit_file = build_commit_file(filename: "lib/a.scss")
         stub_owner_hound_config(instance_double("HoundConfig", content: {}))
@@ -50,18 +50,21 @@ describe Linter::Scss do
 
     context "when the owner has a configuration set up" do
       it "enqueues a file review with the owner config merged with the local" do
+        hound_yml= <<~YML
+          scss:
+            config_file: .scss.yml
+        YML
+        scss_yml = <<~YML
+          linters:
+            BorderZero:
+              enabled: false
+            Indentation:
+              width: 1
+        YML
+
         stubbed_owner_config = stubbed_commit(
-          ".hound.yml" => <<~YML,
-            scss:
-              config_file: .scss.yml
-          YML
-          ".scss.yml" => <<~YML
-            linters:
-              BorderZero:
-                enabled: false
-              Indentation:
-                width: 1
-          YML
+          ".hound.yml" => hound_yml,
+          ".scss.yml" => scss_yml,
         )
         stub_owner_hound_config(HoundConfig.new(stubbed_owner_config))
         build = build(:build, commit_sha: "foo", pull_request_number: 123)
@@ -69,7 +72,7 @@ describe Linter::Scss do
           linters:
             Indentation:
               width: 2
-          CFG
+        CFG
         linter = build_linter(build, "config/scss.yml" => config_content)
         commit_file = build_commit_file(filename: "lib/a.scss")
         allow(Resque).to receive(:enqueue)
@@ -79,7 +82,8 @@ describe Linter::Scss do
         expect(Resque).to have_received(:enqueue).with(
           ScssReviewJob,
           commit_sha: build.commit_sha,
-          config: "---\n" + <<~YML,
+          config: <<~YML,
+            ---
             linters:
               BorderZero:
                 enabled: false
