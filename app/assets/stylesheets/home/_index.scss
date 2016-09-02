@@ -19,7 +19,7 @@
     letter-spacing: 1px;
     margin: 0 0 0.4em 0;
 
-    @include media($small-screen) {
+    @include media($medium-screen) {
       font-size: 2.2em;
     }
 
