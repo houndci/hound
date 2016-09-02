@@ -1,7 +1,5 @@
 module Config
   class Jshint < Base
-    DEFAULT_CONTENT = "{}"
-
     pattr_initialize :raw_content
 
     def serialize(data = content)
