@@ -2,6 +2,7 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/parser"
 require "app/models/config/jshint"
+require "app/models/mergeable_config_builder"
 require "app/models/jshint_config_builder"
 
 describe JshintConfigBuilder do

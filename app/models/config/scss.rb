@@ -19,7 +19,7 @@ module Config
     private
 
     def parse(file_content = raw_content)
-      Parser.yaml(file_content)
+      Config::Parser.yaml(file_content)
     end
   end
 end
