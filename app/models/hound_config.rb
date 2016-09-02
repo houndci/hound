@@ -2,7 +2,6 @@
 class HoundConfig
   BETA_LINTERS = %w(
     eslint
-    jscs
     remark
     python
   ).freeze

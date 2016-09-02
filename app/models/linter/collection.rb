@@ -5,7 +5,6 @@ module Linter
       Linter::Eslint,
       Linter::Go,
       Linter::Haml,
-      Linter::Jscs,
       Linter::Jshint,
       Linter::Remark,
       Linter::Python,
