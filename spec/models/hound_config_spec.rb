@@ -30,7 +30,7 @@ describe HoundConfig do
         hound_config = HoundConfig.new(commit)
 
         supported_languages =
-          Linter::Collection.linter_names - HoundConfig::BETA_LINTERS
+          HoundConfig.linter_names - HoundConfig::BETA_LINTERS
         supported_languages.each do |language|
           expect(hound_config).to be_enabled_for(language)
         end

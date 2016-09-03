@@ -48,7 +48,7 @@ module Config
     end
 
     def legacy?
-      (configured_languages & Linter::Collection.linter_names).empty?
+      (configured_languages & HoundConfig.linter_names).empty?
     end
 
     def configured_languages
