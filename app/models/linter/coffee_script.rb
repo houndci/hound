@@ -5,10 +5,19 @@ module Linter
     FILE_REGEXP = /.+\.coffee(\.js)?(\.erb)?\z/
 
     def file_review(commit_file)
-      FileReview.create!(
-        filename: commit_file.filename,
-        linter_name: name,
-      ) do |file_review|
+      create_file_review(commit_file).tap do |file_review|
+        file_review.build.increment!(
+          :violations_count,
+          file_review.violations.map(&:messages_count).sum,
+        )
+      end
+    end
+
+    private
+
+    def create_file_review(commit_file)
+      filename = commit_file.filename
+      FileReview.create!(filename: filename, linter_name: name) do |file_review|
         content = content_for_file(commit_file)
 
         lint(content).each do |violation|
@@ -20,8 +29,6 @@ module Linter
         file_review.complete
       end
     end
-
-    private
 
     def lint(content)
       Coffeelint.lint(content, merged_config)
