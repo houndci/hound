@@ -29,9 +29,9 @@ describe HoundConfig do
         commit = stubbed_commit(".hound.yml" => "")
         hound_config = HoundConfig.new(commit)
 
-        supported_languages =
-          HoundConfig.linter_names - HoundConfig::BETA_LINTERS
-        supported_languages.each do |language|
+        enabled_by_default =
+          HoundConfig::LINTER_NAMES - HoundConfig::BETA_LINTERS
+        enabled_by_default.each do |language|
           expect(hound_config).to be_enabled_for(language)
         end
       end

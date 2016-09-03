@@ -12,6 +12,7 @@ class HoundConfig
     Linter::Scss,
     Linter::Swift,
   ].freeze
+  LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
   BETA_LINTERS = %w(
     eslint
     remark
@@ -20,10 +21,6 @@ class HoundConfig
   CONFIG_FILE = ".hound.yml"
 
   attr_reader_initialize :commit
-
-  def self.linter_names
-    LINTERS.map { |klass| klass.name.demodulize.underscore }
-  end
 
   def content
     @_content ||= default_config.deep_merge(resolved_conflicts_config)
@@ -43,7 +40,7 @@ class HoundConfig
   private
 
   def default_config
-    self.class.linter_names.each.with_object({}) do |name, config|
+    LINTER_NAMES.each.with_object({}) do |name, config|
       config[name] = { "enabled" => !BETA_LINTERS.include?(name) }
     end
   end
