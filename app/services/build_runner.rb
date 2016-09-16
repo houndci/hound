@@ -24,7 +24,6 @@ class BuildRunner
     upsert_owner
     build = create_build
     review_files(build)
-    report_on_build(build)
   end
 
   def relevant_pull_request?
@@ -58,14 +57,6 @@ class BuildRunner
 
   def repo
     @repo ||= Repo.active.find_by(github_id: payload.github_repo_id)
-  end
-
-  def report_on_build(build)
-    BuildReport.run(
-      pull_request: pull_request,
-      build: build,
-      token: user_token.token,
-    )
   end
 
   def track_subscribed_build_started

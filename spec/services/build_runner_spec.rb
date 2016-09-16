@@ -29,22 +29,6 @@ describe BuildRunner do
         expect(build.payload).to eq ({ payload_stuff: "test" }).to_json
       end
 
-      it "runs the BuildReport to finalize the build" do
-        build_runner = make_build_runner
-        stubbed_github_api
-        pull_request = stubbed_pull_request
-        stubbed_style_checker(violations: [build(:violation)])
-        allow(BuildReport).to receive(:run)
-
-        build_runner.run
-
-        expect(BuildReport).to have_received(:run).with(
-          build: Build.last,
-          pull_request: pull_request,
-          token: Hound::GITHUB_TOKEN,
-        )
-      end
-
       it "reviews files via style checker" do
         build_runner = make_build_runner
         style_checker = stubbed_style_checker
@@ -73,7 +57,7 @@ describe BuildRunner do
         expect(PullRequest).to have_received(:new).with(payload, user.token)
       end
 
-      it "creates GitHub statuses" do
+      it "sets the GitHub status to pending" do
         repo_name = "test/repo"
         repo = create(:repo, :active, name: repo_name)
         payload = stubbed_payload(
@@ -97,11 +81,6 @@ describe BuildRunner do
           repo_name,
           "headsha",
           I18n.t(:pending_status),
-        )
-        expect(github_api).to have_received(:create_success_status).with(
-          repo_name,
-          "headsha",
-          I18n.t(:complete_status, count: 3),
         )
       end
 
@@ -365,7 +344,6 @@ describe BuildRunner do
     github_api = double(
       "GithubApi",
       create_pending_status: nil,
-      create_success_status: nil,
       create_error_status: nil
     )
     allow(GithubApi).to receive(:new).and_return(github_api)
