@@ -1,22 +1,29 @@
-# Filters files to reviewable subset.
-# Builds style guide based on file extension.
-# Delegates to style guide for line violations.
 class StyleChecker
   pattr_initialize :pull_request, :build
 
   def review_files
-    pull_request.commit_files.each do |commit_file|
-      collection = build_linter_collection(commit_file.filename)
-
-      collection.file_review(commit_file)
-    end
+    pull_request.commit_files.each { |commit_file| review_file(commit_file) }
   end
 
   private
 
-  def build_linter_collection(filename)
-    Linter::Collection.for(
-      filename: filename,
+  def review_file(commit_file)
+    find_able_linters(commit_file.filename).
+      select(&:enabled?).
+      select { |linter| linter.file_included?(commit_file) }.
+      each { |linter| linter.file_review(commit_file) }
+  end
+
+  private
+
+  def find_able_linters(filename)
+    HoundConfig::LINTERS.
+      select { |linter_class| linter_class.can_lint?(filename) }.
+      map { |linter_class| build_linter(linter_class) }
+  end
+
+  def build_linter(linter_class)
+    linter_class.new(
       hound_config: hound_config,
       build: build,
       repository_owner_name: pull_request.repository_owner_name,
@@ -24,6 +31,6 @@ class StyleChecker
   end
 
   def hound_config
-    @hound_config ||= HoundConfig.new(pull_request.head_commit)
+    @_hound_config ||= HoundConfig.new(pull_request.head_commit)
   end
 end

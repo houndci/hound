@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 class HoundConfig
+  LINTERS = [
+    Linter::CoffeeScript,
+    Linter::Eslint,
+    Linter::Go,
+    Linter::Haml,
+    Linter::Jshint,
+    Linter::Remark,
+    Linter::Python,
+    Linter::Ruby,
+    Linter::Scss,
+    Linter::Swift,
+  ].freeze
+  LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
   BETA_LINTERS = %w(
     eslint
     remark
@@ -27,7 +40,7 @@ class HoundConfig
   private
 
   def default_config
-    Linter::Collection.linter_names.each.with_object({}) do |name, config|
+    LINTER_NAMES.each.with_object({}) do |name, config|
       config[name] = { "enabled" => !BETA_LINTERS.include?(name) }
     end
   end

@@ -17,13 +17,11 @@ describe StyleChecker do
     it "only fetches content for supported files" do
       ruby_file = double("GithubFile", filename: "ruby.rb", patch: "foo")
       bogus_file = double("GithubFile", filename: "[:facebook]", patch: "bar")
-      config = <<-HOUND.strip_heredoc
+      config = <<~YAML
         ruby:
           enabled: true
-      HOUND
-      head_commit = stub_head_commit(
-        ".hound.yml" => config,
-      )
+      YAML
+      head_commit = stub_head_commit(".hound.yml" => config,)
       pull_request = PullRequest.new(payload_stub, "anything")
       allow(pull_request).to receive(:head_commit).and_return(head_commit)
       allow(pull_request).to receive(:modified_github_files).
