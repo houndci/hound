@@ -24,7 +24,7 @@ module Linter
     end
 
     def enabled?
-      CheckEnabledLinter.run(config)
+      hound_config.linter_enabled?(name)
     end
 
     def file_included?(*)
