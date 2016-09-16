@@ -89,10 +89,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-    coffeelint (1.14.0)
-      coffee-script
-      execjs
-      json
     columnize (0.8.9)
     concurrent-ruby (1.0.2)
     crack (0.4.3)
@@ -371,7 +367,6 @@ DEPENDENCIES
   capybara (~> 2.4.0)
   capybara-webkit (~> 1.5.1)
   coffee-rails
-  coffeelint
   database_cleaner
   dotenv-rails
   email_validator

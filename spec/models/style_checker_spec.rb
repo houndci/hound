@@ -35,49 +35,6 @@ describe StyleChecker do
         with(bogus_file.filename)
     end
 
-    context "for a CoffeeScript file" do
-      context "with style violations" do
-        it "is processed with a coffee.js extension" do
-          commit_file = stub_commit_file(
-            "test.coffee.erb",
-            "class strange_ClassNAME",
-          )
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violation_messages(pull_request)
-
-          expect(violation_messages).to eq [
-            "Class name should be UpperCamelCased",
-          ]
-        end
-
-        it "is processed with a coffee.erb extension" do
-          commit_file = stub_commit_file(
-            "test.coffee.erb",
-            "class strange_ClassNAME",
-          )
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violation_messages(pull_request)
-
-          expect(violation_messages).to eq [
-            "Class name should be UpperCamelCased",
-          ]
-        end
-      end
-
-      context "without style violations" do
-        it "returns no violations" do
-          commit_file = stub_commit_file("test.coffee", "alert('Hello World')")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violation_messages(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-    end
-
     context "with unsupported file type" do
       it "uses the unsupported linter" do
         commit_file = stub_commit_file(
