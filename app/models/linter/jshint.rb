@@ -10,7 +10,7 @@ module Linter
     private
 
     def config
-      @_config ||= JshintConfigBuilder.for(hound_config)
+      @_config ||= MergeableConfigBuilder.for(hound_config, "jshint")
     end
 
     def jsignore

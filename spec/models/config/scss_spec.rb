@@ -14,10 +14,37 @@ describe Config::Scss do
             space_before_bang: true
             space_after_bang: false
       EOS
-      commit = stubbed_commit("config/scss.yml" => raw_config)
-      config = build_config(commit)
+      config = Config::Scss.new(raw_config)
 
       expect(config.content).to eq Config::Parser.yaml(raw_config)
+    end
+  end
+
+  describe "#merge" do
+    it "combines the existing configuration with the overrides" do
+      raw_config = <<-EOS.strip_heredoc
+        linters:
+          BangFormat:
+            enabled: true
+            space_before_bang: true
+            space_after_bang: false
+      EOS
+      raw_overrides = <<-EOS.strip_heredoc
+        linters:
+          BangFormat:
+            enabled: false
+      EOS
+
+      config = Config::Scss.new(raw_config).merge(raw_overrides)
+
+      expect(config.serialize).to eq <<~EOS
+        ---
+        linters:
+          BangFormat:
+            enabled: false
+            space_before_bang: true
+            space_after_bang: false
+      EOS
     end
   end
 
@@ -30,8 +57,7 @@ describe Config::Scss do
             space_before_bang: true
             space_after_bang: false
       EOS
-      commit = stubbed_commit("config/scss.yml" => raw_config)
-      config = build_config(commit)
+      config = Config::Scss.new(raw_config)
 
       expect(config.serialize).to eq <<-EOS.strip_heredoc
         ---

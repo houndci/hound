@@ -2,9 +2,9 @@ require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/parser"
 require "app/models/config/jshint"
-require "app/models/jshint_config_builder"
+require "app/models/mergeable_config_builder"
 
-describe JshintConfigBuilder do
+describe MergeableConfigBuilder do
   describe ".for" do
     context "when there is a jshint configuration" do
       it "takes a hound config and returns a jshint config with content" do
@@ -21,7 +21,7 @@ describe JshintConfigBuilder do
           content: { "jshint" => { "config_file" => ".jshintrc" } },
         )
 
-        config = JshintConfigBuilder.for(hound_config)
+        config = described_class.for(hound_config, "jshint")
 
         expect(config).to be_a(Config::Jshint)
         expect(config.content).to eq(
@@ -39,7 +39,7 @@ describe JshintConfigBuilder do
           content: {},
         )
 
-        config = JshintConfigBuilder.for(hound_config)
+        config = described_class.for(hound_config, "jshint")
 
         expect(config).to be_a(Config::Jshint)
         expect(config.content).to eq({})

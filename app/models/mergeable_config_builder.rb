@@ -1,15 +1,21 @@
-class JshintConfigBuilder
-  pattr_initialize :hound_config
+class MergeableConfigBuilder
+  pattr_initialize :hound_config, :name
 
-  def self.for(hound_config)
-    new(hound_config).config
+  def self.for(hound_config, name)
+    new(hound_config, name).config
   end
 
   def config
-    Config::Jshint.new(load_content)
+    config_class.new(load_content)
   end
 
   private
+
+  def config_class
+    "Config::#{name.classify}".constantize
+  rescue
+    Config::Unsupported
+  end
 
   def load_content
     if file_path
@@ -19,7 +25,7 @@ class JshintConfigBuilder
         commit.file_content(file_path)
       end
     else
-      "{}"
+      default_content
     end
   end
 
@@ -42,10 +48,14 @@ class JshintConfigBuilder
   end
 
   def linter_config
-    hound_config.content.slice("jshint").values.first
+    hound_config.content.slice(name).values.first
   end
 
   def commit
     hound_config.commit
+  end
+
+  def default_content
+    "{}"
   end
 end
