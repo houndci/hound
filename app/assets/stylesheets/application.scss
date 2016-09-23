@@ -1,17 +1,12 @@
 @import "bourbon";
 @import "neat";
-@import "normalize";
+@import "normalize-rails";
 @import "font-awesome";
 
 @import "base/base";
-
-@import "application/helpers";
-
-@import "toggle_switch";
+@import "components/components";
 @import "pages/pages";
-@import "accounts/show";
-@import "application/footer";
-@import "application/header";
-@import "home/index";
 @import "repos/repos";
+
+@import "accounts/show";
 @import "sessions/new";

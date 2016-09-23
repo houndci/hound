@@ -381,6 +381,7 @@ DEPENDENCIES
   jquery-rails (~> 4.0.0)
   launchy
   neat
+  normalize-rails
   octokit
   omniauth-github
   paranoia (~> 2.0)
