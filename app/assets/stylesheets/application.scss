@@ -3,15 +3,10 @@
 @import "normalize";
 @import "font-awesome";
 
-@import "variables";
-@import "animations";
-@import "extends";
+@import "base/base";
+
 @import "application/helpers";
 
-@import "button_mixins";
-
-@import "base";
-@import "buttons";
 @import "toggle_switch";
 @import "pages/pages";
 @import "accounts/show";
