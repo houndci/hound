@@ -1,0 +1,21 @@
+.code,
+.code-block {
+  background-color: $code-background-color;
+  display: inline-block;
+  font-family: monospace;
+  font-style: normal;
+}
+
+.code-block {
+  border: 1px solid $code-background-color;
+  border-radius: 3px;
+  display: block;
+  margin: 1em 0 2em;
+  padding: 1em;
+  white-space: pre-wrap;
+}
+
+.code-inline {
+  border-radius: 2px;
+  padding: 0.3em 0.5em 0.2em;
+}

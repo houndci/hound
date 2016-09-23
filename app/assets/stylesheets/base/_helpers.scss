@@ -16,3 +16,11 @@
 .pull-right {
   float: right;
 }
+
+.content {
+  @include outer-container;
+}
+
+.inner-wrapper {
+  @include clearfix;
+}

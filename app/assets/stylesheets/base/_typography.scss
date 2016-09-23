@@ -1,15 +1,7 @@
 body {
-  background-color: rgb(255,255,255);
+  background-color: $white;
   color: $base-font-color;
-  font: $font-weight-light 1em / 1.4 'Lato';
-}
-
-.content {
-  @include outer-container;
-}
-
-.inner-wrapper {
-  @include clearfix;
+  font: $font-weight-light 1em / 1.4 "Lato";
 }
 
 a {
@@ -49,43 +41,11 @@ p {
   margin: 0 0 1em;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-li.debug-steps {
-  list-style: circle;
-}
-
-ol.numbered {
-  list-style: decimal;
-  li {
-    margin: 0.5em 0;
-  }
-}
-
-.code {
-  background: rgba(#99abc0, 0.25);
-  display: inline-block;
-  font-family: monospace;
-  font-style: normal;
-}
-
-em.code {
-  border-radius: 2px;
-  padding: 0.3em 0.5em 0.2em;
-}
-
-.code-block {
-  @extend .code;
-  border: 1px solid rgba(#99abc0, 0.25);
-  border-radius: 3px;
-  display: block;
-  padding: 1em;
-  margin: 1em 0 2em;
-  white-space: pre-wrap;
 }
 
 figure {
