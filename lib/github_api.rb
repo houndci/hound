@@ -28,17 +28,6 @@ class GithubApi
     client.repository(repo_name)
   end
 
-  def add_pull_request_comment(options)
-    client.create_pull_request_comment(
-      options[:commit].repo_name,
-      options[:pull_request_number],
-      options[:comment],
-      options[:commit].sha,
-      options[:filename],
-      options[:patch_position]
-    )
-  end
-
   def create_hook(full_repo_name, callback_endpoint)
     hook = client.create_hook(
       full_repo_name,
@@ -72,6 +61,21 @@ class GithubApi
 
   def pull_request_comments(full_repo_name, pull_request_number)
     client.pull_request_comments(full_repo_name, pull_request_number)
+  end
+
+  def add_pull_request_comment(options)
+    client.create_pull_request_comment(
+      options[:commit].repo_name,
+      options[:pull_request_number],
+      options[:comment],
+      options[:commit].sha,
+      options[:filename],
+      options[:patch_position],
+    )
+  end
+
+  def delete_pull_request_comment(full_repo_name, comment_id)
+    client.delete_pull_request_comment(full_repo_name, comment_id)
   end
 
   def pull_request_files(full_repo_name, number)

@@ -7,11 +7,13 @@ class BuildReport
     @build = build
     @pull_request = pull_request
     @token = token
+    @commenter = Commenter.new(pull_request)
   end
 
   def run
     if build.completed?
-      Commenter.new(pull_request).comment_on_violations(priority_violations)
+      commenter.remove_resolved_violations(build.violations)
+      commenter.comment_on_violations(priority_violations)
       set_commit_status
       track_subscribed_build_completed
     end
