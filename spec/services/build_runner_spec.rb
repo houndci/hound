@@ -223,6 +223,23 @@ describe BuildRunner do
       end
     end
 
+    context "when no files need to be reviewed" do
+      it "sets the final status as passing" do
+        repo = create(:repo, :active)
+        build_runner = make_build_runner(repo: repo)
+        github_api = stubbed_github_api
+        stubbed_pull_request_with_file("foo.whatever", "hello world")
+
+        build_runner.run
+
+        expect(github_api).to have_received(:create_success_status).with(
+          repo.name,
+          stubbed_payload.head_sha,
+          I18n.t(:complete_status, count: 0),
+        )
+      end
+    end
+
     def stubbed_style_checker(violations: [])
       file_review = build(:file_review, :completed, violations: violations)
       style_checker = double("StyleChecker", review_files: nil)
@@ -341,10 +358,11 @@ describe BuildRunner do
   end
 
   def stubbed_github_api
-    github_api = double(
+    github_api = instance_double(
       "GithubApi",
       create_pending_status: nil,
-      create_error_status: nil
+      create_success_status: nil,
+      create_error_status: nil,
     )
     allow(GithubApi).to receive(:new).and_return(github_api)
 
