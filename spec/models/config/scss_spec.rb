@@ -7,7 +7,7 @@ require "app/models/config/serializer"
 describe Config::Scss do
   describe "#content" do
     it "parses the configuration using YAML" do
-      raw_config = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         linters:
           BangFormat:
             enabled: true
@@ -22,14 +22,14 @@ describe Config::Scss do
 
   describe "#merge" do
     it "combines the existing configuration with the overrides" do
-      raw_config = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         linters:
           BangFormat:
             enabled: true
             space_before_bang: true
             space_after_bang: false
       EOS
-      raw_overrides = <<-EOS.strip_heredoc
+      raw_overrides = <<~EOS
         linters:
           BangFormat:
             enabled: false
@@ -50,7 +50,7 @@ describe Config::Scss do
 
   describe "#serialize" do
     it "serializes the parsed content into YAML" do
-      raw_config = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         linters:
           BangFormat:
             enabled: true
@@ -59,7 +59,7 @@ describe Config::Scss do
       EOS
       config = Config::Scss.new(raw_config)
 
-      expect(config.serialize).to eq <<-EOS.strip_heredoc
+      expect(config.serialize).to eq <<~EOS
         ---
         linters:
           BangFormat:

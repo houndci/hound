@@ -23,11 +23,11 @@ describe Linter::Scss do
     context "when the owner does not have a configuration set up" do
       it "enqueues a file review with the local config" do
         build = build(:build, commit_sha: "foo", pull_request_number: 123)
-        config_content = <<~CFG
+        config_content = <<~EOS
           linters:
             Indentation:
               width: 2
-        CFG
+        EOS
         linter = build_linter(build, "config/scss.yml" => config_content)
         commit_file = build_commit_file(filename: "lib/a.scss")
         stub_owner_hound_config(instance_double("HoundConfig", content: {}))
@@ -50,17 +50,17 @@ describe Linter::Scss do
 
     context "when the owner has a configuration set up" do
       it "enqueues a file review with the owner config merged with the local" do
-        hound_yml= <<~YML
+        hound_yml= <<~EOS
           scss:
             config_file: .scss.yml
-        YML
-        scss_yml = <<~YML
+        EOS
+        scss_yml = <<~EOS
           linters:
             BorderZero:
               enabled: false
             Indentation:
               width: 1
-        YML
+        EOS
 
         stubbed_owner_config = stubbed_commit(
           ".hound.yml" => hound_yml,
@@ -68,11 +68,11 @@ describe Linter::Scss do
         )
         stub_owner_hound_config(HoundConfig.new(stubbed_owner_config))
         build = build(:build, commit_sha: "foo", pull_request_number: 123)
-        config_content = <<~CFG
+        config_content = <<~EOS
           linters:
             Indentation:
               width: 2
-        CFG
+        EOS
         linter = build_linter(build, "config/scss.yml" => config_content)
         commit_file = build_commit_file(filename: "lib/a.scss")
         allow(Resque).to receive(:enqueue)
@@ -82,14 +82,14 @@ describe Linter::Scss do
         expect(Resque).to have_received(:enqueue).with(
           ScssReviewJob,
           commit_sha: build.commit_sha,
-          config: <<~YML,
+          config: <<~EOS,
             ---
             linters:
               BorderZero:
                 enabled: false
               Indentation:
                 width: 2
-          YML
+          EOS
           content: commit_file.content,
           filename: commit_file.filename,
           linter_name: "scss",

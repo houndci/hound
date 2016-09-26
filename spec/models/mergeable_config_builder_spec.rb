@@ -21,7 +21,7 @@ describe MergeableConfigBuilder do
           content: { "jshint" => { "config_file" => ".jshintrc" } },
         )
 
-        config = described_class.for(hound_config, "jshint")
+        config = MergeableConfigBuilder.for(hound_config, "jshint")
 
         expect(config).to be_a(Config::Jshint)
         expect(config.content).to eq(
@@ -39,7 +39,7 @@ describe MergeableConfigBuilder do
           content: {},
         )
 
-        config = described_class.for(hound_config, "jshint")
+        config = MergeableConfigBuilder.for(hound_config, "jshint")
 
         expect(config).to be_a(Config::Jshint)
         expect(config.content).to eq({})
