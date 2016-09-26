@@ -24,6 +24,9 @@ class BuildRunner
     upsert_owner
     build = create_build
     review_files(build)
+    if build.file_reviews.empty?
+      set_no_violations_status
+    end
   end
 
   def relevant_pull_request?
@@ -90,5 +93,9 @@ class BuildRunner
       commit_sha: payload.head_sha,
       linter_name: exception.linter_name,
     )
+  end
+
+  def set_no_violations_status
+    commit_status.set_success(0)
   end
 end
