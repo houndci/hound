@@ -3,6 +3,10 @@ class BuildsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create]
   skip_before_action :authenticate, only: [:create]
 
+  def index
+    render locals: { builds: recent_builds_by_repo }
+  end
+
   def create
     if payload.pull_request?
       build_job_class.perform_later(payload.build_data)
@@ -32,5 +36,9 @@ class BuildsController < ApplicationController
 
   def payload
     @payload ||= Payload.new(params[:payload] || request.raw_post)
+  end
+
+  def recent_builds_by_repo
+    RecentBuildsByRepoQuery.run(user: current_user)
   end
 end

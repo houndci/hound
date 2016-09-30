@@ -1,14 +1,15 @@
 .build-button {
   background-color: $base-background-color;
-  border: 2px solid $base-border-color;
-  border-bottom-left-radius: $base-border-radius;
-  border-bottom-right-radius: $base-border-radius;
+  border: 0;
+  border-bottom-left-radius: $base-border-radius - 1px;
+  border-bottom-right-radius: $base-border-radius - 1px;
+  border-top: 2px solid $base-border-color;
   color: $light-font-color;
   font-weight: $font-weight-normal;
-  margin: 0 -2px -2px;
   padding: $small-spacing 0;
   text-align: center;
   transition: $base-transition;
+  width: 100%;
 
   &:hover {
     background-color: $purple;

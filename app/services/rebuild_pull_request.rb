@@ -1,4 +1,8 @@
 class RebuildPullRequest
+  def self.call(*args)
+    new(*args).call
+  end
+
   def initialize(repo:, pull_request_number:)
     @repo = repo
     @pull_request_number = pull_request_number

@@ -8,6 +8,7 @@ FactoryGirl.define do
   end
 
   factory :build do
+    sequence(:pull_request_number)
     commit_sha "somesha"
     repo
   end

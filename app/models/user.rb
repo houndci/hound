@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   has_many :memberships, dependent: :destroy
   has_many :repos, through: :memberships
+  has_many :builds, through: :repos
   has_many :subscribed_repos, through: :subscriptions, source: :repo
   has_many :subscriptions
 
