@@ -18,7 +18,7 @@ describe Config::CoffeeScript do
         result = config.content
 
         expect(result).to eq(
-          "arrow_spacing" => { "level" => "error" },
+          "arrow_spacing" => { "level" => "error" }
         )
       end
     end
@@ -35,7 +35,7 @@ describe Config::CoffeeScript do
         result = config.content
 
         expect(result).to eq(
-          "arrow_spacing" => { "level" => "error" },
+          "arrow_spacing" => { "level" => "error" }
         )
       end
     end
@@ -51,7 +51,7 @@ describe Config::CoffeeScript do
 
         expect { config.content }.to raise_error(
           Config::ParserError,
-          /unexpected token at 'invalid_json\n'/,
+          /unexpected token at 'invalid_json\n'/
         )
       end
     end
@@ -64,9 +64,9 @@ describe Config::CoffeeScript do
       content: {
         "coffee_script" => {
           "enabled" => true,
-          "config_file" => "config/coffeescript.json",
-        },
-      },
+          "config_file" => "config/coffeescript.json"
+        }
+      }
     )
     Config::CoffeeScript.new(hound_config)
   end

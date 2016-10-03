@@ -28,8 +28,6 @@ module Retryable
   end
 
   def after_retry_attempts
-    if respond_to?(:after_retry_exhausted)
-      after_retry_exhausted
-    end
+    after_retry_exhausted if respond_to?(:after_retry_exhausted)
   end
 end

@@ -3,13 +3,13 @@ class Plan
     bulk: 0,
     public: 0,
     private: 12
-  }
+  }.freeze
 
   TYPES = {
     bulk: "bulk",
     public: "public",
     private: "private"
-  }
+  }.freeze
 
   def initialize(repo)
     @repo = repo

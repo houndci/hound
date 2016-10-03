@@ -15,13 +15,13 @@ describe ReportInvalidConfig do
           pull_request_number: pull_request_number,
           commit_sha: commit_sha,
           linter_name: linter_name,
-          message: message,
+          message: message
         )
 
         expect(commit_status).to have_received(:set_config_error).with(message)
         expect(Build).to have_received(:find_by!).with(
           pull_request_number: pull_request_number,
-          commit_sha: commit_sha,
+          commit_sha: commit_sha
         )
       end
     end
@@ -37,16 +37,16 @@ describe ReportInvalidConfig do
         ReportInvalidConfig.run(
           pull_request_number: pull_request_number,
           commit_sha: commit_sha,
-          linter_name: linter_name,
+          linter_name: linter_name
         )
 
         expected_message =
           "Error parsing config for: ruby. Click \"details\" for assistance."
-        expect(commit_status).to have_received(:set_config_error).
-          with(expected_message)
+        expect(commit_status).to have_received(:set_config_error)
+          .with(expected_message)
         expect(Build).to have_received(:find_by!).with(
           pull_request_number: pull_request_number,
-          commit_sha: commit_sha,
+          commit_sha: commit_sha
         )
       end
     end

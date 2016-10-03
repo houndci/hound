@@ -18,8 +18,8 @@ describe Commit do
         commit = build_commit("€25.00")
         tmp_file = Tempfile.new("foo", encoding: "utf-8")
 
-        expect { tmp_file.write(commit.file_content("test.rb")) }.
-          not_to raise_error
+        expect { tmp_file.write(commit.file_content("test.rb")) }
+          .not_to raise_error
       end
     end
 

@@ -32,7 +32,7 @@ class SubscriptionsController < ApplicationController
 
   def repo
     @repo ||= current_user.repos.find_by(id: params.fetch(:repo_id)) ||
-      current_user.subscribed_repos.find(params.fetch(:repo_id))
+              current_user.subscribed_repos.find(params.fetch(:repo_id))
   end
 
   def github_token

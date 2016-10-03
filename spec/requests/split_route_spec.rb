@@ -11,12 +11,12 @@ describe "/split" do
 
   context "with auth" do
     it "allows access" do
-      credentials = ActionController::HttpAuthentication::Basic.
-        encode_credentials(
-          "admin",
-          ENV["SPLIT_ADMIN_PASSWORD"]
-        )
-      get "/split", nil, { "HTTP_AUTHORIZATION" => credentials }
+      credentials = ActionController::HttpAuthentication::Basic
+                    .encode_credentials(
+                      "admin",
+                      ENV["SPLIT_ADMIN_PASSWORD"]
+                    )
+      get "/split", nil, "HTTP_AUTHORIZATION" => credentials
 
       expect(response.status).to eq(200)
     end

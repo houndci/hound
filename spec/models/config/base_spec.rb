@@ -23,7 +23,7 @@ describe Config::Base do
         hound_config = instance_double(
           "HoundConfig",
           commit: instance_double("Commit", file_content: ""),
-          content: {},
+          content: {}
         )
         config = build_config(hound_config: hound_config)
 
@@ -38,8 +38,8 @@ describe Config::Base do
           "HoundConfig",
           commit: double("Commit"),
           content: {
-            "test" => config_content,
-          },
+            "test" => config_content
+          }
         )
         config = build_config(hound_config: hound_config)
 
@@ -55,17 +55,17 @@ describe Config::Base do
             commit: double("Commit"),
             content: {
               "test" => {
-                "config_file" => "http://example.com/rubocop.yml",
-              },
-            },
+                "config_file" => "http://example.com/rubocop.yml"
+              }
+            }
           )
           response = <<-EOS.strip_heredoc
             LineLength:
               Max: 90
           EOS
           parsed_result = { "LineLength" => { "Max" => 90 } }
-          stub_request(:get, "http://example.com/rubocop.yml").
-            to_return(status: 200, body: response)
+          stub_request(:get, "http://example.com/rubocop.yml")
+            .to_return(status: 200, body: response)
           config = build_config(hound_config: hound_config)
 
           expect(config.content).to eq parsed_result
@@ -79,16 +79,16 @@ describe Config::Base do
             commit: double("Commit"),
             content: {
               "test" => {
-                "config_file" => "http://example.com/rubocop.yml",
-              },
-            },
+                "config_file" => "http://example.com/rubocop.yml"
+              }
+            }
           )
           stub_request(
             :get,
-            "http://example.com/rubocop.yml",
+            "http://example.com/rubocop.yml"
           ).to_return(
             status: 404,
-            body: "Could not find resource",
+            body: "Could not find resource"
           )
           config = build_config(hound_config: hound_config)
 
@@ -106,14 +106,14 @@ describe Config::Base do
           "HoundConfig",
           commit: double("Commit", file_content: ""),
           content: {
-            "linter" => { "config_file" => "config-file.txt" },
-          },
+            "linter" => { "config_file" => "config-file.txt" }
+          }
         )
         config = Config::Base.new(hound_config)
 
         expect { config.content }.to raise_error(
           AttrExtras::MethodNotImplementedError,
-          "Implement a 'parse(file_content)' method",
+          "Implement a 'parse(file_content)' method"
         )
       end
     end
@@ -128,8 +128,8 @@ describe Config::Base do
       "HoundConfig",
       commit: double("Commit", file_content: ""),
       content: {
-        "test" => { "config_file" => "config-file.txt" },
-      },
+        "test" => { "config_file" => "config-file.txt" }
+      }
     )
   end
 end

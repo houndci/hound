@@ -5,8 +5,8 @@ describe Subscription do
     it "raises a unique constraint error" do
       create(:subscription, repo_id: 1)
 
-      expect { create(:subscription, repo_id: 1) }.
-        to raise_error ActiveRecord::RecordNotUnique
+      expect { create(:subscription, repo_id: 1) }
+        .to raise_error ActiveRecord::RecordNotUnique
     end
   end
 

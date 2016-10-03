@@ -29,7 +29,7 @@ describe Violation do
 
   describe "#messages_count" do
     it "returns the number of violation messages" do
-      violation = build(:violation, messages: ["foo", "bar"])
+      violation = build(:violation, messages: %w(foo bar))
 
       expect(violation.messages_count).to eq 2
     end

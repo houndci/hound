@@ -2,7 +2,7 @@ class DashboardManifest
   DASHBOARDS = [
     :blacklisted_pull_requests,
     :bulk_customers,
-    :job_failures,
-  ]
+    :job_failures
+  ].freeze
   ROOT_DASHBOARD = :bulk_customers
 end

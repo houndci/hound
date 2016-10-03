@@ -11,8 +11,8 @@ describe AccountsController do
 
         response_body = JSON.parse(response.body)
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response_body["errors"].first).
-          to eq I18n.t("account.billable_email.invalid")
+        expect(response_body["errors"].first)
+          .to eq I18n.t("account.billable_email.invalid")
       end
 
       context "when email is not valid" do
@@ -25,8 +25,8 @@ describe AccountsController do
 
           response_body = JSON.parse(response.body)
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(response_body["errors"].first).
-            to eq I18n.t("account.billable_email.invalid")
+          expect(response_body["errors"].first)
+            .to eq I18n.t("account.billable_email.invalid")
         end
       end
     end

@@ -11,11 +11,11 @@ namespace :resque do
       time_running = Time.current - worker_start_time
       max_time_running = 10.minutes
 
-      if time_running > max_time_running
-        w.unregister_worker
-      end
+      w.unregister_worker if time_running > max_time_running
 
-      Resque.workers.each { |w| w.unregister_worker unless w.working? }
+      Resque.workers.each do |resque_worker|
+        resque_worker.unregister_worker unless resque_worker.working?
+      end
     end
   end
 
@@ -24,9 +24,7 @@ namespace :resque do
     all_failures = Resque::Failure.all(0, Resque::Failure.count)
 
     ids = all_failures.each_with_object([]).with_index do |(failure, agg), i|
-      if failure["failed_at"].to_time < 2.weeks.ago
-        agg << i
-      end
+      agg << i if failure["failed_at"].to_time < 2.weeks.ago
     end
 
     ids.reverse.each { |i| Resque::Failure.remove(i) }

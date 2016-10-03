@@ -42,18 +42,16 @@ describe Linter::Python do
 
       expect(Resque).to have_received(:push).with(
         "python_review",
-        {
-          class: "review.PythonReviewJob",
-          args: [
-            filename: commit_file.filename,
-            commit_sha: build.commit_sha,
-            linter_name: "python",
-            pull_request_number: build.pull_request_number,
-            patch: commit_file.patch,
-            content: commit_file.content,
-            config: "config",
-          ],
-        }
+        class: "review.PythonReviewJob",
+        args: [
+          filename: commit_file.filename,
+          commit_sha: build.commit_sha,
+          linter_name: "python",
+          pull_request_number: build.pull_request_number,
+          patch: commit_file.patch,
+          content: commit_file.content,
+          config: "config"
+        ]
       )
     end
   end
@@ -64,14 +62,14 @@ describe Linter::Python do
       changed?: true,
       content: "blah",
       number: 1,
-      patch_position: 2,
+      patch_position: 2
     )
     double(
       "CommitFile",
       content: "codes",
       filename: "lib/a.py",
       line_at: line,
-      patch: "patch",
+      patch: "patch"
     )
   end
 
@@ -79,7 +77,7 @@ describe Linter::Python do
     stubbed_python_config = double(
       "PythonConfig",
       content: config,
-      serialize: config,
+      serialize: config
     )
     allow(Config::Python).to receive(:new).and_return(stubbed_python_config)
 

@@ -10,7 +10,7 @@ describe RebuildPullRequest do
           :build,
           repo: repo,
           payload: payload,
-          pull_request_number: 42,
+          pull_request_number: 42
         )
         rebuilder = RebuildPullRequest.new(repo: repo, pull_request_number: 42)
         allow(SmallBuildJob).to receive(:perform_later)
@@ -29,7 +29,7 @@ describe RebuildPullRequest do
           :build,
           repo: repo,
           payload: payload,
-          pull_request_number: 42,
+          pull_request_number: 42
         )
         rebuilder = RebuildPullRequest.new(repo: repo, pull_request_number: 100)
         allow(SmallBuildJob).to receive(:perform_later)

@@ -33,7 +33,7 @@ module Config
     end
 
     def raise_type_error
-      raise_parse_error(%{"#{file_path}" must be a Hash})
+      raise_parse_error(%("#{file_path}" must be a Hash))
     end
 
     def load_content
@@ -59,7 +59,7 @@ module Config
     end
 
     def url?
-      URI::regexp(%w(http https)).match(file_path)
+      URI.regexp(%w(http https)).match(file_path)
     end
 
     def default_content

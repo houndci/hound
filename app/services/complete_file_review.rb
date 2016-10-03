@@ -13,7 +13,7 @@ class CompleteFileReview
     BuildReport.run(
       pull_request: pull_request,
       build: build,
-      token: build.user_token,
+      token: build.user_token
     )
   end
 
@@ -31,7 +31,7 @@ class CompleteFileReview
     file_review.save!
     file_review.build.increment!(
       :violations_count,
-      file_review.violations.map(&:messages_count).sum,
+      file_review.violations.map(&:messages_count).sum
     )
   end
 
@@ -46,7 +46,7 @@ class CompleteFileReview
   def build
     @build ||= Build.find_by!(
       pull_request_number: attributes.fetch("pull_request_number"),
-      commit_sha: attributes.fetch("commit_sha"),
+      commit_sha: attributes.fetch("commit_sha")
     )
   end
 
@@ -55,9 +55,9 @@ class CompleteFileReview
   end
 
   def file_review_properties
-    if attributes.has_key?("linter_name")
+    if attributes.key?("linter_name")
       legacy_file_review_search_properties.merge(
-        linter_name: attributes.fetch("linter_name"),
+        linter_name: attributes.fetch("linter_name")
       )
     else
       legacy_file_review_search_properties
@@ -72,7 +72,7 @@ class CompleteFileReview
     @commit_sha ||= CommitFile.new(
       patch: attributes.fetch("patch"),
       filename: nil,
-      commit: nil,
+      commit: nil
     )
   end
 end

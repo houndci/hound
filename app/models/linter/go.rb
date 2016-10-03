@@ -12,7 +12,7 @@ module Linter
       path_components = Pathname(filename).each_filename
 
       path_components.include?("vendor") ||
-        path_components.take(2) == ["Godeps", "_workspace"]
+        path_components.take(2) == %w(Godeps _workspace)
     end
   end
 end

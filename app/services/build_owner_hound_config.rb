@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class BuildOwnerHoundConfig
-  LATEST_SHA = "HEAD"
+  LATEST_SHA = "HEAD".freeze
 
   def self.run(*args)
     new(*args).run

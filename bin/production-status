@@ -6,7 +6,7 @@ parent_directory = File.expand_path("../../..", __FILE__)
 Dir.chdir(parent_directory)
 child_directories = `ls -d */`.split
 git_directories = child_directories.select do |child_directory|
-  Dir.exists?(File.join(child_directory, ".git"))
+  Dir.exist?(File.join(child_directory, ".git"))
 end
 
 git_directories.each do |git_directory|
@@ -26,8 +26,8 @@ git_directories.each do |git_directory|
       puts commits_not_on_production
     end
   else
-    missing_remotes = %w{origin production} - remotes
-    puts "missing remotes: #{missing_remotes.join(", ")}"
+    missing_remotes = %w(origin production) - remotes
+    puts "missing remotes: #{missing_remotes.join(', ')}"
   end
 
   puts

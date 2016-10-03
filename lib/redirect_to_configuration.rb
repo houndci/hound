@@ -6,7 +6,9 @@ class RedirectToConfiguration
   end
 
   def call(env)
-    if new_location = old_to_new(env["PATH_INFO"])
+    new_location = old_to_new(env["PATH_INFO"])
+
+    if new_location
       [
         301,
         { "Location" => new_location, "Content-Type" => "text/html" },
@@ -20,8 +22,6 @@ class RedirectToConfiguration
   private
 
   def old_to_new(old)
-    if CONFIG_REGEX.match(old)
-      old.sub("configuration&", "configuration?&")
-    end
+    old.sub("configuration&", "configuration?&") if CONFIG_REGEX.match(old)
   end
 end

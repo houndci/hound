@@ -8,7 +8,7 @@ describe RepoSerializer do
         serializer = RepoSerializer.new(
           membership.repo,
           scope: membership.user,
-          scope_name: :current_user,
+          scope_name: :current_user
         )
 
         expect(serializer.admin).to eq true
@@ -21,7 +21,7 @@ describe RepoSerializer do
         serializer = RepoSerializer.new(
           membership.repo,
           scope: membership.user,
-          scope_name: :current_user,
+          scope_name: :current_user
         )
 
         expect(serializer.admin).to eq false
@@ -36,7 +36,7 @@ describe RepoSerializer do
           serializer = RepoSerializer.new(
             repo,
             scope: user,
-            scope_name: :current_user,
+            scope_name: :current_user
           )
 
           expect(serializer.admin).to eq false
@@ -51,7 +51,7 @@ describe RepoSerializer do
           serializer = RepoSerializer.new(
             repo,
             scope: user,
-            scope_name: :current_user,
+            scope_name: :current_user
           )
 
           expect(serializer.admin).to eq true

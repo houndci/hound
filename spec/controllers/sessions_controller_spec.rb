@@ -8,7 +8,7 @@ describe SessionsController do
         request.env["omniauth.auth"] = stub_oauth(
           username: "jimtom",
           email: "jimtom@example.com",
-          token: "letmein",
+          token: "letmein"
         )
 
         expect { post :create }.to change { User.count }.by(1)
@@ -27,7 +27,7 @@ describe SessionsController do
           post :create
         end.to raise_error(
           ActiveRecord::RecordInvalid,
-          "Validation failed: Github username can't be blank",
+          "Validation failed: Github username can't be blank"
         )
         expect(User.count).to be_zero
       end

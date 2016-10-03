@@ -5,9 +5,7 @@ module Admin
     private
 
     def authenticate_admin
-      unless github_admin?
-        redirect_to :root
-      end
+      redirect_to :root unless github_admin?
     end
 
     def github_admin?

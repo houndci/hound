@@ -87,7 +87,7 @@ describe GithubApi do
         )
         yielded = false
 
-        api.create_hook(full_repo_name, callback_endpoint) do |hook|
+        api.create_hook(full_repo_name, callback_endpoint) do |_hook|
           yielded = true
         end
 
@@ -284,7 +284,7 @@ describe GithubApi do
       request = stub_remove_collaborator_request(
         username,
         full_repo_name,
-        token,
+        token
       )
 
       api.remove_collaborator(full_repo_name, username)

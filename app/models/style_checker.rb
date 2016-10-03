@@ -8,25 +8,25 @@ class StyleChecker
   private
 
   def review_file(commit_file)
-    find_able_linters(commit_file.filename).
-      select(&:enabled?).
-      select { |linter| linter.file_included?(commit_file) }.
-      each { |linter| linter.file_review(commit_file) }
+    find_able_linters(commit_file.filename)
+      .select(&:enabled?)
+      .select { |linter| linter.file_included?(commit_file) }
+      .each { |linter| linter.file_review(commit_file) }
   end
 
   private
 
   def find_able_linters(filename)
-    HoundConfig::LINTERS.
-      select { |linter_class| linter_class.can_lint?(filename) }.
-      map { |linter_class| build_linter(linter_class) }
+    HoundConfig::LINTERS
+      .select { |linter_class| linter_class.can_lint?(filename) }
+      .map { |linter_class| build_linter(linter_class) }
   end
 
   def build_linter(linter_class)
     linter_class.new(
       hound_config: hound_config,
       build: build,
-      repository_owner_name: pull_request.repository_owner_name,
+      repository_owner_name: pull_request.repository_owner_name
     )
   end
 

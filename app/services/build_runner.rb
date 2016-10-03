@@ -2,9 +2,7 @@ class BuildRunner
   pattr_initialize :payload
 
   def run
-    if repo && relevant_pull_request?
-      review_pull_request
-    end
+    review_pull_request if repo && relevant_pull_request?
   rescue Config::ParserError => exception
     report_config_file_as_invalid(exception)
   rescue Octokit::NotFound, Octokit::Unauthorized
@@ -12,9 +10,7 @@ class BuildRunner
     raise
   end
 
-  def set_internal_error
-    commit_status.set_internal_error
-  end
+  delegate :set_internal_error, to: :commit_status
 
   private
 
@@ -24,9 +20,7 @@ class BuildRunner
     upsert_owner
     build = create_build
     review_files(build)
-    if build.file_reviews.empty?
-      set_no_violations_status
-    end
+    set_no_violations_status if build.file_reviews.empty?
   end
 
   def relevant_pull_request?
@@ -42,7 +36,7 @@ class BuildRunner
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       payload: payload.build_data.to_json,
-      user: user_token.user,
+      user: user_token.user
     )
   end
 
@@ -83,7 +77,7 @@ class BuildRunner
     @commit_status ||= CommitStatus.new(
       repo_name: payload.full_repo_name,
       sha: payload.head_sha,
-      token: user_token.token,
+      token: user_token.token
     )
   end
 
@@ -91,7 +85,7 @@ class BuildRunner
     ReportInvalidConfig.run(
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
-      linter_name: exception.linter_name,
+      linter_name: exception.linter_name
     )
   end
 

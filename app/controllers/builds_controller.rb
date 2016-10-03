@@ -8,9 +8,7 @@ class BuildsController < ApplicationController
   end
 
   def create
-    if payload.pull_request?
-      build_job_class.perform_later(payload.build_data)
-    end
+    build_job_class.perform_later(payload.build_data) if payload.pull_request?
     head :ok
   end
 
@@ -21,9 +19,7 @@ class BuildsController < ApplicationController
   end
 
   def ignore_confirmation_pings
-    if payload.ping?
-      head :ok
-    end
+    head :ok if payload.ping?
   end
 
   def build_job_class

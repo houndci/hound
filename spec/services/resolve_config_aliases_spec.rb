@@ -6,11 +6,11 @@ describe ResolveConfigAliases do
       it "renames them to the appropriate linter" do
         config = {
           "javascript" => { "enabled" => false },
-          "ruby" => { "enabled" => false },
+          "ruby" => { "enabled" => false }
         }
 
-        expect(ResolveConfigAliases.run(config).keys).
-          to match_array(["jshint", "ruby"])
+        expect(ResolveConfigAliases.run(config).keys)
+          .to match_array(%w(jshint ruby))
       end
     end
   end

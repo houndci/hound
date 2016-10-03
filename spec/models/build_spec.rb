@@ -22,12 +22,12 @@ describe Build do
   describe "#violation_count" do
     it "returns count of violation messages in the build" do
       build = build(:build)
-      violation1 = build(:violation, messages: ["one", "two"])
-      violation2 = build(:violation, messages: ["three", "four"])
+      violation1 = build(:violation, messages: %w(one two))
+      violation2 = build(:violation, messages: %w(three four))
       create(
         :file_review,
         violations: [violation1, violation2],
-        build: build,
+        build: build
       )
 
       expect(build.violation_count).to eq 4

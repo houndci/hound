@@ -23,13 +23,13 @@ feature "Account" do
   scenario "user with multiple subscriptions views account page" do
     user = create(:user, stripe_customer_id: "1234")
     subscriptions_response = generate_subscriptions_response([
-      individual_subscription_response,
-      private_subscription_response,
-      org_subscription_response,
-    ])
+                                                               individual_subscription_response,
+                                                               private_subscription_response,
+                                                               org_subscription_response
+                                                             ])
     stub_customer_find_request_with_subscriptions(
       user.stripe_customer_id,
-      subscriptions_response,
+      subscriptions_response
     )
     individual_repo = create(:repo, users: [user])
     create(:subscription, repo: individual_repo, user: user, price: 9)
@@ -55,12 +55,12 @@ feature "Account" do
   scenario "user with discounted subscriptions views account page" do
     user = create(:user, stripe_customer_id: "1234")
     subscriptions_reponse = generate_subscriptions_response([
-      discounted_amount_subscription_response,
-      discounted_percent_subscription_response,
-    ])
+                                                              discounted_amount_subscription_response,
+                                                              discounted_percent_subscription_response
+                                                            ])
     stub_customer_find_request_with_subscriptions(
       user.stripe_customer_id,
-      subscriptions_reponse,
+      subscriptions_reponse
     )
 
     sign_in_as(user)
@@ -93,9 +93,9 @@ feature "Account" do
   private
 
   def stub_customer_find_request_with_subscriptions(customer_id, subscriptions)
-    stub_request(:get, "#{stripe_base_url}/#{customer_id}").
-      with(headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }).
-      to_return(status: 200, body: merge_customer_subscriptions(subscriptions))
+    stub_request(:get, "#{stripe_base_url}/#{customer_id}")
+      .with(headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" })
+      .to_return(status: 200, body: merge_customer_subscriptions(subscriptions))
   end
 
   def generate_subscriptions_response(subscriptions)
@@ -104,7 +104,7 @@ feature "Account" do
       "total_count" => subscriptions.length,
       "has_more" => false,
       "url" => "/v1/customers/cus_2e3fqARc1uHtCv/subscriptions",
-      "data" => subscriptions,
+      "data" => subscriptions
     }
   end
 

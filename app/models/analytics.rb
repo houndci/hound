@@ -2,7 +2,7 @@ class Analytics
   class_attribute :backend
   self.backend = AnalyticsRuby
 
-  def initialize(user, params = {})
+  def initialize(user, _params = {})
     @user = user
   end
 
@@ -26,7 +26,7 @@ class Analytics
       properties: {
         name: repo.full_github_name,
         private: repo.private,
-        revenue: -repo.plan_price,
+        revenue: -repo.plan_price
       }
     )
   end
@@ -36,7 +36,7 @@ class Analytics
       event: "Build Started",
       properties: {
         name: repo.full_github_name,
-        private: repo.private,
+        private: repo.private
       }
     )
   end
@@ -46,7 +46,7 @@ class Analytics
       event: "Build Completed",
       properties: {
         name: repo.full_github_name,
-        private: repo.private,
+        private: repo.private
       }
     )
   end
@@ -65,7 +65,7 @@ class Analytics
   def track(options)
     backend.track({
       active_repos_count: user.repos.active.count,
-      user_id: user.id,
+      user_id: user.id
     }.merge(options))
   end
 

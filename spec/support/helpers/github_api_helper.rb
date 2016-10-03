@@ -6,7 +6,7 @@ module GithubApiHelper
     ).with(
       headers: { "Authorization" => "token #{user_token}" }
     ).to_return(
-      status: 204,
+      status: 204
     )
   end
 
@@ -17,7 +17,7 @@ module GithubApiHelper
     ).with(
       headers: { "Authorization" => "token #{user_token}" }
     ).to_return(
-      status: 204,
+      status: 204
     )
   end
 
@@ -77,9 +77,9 @@ module GithubApiHelper
 
   def stub_hook_removal_request(full_repo_name, hook_id)
     url = "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
-    stub_request(:delete, url).
-      with(headers: { 'Authorization' => /^token \w+$/ }).
-      to_return(status: 204)
+    stub_request(:delete, url)
+      .with(headers: { 'Authorization' => /^token \w+$/ })
+      .to_return(status: 204)
   end
 
   def stub_commit_request(full_repo_name, commit_sha)
@@ -125,16 +125,16 @@ module GithubApiHelper
   end
 
   def stub_scopes_request(token: "token", scopes: "public_repo,user:email")
-    stub_request(:get, "https://api.github.com/user").
-      with(
+    stub_request(:get, "https://api.github.com/user")
+      .with(
         headers: {
           "Accept" => "application/vnd.github.v3+json",
           "Authorization" => "token #{token}",
           "Content-Type" => "application/json",
-          "User-Agent" => "Octokit Ruby Gem 4.1.1",
+          "User-Agent" => "Octokit Ruby Gem 4.1.1"
         }
-      ).
-      to_return(
+      )
+      .to_return(
         status: 200, body: "", headers: { "X-OAuth-Scopes" => scopes }
       )
   end
@@ -154,7 +154,7 @@ module GithubApiHelper
       body: read_fixture("github_repos_response_for_jimtom.json"),
       headers: {
         "Link" => %(<#{repos_url}?page=2&per_page=100>; rel="next"),
-        "Content-Type" => "application/json; charset=utf-8",
+        "Content-Type" => "application/json; charset=utf-8"
       }
     )
 
@@ -168,7 +168,7 @@ module GithubApiHelper
       body: read_fixture("github_repos_response_for_jimtom_page2.json"),
       headers: {
         "Link" => %(<#{repos_url}?page=3&per_page=100>; rel="next"),
-        "Content-Type" => "application/json; charset=utf-8",
+        "Content-Type" => "application/json; charset=utf-8"
       }
     )
 
@@ -200,17 +200,17 @@ module GithubApiHelper
 
   def stub_pull_request_comments_request(full_repo_name, pull_request_number)
     comments_body = read_fixture("pull_request_comments.json")
-    url = "https://api.github.com/repos/#{full_repo_name}/pulls/" +
-      "#{pull_request_number}/comments"
+    url = "https://api.github.com/repos/#{full_repo_name}/pulls/" \
+          "#{pull_request_number}/comments"
     headers = { "Content-Type" => "application/json; charset=utf-8" }
 
-    stub_request(:get, "#{url}?per_page=100").
-      with(headers: { "Authorization" => "token #{hound_token}" }).
-      to_return(status: 200, body: comments_body, headers: headers.merge(
-        "Link" => %(<#{url}?page=2&per_page=100>; rel="next"),
+    stub_request(:get, "#{url}?per_page=100")
+      .with(headers: { "Authorization" => "token #{hound_token}" })
+      .to_return(status: 200, body: comments_body, headers: headers.merge(
+        "Link" => %(<#{url}?page=2&per_page=100>; rel="next")
       ))
-    stub_request(:get, "#{url}?page=2&per_page=100").
-      to_return(status: 200, body: "[]", headers: headers)
+    stub_request(:get, "#{url}?page=2&per_page=100")
+      .to_return(status: 200, body: "[]", headers: headers)
   end
 
   def stub_status_requests(repo_name, sha)
@@ -231,23 +231,23 @@ module GithubApiHelper
   def stub_status_request(repo_name, sha, state, description, target_url = nil)
     stub_request(
       :post,
-      "https://api.github.com/repos/#{repo_name}/statuses/#{sha}",
+      "https://api.github.com/repos/#{repo_name}/statuses/#{sha}"
     ).with(
       headers: { "Authorization" => "token #{hound_token}" },
-      body: status_request_body(description, state, target_url),
+      body: status_request_body(description, state, target_url)
     ).to_return(status_request_return_value)
   end
 
   def stub_success_on_repo(repo_name)
-    stub_request(:get, "https://api.github.com/repos/#{repo_name}").
-      to_return(status: 200, body: "", headers: {})
+    stub_request(:get, "https://api.github.com/repos/#{repo_name}")
+      .to_return(status: 200, body: "", headers: {})
   end
 
   def status_request_return_value
     {
       status: 201,
       body: read_fixture("github_status_response.json"),
-      headers: { "Content-Type" => "application/json; charset=utf-8" },
+      headers: { "Content-Type" => "application/json; charset=utf-8" }
     }
   end
 
@@ -256,7 +256,7 @@ module GithubApiHelper
       context: "hound",
       description: description,
       state: state,
-      target_url: target_url,
+      target_url: target_url
     }
   end
 

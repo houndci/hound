@@ -34,7 +34,7 @@ class JshintConfigBuilder
   end
 
   def url?
-    URI::regexp(%w(http https)).match(file_path)
+    URI.regexp(%w(http https)).match(file_path)
   end
 
   def file_path

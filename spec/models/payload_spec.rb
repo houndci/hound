@@ -46,7 +46,7 @@ describe Payload do
 
   describe '#data' do
     it 'returns data' do
-      data = {one: 1}
+      data = { one: 1 }
       payload = Payload.new(data)
 
       expect(payload.data).to eq data
@@ -155,7 +155,7 @@ describe Payload do
       it "returns true" do
         payload_json = {
           "repository" => {
-            "private" => true,
+            "private" => true
           }
         }
         payload = Payload.new(payload_json)
@@ -168,7 +168,7 @@ describe Payload do
       it "returns false" do
         payload_json = {
           "repository" => {
-            "private" => false,
+            "private" => false
           }
         }
         payload = Payload.new(payload_json)
@@ -186,24 +186,22 @@ describe Payload do
       payload = Payload.new(payload_data)
 
       expect(payload.build_data).to eq(
-        {
-          "number" => 2,
-          "action" => "opened",
-          "pull_request" => {
-            "changed_files" => 1,
-            "head" => {
-              "sha" => "498b81cd038f8a3ac02f035a8537b7ddcff38a81",
-            }
-          },
-          "repository" => {
-            "id" => 2937493,
-            "full_name" => "salbertson/life",
-            "private" => false,
-            "owner" => {
-              "id" => 154463,
-              "login" => "salbertson",
-              "type" => "User"
-            }
+        "number" => 2,
+        "action" => "opened",
+        "pull_request" => {
+          "changed_files" => 1,
+          "head" => {
+            "sha" => "498b81cd038f8a3ac02f035a8537b7ddcff38a81"
+          }
+        },
+        "repository" => {
+          "id" => 2_937_493,
+          "full_name" => "salbertson/life",
+          "private" => false,
+          "owner" => {
+            "id" => 154_463,
+            "login" => "salbertson",
+            "type" => "User"
           }
         }
       )

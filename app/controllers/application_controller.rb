@@ -25,14 +25,12 @@ class ApplicationController < ActionController::Base
     session[:campaign_params] ||= {
       utm_campaign: params[:utm_campaign],
       utm_medium: params[:utm_medium],
-      utm_source: params[:utm_source],
+      utm_source: params[:utm_source]
     }
   end
 
   def authenticate
-    unless signed_in?
-      redirect_to root_path
-    end
+    redirect_to root_path unless signed_in?
   end
 
   def signed_in?

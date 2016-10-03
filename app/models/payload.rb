@@ -56,7 +56,7 @@ class Payload
       "pull_request" => {
         "changed_files" => changed_files,
         "head" => {
-          "sha" => head_sha,
+          "sha" => head_sha
         }
       },
       "repository" => {
@@ -66,7 +66,7 @@ class Payload
         "owner" => {
           "id" => repository_owner_id,
           "login" => repository_owner_name,
-          "type" => repository["owner"]["type"],
+          "type" => repository["owner"]["type"]
         }
       }
     }

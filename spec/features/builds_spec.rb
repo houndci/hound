@@ -94,7 +94,7 @@ feature 'Builds' do
         "linter_name" => attributes.fetch("linter_name"),
         "patch" => attributes.fetch("patch"),
         "pull_request_number" => attributes.fetch("pull_request_number"),
-        "violations" => violations.map(&:stringify_keys),
+        "violations" => violations.map(&:stringify_keys)
       )
     end
   end

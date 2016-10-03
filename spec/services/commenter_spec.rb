@@ -15,8 +15,8 @@ describe Commenter do
 
           commenter.comment_on_violations([violation])
 
-          expect(pull_request).to have_received(:comment_on_violation).
-            with(violation)
+          expect(pull_request).to have_received(:comment_on_violation)
+            .with(violation)
         end
       end
 

@@ -16,9 +16,7 @@ class ActivationsController < ApplicationController
   private
 
   def check_repo_plan
-    if repo.plan_price > 0
-      raise CannotActivatePaidRepo
-    end
+    raise CannotActivatePaidRepo if repo.plan_price > 0
   end
 
   def activator

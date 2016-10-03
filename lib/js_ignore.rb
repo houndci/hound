@@ -19,17 +19,17 @@ class JsIgnore
   end
 
   def ignored_paths
-    @ignored_paths ||= hound_config.
-      commit.
-      file_content(ignore_filename).
-      to_s.
-      split("\n")
+    @ignored_paths ||= hound_config
+                       .commit
+                       .file_content(ignore_filename)
+                       .to_s
+                       .split("\n")
   end
 
   def ignore_filename
-    @ignore_filename ||= hound_config.
-      content.
-      fetch(linter_name, {}).
-      fetch("ignore_file", default_filename)
+    @ignore_filename ||= hound_config
+                         .content
+                         .fetch(linter_name, {})
+                         .fetch("ignore_file", default_filename)
   end
 end

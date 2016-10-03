@@ -18,8 +18,8 @@ class Repo < ActiveRecord::Base
 
   def self.find_or_create_with(attributes)
     repo = find_by(github_id: attributes[:github_id]) ||
-      find_by(full_github_name: attributes[:full_github_name]) ||
-      Repo.new
+           find_by(full_github_name: attributes[:full_github_name]) ||
+           Repo.new
 
     begin
       repo.update!(attributes)
@@ -43,9 +43,7 @@ class Repo < ActiveRecord::Base
   end
 
   def stripe_subscription_id
-    if subscription
-      subscription.stripe_subscription_id
-    end
+    subscription.stripe_subscription_id if subscription
   end
 
   def bulk?
@@ -67,9 +65,7 @@ class Repo < ActiveRecord::Base
   private
 
   def organization
-    if full_github_name
-      full_github_name.split("/").first
-    end
+    full_github_name.split("/").first if full_github_name
   end
 
   def self.report_update_failure(error, attributes)
@@ -77,7 +73,7 @@ class Repo < ActiveRecord::Base
       error,
       extra: {
         github_id: attributes[:github_id],
-        full_github_name: attributes[:full_github_name],
+        full_github_name: attributes[:full_github_name]
       }
     )
   end

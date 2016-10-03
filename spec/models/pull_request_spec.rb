@@ -75,7 +75,7 @@ describe PullRequest do
         commit: commit,
         comment: violation.messages.first,
         filename: violation.filename,
-        patch_position: violation.patch_position,
+        patch_position: violation.patch_position
       )
     end
   end
@@ -118,7 +118,7 @@ describe PullRequest do
     defaults =  {
       messages: ["A comment"],
       filename: "test.rb",
-      patch_position: 123,
+      patch_position: 123
     }
     double("Violation", defaults.merge(options))
   end
@@ -127,7 +127,7 @@ describe PullRequest do
     defaults = {
       full_repo_name: "org/repo",
       head_sha: "1234abcd",
-      pull_request_number: 5,
+      pull_request_number: 5
     }
     double("Payload", defaults.merge(options))
   end

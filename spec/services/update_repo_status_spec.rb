@@ -9,7 +9,7 @@ describe UpdateRepoStatus do
         "Payload",
         github_repo_id: repo.github_id,
         full_repo_name: expected_repo_name,
-        private_repo?: repo.private,
+        private_repo?: repo.private
       )
 
       UpdateRepoStatus.new(payload).run
@@ -25,7 +25,7 @@ describe UpdateRepoStatus do
         "Payload",
         github_repo_id: repo.github_id,
         full_repo_name: repo.full_github_name,
-        private_repo?: expected_status,
+        private_repo?: expected_status
       )
 
       UpdateRepoStatus.new(payload).run

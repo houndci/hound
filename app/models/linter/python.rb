@@ -7,10 +7,8 @@ module Linter
     def enqueue_job(attributes)
       Resque.push(
         "python_review",
-        {
-          class: "review.PythonReviewJob",
-          args: [attributes],
-        }
+        class: "review.PythonReviewJob",
+        args: [attributes]
       )
     end
   end

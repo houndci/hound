@@ -1,7 +1,7 @@
 class PullRequest
   pattr_initialize :payload, :token
 
-  FILE_REMOVED_STATUS = "removed"
+  FILE_REMOVED_STATUS = "removed".freeze
 
   def comments
     @comments ||= user_github.pull_request_comments(full_repo_name, number)
@@ -21,9 +21,7 @@ class PullRequest
     )
   end
 
-  def repository_owner_name
-    payload.repository_owner_name
-  end
+  delegate :repository_owner_name, to: :payload
 
   def opened?
     payload.action == "opened"
@@ -44,7 +42,7 @@ class PullRequest
       CommitFile.new(
         filename: github_file.filename,
         patch: github_file.patch,
-        commit: head_commit,
+        commit: head_commit
       )
     end
   end

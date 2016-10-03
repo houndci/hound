@@ -36,7 +36,7 @@ describe Buildable do
         create(
           :blacklisted_pull_request,
           full_repo_name: "ignore/me",
-          pull_request_number: 42,
+          pull_request_number: 42
         )
         allow(UpdateRepoStatus).to receive(:new)
 
@@ -50,7 +50,7 @@ describe Buildable do
         create(
           :blacklisted_pull_request,
           full_repo_name: "ignore/me",
-          pull_request_number: 42,
+          pull_request_number: 42
         )
         allow(BuildRunner).to receive(:new)
 
@@ -100,7 +100,7 @@ describe Buildable do
       Payload,
       github_repo_id: 1,
       full_repo_name: "user/repo",
-      pull_request_number: 1,
+      pull_request_number: 1
     )
     allow(Payload).to receive(:new).with(payload_data).and_return(payload)
     payload
