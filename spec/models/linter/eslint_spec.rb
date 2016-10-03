@@ -63,7 +63,7 @@ describe Linter::Eslint do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "{}",
+        config: "{}"
       )
     end
   end
@@ -92,15 +92,15 @@ describe Linter::Eslint do
         stub_eslint_config
         linter = build_linter(
           nil,
-          Linter::Eslint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
+          Linter::Eslint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*"
         )
         commit_file1 = double(
           "CommitFile",
-          filename: "app/javascripts/bar.js",
+          filename: "app/javascripts/bar.js"
         )
         commit_file2 = double(
           "CommitFile",
-          filename: "vendor/javascripts/foo.js",
+          filename: "vendor/javascripts/foo.js"
         )
 
         expect(linter.file_included?(commit_file1)).to be false
@@ -114,7 +114,7 @@ describe Linter::Eslint do
       "EslintConfig",
       content: content,
       excluded_paths: excluded_paths,
-      serialize: content.to_s,
+      serialize: content.to_s
     )
     allow(Config::Eslint).to receive(:new).and_return(stubbed_eslint_config)
 

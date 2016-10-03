@@ -2,9 +2,7 @@ class UpdateRepoStatus
   pattr_initialize :payload
 
   def run
-    if repo
-      repo.update(repo_attributes)
-    end
+    repo.update(repo_attributes) if repo
   end
 
   private
@@ -16,7 +14,7 @@ class UpdateRepoStatus
   def repo_attributes
     {
       full_github_name: payload.full_repo_name,
-      private: payload.private_repo?,
+      private: payload.private_repo?
     }
   end
 end

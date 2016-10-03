@@ -7,7 +7,7 @@ describe NormalizeConfig do
         config = { "Ruby" => { "Enabled" => true } }
 
         expect(NormalizeConfig.run(config)).to eq(
-          "ruby" => { "enabled" => true },
+          "ruby" => { "enabled" => true }
         )
       end
     end

@@ -47,7 +47,7 @@ describe Linter::Ruby do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "--- {}\n",
+        config: "--- {}\n"
       )
     end
   end
@@ -58,7 +58,7 @@ describe Linter::Ruby do
     stubbed_ruby_config = instance_double(
       Config::Ruby,
       content: config,
-      serialize: Config::Serializer.yaml(config),
+      serialize: Config::Serializer.yaml(config)
     )
     allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
 

@@ -19,10 +19,10 @@ describe SubscriptionsController, "#create" do
       )
 
       expect(activator).to have_received(:activate)
-      expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: membership.user.token)
-      expect(RepoSubscriber).to have_received(:subscribe).
-        with(repo, membership.user, "cardtoken")
+      expect(RepoActivator).to have_received(:new)
+        .with(repo: repo, github_token: membership.user.token)
+      expect(RepoSubscriber).to have_received(:subscribe)
+        .with(repo, membership.user, "cardtoken")
     end
 
     it "updates the current user's email address" do
@@ -82,8 +82,8 @@ describe SubscriptionsController, "#destroy" do
 
       expect(response.status).to eq(409)
       response_body = JSON.parse(response.body)
-      expect(response_body["errors"]).
-        to eq(["No subscription exists for this repo"])
+      expect(response_body["errors"])
+        .to eq(["No subscription exists for this repo"])
     end
   end
 
@@ -107,17 +107,17 @@ describe SubscriptionsController, "#destroy" do
       )
 
       expect(activator).to have_received(:deactivate)
-      expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: current_user.token)
-      expect(RepoSubscriber).to have_received(:unsubscribe).
-        with(repo, subscribed_user)
-      expect(analytics).to have_tracked("Repo Deactivated").
-        for_user(current_user).
-        with(
+      expect(RepoActivator).to have_received(:new)
+        .with(repo: repo, github_token: current_user.token)
+      expect(RepoSubscriber).to have_received(:unsubscribe)
+        .with(repo, subscribed_user)
+      expect(analytics).to have_tracked("Repo Deactivated")
+        .for_user(current_user)
+        .with(
           properties: {
             name: repo.name,
             private: true,
-            revenue: -repo.plan_price,
+            revenue: -repo.plan_price
           }
         )
     end

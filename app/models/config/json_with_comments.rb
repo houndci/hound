@@ -18,9 +18,7 @@ module Config
         if !inside_comment && current_char == '"'
           escaped = content[index - 1] == '\\' && content[index - 2] != '\\'
 
-          unless escaped
-            inside_string = !inside_string
-          end
+          inside_string = !inside_string unless escaped
         end
 
         unless inside_string

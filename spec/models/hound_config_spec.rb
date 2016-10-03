@@ -18,7 +18,7 @@ describe HoundConfig do
 
       expect(hound_config.content["ruby"]).to eq(
         "enabled" => true,
-        "config_file" => "config/rubocop.yml",
+        "config_file" => "config/rubocop.yml"
       )
     end
   end

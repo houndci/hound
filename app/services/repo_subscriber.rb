@@ -14,8 +14,8 @@ class RepoSubscriber
   end
 
   def unsubscribe
-    payment_gateway_subscription = payment_gateway_customer.
-      retrieve_subscription(repo.subscription.stripe_subscription_id)
+    payment_gateway_subscription = payment_gateway_customer
+                                   .retrieve_subscription(repo.subscription.stripe_subscription_id)
 
     payment_gateway_subscription.unsubscribe(repo.id)
 
@@ -30,7 +30,7 @@ class RepoSubscriber
   def create_subscription
     payment_gateway_subscription = customer.find_or_create_subscription(
       plan: repo.plan_type,
-      repo_id: repo.id,
+      repo_id: repo.id
     )
 
     payment_gateway_subscription.subscribe(repo.id)
@@ -38,7 +38,7 @@ class RepoSubscriber
     repo.create_subscription!(
       user_id: user.id,
       stripe_subscription_id: payment_gateway_subscription.id,
-      price: repo.plan_price,
+      price: repo.plan_price
     )
   rescue => error
     report_exception(error)

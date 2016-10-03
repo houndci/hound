@@ -1,6 +1,6 @@
 module Config
   class Go < Base
-    DEFAULT_CONFIG = ""
+    DEFAULT_CONFIG = "".freeze
 
     def content
       DEFAULT_CONFIG

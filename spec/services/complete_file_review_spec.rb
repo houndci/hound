@@ -28,11 +28,11 @@ describe CompleteFileReview do
       expect(BuildReport).to have_received(:run).with(
         pull_request: pull_request,
         build: build,
-        token: Hound::GITHUB_TOKEN,
+        token: Hound::GITHUB_TOKEN
       )
       expect(Payload).to have_received(:new).with(build.payload)
-      expect(PullRequest).
-        to(have_received(:new).with(payload, Hound::GITHUB_TOKEN))
+      expect(PullRequest)
+        .to(have_received(:new).with(payload, Hound::GITHUB_TOKEN))
     end
 
     context "when there are two builds with the same commit_sha" do
@@ -41,12 +41,12 @@ describe CompleteFileReview do
         correct_build = create(
           :build,
           commit_sha: "abc123",
-          pull_request_number: 123,
+          pull_request_number: 123
         )
         create(
           :file_review,
           build: correct_build,
-          filename: attributes.fetch("filename"),
+          filename: attributes.fetch("filename")
         )
         stub_build_report_run
         pull_request = stub_pull_request
@@ -57,7 +57,7 @@ describe CompleteFileReview do
         expect(BuildReport).to have_received(:run).with(
           pull_request: pull_request,
           build: correct_build,
-          token: Hound::GITHUB_TOKEN,
+          token: Hound::GITHUB_TOKEN
         )
       end
     end
@@ -69,7 +69,7 @@ describe CompleteFileReview do
       "commit_sha" => "abc123",
       "pull_request_number" => 123,
       "patch" => File.read("spec/support/fixtures/patch.diff"),
-      "violations" => ["line" => 14, "message" => "woohoo"],
+      "violations" => ["line" => 14, "message" => "woohoo"]
     }
   end
 
@@ -77,7 +77,7 @@ describe CompleteFileReview do
     build = build(
       :build,
       commit_sha: attributes.fetch("commit_sha"),
-      pull_request_number: attributes.fetch("pull_request_number"),
+      pull_request_number: attributes.fetch("pull_request_number")
     )
     create(:file_review, build: build, filename: attributes.fetch("filename"))
   end

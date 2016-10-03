@@ -82,7 +82,7 @@ describe FileReview do
       "Line",
       changed?: changed,
       number: number,
-      patch_position: patch_position,
+      patch_position: patch_position
     )
   end
 end

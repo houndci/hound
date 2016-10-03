@@ -2,7 +2,7 @@ class RebuildsController < ApplicationController
   def create
     RebuildPullRequest.call(
       repo: repo,
-      pull_request_number: pull_request_number,
+      pull_request_number: pull_request_number
     )
     flash[:notice] = t(".success")
     redirect_to builds_path

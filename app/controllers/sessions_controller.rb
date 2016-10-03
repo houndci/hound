@@ -25,9 +25,9 @@ class SessionsController < ApplicationController
   end
 
   def find_user
-    if user = User.where(github_username: github_username).first
-      Analytics.new(user).track_signed_in
-    end
+    user = User.where(github_username: github_username).first
+
+    Analytics.new(user).track_signed_in if user
 
     user
   end
@@ -36,7 +36,7 @@ class SessionsController < ApplicationController
     user = User.create!(
       github_username: github_username,
       email_address: github_email_address,
-      utm_source: session[:campaign_params].try(:[], :utm_source),
+      utm_source: session[:campaign_params].try(:[], :utm_source)
     )
     flash[:signed_up] = true
     user

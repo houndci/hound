@@ -1,8 +1,8 @@
 class CreateDelayedJobs < ActiveRecord::Migration
   def self.up
-    create_table :delayed_jobs, :force => true do |table|
-      table.integer  :priority, :default => 0
-      table.integer  :attempts, :default => 0
+    create_table :delayed_jobs, force: true do |table|
+      table.integer  :priority, default: 0
+      table.integer  :attempts, default: 0
       table.text     :handler
       table.text     :last_error
       table.datetime :run_at
@@ -13,7 +13,7 @@ class CreateDelayedJobs < ActiveRecord::Migration
       table.timestamps null: false
     end
 
-    add_index :delayed_jobs, [:priority, :run_at], :name => 'delayed_jobs_priority'
+    add_index :delayed_jobs, [:priority, :run_at], name: 'delayed_jobs_priority'
   end
 
   def self.down

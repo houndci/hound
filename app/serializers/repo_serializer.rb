@@ -11,7 +11,7 @@ class RepoSerializer < ActiveModel::Serializer
     :price_in_cents,
     :price_in_dollars,
     :private,
-    :stripe_subscription_id,
+    :stripe_subscription_id
   )
 
   def price_in_cents

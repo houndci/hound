@@ -28,9 +28,7 @@ describe Retryable do
         self.counter ||= 0
         self.counter += 1
 
-        if counter < 3
-          raise "max attempts"
-        end
+        raise "max attempts" if counter < 3
       end
     end
 

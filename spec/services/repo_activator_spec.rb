@@ -77,13 +77,13 @@ describe RepoActivator do
 
           activator.activate
 
-          expect(api).to have_received(:add_collaborator).
-            with(repo.full_github_name, Hound::GITHUB_USERNAME)
+          expect(api).to have_received(:add_collaborator)
+            .with(repo.full_github_name, Hound::GITHUB_USERNAME)
         end
 
         it "marks repo as active" do
           repo = create(:repo, :in_private_org)
-          github = stub_github_api
+          _ = stub_github_api
           activator = build_activator(repo: repo)
 
           activator.activate
@@ -115,7 +115,7 @@ describe RepoActivator do
 
         it "marks repo as active" do
           repo = create(:repo, private: true, in_organization: false)
-          github = stub_github_api
+          _ = stub_github_api
           activator = build_activator(repo: repo)
 
           activator.activate
@@ -148,7 +148,7 @@ describe RepoActivator do
 
           expect(github).to have_received(:create_hook).with(
             repo.full_github_name,
-            URI.join("https://#{ENV["HOST"]}", "builds").to_s
+            URI.join("https://#{ENV['HOST']}", "builds").to_s
           )
         end
       end
@@ -163,7 +163,7 @@ describe RepoActivator do
 
           expect(github).to have_received(:create_hook).with(
             repo.full_github_name,
-            URI.join("http://#{ENV["HOST"]}", "builds").to_s
+            URI.join("http://#{ENV['HOST']}", "builds").to_s
           )
         end
       end
@@ -189,8 +189,8 @@ describe RepoActivator do
         allow(api).to(
           receive(:add_collaborator).and_raise(Octokit::Forbidden.new)
         )
-        allow(ErrorMessageTranslation).to receive(:from_error_response).
-          and_return(error_message)
+        allow(ErrorMessageTranslation).to receive(:from_error_response)
+          .and_return(error_message)
 
         activator.activate
 
@@ -253,8 +253,8 @@ describe RepoActivator do
 
         activator.deactivate
 
-        expect(api).to have_received(:remove_collaborator).
-          with(repo.full_github_name, Hound::GITHUB_USERNAME)
+        expect(api).to have_received(:remove_collaborator)
+          .with(repo.full_github_name, Hound::GITHUB_USERNAME)
       end
 
       context "when the subscribed user does not have a membership" do

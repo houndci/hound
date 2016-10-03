@@ -49,8 +49,8 @@ describe Config::Scss do
       "HoundConfig",
       commit: commit,
       content: {
-        "scss" => { "config_file" => "config/scss.yml" },
-      },
+        "scss" => { "config_file" => "config/scss.yml" }
+      }
     )
 
     Config::Scss.new(hound_config)

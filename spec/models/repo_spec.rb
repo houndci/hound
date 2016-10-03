@@ -138,7 +138,7 @@ describe Repo do
     context "when one repo has taken the github name and another taken id" do
       it "updates relying on github_id as the source of truth" do
         github_name = "foo/bar"
-        github_id = 40023
+        github_id = 40_023
         repo_with_id = create(:repo, github_id: github_id)
         _repo_with_name = create(:repo, full_github_name: github_name)
         new_attributes = { github_id: github_id, full_github_name: github_name }

@@ -63,7 +63,7 @@ describe Linter::CoffeeScript do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "{}",
+        config: "{}"
       )
     end
   end
@@ -72,7 +72,7 @@ describe Linter::CoffeeScript do
     stubbged_config = instance_double(
       Config::CoffeeScript,
       content: config,
-      serialize: Config::Serializer.json(config),
+      serialize: Config::Serializer.json(config)
     )
     allow(Config::CoffeeScript).to receive(:new).and_return(stubbged_config)
 

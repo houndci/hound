@@ -8,7 +8,7 @@ class ApplicationJob < ActiveJob::Base
   end
 
   around_perform do |_, block|
-    Timeout::timeout(ApplicationJob.timeout, &block)
+    Timeout.timeout(ApplicationJob.timeout, &block)
   end
 
   around_perform do |_, block|

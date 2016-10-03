@@ -33,14 +33,12 @@ class User < ActiveRecord::Base
 
   def token=(value)
     encrypted_token = crypt.encrypt_and_sign(value)
-    write_attribute(:token, encrypted_token)
+    self[:token] = encrypted_token
   end
 
   def token
-    encrypted_token = read_attribute(:token)
-    unless encrypted_token.nil?
-      crypt.decrypt_and_verify(encrypted_token)
-    end
+    encrypted_token = self[:token]
+    crypt.decrypt_and_verify(encrypted_token) unless encrypted_token.nil?
   end
 
   def has_access_to_private_repos?
@@ -56,10 +54,10 @@ class User < ActiveRecord::Base
   end
 
   def repos_by_activation_ability
-    repos.
-      order("memberships.admin DESC").
-      order(active: :desc).
-      order("LOWER(full_github_name) ASC")
+    repos
+      .order("memberships.admin DESC")
+      .order(active: :desc)
+      .order("LOWER(full_github_name) ASC")
   end
 
   private

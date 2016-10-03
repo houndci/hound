@@ -20,7 +20,7 @@ module Buildable
   def blacklisted?(payload)
     BlacklistedPullRequest.where(
       full_repo_name: payload.full_repo_name,
-      pull_request_number: payload.pull_request_number,
+      pull_request_number: payload.pull_request_number
     ).any?
   end
 end

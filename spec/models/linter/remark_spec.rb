@@ -55,7 +55,7 @@ describe Linter::Remark do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "{}",
+        config: "{}"
       )
     end
   end
@@ -64,7 +64,7 @@ describe Linter::Remark do
     stubbed_remark_config = double(
       "RemarkConfig",
       content: content,
-      serialize: content.to_s,
+      serialize: content.to_s
     )
     allow(Config::Remark).to receive(:new).and_return(stubbed_remark_config)
 

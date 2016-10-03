@@ -55,7 +55,7 @@ feature "Job failures" do
       Resque::Failure.create(
         exception: StandardError.new(message),
         payload: {},
-        queue: QUEUE_NAME,
+        queue: QUEUE_NAME
       )
     end
   end

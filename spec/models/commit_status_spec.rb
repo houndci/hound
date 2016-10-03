@@ -10,7 +10,7 @@ describe CommitStatus do
       commit_status = CommitStatus.new(
         repo_name: repo_name,
         sha: sha,
-        token: token,
+        token: token
       )
 
       commit_status.set_pending
@@ -18,7 +18,7 @@ describe CommitStatus do
       expect(github_api).to have_received(:create_pending_status).with(
         repo_name,
         sha,
-        I18n.t(:pending_status),
+        I18n.t(:pending_status)
       )
     end
   end
@@ -33,7 +33,7 @@ describe CommitStatus do
       commit_status = CommitStatus.new(
         repo_name: repo_name,
         sha: sha,
-        token: token,
+        token: token
       )
 
       commit_status.set_success(violation_count)
@@ -41,7 +41,7 @@ describe CommitStatus do
       expect(github_api).to have_received(:create_success_status).with(
         repo_name,
         sha,
-        I18n.t(:complete_status, count: violation_count),
+        I18n.t(:complete_status, count: violation_count)
       )
     end
   end
@@ -56,7 +56,7 @@ describe CommitStatus do
       commit_status = CommitStatus.new(
         repo_name: repo_name,
         sha: sha,
-        token: token,
+        token: token
       )
 
       commit_status.set_failure(violation_count)
@@ -64,7 +64,7 @@ describe CommitStatus do
       expect(github_api).to have_received(:create_error_status).with(
         repo_name,
         sha,
-        I18n.t(:complete_status, count: violation_count),
+        I18n.t(:complete_status, count: violation_count)
       )
     end
   end
@@ -79,7 +79,7 @@ describe CommitStatus do
       commit_status = CommitStatus.new(
         repo_name: repo_name,
         sha: sha,
-        token: token,
+        token: token
       )
 
       commit_status.set_config_error(message)
@@ -88,7 +88,7 @@ describe CommitStatus do
         repo_name,
         sha,
         message,
-        configuration_url,
+        configuration_url
       )
     end
   end
@@ -102,7 +102,7 @@ describe CommitStatus do
       commit_status = CommitStatus.new(
         repo_name: repo_name,
         sha: sha,
-        token: token,
+        token: token
       )
 
       commit_status.set_internal_error
@@ -110,7 +110,7 @@ describe CommitStatus do
       expect(github_api).to have_received(:create_error_status).with(
         repo_name,
         sha,
-        I18n.t(:hound_error_status),
+        I18n.t(:hound_error_status)
       )
     end
   end

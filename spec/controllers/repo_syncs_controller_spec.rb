@@ -9,8 +9,8 @@ describe RepoSyncsController, "#create" do
 
       post :create
 
-      expect(RepoSynchronizationJob).
-        not_to have_received(:perform_later).with(user)
+      expect(RepoSynchronizationJob)
+        .not_to have_received(:perform_later).with(user)
     end
   end
 
@@ -23,8 +23,8 @@ describe RepoSyncsController, "#create" do
       post :create
 
       expect(user.reload).to be_refreshing_repos
-      expect(RepoSynchronizationJob).
-        to have_received(:perform_later).with(user)
+      expect(RepoSynchronizationJob)
+        .to have_received(:perform_later).with(user)
     end
   end
 end

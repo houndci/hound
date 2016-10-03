@@ -14,12 +14,12 @@ module StripeApiHelper
     ).with(
       body: {
         "card" => "cardtoken",
-        "metadata" => { "user_id" => "#{user.id}" }
+        "metadata" => { "user_id" => user.id.to_s }
       },
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_customer_create.json"),
+      body: File.read("spec/support/fixtures/stripe_customer_create.json")
     )
   end
 
@@ -28,10 +28,10 @@ module StripeApiHelper
       :get,
       "#{stripe_base_url}/#{customer_id}"
     ).with(
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_customer_find.json"),
+      body: File.read("spec/support/fixtures/stripe_customer_find.json")
     )
   end
 
@@ -52,10 +52,10 @@ module StripeApiHelper
       "#{stripe_base_url}/#{stripe_customer_id}"
     ).with(
       body: attrs,
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_customer_update.json"),
+      body: File.read("spec/support/fixtures/stripe_customer_update.json")
     )
   end
 
@@ -87,10 +87,10 @@ module StripeApiHelper
       "#{stripe_base_url}/#{stripe_customer_id}/subscriptions"
     ).with(
       body: hash_including(body),
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_subscription_create.json"),
+      body: File.read("spec/support/fixtures/stripe_subscription_create.json")
     )
   end
 
@@ -98,8 +98,8 @@ module StripeApiHelper
     body = {
       quantity: quantity.to_s,
       metadata: {
-        repo_ids: repo_ids.to_s,
-      },
+        repo_ids: repo_ids.to_s
+      }
     }
 
     stub_request(
@@ -108,10 +108,10 @@ module StripeApiHelper
         "subscriptions/#{stripe_subscription_id}"
     ).with(
       body: body,
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_subscription_update.json"),
+      body: File.read("spec/support/fixtures/stripe_subscription_update.json")
     )
   end
 
@@ -134,10 +134,10 @@ module StripeApiHelper
       "#{stripe_base_url}/#{stripe_customer_id}/"\
       "subscriptions/#{stripe_subscription_id}"
     ).with(
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_subscription_delete.json"),
+      body: File.read("spec/support/fixtures/stripe_subscription_delete.json")
     )
   end
 
@@ -148,10 +148,10 @@ module StripeApiHelper
         "subscriptions/#{stripe_subscription_id}"
     ).with(
       body: { metadata: { repo_ids: subscription.repo_id.to_s } },
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
-      body: File.read("spec/support/fixtures/stripe_subscription_update.json"),
+      body: File.read("spec/support/fixtures/stripe_subscription_update.json")
     )
   end
 
@@ -161,7 +161,7 @@ module StripeApiHelper
       "#{stripe_base_url}/#{stripe_customer_id}/subscriptions"
     ).with(
       body: hash_including("plan" => plan_type),
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 402,
       body: {
@@ -180,13 +180,13 @@ module StripeApiHelper
       :destroy,
       "#{stripe_base_url}/#{stripe_customer_id}/subscriptions"
     ).with(
-      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}" }
+      headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 402,
       body: {
         error: {
           message: "Error",
-          type: "error",
+          type: "error"
         }
       }.to_json
     )

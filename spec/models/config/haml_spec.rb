@@ -19,7 +19,7 @@ describe Config::Haml do
         config = build_config(commit)
 
         expect(config.content).to eq(
-          "linters" => { "AltText" => { "enabled" => true } },
+          "linters" => { "AltText" => { "enabled" => true } }
         )
       end
     end
@@ -36,7 +36,7 @@ describe Config::Haml do
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            %r("config/haml\.yml" must be a Hash),
+            %r{"config/haml\.yml" must be a Hash}
           )
         end
       end
@@ -53,7 +53,7 @@ describe Config::Haml do
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            /Tried to load unspecified class: Object/,
+            /Tried to load unspecified class: Object/
           )
         end
       end
@@ -67,9 +67,9 @@ describe Config::Haml do
       content: {
         "haml" => {
           "enabled" => true,
-          "config_file" => "config/haml.yml",
-        },
-      },
+          "config_file" => "config/haml.yml"
+        }
+      }
     )
     Config::Haml.new(hound_config)
   end

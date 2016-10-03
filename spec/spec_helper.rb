@@ -1,4 +1,4 @@
-$: << File.expand_path("../..", __FILE__)
+$LOAD_PATH << File.expand_path("../..", __FILE__)
 
 require "active_support"
 require "active_support/core_ext"

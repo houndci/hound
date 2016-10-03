@@ -12,7 +12,7 @@ class RepoSynchronization
         repo = Repo.find_or_create_with(attributes)
         user.memberships.create!(
           repo: repo,
-          admin: resource.to_hash[:permissions][:admin],
+          admin: resource.to_hash[:permissions][:admin]
         )
       end
     end
@@ -32,7 +32,7 @@ class RepoSynchronization
       github_id: attributes[:id],
       full_github_name: attributes[:full_name],
       in_organization: attributes[:owner][:type] == GithubApi::ORGANIZATION_TYPE,
-      owner: owner,
+      owner: owner
     }
   end
 

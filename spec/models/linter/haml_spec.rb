@@ -47,7 +47,7 @@ describe Linter::Haml do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: "{}",
+        config: "{}"
       )
     end
   end
@@ -58,7 +58,7 @@ describe Linter::Haml do
     stubbed_haml_config = double(
       "HamlConfig",
       content: config,
-      serialize: config.to_s,
+      serialize: config.to_s
     )
     allow(Config::Haml).to receive(:new).and_return(stubbed_haml_config)
 

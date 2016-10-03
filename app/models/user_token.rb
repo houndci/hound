@@ -1,9 +1,7 @@
 class UserToken
   attr_private_initialize :repo
 
-  def token
-    user.token
-  end
+  delegate :token, to: :user
 
   def user
     @user ||= users_with_token.sample || user_with_default_token

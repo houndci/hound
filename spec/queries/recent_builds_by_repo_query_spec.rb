@@ -11,14 +11,14 @@ describe RecentBuildsByRepoQuery do
         :build,
         pull_request_number: 1,
         repo: repo1,
-        created_at: 1.hour.ago,
+        created_at: 1.hour.ago
       )
       recent_build2 = create(:build, pull_request_number: 2, repo: repo2)
       _old_build2 = create(
         :build,
         pull_request_number: 2,
         repo: repo2,
-        created_at: 1.hour.ago,
+        created_at: 1.hour.ago
       )
 
       builds = RecentBuildsByRepoQuery.run(user: user)

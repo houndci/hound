@@ -31,7 +31,7 @@ describe AnalyticsHelper do
         email: user.email_address,
         username: user.github_username,
         user_id: user.id,
-        active_repo_ids: [repo.id],
+        active_repo_ids: [repo.id]
       )
     end
   end
@@ -43,11 +43,11 @@ describe AnalyticsHelper do
       expected_intercom_hash = OpenSSL::HMAC.hexdigest(
         "sha256",
         Hound::INTERCOM_API_SECRET,
-        user.id.to_s,
+        user.id.to_s
       )
 
       expect(intercom_hash(user)).to eq(
-        "Intercom" => { userHash: expected_intercom_hash },
+        "Intercom" => { userHash: expected_intercom_hash }
       )
     end
   end

@@ -87,7 +87,7 @@ feature "Repo list", js: true do
   scenario "user activates repo" do
     token = "letmein"
     repo = create_repo(private: false)
-    hook_url = "http://#{ENV["HOST"]}/builds"
+    hook_url = "http://#{ENV['HOST']}/builds"
     stub_repo_request(repo.full_github_name, token)
     stub_add_collaborator_request(username, repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
@@ -107,7 +107,7 @@ feature "Repo list", js: true do
   scenario "user with admin access activates organization repo" do
     token = "letmein"
     repo = create_repo(private: false, full_github_name: "testing/repo")
-    hook_url = "http://#{ENV["HOST"]}/builds"
+    hook_url = "http://#{ENV['HOST']}/builds"
     stub_repo_with_org_request(repo.full_github_name, token)
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
 

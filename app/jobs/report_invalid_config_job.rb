@@ -13,7 +13,7 @@ class ReportInvalidConfigJob
       pull_request_number: attributes.fetch("pull_request_number"),
       commit_sha: attributes.fetch("commit_sha"),
       linter_name: attributes.fetch("linter_name"),
-      message: attributes["message"],
+      message: attributes["message"]
     )
   end
 end

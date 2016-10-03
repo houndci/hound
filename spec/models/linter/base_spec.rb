@@ -53,7 +53,7 @@ describe Linter::Base do
     default_options = {
       hound_config: double("HoundConfig", enabled_for?: false),
       build: double("Build", repo: double("Repo")),
-      repository_owner_name: "foo",
+      repository_owner_name: "foo"
     }
 
     Linter::Test.new(default_options.merge(options))

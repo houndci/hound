@@ -93,7 +93,7 @@ describe PaymentGatewayCustomer do
 
       payment_gateway_customer = PaymentGatewayCustomer.new(
         user,
-        customer: customer,
+        customer: customer
       )
 
       expect(payment_gateway_customer.customer).to eq customer

@@ -10,11 +10,11 @@ class NormalizeConfig
   def run
     @config.reduce({}) do |normalized_config, (key, value)|
       normalized_key = normalize_key(key)
-      if value.is_a? Hash
-        normalized_config[normalized_key] = NormalizeConfig.run(value)
-      else
-        normalized_config[normalized_key] = value
-      end
+      normalized_config[normalized_key] = if value.is_a? Hash
+                                            NormalizeConfig.run(value)
+                                          else
+                                            value
+                                          end
       normalized_config
     end
   end

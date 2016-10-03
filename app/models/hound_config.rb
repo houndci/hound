@@ -10,7 +10,7 @@ class HoundConfig
     Linter::Python,
     Linter::Ruby,
     Linter::Scss,
-    Linter::Swift,
+    Linter::Swift
   ].freeze
   LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
   BETA_LINTERS = %w(
@@ -18,7 +18,7 @@ class HoundConfig
     remark
     python
   ).freeze
-  CONFIG_FILE = ".hound.yml"
+  CONFIG_FILE = ".hound.yml".freeze
 
   attr_reader_initialize :commit
 

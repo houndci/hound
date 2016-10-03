@@ -3,9 +3,7 @@ module Linter
     FILE_REGEXP = /.+(\.js|\.es6|\.jsx)\z/
     IGNORE_FILENAME = ".eslintignore".freeze
 
-    def file_included?(commit_file)
-      jsignore.file_included?(commit_file)
-    end
+    delegate :file_included?, to: :jsignore
 
     private
 

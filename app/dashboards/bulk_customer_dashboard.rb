@@ -16,8 +16,8 @@ class BulkCustomerDashboard < Administrate::BaseDashboard
     current_repos: Field::Number,
     subscription_token: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
-  }
+    updated_at: Field::DateTime
+  }.freeze
 
   # COLLECTION_ATTRIBUTES
   # an array of attributes that will be displayed on the model's index page.
@@ -28,8 +28,8 @@ class BulkCustomerDashboard < Administrate::BaseDashboard
     :org,
     :description,
     :repo_limit,
-    :current_repos,
-  ]
+    :current_repos
+  ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
@@ -44,8 +44,8 @@ class BulkCustomerDashboard < Administrate::BaseDashboard
     :interval,
     :repo_limit,
     :current_repos,
-    :subscription_token,
-  ]
+    :subscription_token
+  ].freeze
 
   # Overwrite this method to customize how bulk customers are displayed
   # across all pages of the admin dashboard.

@@ -11,7 +11,7 @@ describe ActivationsController, "#create" do
       expected_repo_json = RepoSerializer.new(
         repo,
         scope_name: :current_user,
-        scope: membership.user,
+        scope: membership.user
       ).to_json
 
       post :create, repo_id: repo.id, format: :json
@@ -19,8 +19,8 @@ describe ActivationsController, "#create" do
       expect(response).to have_http_status(:created)
       expect(response.body).to eq expected_repo_json
       expect(activator).to have_received(:activate)
-      expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: membership.user.token)
+      expect(RepoActivator).to have_received(:new)
+        .with(repo: repo, github_token: membership.user.token)
     end
   end
 
@@ -44,8 +44,8 @@ describe ActivationsController, "#create" do
         expect(response.code).to eq "502"
         expect(response_body["errors"]).to match_array(error_message)
         expect(activator).to have_received(:activate)
-        expect(RepoActivator).to have_received(:new).
-          with(repo: repo, github_token: membership.user.token)
+        expect(RepoActivator).to have_received(:new)
+          .with(repo: repo, github_token: membership.user.token)
       end
     end
 
@@ -62,9 +62,9 @@ describe ActivationsController, "#create" do
 
       post :create, repo_id: repo.id, format: :json
 
-      expect(analytics).to have_tracked("Repo Activation Failed").
-        for_user(membership.user).
-        with(
+      expect(analytics).to have_tracked("Repo Activation Failed")
+        .for_user(membership.user)
+        .with(
           properties: {
             name: repo.full_github_name,
             private: false

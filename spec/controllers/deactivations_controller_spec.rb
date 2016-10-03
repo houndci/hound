@@ -11,7 +11,7 @@ describe DeactivationsController, "#create" do
       expected_repo_json = RepoSerializer.new(
         repo,
         scope_name: :current_user,
-        scope: membership.user,
+        scope: membership.user
       ).to_json
 
       post :create, repo_id: repo.id, format: :json
@@ -19,15 +19,15 @@ describe DeactivationsController, "#create" do
       expect(response).to have_http_status(:created)
       expect(response.body).to eq expected_repo_json
       expect(activator).to have_received(:deactivate)
-      expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: membership.user.token)
-      expect(analytics).to have_tracked("Repo Deactivated").
-        for_user(membership.user).
-        with(
+      expect(RepoActivator).to have_received(:new)
+        .with(repo: repo, github_token: membership.user.token)
+      expect(analytics).to have_tracked("Repo Deactivated")
+        .for_user(membership.user)
+        .with(
           properties: {
             name: repo.full_github_name,
             private: false,
-            revenue: 0,
+            revenue: 0
           }
         )
     end
@@ -45,8 +45,8 @@ describe DeactivationsController, "#create" do
 
       expect(response.code).to eq "502"
       expect(activator).to have_received(:deactivate)
-      expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: membership.user.token)
+      expect(RepoActivator).to have_received(:new)
+        .with(repo: repo, github_token: membership.user.token)
     end
   end
 
@@ -57,8 +57,8 @@ describe DeactivationsController, "#create" do
       create(:subscription, repo: repo)
       stub_sign_in(user)
 
-      expect { post :create, repo_id: repo.id, format: :json }.
-        to raise_error(
+      expect { post :create, repo_id: repo.id, format: :json }
+        .to raise_error(
           DeactivationsController::CannotDeactivateRepoWithSubscription
         )
     end

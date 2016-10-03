@@ -46,7 +46,7 @@ describe CommitFile do
     end
   end
 
-  def commit_file(options = {})
+  def commit_file(_options = {})
     commit = double("Commit", file_content: "content")
     CommitFile.new(filename: "test.rb", patch: "patch", commit: commit)
   end

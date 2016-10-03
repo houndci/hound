@@ -12,7 +12,7 @@ describe Config::Ruby do
       it "returns the HoundConfig's content as a hash" do
         hound_config = double(
           "HoundConfig",
-          content: { "LineLength" => { "Max" => 90 } },
+          content: { "LineLength" => { "Max" => 90 } }
         )
         config = Config::Ruby.new(hound_config)
 
@@ -23,7 +23,7 @@ describe Config::Ruby do
     context "when the hound config is not a legacy config" do
       it "returns the content from GitHub as a hash" do
         commit = stubbed_commit(
-          "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
+          "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }'
         )
         config = build_config(commit)
 
@@ -34,19 +34,19 @@ describe Config::Ruby do
         it "returns the config merged with the owner's config as a hash" do
           owner = double("Owner")
           owner_commit = stubbed_commit(
-            "config/rubocop.yml" => '{ "Metrics/ClassLength": { "Max": 100 } }',
+            "config/rubocop.yml" => '{ "Metrics/ClassLength": { "Max": 100 } }'
           )
           owner_config = build_config(owner_commit)
           repo_commit = stubbed_commit(
-            "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
+            "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }'
           )
           config = build_config(repo_commit, owner)
-          allow(BuildOwnerHoundConfig).to receive(:run).with(owner).
-            and_return(owner_config)
+          allow(BuildOwnerHoundConfig).to receive(:run).with(owner)
+            .and_return(owner_config)
 
           expect(config.content).to eq(
             "LineLength" => { "Max" => 90 },
-            "Metrics/ClassLength" => { "Max" => 100 },
+            "Metrics/ClassLength" => { "Max" => 100 }
           )
         end
       end
@@ -58,7 +58,7 @@ describe Config::Ruby do
           Enabled: true
       EOS
       commit = stubbed_commit(
-        "config/rubocop.yml" => rubocop,
+        "config/rubocop.yml" => rubocop
       )
 
       config = build_config(commit)
@@ -93,14 +93,14 @@ describe Config::Ruby do
       commit = stubbed_commit(
         "config/rubocop.yml" => rubocop,
         "config/base.yml" => base,
-        "config/overrides.yml" => overrides,
+        "config/overrides.yml" => overrides
       )
       config = build_config(commit)
 
       expect(config.content).to eq(
         "LineLength" => { "Max" => 40 },
         "Style/HashSyntax" => { "EnforcedStyle" => "hash_rockets" },
-        "Style/Encoding" => { "Enabled" => true },
+        "Style/Encoding" => { "Enabled" => true }
       )
     end
 
@@ -114,12 +114,12 @@ describe Config::Ruby do
         rubocop_todo = "# this is an empty file"
         commit = stubbed_commit(
           "config/rubocop.yml" => rubocop,
-          "config/rubocop_todo.yml" => rubocop_todo,
+          "config/rubocop_todo.yml" => rubocop_todo
         )
         config = build_config(commit)
 
         expect(config.content).to eq(
-          "Style/Encoding" => { "Enabled" => true },
+          "Style/Encoding" => { "Enabled" => true }
         )
       end
     end
@@ -130,7 +130,7 @@ describe Config::Ruby do
         rubocop_todo = "foo: bar: "
         commit = stubbed_commit(
           "config/rubocop.yml" => rubocop,
-          "config/rubocop_todo.yml" => rubocop_todo,
+          "config/rubocop_todo.yml" => rubocop_todo
         )
         config = build_config(commit)
 
@@ -147,7 +147,7 @@ describe Config::Ruby do
 
         expect { config.content }.to raise_error(
           Config::ParserError,
-          %r("config/rubocop\.yml" must be a Hash),
+          %r{"config/rubocop\.yml" must be a Hash}
         )
       end
     end
@@ -164,7 +164,7 @@ describe Config::Ruby do
 
         expect { config.content }.to raise_error(
           Config::ParserError,
-          /Tried to load unspecified class: Object/,
+          /Tried to load unspecified class: Object/
         )
       end
     end
@@ -176,9 +176,9 @@ describe Config::Ruby do
       commit: commit,
       content: {
         "ruby" => {
-          "config_file" => "config/rubocop.yml",
-        },
-      },
+          "config_file" => "config/rubocop.yml"
+        }
+      }
     )
 
     Config::Ruby.new(hound_config, owner: owner)

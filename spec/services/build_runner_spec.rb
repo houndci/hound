@@ -9,7 +9,7 @@ describe BuildRunner do
           github_repo_id: repo.github_id,
           pull_request_number: 5,
           head_sha: "123abc",
-          full_repo_name: repo.name,
+          full_repo_name: repo.name
         )
         build_runner = BuildRunner.new(payload)
         stubbed_style_checker(violations: [build(:violation)])
@@ -26,7 +26,7 @@ describe BuildRunner do
         expect(build.violations.count).to be >= 1
         expect(build.pull_request_number).to eq 5
         expect(build.commit_sha).to eq payload.head_sha
-        expect(build.payload).to eq ({ payload_stuff: "test" }).to_json
+        expect(build.payload).to eq({ payload_stuff: "test" }.to_json)
       end
 
       it "reviews files via style checker" do
@@ -63,13 +63,13 @@ describe BuildRunner do
         payload = stubbed_payload(
           github_repo_id: repo.github_id,
           full_repo_name: repo_name,
-          head_sha: "headsha",
+          head_sha: "headsha"
         )
         build_runner = BuildRunner.new(payload)
         stubbed_pull_request
         violations = [
           build(:violation),
-          build(:violation, messages: ["wrong", "bad"]),
+          build(:violation, messages: %w(wrong bad))
         ]
         stubbed_style_checker(violations: violations)
         stubbed_commenter
@@ -80,12 +80,12 @@ describe BuildRunner do
         expect(github_api).to have_received(:create_pending_status).with(
           repo_name,
           "headsha",
-          I18n.t(:pending_status),
+          I18n.t(:pending_status)
         )
       end
 
       it "upserts repository owner" do
-        owner_github_id = 56789
+        owner_github_id = 56_789
         owner_name = "john"
         repo = create(:repo, :active)
         payload = stubbed_payload(
@@ -94,7 +94,7 @@ describe BuildRunner do
           head_sha: "headsha",
           repository_owner_id: owner_github_id,
           repository_owner_name: owner_name,
-          repository_owner_is_organization?: true,
+          repository_owner_is_organization?: true
         )
         build_runner = BuildRunner.new(payload)
         stubbed_pull_request
@@ -108,7 +108,7 @@ describe BuildRunner do
         expect(owner_attributes).to eq(
           "name" => owner_name,
           "github_id" => owner_github_id,
-          "organization" => true,
+          "organization" => true
         )
         expect(repo.reload.owner).to eq Owner.first
       end
@@ -130,8 +130,8 @@ describe BuildRunner do
         repo = create(:repo)
         build_runner = make_build_runner(repo: repo)
         pull_request = stubbed_pull_request
-        allow(pull_request).
-          to receive_messages(opened?: false, synchronize?: false)
+        allow(pull_request)
+          .to receive_messages(opened?: false, synchronize?: false)
 
         build_runner.run
 
@@ -145,7 +145,7 @@ describe BuildRunner do
         create(:subscription, repo: repo)
         payload = stubbed_payload(
           github_repo_id: repo.github_id,
-          full_repo_name: repo.name,
+          full_repo_name: repo.name
         )
         build_runner = BuildRunner.new(payload)
         stubbed_style_checker(violations: [build(:violation)])
@@ -155,9 +155,9 @@ describe BuildRunner do
 
         build_runner.run
 
-        expect(analytics).to have_tracked("Build Started").
-          for_user(repo.subscription.user).
-          with(properties: { name: repo.full_github_name, private: true })
+        expect(analytics).to have_tracked("Build Started")
+          .for_user(repo.subscription.user)
+          .with(properties: { name: repo.full_github_name, private: true })
       end
     end
 
@@ -165,7 +165,7 @@ describe BuildRunner do
       it "marks the config file as invalid" do
         build_runner = make_build_runner
         pull_request = stubbed_pull_request(
-          [double("CommitFile", filename: "foo.rb")],
+          [double("CommitFile", filename: "foo.rb")]
         )
         payload = stubbed_payload(commit_sha: "commitsha123")
         invalid_config_file(pull_request, "config/rubocop.yml" => "!")
@@ -178,7 +178,7 @@ describe BuildRunner do
         expect(ReportInvalidConfig).to have_received(:run).with(
           pull_request_number: payload.pull_request_number,
           commit_sha: payload.head_sha,
-          linter_name: "ruby",
+          linter_name: "ruby"
         )
       end
     end
@@ -191,12 +191,12 @@ describe BuildRunner do
         user.repos += [reachable_repo, unreachable_repo]
         payload = stubbed_payload(
           github_repo_id: unreachable_repo.github_id,
-          full_repo_name: unreachable_repo.name,
+          full_repo_name: unreachable_repo.name
         )
         build_runner = BuildRunner.new(payload)
         github_api = stubbed_github_api
-        allow(github_api).to receive(:create_pending_status).
-          and_raise(Octokit::NotFound)
+        allow(github_api).to receive(:create_pending_status)
+          .and_raise(Octokit::NotFound)
 
         expect { build_runner.run }.to raise_error Octokit::NotFound
 
@@ -213,8 +213,8 @@ describe BuildRunner do
         force_fail_build_creation
         allow(Resque).to receive(:enqueue)
 
-        expect { build_runner.run }.
-          to raise_error ActiveRecord::StatementInvalid
+        expect { build_runner.run }
+          .to raise_error ActiveRecord::StatementInvalid
         expect(Resque).not_to have_received(:enqueue)
       end
 
@@ -235,7 +235,7 @@ describe BuildRunner do
         expect(github_api).to have_received(:create_success_status).with(
           repo.name,
           stubbed_payload.head_sha,
-          I18n.t(:complete_status, count: 0),
+          I18n.t(:complete_status, count: 0)
         )
       end
     end
@@ -263,7 +263,7 @@ describe BuildRunner do
         "HeadCommit",
         sha: "headsha",
         repo_name: "test/repo",
-        file_content: "",
+        file_content: ""
       )
       stub_commit_to_return_hound_config(head_commit)
       pull_request = double(
@@ -272,7 +272,7 @@ describe BuildRunner do
         config: double(:config),
         opened?: true,
         head_commit: head_commit,
-        repository_owner_name: "test",
+        repository_owner_name: "test"
       )
       allow(PullRequest).to receive(:new).and_return(pull_request)
 
@@ -292,7 +292,7 @@ describe BuildRunner do
         removed?: false,
         sha: "abcd1234",
         pull_request_number: 1,
-        patch: "sometext",
+        patch: "sometext"
       )
     end
 
@@ -300,8 +300,8 @@ describe BuildRunner do
       commit = double("Commit")
       hound_config = configuration.delete(:hound_config)
       allow(commit).to receive(:file_content)
-      allow(commit).to receive(:file_content).
-        with(HoundConfig::CONFIG_FILE).and_return(hound_config)
+      allow(commit).to receive(:file_content)
+        .with(HoundConfig::CONFIG_FILE).and_return(hound_config)
       stub_configuration_for_commit(configuration, commit)
 
       commit
@@ -309,8 +309,8 @@ describe BuildRunner do
 
     def stub_configuration_for_commit(configuration, commit)
       configuration.each do |filename, contents|
-        allow(commit).to receive(:file_content).
-          with(filename).and_return(contents)
+        allow(commit).to receive(:file_content)
+          .with(filename).and_return(contents)
       end
     end
 
@@ -330,7 +330,7 @@ describe BuildRunner do
       expect(github_api).to have_received(:create_error_status).with(
         repo.name,
         "somesha",
-        I18n.t(:hound_error_status),
+        I18n.t(:hound_error_status)
       )
     end
   end
@@ -338,7 +338,7 @@ describe BuildRunner do
   def make_build_runner(repo: create(:repo, :active))
     payload = stubbed_payload(
       github_repo_id: repo.github_id,
-      full_repo_name: repo.name,
+      full_repo_name: repo.name
     )
     BuildRunner.new(payload)
   end
@@ -362,7 +362,7 @@ describe BuildRunner do
       "GithubApi",
       create_pending_status: nil,
       create_success_status: nil,
-      create_error_status: nil,
+      create_error_status: nil
     )
     allow(GithubApi).to receive(:new).and_return(github_api)
 
@@ -371,9 +371,9 @@ describe BuildRunner do
 
   def invalid_config_file(pull_request, stubs = {})
     stubs.each do |filename, content|
-      allow(pull_request.head_commit).to receive(:file_content).
-        with(filename).
-        and_return(content)
+      allow(pull_request.head_commit).to receive(:file_content)
+        .with(filename)
+        .and_return(content)
     end
   end
 end

@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
     @account_page = AccountPage.new(
       repos: find_subscribed_repos,
       billable_email: current_user.billable_email,
-      payment_gateway_subscriptions: current_user.payment_gateway_subscriptions,
+      payment_gateway_subscriptions: current_user.payment_gateway_subscriptions
     )
   end
 
