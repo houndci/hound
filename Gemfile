@@ -35,6 +35,7 @@ gem "sass-rails"
 gem "split", require: "split/dashboard"
 gem "stripe", ">= 1.55"
 gem "uglifier", ">= 2.7.2"
+gem "rake-progressbar"
 
 group :staging, :production do
   gem "rack-timeout"

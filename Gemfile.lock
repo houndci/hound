@@ -236,6 +236,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (11.2.2)
+    rake-progressbar (0.0.5)
     redis (3.2.1)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
@@ -374,6 +375,7 @@ DEPENDENCIES
   rails (= 4.2.7.1)
   rails-assets-lodash!
   rails_12factor
+  rake-progressbar
   resque (~> 1.25.0)
   resque-scheduler
   resque-sentry
