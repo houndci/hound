@@ -33,7 +33,7 @@ gem "resque-sentry"
 gem "rest-client", ">= 1.8.0"
 gem "sass-rails"
 gem "split", require: "split/dashboard"
-gem "stripe"
+gem "stripe", ">= 1.55"
 gem "uglifier", ">= 2.7.2"
 
 group :staging, :production do

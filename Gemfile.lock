@@ -309,10 +309,8 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    stripe (1.15.0)
-      json (~> 1.8.1)
-      mime-types (>= 1.25, < 3.0)
-      rest-client (~> 1.4)
+    stripe (1.55.0)
+      rest-client (>= 1.4, < 4.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
@@ -385,7 +383,7 @@ DEPENDENCIES
   sentry-raven (>= 0.12.2)
   shoulda-matchers
   split
-  stripe
+  stripe (>= 1.55)
   uglifier (>= 2.7.2)
   webmock
 
@@ -393,4 +391,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.1
+   1.13.2
