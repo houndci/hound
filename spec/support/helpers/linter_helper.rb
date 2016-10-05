@@ -64,6 +64,13 @@ module LinterHelper
 
     commit
   end
+
+  def stub_commit_on_repo(repo:, sha:, files:)
+    allow(Commit).
+      to receive(:new).
+      with(repo, sha, anything).
+      and_return(stubbed_commit(files))
+  end
 end
 
 RSpec.configure do |config|

@@ -1,6 +1,5 @@
 require "spec_helper"
 require "app/models/linter/base"
-require "app/services/check_enabled_linter"
 require "app/models/config_builder"
 require "app/models/config/base"
 require "app/models/config/unsupported"
@@ -33,21 +32,19 @@ describe Linter::Base do
   describe "#enabled?" do
     context "when the hound config is enabled for the given language" do
       it "returns true" do
-        allow(CheckEnabledLinter).to receive(:run).and_return(true)
-        linter = build_linter
+        hound_config = instance_double("HoundConfig", linter_enabled?: true)
+        linter = build_linter(hound_config: hound_config)
 
-        expect(linter.enabled?).to eq true
-        expect(CheckEnabledLinter).to have_received(:run)
+        expect(linter).to be_enabled
       end
     end
 
     context "when the hound config is disabled for the given language" do
       it "returns false" do
-        allow(CheckEnabledLinter).to receive(:run).and_return(false)
-        linter = build_linter
+        hound_config = instance_double("HoundConfig", linter_enabled?: false)
+        linter = build_linter(hound_config: hound_config)
 
-        expect(linter.enabled?).to eq false
-        expect(CheckEnabledLinter).to have_received(:run)
+        expect(linter).not_to be_enabled
       end
     end
   end

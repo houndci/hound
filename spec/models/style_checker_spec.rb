@@ -2,254 +2,37 @@ require "rails_helper"
 
 describe StyleChecker do
   describe "#review_files" do
-    it "returns a collection of file reviews with violations" do
+    it "returns a collection of incomplete file reviews" do
       stylish_commit_file = stub_commit_file("good.rb", "def good; end")
       violated_commit_file = stub_commit_file("bad.rb", "def bad(a ); a; end  ")
       pull_request = stub_pull_request(
         commit_files: [stylish_commit_file, violated_commit_file],
       )
 
-      violation_messages = pull_request_violations(pull_request)
+      file_reviews = pull_request_file_reviews(pull_request)
 
-      expect(violation_messages).to include "Trailing whitespace detected."
+      expect(file_reviews.map(&:filename)).to match_array ["good.rb", "bad.rb"]
     end
 
     it "only fetches content for supported files" do
       ruby_file = double("GithubFile", filename: "ruby.rb", patch: "foo")
       bogus_file = double("GithubFile", filename: "[:facebook]", patch: "bar")
-      config = <<-HOUND.strip_heredoc
+      config = <<~YAML
         ruby:
           enabled: true
-      HOUND
-      head_commit = stub_head_commit(
-        ".hound.yml" => config,
-      )
+      YAML
+      head_commit = stub_head_commit(".hound.yml" => config,)
       pull_request = PullRequest.new(payload_stub, "anything")
       allow(pull_request).to receive(:head_commit).and_return(head_commit)
       allow(pull_request).to receive(:modified_github_files).
         and_return([bogus_file, ruby_file])
 
-      pull_request_violations(pull_request)
+      pull_request_violation_messages(pull_request)
 
       expect(head_commit).to have_received(:file_content).
         with(ruby_file.filename)
       expect(head_commit).not_to have_received(:file_content).
         with(bogus_file.filename)
-    end
-
-    context "for a Ruby file" do
-      context "with style violations" do
-        it "returns violations" do
-          commit_file = stub_commit_file("ruby.rb", "puts 123    ")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to include "Trailing whitespace detected."
-        end
-      end
-
-      context "with style violation on unchanged line" do
-        it "returns no violations" do
-          commit_file = stub_commit_file(
-            "foo.rb",
-            "'wrong quotes'",
-            UnchangedLine.new,
-          )
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-
-      context "without style violations" do
-        it "returns no violations" do
-          commit_file = stub_commit_file("ruby.rb", "puts 123")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-    end
-
-    context "for a CoffeeScript file" do
-      it "is processed with a coffee.js extension" do
-        commit_file = stub_commit_file("test.js.coffee", "foo ->")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to eq ["Empty function"]
-      end
-
-      it "is processed with a coffee.erb extension" do
-        commit_file = stub_commit_file(
-          "test.coffee.erb",
-          "class strange_ClassNAME",
-        )
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to eq [
-          "Class name should be UpperCamelCased",
-        ]
-      end
-
-      context "with style violations" do
-        it "returns violations" do
-          commit_file = stub_commit_file("test.coffee", "foo: ->")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to eq ["Empty function"]
-        end
-      end
-
-      context "without style violations" do
-        it "returns no violations" do
-          commit_file = stub_commit_file("test.coffee", "alert('Hello World')")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-    end
-
-    context "for a JavaScript file" do
-      context "when the default javascript linter JSHint is enabled" do
-        it "creates violations" do
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => <<-EOS.strip_heredoc
-              javascript:
-                enabled: true
-            EOS
-          )
-          pull_request = stub_pull_request(
-            commit_files: [commit_file],
-            head_commit: head_commit,
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-
-      context "when Eslint is enabled" do
-        it "creates violations" do
-          hound_config_content = <<-EOS.strip_heredoc
-            eslint:
-              enabled: true
-              config_file: config/.eslintrc
-          EOS
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => hound_config_content,
-            "config/.eslintrc" => "{}",
-          )
-          pull_request = stub_pull_request(
-            commit_files: [commit_file],
-            head_commit: head_commit,
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-
-      context "when JSCS is enabled" do
-        it "creates violations" do
-          hound_config_content = <<-EOS.strip_heredoc
-            jscs:
-              enabled: true
-              config_file: config/.jscsrc
-          EOS
-          commit_file = stub_commit_file("test.js", "var test = 'test'")
-          head_commit = stub_head_commit(
-            HoundConfig::CONFIG_FILE => hound_config_content,
-            "config/.jscsrc" => "{}",
-          )
-          pull_request = stub_pull_request(
-            commit_files: [commit_file],
-            head_commit: head_commit,
-          )
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to be_empty
-        end
-      end
-    end
-
-    context "for a SCSS file" do
-      it "creates violations" do
-        commit_file = stub_commit_file("test.scss", "* { color: red; }")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to be_empty
-      end
-    end
-
-    context "for a Python file" do
-      it "creates violations" do
-        commit_file = stub_commit_file("test.py", "import this")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to be_empty
-      end
-    end
-
-    context "for a Haml file" do
-      context "with style violations" do
-        it "returns violations" do
-          commit_file = stub_commit_file("test.haml", "%div.message 123")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-          message = "`%div.message` can be written as `.message` since `%div` "\
-            "is implicit"
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).to include message
-        end
-      end
-
-      context "without style violations" do
-        it "returns no violations" do
-          commit_file = stub_commit_file("test.haml", ".foo 123")
-          pull_request = stub_pull_request(commit_files: [commit_file])
-
-          violation_messages = pull_request_violations(pull_request)
-
-          expect(violation_messages).not_to include(
-            "`%div.foo` can be written as `.foo` since `%div` is implicit",
-          )
-        end
-      end
-    end
-
-    context "for a Markdown file" do
-      it "creates violations" do
-        commit_file = stub_commit_file("test.md", "# Hello!")
-        pull_request = stub_pull_request(commit_files: [commit_file])
-
-        violation_messages = pull_request_violations(pull_request)
-
-        expect(violation_messages).to be_empty
-      end
     end
 
     context "with unsupported file type" do
@@ -260,15 +43,27 @@ describe StyleChecker do
         )
         pull_request = stub_pull_request(commit_files: [commit_file])
 
-        violation_messages = pull_request_violations(pull_request)
+        violation_messages = pull_request_violation_messages(pull_request)
 
         expect(violation_messages).to be_empty
       end
     end
   end
 
-  def pull_request_violations(pull_request)
-    build = build(:build)
+  def pull_request_file_reviews(pull_request)
+    repo = build(:repo, owner: build(:owner, config_enabled: false))
+    build = build(:build, repo: repo)
+
+    StyleChecker.new(pull_request, build).review_files
+
+    build.file_reviews
+  end
+
+  def pull_request_violation_messages(pull_request)
+    build = build(
+      :build,
+      repo: build(:repo, owner: build(:owner, config_enabled: false)),
+    )
     StyleChecker.new(pull_request, build).review_files
 
     build.violations.flat_map(&:messages)

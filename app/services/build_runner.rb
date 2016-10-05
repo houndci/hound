@@ -7,7 +7,7 @@ class BuildRunner
     end
   rescue Config::ParserError => exception
     report_config_file_as_invalid(exception)
-  rescue Octokit::NotFound
+  rescue Octokit::NotFound, Octokit::Unauthorized
     remove_current_user_membership
     raise
   end
@@ -24,7 +24,9 @@ class BuildRunner
     upsert_owner
     build = create_build
     review_files(build)
-    report_on_build(build)
+    if build.file_reviews.empty?
+      set_no_violations_status
+    end
   end
 
   def relevant_pull_request?
@@ -60,14 +62,6 @@ class BuildRunner
     @repo ||= Repo.active.find_by(github_id: payload.github_repo_id)
   end
 
-  def report_on_build(build)
-    BuildReport.run(
-      pull_request: pull_request,
-      build: build,
-      token: user_token.token,
-    )
-  end
-
   def track_subscribed_build_started
     if repo.subscription
       user = repo.subscription.user
@@ -99,5 +93,9 @@ class BuildRunner
       commit_sha: payload.head_sha,
       linter_name: exception.linter_name,
     )
+  end
+
+  def set_no_violations_status
+    commit_status.set_success(0)
   end
 end

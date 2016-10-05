@@ -7,7 +7,7 @@ describe Config::Go do
   describe "#content" do
     it "returns an empty string" do
       hound_config = double("HoundConfig")
-      config = Config::Go.new(hound_config, "go")
+      config = Config::Go.new(hound_config)
 
       expect(config.content).to eq ""
     end

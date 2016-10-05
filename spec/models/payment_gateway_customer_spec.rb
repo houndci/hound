@@ -54,27 +54,6 @@ describe PaymentGatewayCustomer do
     end
   end
 
-  describe "#card_last4" do
-    context "when a customer has a card in stripe" do
-      it "returns last 4 from the customers card" do
-        user = build_stubbed(:user, stripe_customer_id: stripe_customer_id)
-        stub_customer_find_request
-        payment_gateway_customer = PaymentGatewayCustomer.new(user)
-
-        expect(payment_gateway_customer.card_last4).to eq "4242"
-      end
-    end
-
-    context "when a customer does not have a card in stripe" do
-      it "returns a null object" do
-        user = build_stubbed(:user, stripe_customer_id: nil)
-        payment_gateway_customer = PaymentGatewayCustomer.new(user)
-
-        expect(payment_gateway_customer.card_last4).to eq ""
-      end
-    end
-  end
-
   describe "#customer" do
     context "when stripe_customer_id is present" do
       it "retrieve customer data" do

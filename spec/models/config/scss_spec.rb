@@ -53,6 +53,6 @@ describe Config::Scss do
       },
     )
 
-    Config::Scss.new(hound_config, "scss")
+    Config::Scss.new(hound_config)
   end
 end

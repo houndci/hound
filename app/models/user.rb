@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   has_many :memberships, dependent: :destroy
   has_many :repos, through: :memberships
+  has_many :builds, through: :repos
   has_many :subscribed_repos, through: :subscriptions, source: :repo
   has_many :subscriptions
 
@@ -57,7 +58,8 @@ class User < ActiveRecord::Base
   def repos_by_activation_ability
     repos.
       order("memberships.admin DESC").
-      order(active: :desc, full_github_name: :asc)
+      order(active: :desc).
+      order("LOWER(full_github_name) ASC")
   end
 
   private

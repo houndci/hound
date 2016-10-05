@@ -1,0 +1,86 @@
+$dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
+
+.organization {
+  border: 1px solid $base-border-color;
+  border-radius: $base-border-radius;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.organization-header {
+  align-items: center;
+  background-color: $base-background-color;
+  border-radius: $base-border-radius $base-border-radius 0 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1em 2em;
+
+  @include media($large-screen) {
+    flex-direction: column;
+    padding: 1em;
+  }
+}
+
+.organization-header-config {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+}
+
+.organization-header-label {
+  color: $light-font-color;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.organization-header-select {
+  @include ellipsis(300px);
+  appearance: none;
+  background: $dropdown-arrow no-repeat calc(100% - 12px) calc(50% + 1px);
+  border: 2px solid $base-border-color;
+  border-radius: 3px;
+  color: $medium-font-color;
+  cursor: pointer;
+  margin: auto 0.5em;
+  padding: 7px 2em 9px 1em;
+  position: relative;
+
+  &:focus {
+    border: 2px solid $purple;
+    outline: 0;
+  }
+}
+
+.organization-header-title {
+  @include ellipsis;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+.organization-header-toggle {
+  align-items: center;
+  display: flex;
+
+  @include media($large-screen) {
+    margin: 1em auto;
+  }
+}
+
+.organization-header-toggle-input {
+  @include size(0);
+  opacity: 0;
+
+  &:checked + label::before {
+    background: $purple;
+    width: 50px;
+  }
+
+  &:checked + label::after {
+    box-shadow: inset 0 0 0 1px $purple, 0 2px 4px rgba($black, 0.2);
+    left: 20px;
+  }
+}

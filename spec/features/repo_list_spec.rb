@@ -15,12 +15,12 @@ feature "Repo list", js: true do
 
     within ".repo:nth-of-type(1)" do
       expect(page).to have_text activatable_repo.full_github_name
-      expect(page).to have_css ".toggle"
+      expect(page).to have_css ".repo-toggle"
     end
     within ".repo:nth-of-type(2)" do
       expect(page).to have_text restricted_repo.full_github_name
       expect(page).to have_text I18n.t("cannot_activate_repo")
-      expect(page).not_to have_css ".toggle"
+      expect(page).not_to have_css ".repo-toggle"
     end
   end
 
@@ -54,7 +54,7 @@ feature "Repo list", js: true do
     repo2 = create_repo(full_github_name: "bar")
 
     sign_in_as(user)
-    find(".search").set("fo")
+    find(".repo-search-tools-input").set("fo")
 
     expect(page).to have_text repo1.full_github_name
     expect(page).not_to have_text repo2.full_github_name
@@ -93,14 +93,14 @@ feature "Repo list", js: true do
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
 
     sign_in_as(user, token)
-    find("li.repo .toggle").click
+    find(".repo .repo-toggle").click
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".repo--active")
     expect(user.repos.active.count).to eq(1)
 
     visit repos_path
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".repo--active")
     expect(user.repos.active.count).to eq(1)
   end
 
@@ -112,14 +112,14 @@ feature "Repo list", js: true do
     stub_hook_creation_request(repo.full_github_name, hook_url, token)
 
     sign_in_as(user, token)
-    find(".repos .toggle").click
+    find(".repos .repo-toggle").click
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".repo--active")
     expect(user.repos.active.count).to eq(1)
 
     visit repos_path
 
-    expect(page).to have_css(".active")
+    expect(page).to have_css(".repo--active")
     expect(user.repos.active.count).to eq(1)
   end
 
@@ -131,14 +131,14 @@ feature "Repo list", js: true do
     stub_remove_collaborator_request(username, repo.full_github_name, token)
 
     sign_in_as(user, token)
-    find(".repos .toggle").click
+    find(".repos .repo-toggle").click
 
-    expect(page).not_to have_css(".active")
+    expect(page).not_to have_css(".repo--active")
     expect(user.repos.active.count).to eq(0)
 
     visit current_path
 
-    expect(page).not_to have_css(".active")
+    expect(page).not_to have_css(".repo--active")
     expect(user.repos.active.count).to eq(0)
   end
 
@@ -150,9 +150,9 @@ feature "Repo list", js: true do
     stub_remove_collaborator_request(username, repo.full_github_name, token)
 
     sign_in_as(user, token)
-    find(".repos .toggle").click
+    find(".repos .repo-toggle").click
 
-    expect(page).not_to have_css(".active")
+    expect(page).not_to have_css(".repo--active")
     expect(user.repos.active.count).to eq(0)
 
     visit current_path

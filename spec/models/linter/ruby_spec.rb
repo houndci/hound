@@ -20,14 +20,14 @@ describe Linter::Ruby do
   end
 
   describe "#file_review" do
-    include ConfigurationHelper
-
-    it "returns a saved and completed file review" do
+    it "returns a saved and incomplete file review" do
       linter = build_linter
+      commit_file = build_commit_file(filename: "lib/a.rb")
 
-      result = linter.file_review(build_file("test"))
+      result = linter.file_review(commit_file)
 
       expect(result).to be_persisted
+<<<<<<< HEAD
       expect(result).to be_completed
     end
 
@@ -639,85 +639,43 @@ describe Linter::Ruby do
       def thoughtbot_violations_in(content)
         violations_in(content, repository_owner_name: "thoughtbot")
       end
+=======
+      expect(result).not_to be_completed
+>>>>>>> 0471184ba96cc5c8871c49cd8ab602e31f0c43f0
     end
 
-    describe "#file_included?" do
-      context "with excluded file" do
-        it "returns false" do
-          config = stub_ruby_config(
-            "AllCops" => { "Exclude" => ["ignore.rb"] },
-          )
-          file = double("CommitFile", filename: "ignore.rb")
-          linter = build_linter(config: config)
+    it "schedules a review job" do
+      build = build(:build, commit_sha: "foo", pull_request_number: 123)
+      linter = build_linter(build)
+      stub_ruby_config({})
+      commit_file = build_commit_file(filename: "lib/a.rb")
+      allow(Resque).to receive(:enqueue)
 
-          expect(linter.file_included?(file)).to eq false
-        end
-      end
+      linter.file_review(commit_file)
 
-      context "with included file" do
-        it "returns true" do
-          config = stub_ruby_config("AllCops" => { "Exclude" => [] })
-          file = double("CommitFile", filename: "app.rb")
-          linter = build_linter(config: config)
-
-          expect(linter.file_included?(file)).to eq true
-        end
-      end
-    end
-
-    private
-
-    def violations_in(
-      content,
-      config: stub_ruby_config,
-      repository_owner_name: "joe"
-    )
-      hound_config = build_hound_config
-      linter = build_linter(
-        hound_config: hound_config,
-        config: config,
-        repository_owner_name: repository_owner_name,
-      )
-
-      linter.
-        file_review(build_file(content)).
-        violations.
-        flat_map(&:messages)
-    end
-
-    def violations_with_config(config = stub_ruby_config)
-      content = <<-CODE.strip_heredoc
-        { :foo => "hello world" }
-      CODE
-
-      violations_in(content, config: config)
-    end
-
-    def build_linter(
-      hound_config: build_hound_config,
-      config: stub_ruby_config,
-      repository_owner_name: "not_thoughtbot"
-    )
-      Linter::Ruby.new(
-        hound_config: hound_config,
-        build: build(:build),
-        repository_owner_name: repository_owner_name,
+      expect(Resque).to have_received(:enqueue).with(
+        RubocopReviewJob,
+        filename: commit_file.filename,
+        commit_sha: build.commit_sha,
+        linter_name: "ruby",
+        pull_request_number: build.pull_request_number,
+        patch: commit_file.patch,
+        content: commit_file.content,
+        config: "--- {}\n",
       )
     end
+  end
 
-    def stub_ruby_config(config = {})
-      stubbed_ruby_config = double("RubyConfig", content: config)
-      allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
+  private
 
-      stubbed_ruby_config
-    end
+  def stub_ruby_config(config = {})
+    stubbed_ruby_config = instance_double(
+      Config::Ruby,
+      content: config,
+      serialize: Config::Serializer.yaml(config),
+    )
+    allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
 
-    def build_hound_config
-      double("HoundConfig", enabled_for?: true, content: "")
-    end
-
-    def build_file(content)
-      build_commit_file(filename: "app/models/user.rb", content: content)
-    end
+    stubbed_ruby_config
   end
 end

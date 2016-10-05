@@ -20,7 +20,12 @@ describe Config::Base do
   describe "#content" do
     context "when there is no config content for the given linter" do
       it "does not raise" do
-        config = build_config(linter_name: "unconfigured_linter")
+        hound_config = instance_double(
+          "HoundConfig",
+          commit: instance_double("Commit", file_content: ""),
+          content: {},
+        )
+        config = build_config(hound_config: hound_config)
 
         expect { config.content }.not_to raise_error
       end
@@ -104,7 +109,7 @@ describe Config::Base do
             "linter" => { "config_file" => "config-file.txt" },
           },
         )
-        config = Config::Base.new(hound_config, "linter")
+        config = Config::Base.new(hound_config)
 
         expect { config.content }.to raise_error(
           AttrExtras::MethodNotImplementedError,
@@ -114,24 +119,8 @@ describe Config::Base do
     end
   end
 
-  describe "#excluded_files" do
-    it "returns an empty array" do
-      config = build_config
-
-      expect(config.excluded_files).to eq []
-    end
-  end
-
-  describe "#linter_names" do
-    it "returns a list of names the linter is accessible under" do
-      config = build_config(linter_name: "test")
-
-      expect(config.linter_names).to eq ["test"]
-    end
-  end
-
-  def build_config(hound_config: build_hound_config, linter_name: "test")
-    Config::Test.new(hound_config, linter_name)
+  def build_config(hound_config: build_hound_config)
+    Config::Test.new(hound_config)
   end
 
   def build_hound_config

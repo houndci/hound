@@ -1,68 +1,71 @@
+# frozen_string_literal: true
 class HoundConfig
-  CONFIG_FILE = ".hound.yml"
-  BETA_LANGUAGES = %w(
+  LINTERS = [
+    Linter::CoffeeScript,
+    Linter::Eslint,
+    Linter::Go,
+    Linter::Haml,
+    Linter::Jshint,
+    Linter::Remark,
+    Linter::Python,
+    Linter::Ruby,
+    Linter::Scss,
+    Linter::Swift,
+  ].freeze
+  LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
+  BETA_LINTERS = %w(
     eslint
-    jscs
-    jshint
     remark
     python
-  )
-  LANGUAGES = %w(
-    coffeescript
-    go
-    haml
-    javascript
-    python
-    ruby
-    scss
-    swift
-  )
+  ).freeze
+  CONFIG_FILE = ".hound.yml"
 
   attr_reader_initialize :commit
 
   def content
-    @content ||= parse(commit.file_content(CONFIG_FILE))
+    @_content ||= default_config.deep_merge(resolved_conflicts_config)
   end
 
-  def enabled_for?(name)
-    configured?(name)
+  def linter_enabled?(name)
+    key = name.downcase
+    config = options_for(key)
+
+    !!config["enabled"]
   end
 
   def fail_on_violations?
-    !!(content["fail_on_violations"])
+    !!content["fail_on_violations"]
   end
 
   private
+
+  def default_config
+    LINTER_NAMES.each.with_object({}) do |name, config|
+      config[name] = { "enabled" => !BETA_LINTERS.include?(name) }
+    end
+  end
+
+  def resolved_aliases_config
+    ResolveConfigAliases.run(normalized_config)
+  end
+
+  def normalized_config
+    NormalizeConfig.run(parsed_config)
+  end
+
+  def resolved_conflicts_config
+    ResolveConfigConflicts.run(resolved_aliases_config)
+  end
+
+  def parsed_config
+    parse(commit.file_content(CONFIG_FILE))
+  end
 
   def parse(file_content)
     Config::Parser.yaml(file_content) || {}
   end
 
-  def configured?(name)
-    key = normalize_key(name)
-    config = options_for(key)
-
-    enabled?(config)
-  end
-
-  def enabled?(config)
-    config["enabled"] || config["Enabled"]
-  end
-
   def options_for(name)
-    config = content[name] || {}
-    default_options_for(name).merge(config)
-  end
-
-  def default_options_for(name)
-    { "enabled" => !beta?(name) }
-  end
-
-  def beta?(name)
-    BETA_LANGUAGES.include?(name)
-  end
-
-  def normalize_key(key)
-    key.downcase.sub("_", "")
+    content.fetch(name, {})
   end
 end

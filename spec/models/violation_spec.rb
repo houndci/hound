@@ -34,15 +34,4 @@ describe Violation do
       expect(violation.messages_count).to eq 2
     end
   end
-
-  describe "after create callbacks" do
-    it "increments the build's violations count by the number of messages" do
-      violation = build(:violation, messages: ["foo", "bar"])
-
-      violation.save
-
-      violation.reload
-      expect(violation.file_review.build.violations_count).to eq 2
-    end
-  end
 end

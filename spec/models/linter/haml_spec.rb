@@ -1,8 +1,6 @@
 require "rails_helper"
 
 describe Linter::Haml do
-  let(:filename) { "app/views/show.html.haml" }
-
   describe ".can_lint?" do
     context "given a .haml file" do
       it "returns true" do
@@ -22,166 +20,48 @@ describe Linter::Haml do
   end
 
   describe "#file_review" do
-    it "returns a saved and completed file review" do
-      linter = build_linter({})
-      file = build_file("")
+    it "returns a saved and incomplete file review" do
+      linter = build_linter
+      commit_file = build_commit_file(filename: "lib/a.haml")
 
-      result = linter.file_review(file)
+      result = linter.file_review(commit_file)
 
       expect(result).to be_persisted
-      expect(result).to be_completed
+      expect(result).not_to be_completed
     end
 
-    context "with default configuration" do
-      context "with an implicit %div violation" do
-        it "returns violations" do
-          content = "%div#container Hello"
+    it "schedules a review job" do
+      build = build(:build, commit_sha: "foo", pull_request_number: 123)
+      linter = build_linter(build)
+      stub_haml_config({})
+      commit_file = build_commit_file(filename: "lib/a.haml")
+      allow(Resque).to receive(:enqueue)
 
-          expect(violations_in(content)).not_to be_empty
-        end
-      end
-    end
+      linter.file_review(commit_file)
 
-    context "when linter excludes a file" do
-      it "does not return violations" do
-        config = {
-          "linters" => {
-            "ClassesBeforeIds" => {
-              "enabled" => true,
-              "exclude" => filename,
-            }
-          }
-        }
-        content = "%div#bar.foo\n"
-
-        expect(violations_in(content, config)).not_to be_empty
-      end
-    end
-
-    context "with violations in file" do
-      it "returns violations" do
-        content = <<-EOS.strip_heredoc
-          .main
-            %div#foo
-              %span{class: "sky" } Hello
-        EOS
-        config = {
-          "linters" => {
-            "SpaceInsideHashAttributes" => {
-              "enabled" => true,
-              "style" => "no_space",
-            },
-            "ImplicitDiv" => {
-              "enabled" => true,
-            },
-          },
-        }
-
-        expect(violations_in(content, config)).to match_array [
-          "Avoid defining `class` in attributes hash for static class names",
-          "`%div#foo` can be written as `#foo` since `%div` is implicit",
-          "Hash attribute should end with no space before the closing brace",
-        ]
-      end
-
-      context "with an invalid HAML format" do
-        it "returns the violation with the line number" do
-          content = <<-EOS.strip_heredoc
-            .main
-              %div
-                  %span
-          EOS
-          patch = <<-EOS.strip_heredoc
-            @@ -1,1 +1,3 @@
-              .main
-            +   %div
-            +       %span
-          EOS
-          commit_file = CommitFile.new(
-            filename: "foo.haml",
-            commit: nil,
-            patch: patch,
-          )
-          linter = build_linter({})
-          allow(commit_file).to receive(:content).and_return(content)
-
-          violations = linter.file_review(commit_file).violations
-
-          expect(violations.count).to eq 1
-          expect(violations.first.line_number).to eq 3
-          expect(violations.first.messages).to eq [
-            "The line was indented 2 levels deeper than the previous line.",
-          ]
-        end
-      end
-    end
-
-    context "when RuboCop linter is enabled" do
-      it "does not raise missing dir for Tempfile error" do
-        content = <<-EOS.strip_heredoc
-          %div
-        EOS
-        commit_file = build_commit_file(
-          filename: "/does/not/exist/foo.haml",
-          content: content,
-        )
-        config = {
-          "linters" => {
-            "RuboCop" => { "enabled" => true },
-          },
-        }
-        linter = build_linter(config)
-
-        expect { linter.file_review(commit_file) }.not_to raise_error
-      end
-    end
-  end
-
-  describe "#file_included?" do
-    context "with excluded file" do
-      it "returns false" do
-        config = { "exclude" => filename }
-        linter = build_linter(config)
-
-        expect(linter.file_included?(filename)).to eq false
-      end
-    end
-
-    context "with non-excluded file" do
-      it "returns true" do
-        config = { "exclude" => "app/views/clearance/**" }
-        linter = build_linter(config)
-
-        expect(linter.file_included?(filename)).to eq true
-      end
+      expect(Resque).to have_received(:enqueue).with(
+        HamlReviewJob,
+        filename: commit_file.filename,
+        commit_sha: build.commit_sha,
+        linter_name: "haml",
+        pull_request_number: build.pull_request_number,
+        patch: commit_file.patch,
+        content: commit_file.content,
+        config: "{}",
+      )
     end
   end
 
   private
 
-  def violations_in(content, config = {})
-    linter = build_linter(config)
-    linter.file_review(build_file(content)).violations.
-      flat_map(&:messages)
-  end
-
-  def build_linter(config)
-    hound_config = double("HoundConfig", enabled_for?: true, content: config)
-    stub_haml_config(config)
-    Linter::Haml.new(
-      hound_config: hound_config,
-      build: build(:build),
-      repository_owner_name: "ralph",
+  def stub_haml_config(config = {})
+    stubbed_haml_config = double(
+      "HamlConfig",
+      content: config,
+      serialize: config.to_s,
     )
-  end
+    allow(Config::Haml).to receive(:new).and_return(stubbed_haml_config)
 
-  def stub_haml_config(content)
-    config = double("HamlConfig", content: content)
-    allow(Config::Haml).to receive(:new).and_return(config)
-    config
-  end
-
-  def build_file(content)
-    build_commit_file(filename: filename, content: content)
+    stubbed_haml_config
   end
 end

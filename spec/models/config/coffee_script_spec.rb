@@ -57,26 +57,17 @@ describe Config::CoffeeScript do
     end
   end
 
-  describe "#linter_names" do
-    it "returns the names that the linter can be reached as" do
-      commit = double("Commit")
-      config = build_config(commit)
-
-      expect(config.linter_names).to eq ["coffee_script", "coffeescript"]
-    end
-  end
-
   def build_config(commit)
     hound_config = double(
       "HoundConfig",
       commit: commit,
       content: {
-        "coffeescript" => {
+        "coffee_script" => {
           "enabled" => true,
           "config_file" => "config/coffeescript.json",
         },
       },
     )
-    Config::CoffeeScript.new(hound_config, "coffee_script")
+    Config::CoffeeScript.new(hound_config)
   end
 end

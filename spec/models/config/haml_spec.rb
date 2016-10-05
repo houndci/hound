@@ -71,6 +71,6 @@ describe Config::Haml do
         },
       },
     )
-    Config::Haml.new(hound_config, "haml")
+    Config::Haml.new(hound_config)
   end
 end

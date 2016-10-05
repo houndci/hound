@@ -17,22 +17,38 @@ describe AnalyticsHelper do
         expect(analytics?).to eq false
       end
     end
+  end
 
-    describe "#identify_hash" do
-      it "includes user data" do
-        user = create(:user)
-        repo = create(:repo, :active, users: [user])
+  describe "#identify_hash" do
+    it "includes user data" do
+      user = create(:user)
+      repo = create(:repo, :active, users: [user])
 
-        identify_hash = identify_hash(user)
+      identify_hash = identify_hash(user)
 
-        expect(identify_hash).to eq(
-          created: user.created_at,
-          email: user.email_address,
-          username: user.github_username,
-          user_id: user.id,
-          active_repo_ids: [repo.id],
-        )
-      end
+      expect(identify_hash).to eq(
+        created: user.created_at,
+        email: user.email_address,
+        username: user.github_username,
+        user_id: user.id,
+        active_repo_ids: [repo.id],
+      )
+    end
+  end
+
+  describe "#intercom_hash" do
+    it "includes user data" do
+      user = build_stubbed(:user)
+
+      expected_intercom_hash = OpenSSL::HMAC.hexdigest(
+        "sha256",
+        Hound::INTERCOM_API_SECRET,
+        user.id.to_s,
+      )
+
+      expect(intercom_hash(user)).to eq(
+        "Intercom" => { userHash: expected_intercom_hash },
+      )
     end
   end
 end
