@@ -10,7 +10,7 @@ describe CommitFile do
     context "with a changed line" do
       it "returns a line at the given line number" do
         line = double("Line", number: 1)
-        patch = double("Patch", changed_lines: [line])
+        patch = double("Patch", changed_lines: { 1 => line })
         allow(Patch).to receive(:new).and_return(patch)
 
         expect(commit_file.line_at(1)).to eq line
@@ -20,7 +20,7 @@ describe CommitFile do
     context "without a changed line" do
       it "returns nil" do
         line = double("Line", number: 1)
-        patch = double("Patch", changed_lines: [line])
+        patch = double("Patch", changed_lines: { 1 => line })
         allow(Patch).to receive(:new).and_return(patch)
 
         expect(commit_file.line_at(2)).to be_an UnchangedLine
