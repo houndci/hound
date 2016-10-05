@@ -6,8 +6,7 @@ describe Patch do
   describe "#changed_lines" do
     it 'returns lines that were modified' do
       patch_text = File.read('spec/support/fixtures/patch.diff')
-      changed_lines =
-        Patch.new(patch_text).changed_lines.each_value
+      changed_lines = Patch.new(patch_text).changed_lines.each_value
 
       expect(changed_lines.size).to eq(3)
       expect(changed_lines.map(&:number)).to match_array [14, 22, 54]
