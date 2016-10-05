@@ -170,7 +170,7 @@ GEM
     momentjs-rails (2.11.1)
       railties (>= 3.1)
     mono_logger (1.1.0)
-    multi_json (1.11.1)
+    multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     neat (1.7.2)
@@ -272,7 +272,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rollbar (2.8.0)
+    rollbar (2.13.2)
       multi_json
     rspec-core (3.4.1)
       rspec-support (~> 3.4.0)
@@ -416,4 +416,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.1
+   1.13.2
