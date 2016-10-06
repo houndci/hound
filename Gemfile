@@ -36,6 +36,10 @@ gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 2.7.2"
 
+gem 'capistrano', '~> 3.4.0'
+gem 'capistrano-docker', git: 'https://github.com/netguru/capistrano-docker.git', tag: 'v0.2.7'
+gem 'rollbar'
+
 group :staging, :production do
   gem "rack-timeout"
   gem "rails_12factor"

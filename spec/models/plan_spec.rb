@@ -46,7 +46,7 @@ describe Plan do
         private_repo = double("Repo", private?: true, bulk?: false)
         plan = Plan.new(private_repo)
 
-        expect(plan.price).to eq 12
+        expect(plan.price).to eq 0
       end
     end
 
