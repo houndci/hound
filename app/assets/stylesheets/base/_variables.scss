@@ -1,0 +1,55 @@
+$sans-serif: "Lato", sans-serif;
+$serif: "Georgia", serif;
+
+$green: rgb(132, 240, 156);
+$purple: rgb(168, 115, 209);
+$red: rgb(255, 123, 123);
+$teal: #379a75;
+$gold: rgb(226, 206, 0);
+$tan: rgb(255, 220, 173);
+$white: #fff;
+$black: #000;
+
+$ruby: rgb(193, 30, 29);
+$javascript: rgb(246, 221, 0);
+$coffee-script: rgb(19, 18, 38);
+$scss: rgb(196, 73, 137);
+
+$inactive-color: #999;
+$active-color: $teal;
+$repo-list-toggle-size: 1.5rem;
+
+$base-background-color: rgb(248, 248, 248);
+$base-border-color: rgb(220, 220, 220);
+$base-font-color: rgb(100, 100, 100);
+$light-font-color: rgb(190, 190, 190);
+$medium-font-color: rgb(140, 140, 140);
+$base-accent-color: $purple;
+$table-heading-background-color: rgb(245, 245, 245);
+
+$icon-font: "FontAwesome";
+$icon-dropdown: '\f0d7';
+$icon-dropup: '\f0d8';
+$icon-lock: '\f023';
+
+$medium-screen-size: 47.5em;
+
+$small-screen: new-breakpoint(max-width em(540) 2);
+$medium-screen: new-breakpoint(max-width $medium-screen-size 4);
+$large-screen: new-breakpoint(max-width em(920) 8);
+
+$base-border-radius: 5px;
+
+$base-spacing: 1.25em;
+$xsmall-spacing: $base-spacing * 0.5;
+$small-spacing: $base-spacing * 0.75;
+$medium-spacing: $base-spacing * 1.5;
+$large-spacing: $base-spacing * 3;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+
+// Transition
+$base-transition-timing: 0.2s;
+$base-easing: cubic-bezier(0.39, 0.575, 0.565, 1);
+$base-transition: all $base-transition-timing $base-easing;

@@ -11,11 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513205551) do
+ActiveRecord::Schema.define(version: 20160712203443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
+
+  create_table "blacklisted_pull_requests", force: :cascade do |t|
+    t.string   "full_repo_name",      null: false
+    t.integer  "pull_request_number", null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
 
   create_table "builds", force: :cascade do |t|
     t.text     "violations_archive"
@@ -70,11 +77,13 @@ ActiveRecord::Schema.define(version: 20160513205551) do
   add_index "memberships", ["user_id", "repo_id"], name: "index_memberships_on_user_id_and_repo_id", unique: true, using: :btree
 
   create_table "owners", force: :cascade do |t|
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "github_id",                    null: false
-    t.string   "name",                         null: false
-    t.boolean  "organization", default: false, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "github_id",                      null: false
+    t.string   "name",                           null: false
+    t.boolean  "organization",   default: false, null: false
+    t.boolean  "config_enabled", default: false, null: false
+    t.string   "config_repo"
   end
 
   add_index "owners", ["github_id"], name: "index_owners_on_github_id", unique: true, using: :btree

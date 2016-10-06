@@ -1,0 +1,596 @@
+.home.home-index {
+  .content {
+    margin: 0;
+    max-width: none;
+    padding: 0;
+  }
+
+  .section-content {
+    @include outer-container;
+  }
+
+  .section-title {
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 2.8em;
+    font-weight: $font-weight-light;
+    letter-spacing: 1px;
+    margin: 0 0 0.4em 0;
+
+    @include media($medium-screen) {
+      font-size: 2.2em;
+    }
+
+    @include media($small-screen) {
+      font-size: 1.8em;
+    }
+  }
+
+  h4 {
+    font-weight: 700;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    margin: 0 0 0.6em 0;
+  }
+
+  p {
+    letter-spacing: 1px;
+    margin: 0;
+  }
+}
+
+section.intro {
+  .hero {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    padding: 7em 0 11em;
+    text-align: center;
+
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+      padding: 4em 1em 7em;
+    }
+
+    @include media($small-screen) {
+      float: none;
+      margin: 0;
+      padding: 2em 1em 4em;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 3.8em;
+      font-weight: $font-weight-light;
+      letter-spacing: 1px;
+      margin: 0 0 0.4em 0;
+
+      @include media($medium-screen) {
+        font-size: 3em;
+      }
+
+      @include media($small-screen) {
+        font-size: 2.7em;
+      }
+    }
+
+    h2 {
+      font-size: 1.2em;
+      font-weight: $font-weight-light;
+      letter-spacing: 1px;
+      margin: 0;
+
+      @include media($small-screen) {
+        font-size: 1em;
+      }
+    }
+
+    .cta {
+      padding-top: 3em;
+
+      @include media($small-screen) {
+        padding-top: 2em;
+      }
+
+      a.auth {
+        @include large-button(solid, $purple, lighten($purple, 10%));
+
+        @include media($small-screen) {
+          padding: 0.8em 1.4em;
+        }
+
+        i, span {
+          position: relative;
+          z-index: 2;
+        }
+      }
+    }
+  }
+
+  .supported-languages {
+    margin-bottom: 8em;
+    padding: 0 1em;
+    position: relative;
+    text-align: center;
+
+    @include media($small-screen) {
+      margin-bottom: 4em;
+    }
+
+    &:before {
+      @include position(absolute, 0.9em 0 0 30%);
+      border-top: 1px solid $base-border-color;
+      content: '';
+      height: 0px;
+      width: 40%;
+      z-index: 1;
+
+      @include media($medium-screen) {
+        left: 10%;
+        width: 80%;
+      }
+
+      @include media($small-screen) {
+        left: 0%;
+        width: 100%;
+      }
+    }
+
+    h4 {
+      background: $white;
+      display: inline-block;
+      font-family: $serif;
+      font-style: italic;
+      font-weight: $font-weight-light;
+      margin: 0 0 3em;
+      padding: 0 0.8em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .inner-wrapper {
+      @include clearfix;
+    }
+
+    ul.languages {
+      @include outer-container;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 75%;
+
+      @include media($medium-screen) {
+        margin: 0;
+        width: 100%;
+      }
+
+      li.language {
+        text-align: center;
+        vertical-align: middle;
+        width: 25%;
+        margin-bottom: 2em;
+
+        @include media($small-screen) {
+          display: inline-block;
+          width: 100%;
+
+          + .language {
+            padding-top: 2em;
+          }
+        }
+
+        .language-logo {
+          display: inline-block;
+          margin-bottom: 0.8em;
+
+          img {
+            @include size(100px);
+            display: block;
+            margin: 0;
+          }
+        }
+
+        h5 {
+          color: $light-font-color;
+          font-size: 0.9em;
+          font-weight: 700;
+          letter-spacing: 2px;
+          margin: 0;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+}
+
+section.importance {
+  @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
+  background-color: $purple;
+  color: #fff;
+  padding: 5em 1em 10em;
+
+  @include media($small-screen) {
+    padding: 4em 1em 8em;
+  }
+
+  @include media($small-screen) {
+    padding: 3em 1em 6em;
+  }
+
+  .section-title {
+    margin-bottom: 5em;
+
+    h3 {
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      display: inline-block;
+      padding: 0 2em 1.4em;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      margin: 0;
+    }
+  }
+
+  article {
+    @include span-columns(8 of 12);
+    @include shift(2);
+
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+    }
+
+    @include media($small-screen) {
+      float: none;
+      margin: 0;
+      width: 100%;
+    }
+
+    ~ article {
+      margin-top: 3em;
+
+      @include media($medium-screen) {
+        margin-top: 4em;
+      }
+
+      @include media($medium-screen) {
+        margin-top: 5em;
+      }
+    }
+
+    .media-object {
+      @include span-columns(2 of 8, table);
+      text-align: center;
+      vertical-align: middle;
+
+      @include media($medium-screen) {
+        margin-bottom: 1em;
+      }
+
+      .icon {
+        @include size(100px);
+        background: rgba(0,0,0, 0.15);
+        border: 1px solid #fff;
+        border-radius: 50%;
+        display: inline-block;
+        padding-top: 1.8em;
+
+        i.fa {
+          font-size: 3em;
+        }
+      }
+    }
+
+    .media-body {
+      @include span-columns(6 of 8, table);
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      vertical-align: top;
+    }
+
+    .media-body,
+    .media-object {
+      @include media($medium-screen) {
+        display: block;
+        float: none;
+        text-align: center;
+        width: 100%;
+      }
+    }
+  }
+}
+
+section.value {
+  padding: 8em 0 10em;
+
+  @include media($medium-screen) {
+    padding: 6em 1em 8em;
+  }
+
+  @include media($small-screen) {
+    padding: 4em 1em 6em;
+  }
+
+  article {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    @include omega;
+    text-align: center;
+
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+    }
+
+    @include media($small-screen) {
+      float: none;
+      margin: 0;
+      width: 100%;
+    }
+
+    &~ article {
+      border-top: 1px solid $base-border-color;
+      margin-top: 8em;
+      padding-top: 7em;
+
+      @include media($small-screen) {
+        margin-top: 4em;
+        padding-top: 3em;
+      }
+    }
+
+    .media-body {
+      margin-bottom: 5em;
+
+      @include media($small-screen) {
+        margin-bottom: 3em;
+      }
+
+      h3 {
+        margin-bottom: 0.6em;
+      }
+
+      p {
+        font-size: 1.2em;
+        line-height: 1.6em;
+      }
+    }
+
+    figure.media-object {
+      img {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}
+
+section.support {
+  background: rgb(249,249,249);
+  display: none;
+  padding: 4em 0 6em;
+
+  .section-title {
+    margin-bottom: 4em;
+
+    h4 {
+      font-family: $serif;
+      font-style: italic;
+      font-weight: $font-weight-light;
+    }
+  }
+
+  ul.customers {
+    @include clearfix;
+
+    li.customer {
+      @include span-columns(3 of 12);
+
+      img {
+        display: inline-block;
+        width: 60%;
+      }
+    }
+  }
+}
+
+section.configuration {
+  @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
+  color: #fff;
+  padding: 4em 1em;
+
+  figure.media-object {
+    @include span-columns(4 of 12, table);
+    vertical-align: middle;
+
+    @include media($medium-screen) {
+      @include span-columns(8 of 12, block);
+      @include shift(2);
+      float: none;
+      margin-bottom: 2em;
+    }
+
+    @include media($small-screen) {
+      @include span-columns(10 of 12, block);
+      @include shift(1);
+      float: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .media-body {
+    @include span-columns(6 of 12, table);
+    padding-left: $column;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    vertical-align: middle;
+
+    @include media($medium-screen) {
+      display: block;
+      float: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+}
+
+section.pricing {
+  padding: 4em 1em 10em;
+  text-align: center;
+
+  @include media($medium-screen) {
+    padding: 3em 1em 6em;
+  }
+
+  @include media($small-screen) {
+    padding: 2em 1em;
+  }
+
+  .section-title {
+    @include span-columns(10 of 12);
+    @include shift(1);
+    @include omega;
+    margin-bottom: 5em;
+    padding-top: 4em;
+
+    @include media($medium-screen) {
+      margin-bottom: 4em;
+      padding-top: 3em;
+    }
+
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      margin: 0 0 3em;
+      padding-top: 2em;
+      width: 100%;
+    }
+
+    h3 {
+      margin: 0;
+    }
+  }
+
+  article.plans {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    @include omega;
+    margin-bottom: 3em;
+
+    p {
+      margin-top: 3em;
+    }
+
+    @include media($medium-screen) {
+      display: block;
+      float: none;
+      margin: 0 0 3em;
+      width: 100%;
+    }
+  }
+
+  .plan {
+    @include span-columns(4 of 8);
+    border-radius: 4px;
+    border: 2px solid $base-border-color;
+    padding: 0 1em;
+    text-align: center;
+
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      width: 100%;
+
+      + .plan {
+        margin-top: 2em;
+      }
+    }
+
+    h4 {
+      border-bottom: 1px dotted $base-border-color;
+      font-weight: 700;
+      margin: 0em 0em 2em;
+      padding: 2em 0em;
+
+      .fa {
+        display: inline-block;
+        margin-right: 0.4em;
+      }
+    }
+
+    .price {
+      .dollar-amount {
+        padding: 1.4em 0 4em;
+
+        span {
+          font-size: 6em;
+        }
+      }
+    }
+  }
+
+  .cta {
+    padding-top: 4em;
+
+    @include media($small-screen) {
+      padding-top: 2em;
+    }
+
+    .auth {
+      @include large-button(solid, $purple, lighten($purple, 10%));
+
+      @include media($small-screen) {
+        padding: 0.8em 1.4em;
+      }
+    }
+  }
+}
+
+section.security {
+  background: rgb(86,86,86);
+  color: #fff;
+  padding: 4em 1em;
+
+  article {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    @include omega();
+    text-align: center;
+
+    @include media($medium-screen) {
+      @include span-columns(10 of 12);
+      @include shift(1);
+    }
+
+    @include media($small-screen) {
+      display: block;
+      float: none;
+      margin: 0;
+      width: 100%;
+    }
+
+    h4, p {
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+  }
+
+  .actions {
+    padding-top: 2em;
+
+    a.security-policy {
+      @include small-button(outline, #fff, $purple);
+      padding-left: 1.2em;
+      padding-right: 1.2em;
+    }
+  }
+}

@@ -4,7 +4,7 @@ module Linter
       self::FILE_REGEXP === filename
     end
 
-    def initialize(hound_config:, build:, repository_owner_name:)
+    def initialize(hound_config:, build:, repository_owner_name: "")
       @hound_config = hound_config
       @build = build
       @repository_owner_name = repository_owner_name
@@ -24,7 +24,7 @@ module Linter
     end
 
     def enabled?
-      CheckEnabledLinter.run(config)
+      hound_config.linter_enabled?(name)
     end
 
     def file_included?(*)
@@ -55,8 +55,12 @@ module Linter
       Resque.enqueue(job_class, attributes)
     end
 
+    def job_name
+      "#{name.classify}ReviewJob"
+    end
+
     def job_class
-      "#{name.classify}ReviewJob".constantize
+      job_name.constantize
     end
 
     def config

@@ -36,4 +36,30 @@ describe Owner do
       end
     end
   end
+
+  describe "#has_config_repo?" do
+    context "when the owner has a config repo set and enabled" do
+      it "returns true" do
+        owner = create(:owner, config_repo: "org/style", config_enabled: true)
+
+        expect(owner).to have_config_repo
+      end
+    end
+
+    context "when the owner has a config repo set and disabled" do
+      it "returns false" do
+        owner = create(:owner, config_repo: "org/style", config_enabled: false)
+
+        expect(owner).not_to have_config_repo
+      end
+    end
+
+    context "when the owner does not have a config repo set" do
+      it "returns false" do
+        owner = create(:owner, config_repo: "")
+
+        expect(owner).not_to have_config_repo
+      end
+    end
+  end
 end

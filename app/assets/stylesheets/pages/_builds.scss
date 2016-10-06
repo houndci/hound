@@ -1,0 +1,74 @@
+.build-button {
+  background-color: $base-background-color;
+  border: 0;
+  border-bottom-left-radius: $base-border-radius - 1px;
+  border-bottom-right-radius: $base-border-radius - 1px;
+  border-top: 2px solid $base-border-color;
+  color: $light-font-color;
+  font-weight: $font-weight-normal;
+  padding: $small-spacing 0;
+  text-align: center;
+  transition: $base-transition;
+  width: 100%;
+
+  &:hover {
+    background-color: $purple;
+    border-color: $purple;
+    color: $white;
+    cursor: pointer;
+  }
+}
+
+.build-list {
+  margin: $large-spacing auto;
+  max-width: $medium-screen-size;
+}
+
+.build-list-item {
+  border: 2px solid $base-border-color;
+  border-radius: $base-border-radius;
+  margin-bottom: $base-spacing;
+  padding-top: $base-spacing;
+}
+
+.build-meta {
+  @include row;
+  padding: 0 $base-spacing;
+}
+
+.build-pull-request,
+.build-sha {
+  font-weight: $font-weight-light;
+
+  span {
+    color: $light-font-color;
+  }
+}
+
+.build-time {
+  span {
+    background-color: $base-background-color;
+    border-radius: $base-border-radius;
+    color: $light-font-color;
+    font-size: 0.75em;
+    padding: ($xsmall-spacing / 2) $xsmall-spacing;
+  }
+}
+
+.build-org-repo,
+.build-pull-request,
+.build-sha,
+.build-time {
+  @include span-columns(6);
+}
+
+.build-org-repo {
+  font-size: 1.2em;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.build-time,
+.build-sha {
+  text-align: right;
+}

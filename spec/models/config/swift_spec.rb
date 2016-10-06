@@ -40,6 +40,6 @@ describe Config::Swift do
       },
     )
 
-    Config::Swift.new(hound_config, "swift")
+    Config::Swift.new(hound_config)
   end
 end

@@ -1,0 +1,33 @@
+$toggle-switch-border-radius: 15px;
+
+.toggle-switch {
+  @include hide-text;
+  @include size(50px 30px);
+  border-radius: $toggle-switch-border-radius;
+  box-shadow: inset 0 0 0 1px $base-border-color;
+  cursor: pointer;
+  display: inline-block;
+  margin: auto 0.5em;
+  position: relative;
+
+  &::before {
+    @include position(absolute, 0 null null 0);
+    @include size(30px);
+    background: transparentize($purple, 0);
+    border-radius: $toggle-switch-border-radius;
+    content: "";
+    display: block;
+    transition: $base-transition;
+  }
+
+  &::after {
+    @include position(absolute, 0 null null 0);
+    @include size(30px);
+    background: $white;
+    border-radius: $toggle-switch-border-radius;
+    box-shadow: inset 0 0 0 1px rgba($black, 0.2), 0 2px 4px rgba($black, 0.2);
+    content: "";
+    display: block;
+    transition: $base-transition;
+  }
+}

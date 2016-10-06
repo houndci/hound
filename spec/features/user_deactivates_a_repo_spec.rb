@@ -3,7 +3,7 @@ require "rails_helper"
 feature "user deactivates a repo", js: true do
   context "when the user has a subscription" do
     context "when the user does not have a membership" do
-      scenario "successfully deactiavtes the repo" do
+      scenario "successfully deactivates the repo" do
         token = "letmein"
         user = create(:user, token_scopes: "public_repo,user:email")
         repo = create(:repo, :active, private: true)
@@ -21,7 +21,7 @@ feature "user deactivates a repo", js: true do
         )
 
         sign_in_as(user, token)
-        find(".repos .toggle").click
+        find(".repo-toggle").click
 
         expect(page).not_to have_css(".active")
 

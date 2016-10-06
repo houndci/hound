@@ -29,22 +29,6 @@ describe BuildRunner do
         expect(build.payload).to eq ({ payload_stuff: "test" }).to_json
       end
 
-      it "runs the BuildReport to finalize the build" do
-        build_runner = make_build_runner
-        stubbed_github_api
-        pull_request = stubbed_pull_request
-        stubbed_style_checker(violations: [build(:violation)])
-        allow(BuildReport).to receive(:run)
-
-        build_runner.run
-
-        expect(BuildReport).to have_received(:run).with(
-          build: Build.last,
-          pull_request: pull_request,
-          token: Hound::GITHUB_TOKEN,
-        )
-      end
-
       it "reviews files via style checker" do
         build_runner = make_build_runner
         style_checker = stubbed_style_checker
@@ -73,7 +57,7 @@ describe BuildRunner do
         expect(PullRequest).to have_received(:new).with(payload, user.token)
       end
 
-      it "creates GitHub statuses" do
+      it "sets the GitHub status to pending" do
         repo_name = "test/repo"
         repo = create(:repo, :active, name: repo_name)
         payload = stubbed_payload(
@@ -97,11 +81,6 @@ describe BuildRunner do
           repo_name,
           "headsha",
           I18n.t(:pending_status),
-        )
-        expect(github_api).to have_received(:create_success_status).with(
-          repo_name,
-          "headsha",
-          I18n.t(:complete_status, count: 3),
         )
       end
 
@@ -244,6 +223,23 @@ describe BuildRunner do
       end
     end
 
+    context "when no files need to be reviewed" do
+      it "sets the final status as passing" do
+        repo = create(:repo, :active)
+        build_runner = make_build_runner(repo: repo)
+        github_api = stubbed_github_api
+        stubbed_pull_request_with_file("foo.whatever", "hello world")
+
+        build_runner.run
+
+        expect(github_api).to have_received(:create_success_status).with(
+          repo.name,
+          stubbed_payload.head_sha,
+          I18n.t(:complete_status, count: 0),
+        )
+      end
+    end
+
     def stubbed_style_checker(violations: [])
       file_review = build(:file_review, :completed, violations: violations)
       style_checker = double("StyleChecker", review_files: nil)
@@ -300,18 +296,6 @@ describe BuildRunner do
       )
     end
 
-    def stubbed_style_checker_with_config_file(pull_request, file_path, content)
-      config = config_for_file(
-        file_path: file_path,
-        content: content,
-        commit: pull_request.head_commit,
-      )
-      style_checker = StyleChecker.new(pull_request, build(:build))
-      allow(style_checker).to receive(:config).and_return(config)
-
-      style_checker
-    end
-
     def stub_commit(configuration)
       commit = double("Commit")
       hound_config = configuration.delete(:hound_config)
@@ -328,19 +312,6 @@ describe BuildRunner do
         allow(commit).to receive(:file_content).
           with(filename).and_return(contents)
       end
-    end
-
-    def config_for_file(file_path:, content:, commit: double("Commit"))
-      hound_config = <<-EOS.strip_heredoc
-        java_script:
-          enabled: true
-          config_file: #{file_path}
-      EOS
-
-      allow(commit).to receive(:file_content).with(file_path).
-        and_return(content)
-
-      HoundConfig.new(commit)
     end
 
     def configuration_url
@@ -387,11 +358,11 @@ describe BuildRunner do
   end
 
   def stubbed_github_api
-    github_api = double(
+    github_api = instance_double(
       "GithubApi",
       create_pending_status: nil,
       create_success_status: nil,
-      create_error_status: nil
+      create_error_status: nil,
     )
     allow(GithubApi).to receive(:new).and_return(github_api)
 

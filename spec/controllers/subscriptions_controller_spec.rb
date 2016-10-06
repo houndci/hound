@@ -23,15 +23,6 @@ describe SubscriptionsController, "#create" do
         with(repo: repo, github_token: membership.user.token)
       expect(RepoSubscriber).to have_received(:subscribe).
         with(repo, membership.user, "cardtoken")
-      expect(analytics).to have_tracked("Repo Activated").
-        for_user(membership.user).
-        with(
-          properties: {
-            name: repo.name,
-            private: true,
-            revenue: repo.plan_price,
-          }
-        )
     end
 
     it "updates the current user's email address" do

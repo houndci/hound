@@ -60,6 +60,6 @@ describe Config::Eslint do
       },
     )
 
-    Config::Eslint.new(hound_config, "eslint")
+    Config::Eslint.new(hound_config)
   end
 end

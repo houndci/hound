@@ -41,10 +41,11 @@ feature 'Builds' do
     stub_pull_request_comments_request(repo_name, pr_number)
     comment_request = stub_simple_comment_request
     stub_status_requests(repo_name, pr_sha)
+    stub_review_job(RubocopReviewJob)
 
     page.driver.post builds_path, payload: payload
 
-    expect(comment_request).to have_been_requested
+    expect(comment_request).to have_been_requested.at_least_once
   end
 
   def stub_github_requests_with_no_violations
@@ -83,5 +84,18 @@ feature 'Builds' do
       :post,
       "https://api.github.com/repos/#{repo_name}/pulls/#{pr_number}/comments"
     )
+  end
+
+  def stub_review_job(klass, violations: [{ line: 1, message: "hello" }])
+    allow(klass).to receive(:perform) do |attributes|
+      CompleteFileReview.run(
+        "commit_sha" => attributes.fetch("commit_sha"),
+        "filename" => attributes.fetch("filename"),
+        "linter_name" => attributes.fetch("linter_name"),
+        "patch" => attributes.fetch("patch"),
+        "pull_request_number" => attributes.fetch("pull_request_number"),
+        "violations" => violations.map(&:stringify_keys),
+      )
+    end
   end
 end

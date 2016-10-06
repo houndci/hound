@@ -11,7 +11,7 @@
       %td.cell-label.cell-label--string.cell-label--false
         Error message
       %td.cell-label.cell-label--string.cell-label--false
-        Job indexes
+        Failure indexes
       %td
 
   %tbody
@@ -22,6 +22,6 @@
         %td.cell-data.cell-data--array
           = job_failures.map(&:index).join(", ")
         %td
-          = link_to "Remove failures",
+          = link_to "Remove",
             admin_job_failure_path(job_failures.map(&:index).join(",")),
             method: :delete

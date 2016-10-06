@@ -42,6 +42,6 @@ describe Config::Remark do
       },
     )
 
-    Config::Remark.new(hound_config, "remark")
+    Config::Remark.new(hound_config)
   end
 end

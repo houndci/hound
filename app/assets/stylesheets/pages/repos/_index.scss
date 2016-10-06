@@ -1,0 +1,148 @@
+.repo {
+  @include clearfix;
+  border-top: 1px solid $base-border-color;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1em;
+  position: relative;
+  width: 100%;
+
+  @include media($small-screen) {
+    display: block;
+    height: auto;
+    padding: 1em 0;
+  }
+}
+
+.repo--processing {
+  &::before {
+    @extend .fa-spin;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .repo-name {
+    padding-left: 1.5em;
+  }
+}
+
+.repo--active .repo-toggle {
+  background-color: $green;
+  border-color: darken($green, 30%);
+  color: darken($green, 40%);
+
+  &::before {
+    content: "Active";
+  }
+
+  &:hover {
+    background-color: $red;
+    border-color: $red;
+    color: $white;
+
+    &::before {
+      content: "Deactivate";
+    }
+  }
+}
+
+.repo-name {
+  @include ellipsis;
+  color: $medium-font-color;
+  font-size: 1.5em;
+  font-weight: $font-weight-light;
+  height: 100%;
+  padding-bottom: 2px;
+  transition: $base-transition;
+
+  @include media($small-screen) {
+    display: block;
+    font-size: 1.2em;
+    font-weight: $font-weight-normal;
+    letter-spacing: 1px;
+    margin-bottom: 0.6em;
+  }
+}
+
+.repo-activation-toggle {
+  align-self: flex-end;
+  height: 100%;
+  margin-left: auto;
+  padding-left: 1em;
+  text-align: right;
+  vertical-align: middle;
+
+  @include media($small-screen) {
+    display: block;
+    padding: 0;
+    text-align: left;
+  }
+}
+
+.repo-activation-toggle--private {
+  min-width: 250px;
+
+  .repo-private-label {
+    display: inline-block;
+  }
+}
+
+.repo-private-label {
+  background: lighten($gold, 50%);
+  border: 1px solid lighten($gold, 3%);
+  border-radius: 3px;
+  color: darken($gold, 5%);
+  display: none;
+  font-size: 0.9em;
+  font-weight: $font-weight-light;
+  letter-spacing: 1px;
+  margin-right: 0.6em;
+  padding: 0.2em 0.6em;
+  text-align: center;
+  vertical-align: middle;
+
+  @include media($small-screen) {
+    margin: 0.1em 0 0 0.6em;
+  }
+
+  .fa {
+    color: $gold;
+    display: inline-block;
+    margin-right: 0.2em;
+  }
+}
+
+.repo-toggle {
+  background: rgba($purple, 0.1);
+  border: 2px solid $purple;
+  border-radius: 20px;
+  color: $purple;
+  display: inline-block;
+  font-weight: $font-weight-normal;
+  letter-spacing: 1px;
+  padding: 0.4em 1em;
+  text-align: center;
+  transition: none;
+  user-select: none;
+  vertical-align: middle;
+
+  @include media($small-screen) {
+    float: left;
+    padding: 0.2em 0.8em;
+  }
+
+  &::before {
+    content: "Activate";
+    display: inline;
+  }
+
+  &:hover {
+    background-color: $purple;
+    color: $white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}

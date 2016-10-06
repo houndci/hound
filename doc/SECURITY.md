@@ -195,7 +195,9 @@ that we use to check the style of the code in each pull request notification:
 
 * Ruby: [RuboCop](https://github.com/bbatsov/rubocop)
 * CoffeeScript: [CoffeeLint](http://www.coffeelint.org/)
-* JavaScript: [JSHint](https://github.com/jshint/jshint/)
+* JavaScript: 
+  * [JSHint](https://github.com/jshint/jshint)
+  * [ESLint](https://github.com/eslint/eslint)
 * SCSS: [SCSS-Lint](https://github.com/brigade/scss-lint)
 * Go: [golint](https://github.com/golang/lint)
 

@@ -1,0 +1,93 @@
+body {
+  background-color: rgb(255,255,255);
+  color: $base-font-color;
+  font: $font-weight-light 1em / 1.4 'Lato';
+}
+
+.content {
+  @include outer-container;
+}
+
+.inner-wrapper {
+  @include clearfix;
+}
+
+a {
+  @include transition(all 0.15s linear);
+  color: darken($purple, 5%);
+  text-decoration: none;
+
+  &:hover {
+    color: darken($purple, 5%);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: normal;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: $font-weight-light;
+  letter-spacing: 1px;
+  margin: 0 0 0.4em;
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: $font-weight-light;
+  letter-spacing: 1px;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li.debug-steps {
+  list-style: circle;
+}
+
+ol.numbered {
+  list-style: decimal;
+  li {
+    margin: 0.5em 0;
+  }
+}
+
+.code {
+  background: rgba(#99abc0, 0.25);
+  display: inline-block;
+  font-family: monospace;
+  font-style: normal;
+}
+
+em.code {
+  border-radius: 2px;
+  padding: 0.3em 0.5em 0.2em;
+}
+
+.code-block {
+  @extend .code;
+  border: 1px solid rgba(#99abc0, 0.25);
+  border-radius: 3px;
+  display: block;
+  padding: 1em;
+  margin: 1em 0 2em;
+  white-space: pre-wrap;
+}
+
+figure {
+  margin: 0;
+}

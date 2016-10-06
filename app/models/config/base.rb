@@ -1,21 +1,17 @@
 module Config
   class Base
-    attr_reader_initialize :hound_config, :linter_name
+    attr_reader_initialize :hound_config
 
     def content
       @content ||= ensure_correct_type(safe_parse(load_content))
     end
 
-    def excluded_files
-      []
-    end
-
-    def linter_names
-      [linter_name]
-    end
-
     def serialize(data = content)
       data
+    end
+
+    def linter_name
+      self.class.name.demodulize.underscore
     end
 
     private
@@ -79,7 +75,7 @@ module Config
     end
 
     def linter_config
-      hound_config.content.slice(*linter_names).values.first
+      hound_config.content.slice(linter_name).values.first
     end
 
     def commit

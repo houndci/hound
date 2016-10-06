@@ -21,15 +21,6 @@ describe ActivationsController, "#create" do
       expect(activator).to have_received(:activate)
       expect(RepoActivator).to have_received(:new).
         with(repo: repo, github_token: membership.user.token)
-      expect(analytics).to have_tracked("Repo Activated").
-        for_user(membership.user).
-        with(
-          properties: {
-            name: repo.full_github_name,
-            private: false,
-            revenue: 0,
-          }
-        )
     end
   end
 

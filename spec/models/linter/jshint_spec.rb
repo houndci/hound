@@ -30,7 +30,6 @@ describe Linter::Jshint do
   describe "#file_included?" do
     context "file is in excluded file list" do
       it "returns false" do
-        stub_jshint_config
         linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
         commit_file = double("CommitFile", filename: "foo.js")
 
@@ -40,7 +39,6 @@ describe Linter::Jshint do
 
     context "file is not excluded" do
       it "returns true" do
-        stub_jshint_config
         linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
         commit_file = double("CommitFile", filename: "bar.js")
 
@@ -48,8 +46,6 @@ describe Linter::Jshint do
       end
 
       it "matches a glob pattern" do
-        stub_jshint_config
-
         linter = build_linter(
           nil,
           Linter::Jshint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
@@ -71,6 +67,7 @@ describe Linter::Jshint do
 
   describe "#file_review" do
     it "returns a saved and incomplete file review" do
+      stub_owner_hound_config(instance_double("HoundConfig", content: {}))
       commit_file = build_commit_file(filename: "lib/a.js")
       linter = build_linter
 
@@ -80,37 +77,73 @@ describe Linter::Jshint do
       expect(result).not_to be_completed
     end
 
-    it "schedules a review job" do
-      build = build(:build, commit_sha: "foo", pull_request_number: 123)
-      stub_jshint_config(content: {})
-      commit_file = build_commit_file(filename: "lib/a.js")
-      allow(Resque).to receive(:enqueue)
-      linter = build_linter(build)
+    context "when the owner has no config enabled" do
+      it "schedules a review job with the local config" do
+        stub_owner_hound_config(instance_double("HoundConfig", content: {}))
+        build = create(:build, commit_sha: "foo", pull_request_number: 123)
+        commit_file = build_commit_file(filename: "lib/a.js")
+        stubbed_local_config = stub_config_files('{"asi": true}')
+        linter = build_linter(build, stubbed_local_config)
+        allow(Resque).to receive(:enqueue)
 
-      linter.file_review(commit_file)
+        linter.file_review(commit_file)
 
-      expect(Resque).to have_received(:enqueue).with(
-        JshintReviewJob,
-        filename: commit_file.filename,
-        commit_sha: build.commit_sha,
-        linter_name: "jshint",
-        pull_request_number: build.pull_request_number,
-        patch: commit_file.patch,
-        content: commit_file.content,
-        config: "{}",
-      )
+        expect(Resque).to have_received(:enqueue).with(
+          JshintReviewJob,
+          commit_sha: build.commit_sha,
+          config: '{"asi":true}',
+          content: commit_file.content,
+          filename: commit_file.filename,
+          linter_name: "jshint",
+          patch: commit_file.patch,
+          pull_request_number: build.pull_request_number,
+        )
+      end
+    end
+
+    context "when there is an owner level config enabled" do
+      it "schedules a review job with the owner's config merged with locals" do
+        build = create(:build, commit_sha: "foo", pull_request_number: 123)
+        stubbed_local_config = stub_config_files('{"asi": false, "maxlen": 50}')
+        stub_owner_hound_config(
+          HoundConfig.new(
+            stubbed_commit(stubbed_local_config),
+          ),
+        )
+        linter = build_linter(build, stub_config_files('{"asi": true}'))
+        commit_file = build_commit_file(filename: "lib/a.js")
+
+        allow(Resque).to receive(:enqueue)
+
+        linter.file_review(commit_file)
+
+        expect(Resque).to have_received(:enqueue).with(
+          JshintReviewJob,
+          commit_sha: build.commit_sha,
+          config: '{"asi":true,"maxlen":50}',
+          content: commit_file.content,
+          filename: commit_file.filename,
+          linter_name: "jshint",
+          patch: commit_file.patch,
+          pull_request_number: build.pull_request_number,
+        )
+      end
     end
   end
 
-  def stub_jshint_config(options = {})
-    default_options = {
-      content: {},
-      serialize: "{}",
+  def stub_config_files(config_content)
+    stubbed_hound_yml = <<~YML
+      "jshint":
+        "config_file": ".jshintrc"
+    YML
+
+    {
+      ".jshintrc" => config_content,
+      ".hound.yml" => stubbed_hound_yml,
     }
-    stubbed_jshint_config = double(
-      "JshintConfig",
-      default_options.merge(options),
-    )
-    allow(Config::Jshint).to receive(:new).and_return(stubbed_jshint_config)
+  end
+
+  def stub_owner_hound_config(config)
+    allow(BuildOwnerHoundConfig).to receive(:run).and_return(config)
   end
 end

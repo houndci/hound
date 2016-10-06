@@ -9,7 +9,7 @@ class ConfigBuilder
   end
 
   def config
-    config_class.new(hound_config, name)
+    config_class.new(hound_config)
   end
 
   private

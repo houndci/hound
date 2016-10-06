@@ -18,10 +18,6 @@ class FileReview < ActiveRecord::Base
     completed_at?
   end
 
-  def running?
-    !completed?
-  end
-
   private
 
   def find_or_build_violation(line)

@@ -77,26 +77,20 @@ feature "Account" do
   scenario "user sees paid repo usage" do
     user = create(:user)
     paid_repo = create(:repo, users: [user])
-    create_failed_build(paid_repo)
-    create_failed_build(paid_repo)
     create(:build, repo: paid_repo)
+    create(:build, repo: paid_repo, violations_count: 3)
+    create(:build, repo: paid_repo, violations_count: 2)
     create(:subscription, repo: paid_repo, user: user)
 
     sign_in_as(user)
 
     visit account_path
 
-    expect(find('td.reviews-given')).to have_text("3");
-    expect(find('td.violations-caught')).to have_text("2");
+    expect(find("td.reviews-given")).to have_text("3")
+    expect(find("td.violations-caught")).to have_text("5")
   end
 
   private
-
-  def create_failed_build(repo)
-    build = create(:build, repo: repo)
-    file_review = create(:file_review, build: build)
-    create(:violation, file_review: file_review)
-  end
 
   def stub_customer_find_request_with_subscriptions(customer_id, subscriptions)
     stub_request(:get, "#{stripe_base_url}/#{customer_id}").
