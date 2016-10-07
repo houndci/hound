@@ -91,84 +91,82 @@ describe CommentingPolicy do
     end
   end
 
-  describe "#comment_matches_any_violation?" do
-    context "when messages match" do
-      context "when commented on the same line, same message, by our user" do
-        it "returns true" do
-          violation = stub_violation(messages: ["foo bar"])
-          comment = stub_comment(
-            body: "foo bar<br>baz qux",
-            position: violation.patch_position,
-            path: violation.filename,
-          )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
+  describe "#delete_comment?" do
+    context "when commented by Hound's user" do
+      context "and messages match" do
+        context "and on the same line" do
+          it "returns false" do
+            violation = stub_violation(messages: ["foo bar"])
+            comment = stub_comment(
+              body: "foo bar<br>baz qux",
+              position: violation.patch_position,
+              path: violation.filename,
+            )
+            pull_request = stub_pull_request(comments: [comment])
+            commenting_policy = CommentingPolicy.new(pull_request)
 
-          result = commenting_policy.
-            comment_matches_any_violation?(comment, [violation])
+            result = commenting_policy.delete_comment?(comment, [violation])
 
-          expect(result).to eq true
+            expect(result).to eq false
+          end
         end
-      end
 
-      context "when commented by a different user" do
-        it "returns false" do
-          violation = stub_violation(messages: ["foo bar"])
-          comment = stub_comment(
-            body: "foo bar<br>baz qux",
-            position: violation.patch_position,
-            path: violation.filename,
-            user: double(login: "bob"),
-          )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
+        context "but on a different line" do
+          it "returns true" do
+            violation = stub_violation(messages: ["foo bar"])
+            comment = stub_comment(
+              body: "foo bar<br>baz qux",
+              position: violation.patch_position + 1,
+              path: violation.filename,
+            )
+            pull_request = stub_pull_request(comments: [comment])
+            commenting_policy = CommentingPolicy.new(pull_request)
 
-          result = commenting_policy.
-            comment_matches_any_violation?(comment, [violation])
+            result = commenting_policy.delete_comment?(comment, [violation])
 
-          expect(result).to eq false
+            expect(result).to eq true
+          end
         end
-      end
 
-      context "when commented on a different line" do
-        it "returns false" do
-          violation = stub_violation(messages: ["foo bar"])
-          comment = stub_comment(
-            body: "foo bar<br>baz qux",
-            position: violation.patch_position + 1,
-            path: violation.filename,
-          )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
+        context "but in a different file" do
+          it "returns true" do
+            violation = stub_violation(messages: ["foo bar"])
+            comment = stub_comment(
+              body: "foo bar<br>baz qux",
+              position: violation.patch_position,
+              path: "some_thing_different.rb",
+            )
+            pull_request = stub_pull_request(comments: [comment])
+            commenting_policy = CommentingPolicy.new(pull_request)
 
-          result = commenting_policy.
-            comment_matches_any_violation?(comment, [violation])
+            result = commenting_policy.delete_comment?(comment, [violation])
 
-          expect(result).to eq false
-        end
-      end
-
-      context "when commented on a different file" do
-        it "returns false" do
-          violation = stub_violation(messages: ["foo bar"])
-          comment = stub_comment(
-            body: "foo bar<br>baz qux",
-            position: violation.patch_position,
-            path: "some_thing_different.rb",
-          )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
-
-          result = commenting_policy.
-            comment_matches_any_violation?(comment, [violation])
-
-          expect(result).to eq false
+            expect(result).to eq true
+          end
         end
       end
     end
 
-    context "when messages don't match" do
+    context "when commented by a different user" do
       it "returns false" do
+        violation = stub_violation(messages: ["foo bar"])
+        comment = stub_comment(
+          body: "foo bar<br>baz qux",
+          position: violation.patch_position,
+          path: violation.filename,
+          user: double(login: "bob"),
+        )
+        pull_request = stub_pull_request(comments: [comment])
+        commenting_policy = CommentingPolicy.new(pull_request)
+
+        result = commenting_policy.delete_comment?(comment, [violation])
+
+        expect(result).to eq false
+      end
+    end
+
+    context "when messages do not match" do
+      it "returns true" do
         violation = stub_violation(messages: ["foo bar"])
         comment = stub_comment(
           body: "cool bar",
@@ -178,19 +176,18 @@ describe CommentingPolicy do
         pull_request = stub_pull_request(comments: [comment])
         commenting_policy = CommentingPolicy.new(pull_request)
 
-        result = commenting_policy.
-          comment_matches_any_violation?(comment, [violation])
+        result = commenting_policy.delete_comment?(comment, [violation])
 
-        expect(result).to eq false
+        expect(result).to eq true
       end
     end
   end
 
   def stub_comment(options = {})
     defaults = {
-      user: double(login: Hound::GITHUB_USERNAME),
+      user: double("GithubUser", login: Hound::GITHUB_USERNAME),
     }
-    double(:github_comment, defaults.merge(options))
+    double("GithubComment", defaults.merge(options))
   end
 
   def stub_violation(options = {})
@@ -199,11 +196,11 @@ describe CommentingPolicy do
       messages: ["Extra newline"],
       patch_position: 1,
     }
-    double(:violation, defaults.merge(options))
+    instance_double("Violation", defaults.merge(options))
   end
 
   def stub_pull_request(options = {})
     defaults = { opened?: true, comments: [] }
-    double(:pull_request, defaults.merge(options))
+    instance_double("PullRequest", defaults.merge(options))
   end
 end

@@ -29,18 +29,6 @@ describe BuildRunner do
         expect(build.payload).to eq ({ payload_stuff: "test" }).to_json
       end
 
-      it "reviews files via style checker" do
-        build_runner = make_build_runner
-        style_checker = stubbed_style_checker
-        stubbed_pull_request
-        stubbed_commenter
-        stubbed_github_api
-
-        build_runner.run
-
-        expect(style_checker).to have_received(:review_files)
-      end
-
       it "initializes PullRequest with payload and Hound token" do
         repo = create(:repo, :active)
         user = create(:user, token: "user_token")
@@ -77,11 +65,8 @@ describe BuildRunner do
 
         build_runner.run
 
-        expect(github_api).to have_received(:create_pending_status).with(
-          repo_name,
-          "headsha",
-          I18n.t(:pending_status),
-        )
+        expect(github_api).to have_received(:create_pending_status).
+          with(repo_name, "headsha", I18n.t(:pending_status))
       end
 
       it "upserts repository owner" do
@@ -162,23 +147,26 @@ describe BuildRunner do
     end
 
     context "when the config is invalid" do
-      it "marks the config file as invalid" do
-        build_runner = make_build_runner
-        pull_request = stubbed_pull_request(
-          [double("CommitFile", filename: "foo.rb")],
+      it "sets the status with a helpful message" do
+        repo = create(:repo, :active, name: "some/repo")
+        build_runner = make_build_runner(repo: repo)
+        commit_file = instance_double("CommitFile", filename: "foo.rb")
+        pull_request = stubbed_pull_request([commit_file])
+        payload = stubbed_payload(
+          github_repo_id: repo.github_id,
+          commit_sha: "sha123",
         )
-        payload = stubbed_payload(commit_sha: "commitsha123")
         invalid_config_file(pull_request, "config/rubocop.yml" => "!")
-        stubbed_github_api
+        github_api = stubbed_github_api
         stubbed_commenter
-        allow(ReportInvalidConfig).to receive(:run)
 
         build_runner.run
 
-        expect(ReportInvalidConfig).to have_received(:run).with(
-          pull_request_number: payload.pull_request_number,
-          commit_sha: payload.head_sha,
-          linter_name: "ruby",
+        expect(github_api).to have_received(:create_error_status).with(
+          repo.name,
+          payload.head_sha,
+          I18n.t(:config_error_status, linter_name: "ruby"),
+          config_url,
         )
       end
     end
@@ -375,5 +363,9 @@ describe BuildRunner do
         with(filename).
         and_return(content)
     end
+  end
+
+  def config_url
+    Rails.application.routes.url_helpers.configuration_url(host: Hound::HOST)
   end
 end

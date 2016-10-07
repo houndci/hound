@@ -68,4 +68,18 @@ describe BuildsController, '#create' do
       expect(SmallBuildJob).not_to have_received(:perform_later)
     end
   end
+
+  context "when payload is not nested under a key" do
+    it "enqueues a job" do
+      payload_data = File.
+        read("spec/support/fixtures/pull_request_opened_event.json")
+      payload = Payload.new(payload_data)
+      allow(SmallBuildJob).to receive(:perform_later)
+
+      post :create, payload_data
+
+      expect(SmallBuildJob).to have_received(:perform_later).
+        with(payload.build_data)
+    end
+  end
 end

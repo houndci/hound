@@ -10,7 +10,7 @@ describe Commenter do
           pull_request = double(:pull_request, comment_on_violation: nil)
           violation = double(:violation)
           commenter = Commenter.new(pull_request)
-          policy = double(:commenting_policy, comment_on?: true)
+          policy = instance_double("CommentingPolicy", comment_on?: true)
           allow(CommentingPolicy).to receive(:new).and_return(policy)
 
           commenter.comment_on_violations([violation])
@@ -48,24 +48,23 @@ describe Commenter do
 
   describe "#remove_resolved_violations" do
     it "deletes comments for violations that are no longer present" do
-      existing_comments = [
-        build_comment(id: 1, position: 4, body: "foo bar"),
-        build_comment(id: 2, position: 5, body: "hello world"),
-      ]
+      unresolved_comment = build_comment(id: 1, position: 4, body: "foo bar")
+      resolved_comment = build_comment(id: 2, position: 5, body: "hello world")
       violations = [
         build_violation(messages: ["foo bar"], patch_position: 4),
         build_violation(messages: ["bar baz"], patch_position: 5),
       ]
       pull_request = instance_double(
         "PullRequest",
-        comments: existing_comments,
+        comments: [unresolved_comment, resolved_comment],
         delete_comment: nil,
       )
       commenter = Commenter.new(pull_request)
 
       commenter.remove_resolved_violations(violations)
 
-      expect(pull_request).to have_received(:delete_comment).with(2)
+      expect(pull_request).to have_received(:delete_comment).
+        with(resolved_comment)
     end
   end
 

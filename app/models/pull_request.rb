@@ -23,8 +23,8 @@ class PullRequest
     )
   end
 
-  def delete_comment(comment_id)
-    delete_pull_request_comment(full_repo_name, comment_id)
+  def delete_comment(comment)
+    hound_github.delete_pull_request_comment(full_repo_name, comment.id)
   end
 
   def repository_owner_name

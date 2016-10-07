@@ -4,23 +4,23 @@ class Commenter
 
   def comment_on_violations(violations)
     violations.each do |violation|
-      if policy.comment_on?(violation)
+      if commenting_policy.comment_on?(violation)
         pull_request.comment_on_violation(violation)
       end
     end
   end
 
   def remove_resolved_violations(violations)
-    pull_request.comments.each do |comment|
-      unless policy.comment_matches_any_violation?(comment, violations)
-        pull_request.delete_comment(comment.id)
-      end
+    comments = pull_request.comments.select do |comment|
+      commenting_policy.delete_comment?(comment, violations)
     end
+
+    comments.each { |comment| pull_request.delete_comment(comment) }
   end
 
   private
 
-  def policy
-    @_policy ||= CommentingPolicy.new(pull_request)
+  def commenting_policy
+    @_commenting_policy ||= CommentingPolicy.new(pull_request)
   end
 end

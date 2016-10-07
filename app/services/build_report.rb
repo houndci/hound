@@ -21,7 +21,7 @@ class BuildReport
 
   private
 
-  attr_reader :build, :token, :pull_request
+  attr_reader :build, :commenter, :token, :pull_request
 
   def priority_violations
     build.violations.take(Hound::MAX_COMMENTS)

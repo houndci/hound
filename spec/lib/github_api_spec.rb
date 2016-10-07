@@ -157,7 +157,7 @@ describe GithubApi do
       files = api.pull_request_files(pull_request.full_repo_name, pr_number)
 
       expect(files.size).to eq(1)
-      expect(files.first.filename).to eq "config/unicorn.rb"
+      expect(files.first.filename).to eq "spec/models/style_guide_spec.rb"
     end
   end
 
@@ -197,10 +197,11 @@ describe GithubApi do
       pull_request = double("PullRequest", full_repo_name: full_repo_name)
       pull_request_id = 253
       commit_sha = "abc253"
-      expected_comment = "inline if's and while's are not violations?"
+      expected_comment = "Line is too long."
       stub_pull_request_comments_request(
         pull_request.full_repo_name,
-        pull_request_id
+        pull_request_id,
+        "houndci-bot",
       )
       stub_contents_request(
         repo_name: pull_request.full_repo_name,
