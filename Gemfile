@@ -5,8 +5,6 @@ ruby "2.3.1"
 gem "active_model_serializers", "0.9.5"
 gem "administrate", ">= 0.2.0"
 gem "analytics-ruby", "~> 2.0.0", require: "segment/analytics"
-gem "angular_rails_csrf"
-gem "angularjs-rails"
 gem "attr_extras"
 gem "autoprefixer-rails"
 gem "bourbon"
@@ -17,7 +15,7 @@ gem "font-awesome-rails"
 gem "haml-rails"
 gem "high_voltage"
 gem "inifile"
-gem "jquery-rails", "~> 4.0.0"
+gem "jquery-rails", "~> 4.2.0"
 gem "rails-assets-lodash", source: "https://rails-assets.org"
 gem "normalize-rails"
 gem "neat"
@@ -35,6 +33,7 @@ gem "sass-rails"
 gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 2.7.2"
+gem "react-rails"
 
 group :staging, :production do
   gem "rack-timeout"
@@ -50,6 +49,7 @@ group :development, :test do
   gem "poltergeist"
   gem "rspec-rails", ">= 3.4"
   gem "bundler-audit", require: false
+  gem "quiet_assets"
 end
 
 group :test do

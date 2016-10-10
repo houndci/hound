@@ -1,9 +1,0 @@
-- content_for :page_title, 'Your Repos'
-
-= render 'settings'
-
-- if display_onboarding?
-  = render 'onboarding'
-
-%section.organization-list{ 'organization-list' => '' }
-= render 'preload_template', template: 'organization_list'

@@ -1,0 +1,99 @@
+<% content_for :page_title, "Your Account" %>
+<%= render 'settings' %>
+<section class="account-section">
+  <aside class="account-nav">
+    <p class="message">
+      <%= t(
+        "account.bulk_pricing",
+        mail_to: mail_to("hound@thoughtbot.com")
+      ).html_safe %>
+    </p>
+  </aside>
+  <div class="account-content">
+    <article class="billing-breakdown">
+      <%= react_component('AccountCreditCardUpdater',
+        authenticity_token: form_authenticity_token,
+        stripe_customer_id_present: current_user.stripe_customer_id.present?)
+      %>
+      <table class="itemized-receipt">
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Base Cost</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @account_page.monthly_line_items.each do |line_item| %>
+            <tr>
+              <td>
+                <%= line_item.title %>
+              </td>
+              <td>
+                <%= line_item.base_price %>
+              </td>
+              <td>
+                <%= line_item.quantity %>
+              </td>
+              <td>
+                <%= line_item.subtotal %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <table class="monthly-total">
+        <thead>
+          <tr>
+            <th>
+              <label>Total Monthly Cost:</label>
+            </th>
+            <th class="total-amount">
+              <label>
+                <%= @account_page.total_monthly_cost %>
+              </label>
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </article>
+    <% if current_user.stripe_customer_id.present? %>
+      <%= react_component('AccountEmailUpdater',
+        authenticity_token: form_authenticity_token,
+        billable_email: @account_page.billable_email)
+      %>
+    <% end %>
+    <article class="active-private-repos">
+      <% if @account_page.repos.any? %>
+        <h3>Active Private Repos</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Repository</th>
+              <th>Reviews given</th>
+              <th>Violations caught</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @account_page.repos.each do |repo| %>
+              <tr class="repo">
+                <td>
+                  <span class="repo-name">
+                    <%= repo.full_github_name %>
+                  </span>
+                </td>
+                <td class="reviews-given">
+                  <%= repo.builds.count %>
+                </td>
+                <td class="violations-caught">
+                  <%= repo.total_violations %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </article>
+  </div>
+</section>
