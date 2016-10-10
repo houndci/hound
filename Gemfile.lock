@@ -160,6 +160,10 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.4.2)
       addressable (~> 2.3)
+    lograge (0.4.1)
+      actionpack (>= 4, < 5.1)
+      activesupport (>= 4, < 5.1)
+      railties (>= 4, < 5.1)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
@@ -386,6 +390,7 @@ DEPENDENCIES
   jasmine-rails
   jquery-rails (~> 4.0.0)
   launchy
+  lograge
   neat
   normalize-rails
   octokit

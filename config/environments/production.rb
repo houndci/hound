@@ -63,6 +63,10 @@ Houndapp::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    { params: event.payload[:params].reject { |k| %w(controller action).include? k } }
+  end
 end
 
 Rack::Timeout.timeout = (ENV["RACK_TIMEOUT"] || 20).to_i
