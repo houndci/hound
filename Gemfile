@@ -42,7 +42,6 @@ gem 'rollbar'
 
 group :staging, :production do
   gem "rack-timeout"
-  gem "rails_12factor"
   gem "sentry-raven", ">= 0.12.2"
   gem "lograge"
 end
