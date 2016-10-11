@@ -25,6 +25,7 @@ $base-font-color: rgb(100, 100, 100);
 $light-font-color: rgb(190, 190, 190);
 $medium-font-color: rgb(140, 140, 140);
 $base-accent-color: $purple;
+$base-secondary-color: lighten($purple, 10%);
 $table-heading-background-color: rgb(245, 245, 245);
 $code-background-color: rgba(#99abc0, 0.25);
 
@@ -33,11 +34,15 @@ $icon-dropdown: '\f0d7';
 $icon-dropup: '\f0d8';
 $icon-lock: '\f023';
 
+$small-screen-size: em(540);
 $medium-screen-size: 47.5em;
+$medium-large-screen-size: 57.5em;
+$large-screen-size: em(920);
 
-$small-screen: new-breakpoint(max-width em(540) 2);
+$small-screen: new-breakpoint(max-width $small-screen-size 2);
 $medium-screen: new-breakpoint(max-width $medium-screen-size 4);
-$large-screen: new-breakpoint(max-width em(920) 8);
+$medium-large-screen: new-breakpoint(max-width $medium-large-screen-size 8);
+$large-screen: new-breakpoint(max-width $large-screen-size 8);
 
 $base-border-radius: 5px;
 
