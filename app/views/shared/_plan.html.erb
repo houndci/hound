@@ -1,0 +1,16 @@
+<div class="plan <%= open_source ? 'plan-open-source' : '' %>">
+  <h5 class="plan-title"><%= name %></h5>
+  <div class="plan-allowance">
+    <% if open_source %>
+      Unlimited
+    <% else %>
+      Up to
+      <strong><%= allowance %></strong>
+      Repos
+    <% end %>
+  </div>
+  <div class="plan-price">
+    <%= price %>
+    <small>month</small>
+  </div>
+</div>
