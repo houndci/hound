@@ -10,6 +10,14 @@ describe Linter::Ruby do
       end
     end
 
+    context "given a .rake file" do
+      it "returns true" do
+        result = Linter::Ruby.can_lint?("foo.rake")
+
+        expect(result).to eq true
+      end
+    end
+
     context "given a non-ruby file" do
       it "returns false" do
         result = Linter::Ruby.can_lint?("foo.js")
