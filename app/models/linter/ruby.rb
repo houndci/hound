@@ -1,6 +1,6 @@
 module Linter
   class Ruby < Base
-    FILE_REGEXP = /.+\.rb\z/
+    FILE_REGEXP = /.+(\.rb|\.rake)\z/
 
     private
 
