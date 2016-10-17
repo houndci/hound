@@ -2,6 +2,12 @@
 <%= render "settings" %>
 <section class="account-section">
   <aside class="account-nav">
+    <h3>Plans</h3>
+
+    <%= render "shared/plan_vertical", current: true, name: "Chihuahua", allowance: "4", price: "$49" %>
+    <%= render "shared/plan_vertical", current: false, name: "Labrador", allowance: "10", price: "$99" %>
+    <%= render "shared/plan_vertical", current: false, name: "Great Dane", allowance: "30", price: "$249" %>
+
     <p class="message">
       <%= t(
         "account.bulk_pricing",

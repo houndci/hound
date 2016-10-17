@@ -1,0 +1,18 @@
+<% if current %>
+  <span class="current-plan">Current Plan</span>
+<% end %>
+
+<div class="plan plan-vertical <%= current ? 'current' : '' %>">
+  <div class="plan-divider">
+    <h5 class="plan-title"><%= name %></h5>
+    <div class="plan-allowance">
+      Up to
+      <strong><%= allowance %></strong>
+      Repos
+    </div>
+  </div>
+  <div class="plan-price">
+    <%= price %>
+    <small>month</small>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 .account-section {
   @extend %content-frame;
   display: table;
+  position: relative;
+  width: 100%;
 }
 
 .account-content {
@@ -21,6 +23,7 @@
     background: lighten($gold, 50%);
     border: 1px solid lighten($gold, 3%);
     border-radius: 3px;
+    clear: both;
     color: darken($gold, 10%);
     padding: 1em;
   }
@@ -92,5 +95,11 @@
     float: right;
     margin-top: 1.5em;
     text-align: right;
+  }
+}
+
+.active-private-repos {
+  .repo {
+    display: table-row;
   }
 }
