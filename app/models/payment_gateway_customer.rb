@@ -46,7 +46,7 @@ class PaymentGatewayCustomer
     customer.email = email
     customer.save
   rescue Stripe::APIError => e
-    Raven.capture_exception(e)
+    Rollbar.error(e)
     false
   end
 
