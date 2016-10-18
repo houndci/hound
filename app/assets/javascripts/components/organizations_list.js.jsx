@@ -1,8 +1,18 @@
 class OrganizationsList extends React.Component {
   reposForOrg(org) {
-    return _.filter(this.props.repos, (repo) => {
-      return repo.owner.id === org.id;
-    });
+    if ( _.has(org, "id") ) {
+      return _.filter(this.props.repos, (repo) => {
+        return repo.owner.id === org.id;
+      });
+    } else {
+      return _.filter(this.props.repos, (repo) => {
+        return this.orgName(repo.full_github_name) === org.name;
+      });
+    }
+  }
+
+  orgName(full_github_name) {
+    return _.split(full_github_name, "/")[0];
   }
 
   render() {
@@ -11,13 +21,15 @@ class OrganizationsList extends React.Component {
       onRepoClicked,
       filterTerm,
       isProcessingId,
+      organizations,
     } = this.props;
+
     return (
       <ul className="organizations">
-        {this.props.organizations.map( (org) => (
+        {organizations.map( (org) => (
           <Organization
             data={org}
-            key={org.id}
+            key={org.id || org.name}
             repos={(repos && this.reposForOrg(org)) || null}
             onRepoClicked={onRepoClicked}
             filterTerm={filterTerm}

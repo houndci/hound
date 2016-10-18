@@ -2,6 +2,7 @@
 //= require jquery3
 //= require namespaced
 //= require_self
+//= require es5-shim
 //= require react
 //= require react_ujs
 //= require components

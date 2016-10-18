@@ -6,19 +6,22 @@ feature "Repo list", js: true do
 
   scenario "user views list of repos" do
     user = create(:user, token_scopes: "public_repo,user:email")
-    restricted_repo = create(:repo, name: "inaccessible-repo")
-    activatable_repo = create(:repo, name: "thoughtbot/my-repo")
+    restricted_repo = create(
+      :repo,
+      full_github_name: "#{user.github_username}/inaccessible-repo",
+    )
+    activatable_repo = create(:repo, full_github_name: "thoughtbot/my-repo")
     create(:membership, repo: activatable_repo, user: user, admin: true)
     create(:membership, repo: restricted_repo, user: user, admin: false)
 
     sign_in_as(user)
 
-    within ".repo:nth-of-type(1)" do
-      expect(page).to have_text activatable_repo.name
+    within "[data-org-name=thoughtbot]" do
+      expect(page).to have_text activatable_repo.full_github_name
       expect(page).to have_css ".repo-toggle"
     end
-    within ".repo:nth-of-type(2)" do
-      expect(page).to have_text restricted_repo.name
+    within "[data-org-name=#{user.github_username}]" do
+      expect(page).to have_text restricted_repo.full_github_name
       expect(page).to have_text I18n.t("cannot_activate_repo")
       expect(page).not_to have_css ".repo-toggle"
     end
@@ -50,8 +53,8 @@ feature "Repo list", js: true do
   end
 
   scenario "user filters list" do
-    repo1 = create_repo(name: "foo")
-    repo2 = create_repo(name: "bar")
+    repo1 = create_repo(full_github_name: "#{user.github_username}/foo")
+    repo2 = create_repo(full_github_name: "#{user.github_username}/bar")
 
     sign_in_as(user)
     find(".repo-search-tools-input").set("fo")

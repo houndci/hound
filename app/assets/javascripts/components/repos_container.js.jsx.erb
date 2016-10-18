@@ -10,7 +10,11 @@ class ReposContainer extends React.Component {
         } else {
           this.setState({repos: data});
 
-          organizations = data.map( (repo) => { return repo.owner; });
+          organizations = data.map( (repo) => {
+            return (repo.owner || {
+              name: this.orgName(repo.full_github_name)
+            });
+          });
           this.setState({
             organizations: _.uniqWith(organizations, _.isEqual)
           });
@@ -22,6 +26,10 @@ class ReposContainer extends React.Component {
         alert("Your repos failed to load.");
       }
     });
+  }
+
+  orgName(full_github_name) {
+    return _.split(full_github_name, "/")[0];
   }
 
   state = {
@@ -155,7 +163,7 @@ class ReposContainer extends React.Component {
       this.track_repo_activated(repo);
       this.commitRepoToState(repo);
     }).catch( (error) => {
-      console.log(error);
+      alert("Your repo could not be enabled.");
     });
   }
 

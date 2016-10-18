@@ -9,7 +9,7 @@ class Organization extends React.Component {
     } = this.props;
 
     return (
-      <div className="organization">
+      <div className="organization" data-org-name={data.name}>
         <header className="organization-header">
           <h2 className="organization-header-title">{data.name}</h2>
         </header>

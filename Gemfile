@@ -46,7 +46,6 @@ group :development, :test do
   gem "dotenv-rails"
   gem "foreman"
   gem "jasmine-rails"
-  gem "poltergeist"
   gem "rspec-rails", ">= 3.4"
   gem "bundler-audit", require: false
   gem "quiet_assets"

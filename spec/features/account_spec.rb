@@ -10,7 +10,7 @@ feature "Account" do
     expect(page).not_to have_text("Update Credit Card")
   end
 
-  scenario "user with Stripe Customer ID" do
+  scenario "user with Stripe Customer ID", js: true do
     user = create(:user, stripe_customer_id: "123")
     stub_customer_find_request(user.stripe_customer_id)
 

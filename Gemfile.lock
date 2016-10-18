@@ -79,7 +79,6 @@ GEM
     capybara-webkit (1.11.1)
       capybara (>= 2.3.0, < 2.8.0)
       json
-    cliver (0.3.2)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -193,11 +192,6 @@ GEM
       activerecord (~> 4.0)
     pg (0.17.1)
     phantomjs (1.9.8.0)
-    poltergeist (1.5.1)
-      capybara (~> 2.1)
-      cliver (~> 0.3.1)
-      multi_json (~> 1.0)
-      websocket-driver (>= 0.2.0)
     puma (3.4.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
@@ -218,7 +212,6 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.7.1)
       sprockets-rails
-    rails-assets-es5-shim (4.5.9)
     rails-assets-lodash (4.13.1)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
@@ -340,7 +333,6 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
-    websocket-driver (0.3.4)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -378,12 +370,10 @@ DEPENDENCIES
   omniauth-github
   paranoia (~> 2.0)
   pg
-  poltergeist
   puma
   quiet_assets
   rack-timeout
   rails (= 4.2.7.1)
-  rails-assets-es5-shim
   rails-assets-lodash!
   rails_12factor
   react-rails
