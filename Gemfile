@@ -30,6 +30,7 @@ gem "rails", "4.2.7.1"
 gem "resque", "~> 1.25.0"
 gem "resque-scheduler"
 gem "rest-client", ">= 1.8.0"
+gem "rollbar"
 gem "sass-rails"
 gem "split", require: "split/dashboard"
 gem "stripe"
@@ -41,7 +42,6 @@ gem 'capistrano-docker', git: 'https://github.com/netguru/capistrano-docker.git'
 group :staging, :production do
   gem "lograge"
   gem "rack-timeout"
-  gem "rollbar"
 end
 
 group :development, :test do
