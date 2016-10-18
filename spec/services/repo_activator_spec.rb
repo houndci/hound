@@ -197,19 +197,6 @@ describe RepoActivator do
         expect(activator.errors).to match_array([error_message])
       end
 
-      it "reports raised exception to Sentry" do
-        repo = build(:repo, private: true)
-        activator = build_activator(repo: repo)
-        error = Octokit::Error.new
-        api = stub_github_api
-        allow(api).to receive(:add_collaborator).and_raise(error)
-        allow(Raven).to receive(:capture_exception)
-
-        activator.activate
-
-        expect(Raven).to have_received(:capture_exception).with(error)
-      end
-
       it "only swallows Octokit errors" do
         repo = build(:repo, private: true)
         activator = build_activator(repo: repo)

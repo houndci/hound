@@ -29,7 +29,6 @@ gem "puma"
 gem "rails", "4.2.7.1"
 gem "resque", "~> 1.25.0"
 gem "resque-scheduler"
-gem "resque-sentry"
 gem "rest-client", ">= 1.8.0"
 gem "sass-rails"
 gem "split", require: "split/dashboard"
@@ -38,12 +37,11 @@ gem "uglifier", ">= 2.7.2"
 
 gem 'capistrano', '~> 3.4.0'
 gem 'capistrano-docker', git: 'https://github.com/netguru/capistrano-docker.git', tag: 'v0.2.7'
-gem 'rollbar'
 
 group :staging, :production do
-  gem "rack-timeout"
-  gem "sentry-raven", ">= 0.12.2"
   gem "lograge"
+  gem "rack-timeout"
+  gem "rollbar"
 end
 
 group :development, :test do
