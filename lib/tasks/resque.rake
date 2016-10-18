@@ -9,7 +9,8 @@ namespace :resque do
     Resque.workers.each do |w|
       worker_start_time = w.processing.fetch("run_at", Time.current).to_time
       time_running = Time.current - worker_start_time
-      max_time_running = 10.minutes
+      max_time_running =
+        ENV.fetch("RESQUE_WORKER_TIMEOUT_MINUTES", 10).to_i.minutes
 
       if time_running > max_time_running
         w.unregister_worker

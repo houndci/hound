@@ -1,7 +1,9 @@
+# frozen_string_literal: true
 class PullRequest
-  pattr_initialize :payload, :token
-
   FILE_REMOVED_STATUS = "removed"
+  COMMENT_LINE_DELIMITER = "<br>"
+
+  pattr_initialize :payload, :token
 
   def comments
     @comments ||= user_github.pull_request_comments(full_repo_name, number)
@@ -14,11 +16,15 @@ class PullRequest
   def comment_on_violation(violation)
     hound_github.add_pull_request_comment(
       pull_request_number: number,
-      comment: violation.messages.join("<br>"),
+      comment: violation.messages.join(COMMENT_LINE_DELIMITER),
       commit: head_commit,
       filename: violation.filename,
       patch_position: violation.patch_position
     )
+  end
+
+  def delete_comment(comment)
+    hound_github.delete_pull_request_comment(full_repo_name, comment.id)
   end
 
   def repository_owner_name

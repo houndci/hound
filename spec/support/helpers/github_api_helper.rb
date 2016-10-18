@@ -198,8 +198,13 @@ module GithubApiHelper
     ).to_return(status: 200)
   end
 
-  def stub_pull_request_comments_request(full_repo_name, pull_request_number)
-    comments_body = read_fixture("pull_request_comments.json")
+  def stub_pull_request_comments_request(
+    full_repo_name,
+    pull_request_number,
+    github_username
+  )
+    comments_body = read_fixture("pull_request_comments.json").
+      gsub("the_hound_user", github_username)
     url = "https://api.github.com/repos/#{full_repo_name}/pulls/" +
       "#{pull_request_number}/comments"
     headers = { "Content-Type" => "application/json; charset=utf-8" }

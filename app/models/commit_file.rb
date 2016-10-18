@@ -12,8 +12,7 @@ class CommitFile
   end
 
   def line_at(line_number)
-    changed_lines.detect { |line| line.number == line_number } ||
-      UnchangedLine.new
+    changed_lines[line_number] || UnchangedLine.new
   end
 
   private

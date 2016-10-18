@@ -10,23 +10,40 @@ class RecentBuildsByRepoQuery
   end
 
   def run
-    @user.builds.
-      includes(:repo).
-      from(Arel.sql("(#{ranked_by_created_at_subquery}) AS builds")).
-      where("rank = 1").
-      order("builds.created_at DESC").
-      limit(NUMBER_OF_BUILDS)
-  end
-
-  private
-
-  def ranked_by_created_at_subquery
-    Build.select(<<-SQL).to_sql
-      builds.*,
-      dense_rank() OVER (
-        PARTITION BY repo_id, pull_request_number
-        ORDER BY created_at DESC
-      ) AS rank
+    Build.find_by_sql([<<-SQL, user_id: @user.id, limit: NUMBER_OF_BUILDS])
+      WITH user_builds AS (
+        SELECT
+          builds.id
+        FROM
+          builds
+          INNER JOIN repos
+            ON builds.repo_id = repos.id
+          INNER JOIN memberships
+            ON repos.id = memberships.repo_id
+        WHERE
+          memberships.user_id = :user_id
+      ),
+      recent_builds_by_pull_request AS (
+        SELECT distinct ON (repo_id, pull_request_number)
+          builds.*
+        FROM
+          builds
+          INNER JOIN user_builds
+            ON user_builds.id = builds.id
+        ORDER BY
+          repo_id,
+          pull_request_number,
+          created_at DESC,
+          id DESC
+      )
+      SELECT
+        *
+      FROM
+        recent_builds_by_pull_request
+      ORDER BY
+        created_at DESC
+      LIMIT
+        :limit
     SQL
   end
 end
