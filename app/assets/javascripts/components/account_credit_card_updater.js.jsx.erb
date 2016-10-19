@@ -16,13 +16,13 @@ class AccountCreditCardUpdater extends React.Component {
     });
   }
 
-  onUpdateCreditCard(evt) {
-    evt.preventDefault();
+  onUpdateCreditCard(event) {
+    event.preventDefault();
 
     StripeCheckout.configure({
       key: Hound.settings.stripePublishableKey,
       image: "<%= image_path('icon.svg') %>",
-      email: $("input[type=email]").attr('placeholder'),
+      email: $("input[type=email]").attr("placeholder"),
       token: this.updateCustomerCreditCard
     }).open({
       panelLabel: "Update Card",
@@ -35,7 +35,7 @@ class AccountCreditCardUpdater extends React.Component {
       return (
         <h3>
           Monthly Billing
-          <a href="#" className="update-card" onClick={(evt) => this.onUpdateCreditCard(evt)}>
+          <a href="#" className="update-card" onClick={this.onUpdateCreditCard}>
             <i className="fa fa-credit-card"></i>
             Update Credit Card
           </a>

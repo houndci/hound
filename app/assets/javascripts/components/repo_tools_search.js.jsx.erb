@@ -6,7 +6,7 @@ class RepoToolsSearch extends React.Component {
           className="repo-search-tools-input"
           placeholder="<%= I18n.t('search_placeholder') %>"
           type="text"
-          onChange={(evt) => this.props.onSearchInput(evt.target.value)}
+          onChange={(event) => this.props.onSearchInput(event.target.value)}
         />
       </div>
     );

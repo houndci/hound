@@ -7,10 +7,16 @@ class RepoTools extends React.Component {
       onRefreshClicked,
     } = this.props;
 
+    if (showPrivateButton) {
+      var privateButton = <RepoToolsPrivate />;
+    } else {
+      var privateButton = null;
+    }
+
     return (
       <div className="repo-tools">
-        <RepoToolsSearch onSearchInput={(evt) => onSearchInput(evt)} />
-        { showPrivateButton ? <RepoToolsPrivate /> : null }
+        <RepoToolsSearch onSearchInput={(event) => onSearchInput(event)} />
+        {privateButton}
         <RepoToolsRefresh
           isSyncing={isSyncing}
           onRefreshClicked={onRefreshClicked}

@@ -5,27 +5,31 @@ class ReposContainer extends React.Component {
       type: "GET",
       dataType: "json",
       success: (data) => {
-        if (data.length == 0) {
-          this.onRefreshClicked();
-        } else {
-          this.setState({repos: data});
-
-          organizations = data.map( (repo) => {
-            return (repo.owner || {
-              name: this.orgName(repo.full_github_name)
-            });
-          });
-          this.setState({
-            organizations: _.uniqWith(organizations, _.isEqual)
-          });
-
-          this.setState({isSyncing: false});
-        }
+        this.onFetchReposAndOrgsSuccess(data);
       },
       error: (error) => {
         alert("Your repos failed to load.");
       }
     });
+  }
+
+  onFetchReposAndOrgsSuccess(data) {
+    if (data.length == 0) {
+      this.onRefreshClicked();
+    } else {
+      this.setState({repos: data});
+
+      organizations = data.map( (repo) => {
+        return (repo.owner || {
+          name: this.orgName(repo.full_github_name)
+        });
+      });
+      this.setState({
+        organizations: _.uniqWith(organizations, _.isEqual)
+      });
+
+      this.setState({isSyncing: false});
+    }
   }
 
   orgName(full_github_name) {
@@ -124,15 +128,22 @@ class ReposContainer extends React.Component {
     }
   }
 
+  activateAndTrackRepoSubscription(repo, stripeSubscriptionId) {
+    repo.active = true;
+    repo.stripe_subscription_id = stripeSubscriptionId;
+    this.track_repo_activated(repo);
+
+    this.commitRepoToState(repo);
+  }
+
   createSubscriptionWithExistingCard(repo) {
     this.createSubscription(
       { repo_id: repo.id}
     ).then( (resp) => {
-      repo.active = true;
-      repo.stripe_subscription_id = resp.stripe_subscription_id;
-      this.track_repo_activated(repo);
+      this.activateAndTrackRepoSubscription(
+        repo, resp.stripe_subscription_id
+      );
 
-      this.commitRepoToState(repo);
     }).catch( (error) => {
       alert("Your subscription could not be activated.");
     });
@@ -146,10 +157,9 @@ class ReposContainer extends React.Component {
         email_address: stripeToken.email
       }
     ).then( (resp) => {
-      repo.active = true;
-      repo.stripe_subscription_id = resp.stripe_subscription_id;
-      this.track_repo_activated(repo);
-      this.commitRepoToState(repo);
+      this.activateAndTrackRepoSubscription(
+        repo, resp.stripe_subscription_id
+      );
     }).catch( (error) => {
       alert("Your subscription could not be activated.");
     });
@@ -217,7 +227,7 @@ class ReposContainer extends React.Component {
     });
   }
 
-  onRefreshClicked(evt) {
+  onRefreshClicked(event) {
     this.setState({isSyncing: true});
 
     $.ajax({
@@ -234,7 +244,7 @@ class ReposContainer extends React.Component {
     });
   }
 
-  onPrivateClicked(evt) {
+  onPrivateClicked(event) {
     $.post("/auth/github?access=full");
   }
 
@@ -266,9 +276,9 @@ class ReposContainer extends React.Component {
       <div>
         <RepoTools
           showPrivateButton={!has_private_access}
-          onSearchInput={(evt) => this.onSearchInput(evt)}
-          onRefreshClicked={(evt) => this.onRefreshClicked(evt)}
-          onPrivateClicked={(evt) => this.onPrivateClicked(evt)}
+          onSearchInput={(event) => this.onSearchInput(event)}
+          onRefreshClicked={(event) => this.onRefreshClicked(event)}
+          onPrivateClicked={(event) => this.onPrivateClicked(event)}
           isSyncing={this.state.isSyncing}
         />
         <ReposView
@@ -276,7 +286,7 @@ class ReposContainer extends React.Component {
           organizations={this.state.organizations}
           repos={this.state.repos}
           filterTerm={this.state.filterTerm}
-          onRepoClicked={(evt) => this.onRepoClicked(evt)}
+          onRepoClicked={(event) => this.onRepoClicked(event)}
           isProcessingId={this.state.isProcessingId}
          />
       </div>

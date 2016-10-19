@@ -6,6 +6,8 @@ class Repo extends React.Component {
       onRepoClicked,
     } = this.props;
 
+    const showPrivate = !repo.active && repo.price_in_cents > 0;
+
     return (
       <li className={classNames(
           "repo",
@@ -18,7 +20,7 @@ class Repo extends React.Component {
         </div>
         <div className={classNames(
           "repo-activation-toggle",
-          {"repo-activation-toggle--private": !repo.active && repo.price_in_cents > 0}
+          {"repo-activation-toggle--private": showPrivate}
         )}>
           <span className="repo-private-label">
             Private - ${repo.price_in_dollars}

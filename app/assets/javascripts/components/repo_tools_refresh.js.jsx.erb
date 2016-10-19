@@ -1,17 +1,19 @@
 class RepoToolsRefresh extends React.Component {
   render() {
     const { isSyncing, onRefreshClicked } = this.props;
-    const buttonText = isSyncing
-      ?
-        "<%= I18n.t('syncing_repos') %>"
-      :
-        "<%= I18n.t('sync_repos') %>";
+
+    if (isSyncing) {
+      var buttonText = "<%= I18n.t('syncing_repos') %>";
+    } else {
+      var buttonText = "<%= I18n.t('sync_repos') %>";
+    }
+    const isDisabled = isSyncing ? "disabled" : null;
 
     return (
       <div className="repo-tools-refresh">
         <button
           className="repo-tools-refresh-button"
-          disabled={isSyncing ? "disabled" : null}
+          disabled={isDisabled}
           onClick={onRefreshClicked}
         >
           <span>{buttonText}</span>
