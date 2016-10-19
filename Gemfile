@@ -34,6 +34,8 @@ gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 2.7.2"
 gem "react-rails"
+gem "rails-assets-es5-shim", source: "https://rails-assets.org"
+gem "rails-assets-classnames", source: "https://rails-assets.org"
 
 group :staging, :production do
   gem "rack-timeout"
