@@ -19,6 +19,12 @@
   <ul class="pull-right">
     <% if signed_in? %>
       <li>
+        <div class="allowance">
+          Private Repos
+          <strong>5/5</strong>
+        </div>
+      </li>
+      <li>
         <%= link_to account_path, class: "account" do %>
           <% if current_user.email.present? %>
             <div class="avatar" style="background-image: url('<%= avatar_url(current_user) %>')"></div>
