@@ -110,6 +110,12 @@
     }
   }
 
+  &.new {
+    .plan-price {
+      color: darken($green, 20%);
+    }
+  }
+
   .plan-divider {
     float: left;
   }

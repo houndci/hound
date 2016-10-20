@@ -25,6 +25,9 @@ en:
     billable_email:
       invalid: "Email is invalid"
 
+  tier_change:
+    title: "Pricing: A Change of Plans"
+
   onboarding:
     title: "Let's keep that code in style:"
     step_one_title: "Activate Hound on a repo."
