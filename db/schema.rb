@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160712203443) do
+ActiveRecord::Schema.define(version: 20161021212135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,14 +27,14 @@ ActiveRecord::Schema.define(version: 20160712203443) do
   create_table "builds", force: :cascade do |t|
     t.text     "violations_archive"
     t.integer  "repo_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.string   "uuid",                limit: 255, null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.string   "uuid",                limit: 255,             null: false
     t.integer  "pull_request_number"
     t.string   "commit_sha",          limit: 255
     t.text     "payload"
     t.integer  "user_id"
-    t.integer  "violations_count"
+    t.integer  "violations_count",                default: 0, null: false
   end
 
   add_index "builds", ["commit_sha", "pull_request_number"], name: "index_builds_on_commit_sha_and_pull_request_number", using: :btree

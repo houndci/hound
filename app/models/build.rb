@@ -14,10 +14,6 @@ class Build < ActiveRecord::Base
     file_reviews.where(completed_at: nil).empty?
   end
 
-  def violation_count
-    violations.map(&:messages_count).sum
-  end
-
   def user_token
     (user && user.token) || Hound::GITHUB_TOKEN
   end
