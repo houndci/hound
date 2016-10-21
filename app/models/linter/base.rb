@@ -42,7 +42,7 @@ module Linter
     def build_review_job_attributes(commit_file)
       {
         commit_sha: build.commit_sha,
-        config: config.serialize,
+        config: serialized_config,
         content: commit_file.content,
         filename: commit_file.filename,
         linter_name: name,
@@ -65,6 +65,10 @@ module Linter
 
     def config
       @config ||= ConfigBuilder.for(hound_config, name)
+    end
+
+    def serialized_config
+      config.serialize
     end
   end
 end

@@ -2,8 +2,8 @@ module Linter
   class Scss < Base
     FILE_REGEXP = /.+\.scss\z/
 
-    def config
-      owner_config.merge(local_config.serialize)
+    def serialized_config
+      owner_config.serialize(local_config.serialize)
     end
 
     def owner_config
