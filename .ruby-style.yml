@@ -272,6 +272,8 @@ Style/NumericLiterals:
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#underscores-in-numerics
   Enabled: false
   MinDigits: 5
+Style/NumericPredicate:
+  Enabled: false
 Style/ParenthesesAroundCondition:
   Description: Don't use parentheses around the condition of an if/unless/while.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-parens-if
