@@ -12,7 +12,7 @@ class BuildOwnerHoundConfig
 
   def run
     if owner.has_config_repo? && config_repo_reachable?
-      commit = Commit.new(config_repo.full_github_name, LATEST_SHA, github)
+      commit = Commit.new(config_repo.name, LATEST_SHA, github)
       HoundConfig.new(commit)
     else
       HoundConfig.new(EmptyCommit.new)
@@ -32,13 +32,12 @@ class BuildOwnerHoundConfig
   end
 
   def config_repo_reachable?
-    !!github.repo(config_repo.full_github_name)
+    !!github.repo(config_repo.name)
   rescue Octokit::InvalidRepository, Octokit::NotFound
     false
   end
 
   def config_repo
-    Repo.find_by(full_github_name: owner.config_repo) ||
-      Repo.new(full_github_name: owner.config_repo)
+    Repo.find_or_initialize_by(name: owner.config_repo)
   end
 end

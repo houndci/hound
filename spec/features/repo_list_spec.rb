@@ -6,29 +6,29 @@ feature "Repo list", js: true do
 
   scenario "user views list of repos" do
     user = create(:user, token_scopes: "public_repo,user:email")
-    restricted_repo = create(:repo, full_github_name: "inaccessible-repo")
-    activatable_repo = create(:repo, full_github_name: "thoughtbot/my-repo")
+    restricted_repo = create(:repo, name: "inaccessible-repo")
+    activatable_repo = create(:repo, name: "thoughtbot/my-repo")
     create(:membership, repo: activatable_repo, user: user, admin: true)
     create(:membership, repo: restricted_repo, user: user, admin: false)
 
     sign_in_as(user)
 
     within ".repo:nth-of-type(1)" do
-      expect(page).to have_text activatable_repo.full_github_name
+      expect(page).to have_text activatable_repo.name
       expect(page).to have_css ".repo-toggle"
     end
     within ".repo:nth-of-type(2)" do
-      expect(page).to have_text restricted_repo.full_github_name
+      expect(page).to have_text restricted_repo.name
       expect(page).to have_text I18n.t("cannot_activate_repo")
       expect(page).not_to have_css ".repo-toggle"
     end
   end
 
   scenario "signed out user views repo list" do
-    repo = create(:repo, full_github_name: "thoughtbot/my-repo")
+    repo = create(:repo, name: "thoughtbot/my-repo")
     repo.users << user
 
-    expect(page).not_to have_content repo.full_github_name
+    expect(page).not_to have_content repo.name
   end
 
   scenario "user sees onboarding" do
@@ -50,29 +50,29 @@ feature "Repo list", js: true do
   end
 
   scenario "user filters list" do
-    repo1 = create_repo(full_github_name: "foo")
-    repo2 = create_repo(full_github_name: "bar")
+    repo1 = create_repo(name: "foo")
+    repo2 = create_repo(name: "bar")
 
     sign_in_as(user)
     find(".repo-search-tools-input").set("fo")
 
-    expect(page).to have_text repo1.full_github_name
-    expect(page).not_to have_text repo2.full_github_name
+    expect(page).to have_text repo1.name
+    expect(page).not_to have_text repo2.name
   end
 
   scenario "user syncs repos" do
     token = "letmein"
-    repo = create_repo(full_github_name: "user1/test-repo")
+    repo = create_repo(name: "user1/test-repo")
     stub_repos_requests(token)
 
     sign_in_as(user, token)
 
-    expect(page).to have_content(repo.full_github_name)
+    expect(page).to have_content(repo.name)
 
     click_button I18n.t("sync_repos")
 
     expect(page).to have_text("jimtom/My-Private-Repo")
-    expect(page).not_to have_text(repo.full_github_name)
+    expect(page).not_to have_text(repo.name)
   end
 
   scenario "user signs up" do
@@ -88,9 +88,9 @@ feature "Repo list", js: true do
     token = "letmein"
     repo = create_repo(private: false)
     hook_url = "http://#{ENV["HOST"]}/builds"
-    stub_repo_request(repo.full_github_name, token)
-    stub_add_collaborator_request(username, repo.full_github_name, token)
-    stub_hook_creation_request(repo.full_github_name, hook_url, token)
+    stub_repo_request(repo.name, token)
+    stub_add_collaborator_request(username, repo.name, token)
+    stub_hook_creation_request(repo.name, hook_url, token)
 
     sign_in_as(user, token)
     find(".repo .repo-toggle").click
@@ -106,10 +106,10 @@ feature "Repo list", js: true do
 
   scenario "user with admin access activates organization repo" do
     token = "letmein"
-    repo = create_repo(private: false, full_github_name: "testing/repo")
+    repo = create_repo(private: false, name: "testing/repo")
     hook_url = "http://#{ENV["HOST"]}/builds"
-    stub_repo_with_org_request(repo.full_github_name, token)
-    stub_hook_creation_request(repo.full_github_name, hook_url, token)
+    stub_repo_with_org_request(repo.name, token)
+    stub_hook_creation_request(repo.name, hook_url, token)
 
     sign_in_as(user, token)
     find(".repos .repo-toggle").click
@@ -126,9 +126,9 @@ feature "Repo list", js: true do
   scenario "user deactivates repo" do
     token = "letmein"
     repo = create_repo(:active)
-    stub_repo_request(repo.full_github_name, token)
-    stub_hook_removal_request(repo.full_github_name, repo.hook_id)
-    stub_remove_collaborator_request(username, repo.full_github_name, token)
+    stub_repo_request(repo.name, token)
+    stub_hook_removal_request(repo.name, repo.hook_id)
+    stub_remove_collaborator_request(username, repo.name, token)
 
     sign_in_as(user, token)
     find(".repos .repo-toggle").click
@@ -145,9 +145,9 @@ feature "Repo list", js: true do
   scenario "user deactivates private repo without subscription" do
     token = "letmein"
     repo = create_repo(:active, private: true)
-    stub_repo_request(repo.full_github_name, token)
-    stub_hook_removal_request(repo.full_github_name, repo.hook_id)
-    stub_remove_collaborator_request(username, repo.full_github_name, token)
+    stub_repo_request(repo.name, token)
+    stub_hook_removal_request(repo.name, repo.hook_id)
+    stub_remove_collaborator_request(username, repo.name, token)
 
     sign_in_as(user, token)
     find(".repos .repo-toggle").click

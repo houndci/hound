@@ -66,7 +66,7 @@ describe ActivationsController, "#create" do
         for_user(membership.user).
         with(
           properties: {
-            name: repo.full_github_name,
+            name: repo.name,
             private: false
           }
         )

@@ -14,7 +14,7 @@ class Analytics
     track(
       event: "Repo Activation Failed",
       properties: {
-        name: repo.full_github_name,
+        name: repo.name,
         private: repo.private
       }
     )
@@ -24,7 +24,7 @@ class Analytics
     track(
       event: "Repo Deactivated",
       properties: {
-        name: repo.full_github_name,
+        name: repo.name,
         private: repo.private,
         revenue: -repo.plan_price,
       }
@@ -35,7 +35,7 @@ class Analytics
     track(
       event: "Build Started",
       properties: {
-        name: repo.full_github_name,
+        name: repo.name,
         private: repo.private,
       }
     )
@@ -45,7 +45,7 @@ class Analytics
     track(
       event: "Build Completed",
       properties: {
-        name: repo.full_github_name,
+        name: repo.name,
         private: repo.private,
       }
     )

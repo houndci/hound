@@ -30,7 +30,7 @@ class RepoSynchronization
     {
       private: attributes[:private],
       github_id: attributes[:id],
-      full_github_name: attributes[:full_name],
+      name: attributes[:full_name],
       in_organization: attributes[:owner][:type] == GithubApi::ORGANIZATION_TYPE,
       owner: owner,
     }

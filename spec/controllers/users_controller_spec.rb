@@ -11,7 +11,7 @@ describe UsersController do
       expect(response.body).to eq(
         {
           id: user.id,
-          github_username: user.github_username,
+          username: user.username,
           card_exists: false,
           refreshing_repos: user.refreshing_repos
         }.to_json

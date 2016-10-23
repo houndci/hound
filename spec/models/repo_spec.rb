@@ -17,7 +17,7 @@ describe Repo do
     context "when repo is bulk" do
       it "returns true" do
         create(:bulk_customer, org: "thoughtbot")
-        repo = Repo.new(full_github_name: "thoughtbot/hub")
+        repo = Repo.new(name: "thoughtbot/hub")
 
         expect(repo).to be_bulk
       end
@@ -25,15 +25,15 @@ describe Repo do
 
     context "when repo is not bulk" do
       it "returns false" do
-        repo = Repo.new(full_github_name: "jimbob/hound")
+        repo = Repo.new(name: "jimbob/hound")
 
         expect(repo).not_to be_bulk
       end
     end
 
-    context "without full_github_name" do
+    context "without name" do
       it "returns false" do
-        repo = Repo.new(full_github_name: nil)
+        repo = Repo.new(name: nil)
 
         expect(repo).not_to be_bulk
       end
@@ -101,28 +101,28 @@ describe Repo do
     context "with existing github name" do
       it "updates attributes" do
         repo = create(:repo, github_id: 1)
-        new_attributes = { github_id: 2, full_github_name: repo.name }
+        new_attributes = { github_id: 2, name: repo.name }
 
         Repo.find_or_create_with(new_attributes)
         repo.reload
 
         expect(Repo.count).to eq 1
-        expect(repo.name).to eq new_attributes[:full_github_name]
+        expect(repo.name).to eq new_attributes[:name]
         expect(repo.github_id).to eq new_attributes[:github_id]
       end
     end
 
     context "with existing github id" do
       it "updates attributes" do
-        repo = create(:repo, full_github_name: "foo")
-        new_attributes = { github_id: repo.github_id, full_github_name: "bar" }
+        repo = create(:repo, name: "foo")
+        new_attributes = { github_id: repo.github_id, name: "bar" }
 
         Repo.find_or_create_with(new_attributes)
         repo.reload
 
         expect(Repo.count).to eq 1
         expect(repo.github_id).to eq new_attributes[:github_id]
-        expect(repo.name).to eq new_attributes[:full_github_name]
+        expect(repo.name).to eq new_attributes[:name]
       end
     end
 
@@ -140,8 +140,8 @@ describe Repo do
         github_name = "foo/bar"
         github_id = 40023
         repo_with_id = create(:repo, github_id: github_id)
-        _repo_with_name = create(:repo, full_github_name: github_name)
-        new_attributes = { github_id: github_id, full_github_name: github_name }
+        _repo_with_name = create(:repo, name: github_name)
+        new_attributes = { github_id: github_id, name: github_name }
 
         Repo.find_or_create_with(new_attributes)
 

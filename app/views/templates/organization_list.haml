@@ -2,7 +2,7 @@
   .repo-tools-search
     %input.repo-search-tools-input{ 'type' => 'text',
       'placeholder' => t('search_placeholder'),
-      'ng-model' => 'search.full_github_name' }
+      'ng-model' => 'search.name' }
   - unless current_user.has_access_to_private_repos?
     .repo-tools-private
       = button_to '/auth/github?access=full',

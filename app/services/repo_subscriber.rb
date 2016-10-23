@@ -69,7 +69,7 @@ class RepoSubscriber
 
   def create_stripe_customer
     stripe_customer = Stripe::Customer.create(
-      email: user.email_address,
+      email: user.email,
       metadata: { user_id: user.id },
       card: card_token
     )

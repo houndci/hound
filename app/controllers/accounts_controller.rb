@@ -37,6 +37,6 @@ class AccountsController < ApplicationController
   end
 
   def find_subscribed_repos
-    current_user.subscribed_repos.order(:full_github_name)
+    current_user.subscribed_repos.order(:name)
   end
 end

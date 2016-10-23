@@ -7,12 +7,12 @@ class User < ActiveRecord::Base
   has_many :subscribed_repos, through: :subscriptions, source: :repo
   has_many :subscriptions
 
-  validates :github_username, presence: true
+  validates :username, presence: true
 
   before_create :generate_remember_token
 
   def to_s
-    github_username
+    username
   end
 
   def active_repos
@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
     repos.
       order("memberships.admin DESC").
       order(active: :desc).
-      order("LOWER(full_github_name) ASC")
+      order("LOWER(name) ASC")
   end
 
   private

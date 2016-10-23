@@ -18,7 +18,7 @@ RSpec.describe "POST /builds" do
       comment_id_from_fixture = 12195842
       commit_id_from_fixture = "498b81cd038f8a3ac02f035a8537b7ddcff38a81"
       violations = [existing_comment_violation, new_violation]
-      create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
+      create(:repo, :active, github_id: repo_id, name: repo_name)
       stub_github_requests_with_violations(filename: filename)
       stub_commit_request(repo_name, pr_sha)
       stub_pull_request_comments_request(
@@ -46,7 +46,7 @@ RSpec.describe "POST /builds" do
 
   context "without violations" do
     it "does not make a comment" do
-      create(:repo, github_id: repo_id, full_github_name: repo_name)
+      create(:repo, github_id: repo_id, name: repo_name)
       stub_github_requests_with_no_violations
       comment_request = stub_new_comment_request
 

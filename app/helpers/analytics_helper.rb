@@ -6,8 +6,8 @@ module AnalyticsHelper
   def identify_hash(user = current_user)
     {
       created: user.created_at,
-      email: user.email_address,
-      username: user.github_username,
+      email: user.email,
+      username: user.username,
       user_id: user.id,
       active_repo_ids: user.active_repos.ids,
     }
