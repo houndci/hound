@@ -4,7 +4,7 @@ class PopulatedRepoList extends React.Component {
 
     if (filterTerm == null) { return true; }
 
-    const repoName = repo.full_github_name.toLowerCase();
+    const repoName = repo.name.toLowerCase();
     return repoName.indexOf(filterTerm.toLowerCase()) !== -1;
   }
 

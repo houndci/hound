@@ -16,7 +16,7 @@ class Repo extends React.Component {
         )}
       >
         <div className="repo-name">
-          {repo.full_github_name}
+          {repo.name}
         </div>
         <div className={classNames(
           "repo-activation-toggle",

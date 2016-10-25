@@ -6,13 +6,13 @@ class OrganizationsList extends React.Component {
       });
     } else {
       return _.filter(this.props.repos, (repo) => {
-        return this.orgName(repo.full_github_name) === org.name;
+        return this.orgName(repo.name) === org.name;
       });
     }
   }
 
-  orgName(full_github_name) {
-    return _.split(full_github_name, "/")[0];
+  orgName(name) {
+    return _.split(name, "/")[0];
   }
 
   render() {

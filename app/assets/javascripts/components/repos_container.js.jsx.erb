@@ -21,7 +21,7 @@ class ReposContainer extends React.Component {
 
       organizations = data.map( (repo) => {
         return (repo.owner || {
-          name: this.orgName(repo.full_github_name)
+          name: this.orgName(repo.name)
         });
       });
       this.setState({
@@ -32,8 +32,8 @@ class ReposContainer extends React.Component {
     }
   }
 
-  orgName(full_github_name) {
-    return _.split(full_github_name, "/")[0];
+  orgName(name) {
+    return _.split(name, "/")[0];
   }
 
   state = {
@@ -263,7 +263,7 @@ class ReposContainer extends React.Component {
 
     window.analytics.track(eventName, {
       properties: {
-        name: repo.full_github_name,
+        name: repo.name,
         revenue: price
       }
     });
