@@ -1,0 +1,40 @@
+<% content_for(:title) do %>
+  Job Failures
+<% end %>
+
+<header class="header">
+  <h1 class="header__heading">
+    <%= content_for(:title) %>
+  </h1>
+</header>
+<table class="collection-data" aria-labelledby="page-title">
+  <thead>
+    <tr>
+      <td class="cell-label cell-label--string cell-label--false">
+        Error message
+      </td>
+      <td class="cell-label cell-label--string cell-label--false">
+        Failure indexes
+      </td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% resources.each do |error_message, job_failures| %>
+      <tr>
+        <td class="cell-data cell-data--string preserve-whitespace">
+          <%= error_message %>
+        </td>
+        <td class="cell-data cell-data--array">
+          <%= job_failures.map(&:index).join(", ") %>
+        </td>
+        <td>
+          <%= link_to "Remove",
+            admin_job_failure_path(job_failures.map(&:index).join(",")),
+            method: :delete
+          %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

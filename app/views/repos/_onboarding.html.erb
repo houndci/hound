@@ -1,0 +1,52 @@
+<section class="onboarding">
+  <div class="inner-wrapper">
+    <h1>
+      <%= t("onboarding.title") %>
+    </h1>
+    <ol class="onboarding-steps">
+      <% if current_user.has_active_repos? %>
+        <li class="step">
+          <h4>
+            <%= t("onboarding.step_one_alt_title", count: current_user.repos.active.count ) %>
+          </h4>
+          <p>
+            <%= t("onboarding.step_one_desc") %>
+          </p>
+        </li>
+        <li class="step current-step">
+          <h4>
+            <%= t("onboarding.step_two_alt_title") %>
+          </h4>
+          <p>
+            <%= t("onboarding.step_two_desc") %>
+          </p>
+        </li>
+      <% else %>
+        <li class="step current-step">
+          <h4>
+            <%= t("onboarding.step_one_title") %>
+          </h4>
+          <p>
+            <%= t("onboarding.step_one_desc") %>
+          </p>
+        </li>
+        <li class="step">
+          <h4>
+            <%= t("onboarding.step_two_title") %>
+          </h4>
+          <p>
+            <%= t("onboarding.step_two_desc") %>
+          </p>
+        </li>
+      <% end %>
+      <li class="step">
+        <h4>
+          <%= t("onboarding.step_three_title") %>
+        </h4>
+        <p>
+          <%= t("onboarding.step_three_desc") %>
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>

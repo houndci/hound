@@ -1,0 +1,39 @@
+<% content_for :page_title, "Recent Builds" %>
+<ul class="build-list">
+  <% builds.each do |build| %>
+    <%= content_tag_for :li, build, class: "build-list-item" do %>
+      <div class="build">
+        <div class="build-meta">
+          <h2 class="build-org-repo">
+            <%= build.repo.name %>
+          </h2>
+          <h4 class="build-time">
+            <span>
+              <%= time_ago_in_words(build.created_at) %>
+            </span>
+          </h4>
+        </div>
+        <div class="build-meta">
+          <h3 class="build-pull-request">
+            <span>Pull request</span>
+            <strong>
+              <%= build.pull_request_number %>
+            </strong>
+          </h3>
+          <h3 class="build-sha">
+            <span>Latest commit</span>
+            <strong>
+              <%= build.commit_sha[0..6] %>
+            </strong>
+          </h3>
+        </div>
+        <%= form_for :rebuild, url: repo_rebuilds_path(build.repo) do |form| %>
+          <%= form.hidden_field :pull_request_number do %>
+            value: build.pull_request_number
+          <% end %>
+          <%= form.submit t(".new"), class: "build-button" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</ul>

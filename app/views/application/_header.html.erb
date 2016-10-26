@@ -1,0 +1,48 @@
+<header class="<%= content_for(:header_class) %> global-header">
+  <div class="logo pull-left">
+    <div class="va-cell">
+      <%= link_to repos_path, class: "logo-link" do %>
+        <h1>
+          Hound
+        </h1>
+      <% end %>
+    </div>
+  </div>
+  <ul class="pull-left">
+    <li>
+      <%= link_to "Docs", configuration_path, class: "docs" %>
+    </li>
+    <li>
+      <%= link_to "FAQ", faq_path, class: "faq" %>
+    </li>
+  </ul>
+  <ul class="pull-right">
+    <% if signed_in? %>
+      <li>
+        <%= link_to account_path, class: "account" do %>
+          <% if current_user.email.present? %>
+            <div class="avatar" style="background-image: url('<%= avatar_url(current_user) %>')"></div>
+          <% end %>
+          <span>
+            <%= current_user.username %>
+          </span>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to t("sign_out"), sign_out_path, class: "sign-out" %>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to "Pricing", root_path(anchor: "pricing"), class: "pricing" %>
+      </li>
+      <li>
+        <%= link_to "https://twitter.com/houndci", target: "_blank", class: "tweet-us" do %>
+          <span>@houndci</span>
+        <% end %>
+      </li>
+      <li class="auth-container">
+        <%= render "application/auth_button" %>
+      </li>
+    <% end %>
+  </ul>
+</header>

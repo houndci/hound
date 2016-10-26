@@ -118,13 +118,6 @@ GEM
       thor (~> 0.19.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    haml (4.0.7)
-      tilt
-    haml-rails (0.5.3)
-      actionpack (>= 4.0.1)
-      activesupport (>= 4.0.1)
-      haml (>= 3.1, < 5.0)
-      railties (>= 4.0.1)
     hashdiff (0.3.0)
     hashie (3.4.2)
     high_voltage (2.2.1)
@@ -360,7 +353,6 @@ DEPENDENCIES
   faraday
   font-awesome-rails
   foreman
-  haml-rails
   high_voltage
   inifile
   jasmine-rails

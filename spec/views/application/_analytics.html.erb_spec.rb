@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "application/_analytics.haml" do
+describe "application/_analytics.html.erb" do
   before do
     allow(view).to receive(:signed_in?).and_return(false)
     user = double("user").as_null_object

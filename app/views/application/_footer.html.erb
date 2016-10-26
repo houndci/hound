@@ -1,0 +1,33 @@
+<footer>
+  <ul class="footer-nav">
+    <li>
+      <%= link_to "Source Code", "https://github.com/houndci/hound" %>
+    </li>
+    <li>
+      <%= link_to "FAQ", faq_path %>
+    </li>
+    <li>
+      <%= link_to "Terms", "https://github.com/houndci/hound/blob/master/doc/TERMS.md" %>
+    </li>
+    <li>
+      <%= link_to "Privacy", "https://github.com/houndci/hound/blob/master/doc/PRIVACY.md" %>
+    </li>
+    <li>
+      <%= link_to "Security", "https://github.com/houndci/hound/blob/master/doc/SECURITY.md" %>
+    </li>
+  </ul>
+  <article class="legal">
+    <p>
+      Questions? Try the
+      <%= link_to "FAQ", faq_path %> or
+      Tweet <%= link_to '@houndci', 'https://twitter.com/houndci', target: :blank %>.
+    </p>
+    <p>
+      Hound is Copyright &copy; <%= Date.today.year %> thoughtbot. It is open source
+      software and may be redistributed under the terms specified in the
+    </p>
+    <p>
+      The names and logos for Hound are trademarks of thoughtbot.
+    </p>
+  </article>
+</footer>

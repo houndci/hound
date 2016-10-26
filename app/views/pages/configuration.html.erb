@@ -1,0 +1,556 @@
+<% content_for :page_title, "Configuration" %>
+<div class="hound-docs configuration-docs">
+  <aside class="docs-nav">
+    <ul>
+      <li>
+        <%= link_to "Hound", "#configuration" %>
+      </li>
+      <li>
+        <%= link_to "Ruby", "#ruby" %>
+      </li>
+      <li>
+        <%= link_to "CoffeeScript", "#coffeescript" %>
+      </li>
+      <li>
+        <%= link_to "JavaScript", "#javascript" %>
+      </li>
+      <li>
+        <%= link_to "SCSS", "#scss" %>
+      </li>
+      <li>
+        <%= link_to "Haml", "#haml" %>
+      </li>
+      <li>
+        <%= link_to "Go", "#go" %>
+      </li>
+      <li>
+        <%= link_to "Swift", "#swift" %>
+      </li>
+      <li>
+        <%= link_to "ESLint (beta)", "#eslint" %>
+      </li>
+      <li>
+        <%= link_to "Python (beta)", "#python" %>
+      </li>
+    </ul>
+  </aside>
+  <section class="doc-content">
+    <article>
+      <h1>Hound Documentation</h1>
+      <p>
+        Want to modify style rules to better suit your preferences?
+        Below you will find documentation on configuring style rules for each
+        linter that we support.
+      </p>
+      <p>
+        If this page doesn't help you find what you are looking for,
+        please tweet at us
+        <%= link_to "@houndci", "https://twitter.com/houndci", target: :blank %>
+        or email us at <%= mail_to "hound@thoughtbot.com" %>
+        and we will help you out.
+      </p>
+    </article>
+    <article id="configuration">
+      <h3>Hound Configuration</h3>
+      <p>
+        All supported linters, except the ones in beta, are enabled by default.
+      </p>
+      <p>
+        Hound will look for a custom configuration file named
+        <em class="code-inline">.hound.yml</em>
+        in the root directory of your project.
+      </p>
+      <p>
+        Using
+        <em class="code-inline">.hound.yml</em>
+        you can tell Hound which linters to enable or disable,
+        specify paths to files that provide custom style rules,
+        and determine which files/directories to ignore.
+        Here is an example:
+      </p>
+      <code class="code-block">
+        <preserve>
+
+          scss:
+            enabled: false
+
+          ruby:
+            config_file: .rubocop.yml
+
+          jshint:
+            ignore_file: .jshintignore
+
+
+        </preserve>
+      </code>
+      <p>
+        In this example,
+        review of SCSS is deactivated,
+        custom RuboCop configuration is provided for Ruby files,
+        and an ignore file is given that tells which files/directories JSHint
+        should not review.
+      </p>
+      <p>
+        Hound can be configured to use
+        <%= link_to "GitHub's Status API",
+          "https://github.com/blog/1935-see-results-from-all-pull-request-status-checks",
+          target: :blank
+        %>
+        to mark a pull request as failed if any violations are found.
+        To do so, add the following to your
+        <em class="code-inline">.hound.yml</em>
+      </p>
+      <code class="code-block">
+        <preserve>
+
+          fail_on_violations: true
+
+
+        </preserve>
+      </code>
+    </article>
+    <article id="ruby">
+      <h3>Ruby</h3>
+      <p>
+        Hound uses
+        <%= link_to "RuboCop",
+          "https://github.com/bbatsov/rubocop",
+          target: :blank
+        %>
+        to review Ruby code.
+      </p>
+      <p>
+        By default, Hound uses the
+        <%= link_to "default RuboCop config", rubocop_config_url, target: :blank %>.
+        To change the way RuboCop is configured, add a
+        <em class="code-inline">.rucobop.yml</em>
+        file to your project, configure it as desired
+        (see the
+        <%= link_to("RuboCop docs",
+          "http://rubocop.readthedocs.io/en/latest/",
+          target: :blank)
+        %>), and reference it in
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            ruby:
+              config_file: .rubocop.yml
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To disable Ruby style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            ruby:
+              enabled: false
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="coffeescript">
+      <h3>CoffeeScript</h3>
+      <p>
+        Hound uses
+        <%= link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank %>
+        with the default configuration.
+      </p>
+      <p>
+        To change the way CoffeeLint is configured, add a config file to your
+        project and reference it in your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            coffeescript:
+              config_file: coffeelint.json
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To disable CoffeeScript style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            coffeescript:
+              enabled: false
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="javascript">
+      <h3>JavaScript</h3>
+      <p>
+        Hound uses
+        <%= link_to "JSHint", "https://github.com/jshint/jshint", target: :blank %>
+        with this
+        <%= link_to "config", jshint_config_url, target: :blank %>
+        by default.
+      </p>
+      <p>
+        To change the way JSHint is configured, copy the
+        <%= link_to "default config file", jshint_config_url, target: :blank %>
+        into your project, make changes and reference the file in your
+        <em class="code-inline">.hound.yml</em>
+      </p>
+      <p>
+        <code class="code-block">
+          <preserve>
+
+            jshint:
+              config_file: .jshintrc
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To ignore certain files and directories, add
+        <em class="code-inline">.jshintignore</em>
+        file to your project,
+        include in it path patterns for files/directories that you want ignored,
+        and reference the ignore file in your
+        <em class="code-inline">.hound.yml</em>
+        \. See
+        <%= link_to "linter docs", "http://jshint.com/docs/cli/", target: :blank %>
+        for more info ("Ignoring Files" section).
+        <code class="code-block">
+          <preserve>
+
+            jshint:
+              ignore_file: .javascript_ignore
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To disable JavaScript style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            jshint:
+              enabled: false
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="eslint">
+      <h3>ESLint (beta)</h3>
+      <p>
+        Hound uses
+        <%= link_to "ESLint", "http://eslint.org/", target: :blank %>
+        with this
+        <%= link_to "config", eslint_config_url, target: :blank %>
+        by default.
+      </p>
+      <p>
+        To enable ESLint style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            eslint:
+              enabled: true
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To change the way ESLint is configured, add
+        <em class="code-inline">.eslintrc</em>
+        file to your project,
+        specify your desired configuration
+        and reference the file in your
+        <em class="code-inline">.hound.yml</em>
+      </p>
+      <p>
+        <code class="code-block">
+          <preserve>
+
+            eslint:
+              enabled: true
+              config_file: .eslintrc
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        For more information on configuring ESLint rules, see the
+        <%= link_to "ESLint Rules Documentation",
+          "http://eslint.org/docs/rules/",
+          target: :blank
+        %>
+      </p>
+      <p>
+        To ignore certain files and directories, add
+        <em class="code-inline">.eslintignore</em>
+        file to your project,
+        include in it path patterns for files/directories that you want ignored,
+        and reference the ignore file in your
+        <em class="code-inline">.hound.yml</em>
+        \. See
+        <%= link_to "linter docs",
+          "http://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories",
+          target: :blank
+        %>
+        for more info.
+        <code class="code-block">
+          <preserve>
+
+            eslint:
+              ignore_file: .eslintignore
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="scss">
+      <h3>SCSS</h3>
+      <p>
+        Hound uses
+        <%= link_to "scss-lint",
+          "https://github.com/causes/scss-lint",
+          target: :blank
+        %>
+        with this
+        <%= link_to "config", scss_config_url, target: :blank %>
+        by default.
+      </p>
+      <p>
+        To change the way scss-lint is configured, simply copy the
+        <%= link_to "default config file", scss_config_url, target: :blank %>
+        into your project, make changes and reference the file in your
+        <em class="code-inline">.hound.yml</em>
+      </p>
+      <p>
+        <code class="code-block">
+          <preserve>
+
+            scss:
+              config_file: .scss-lint.yml
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To ignore certain SCSS files, add
+        <em class="code-inline">exclude:</em>
+        directive to your
+        <em class="code-inline">.scss-lint.yml</em>
+        file, like:
+        <code class="code-block">
+          <preserve>
+
+            exclude:
+              - "app/assets/stylesheets/plugins/**"
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To disable SCSS style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            scss:
+              enabled: false
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="haml">
+      <h3>Haml</h3>
+      <p>
+        Hound uses
+        <%= link_to "haml-lint",
+          "https://github.com/brigade/haml-lint",
+          target: :blank
+        %>
+        with this
+        <%= link_to "config", haml_config_url, target: :blank %>
+        by default.
+      </p>
+      <p>
+        To change the way haml-lint is configured, simply copy the
+        <%= link_to "default config file", haml_config_url, target: :blank %>
+        into your project, make changes and reference the file in your
+        <em class="code-inline">.hound.yml</em>
+      </p>
+      <p>
+        <code class="code-block">
+          <preserve>
+
+            haml:
+              config_file: .haml-lint.yml
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To disable Haml style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            haml:
+              enabled: false
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="go">
+      <h3>Go</h3>
+      <p>
+        To disable Go style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            go:
+              enabled: false
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="python">
+      <h3>Python (beta)</h3>
+      <p>
+        Hound uses
+        <%= link_to "Flake8",
+          "http://flake8.readthedocs.org/en/latest/",
+          target: :blank
+        %>
+        with this
+        <%= link_to "default config",
+          "http://flake8.readthedocs.org/en/latest/config.html#default",
+          target: :blank
+        %>
+        by default.
+      </p>
+      <p>
+        To enable Python style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        <code class="code-block">
+          <preserve>
+
+            python:
+              enabled: true
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To change the way Flake8 is configured, create a
+        <%= link_to ".ini file",
+          "http://flake8.readthedocs.org/en/latest/config.html#per-project",
+          target: :blank
+        %>
+        with your custom configuration and reference the file in
+        <em class="code-inline">.hound.yml</em>
+      </p>
+      <p>
+        <code class="code-block">
+          <preserve>
+
+            python:
+              enabled: true
+              config_file: .flake8.ini
+
+
+          </preserve>
+        </code>
+      </p>
+    </article>
+    <article id="swift">
+      <h3>Swift</h3>
+      <p>
+        Hound uses
+        <%= link_to "SwiftLint",
+          "https://github.com/realm/SwiftLint",
+          target: :blank
+        %>
+        with this
+        <%= link_to "config", swift_config_url, target: :blank %>
+        by default.
+      </p>
+      <p>
+        To change the way SwiftLint is configured, copy the
+        <%= link_to "default config file", swift_config_url, target: :blank %>
+        into your project, make changes and reference the file in your
+        <em class="code-inline">.hound.yml</em>
+      </p>
+      <p>
+        <code class="code-block">
+          <preserve>
+
+            swift:
+              config_file: .swiftlint.yml
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        To disable Swift style checking, add the following to your
+        <em class="code-inline">.hound.yml</em>
+        file.
+        <code class="code-block">
+          <preserve>
+
+            swift:
+              enabled: false
+
+
+          </preserve>
+        </code>
+      </p>
+      <p>
+        For more information on the available configuration in your
+        <em class="code-inline">config_file</em>
+        , you can read about it on the
+        <%= link_to "SwiftLint Configuration Documentation",
+          "https://github.com/realm/SwiftLint#configuration",
+          target: :blank
+        %>
+      </p>
+    </article>
+    <article>
+      <h3>Didn't find what you where looking for?</h3>
+      <p>
+        Please tweet at us
+        <%= link_to "@houndci", "https://twitter.com/houndci", target: :blank %>
+        or email us at <%= mail_to "hound@thoughtbot.com" %>
+        and we will help you out.
+      </p>
+    </article>
+  </section>
+</div>
