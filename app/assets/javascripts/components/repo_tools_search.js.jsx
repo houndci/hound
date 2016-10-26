@@ -4,7 +4,7 @@ class RepoToolsSearch extends React.Component {
       <div className="repo-tools-search">
         <input
           className="repo-search-tools-input"
-          placeholder="<%= I18n.t('search_placeholder') %>"
+          placeholder={Hound.settings.searchPlaceholder}
           type="text"
           onChange={(event) => this.props.onSearchInput(event.target.value)}
         />

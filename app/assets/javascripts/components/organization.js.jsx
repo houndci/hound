@@ -1,7 +1,7 @@
 class Organization extends React.Component {
   render() {
     const {
-      data,
+      name,
       onRepoClicked,
       isProcessingId,
       repos,
@@ -9,9 +9,9 @@ class Organization extends React.Component {
     } = this.props;
 
     return (
-      <div className="organization" data-org-name={data.name}>
+      <div className="organization" data-org-name={name}>
         <header className="organization-header">
-          <h2 className="organization-header-title">{data.name}</h2>
+          <h2 className="organization-header-title">{name}</h2>
         </header>
         <section className="repo_listing">
           <RepoList

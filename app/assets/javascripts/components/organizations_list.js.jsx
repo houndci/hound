@@ -1,6 +1,6 @@
 class OrganizationsList extends React.Component {
   reposForOrg(org) {
-    if ( _.has(org, "id") ) {
+    if (_.has(org, "id")) {
       return _.filter(this.props.repos, (repo) => {
         return repo.owner.id === org.id;
       });
@@ -26,11 +26,11 @@ class OrganizationsList extends React.Component {
 
     return (
       <ul className="organizations">
-        {organizations.map( (org) => (
+        {organizations.map( org => (
           <Organization
-            data={org}
+            name={org.name}
             key={org.id || org.name}
-            repos={(repos && this.reposForOrg(org)) || null}
+            repos={this.reposForOrg(org) || null}
             onRepoClicked={onRepoClicked}
             filterTerm={filterTerm}
             isProcessingId={isProcessingId}

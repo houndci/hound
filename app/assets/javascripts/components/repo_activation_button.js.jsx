@@ -1,18 +1,21 @@
 class RepoActivationButton extends React.Component {
+  get disabledState() {
+    return (this.props.isProcessingId === this.props.repo.id) ? "disabled" : null;
+  }
+
   render() {
     const {
       repo,
       onRepoClicked,
       isProcessingId,
     } = this.props;
-    const disabledState = (isProcessingId === repo.id) ? "disabled" : null;
 
     if (repo.admin) {
       return (
         <button
           className="repo-toggle"
           onClick={() => onRepoClicked(repo.id)}
-          disabled={disabledState}
+          disabled={this.disabledState}
         >
         </button>
       );

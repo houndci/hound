@@ -9,7 +9,7 @@ class AccountCreditCardUpdater extends React.Component {
 
   updateCustomerCreditCard(stripeToken) {
     $.ajax({
-      url: `/credit_card.json`,
+      url: "/credit_card.json",
       type: "PUT",
       data: {card_token: stripeToken.id},
       dataType: "json"
@@ -21,7 +21,7 @@ class AccountCreditCardUpdater extends React.Component {
 
     StripeCheckout.configure({
       key: Hound.settings.stripePublishableKey,
-      image: "<%= image_path('icon.svg') %>",
+      image: Hound.settings.iconPath,
       email: $("input[type=email]").attr("placeholder"),
       token: this.updateCustomerCreditCard
     }).open({

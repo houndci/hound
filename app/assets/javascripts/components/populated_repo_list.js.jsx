@@ -2,10 +2,12 @@ class PopulatedRepoList extends React.Component {
   canShow(repo) {
     const { filterTerm } = this.props;
 
-    if (filterTerm == null) { return true; }
-
-    const repoName = repo.name.toLowerCase();
-    return repoName.indexOf(filterTerm.toLowerCase()) !== -1;
+    if (filterTerm == null) {
+      return true;
+    } else {
+      const repoName = repo.name.toLowerCase();
+      return repoName.indexOf(filterTerm.toLowerCase()) !== -1;
+    }
   }
 
   render() {
@@ -13,7 +15,7 @@ class PopulatedRepoList extends React.Component {
 
     return (
       <ul className="repos">
-        {repos.filter(repo => this.canShow(repo)).map( (repo) => (
+        {repos.filter(repo => this.canShow(repo)).map( repo => (
           <Repo
             repo={repo}
             key={repo.id}

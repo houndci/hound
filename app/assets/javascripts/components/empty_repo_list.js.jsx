@@ -1,7 +1,5 @@
 class EmptyRepoList extends React.Component {
   render() {
-    return (
-      <ul className="repos"></ul>
-    );
+    return (<ul className="repos"></ul>);
   }
 }

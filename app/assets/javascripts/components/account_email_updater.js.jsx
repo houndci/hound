@@ -17,7 +17,7 @@ class AccountEmailUpdater extends React.Component {
     event.preventDefault();
 
     $.ajax({
-      url: `/account.json`,
+      url: "/account.json",
       type: "PUT",
       data: {billable_email: this.state.emailInput},
       dataType: "text",
@@ -46,13 +46,10 @@ class AccountEmailUpdater extends React.Component {
             <input
               type="email"
               placeholder={placeholder}
-              onChange={
-                (event) => this.setState(
-                  {
-                    emailInput: event.target.value,
-                    addressChanged: null
-                  }
-              )}
+              onChange={ event => this.setState({
+                emailInput: event.target.value,
+                addressChanged: null
+              })}
             ></input>
             <AccountEmailUpdaterMessage
               addressChanged={this.state.addressChanged}
@@ -60,7 +57,7 @@ class AccountEmailUpdater extends React.Component {
           </div>
           <div className="form-actions">
             <button className="button-small" onClick={
-              (event) => this.onUpdateEmail(event)
+              event => this.onUpdateEmail(event)
             }>
               Update Email
             </button>
