@@ -1,29 +1,5 @@
-<section class="tier-change-container">
-  <aside class="tier-change-plans">
-    <h3>Plans</h3>
-
-    <%= render "shared/plan_vertical", new: false, current: true, name: "Chihuahua", allowance: "4", price: "$49" %>
-    <%= render "shared/plan_vertical", new: true,  current: false, name: "Labrador", allowance: "10", price: "$99" %>
-    <%= render "shared/plan_vertical", new: false,  current: false, name: "Great Dane", allowance: "30", price: "$249" %>
-  </aside>
-
-  <div class="tier-change-content">
-    <h1>Pricing: Change of Plans</h1>
-    <section class="tier-change-description">
-      <div class="allowance large">
-        Private Repos
-        <strong>5/5</strong>
-      </div>
-      <p>
-        <strong>
-          Activating "neat" will change the price you pay per month.<br>
-        </strong>
-        You'll be charged an extra $50 a month ($99 total).
-      </p>
-      <p>Upgrade to continue or cancel to deactivate "neat"</p>
-    </section>
-
-    <a class="repo-toggle tier-change-accept" href="#">Upgrade</a>
-    <a class="button tier-change-cancel" href="#">Cancel</a>
-  </div>
-</section>
+<%= react_component "TierChangeNotifier",
+  plans: @plans,
+  repo_id: @repo.id,
+  repo_name: @repo.name
+%>
