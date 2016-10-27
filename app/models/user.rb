@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
     repos.active
   end
 
+  def tier_max
+    4
+  end
+
   def billable_email
     payment_gateway_customer.email
   end

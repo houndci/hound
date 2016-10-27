@@ -18,12 +18,14 @@
   </ul>
   <ul class="pull-right">
     <% if signed_in? %>
-      <li>
-        <div class="allowance">
-          Private Repos
-          <strong>5/5</strong>
-        </div>
-      </li>
+      <% if current_user.subscriptions.count > 0 %>
+        <li>
+          <div class="allowance">
+            Private Repos
+            <strong><%= current_user.subscribed_repos.count%>/<%= current_user.tier_max %></strong>
+          </div>
+        </li>
+      <% end %>
       <li>
         <%= link_to account_path, class: "account" do %>
           <% if current_user.email.present? %>
