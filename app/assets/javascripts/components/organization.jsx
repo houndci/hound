@@ -1,3 +1,7 @@
+import React from 'react';
+
+import RepoList from './repo_list';
+
 class Organization extends React.Component {
   render() {
     const {
@@ -25,3 +29,5 @@ class Organization extends React.Component {
     );
   }
 }
+
+module.exports = Organization;

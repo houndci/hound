@@ -1,3 +1,7 @@
+import React from 'react';
+
+import Repo from './repo';
+
 class PopulatedRepoList extends React.Component {
   canShow(repo) {
     const { filterTerm } = this.props;
@@ -27,3 +31,5 @@ class PopulatedRepoList extends React.Component {
     );
   }
 }
+
+module.exports = PopulatedRepoList;

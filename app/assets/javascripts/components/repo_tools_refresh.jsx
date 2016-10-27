@@ -1,3 +1,5 @@
+import React from 'react';
+
 class RepoToolsRefresh extends React.Component {
   get isSyncing() {
     return this.props.isSyncing;
@@ -29,3 +31,5 @@ class RepoToolsRefresh extends React.Component {
     );
   }
 }
+
+module.exports = RepoToolsRefresh;

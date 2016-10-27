@@ -1,3 +1,5 @@
+import React from 'react';
+
 class RepoToolsSearch extends React.Component {
   render() {
     return (
@@ -12,3 +14,5 @@ class RepoToolsSearch extends React.Component {
     );
   }
 }
+
+module.exports = RepoToolsSearch;

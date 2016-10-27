@@ -1,3 +1,5 @@
+import React from 'react';
+
 class RepoActivationButton extends React.Component {
   get disabledState() {
     return (this.props.isProcessingId === this.props.repo.id) ? "disabled" : null;
@@ -28,3 +30,5 @@ class RepoActivationButton extends React.Component {
     }
   }
 }
+
+module.exports = RepoActivationButton;

@@ -1,3 +1,7 @@
+import React from 'react';
+
+import RepoActivationButton from './repo_activation_button';
+
 class Repo extends React.Component {
   render() {
     const {
@@ -35,3 +39,5 @@ class Repo extends React.Component {
     );
   }
 }
+
+module.exports = Repo;

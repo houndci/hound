@@ -1,3 +1,5 @@
+import React from 'react';
+
 class AccountCreditCardUpdater extends React.Component {
   componentWillMount() {
     $.ajaxSetup({
@@ -48,3 +50,5 @@ class AccountCreditCardUpdater extends React.Component {
     }
   }
 }
+
+module.exports = AccountCreditCardUpdater;

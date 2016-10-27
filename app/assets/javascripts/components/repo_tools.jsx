@@ -1,3 +1,9 @@
+import React from 'react';
+
+import RepoToolsSearch from './repo_tools_search';
+import RepoToolsPrivate from './repo_tools_private';
+import RepoToolsRefresh from './repo_tools_refresh';
+
 class RepoTools extends React.Component {
   render() {
     const {
@@ -23,3 +29,5 @@ class RepoTools extends React.Component {
     );
   }
 }
+
+module.exports = RepoTools;

@@ -4,7 +4,7 @@
   <%= render "onboarding" %>
 <% end %>
 <section class="organization-list"></section>
-<%= react_component("ReposContainer",
+<%= react_component("app.ReposContainer",
   authenticity_token: form_authenticity_token,
   has_private_access: current_user.has_access_to_private_repos?,
   userHasCard: current_user.stripe_customer_id.present?)

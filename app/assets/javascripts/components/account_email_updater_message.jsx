@@ -1,3 +1,5 @@
+import React from 'react';
+
 class AccountEmailUpdaterMessage extends React.Component {
   render() {
     if (this.props.addressChanged == null) {
@@ -23,3 +25,5 @@ class AccountEmailUpdaterMessage extends React.Component {
     }
   }
 }
+
+module.exports = AccountEmailUpdaterMessage;

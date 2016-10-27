@@ -1,3 +1,8 @@
+import React from 'react';
+
+import ReposSyncSpinner from './repos_sync_spinner';
+import OrganizationsList from './organizations_list';
+
 class ReposView extends React.Component {
   render() {
     const {
@@ -26,3 +31,5 @@ class ReposView extends React.Component {
     }
   }
 }
+
+module.exports = ReposView;

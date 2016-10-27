@@ -1,3 +1,7 @@
+import React from 'react';
+
+import TierPlan from './tier_plan';
+
 class TierChangeNotifier extends React.Component {
   render() {
     const {
@@ -51,3 +55,5 @@ class TierChangeNotifier extends React.Component {
   );
   }
 }
+
+module.exports = TierChangeNotifier;
