@@ -15,6 +15,7 @@ Houndapp::Application.routes.draw do
   get "/sign_out", to: "sessions#destroy"
   get "/configuration", to: "pages#configuration"
   get "/faq", to: "pages#show", id: "faq"
+  get "/tier_change", to: "pages#show", id: "tier_change"
 
   resource :account, only: [:show, :update]
   resources :builds, only: [:create, :index]

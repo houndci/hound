@@ -136,6 +136,14 @@ class ReposContainer extends React.Component {
     this.commitRepoToState(repo);
   }
 
+  onSubscriptionError(error) {
+    if (error.status === 402) {
+      document.location.href = "/pricing";
+    } else {
+      alert("Your subscription could not be activated.");
+    }
+  }
+
   createSubscriptionWithExistingCard(repo) {
     this.createSubscription({
       repo_id: repo.id
@@ -143,10 +151,7 @@ class ReposContainer extends React.Component {
       this.activateAndTrackRepoSubscription(
         repo, resp.stripe_subscription_id
       );
-
-    }).catch( () => {
-      alert("Your subscription could not be activated.");
-    });
+    }).catch( error => this.onSubscriptionError(error));
   }
 
   createSubscriptionWithNewCard(repo, stripeToken) {
@@ -158,9 +163,7 @@ class ReposContainer extends React.Component {
       this.activateAndTrackRepoSubscription(
         repo, resp.stripe_subscription_id
       );
-    }).catch( () => {
-      alert("Your subscription could not be activated.");
-    });
+    }).catch( error => this.onSubscriptionError(error));
   }
 
   activateFreeRepo(repo) {

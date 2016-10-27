@@ -92,3 +92,46 @@
     color: $base-font-color;
   }
 }
+
+.plan-vertical {
+  @include border-width(0 0 1px 0);
+  border-bottom: 1px dotted;
+  border-color: $light-font-color;
+  border-radius: 0;
+  margin-left: 0.5em;
+  padding-left: 0;
+  padding-top: 0;
+  position: static;
+  width: 100%;
+
+  &.current {
+    .plan-price {
+      color: $base-accent-color;
+    }
+  }
+
+  &.new {
+    .plan-price {
+      color: darken($green, 20%);
+    }
+  }
+
+  .plan-divider {
+    float: left;
+  }
+
+  .plan-title,
+  .plan-allowance {
+    font-size: 1.2em;
+  }
+
+  .plan-allowance {
+    margin-bottom: 0;
+  }
+
+  .plan-price {
+    color: $base-font-color;
+    float: right;
+    font-size: 1.8em;
+  }
+}
