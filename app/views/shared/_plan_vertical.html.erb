@@ -1,8 +1,14 @@
-<% if current %>
-  <span class="current-plan">Current Plan</span>
-<% end %>
-
-<div class="plan plan-vertical <%= current ? 'current' : '' %>">
+<div class="plan plan-vertical <%= current ? 'current' : '' %> <%= new ? 'new' : '' %>">
+  <% if current %>
+    <div class="marker-wrapper">
+      <span class="current-plan">Current Plan</span>
+    </div>
+  <% end %>
+  <% if new %>
+    <div class="marker-wrapper">
+      <span class="new-plan">New Plan</span>
+    </div>
+  <% end %>
   <div class="plan-divider">
     <h5 class="plan-title"><%= name %></h5>
     <div class="plan-allowance">

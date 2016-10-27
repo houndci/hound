@@ -6,18 +6,11 @@
 }
 
 .account-content {
-  @include span-columns(9 of 12, table);
-  border-left: 1px solid $base-border-color;
-  padding: 0;
-  padding-left: 2em;
+  @extend %content-main;
 }
 
 .account-nav {
-  @include span-columns(3 of 12, table);
-  @include omega;
-  padding: 0;
-  padding-right: 2em;
-  vertical-align: top;
+  @extend %content-aside;
 
   .message {
     background: lighten($gold, 50%);
