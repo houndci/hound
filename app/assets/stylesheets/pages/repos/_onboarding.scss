@@ -13,7 +13,7 @@
     border-radius: 4px;
     padding: 1em 1.6em 1.8em;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       padding: 1em;
     }
   }
@@ -22,7 +22,7 @@
     color: $base-accent-color;
     margin-bottom: 0.6em;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       font-size: 2em;
     }
   }
@@ -37,7 +37,7 @@
     padding-left: 2em;
     position: relative;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       float: none;
       margin: 0;
       width: 100%;

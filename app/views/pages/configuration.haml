@@ -1,31 +1,31 @@
 - content_for :page_title, "Configuration"
 
-.hound-docs.configuration-docs
-  %aside.docs-nav
+.docs
+  %nav.docs-nav
     %ul
       %li
-        = link_to "Hound", "#configuration"
+        = link_to "Hound", "#configuration", class: "docs-nav-link"
       %li
-        = link_to "Ruby", "#ruby"
+        = link_to "Ruby", "#ruby", class: "docs-nav-link"
       %li
-        = link_to "CoffeeScript", "#coffeescript"
+        = link_to "CoffeeScript", "#coffeescript", class: "docs-nav-link"
       %li
-        = link_to "JavaScript", "#javascript"
+        = link_to "JavaScript", "#javascript", class: "docs-nav-link"
       %li
-        = link_to "SCSS", "#scss"
+        = link_to "SCSS", "#scss", class: "docs-nav-link"
       %li
-        = link_to "Haml", "#haml"
+        = link_to "Haml", "#haml", class: "docs-nav-link"
       %li
-        = link_to "Go", "#go"
+        = link_to "Go", "#go", class: "docs-nav-link"
       %li
-        = link_to "Swift", "#swift"
+        = link_to "Swift", "#swift", class: "docs-nav-link"
       %li
-        = link_to "ESLint (beta)", "#eslint"
+        = link_to "ESLint (beta)", "#eslint", class: "docs-nav-link"
       %li
-        = link_to "Python (beta)", "#python"
+        = link_to "Python (beta)", "#python", class: "docs-nav-link"
 
-  %section.doc-content
-    %article
+  %section.docs-content
+    %article.docs-article
       %h1 Hound Documentation
       %p
         Want to modify style rules to better suit your preferences?
@@ -39,7 +39,7 @@
         or email us at #{mail_to "hound@thoughtbot.com"}
         and we will help you out.
 
-    %article#configuration
+    %article.docs-article#configuration
       %h3 Hound Configuration
 
       %p
@@ -90,7 +90,7 @@
         :preserve
           fail_on_violations: true
 
-    %article#ruby
+    %article.docs-article#ruby
       %h3 Ruby
       %p
         Hound uses
@@ -128,7 +128,7 @@
             ruby:
               enabled: false
 
-    %article#coffeescript
+    %article.docs-article#coffeescript
       %h3 CoffeeScript
 
       %p
@@ -155,7 +155,7 @@
             coffeescript:
               enabled: false
 
-    %article#javascript
+    %article.docs-article#javascript
       %h3 JavaScript
 
       %p
@@ -202,7 +202,7 @@
             jshint:
               enabled: false
 
-    %article#eslint
+    %article.docs-article#eslint
       %h3 ESLint (beta)
 
       %p
@@ -260,7 +260,7 @@
             eslint:
               ignore_file: .eslintignore
 
-    %article#scss
+    %article.docs-article#scss
       %h3 SCSS
 
       %p
@@ -305,7 +305,7 @@
             scss:
               enabled: false
 
-    %article#haml
+    %article.docs-article#haml
       %h3 Haml
 
       %p
@@ -338,7 +338,7 @@
             haml:
               enabled: false
 
-    %article#go
+    %article.docs-article#go
       %h3 Go
 
       %p
@@ -350,7 +350,7 @@
             go:
               enabled: false
 
-    %article#python
+    %article.docs-article#python
       %h3 Python (beta)
 
       %p
@@ -388,7 +388,7 @@
               enabled: true
               config_file: .flake8.ini
 
-    %article#swift
+    %article.docs-article#swift
       %h3 Swift
 
       %p
@@ -430,7 +430,7 @@
           "https://github.com/realm/SwiftLint#configuration",
           target: :blank
 
-    %article
+    %article.docs-article
       %h3 Didn't find what you where looking for?
 
       %p
