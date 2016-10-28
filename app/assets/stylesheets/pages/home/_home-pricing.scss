@@ -1,0 +1,70 @@
+.home-pricing {
+  padding: ($base-spacing * 2) $base-spacing;
+  text-align: center;
+
+  @include media($medium-screen-up) {
+    padding: $large-spacing $base-spacing ($large-spacing * 2);
+  }
+
+  @include media($large-screen-up) {
+    padding: $large-spacing $base-spacing ($large-spacing * 3);
+  }
+}
+
+.home-pricing-heading {
+  margin-bottom: $medium-spacing;
+  padding-top: $medium-spacing;
+}
+
+.home-pricing-plan {
+  border: 2px solid $base-border-color;
+  border-radius: $base-border-radius;
+  margin: $medium-spacing 0;
+  max-width: 24rem;
+  padding: 0 $base-spacing;
+  text-align: center;
+
+  @include media($medium-screen-up) {
+    @include span-columns(4 of 8);
+    display: inline-block;
+    float: none;
+    margin-top: 0;
+  }
+}
+
+.home-pricing-plan-heading {
+  border-bottom: $base-border;
+  font-weight: $font-weight-bold;
+  margin-bottom: $medium-spacing;
+  padding: $medium-spacing 0;
+
+  .fa {
+    display: inline-block;
+    margin-right: $xsmall-spacing;
+  }
+}
+
+.home-pricing-plan-price {
+  padding: $base-spacing 0 $large-spacing;
+
+  span {
+    font-size: 6em;
+  }
+}
+
+.home-pricing-cta {
+  padding-top: $base-spacing * 2;
+
+  @include media($medium-screen-up) {
+    padding-top: $large-spacing;
+  }
+
+  .auth {
+    @include large-button(solid, $purple, lighten($purple, 10%));
+    padding: $small-spacing $base-spacing;
+
+    @include media($medium-screen-up) {
+      padding: $small-spacing ($base-spacing * 2);
+    }
+  }
+}

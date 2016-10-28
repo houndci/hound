@@ -24,3 +24,7 @@
 .inner-wrapper {
   @include clearfix;
 }
+
+img {
+  max-width: 100%;
+}
