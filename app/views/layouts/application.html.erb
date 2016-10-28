@@ -19,7 +19,7 @@
         <%= value %>
       </div>
     <% end %>
-    <div class="content">
+    <div class="content <%= content_for(:container_class) %>">
       <%= yield %>
     </div>
     <%= render "application/footer" %>
