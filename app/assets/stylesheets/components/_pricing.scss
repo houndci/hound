@@ -1,7 +1,7 @@
 .plan-category {
   @include span-columns(12 of 12);
   color: $base-accent-color;
-  margin-bottom: $medium-spacing;
+  margin: $medium-spacing 0;
   text-align: center;
 
   .fa {
@@ -20,6 +20,7 @@
   border-radius: $base-border-radius;
   margin-bottom: $medium-spacing;
   position: relative;
+  text-align: left;
 
   @include media($medium-large-screen-only) {
     padding-left: $medium-spacing;

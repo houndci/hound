@@ -1,0 +1,23 @@
+.home-security {
+  background: $base-font-color;
+  color: $white;
+  padding: $large-spacing $base-spacing;
+  text-align: center;
+
+  h4,
+  p {
+    margin: 0 auto;
+    max-width: $medium-screen-size;
+    text-shadow: $base-text-shadow;
+  }
+}
+
+.home-security-actions {
+  padding-top: $medium-spacing;
+}
+
+.home-security-actions-policy {
+  @include small-button(outline, $white, $purple);
+  padding-left: $base-spacing;
+  padding-right: $base-spacing;
+}
