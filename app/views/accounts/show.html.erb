@@ -4,9 +4,37 @@
   <aside class="account-nav">
     <h3>Plans</h3>
 
-    <%= render "shared/plan_vertical", new: false, current: true, name: "Chihuahua", allowance: "4", price: "$49" %>
-    <%= render "shared/plan_vertical", new: false,  current: false, name: "Labrador", allowance: "10", price: "$99" %>
-    <%= render "shared/plan_vertical", new: false,  current: false, name: "Great Dane", allowance: "30", price: "$249" %>
+    <%= render "shared/plan_vertical",
+      new: false,
+      current: false,
+      open_source: true,
+      name: "Hound",
+      allowance: "Unlimited",
+      price: "$0" %>
+
+    <%= render "shared/plan_vertical",
+      new: false,
+      current: true,
+      open_source: false,
+      name: "Chihuahua",
+      allowance: "4",
+      price: "$49" %>
+
+    <%= render "shared/plan_vertical",
+      new: false,
+      current: false,
+      open_source: false,
+      name: "Labrador",
+      allowance: "10",
+      price: "$99" %>
+
+    <%= render "shared/plan_vertical",
+      new: false,
+      current: false,
+      open_source: false,
+      name: "Great Dane",
+      allowance: "30",
+      price: "$249" %>
 
     <p class="message">
       <%= t(
@@ -25,8 +53,8 @@
         <thead>
           <tr>
             <th>Plan</th>
-            <th>Base Cost</th>
-            <th>Quantity</th>
+            <th>Allowance</th>
+            <th>Remaining</th>
             <th>Subtotal</th>
           </tr>
         </thead>
