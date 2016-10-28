@@ -1,0 +1,36 @@
+.configuration {
+  @include row;
+  background: linear-gradient(160deg, $home-gradient-top, $home-gradient-bottom);
+  color: $white;
+  padding: $medium-spacing;
+
+  @include media($medium-screen-up) {
+    padding: $large-spacing;
+  }
+}
+
+.configuration-image {
+  margin-bottom: $medium-spacing;
+
+  @include media($medium-screen-up) {
+    @include span-columns(4 of 12);
+    @include shift(0);
+    margin-bottom: 0;
+  }
+}
+
+.configuration-text {
+  text-align: center;
+
+  @include media($medium-screen-up) {
+    @include span-columns(6 of 12);
+    padding-left: $column;
+    text-align: left;
+    text-shadow: $base-text-shadow;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}

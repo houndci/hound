@@ -46,8 +46,8 @@
 
 @mixin large-button($type: $outline, $base-color: $purple, $hover-color: $white) {
   @include button($type, $base-color, $hover-color);
-  font-size: 1em;
-  padding: 0.8em 2.4em;
+  font-size: $font-size-base;
+  padding: $small-spacing ($base-spacing * 2);
 }
 
 @mixin small-button($type: $outline, $base-color: $purple, $hover-color: $white) {

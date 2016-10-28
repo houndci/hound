@@ -1,0 +1,41 @@
+.home {
+  .content {
+    margin: 0;
+    max-width: none;
+  }
+
+  .section-content {
+    @include outer-container;
+  }
+
+  .section-title {
+    text-align: center;
+  }
+
+  p {
+    letter-spacing: $letter-spacing-base;
+    margin: 0;
+  }
+}
+
+.home-heading--large {
+  font-size: 1.8em;
+  font-weight: $font-weight-light;
+  letter-spacing: letter-spacing-base;
+  margin-bottom: $xsmall-spacing;
+
+  @include media($medium-screen-up) {
+    font-size: 2.2em;
+  }
+
+  @include media($large-screen-up) {
+    font-size: $font-size-large;
+  }
+}
+
+.home-heading--small {
+  font-size: $font-size-medium;
+  font-weight: $font-weight-bold;
+  letter-spacing: $letter-spacing-base;
+  margin-bottom: $xsmall-spacing;
+}
