@@ -12,9 +12,13 @@
   <div class="plan-divider">
     <h5 class="plan-title"><%= name %></h5>
     <div class="plan-allowance">
-      Up to
-      <strong><%= allowance %></strong>
-      Repos
+      <% if open_source %>
+        Unlimited
+      <% else %>
+        Up to
+        <strong><%= allowance %></strong>
+        Repos
+      <% end %>
     </div>
   </div>
   <div class="plan-price">
