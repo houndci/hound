@@ -1,56 +1,58 @@
-<header class="<%= content_for(:header_class) %> global-header">
-  <div class="logo pull-left">
-    <div class="va-cell">
-      <%= link_to repos_path, class: "logo-link" do %>
-        <h1>
-          Hound
-        </h1>
-      <% end %>
+<div class="global-header <%= content_for(:header_class) %>">
+  <header class="global-header-wrapper <%= content_for(:header_class) %>">
+    <div class="logo pull-left">
+      <div class="va-cell">
+        <%= link_to repos_path, class: "logo-link" do %>
+          <h1>
+            Hound
+          </h1>
+        <% end %>
+      </div>
     </div>
-  </div>
-  <ul class="pull-left">
-    <li>
-      <%= link_to "Docs", configuration_path, class: "docs" %>
-    </li>
-    <li>
-      <%= link_to "FAQ", faq_path, class: "faq" %>
-    </li>
-  </ul>
-  <ul class="pull-right">
-    <% if signed_in? %>
-      <% if current_user.subscriptions.count > 0 %>
+    <ul class="pull-left">
+      <li>
+        <%= link_to "Docs", configuration_path, class: "docs" %>
+      </li>
+      <li>
+        <%= link_to "FAQ", faq_path, class: "faq" %>
+      </li>
+    </ul>
+    <ul class="pull-right">
+      <% if signed_in? %>
+        <% if current_user.subscriptions.count > 0 %>
+          <li>
+            <div class="allowance">
+              Private Repos
+              <strong><%= current_user.subscribed_repos.count%>/<%= current_user.tier_max %></strong>
+            </div>
+          </li>
+        <% end %>
         <li>
-          <div class="allowance">
-            Private Repos
-            <strong><%= current_user.subscribed_repos.count%>/<%= current_user.tier_max %></strong>
-          </div>
+          <%= link_to account_path, class: "account" do %>
+            <% if current_user.email.present? %>
+              <div class="avatar" style="background-image: url('<%= avatar_url(current_user) %>')"></div>
+            <% end %>
+            <span>
+              <%= current_user.username %>
+            </span>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to t("sign_out"), sign_out_path, class: "sign-out" %>
+        </li>
+      <% else %>
+        <li>
+          <%= link_to "Pricing", root_path(anchor: "pricing"), class: "pricing" %>
+        </li>
+        <li>
+          <%= link_to "https://twitter.com/houndci", target: "_blank", class: "tweet-us" do %>
+            <span>@houndci</span>
+          <% end %>
+        </li>
+        <li class="auth-container">
+          <%= render "application/auth_button" %>
         </li>
       <% end %>
-      <li>
-        <%= link_to account_path, class: "account" do %>
-          <% if current_user.email.present? %>
-            <div class="avatar" style="background-image: url('<%= avatar_url(current_user) %>')"></div>
-          <% end %>
-          <span>
-            <%= current_user.username %>
-          </span>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to t("sign_out"), sign_out_path, class: "sign-out" %>
-      </li>
-    <% else %>
-      <li>
-        <%= link_to "Pricing", root_path(anchor: "pricing"), class: "pricing" %>
-      </li>
-      <li>
-        <%= link_to "https://twitter.com/houndci", target: "_blank", class: "tweet-us" do %>
-          <span>@houndci</span>
-        <% end %>
-      </li>
-      <li class="auth-container">
-        <%= render "application/auth_button" %>
-      </li>
-    <% end %>
-  </ul>
-</header>
+    </ul>
+  </header>
+</div>

@@ -72,3 +72,6 @@ $font-size-base: 1em;
 $base-transition-timing: 0.2s;
 $base-easing: cubic-bezier(0.39, 0.575, 0.565, 1);
 $base-transition: all $base-transition-timing $base-easing;
+
+// Z-Indices
+$z-index-front: 100;
