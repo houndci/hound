@@ -1,26 +1,26 @@
 <% content_for :page_title, "FAQ" %>
-<section class="hound-docs faq-docs">
+<section class="docs">
   <aside class="docs-nav">
-    <p class="message">
+    <p class="docs-message">
       If this FAQ doesn't answer all of your questions tweet at us
       <%= link_to '@houndci', 'https://twitter.com/houndci', target: :blank %>
       or email us at <%= mail_to "hound@thoughtbot.com" %>.
       We will help you out.
     </p>
   </aside>
-  <section class="doc-content">
+  <section class="docs-content">
     <article>
       <h1>Frequently Asked Questions</h1>
     </article>
     <article>
       <h3>Why isn't Hound commenting on my pull request?</h3>
-      <ul>
-        <li>
+      <ul class="docs-list">
+        <li class="docs-list-item">
           Note that Hound only comments when style violations are found. Ensure
           that changes made in your pull request actually contain style guide
           violations.
         </li>
-        <li>
+        <li class="docs-list-item">
           Alternatively, tools like RuboCop and JSHint can be used to
           check for style guide violations locally, given your configuration.
         </li>
@@ -30,7 +30,7 @@
           <%= link_to('configuration', configuration_path) %>
           page for more info.
         </li>
-        <li>
+        <li class="docs-list-item">
           Be sure your PR is of a manageable size. The Github API has access
           limits which can affect the number of violations reported. Anecdotally,
           we've seen pull requests with more than 250 changed files get incomplete

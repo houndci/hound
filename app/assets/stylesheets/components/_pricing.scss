@@ -21,11 +21,11 @@
   padding: $medium-spacing 0 $medium-spacing $large-spacing;
   position: relative;
 
-  @include media($medium-large-screen) {
+  @include media($medium-large-screen-only) {
     padding-left: $medium-spacing;
   }
 
-  @include media($medium-screen) {
+  @include media($medium-screen-down) {
     @include span-columns(4);
     @include omega;
     padding-left: $large-spacing;
@@ -48,7 +48,7 @@
   @include shift(4 of 12);
   border-color: $light-font-color;
 
-  @include media($medium-screen) {
+  @include media($medium-screen-down) {
     @include shift(0);
   }
 
@@ -80,7 +80,7 @@
   font-weight: $font-weight-light;
   line-height: 1;
 
-  @include media($medium-large-screen) {
+  @include media($medium-large-screen-only) {
     font-size: 2.1em;
   }
 
