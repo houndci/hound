@@ -12,7 +12,7 @@
   position: relative;
   vertical-align: top;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     display: block;
     margin-bottom: 1em;
     padding: 0;
@@ -64,14 +64,14 @@
   @include span-columns(4 of 12, table);
   padding-right: 1em;
 
-  @include media($medium-screen) {
+  @include media($medium-screen-down) {
     display: none;
   }
 }
 
 .repo-tools-refresh {
   @include span-columns(3 of 12, table);
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     display: block;
     width: 100%;
   }

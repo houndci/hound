@@ -2,7 +2,7 @@ img.logo {
   @include size(auto 100px);
   margin-left: -3em;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     @include size(auto 72px);
     display: block;
     margin: 0 auto;
@@ -13,6 +13,16 @@ ol.getting-started {
   margin: 2.0em 1.2em;
   padding: 0 0 8em 3em;
   position: relative;
+
+  @include media($small-screen-only) {
+    margin: 0;
+    padding-left: 0;
+    text-align: center;
+
+    &::before {
+      @include position(absolute, 2em 0 0 50%);
+    }
+  }
 
   &:before {
     @include position(absolute, 0.5em 0 0em -1.4em);
@@ -27,16 +37,6 @@ ol.getting-started {
     z-index: 1;
   }
 
-  @include media($small-screen) {
-    margin: 0;
-    padding-left: 0;
-    text-align: center;
-
-    &:before {
-      @include position(absolute, 2em 0 0em 50%);
-    }
-  }
-
   h1.logo {
     letter-spacing: 6px;
     font-weight: 900;
@@ -44,7 +44,7 @@ ol.getting-started {
     margin: 0;
     text-transform: uppercase;
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       display: inline-block;
       font-size: 3.2em;
       line-height: normal;
@@ -57,7 +57,7 @@ ol.getting-started {
     position: relative;
     z-index: 2;
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       background: #fff;
       margin-bottom: 7em;
       padding: 1em 0;
@@ -78,7 +78,7 @@ ol.getting-started {
       display: block;
       margin-left: -21px;
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         @include position(absolute, -4.8em 0 0 50%);
       }
     }
@@ -120,7 +120,7 @@ ol.getting-started {
       text-align: center;
       top: 8px;
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         left: 50%;
         top: -3.2em;
       }
@@ -137,7 +137,7 @@ ol.getting-started {
         line-height: 1.6;
         margin: 0 0 0.4em;
 
-        @include media($small-screen) {
+        @include media($small-screen-only) {
           font-size: 1.5em;
           margin: 0 0 0.6em;
         }
@@ -169,7 +169,7 @@ ol.getting-started {
       overflow: hidden;
       width: 100%;
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         margin-left: 0;
       }
 
