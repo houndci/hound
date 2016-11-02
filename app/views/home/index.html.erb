@@ -207,44 +207,30 @@
         Hound keeps your code style in check.
       </h3>
     </div>
+
     <article class="plans">
       <div class="inner-wrapper">
-        <div class="plan">
-          <h4>
-            <i class="fa fa-book"></i>
-            Open Source
-          </h4>
-          <span class="tagline">
-            Get higher quality pull requests:
-          </span>
-          <div class="price">
-            <div class="dollar-amount">
-              <span>$0</span>
-              <small>/month</small>
-            </div>
-          </div>
-        </div>
-        <div class="plan">
-          <h4>
-            <i class="fa fa-lock"></i>
-            Private Repo
-          </h4>
-          <span class="tagline">
-            Keep your codebase clean:
-          </span>
-          <div class="price">
-            <div class="dollar-amount">
-              <span>$12</span>
-              <small>/month</small>
-            </div>
-          </div>
-        </div>
+        <h4 class="plan-category">
+          <i class="fa fa-lock"></i>
+          Private Repos
+        </h4>
+
+        <%= render "shared/plan", open_source: false, name: "Chihuahua", allowance: "4", price: "$49" %>
+        <%= render "shared/plan", open_source: false, name: "Labrador", allowance: "10", price: "$99" %>
+        <%= render "shared/plan", open_source: false, name: "Great Dane", allowance: "30", price: "$249" %>
+
+        <h4 class="plan-category open-source">
+          <i class="fa fa-code-fork"></i>
+          Open Source
+        </h4>
+
+        <%= render "shared/plan", open_source: true, name: "Hound", price: "$0" %>
+
       </div>
-      <p>
-        Email <%= mail_to "hound@thoughtbot.com" %> for bulk pricing
-        for your GitHub organization.
-      </p>
       <div class="cta">
+        <div class="cta-description">
+          Open-source repos are totally free. For private repos we have three tiers, ranging from 5 repos, to infinity.
+        </div>
         <%= render "application/auth_button" %>
       </div>
     </article>
