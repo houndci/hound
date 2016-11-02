@@ -8,7 +8,7 @@
   position: relative;
   width: 100%;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     display: block;
     height: auto;
     padding: 1em 0;
@@ -56,7 +56,7 @@
   padding-bottom: 2px;
   transition: $base-transition;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     display: block;
     font-size: 1.2em;
     font-weight: $font-weight-normal;
@@ -73,7 +73,7 @@
   text-align: right;
   vertical-align: middle;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     display: block;
     padding: 0;
     text-align: left;
@@ -102,7 +102,7 @@
   text-align: center;
   vertical-align: middle;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     margin: 0.1em 0 0 0.6em;
   }
 
@@ -127,7 +127,7 @@
   user-select: none;
   vertical-align: middle;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     float: left;
     padding: 0.2em 0.8em;
   }

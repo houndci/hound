@@ -19,11 +19,11 @@
     letter-spacing: 1px;
     margin: 0 0 0.4em 0;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       font-size: 2.2em;
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       font-size: 1.8em;
     }
   }
@@ -47,13 +47,13 @@ section.intro {
     padding: 7em 0 11em;
     text-align: center;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       @include span-columns(10 of 12);
       @include shift(1);
       padding: 4em 1em 7em;
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       float: none;
       margin: 0;
       padding: 2em 1em 4em;
@@ -66,11 +66,11 @@ section.intro {
       letter-spacing: 1px;
       margin: 0 0 0.4em 0;
 
-      @include media($medium-screen) {
+      @include media($medium-screen-down) {
         font-size: 3em;
       }
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         font-size: 2.7em;
       }
     }
@@ -81,8 +81,29 @@ section.intro {
       letter-spacing: 1px;
       margin: 0;
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         font-size: 1em;
+      }
+    }
+
+    .cta {
+      padding-top: 3em;
+
+      @include media($small-screen-only) {
+        padding-top: 2em;
+      }
+
+      a.auth {
+        @include large-button(solid, $purple, lighten($purple, 10%));
+
+        @include media($small-screen-only) {
+          padding: 0.8em 1.4em;
+        }
+
+        i, span {
+          position: relative;
+          z-index: 2;
+        }
       }
     }
   }
@@ -95,7 +116,7 @@ section.intro {
     position: relative;
     text-align: center;
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       margin-bottom: 4em;
     }
 
@@ -107,12 +128,12 @@ section.intro {
       width: 40%;
       z-index: 1;
 
-      @include media($medium-screen) {
+      @include media($medium-screen-down) {
         left: 10%;
         width: 80%;
       }
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         left: 0%;
         width: 100%;
       }
@@ -141,7 +162,7 @@ section.intro {
       justify-content: center;
       width: 75%;
 
-      @include media($medium-screen) {
+      @include media($medium-screen-down) {
         margin: 0;
         width: 100%;
       }
@@ -152,7 +173,7 @@ section.intro {
         width: 25%;
         margin-bottom: 2em;
 
-        @include media($small-screen) {
+        @include media($small-screen-only) {
           display: inline-block;
           width: 100%;
 
@@ -191,12 +212,12 @@ section.intro {
   text-align: center;
   padding-top: 3em;
 
-  @include media($medium-screen) {
+  @include media($medium-screen-down) {
     @include span-columns(4);
     @include shift(0);
   }
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     padding-top: 2em;
   }
 
@@ -207,7 +228,7 @@ section.intro {
   a.auth {
     @include large-button(solid, $purple, lighten($purple, 10%));
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       padding: 0.8em 1.4em;
     }
 
@@ -225,11 +246,11 @@ section.importance {
   color: #fff;
   padding: 5em 1em 10em;
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     padding: 4em 1em 8em;
   }
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     padding: 3em 1em 6em;
   }
 
@@ -249,12 +270,12 @@ section.importance {
     @include span-columns(8 of 12);
     @include shift(2);
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       @include span-columns(10 of 12);
       @include shift(1);
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       float: none;
       margin: 0;
       width: 100%;
@@ -263,11 +284,11 @@ section.importance {
     ~ article {
       margin-top: 3em;
 
-      @include media($medium-screen) {
+      @include media($medium-screen-down) {
         margin-top: 4em;
       }
 
-      @include media($medium-screen) {
+      @include media($medium-screen-down) {
         margin-top: 5em;
       }
     }
@@ -277,7 +298,7 @@ section.importance {
       text-align: center;
       vertical-align: middle;
 
-      @include media($medium-screen) {
+      @include media($medium-screen-down) {
         margin-bottom: 1em;
       }
 
@@ -304,7 +325,7 @@ section.importance {
 
     .media-body,
     .media-object {
-      @include media($medium-screen) {
+      @include media($medium-screen-down) {
         display: block;
         float: none;
         text-align: center;
@@ -317,11 +338,11 @@ section.importance {
 section.value {
   padding: 8em 0 10em;
 
-  @include media($medium-screen) {
+  @include media($medium-screen-down) {
     padding: 6em 1em 8em;
   }
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     padding: 4em 1em 6em;
   }
 
@@ -331,12 +352,12 @@ section.value {
     @include omega;
     text-align: center;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       @include span-columns(10 of 12);
       @include shift(1);
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       float: none;
       margin: 0;
       width: 100%;
@@ -347,7 +368,7 @@ section.value {
       margin-top: 8em;
       padding-top: 7em;
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         margin-top: 4em;
         padding-top: 3em;
       }
@@ -356,7 +377,7 @@ section.value {
     .media-body {
       margin-bottom: 5em;
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         margin-bottom: 3em;
       }
 
@@ -417,14 +438,14 @@ section.configuration {
     @include span-columns(4 of 12, table);
     vertical-align: middle;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       @include span-columns(8 of 12, block);
       @include shift(2);
       float: none;
       margin-bottom: 2em;
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       @include span-columns(10 of 12, block);
       @include shift(1);
       float: none;
@@ -442,7 +463,7 @@ section.configuration {
     text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     vertical-align: middle;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       display: block;
       float: none;
       margin: 0;
@@ -461,11 +482,11 @@ section.configuration {
 section.pricing {
   padding: 4em 6em 10em;
 
-  @include media($medium-screen) {
+  @include media($medium-screen-down) {
     padding: 3em 10em 6em;
   }
 
-  @include media($small-screen) {
+  @include media($small-screen-only) {
     padding: 2em 1em;
   }
 
@@ -476,12 +497,12 @@ section.pricing {
     margin-bottom: 5em;
     padding-top: 4em;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       margin-bottom: 4em;
       padding-top: 3em;
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       display: block;
       float: none;
       margin: 0 0 3em;
@@ -499,7 +520,6 @@ section.pricing {
     margin: 0 auto;
     max-width: $large-screen-size;
   }
-
 }
 
 section.security {
@@ -513,12 +533,12 @@ section.security {
     @include omega();
     text-align: center;
 
-    @include media($medium-screen) {
+    @include media($medium-screen-down) {
       @include span-columns(10 of 12);
       @include shift(1);
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       display: block;
       float: none;
       margin: 0;

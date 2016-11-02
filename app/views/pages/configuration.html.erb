@@ -1,41 +1,41 @@
 <% content_for :page_title, "Configuration" %>
-<div class="hound-docs configuration-docs">
-  <aside class="docs-nav">
+<div class="docs">
+  <nav class="docs-nav">
     <ul>
       <li>
-        <%= link_to "Hound", "#configuration" %>
+        <%= link_to "Hound", "#configuration", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "Ruby", "#ruby" %>
+        <%= link_to "Ruby", "#ruby", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "CoffeeScript", "#coffeescript" %>
+        <%= link_to "CoffeeScript", "#coffeescript", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "JavaScript", "#javascript" %>
+        <%= link_to "JavaScript", "#javascript", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "SCSS", "#scss" %>
+        <%= link_to "SCSS", "#scss", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "Haml", "#haml" %>
+        <%= link_to "Haml", "#haml", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "Go", "#go" %>
+        <%= link_to "Go", "#go", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "Swift", "#swift" %>
+        <%= link_to "Swift", "#swift", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "ESLint (beta)", "#eslint" %>
+        <%= link_to "ESLint (beta)", "#eslint", class: "docs-nav-link" %>
       </li>
       <li>
-        <%= link_to "Python (beta)", "#python" %>
+        <%= link_to "Python (beta)", "#python", class: "docs-nav-link" %>
       </li>
     </ul>
-  </aside>
-  <section class="doc-content">
-    <article>
+  </nav>
+  <section class="docs-content">
+    <article class="docs-article">
       <h1>Hound Documentation</h1>
       <p>
         Want to modify style rules to better suit your preferences?
@@ -50,7 +50,7 @@
         and we will help you out.
       </p>
     </article>
-    <article id="configuration">
+    <article class="docs-article" id="configuration">
       <h3>Hound Configuration</h3>
       <p>
         All supported linters, except the ones in beta, are enabled by default.
@@ -109,7 +109,7 @@
         </preserve>
       </code>
     </article>
-    <article id="ruby">
+    <article class="docs-article" id="ruby">
       <h3>Ruby</h3>
       <p>
         Hound uses
@@ -154,7 +154,7 @@
         </code>
       </p>
     </article>
-    <article id="coffeescript">
+    <article class="docs-article" id="coffeescript">
       <h3>CoffeeScript</h3>
       <p>
         Hound uses
@@ -189,7 +189,7 @@
         </code>
       </p>
     </article>
-    <article id="javascript">
+    <article class="docs-article" id="javascript">
       <h3>JavaScript</h3>
       <p>
         Hound uses
@@ -249,7 +249,7 @@
         </code>
       </p>
     </article>
-    <article id="eslint">
+    <article class="docs-article" id="eslint">
       <h3>ESLint (beta)</h3>
       <p>
         Hound uses
@@ -322,7 +322,7 @@
         </code>
       </p>
     </article>
-    <article id="scss">
+    <article class="docs-article" id="scss">
       <h3>SCSS</h3>
       <p>
         Hound uses
@@ -381,7 +381,7 @@
         </code>
       </p>
     </article>
-    <article id="haml">
+    <article class="docs-article" id="haml">
       <h3>Haml</h3>
       <p>
         Hound uses
@@ -424,7 +424,7 @@
         </code>
       </p>
     </article>
-    <article id="go">
+    <article class="docs-article" id="go">
       <h3>Go</h3>
       <p>
         To disable Go style checking, add the following to your
@@ -440,7 +440,7 @@
         </code>
       </p>
     </article>
-    <article id="python">
+    <article class="docs-article" id="python">
       <h3>Python (beta)</h3>
       <p>
         Hound uses
@@ -490,7 +490,7 @@
         </code>
       </p>
     </article>
-    <article id="swift">
+    <article class="docs-article" id="swift">
       <h3>Swift</h3>
       <p>
         Hound uses
@@ -543,7 +543,7 @@
         %>
       </p>
     </article>
-    <article>
+    <article class="docs-article">
       <h3>Didn't find what you where looking for?</h3>
       <p>
         Please tweet at us

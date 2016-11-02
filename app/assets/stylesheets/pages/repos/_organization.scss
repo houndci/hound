@@ -16,7 +16,7 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
   justify-content: space-between;
   padding: 1em 2em;
 
-  @include media($large-screen) {
+  @include media($large-screen-down) {
     flex-direction: column;
     padding: 1em;
   }
@@ -65,7 +65,7 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
   align-items: center;
   display: flex;
 
-  @include media($large-screen) {
+  @include media($large-screen-down) {
     margin: 1em auto;
   }
 }
