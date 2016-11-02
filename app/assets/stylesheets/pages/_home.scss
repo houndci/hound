@@ -520,25 +520,6 @@ section.pricing {
     margin: 0 auto;
     max-width: $large-screen-size;
   }
-
-}
-
-.plans {
-  @include span-columns(8 of 12);
-  @include shift(2);
-  @include omega;
-  margin-bottom: 3em;
-
-  @include media($medium-screen-down) {
-    display: block;
-    float: none;
-    margin: 0 0 3em;
-    width: 100%;
-  }
-
-  p {
-    margin-top: 3em;
-  }
 }
 
 section.security {
