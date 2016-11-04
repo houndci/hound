@@ -1,9 +1,7 @@
 module Admin
   class JobFailuresController < Admin::ApplicationController
     def index
-      grouped_job_failures = JobFailure.all.group_by(&:error).
-        sort_by { |error, failures| failures.map(&:index).size }.
-        reverse
+      grouped_job_failures = JobFailure.grouped
 
       render locals: { resources: grouped_job_failures }
     end
