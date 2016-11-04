@@ -12,7 +12,6 @@ class BuildReport
 
   def run
     if build.completed?
-      commenter.remove_resolved_violations(build.violations)
       commenter.comment_on_violations(priority_violations)
       set_commit_status
       track_subscribed_build_completed

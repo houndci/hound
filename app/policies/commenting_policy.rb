@@ -5,11 +5,6 @@ class CommentingPolicy
     unreported_violation_messages(violation).any?
   end
 
-  def delete_comment?(comment, violations)
-    comment.user.login == Hound::GITHUB_USERNAME &&
-      !comment_matches_any_violations?(comment, violations)
-  end
-
   private
 
   def unreported_violation_messages(violation)
@@ -28,13 +23,6 @@ class CommentingPolicy
     end
   end
 
-  def comment_matches_any_violations?(comment, violations)
-    violations.any? do |violation|
-      matches_location?(violation, comment) &&
-        matches_messages?(violation, comment)
-    end
-  end
-
   def matches_location?(violation, comment)
     comment.path == violation.filename && on_same_line?(violation, comment)
   end
@@ -45,10 +33,5 @@ class CommentingPolicy
     else
       comment.original_position == violation.patch_position
     end
-  end
-
-  def matches_messages?(violation, comment)
-    comment_lines = comment.body.split(PullRequest::COMMENT_LINE_DELIMITER)
-    (comment_lines & violation.messages).any?
   end
 end

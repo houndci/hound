@@ -33,14 +33,10 @@ RSpec.describe "POST /builds" do
         file_path: filename,
         commit_id: commit_id_from_fixture,
       )
-      delete_comment_request = stub_delete_comment_request(
-        comment_id_from_fixture,
-      )
 
       post builds_path, payload: payload
 
       expect(new_comment_request).to have_been_requested
-      expect(delete_comment_request).to have_been_requested
     end
   end
 
@@ -103,13 +99,6 @@ RSpec.describe "POST /builds" do
       position: violation[:line],
     }
     stub_new_comment_request.with(body: comment.to_json)
-  end
-
-  def stub_delete_comment_request(comment_id)
-    stub_request(
-      :delete,
-      "https://api.github.com/repos/#{repo_name}/pulls/comments/#{comment_id}",
-    )
   end
 
   def stub_review_job(klass, violations:)

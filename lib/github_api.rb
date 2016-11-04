@@ -74,10 +74,6 @@ class GithubApi
     )
   end
 
-  def delete_pull_request_comment(full_repo_name, comment_id)
-    client.delete_pull_request_comment(full_repo_name, comment_id)
-  end
-
   def pull_request_files(full_repo_name, number)
     client.pull_request_files(full_repo_name, number)
   end
