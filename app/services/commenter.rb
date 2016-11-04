@@ -10,14 +10,6 @@ class Commenter
     end
   end
 
-  def remove_resolved_violations(violations)
-    comments = pull_request.comments.select do |comment|
-      commenting_policy.delete_comment?(comment, violations)
-    end
-
-    comments.each { |comment| pull_request.delete_comment(comment) }
-  end
-
   private
 
   def commenting_policy
