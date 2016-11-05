@@ -14,7 +14,7 @@ describe SubscriptionsController, "#create" do
         :create,
         repo_id: repo.id,
         card_token: "cardtoken",
-        email_address: "jimtom@example.com",
+        email: "jimtom@example.com",
         format: :json
       )
 
@@ -26,7 +26,7 @@ describe SubscriptionsController, "#create" do
     end
 
     it "updates the current user's email address" do
-      user = create(:user, email_address: nil)
+      user = create(:user, email: nil)
       repo = create(:repo)
       user.repos << repo
       activator = double(:repo_activator, activate: true)
@@ -38,11 +38,11 @@ describe SubscriptionsController, "#create" do
         :create,
         repo_id: repo.id,
         card_token: "cardtoken",
-        email_address: "jimtom@example.com",
+        email: "jimtom@example.com",
         format: :json
       )
 
-      expect(user.reload.email_address).to eq "jimtom@example.com"
+      expect(user.reload.email).to eq "jimtom@example.com"
     end
   end
 

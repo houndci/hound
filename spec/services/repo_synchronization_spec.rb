@@ -64,7 +64,7 @@ describe RepoSynchronization do
 
       user.reload
       expect(user.repos.size).to eq(1)
-      expect(user.repos.first.full_github_name).to eq "user/newrepo"
+      expect(user.repos.first.name).to eq "user/newrepo"
       expect(user.repos.first.github_id).to eq 456
     end
 

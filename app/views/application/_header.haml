@@ -13,9 +13,9 @@
     - if signed_in?
       %li
         = link_to account_path, class: "account" do
-          - if current_user.email_address.present?
+          - if current_user.email.present?
             .avatar(style="background-image: url('#{avatar_url(current_user)}')")
-          %span #{current_user.github_username}
+          %span= current_user.username
       %li
         = link_to t("sign_out"), sign_out_path, class: "sign-out"
     - else

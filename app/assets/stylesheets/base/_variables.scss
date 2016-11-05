@@ -6,6 +6,8 @@ $purple: rgb(168, 115, 209);
 $red: rgb(255, 123, 123);
 $teal: #379a75;
 $gold: rgb(226, 206, 0);
+$dark-gold: darken($gold, 10%);
+$light-gold: lighten($gold, 50%);
 $tan: rgb(255, 220, 173);
 $white: #fff;
 $black: #000;
@@ -26,19 +28,30 @@ $light-font-color: rgb(190, 190, 190);
 $medium-font-color: rgb(140, 140, 140);
 $base-accent-color: $purple;
 $table-heading-background-color: rgb(245, 245, 245);
+$code-background-color: rgba(#99abc0, 0.25);
 
 $icon-font: "FontAwesome";
 $icon-dropdown: '\f0d7';
 $icon-dropup: '\f0d8';
 $icon-lock: '\f023';
 
-$medium-screen-size: 47.5em;
+$medium-header-breakpoint: 850px;
 
-$small-screen: new-breakpoint(max-width em(540) 2);
-$medium-screen: new-breakpoint(max-width $medium-screen-size 4);
-$large-screen: new-breakpoint(max-width em(920) 8);
+$small-screen-size: 540px;
+$medium-screen-size: 760px;
+$large-screen-size: 920px;
 
+$small-screen-only: new-breakpoint(max-width $small-screen-size 2);
+$medium-screen-down--header: new-breakpoint(max-width ($medium-header-breakpoint - 1px) 4);
+$medium-screen-down: new-breakpoint(max-width ($medium-screen-size - 1px) 4);
+$medium-screen-up: new-breakpoint(min-width $medium-screen-size 12);
+$large-screen-down: new-breakpoint(max-width ($large-screen-size - 1px) 8);
+$large-screen-up: new-breakpoint(min-width $large-screen-size 12);
+
+$base-border: 1px solid $base-border-color;
 $base-border-radius: 5px;
+$large-border-radius: $base-border-radius + 1px;
+$small-border-radius: $base-border-radius - 2px;
 
 $base-spacing: 1.25em;
 $xsmall-spacing: $base-spacing * 0.5;
@@ -48,6 +61,9 @@ $large-spacing: $base-spacing * 3;
 
 $font-weight-light: 300;
 $font-weight-normal: 400;
+
+$font-size-small: 0.875em;
+$font-size-base: 1em;
 
 // Transition
 $base-transition-timing: 0.2s;

@@ -33,14 +33,14 @@ FactoryGirl.define do
       private true
     end
 
-    sequence(:full_github_name) { |n| "user/repo#{n}" }
+    sequence(:name) { |n| "user/repo#{n}" }
     github_id
     private false
     in_organization false
   end
 
   factory :user do
-    github_username { generate(:github_name) }
+    username { generate(:github_name) }
   end
 
   factory :membership do

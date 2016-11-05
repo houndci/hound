@@ -18,7 +18,7 @@ RSpec.describe "POST /builds" do
       comment_id_from_fixture = 12195842
       commit_id_from_fixture = "498b81cd038f8a3ac02f035a8537b7ddcff38a81"
       violations = [existing_comment_violation, new_violation]
-      create(:repo, :active, github_id: repo_id, full_github_name: repo_name)
+      create(:repo, :active, github_id: repo_id, name: repo_name)
       stub_github_requests_with_violations(filename: filename)
       stub_commit_request(repo_name, pr_sha)
       stub_pull_request_comments_request(
@@ -33,20 +33,16 @@ RSpec.describe "POST /builds" do
         file_path: filename,
         commit_id: commit_id_from_fixture,
       )
-      delete_comment_request = stub_delete_comment_request(
-        comment_id_from_fixture,
-      )
 
       post builds_path, payload: payload
 
       expect(new_comment_request).to have_been_requested
-      expect(delete_comment_request).to have_been_requested
     end
   end
 
   context "without violations" do
     it "does not make a comment" do
-      create(:repo, github_id: repo_id, full_github_name: repo_name)
+      create(:repo, github_id: repo_id, name: repo_name)
       stub_github_requests_with_no_violations
       comment_request = stub_new_comment_request
 
@@ -103,13 +99,6 @@ RSpec.describe "POST /builds" do
       position: violation[:line],
     }
     stub_new_comment_request.with(body: comment.to_json)
-  end
-
-  def stub_delete_comment_request(comment_id)
-    stub_request(
-      :delete,
-      "https://api.github.com/repos/#{repo_name}/pulls/comments/#{comment_id}",
-    )
   end
 
   def stub_review_job(klass, violations:)

@@ -49,7 +49,7 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
       subscription = new Subscription(
         repo_id: scope.repo.id
         card_token: stripeToken.id
-        email_address: stripeToken.email
+        email: stripeToken.email
       )
       saveSubscription(subscription)
 
@@ -97,6 +97,6 @@ App.directive 'repo', ['Subscription', 'StripeCheckout', 'User', (Subscription, 
 
       window.analytics.track eventName,
         properties:
-          name: repo.full_github_name
+          name: repo.name
           revenue: price
 ]

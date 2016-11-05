@@ -5,8 +5,6 @@ class Repo < ActiveRecord::Base
   has_one :subscription
   has_many :users, through: :memberships
 
-  alias_attribute :name, :full_github_name
-
   delegate :type, :price, to: :plan, prefix: true
   delegate :price, to: :subscription, prefix: true
 
@@ -18,7 +16,7 @@ class Repo < ActiveRecord::Base
 
   def self.find_or_create_with(attributes)
     repo = find_by(github_id: attributes[:github_id]) ||
-      find_by(full_github_name: attributes[:full_github_name]) ||
+      find_by(name: attributes[:name]) ||
       Repo.new
 
     begin
@@ -67,16 +65,14 @@ class Repo < ActiveRecord::Base
   private
 
   def organization
-    if full_github_name
-      full_github_name.split("/").first
-    end
+    name && name.split("/").first
   end
 
   def self.report_update_failure(error, attributes)
     Rollbar.error(
       error,
       github_id: attributes[:github_id],
-      full_github_name: attributes[:full_github_name],
+      name: attributes[:name],
     )
   end
   private_class_method :report_update_failure

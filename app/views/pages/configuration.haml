@@ -1,31 +1,31 @@
 - content_for :page_title, "Configuration"
 
-.hound-docs.configuration-docs
-  %aside.docs-nav
+.docs
+  %nav.docs-nav
     %ul
       %li
-        = link_to "Hound", "#configuration"
+        = link_to "Hound", "#configuration", class: "docs-nav-link"
       %li
-        = link_to "Ruby", "#ruby"
+        = link_to "Ruby", "#ruby", class: "docs-nav-link"
       %li
-        = link_to "CoffeeScript", "#coffeescript"
+        = link_to "CoffeeScript", "#coffeescript", class: "docs-nav-link"
       %li
-        = link_to "JavaScript", "#javascript"
+        = link_to "JavaScript", "#javascript", class: "docs-nav-link"
       %li
-        = link_to "SCSS", "#scss"
+        = link_to "SCSS", "#scss", class: "docs-nav-link"
       %li
-        = link_to "Haml", "#haml"
+        = link_to "Haml", "#haml", class: "docs-nav-link"
       %li
-        = link_to "Go", "#go"
+        = link_to "Go", "#go", class: "docs-nav-link"
       %li
-        = link_to "Swift", "#swift"
+        = link_to "Swift", "#swift", class: "docs-nav-link"
       %li
-        = link_to "ESLint (beta)", "#eslint"
+        = link_to "ESLint (beta)", "#eslint", class: "docs-nav-link"
       %li
-        = link_to "Python (beta)", "#python"
+        = link_to "Python (beta)", "#python", class: "docs-nav-link"
 
-  %section.doc-content
-    %article
+  %section.docs-content
+    %article.docs-article
       %h1 Hound Documentation
       %p
         Want to modify style rules to better suit your preferences?
@@ -39,7 +39,7 @@
         or email us at #{mail_to "hound@thoughtbot.com"}
         and we will help you out.
 
-    %article#configuration
+    %article.docs-article#configuration
       %h3 Hound Configuration
 
       %p
@@ -47,12 +47,12 @@
 
       %p
         Hound will look for a custom configuration file named
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
         in the root directory of your project.
 
       %p
         Using
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
         you can tell Hound which linters to enable or disable,
         specify paths to files that provide custom style rules,
         and determine which files/directories to ignore.
@@ -84,13 +84,13 @@
           target: :blank
         to mark a pull request as failed if any violations are found.
         To do so, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
       %code.code-block
         :preserve
           fail_on_violations: true
 
-    %article#ruby
+    %article.docs-article#ruby
       %h3 Ruby
       %p
         Hound uses
@@ -104,7 +104,7 @@
         = succeed "." do
           = link_to "default RuboCop config", rubocop_config_url, target: :blank
         To change the way RuboCop is configured, add a
-        %em.code .rucobop.yml
+        %em.code-inline .rucobop.yml
         file to your project, configure it as desired
         (see the
         = succeed ")," do
@@ -112,7 +112,7 @@
             "http://rubocop.readthedocs.io/en/latest/",
             target: :blank)
         and reference it in
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
@@ -121,14 +121,14 @@
 
       %p
         To disable Ruby style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
             ruby:
               enabled: false
 
-    %article#coffeescript
+    %article.docs-article#coffeescript
       %h3 CoffeeScript
 
       %p
@@ -139,7 +139,7 @@
       %p
         To change the way CoffeeLint is configured, add a config file to your
         project and reference it in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
@@ -148,14 +148,14 @@
 
       %p
         To disable CoffeeScript style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
             coffeescript:
               enabled: false
 
-    %article#javascript
+    %article.docs-article#javascript
       %h3 JavaScript
 
       %p
@@ -169,7 +169,7 @@
         To change the way JSHint is configured, copy the
         = link_to "default config file", jshint_config_url, target: :blank
         into your project, make changes and reference the file in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
       %p
         %code.code-block
@@ -179,11 +179,11 @@
 
       %p
         To ignore certain files and directories, add
-        %em.code .jshintignore
+        %em.code-inline .jshintignore
         file to your project,
         include in it path patterns for files/directories that you want ignored,
         and reference the ignore file in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
         \. See
         = link_to "linter docs", "http://jshint.com/docs/cli/", target: :blank
         for more info ("Ignoring Files" section).
@@ -195,14 +195,14 @@
 
       %p
         To disable JavaScript style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
             jshint:
               enabled: false
 
-    %article#eslint
+    %article.docs-article#eslint
       %h3 ESLint (beta)
 
       %p
@@ -214,7 +214,7 @@
 
       %p
         To enable ESLint style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
@@ -223,11 +223,11 @@
 
       %p
         To change the way ESLint is configured, add
-        %em.code .eslintrc
+        %em.code-inline .eslintrc
         file to your project,
         specify your desired configuration
         and reference the file in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
       %p
         %code.code-block
@@ -244,11 +244,11 @@
 
       %p
         To ignore certain files and directories, add
-        %em.code .eslintignore
+        %em.code-inline .eslintignore
         file to your project,
         include in it path patterns for files/directories that you want ignored,
         and reference the ignore file in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
         \. See
         = link_to "linter docs",
           "http://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories",
@@ -260,7 +260,7 @@
             eslint:
               ignore_file: .eslintignore
 
-    %article#scss
+    %article.docs-article#scss
       %h3 SCSS
 
       %p
@@ -276,7 +276,7 @@
         To change the way scss-lint is configured, simply copy the
         = link_to "default config file", scss_config_url, target: :blank
         into your project, make changes and reference the file in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
       %p
         %code.code-block
@@ -286,9 +286,9 @@
 
       %p
         To ignore certain SCSS files, add
-        %em.code exclude:
+        %em.code-inline exclude:
         directive to your
-        %em.code .scss-lint.yml
+        %em.code-inline .scss-lint.yml
         file, like:
 
         %code.code-block
@@ -298,14 +298,14 @@
 
       %p
         To disable SCSS style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
             scss:
               enabled: false
 
-    %article#haml
+    %article.docs-article#haml
       %h3 Haml
 
       %p
@@ -321,7 +321,7 @@
         To change the way haml-lint is configured, simply copy the
         = link_to "default config file", haml_config_url, target: :blank
         into your project, make changes and reference the file in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
       %p
         %code.code-block
@@ -331,26 +331,26 @@
 
       %p
         To disable Haml style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
             haml:
               enabled: false
 
-    %article#go
+    %article.docs-article#go
       %h3 Go
 
       %p
         To disable Go style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
             go:
               enabled: false
 
-    %article#python
+    %article.docs-article#python
       %h3 Python (beta)
 
       %p
@@ -366,7 +366,7 @@
 
       %p
         To enable Python style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
@@ -379,7 +379,7 @@
           "http://flake8.readthedocs.org/en/latest/config.html#per-project",
           target: :blank
         with your custom configuration and reference the file in
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
       %p
         %code.code-block
@@ -388,7 +388,7 @@
               enabled: true
               config_file: .flake8.ini
 
-    %article#swift
+    %article.docs-article#swift
       %h3 Swift
 
       %p
@@ -404,7 +404,7 @@
         To change the way SwiftLint is configured, copy the
         = link_to "default config file", swift_config_url, target: :blank
         into your project, make changes and reference the file in your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
 
       %p
         %code.code-block
@@ -414,7 +414,7 @@
 
       %p
         To disable Swift style checking, add the following to your
-        %em.code .hound.yml
+        %em.code-inline .hound.yml
         file.
 
         %code.code-block
@@ -424,13 +424,13 @@
 
       %p
         For more information on the available configuration in your
-        %em.code config_file
+        %em.code-inline config_file
         , you can read about it on the
         = link_to "SwiftLint Configuration Documentation",
           "https://github.com/realm/SwiftLint#configuration",
           target: :blank
 
-    %article
+    %article.docs-article
       %h3 Didn't find what you where looking for?
 
       %p

@@ -12,7 +12,6 @@ class BuildReport
 
   def run
     if build.completed?
-      commenter.remove_resolved_violations(build.violations)
       commenter.comment_on_violations(priority_violations)
       set_commit_status
       track_subscribed_build_completed
@@ -37,14 +36,14 @@ class BuildReport
 
   def set_commit_status
     if fail_build?
-      commit_status.set_failure(build.violation_count)
+      commit_status.set_failure(build.violations_count)
     else
-      commit_status.set_success(build.violation_count)
+      commit_status.set_success(build.violations_count)
     end
   end
 
   def fail_build?
-    hound_config.fail_on_violations? && build.violation_count > 0
+    hound_config.fail_on_violations? && build.violations_count > 0
   end
 
   def hound_config

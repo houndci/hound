@@ -6,7 +6,7 @@
       .build
         .build-meta
           %h2.build-org-repo
-            = build.repo.full_github_name
+            = build.repo.name
           %h4.build-time
             %span
               = time_ago_in_words(build.created_at)

@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
   end
 
   def find_user
-    if user = User.where(github_username: github_username).first
+    if user = User.where(username: username).first
       Analytics.new(user).track_signed_in
     end
 
@@ -34,8 +34,8 @@ class SessionsController < ApplicationController
 
   def create_user
     user = User.create!(
-      github_username: github_username,
-      email_address: github_email_address,
+      username: username,
+      email: github_email,
       utm_source: session[:campaign_params].try(:[], :utm_source),
     )
     flash[:signed_up] = true
@@ -54,11 +54,11 @@ class SessionsController < ApplicationController
     GithubApi.new(github_token)
   end
 
-  def github_username
+  def username
     request.env["omniauth.auth"]["info"]["nickname"]
   end
 
-  def github_email_address
+  def github_email
     request.env["omniauth.auth"]["info"]["email"]
   end
 

@@ -1,9 +1,13 @@
-$medium-screen-header: new-breakpoint(max-width em(850) 4);
-
 .global-header {
   @include outer-container;
   height: 120px;
   padding: 0 0.5em;
+
+  @include media($medium-screen-down--header) {
+    height: auto;
+    padding: 2em 1em;
+    text-align: center;
+  }
 
   &.home-header {
     @include clearfix;
@@ -19,24 +23,18 @@ $medium-screen-header: new-breakpoint(max-width em(850) 4);
     }
   }
 
-  @include media($medium-screen-header) {
-    height: auto;
-    padding: 2em 1em;
-    text-align: center;
-  }
-
   .logo {
     display: table;
     height: 100%;
     margin-right: 1em;
 
-    @include media($medium-screen-header) {
+    @include media($medium-screen-down--header) {
       display: inline-block;
       float: none;
       vertical-align: middle;
     }
 
-    @include media($small-screen) {
+    @include media($small-screen-only) {
       display: table;
       margin: 0 0 1em;
       width: 100%;
@@ -70,7 +68,7 @@ $medium-screen-header: new-breakpoint(max-width em(850) 4);
     display: table;
     height: 100%;
 
-    @include media($medium-screen-header) {
+    @include media($medium-screen-down--header) {
       display: inline-block;
 
       &.pull-right,
@@ -80,11 +78,11 @@ $medium-screen-header: new-breakpoint(max-width em(850) 4);
     }
 
     + ul {
-      @include media($medium-screen-header) {
+      @include media($medium-screen-down--header) {
         padding: 1.2em 1em;
       }
 
-      @include media($small-screen) {
+      @include media($small-screen-only) {
         display: none;
       }
     }
@@ -94,7 +92,7 @@ $medium-screen-header: new-breakpoint(max-width em(850) 4);
       vertical-align: middle;
       text-align: center;
 
-      @include media($medium-screen-header) {
+      @include media($medium-screen-down--header) {
         display: inline-block;
       }
 

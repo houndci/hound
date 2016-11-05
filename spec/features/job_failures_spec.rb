@@ -16,7 +16,7 @@ feature "Job failures" do
 
   scenario "Admin views all failures" do
     stub_const("Hound::ADMIN_GITHUB_USERNAMES", ["foo-user"])
-    user = create(:user, github_username: "foo-user")
+    user = create(:user, username: "foo-user")
     populate_failures(["Foo error", "Bar error", "Foo error"])
 
     sign_in_as(user)
@@ -39,7 +39,7 @@ feature "Job failures" do
 
   scenario "Admin removes job failures" do
     stub_const("Hound::ADMIN_GITHUB_USERNAMES", ["foo-user"])
-    user = create(:user, github_username: "foo-user")
+    user = create(:user, username: "foo-user")
     populate_failures(["Foo error", "Bar error", "Foo error"])
 
     sign_in_as(user)

@@ -46,28 +46,6 @@ describe Commenter do
     end
   end
 
-  describe "#remove_resolved_violations" do
-    it "deletes comments for violations that are no longer present" do
-      unresolved_comment = build_comment(id: 1, position: 4, body: "foo bar")
-      resolved_comment = build_comment(id: 2, position: 5, body: "hello world")
-      violations = [
-        build_violation(messages: ["foo bar"], patch_position: 4),
-        build_violation(messages: ["bar baz"], patch_position: 5),
-      ]
-      pull_request = instance_double(
-        "PullRequest",
-        comments: [unresolved_comment, resolved_comment],
-        delete_comment: nil,
-      )
-      commenter = Commenter.new(pull_request)
-
-      commenter.remove_resolved_violations(violations)
-
-      expect(pull_request).to have_received(:delete_comment).
-        with(resolved_comment)
-    end
-  end
-
   def build_violation(attributes = {})
     instance_double(
       "Violation",

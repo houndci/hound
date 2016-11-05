@@ -12,7 +12,7 @@ module Admin
 
     def github_admin?
       current_user &&
-        Hound::ADMIN_GITHUB_USERNAMES.include?(current_user.github_username)
+        Hound::ADMIN_GITHUB_USERNAMES.include?(current_user.username)
     end
 
     def current_user

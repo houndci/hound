@@ -2,7 +2,7 @@ class RepoSerializer < ActiveModel::Serializer
   attributes(
     :admin,
     :active,
-    :full_github_name,
+    :name,
     :full_plan_name,
     :github_id,
     :id,

@@ -5,13 +5,13 @@ class BulkCustomer < ActiveRecord::Base
       includes(:subscription).
       where(subscriptions: { repo_id: nil }).
       where(private: true).
-      where("full_github_name !~* ?", "(#{bulk_orgs.join('|')})").
+      where("name !~* ?", "(#{bulk_orgs.join('|')})").
       active
   end
 
   def update_current_repos
     repo_count = Repo.
-      where("full_github_name ILIKE ?", "#{org}/%").
+      where("name ILIKE ?", "#{org}/%").
       where(private: true).
       active.
       count

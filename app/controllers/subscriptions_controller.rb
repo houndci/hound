@@ -2,7 +2,7 @@ class SubscriptionsController < ApplicationController
   class FailedToActivate < StandardError; end
 
   before_action :check_subscription_presence, only: :destroy
-  before_action :update_email_address
+  before_action :update_email
 
   def create
     if activator.activate && create_subscription
@@ -56,9 +56,9 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-  def update_email_address
-    if current_user.email_address.blank?
-      current_user.update(email_address: params[:email_address])
+  def update_email
+    if current_user.email.blank?
+      current_user.update(email: params[:email])
     end
   end
 end

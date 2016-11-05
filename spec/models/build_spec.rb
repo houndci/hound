@@ -19,21 +19,6 @@ describe Build do
     end
   end
 
-  describe "#violation_count" do
-    it "returns count of violation messages in the build" do
-      build = build(:build)
-      violation1 = build(:violation, messages: ["one", "two"])
-      violation2 = build(:violation, messages: ["three", "four"])
-      create(
-        :file_review,
-        violations: [violation1, violation2],
-        build: build,
-      )
-
-      expect(build.violation_count).to eq 4
-    end
-  end
-
   describe "#user_token" do
     context "when user is associated with a build" do
       it "returns the user's token" do

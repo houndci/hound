@@ -142,7 +142,7 @@ describe BuildRunner do
 
         expect(analytics).to have_tracked("Build Started").
           for_user(repo.subscription.user).
-          with(properties: { name: repo.full_github_name, private: true })
+          with(properties: { name: repo.name, private: true })
       end
     end
 

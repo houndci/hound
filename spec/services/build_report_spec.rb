@@ -24,20 +24,16 @@ describe BuildReport do
 
         context "when fail on violations is disabled" do
           it "sets GitHub status to complete" do
-            file_review = create(
-              :file_review,
-              completed_at: Time.current,
-              violations: [build(:violation)],
-            )
+            build = build_stubbed(:build, violations_count: 1)
             stubbed_commenter
             stubbed_hound_config(fail_on_violations?: false)
             github_api = stubbed_github_api
 
-            run_service(file_review.build)
+            run_service(build)
 
             expect(github_api).to have_received(:create_success_status).with(
-              file_review.build.repo_name,
-              file_review.build.commit_sha,
+              build.repo_name,
+              build.commit_sha,
               "1 violation found.",
             )
           end
@@ -45,20 +41,16 @@ describe BuildReport do
 
         context "when fail on violations is enabled" do
           it "sets GitHub status to failed" do
-            file_review = create(
-              :file_review,
-              completed_at: Time.current,
-              violations: [build(:violation)],
-            )
+            build = build_stubbed(:build, violations_count: 1)
             stubbed_commenter
             stubbed_hound_config(fail_on_violations?: true)
             github_api = stubbed_github_api
 
-            run_service(file_review.build)
+            run_service(build)
 
             expect(github_api).to have_received(:create_error_status).with(
-              file_review.build.repo_name,
-              file_review.build.commit_sha,
+              build.repo_name,
+              build.commit_sha,
               "1 violation found.",
             )
           end
@@ -129,7 +121,7 @@ describe BuildReport do
 
         expect(analytics).to have_tracked("Build Completed").
           for_user(repo.subscription.user).
-          with(properties: { name: repo.full_github_name, private: true })
+          with(properties: { name: repo.name, private: true })
       end
     end
 

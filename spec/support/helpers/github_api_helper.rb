@@ -201,10 +201,10 @@ module GithubApiHelper
   def stub_pull_request_comments_request(
     full_repo_name,
     pull_request_number,
-    github_username
+    username
   )
     comments_body = read_fixture("pull_request_comments.json").
-      gsub("the_hound_user", github_username)
+      gsub("the_hound_user", username)
     url = "https://api.github.com/repos/#{full_repo_name}/pulls/" +
       "#{pull_request_number}/comments"
     headers = { "Content-Type" => "application/json; charset=utf-8" }
