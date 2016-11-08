@@ -8,13 +8,10 @@
 
   .account-content
     %article.billing-breakdown
-      %h3
-        Monthly Billing
-        - if current_user.stripe_customer_id.present?
-          %a{ href: '#', class: 'update-card', 'ng-controller' => 'accountController', 'ng-click' => 'showStripeForm()' }
-            %i.fa.fa-credit-card
-            Update Credit Card
-
+      = react_component("AccountCreditCardUpdater",
+          authenticity_token: form_authenticity_token,
+          stripe_customer_id_present: current_user.stripe_customer_id.present?,
+        )
       %table.itemized-receipt
         %thead
           %tr
@@ -43,22 +40,10 @@
               %label= @account_page.total_monthly_cost
 
     - if current_user.stripe_customer_id.present?
-      %article.account-details
-        %h3
-          Update account settings
-        %form{ 'ng-controller' => 'accountController' }
-          .form-group
-            %label Email address for receipts
-            %input{ type: 'email', placeholder: "#{@account_page.billable_email}", 'ng-model' => 'account.billable_email' }
-            %p.inline-flash.inline-flash--success{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'successMessage' }
-              %i.fa.fa-check
-                {{successMessage}}
-            %p.inline-flash.inline-flash--error{ 'ng-cloak' => 'ng-cloak', 'ng-show' => 'failureMessage' }
-              %i.fa.fa-exclamation-circle
-                {{failureMessage}}
-          .form-actions
-            %button.button-small{ 'ng-click' => 'update()' } Update Email
-
+      = react_component("AccountEmailUpdater",
+          authenticity_token: form_authenticity_token,
+          billable_email: @account_page.billable_email,
+        )
     %article.active-private-repos
       - if @account_page.repos.any?
         %h3 Active Private Repos
