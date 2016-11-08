@@ -1,9 +1,0 @@
-App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User, $timeout) ->
-  scope: true
-  templateUrl: '/templates/repo_list'
-
-  link: (scope, element, attributes) ->
-    scope.repos = scope.repos.filter((repo) ->
-      repo.owner.name == scope.organization.name
-    )
-]
