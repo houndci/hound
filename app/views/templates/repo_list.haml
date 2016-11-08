@@ -1,6 +1,0 @@
-%ul.repos
-  %li.repo{ 'repo' => '',
-    'ng-repeat' => 'repo in repos | filter:search',
-      'ng-class' => '{"repo--active": repo.active, |
-        "repo--processing": processing}' }
-= render 'preload_template', template: 'repo'
