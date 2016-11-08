@@ -1,12 +1,9 @@
-//= require angular
-//= require angular-resource
 //= require lodash
+//= require jquery3
 //= require namespaced
 //= require_self
+//= require es5-shim
+//= require react
+//= require react_ujs
+//= require classnames
 //= require_tree .
-
-App = angular.module('Hound', ['ngResource']);
-
-App.config(['$httpProvider', function($httpProvider) {
-  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-}]);

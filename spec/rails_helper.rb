@@ -12,10 +12,6 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.before(:each, js: true) do
-    page.driver.block_unknown_urls
-  end
-
   config.infer_base_class_for_anonymous_controllers = false
   config.infer_spec_type_from_file_location!
   config.include AnalyticsHelper
@@ -33,6 +29,8 @@ Capybara.configure do |config|
   config.javascript_driver = :webkit
   config.default_wait_time = 4
 end
+
+Capybara::Webkit.configure(&:block_unknown_urls)
 
 OmniAuth.configure do |config|
   config.test_mode = true
