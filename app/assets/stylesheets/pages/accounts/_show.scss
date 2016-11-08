@@ -94,3 +94,9 @@
     text-align: right;
   }
 }
+
+.active-private-repos {
+  .repo {
+    display: table-row;
+  }
+}
