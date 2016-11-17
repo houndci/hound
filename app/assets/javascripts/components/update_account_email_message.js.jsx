@@ -1,8 +1,8 @@
-class AccountEmailUpdaterMessage extends React.Component {
+class UpdateAccountEmailMessage extends React.Component {
   render() {
-    if (this.props.addressChanged == null) {
+    if (this.props.addressChanged === null) {
       return null;
-    } else if (this.props.addressChanged) {
+    } else if (this.props.addressChanged === true) {
       return (
         <p className="inline-flash inline-flash--success">
           <i className="fa fa-check">

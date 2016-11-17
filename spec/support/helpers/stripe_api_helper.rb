@@ -94,13 +94,8 @@ module StripeApiHelper
     )
   end
 
-  def stub_subscription_update_request(quantity: 1, repo_ids: nil)
-    body = {
-      quantity: quantity.to_s,
-      metadata: {
-        repo_ids: repo_ids.to_s,
-      },
-    }
+  def stub_subscription_update_request(plan:, repo_ids:)
+    body = { metadata: { repo_ids: repo_ids.to_s }, plan: plan }
 
     stub_request(
       :post,

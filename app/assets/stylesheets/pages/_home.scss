@@ -32,7 +32,6 @@
     font-weight: 700;
     font-size: 1.2em;
     letter-spacing: 1px;
-    margin: 0 0 0.6em 0;
   }
 
   p {
@@ -202,6 +201,40 @@ section.intro {
         }
       }
     }
+  }
+}
+
+.cta {
+  @include span-columns(6 of 12);
+  @include shift(3);
+  padding-top: 3em;
+  text-align: center;
+
+  @include media($medium-screen-down) {
+    @include span-columns(4);
+    @include shift(0);
+  }
+
+  @include media($small-screen-only) {
+    padding-top: 2em;
+  }
+
+  .cta-description {
+    margin-bottom: $medium-spacing;
+  }
+
+  .auth {
+    @include large-button(solid, $purple, lighten($purple, 10%));
+
+    @include media($small-screen-only) {
+      padding: 0.8em 1.4em;
+    }
+  }
+
+  i,
+  span {
+    position: relative;
+    z-index: 2;
   }
 }
 
@@ -445,11 +478,10 @@ section.configuration {
 }
 
 section.pricing {
-  padding: 4em 1em 10em;
-  text-align: center;
+  padding: 4em 6em 10em;
 
   @include media($medium-screen-down) {
-    padding: 3em 1em 6em;
+    padding: 3em 10em 6em;
   }
 
   @include media($small-screen-only) {
@@ -481,78 +513,9 @@ section.pricing {
     }
   }
 
-  .plan {
-    @include span-columns(4 of 8);
-    border-radius: 4px;
-    border: 2px solid $base-border-color;
-    padding: 0 1em;
-    text-align: center;
-
-    @include media($small-screen-only) {
-      display: block;
-      float: none;
-      width: 100%;
-
-      + .plan {
-        margin-top: 2em;
-      }
-    }
-
-    h4 {
-      border-bottom: 1px dotted $base-border-color;
-      font-weight: 700;
-      margin: 0em 0em 2em;
-      padding: 2em 0em;
-
-      .fa {
-        display: inline-block;
-        margin-right: 0.4em;
-      }
-    }
-
-    .price {
-      .dollar-amount {
-        padding: 1.4em 0 4em;
-
-        span {
-          font-size: 6em;
-        }
-      }
-    }
-  }
-
-  .cta {
-    padding-top: 4em;
-
-    @include media($small-screen-only) {
-      padding-top: 2em;
-    }
-
-    .auth {
-      @include large-button(solid, $purple, lighten($purple, 10%));
-
-      @include media($small-screen-only) {
-        padding: 0.8em 1.4em;
-      }
-    }
-  }
-}
-
-.plans {
-  @include span-columns(8 of 12);
-  @include shift(2);
-  @include omega;
-  margin-bottom: 3em;
-
-  @include media($medium-screen-down) {
-    display: block;
-    float: none;
-    margin: 0 0 3em;
-    width: 100%;
-  }
-
-  p {
-    margin-top: 3em;
+  .plans {
+    margin: 0 auto;
+    max-width: $large-screen-size;
   }
 }
 

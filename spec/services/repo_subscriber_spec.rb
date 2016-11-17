@@ -14,13 +14,18 @@ describe RepoSubscriber do
           stub_customer_find_request
           update_request = stub_customer_update_request
           subscription_request = stub_subscription_create_request(
-            plan: repo.plan_type,
+            plan: user.current_tier.id,
+            repo_ids: repo.id,
+          )
+          subscription_update_request = stub_subscription_update_request(
+            plan: user.next_tier.id,
             repo_ids: repo.id,
           )
 
           RepoSubscriber.subscribe(repo, user, "cardtoken")
 
           expect(subscription_request).to have_been_requested
+          expect(subscription_update_request).to have_been_requested
           expect(update_request).not_to have_been_requested
           expect(repo.subscription.stripe_subscription_id).
             to eq(stripe_subscription_id)
@@ -38,17 +43,17 @@ describe RepoSubscriber do
           )
           stub_customer_find_request_with_subscriptions
           subscription_update_request = stub_subscription_update_request(
-            quantity: 2,
+            plan: "tier1",
             repo_ids: repo.id,
           )
           subscription_create_request = stub_subscription_create_request(
-            plan: repo.plan_type,
+            plan: "basic",
             repo_ids: repo.id,
           )
 
           RepoSubscriber.subscribe(repo, user, "cardtoken")
 
-          expect(subscription_create_request).not_to have_been_requested
+          expect(subscription_create_request).to have_been_requested
           expect(subscription_update_request).to have_been_requested
           expect(repo.subscription.stripe_subscription_id).
             to eq(stripe_subscription_id)
@@ -63,7 +68,11 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo], stripe_customer_id: "",)
         customer_request = stub_customer_create_request(user)
         subscription_request = stub_subscription_create_request(
-          plan: repo.plan_type,
+          plan: user.current_tier.id,
+          repo_ids: repo.id,
+        )
+        update_request = stub_subscription_update_request(
+          plan: user.next_tier.id,
           repo_ids: repo.id,
         )
 
@@ -71,6 +80,7 @@ describe RepoSubscriber do
 
         expect(customer_request).to have_been_requested
         expect(subscription_request).to have_been_requested
+        expect(update_request).to have_been_requested
         expect(repo.subscription.stripe_subscription_id).
           to eq(stripe_subscription_id)
         expect(user.stripe_customer_id).to eq stripe_customer_id
@@ -82,7 +92,7 @@ describe RepoSubscriber do
         repo = create(:repo)
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
-        stub_failed_subscription_create_request(repo.plan_type)
+        stub_failed_subscription_create_request(user.current_tier.id)
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
@@ -93,7 +103,7 @@ describe RepoSubscriber do
         repo = build_stubbed(:repo)
         user = create(:user)
         stub_customer_create_request(user)
-        stub_failed_subscription_create_request(repo.plan_type)
+        stub_failed_subscription_create_request(user.current_tier.id)
         allow(Raven).to receive(:capture_exception)
 
         RepoSubscriber.subscribe(repo, user, "cardtoken")
@@ -108,7 +118,11 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
         stub_subscription_create_request(
-          plan: repo.plan_type,
+          plan: user.current_tier.id,
+          repo_ids: repo.id,
+        )
+        stub_subscription_update_request(
+          plan: user.next_tier.id,
           repo_ids: repo.id,
         )
         stripe_delete_request = stub_subscription_delete_request
@@ -139,45 +153,20 @@ describe RepoSubscriber do
   end
 
   describe ".unsubscribe" do
-    context "when the subscription quantity is 1" do
-      it "deletes Stripe subscription" do
-        subscription = subscription_with_user
-        stub_customer_find_request
-        stub_subscription_find_request(subscription)
-        stripe_delete_request = stub_subscription_delete_request
+    it "updates the Stripe plan" do
+      subscription = subscription_with_user
+      stub_customer_find_request
+      stub_subscription_find_request(subscription, quantity: 2)
+      stripe_delete_request = stub_subscription_delete_request
+      subscription_update_request = stub_subscription_update_request(
+        plan: "basic",
+        repo_ids: "",
+      )
 
-        RepoSubscriber.unsubscribe(subscription.repo, subscription.user)
+      RepoSubscriber.unsubscribe(subscription.repo, subscription.user)
 
-        expect(stripe_delete_request).to have_been_requested
-      end
-
-      it "soft deletes the Repo subscription" do
-        subscription = subscription_with_user
-        stub_customer_find_request
-        stub_subscription_find_request(subscription)
-        stub_subscription_delete_request
-
-        RepoSubscriber.unsubscribe(subscription.repo, subscription.user)
-
-        expect(subscription.reload).to be_deleted
-      end
-    end
-
-    context "when the subscription quantity is greater 1" do
-      it "decrements the Stripe subscription quantity" do
-        subscription = subscription_with_user
-        stub_customer_find_request
-        stub_subscription_find_request(subscription, quantity: 2)
-        stripe_delete_request = stub_subscription_delete_request
-        subscription_update_request = stub_subscription_update_request(
-          quantity: 1,
-        )
-
-        RepoSubscriber.unsubscribe(subscription.repo, subscription.user)
-
-        expect(stripe_delete_request).not_to have_been_requested
-        expect(subscription_update_request).to have_been_requested
-      end
+      expect(stripe_delete_request).not_to have_been_requested
+      expect(subscription_update_request).to have_been_requested
     end
 
     context "when Stripe unsubscription fails" do

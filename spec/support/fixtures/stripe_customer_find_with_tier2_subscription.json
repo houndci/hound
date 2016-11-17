@@ -1,0 +1,84 @@
+{
+  "object": "customer",
+  "created": 1380227987,
+  "id": "cus_2e3fqARc1uHtCv",
+  "livemode": false,
+  "description": null,
+  "email": "scott@thoughtbot.com",
+  "delinquent": false,
+  "metadata": {
+  },
+  "subscriptions": {
+    "object": "list",
+    "total_count": 0,
+    "has_more": false,
+    "url": "/v1/customers/cus_2e3fqARc1uHtCv/subscriptions",
+    "data": [{
+      "id": "sub_488ZZngNkyRMiR",
+      "plan": {
+        "interval": "month",
+        "name": "Personal",
+        "created": 1401465831,
+        "amount": 900,
+        "currency": "usd",
+        "id": "tier2",
+        "object": "plan",
+        "livemode": false,
+        "interval_count": 1,
+        "trial_period_days": null,
+        "metadata": {
+        },
+        "statement_description": null
+      },
+      "object": "subscription",
+      "start": 1407216749,
+      "status": "active",
+      "customer": "cus_2e3fqARc1uHtCv",
+      "cancel_at_period_end": false,
+      "current_period_start": 1407216749,
+      "current_period_end": 1409895149,
+      "ended_at": null,
+      "trial_start": null,
+      "trial_end": null,
+      "canceled_at": null,
+      "quantity": 1,
+      "application_fee_percent": null,
+      "discount": null,
+      "metadata": {
+      }
+    }]
+  },
+  "discount": null,
+  "account_balance": 0,
+  "currency": "usd",
+  "cards": {
+    "object": "list",
+    "total_count": 1,
+    "has_more": false,
+    "url": "/v1/customers/cus_2e3fqARc1uHtCv/cards",
+    "data": [
+      {
+        "id": "card_102e3c2QAwplLIsJn2oXQKvB",
+        "object": "card",
+        "last4": "4242",
+        "type": "Visa",
+        "exp_month": 12,
+        "exp_year": 2013,
+        "fingerprint": "EEsAljuM0b4ras7N",
+        "country": "US",
+        "name": null,
+        "address_line1": null,
+        "address_line2": null,
+        "address_city": null,
+        "address_state": null,
+        "address_zip": null,
+        "address_country": null,
+        "cvc_check": "pass",
+        "address_line1_check": null,
+        "address_zip_check": null,
+        "customer": "cus_2e3fqARc1uHtCv"
+      }
+    ]
+  },
+  "default_card": "card_102e3c2QAwplLIsJn2oXQKvB"
+}

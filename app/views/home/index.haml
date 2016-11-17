@@ -152,33 +152,17 @@
 
     %article.plans
       .inner-wrapper
-        .plan
-          %h4
-            %i.fa.fa-book
-            Open Source
-          %span.tagline
-            Get higher quality pull requests:
-          .price
-            .dollar-amount
-              %span $0
-              %small /month
+        %h4.plan-category
+          %i.fa.fa-book
+          Private Repos
 
-        .plan
-          %h4
-            %i.fa.fa-lock
-            Private Repo
-          %span.tagline
-            Keep your codebase clean:
-          .price
-            .dollar-amount
-              %span $12
-              %small /month
-      %p
-        Email #{mail_to "hound@thoughtbot.com"} for bulk pricing
-        for your GitHub organization.
+        = render(partial: @home.private_pricings, as: :plan)
 
-      .cta
-        = render "application/auth_button"
+        %h4.plan-category.open-source
+          %i.fa.fa-code-fork
+          Open Source
+
+        = render(partial: @home.open_source_pricings, as: :plan)
 
 %section.security
   .section-content

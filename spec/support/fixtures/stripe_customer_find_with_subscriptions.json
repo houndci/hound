@@ -21,7 +21,7 @@
         "created": 1401465831,
         "amount": 900,
         "currency": "usd",
-        "id": "private",
+        "id": "tier1",
         "object": "plan",
         "livemode": false,
         "interval_count": 1,

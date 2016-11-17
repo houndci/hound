@@ -1,28 +1,37 @@
-%header.global-header{ class: content_for(:header_class) }
-  .logo.pull-left
-    .va-cell
-      = link_to repos_path, class: "logo-link" do
-        %h1
-          Hound
-  %ul.pull-left
-    %li
-      = link_to "Docs", configuration_path, class: "docs"
-    %li
-      = link_to "FAQ", faq_path, class: "faq"
-  %ul.pull-right
-    - if signed_in?
+.global-header{ class: content_for(:header_class) }
+  %header.global-header-wrapper{ class: content_for(:header_class) }
+    .logo.pull-left
+      .va-cell
+        = link_to repos_path, class: "logo-link" do
+          %h1
+            Hound
+    %ul.pull-left
       %li
-        = link_to account_path, class: "account" do
-          - if current_user.email.present?
-            .avatar(style="background-image: url('#{avatar_url(current_user)}')")
-          %span= current_user.username
+        = link_to "Docs", configuration_path, class: "docs"
       %li
-        = link_to t("sign_out"), sign_out_path, class: "sign-out"
-    - else
-      %li
-        = link_to "Pricing", root_path(anchor: "pricing"), class: "pricing"
-      %li
-        = link_to "https://twitter.com/houndci", target: "_blank", class: "tweet-us" do
-          %span @houndci
-      %li.auth-container
-        = render "application/auth_button"
+        = link_to "FAQ", faq_path, class: "faq"
+    %ul.pull-right
+      - if signed_in?
+        - if current_user.subscriptions.count > 0
+          %li
+            .allowance
+              Private Repos
+              %strong
+                #{current_user.subscribed_repos.count}/#{current_user.tier_max}
+        %li
+          = link_to account_path, class: "account" do
+            - if current_user.email.present?
+              - avatar = avatar_url(current_user)
+              .avatar{ style: "background-image: url('#{avatar}')" }
+            %span= current_user.username
+        %li
+          = link_to t("sign_out"), sign_out_path, class: "sign-out"
+      - else
+        %li
+          = link_to "Pricing", root_path(anchor: "pricing"), class: "pricing"
+        %li
+          - options = { target: "_blank", class: "tweet-us" }
+          = link_to "https://twitter.com/houndci", options do
+            %span @houndci
+        %li.auth-container
+          = render "application/auth_button"

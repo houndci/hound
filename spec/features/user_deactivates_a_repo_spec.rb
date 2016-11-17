@@ -9,11 +9,11 @@ feature "user deactivates a repo", js: true do
         repo = create(:repo, :active, private: true)
         create(:subscription, user: user, repo: repo)
         gateway_subscription = instance_double(
-          PaymentGatewaySubscription,
+          "PaymentGatewaySubscription",
           unsubscribe: true,
         )
         payment_gateway_customer = instance_double(
-          PaymentGatewayCustomer,
+          "PaymentGatewayCustomer",
           retrieve_subscription: gateway_subscription,
         )
         allow(PaymentGatewayCustomer).to receive(:new).and_return(

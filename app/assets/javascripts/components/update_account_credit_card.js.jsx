@@ -1,4 +1,4 @@
-class AccountCreditCardUpdater extends React.Component {
+class UpdateAccountCreditCard extends React.Component {
   componentWillMount() {
     $.ajaxSetup({
       headers: {

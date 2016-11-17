@@ -1,0 +1,7 @@
+<%= react_component(
+  "NotifyTierChange",
+  authenticity_token: form_authenticity_token,
+  plans: @pricings,
+  repo_id: @repo.id,
+  repo_name: @repo.name,
+) %>

@@ -1,71 +1,67 @@
 require "rails_helper"
 
 describe PaymentGatewaySubscription do
-  context ".subscribe" do
-    context "existing subscription" do
-      it "appends id to repo_ids metadata" do
-        stripe_subscription = MockStripeSubscription.new(repo_ids: [1])
-        subscription = PaymentGatewaySubscription.new(stripe_subscription)
+  describe "#subscribe" do
+    it "sets the plan to the upgraded tier" do
+      plan = "tier1"
+      succ = instance_double("Pricing")
+      repo_id = 1
+      stripe_subscription = MockStripeSubscription.new(repo_ids: [])
+      tier = instance_double("Tier")
+      subscription = PaymentGatewaySubscription.new(
+        stripe_subscription: stripe_subscription,
+        tier: tier,
+      )
+      allow(succ).to receive(:id).once.with(no_args).and_return(plan)
+      allow(tier).to receive(:next).once.with(no_args).and_return(succ)
 
-        expect(stripe_subscription.metadata["repo_ids"]).to eq "1"
+      subscription.subscribe(repo_id)
 
-        subscription.subscribe(2)
-
-        expect(stripe_subscription.metadata["repo_ids"]).to eq "1,2"
-      end
-
-      it "converts legacy format to new format" do
-        legacy_subscription = MockLegacyStripeSubscription.new(repo_id: 1)
-        subscription = PaymentGatewaySubscription.new(legacy_subscription)
-
-        expect(legacy_subscription.metadata["repo_id"]).to eq "1"
-
-        subscription.subscribe(2)
-
-        expect(legacy_subscription.metadata["repo_id"]).to be_nil
-        expect(legacy_subscription.metadata["repo_ids"]).to eq "1,2"
-      end
+      expect(stripe_subscription).to be_saved
+      expect(stripe_subscription.metadata).to eq("repo_ids" => repo_id.to_s)
+      expect(stripe_subscription.plan).to eq plan
     end
   end
 
-  context ".unsubscribe" do
-    it "removes repo_id from repo_ids" do
-      stripe_subscription = MockStripeSubscription.new(repo_ids: [1, 2])
-      allow(stripe_subscription).to receive(:delete)
-      allow(stripe_subscription).to receive(:save)
-      subscription = PaymentGatewaySubscription.new(stripe_subscription)
+  describe "#unsubscribe" do
+    it "sets the plan to the downgraded tier" do
+      plan = "basic"
+      previous = instance_double("Pricing")
+      repo_id = 1
+      stripe_subscription = MockStripeSubscription.new(repo_ids: [repo_id])
+      tier = instance_double("Tier")
+      subscription = PaymentGatewaySubscription.new(
+        stripe_subscription: stripe_subscription,
+        tier: tier,
+      )
+      allow(previous).to receive(:id).once.with(no_args).and_return(plan)
+      allow(tier).to receive(:previous).once.with(no_args).and_return(previous)
 
-      subscription.unsubscribe(2)
+      subscription.unsubscribe(repo_id)
 
-      expect(stripe_subscription.metadata["repo_ids"]).to eq "1"
-      expect(stripe_subscription).not_to have_received(:delete)
-      expect(stripe_subscription).to have_received(:save)
-    end
-
-    it "doesn't blow up when unsubscribing from a legacy subscription" do
-      legacy_subscription = MockLegacyStripeSubscription.new(repo_id: 1)
-      allow(legacy_subscription).to receive(:delete)
-      allow(legacy_subscription).to receive(:save)
-      subscription = PaymentGatewaySubscription.new(legacy_subscription)
-
-      subscription.unsubscribe(1)
-
-      expect(legacy_subscription).to have_received(:delete)
-      expect(legacy_subscription).not_to have_received(:save)
+      expect(stripe_subscription).to be_saved
+      expect(stripe_subscription.metadata).to eq("repo_ids" => nil)
+      expect(stripe_subscription.plan).to eq plan
     end
   end
 
   class MockStripeSubscription
-    attr_accessor :quantity, :metadata
+    attr_accessor :quantity, :metadata, :plan
 
     def initialize(repo_ids:)
       @quantity = repo_ids.count
       @metadata = { "repo_ids" => repo_ids.join(",") }
     end
 
-    def save; end
+    def save
+      @save = true
+    end
 
     def delete; end
+
+    def saved?
+      !!@save
+    end
   end
 
   class MockLegacyStripeSubscription < MockStripeSubscription

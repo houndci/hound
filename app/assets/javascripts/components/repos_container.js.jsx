@@ -1,10 +1,11 @@
 class ReposContainer extends React.Component {
   state = {
-    filterTerm: null,
-    isProcessingId: null,
     isSyncing: false,
+    isProcessingId: null,
+    filterTerm: null,
+    repos: [],
     organizations: [],
-    repos: []
+    userHasCard: this.props.userHasCard
   }
 
   fetchReposAndOrgs() {
@@ -116,7 +117,7 @@ class ReposContainer extends React.Component {
   }
 
   activatePaidRepo(repo) {
-    if (this.props.userHasCard) {
+    if (this.state.userHasCard) {
       this.createSubscriptionWithExistingCard(repo);
     } else {
       this.showCreditCardForm(
@@ -134,6 +135,14 @@ class ReposContainer extends React.Component {
     this.commitRepoToState(repo);
   }
 
+  onSubscriptionError(repo, error) {
+    if (error.status === 402) {
+      document.location.href = `/pricings?repo_id=${repo.id}`;
+    } else {
+      alert("Your subscription could not be activated.");
+    }
+  }
+
   createSubscriptionWithExistingCard(repo) {
     this.createSubscription({
       repo_id: repo.id
@@ -141,9 +150,7 @@ class ReposContainer extends React.Component {
       this.activateAndTrackRepoSubscription(
         repo, resp.stripe_subscription_id
       );
-    }).catch( () => {
-      alert("Your subscription could not be activated.");
-    });
+    }).catch(error => this.onSubscriptionError(repo, error));
   }
 
   createSubscriptionWithNewCard(repo, stripeToken) {
@@ -155,9 +162,9 @@ class ReposContainer extends React.Component {
       this.activateAndTrackRepoSubscription(
         repo, resp.stripe_subscription_id
       );
-    }).catch( () => {
-      alert("Your subscription could not be activated.");
-    });
+    }).then( () => {
+      this.setState({ userHasCard: true });
+    }).catch(error => this.onSubscriptionError(repo, error));
   }
 
   activateFreeRepo(repo) {
@@ -214,7 +221,7 @@ class ReposContainer extends React.Component {
       dataType: "json",
       success: data => {
         if (data.refreshing_repos) {
-          setTimeout(this.handleSync, 1000);
+          setTimeout(this.handleSync.bind(this), 1000);
         } else {
           this.fetchReposAndOrgs();
         }

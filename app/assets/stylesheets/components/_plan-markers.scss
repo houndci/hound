@@ -1,0 +1,28 @@
+%plan-marker {
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 1px;
+  display: inline-block;
+  font-size: 0.8em;
+  margin-bottom: $small-spacing;
+  padding: 0 1em;
+  text-transform: uppercase;
+}
+
+.current-plan {
+  @extend %plan-marker;
+  background: lighten($gold, 50%);
+  border-color: lighten($gold, 3%);
+  color: darken($gold, 10%);
+}
+
+.new-plan {
+  @extend %plan-marker;
+  background: lighten($green, 10%);
+  border-color: darken($green, 20%);
+  color: darken($green, 40%);
+}
+
+.marker-wrapper {
+  display: block;
+}

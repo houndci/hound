@@ -10,13 +10,14 @@ feature "Repo list", js: true do
       :repo,
       name: "#{user.username}/inaccessible-repo",
     )
-    activatable_repo = create(:repo, name: "thoughtbot/my-repo")
+    organization = "thoughtbot"
+    activatable_repo = create(:repo, name: "#{organization}/my-repo")
     create(:membership, repo: activatable_repo, user: user, admin: true)
     create(:membership, repo: restricted_repo, user: user, admin: false)
 
     sign_in_as(user)
 
-    within "[data-org-name=thoughtbot]" do
+    within "[data-org-name=#{organization}]" do
       expect(page).to have_text activatable_repo.name
       expect(page).to have_css ".repo-toggle"
     end

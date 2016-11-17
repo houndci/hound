@@ -5,6 +5,7 @@ describe SubscriptionsController, "#create" do
     it "subscribes the user to the repo" do
       repo = create(:repo, private: true)
       membership = create(:membership, repo: repo)
+      create(:subscription, repo: repo, user: membership.user)
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
@@ -50,6 +51,7 @@ describe SubscriptionsController, "#create" do
     it "deactivates repo" do
       membership = create(:membership)
       repo = membership.repo
+      create(:subscription, repo: repo, user: membership.user)
       activator = double(:repo_activator, activate: true, deactivate: nil)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(false)
@@ -59,6 +61,76 @@ describe SubscriptionsController, "#create" do
 
       expect(response.code).to eq "502"
       expect(activator).to have_received(:deactivate)
+    end
+  end
+
+  context "when the current tier is full" do
+    it "notifies that payment is required" do
+      membership = create(:membership)
+      repo = membership.repo
+      tier = instance_double("Tier", full?: true)
+      user = membership.user
+      allow(Tier).to receive(:new).once.with(user).and_return(tier)
+      stub_sign_in(user)
+
+      post :create, repo_id: repo.id
+
+      expect(response).to have_http_status(:payment_required)
+    end
+  end
+
+  describe "#update" do
+    it "creates a subscription" do
+      hook_url = "http://#{ENV['HOST']}/builds"
+      user = create(:user, :stripe)
+      membership = create(:membership, user: user)
+      tier = Tier.new(user)
+      new_plan = tier.next.id
+      plan = tier.current.id
+      repo = membership.repo
+      token = "letmein"
+      stub_customer_find_request(user.stripe_customer_id)
+      stub_sign_in(user)
+      stub_hook_creation_request(repo.name, hook_url, token)
+      stub_subscription_create_request(plan: plan, repo_ids: repo.id)
+      stub_subscription_update_request(plan: new_plan, repo_ids: repo.id)
+
+      put :update, repo_id: repo.id
+
+      expect(response).to have_http_status(:created)
+      expect(JSON.parse(response.body)).to include(
+        "admin" => true,
+        "active" => true,
+        "full_plan_name" => "Public Repo",
+        "id" => 1,
+        "in_organization" => false,
+        "owner" => nil,
+        "price_in_cents" => 0,
+        "price_in_dollars" => 0,
+        "private" => false,
+        "stripe_subscription_id" => "sub_488ZZngNkyRMiR",
+      )
+    end
+
+    context "when the subscription cannot be created" do
+      it "returns 'Bad Gateway'" do
+        hook_id = 1
+        hook_url = "http://#{ENV['HOST']}/builds"
+        user = create(:user, :stripe)
+        membership = create(:membership, user: user)
+        plan = Tier.new(user).current.id
+        repo = membership.repo
+        token = "letmein"
+        stub_customer_find_request(user.stripe_customer_id)
+        stub_failed_subscription_create_request(plan)
+        stub_sign_in(user)
+        stub_hook_creation_request(repo.name, hook_url, token)
+        stub_hook_removal_request(repo.name, hook_id)
+
+        put :update, repo_id: repo.id
+
+        expect(response).to have_http_status(:bad_gateway)
+      end
     end
   end
 end

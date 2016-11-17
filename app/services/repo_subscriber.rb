@@ -29,7 +29,7 @@ class RepoSubscriber
 
   def create_subscription
     payment_gateway_subscription = customer.find_or_create_subscription(
-      plan: repo.plan_type,
+      plan: user.current_tier.id,
       repo_id: repo.id,
     )
 

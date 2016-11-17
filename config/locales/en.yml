@@ -25,6 +25,9 @@ en:
     billable_email:
       invalid: "Email is invalid"
 
+  tier_change:
+    title: "Pricing: A Change of Plans"
+
   onboarding:
     title: "Let's keep that code in style:"
     step_one_title: "Activate Hound on a repo."
@@ -43,6 +46,15 @@ en:
       "If Hound finds any violations of your style guide it will
       comment inline on the violation in your GitHub pull
       request."
+
+  pricings:
+    open_source:
+      allowance: "Unlimited"
+      price_html: "$%{price} <small>month</small>"
+
+    private:
+      allowance_html: "Up to <strong>%{allowance}</strong> Repos"
+      price_html: "$%{price} <small>month</small>"
 
   builds:
     index:

@@ -48,7 +48,6 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "foreman"
-  gem "jasmine-rails"
   gem "quiet_assets"
   gem "rspec-rails", ">= 3.4"
 end

@@ -1,61 +1,43 @@
 class PaymentGatewaySubscription
-  attr_reader :stripe_subscription
+  attr_reader :stripe_subscription, :tier
 
   delegate(
     :id,
     :metadata,
+    :plan=,
     :save,
     :delete,
-    :quantity,
     :discount,
     to: :stripe_subscription,
   )
 
-  def initialize(stripe_subscription, new_subscription: false)
+  def initialize(stripe_subscription:, tier:)
     @stripe_subscription = stripe_subscription
-    @new_subscription = new_subscription
+    @tier = tier
   end
 
   def subscribe(repo_id)
     append_repo_id_to_metadata(repo_id)
-    if existing_subscription?
-      increment_quantity
-    end
-  end
-
-  def unsubscribe(repo_id)
-    if stripe_subscription.quantity > 1
-      remove_repo_id_from_metadata(repo_id)
-      decrement_quantity
-    else
-      delete
-    end
-  end
-
-  def increment_quantity
-    stripe_subscription.quantity += 1
+    self.plan = tier.next.id
     save
   end
 
-  def decrement_quantity
-    stripe_subscription.quantity -= 1
+  def unsubscribe(repo_id)
+    remove_repo_id_from_metadata(repo_id)
+    self.plan = downgraded_plan
     save
   end
 
   def plan
-    stripe_subscription.plan.id
+    stripe_plan.id
   end
 
   def plan_amount
-    stripe_subscription.plan.amount
+    stripe_plan.amount
   end
 
   def plan_name
-    stripe_subscription.plan.name
-  end
-
-  def existing_subscription?
-    !@new_subscription
+    stripe_plan.name
   end
 
   private
@@ -66,6 +48,18 @@ class PaymentGatewaySubscription
     else
       Array(metadata["repo_id"])
     end
+  end
+
+  def downgraded_plan
+    previous_tier.id
+  end
+
+  def previous_tier
+    tier.previous
+  end
+
+  def stripe_plan
+    stripe_subscription.plan
   end
 
   def append_repo_id_to_metadata(repo_id)

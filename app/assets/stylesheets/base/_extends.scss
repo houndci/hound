@@ -4,3 +4,18 @@
   border-radius: 6px;
   padding: 2em;
 }
+
+%content-aside {
+  @include span-columns(3 of 12, table);
+  @include omega;
+  padding: 0;
+  padding-right: 2em;
+  vertical-align: top;
+}
+
+%content-main {
+  @include span-columns(9 of 12, table);
+  border-left: 1px solid $base-border-color;
+  padding: 0;
+  padding-left: 2em;
+}

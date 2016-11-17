@@ -1,4 +1,4 @@
-class AccountEmailUpdater extends React.Component {
+class UpdateAccountEmail extends React.Component {
   state = {
     emailAddress: null,
     emailInput: null,
@@ -31,8 +31,7 @@ class AccountEmailUpdater extends React.Component {
   }
 
   render() {
-    const { billable_email } = this.props;
-    const placeholder = this.state.emailInput || billable_email;
+    const placeholder = this.state.emailAddress || this.props.billable_email;
 
     return (
       <article className="account-details">
@@ -48,7 +47,7 @@ class AccountEmailUpdater extends React.Component {
                 addressChanged: null
               })}
             ></input>
-            <AccountEmailUpdaterMessage
+            <UpdateAccountEmailMessage
               addressChanged={this.state.addressChanged}
             />
           </div>

@@ -25,15 +25,14 @@ class PaymentGatewayCustomer
       create_subscription(plan: plan, metadata: { repo_ids: repo_id })
   end
 
-  def subscriptions
-    customer.subscriptions.map do |subscription|
-      PaymentGatewaySubscription.new(subscription)
-    end
+  def subscription
+    subscriptions.first || NoSubscription.new
   end
 
-  def retrieve_subscription(stripe_subscription_id)
+  def retrieve_subscription(subscription_id)
     PaymentGatewaySubscription.new(
-      customer.subscriptions.retrieve(stripe_subscription_id)
+      stripe_subscription: customer.subscriptions.retrieve(subscription_id),
+      tier: tier,
     )
   end
 
@@ -54,14 +53,27 @@ class PaymentGatewayCustomer
 
   def create_subscription(options)
     PaymentGatewaySubscription.new(
-      customer.subscriptions.create(options),
-      new_subscription: true,
+      stripe_subscription: customer.subscriptions.create(options),
+      tier: tier,
     )
   end
 
   def default_card
     customer.cards.detect { |card| card.id == customer.default_card } ||
       BlankCard.new
+  end
+
+  def subscriptions
+    customer.subscriptions.map do |subscription|
+      PaymentGatewaySubscription.new(
+        stripe_subscription: subscription,
+        tier: tier,
+      )
+    end
+  end
+
+  def tier
+    Tier.new(user)
   end
 
   class NoRecord
@@ -87,8 +99,24 @@ class PaymentGatewayCustomer
       []
     end
 
+    def discount
+      NoDiscount.new
+    end
+
     def map
       []
+    end
+
+    def plan_amount
+      0
+    end
+
+    def plan_name
+      "basic"
+    end
+
+    def quantity
+      1
     end
   end
 
