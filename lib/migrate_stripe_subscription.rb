@@ -34,6 +34,11 @@ class MigrateStripeSubscription
 
   def delete_stripe_subscriptions(subscriptions)
     while subscriptions.has_more
+      subscriptions = customer.subscriptions.all(
+        limit: 100,
+        starting_after: subscriptions.data.last.id,
+      )
+
       subscriptions.each(&:delete)
     end
   end

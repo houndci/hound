@@ -7,7 +7,12 @@ class MigrateStripeCustomers
     customers.each { |customer| migrate_subscriptions_for(customer) }
 
     while customers.has_more
-      run
+      customers = Stripe::Customers.all(
+        limit: 100,
+        starting_after: customers.data.last.id,
+      )
+
+      run(customers)
     end
   end
 
