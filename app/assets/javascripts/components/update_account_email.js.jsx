@@ -40,6 +40,7 @@ class UpdateAccountEmail extends React.Component {
           <div className="form-group">
             <label>Email address for receipts</label>
             <input
+              id="email_address"
               type="email"
               placeholder={placeholder}
               onChange={ event => this.setState({
@@ -52,7 +53,10 @@ class UpdateAccountEmail extends React.Component {
             />
           </div>
           <div className="form-actions">
-            <button className="button-small" onClick={this.onUpdateEmail}>
+            <button
+              className="button-small"
+              onClick={this.onUpdateEmail.bind(this)}
+            >
               Update Email
             </button>
           </div>

@@ -135,12 +135,30 @@ feature "Account" do
     expect(find("td.violations-caught")).to have_text("5")
   end
 
+  scenario "user updates their email address", :js do
+    email_address = "somebody.else@example.com"
+    stub_customer_find_request
+    stub_customer_update_request(email: email_address)
+    stub_repos_requests("letmein")
+
+    sign_in_as(create(:user, :stripe))
+    visit account_path
+    user = user_on_page
+    user.update(email_address)
+
+    expect(user).to be_updated
+  end
+
   private
 
   def stub_customer_find_request_with_subscriptions(customer_id, subscriptions)
     stub_request(:get, "#{stripe_base_url}/#{customer_id}").
       with(headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }).
       to_return(status: 200, body: merge_customer_subscriptions(subscriptions))
+  end
+
+  def user_on_page
+    UserOnPage.new
   end
 
   def generate_subscriptions_response(subscriptions)
