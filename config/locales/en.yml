@@ -34,9 +34,9 @@ en:
     step_one_alt_title: "Hound is active on %{count} of your repos!"
     step_one_desc:
       "Hound watches for pull requests on all active repos.
-      Activating public repos costs $0; private repos cost $12."
-    step_two_title: "Open a GitHub pull request on the repo."
-    step_two_alt_title: "Open a pull request on an active repo."
+      Activating public repos is free; private repos are priced by tier."
+    step_one_link: "Details"
+    step_two_title: "Open a GitHub pull request on the active repo."
     step_two_desc:
       "Hound will review all GitHub pull requests that are
       opened on an activated repo for violations of your style

@@ -22,9 +22,6 @@ class Repo extends React.Component {
           "repo-activation-toggle",
           {"repo-activation-toggle--private": showPrivate}
         )}>
-          <span className="repo-private-label">
-            Private - ${repo.price_in_dollars}
-          </span>
           <RepoActivationButton
             repo={repo}
             onRepoClicked={onRepoClicked}
