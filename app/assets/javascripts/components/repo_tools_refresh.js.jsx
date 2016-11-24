@@ -1,3 +1,5 @@
+import React from 'react';
+
 class RepoToolsRefresh extends React.Component {
   buttonText(isSyncing) {
     if (isSyncing) {
@@ -23,3 +25,5 @@ class RepoToolsRefresh extends React.Component {
     );
   }
 }
+
+module.exports = RepoToolsRefresh;

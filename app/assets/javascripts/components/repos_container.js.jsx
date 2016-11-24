@@ -1,3 +1,13 @@
+import React from 'react';
+import ReactAddonsUpdate from 'react-addons-update';
+
+import RepoTools from './repo_tools.js';
+import ReposView from './repos_view.js';
+
+import * as Ajax from '../lib/ajax.js';
+
+import $ from 'jquery';
+
 class ReposContainer extends React.Component {
   state = {
     isSyncing: false,
@@ -26,7 +36,7 @@ class ReposContainer extends React.Component {
     } else {
       this.setState({repos: data});
 
-      organizations = data.map( repo => {
+      const organizations = data.map( repo => {
         return (repo.owner || {
           name: this.orgName(repo.name)
         });
@@ -53,43 +63,10 @@ class ReposContainer extends React.Component {
     this.fetchReposAndOrgs();
   }
 
-  createSubscription(subscriptionOptions) {
-    return $.ajax({
-      url: `/repos/${subscriptionOptions.repo_id}/subscription.json`,
-      type: "POST",
-      data: subscriptionOptions,
-      dataType: "json"
-    });
-  }
-
-  deleteSubscription(repo) {
-    return $.ajax({
-      url: `/repos/${repo.id}/subscription`,
-      type: "DELETE",
-      dataType: "json"
-    });
-  }
-
-  deactivateRepo(repo) {
-    return $.ajax({
-      url: `/repos/${repo.id}/deactivation`,
-      type: "POST",
-      dataType: "text"
-    });
-  }
-
-  activateRepo(repo) {
-    return $.ajax({
-      url: `/repos/${repo.id}/activation`,
-      type: "POST",
-      dataType: "text"
-    });
-  }
-
   commitRepoToState(repo) {
     const repoIdx = _.findIndex(this.state.repos, {id: repo.id});
 
-    const newRepos = React.addons.update(
+    const newRepos = ReactAddonsUpdate(
       this.state.repos, {
         [repoIdx]: {$set: repo}
       }
@@ -98,7 +75,7 @@ class ReposContainer extends React.Component {
   }
 
   deactivateSubscribedRepo(repo) {
-    this.deleteSubscription(repo).then( () => {
+    Ajax.deleteSubscription(repo).then( () => {
       repo.active = false;
       repo.stripe_subscription_id = null;
       this.commitRepoToState(repo);
@@ -109,7 +86,7 @@ class ReposContainer extends React.Component {
   }
 
   deactivateUnsubscribedRepo(repo) {
-    this.deactivateRepo(repo).then( () => {
+    Ajax.deactivateRepo(repo).then( () => {
       repo.active = false;
       this.commitRepoToState(repo);
     }).catch( () => {
@@ -169,7 +146,7 @@ class ReposContainer extends React.Component {
   }
 
   createSubscriptionWithExistingCard(repo) {
-    this.createSubscription({
+    Ajax.createSubscription({
       repo_id: repo.id
     }).then( resp => {
       this.activateAndTrackRepoSubscription(
@@ -179,7 +156,7 @@ class ReposContainer extends React.Component {
   }
 
   createSubscriptionWithNewCard(repo, stripeToken) {
-    this.createSubscription({
+    Ajax.createSubscription({
       repo_id: repo.id,
       card_token: stripeToken.id,
       email_address: stripeToken.email
@@ -193,7 +170,7 @@ class ReposContainer extends React.Component {
   }
 
   activateFreeRepo(repo) {
-    this.activateRepo(
+    Ajax.activateRepo(
       repo
     ).then( resp => {
       repo.active = true;
@@ -323,3 +300,5 @@ class ReposContainer extends React.Component {
     );
   }
 }
+
+module.exports = ReposContainer;

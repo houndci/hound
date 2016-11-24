@@ -1,3 +1,7 @@
+import React from 'react';
+
+import UpdateAccountEmailMessage from './update_account_email_message.js';
+
 class UpdateAccountEmail extends React.Component {
   state = {
     emailAddress: null,
@@ -65,3 +69,5 @@ class UpdateAccountEmail extends React.Component {
     );
   }
 }
+
+module.exports = UpdateAccountEmail;

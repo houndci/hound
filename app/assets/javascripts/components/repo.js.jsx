@@ -1,3 +1,7 @@
+import React from 'react';
+
+import RepoActivationButton from './repo_activation_button.js';
+
 class Repo extends React.Component {
   renderButton() {
     const { isProcessingId, repo, onRepoClicked } = this.props;
@@ -52,3 +56,5 @@ class Repo extends React.Component {
     );
   }
 }
+
+module.exports = Repo;

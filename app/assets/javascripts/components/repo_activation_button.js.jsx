@@ -1,3 +1,5 @@
+import React from 'react';
+
 class RepoActivationButton extends React.Component {
   get disabledState() {
     const { isProcessingId, repo } = this.props;
@@ -29,3 +31,5 @@ class RepoActivationButton extends React.Component {
     }
   }
 }
+
+module.exports = RepoActivationButton;

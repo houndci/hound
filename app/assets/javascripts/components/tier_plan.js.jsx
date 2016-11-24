@@ -1,3 +1,5 @@
+import React from 'react';
+
 class TierPlan extends React.Component {
   getIsCurrent() {
     return this.props.isCurrent;
@@ -62,3 +64,5 @@ class TierPlan extends React.Component {
     );
   }
 }
+
+module.exports = TierPlan;

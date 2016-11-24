@@ -1,3 +1,5 @@
+import React from 'react';
+
 class ReposSyncSpinner extends React.Component {
   render() {
     return (
@@ -9,3 +11,5 @@ class ReposSyncSpinner extends React.Component {
     );
   }
 }
+
+module.exports = ReposSyncSpinner;

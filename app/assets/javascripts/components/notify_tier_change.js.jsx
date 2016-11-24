@@ -1,3 +1,8 @@
+import React from 'react';
+
+import UpgradeSubscriptionLink from './upgrade_subscription_link.js';
+import TierPlan from './tier_plan.js';
+
 class NotifyTierChange extends React.Component {
   getCurrentPlan() {
     return this.getPlan(this.getCurrentPlanIndex());
@@ -92,3 +97,5 @@ class NotifyTierChange extends React.Component {
   );
   }
 }
+
+module.exports = NotifyTierChange;

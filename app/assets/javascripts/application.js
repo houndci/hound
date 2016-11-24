@@ -1,9 +1,10 @@
 //= require lodash
 //= require jquery3
 //= require namespaced
-//= require_self
-//= require es5-shim
-//= require react
+
+//= require vendor-bundle
+//= require app-bundle
+
 //= require react_ujs
 //= require classnames
-//= require_tree .
+
