@@ -8,3 +8,4 @@
 //= require react_ujs
 //= require classnames
 
+//= require sticky-header
