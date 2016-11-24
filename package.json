@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node_modules/webpack/bin/webpack.js -w --config webpack.config.babel.js",
-    "build:prod": "node_modules/webpack/bin/webpack.js -p -w --config webpack.config.babel.js",
+    "build:prod": "node_modules/webpack/bin/webpack.js -p --config webpack.config.babel.js",
     "test": "mocha --compilers jsx:babel-core/register app/assets/javascripts/components/tests/*-test.jsx"
   },
   "engines": {
