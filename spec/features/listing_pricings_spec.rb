@@ -66,6 +66,6 @@ feature "Listing Pricings" do
     wait_for_ajax
 
     expect(current_path).to eq repos_path
-    expect(page).to have_content "Private Repos 5/10"
+    expect(page).to have_text "Private Repos 5 / 10"
   end
 end

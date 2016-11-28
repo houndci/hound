@@ -1,5 +1,19 @@
-class RepoActivationButton extends React.Component {
-  get disabledState() {
+class RepoDeactivationButton extends React.Component {
+  constructor() {
+    super();
+
+    this.state = { buttonText: "Active" };
+  }
+
+  onMouseOutButton() {
+    this.setState({ buttonText: "Active" });
+  }
+
+  onMouseOverButton() {
+    this.setState({ buttonText: "Deactivate" });
+  }
+
+  getDisabledState() {
     const { isProcessingId, repo } = this.props;
     const { id } = repo;
 
@@ -7,6 +21,7 @@ class RepoActivationButton extends React.Component {
   }
 
   render() {
+    const { buttonText } = this.state;
     const { repo, onRepoClicked } = this.props;
     const { admin, id } = repo;
 
@@ -14,10 +29,12 @@ class RepoActivationButton extends React.Component {
       return (
         <button
           className="repo-toggle"
+          disabled={this.getDisabledState()}
           onClick={() => onRepoClicked(id)}
-          disabled={this.disabledState}
+          onMouseOut={() => this.onMouseOutButton()}
+          onMouseOver={() => this.onMouseOverButton()}
         >
-          Activate
+          {buttonText}
         </button>
       );
     } else {

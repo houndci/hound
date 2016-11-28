@@ -1,32 +1,52 @@
 class Repo extends React.Component {
-  render() {
-    const {
-      isProcessingId,
-      repo,
-      onRepoClicked,
-    } = this.props;
+  renderButton() {
+    const { isProcessingId, repo, onRepoClicked } = this.props;
+    const { active } = repo;
 
-    const showPrivate = !repo.active && repo.price_in_cents > 0;
+    if (active) {
+      return (
+        <RepoDeactivationButton
+          repo={repo}
+          onRepoClicked={onRepoClicked}
+          isProcessingId={isProcessingId}
+        />
+      );
+    } else {
+      return (
+        <RepoActivationButton
+          repo={repo}
+          onRepoClicked={onRepoClicked}
+          isProcessingId={isProcessingId}
+        />
+      );
+    }
+  }
+
+  render() {
+    const { isProcessingId, repo } = this.props;
+    const { active, id, name, price_in_cents } = repo
+
+    const showPrivate = !active && price_in_cents > 0;
 
     return (
-      <li className={classNames(
-          "repo",
-          {"repo--active": repo.active},
-          {"repo--processing": isProcessingId === repo.id}
-        )}
+      <li
+        className={
+          classNames(
+            "repo",
+            {"repo--active": active},
+            {"repo--processing": isProcessingId === id}
+          )
+        }
       >
         <div className="repo-name">
-          {repo.name}
+          {name}
         </div>
+
         <div className={classNames(
           "repo-activation-toggle",
           {"repo-activation-toggle--private": showPrivate}
         )}>
-          <RepoActivationButton
-            repo={repo}
-            onRepoClicked={onRepoClicked}
-            isProcessingId={isProcessingId}
-          />
+          {this.renderButton()}
         </div>
       </li>
     );

@@ -32,18 +32,10 @@
   border-color: darken($green, 30%);
   color: darken($green, 40%);
 
-  &::before {
-    content: "Active";
-  }
-
   &:hover {
     background-color: $red;
     border-color: $red;
     color: $white;
-
-    &::before {
-      content: "Deactivate";
-    }
   }
 }
 
@@ -101,11 +93,6 @@
   @include media($small-screen-only) {
     float: left;
     padding: 0.2em 0.8em;
-  }
-
-  &::before {
-    content: "Activate";
-    display: inline;
   }
 
   &:hover {

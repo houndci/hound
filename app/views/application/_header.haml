@@ -10,14 +10,18 @@
         = link_to "Docs", configuration_path, class: "docs"
       %li
         = link_to "FAQ", faq_path, class: "faq"
-    %ul.pull-right
+    %ul.pull-right{ "data-role" => "account-actions" }
       - if signed_in?
         - if current_user.subscriptions.count > 0
           %li
-            .allowance
+            .allowance{ "data-role" => "allowance-container" }
               Private Repos
               %strong
-                #{current_user.subscribed_repos.count}/#{current_user.tier_max}
+                %span{ "data-role" => "subscribed-repo-count" }
+                  #{current_user.subscribed_repos.count}
+                \/
+                %span{ "data-role" => "tier-allowance" }
+                  #{current_user.tier_max}
         %li
           = link_to account_path, class: "account" do
             - if current_user.email.present?
