@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 // Base client-side webpack configuration
 const webpack = require('webpack');
 const path = require('path');

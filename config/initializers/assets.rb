@@ -7,4 +7,5 @@ Rails.application.config.assets.version = "1.0"
 Rails.application.config.assets.precompile += %w( repos/*.js )
 
 # webpack
-Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpack")
+webpack_output_path = Rails.root.join("app", "assets", "webpack")
+Rails.application.config.assets.paths << webpack_output_path
