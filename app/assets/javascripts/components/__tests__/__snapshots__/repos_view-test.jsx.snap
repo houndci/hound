@@ -1,0 +1,36 @@
+exports[`test renders appropriately 1`] = `
+<ul
+  className="organizations">
+  <div
+    className="organization"
+    data-org-name="Test org">
+    <header
+      className="organization-header">
+      <h2
+        className="organization-header-title">
+        Test org
+      </h2>
+    </header>
+    <section
+      className="repo_listing">
+      <ul
+        className="repos">
+        <li
+          className="repo">
+          <div
+            className="repo-name">
+            Test repo
+          </div>
+          <div
+            className="repo-activation-toggle">
+            <div
+              className="repo-restricted">
+              Only repo admins can activate
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</ul>
+`;

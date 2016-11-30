@@ -1,0 +1,48 @@
+exports[`test renders appropriately 1`] = `
+<div>
+  <div
+    className="repo-tools">
+    <div
+      className="repo-tools-search">
+      <input
+        className="repo-search-tools-input"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+    </div>
+    <div
+      className="repo-tools-private">
+      <form
+        action="/auth/github?access=full"
+        method="post">
+        <button
+          className="repo-tools-private-button"
+          onClick={undefined}
+          type="submit">
+          <span>
+            Include private repos
+          </span>
+        </button>
+      </form>
+    </div>
+    <div
+      className="repo-tools-refresh">
+      <button
+        className="repo-tools-refresh-button"
+        disabled="disabled"
+        onClick={[Function]}>
+        <span />
+      </button>
+    </div>
+  </div>
+  <div
+    className="repos-syncing">
+    <div
+      className="dot" />
+    <div
+      className="dot" />
+    <div
+      className="dot" />
+  </div>
+</div>
+`;

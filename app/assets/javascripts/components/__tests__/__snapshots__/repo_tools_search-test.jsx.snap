@@ -1,0 +1,10 @@
+exports[`test renders appropriately 1`] = `
+<div
+  className="repo-tools-search">
+  <input
+    className="repo-search-tools-input"
+    onChange={[Function]}
+    placeholder={undefined}
+    type="text" />
+</div>
+`;

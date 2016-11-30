@@ -1,0 +1,9 @@
+exports[`test renders appropriately 1`] = `
+<p
+  className="inline-flash inline-flash--error">
+  <i
+    className="fa fa-exclamation-circle">
+    There was a problem updating your email. Please try again.
+  </i>
+</p>
+`;

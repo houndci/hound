@@ -1,0 +1,6 @@
+exports[`test renders a button appropriately 1`] = `
+<div
+  className="repo-restricted">
+  Only repo admins can activate
+</div>
+`;

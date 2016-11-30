@@ -1,0 +1,4 @@
+exports[`test renders an empty unordered list 1`] = `
+<ul
+  className="repos" />
+`;

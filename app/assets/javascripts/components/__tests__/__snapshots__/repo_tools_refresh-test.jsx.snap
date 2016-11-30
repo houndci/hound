@@ -1,0 +1,11 @@
+exports[`test renders appropriately 1`] = `
+<div
+  className="repo-tools-refresh">
+  <button
+    className="repo-tools-refresh-button"
+    disabled={null}
+    onClick={[Function]}>
+    <span />
+  </button>
+</div>
+`;

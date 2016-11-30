@@ -1,0 +1,29 @@
+exports[`test renders appropriately 1`] = `
+<article
+  className="account-details">
+  <h3>
+    Update account settings
+  </h3>
+  <form>
+    <div
+      className="form-group">
+      <label>
+        Email address for receipts
+      </label>
+      <input
+        id="email_address"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="email" />
+    </div>
+    <div
+      className="form-actions">
+      <button
+        className="button-small"
+        onClick={[Function]}>
+        Update Email
+      </button>
+    </div>
+  </form>
+</article>
+`;

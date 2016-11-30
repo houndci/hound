@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import UpgradeSubscriptionLink from './upgrade_subscription_link.js';
 import TierPlan from './tier_plan.js';

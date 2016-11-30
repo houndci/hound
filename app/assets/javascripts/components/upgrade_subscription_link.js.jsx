@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 
 import * as Ajax from '../lib/ajax.js';
 

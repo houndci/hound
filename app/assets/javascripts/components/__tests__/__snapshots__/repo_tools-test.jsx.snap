@@ -1,0 +1,22 @@
+exports[`test renders appropriately without Show Private button (not syncing) 1`] = `
+<div
+  className="repo-tools">
+  <div
+    className="repo-tools-search">
+    <input
+      className="repo-search-tools-input"
+      onChange={[Function]}
+      placeholder={undefined}
+      type="text" />
+  </div>
+  <div
+    className="repo-tools-refresh">
+    <button
+      className="repo-tools-refresh-button"
+      disabled={null}
+      onClick={[Function]}>
+      <span />
+    </button>
+  </div>
+</div>
+`;

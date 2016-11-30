@@ -1,3 +1,7 @@
+machine:
+  node:
+    version: 7.1.0
+
 test:
   override:
-    - npm i && npm run build:prod && bundle exec rake
+    - npm i && bundle exec rake && npm run test
