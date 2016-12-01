@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/webpack/bin/webpack.js --config webpack.config.babel.js",
-    "build:watch": "node_modules/webpack/bin/webpack.js -w --config webpack.config.babel.js",
-    "build:prod": "node_modules/webpack/bin/webpack.js -p --config webpack.config.babel.js",
-    "test": "node_modules/jest/bin/jest.js app/assets/javascripts/components/__tests__/*-test.jsx",
-    "test:watch": "node_modules/jest/bin/jest.js --watch app/assets/javascripts/components/__tests__/*-test.jsx"
+    "build": "webpack --config webpack.config.babel.js",
+    "build:watch": "webpack -w --config webpack.config.babel.js",
+    "build:prod": "webpack -p --config webpack.config.babel.js",
+    "test": "jest app/assets/javascripts/components/__tests__/*-test.jsx",
+    "test:watch": "jest --watch app/assets/javascripts/components/__tests__/*-test.jsx"
   },
   "engines": {
     "node": "7.1",
