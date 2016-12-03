@@ -15,6 +15,7 @@ feature "user deactivates a repo", js: true do
         payment_gateway_customer = instance_double(
           "PaymentGatewayCustomer",
           retrieve_subscription: gateway_subscription,
+          email: user.email,
         )
         allow(PaymentGatewayCustomer).to receive(:new).and_return(
           payment_gateway_customer

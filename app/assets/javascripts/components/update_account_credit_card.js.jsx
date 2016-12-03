@@ -22,9 +22,9 @@ class UpdateAccountCreditCard extends React.Component {
     StripeCheckout.configure({
       key: Hound.settings.stripePublishableKey,
       image: Hound.settings.iconPath,
-      email: $("input[type=email]").attr("placeholder"),
       token: this.updateCustomerCreditCard
     }).open({
+      email: $("input[type=email]").attr("placeholder"),
       panelLabel: "Update Card",
       allowRememberMe: false
     });
@@ -35,7 +35,7 @@ class UpdateAccountCreditCard extends React.Component {
       return (
         <h3>
           Monthly Billing
-          <a href="#" className="update-card" onClick={this.onUpdateCreditCard}>
+          <a href="#" className="update-card" onClick={this.onUpdateCreditCard.bind(this)}>
             <i className="fa fa-credit-card"></i>
             Update Credit Card
           </a>

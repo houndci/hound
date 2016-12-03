@@ -152,7 +152,7 @@ feature "Account" do
   private
 
   def stub_customer_find_request_with_subscriptions(customer_id, subscriptions)
-    stub_request(:get, "#{stripe_base_url}/#{customer_id}").
+    stub_request(:get, "#{stripe_base_url}/customers/#{customer_id}").
       with(headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }).
       to_return(status: 200, body: merge_customer_subscriptions(subscriptions))
   end

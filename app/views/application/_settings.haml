@@ -2,7 +2,7 @@
   Namespaced.declare("Hound.settings");
   Hound.settings = {
     stripePublishableKey: "#{Hound::STRIPE_PUBLISHABLE_KEY}",
-    userEmailAddress: "#{current_user.email}",
+    userEmailAddress: "#{current_user.billable_email}",
     syncingButtonText: "#{I18n.t('syncing_repos')}",
     syncNowButtonText: "#{I18n.t('sync_repos')}",
     searchPlaceholder: "#{I18n.t('search_placeholder')}",
