@@ -8,45 +8,21 @@ require "app/models/config/json_with_comments"
 require "yaml"
 
 describe Config::Eslint do
-  describe "#content" do
-    it "parses the configuration using YAML" do
-      raw_config = <<-EOS.strip_heredoc
-        rules:
-          quotes: [2, "double"]
-      EOS
-      commit = stubbed_commit("config/.eslintrc" => raw_config)
-      config = build_config(commit)
-
-      expect(config.content).to eq("rules" => { "quotes" => [2, "double"] })
-    end
-
-    context "when configuration is linter-flavored JSON format" do
-      it "parses the configuration" do
-        raw_config = <<-EOS.strip_heredoc
-          {
-            "foo": 1, // eslint JSON flavor can have comments
-            "bar": 2,
-          }
-        EOS
-        commit = stubbed_commit("config/.eslintrc" => raw_config)
-        config = build_config(commit)
-
-        expect(config.content).to eq("foo" => 1, "bar" => 2)
-      end
-    end
-  end
-
   describe "#serialize" do
-    it "serializes the content into JSON" do
+    it "serializes the content" do
       raw_config = <<-EOS.strip_heredoc
         rules:
           quotes: [2, "double"]
       EOS
-      commit = stubbed_commit("config/.eslintrc" => raw_config)
+      commit = stubbed_commit("config/.eslintrc.yaml" => raw_config)
       config = build_config(commit)
 
       expect(config.serialize).to eq(
-        "{\"rules\":{\"quotes\":[2,\"double\"]}}",
+        {
+          raw_content: "rules:\n  quotes: [2, \"double\"]\n",
+          file_name: "config/.eslintrc.yaml",
+          hound_config_eslint_version: 2
+        }.to_json
       )
     end
   end
@@ -56,7 +32,10 @@ describe Config::Eslint do
       "HoundConfig",
       commit: commit,
       content: {
-        "eslint" => { "enabled": true, "config_file" => "config/.eslintrc" },
+        "eslint" => {
+          "enabled": true,
+          "config_file" => "config/.eslintrc.yaml"
+        },
       },
     )
 
