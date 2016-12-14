@@ -1,7 +1,3 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import _ from 'lodash';
-
 import NotifyTierChange from '../../notify_tier_change.js';
 
 let repo = {id: 1, name: "Test repo"};

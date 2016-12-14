@@ -1,6 +1,3 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-
 import UpgradeSubscriptionLink from '../../upgrade_subscription_link.js';
 
 it('renders appropriately', () => {

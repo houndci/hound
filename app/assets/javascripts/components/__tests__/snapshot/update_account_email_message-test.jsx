@@ -1,6 +1,3 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-
 import UpdateAccountEmailMessage from '../../update_account_email_message.js';
 
 it('renders appropriately', () => {

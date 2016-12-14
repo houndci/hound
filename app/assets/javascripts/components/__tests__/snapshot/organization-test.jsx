@@ -1,7 +1,3 @@
-import React from 'react';
-import {shallow} from 'enzyme';
-import renderer from 'react-test-renderer';
-
 import Organization from '../../organization.js';
 
 it('renders an organization with ID appropriately (no repo processing)', () => {

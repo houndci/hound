@@ -1,7 +1,3 @@
-import React from 'react';
-import {shallow} from 'enzyme';
-import renderer from 'react-test-renderer';
-
 import PopulatedRepoList from '../../populated_repo_list.js';
 
 it('renders a list of repos appropriately', () => {

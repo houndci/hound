@@ -1,6 +1,3 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-
 import UpdateAccountCreditCard from '../../update_account_credit_card.js';
 
 it('renders appropriately', () => {

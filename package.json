@@ -7,7 +7,8 @@
     "build:watch": "webpack -w --config webpack.config.babel.js",
     "build:prod": "webpack -p --config webpack.config.babel.js",
     "test": "jest app/assets/javascripts/components/__tests__/snapshot/*-test.jsx",
-    "test:watch": "jest --watch app/assets/javascripts/components/__tests__/snapshot/*-test.jsx"
+    "test:watch": "jest --watch app/assets/javascripts/components/__tests__/snapshot/*-test.jsx",
+    "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/snapshot/*-test.jsx"
   },
   "engines": {
     "node": "7.1",
@@ -39,17 +40,20 @@
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0-beta8",
+    "babel-jest": "^17.0.2",
     "babel-plugin-react-transform": "^2.0.0",
     "enzyme": "^2.6.0",
+    "enzyme-to-json": "^1.4.4",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^5.0.0",
     "eslint-config-shakacode": "^1.0.0",
     "eslint-plugin-react": "^3.16.1",
     "file-loader": "^0.8.5",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^17.0.3",
     "jest-enzyme": "^2.0.0",
     "node-sass": "^3.4.2",
-    "react-addons-test-utils": "^15.3.2",
+    "react-addons-test-utils": "^15.4.1",
     "react-test-renderer": "^15.4.1",
     "react-transform-hmr": "^1.0.2",
     "sass-loader": "^3.1.2",
@@ -61,6 +65,12 @@
     "url": "git+https://github.com/houndci/hound.git"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^.+\\.(css|scss)$": "identity-obj-proxy"
+    },
+    "setupFiles": [
+      "./app/assets/javascripts/components/__tests__/jestsetup.js"
+    ],
     "setupTestFrameworkScriptFile": "node_modules/jest-enzyme/lib/index.js",
     "unmockedModulePathPatterns": [
       "react",

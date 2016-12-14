@@ -1,14 +1,4 @@
-import React from 'react';
-import {shallow} from 'enzyme';
-import renderer from 'react-test-renderer';
-
 import RepoTools from '../../repo_tools.js';
-
-const Hound = window.Hound = global.Hound = {
-  settings: {
-    placeholder: "meh"
-  }
-};
 
 it('renders appropriately without Show Private button (not syncing)', () => {
   const has_private_access = true;

@@ -1,6 +1,3 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-
 import ReposSyncSpinner from '../../repos_sync_spinner.js';
 
 it('renders appropriately', () => {

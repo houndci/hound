@@ -1,6 +1,3 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-
 import TierPlan from '../../tier_plan.js';
 
 it('renders appropriately (current plan)', () => {

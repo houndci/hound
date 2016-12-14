@@ -1,7 +1,3 @@
-import React from 'react';
-import {shallow} from 'enzyme';
-import renderer from 'react-test-renderer';
-
 import OrganizationsList from '../../organizations_list.js';
 
 it('renders a list of organizations appropriately', () => {

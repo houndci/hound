@@ -1,6 +1,3 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-
 import ReposView from '../../repos_view.js';
 
 it('renders appropriately', () => {
