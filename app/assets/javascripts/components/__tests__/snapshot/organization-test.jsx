@@ -11,7 +11,7 @@ it('renders an organization with ID appropriately (no repo processing)', () => {
 
   const onRepoClicked = jest.genMockFunction();
 
-  const component = renderer.create(
+  const wrapper = shallow(
     <Organization
       name={org.name}
       key={org.id}
@@ -20,8 +20,6 @@ it('renders an organization with ID appropriately (no repo processing)', () => {
       filterTerm={""}
       isProcessingId={null}
     />
-
   );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

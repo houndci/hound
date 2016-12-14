@@ -16,15 +16,13 @@ it('renders a list of repos appropriately', () => {
 
   const onRepoClicked = jest.genMockFunction();
 
-  const component = renderer.create(
+  const wrapper = shallow(
     <PopulatedRepoList
       repos={repos}
       onRepoClicked={onRepoClicked}
       isProcessingId={null}
       filterTerm={""}
     />
-
   );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

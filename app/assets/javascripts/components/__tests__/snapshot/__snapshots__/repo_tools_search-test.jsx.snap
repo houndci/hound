@@ -4,7 +4,6 @@ exports[`test renders appropriately 1`] = `
   <input
     className="repo-search-tools-input"
     onChange={[Function]}
-    placeholder={undefined}
     type="text" />
 </div>
 `;

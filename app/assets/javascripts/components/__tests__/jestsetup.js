@@ -1,17 +1,14 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import _ from 'lodash';
-
 global.React = React;
-global.renderer = renderer;
+
+import _ from 'lodash';
 global._ = _;
 
 const Hound = window.Hound = global.Hound = {
   settings: {
-    placeholder: "meh"
+    placeholder: "placeholder"
   }
 };
-
 
 // Make Enzyme functions available in all test files without importing
 import { shallow, render, mount } from 'enzyme';

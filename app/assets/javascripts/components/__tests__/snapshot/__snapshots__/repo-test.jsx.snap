@@ -7,10 +7,18 @@ exports[`test renders a repo appropriately 1`] = `
   </div>
   <div
     className="repo-activation-toggle">
-    <div
-      className="repo-restricted">
-      Only repo admins can activate
-    </div>
+    <RepoActivationButton
+      isProcessingId={null}
+      onRepoClicked={[Function]}
+      repo={
+        Object {
+          "id": 1,
+          "name": "Test repo",
+          "owner": Object {
+            "id": 1,
+          },
+        }
+      } />
   </div>
 </li>
 `;

@@ -13,8 +13,9 @@ exports[`test renders appropriately 1`] = `
       <input
         id="email_address"
         onChange={[Function]}
-        placeholder={undefined}
         type="email" />
+      <UpdateAccountEmailMessage
+        addressChanged={null} />
     </div>
     <div
       className="form-actions">

@@ -1,12 +1,10 @@
 import UpdateAccountEmail from '../../update_account_email.js';
 
 it('renders appropriately', () => {
-  const component = renderer.create(
+  const wrapper = shallow(
     <UpdateAccountEmail
       addressChanged={false}
     />
   );
-
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

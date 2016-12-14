@@ -16,7 +16,7 @@ it('renders a list of organizations appropriately', () => {
 
   const onRepoClicked = jest.genMockFunction();
 
-  const component = renderer.create(
+  const wrapper = shallow(
     <OrganizationsList
       organizations={organizations}
       repos={repos}
@@ -24,8 +24,6 @@ it('renders a list of organizations appropriately', () => {
       onRepoClicked={onRepoClicked}
       isProcessingId={null}
     />
-
   );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

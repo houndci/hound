@@ -6,101 +6,39 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Chihuahua -> La
     <h3>
       Plans
     </h3>
-    <div
-      className="plan plan-vertical current">
-      <div
-        className="marker-wrapper">
-        <span
-          className="current-plan">
-          Current Plan
-        </span>
-      </div>
-      <div
-        className="plan-divider">
-        <h5
-          className="plan-title">
-          Chihuahua
-        </h5>
-        <div
-          className="plan-allowance">
-          Up to 
-          <strong>
-            4
-          </strong>
-           Repos
-        </div>
-      </div>
-      <div
-        className="plan-price">
-        $
-        49
-         
-        <small>
-          month
-        </small>
-      </div>
-    </div>
-    <div
-      className="plan plan-vertical new">
-      <div
-        className="marker-wrapper">
-        <span
-          className="new-plan">
-          New Plan
-        </span>
-      </div>
-      <div
-        className="plan-divider">
-        <h5
-          className="plan-title">
-          Labrador
-        </h5>
-        <div
-          className="plan-allowance">
-          Up to 
-          <strong>
-            10
-          </strong>
-           Repos
-        </div>
-      </div>
-      <div
-        className="plan-price">
-        $
-        99
-         
-        <small>
-          month
-        </small>
-      </div>
-    </div>
-    <div
-      className="plan plan-vertical">
-      <div
-        className="plan-divider">
-        <h5
-          className="plan-title">
-          Great Dane
-        </h5>
-        <div
-          className="plan-allowance">
-          Up to 
-          <strong>
-            30
-          </strong>
-           Repos
-        </div>
-      </div>
-      <div
-        className="plan-price">
-        $
-        249
-         
-        <small>
-          month
-        </small>
-      </div>
-    </div>
+    <TierPlan
+      isCurrent={true}
+      isNew={false}
+      plan={
+        Object {
+          "allowance": 4,
+          "current": true,
+          "name": "Chihuahua",
+          "price": 49,
+        }
+      } />
+    <TierPlan
+      isCurrent={false}
+      isNew={true}
+      plan={
+        Object {
+          "allowance": 10,
+          "current": false,
+          "name": "Labrador",
+          "price": 99,
+        }
+      } />
+    <TierPlan
+      isCurrent={false}
+      isNew={false}
+      plan={
+        Object {
+          "allowance": 30,
+          "current": false,
+          "name": "Great Dane",
+          "price": 249,
+        }
+      } />
   </aside>
   <div
     className="tier-change-content">
@@ -138,12 +76,9 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Chihuahua -> La
         \"
       </p>
     </section>
-    <a
-      className="repo-toggle tier-change-accept"
-      href="javascript:void(0);"
-      onClick={[Function]}>
-      Upgrade
-    </a>
+    <UpgradeSubscriptionLink
+      authenticityToken="csrf_token"
+      repoId={1} />
     <a
       className="button tier-change-cancel"
       href="/repos">
@@ -161,101 +96,39 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Labrador -> Gre
     <h3>
       Plans
     </h3>
-    <div
-      className="plan plan-vertical">
-      <div
-        className="plan-divider">
-        <h5
-          className="plan-title">
-          Chihuahua
-        </h5>
-        <div
-          className="plan-allowance">
-          Up to 
-          <strong>
-            4
-          </strong>
-           Repos
-        </div>
-      </div>
-      <div
-        className="plan-price">
-        $
-        49
-         
-        <small>
-          month
-        </small>
-      </div>
-    </div>
-    <div
-      className="plan plan-vertical current">
-      <div
-        className="marker-wrapper">
-        <span
-          className="current-plan">
-          Current Plan
-        </span>
-      </div>
-      <div
-        className="plan-divider">
-        <h5
-          className="plan-title">
-          Labrador
-        </h5>
-        <div
-          className="plan-allowance">
-          Up to 
-          <strong>
-            10
-          </strong>
-           Repos
-        </div>
-      </div>
-      <div
-        className="plan-price">
-        $
-        99
-         
-        <small>
-          month
-        </small>
-      </div>
-    </div>
-    <div
-      className="plan plan-vertical new">
-      <div
-        className="marker-wrapper">
-        <span
-          className="new-plan">
-          New Plan
-        </span>
-      </div>
-      <div
-        className="plan-divider">
-        <h5
-          className="plan-title">
-          Great Dane
-        </h5>
-        <div
-          className="plan-allowance">
-          Up to 
-          <strong>
-            30
-          </strong>
-           Repos
-        </div>
-      </div>
-      <div
-        className="plan-price">
-        $
-        249
-         
-        <small>
-          month
-        </small>
-      </div>
-    </div>
+    <TierPlan
+      isCurrent={false}
+      isNew={false}
+      plan={
+        Object {
+          "allowance": 4,
+          "current": false,
+          "name": "Chihuahua",
+          "price": 49,
+        }
+      } />
+    <TierPlan
+      isCurrent={true}
+      isNew={false}
+      plan={
+        Object {
+          "allowance": 10,
+          "current": true,
+          "name": "Labrador",
+          "price": 99,
+        }
+      } />
+    <TierPlan
+      isCurrent={false}
+      isNew={true}
+      plan={
+        Object {
+          "allowance": 30,
+          "current": false,
+          "name": "Great Dane",
+          "price": 249,
+        }
+      } />
   </aside>
   <div
     className="tier-change-content">
@@ -293,12 +166,9 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Labrador -> Gre
         \"
       </p>
     </section>
-    <a
-      className="repo-toggle tier-change-accept"
-      href="javascript:void(0);"
-      onClick={[Function]}>
-      Upgrade
-    </a>
+    <UpgradeSubscriptionLink
+      authenticityToken="csrf_token"
+      repoId={1} />
     <a
       className="button tier-change-cancel"
       href="/repos">

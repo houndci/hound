@@ -1,10 +1,8 @@
 import RepoToolsPrivate from '../../repo_tools_private.js';
 
 it('renders appropriately', () => {
-  const component = renderer.create(
+  const wrapper = shallow(
     <RepoToolsPrivate />
   );
-
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

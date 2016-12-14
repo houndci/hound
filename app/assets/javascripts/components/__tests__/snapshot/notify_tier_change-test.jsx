@@ -24,7 +24,7 @@ describe('NotifyTierChange', () => {
     it('renders plans appropriately (Chihuahua -> Labrador)', () => {
       plans = make_active_plan("Chihuahua");
 
-      const component = renderer.create(
+      const wrapper = shallow(
         <NotifyTierChange
           authenticity_token = "csrf_token"
           plans = {plans}
@@ -32,15 +32,13 @@ describe('NotifyTierChange', () => {
           repo_name = {repo.name}
         />
       );
-
-      let tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     it('renders plans appropriately (Labrador -> Great Dane)', () => {
       plans = make_active_plan("Labrador");
 
-      const component = renderer.create(
+      const wrapper = shallow(
         <NotifyTierChange
           authenticity_token = "csrf_token"
           plans = {plans}
@@ -48,9 +46,7 @@ describe('NotifyTierChange', () => {
           repo_name = {repo.name}
         />
       );
-
-      let tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
   });
 });

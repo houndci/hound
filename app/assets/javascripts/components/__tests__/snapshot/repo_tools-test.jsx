@@ -7,7 +7,7 @@ it('renders appropriately without Show Private button (not syncing)', () => {
   const onRefreshClicked = jest.genMockFunction();
   const onPrivateClicked = jest.genMockFunction();
 
-  const component = renderer.create(
+  const wrapper = shallow(
     <RepoTools
       showPrivateButton={!has_private_access}
       onSearchInput={(event) => onSearchInput}
@@ -15,8 +15,6 @@ it('renders appropriately without Show Private button (not syncing)', () => {
       onPrivateClicked={(event) => onPrivateClicked}
       isSyncing={false}
     />
-
   );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

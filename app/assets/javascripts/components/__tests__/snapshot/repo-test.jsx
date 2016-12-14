@@ -11,15 +11,13 @@ it('renders a repo appropriately', () => {
 
   const onRepoClicked = jest.genMockFunction();
 
-  const component = renderer.create(
+  const wrapper = shallow(
     <Repo
       repo={repo}
       key={repo.id}
       onRepoClicked={onRepoClicked}
       isProcessingId={null}
     />
-
   );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

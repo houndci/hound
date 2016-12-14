@@ -11,14 +11,12 @@ it('renders a button appropriately', () => {
 
   const onRepoClicked = jest.genMockFunction();
 
-  const component = renderer.create(
+  const wrapper = shallow(
     <RepoActivationButton
       repo={repo}
       onRepoClicked={onRepoClicked}
       isProcessingId={null}
     />
-
   );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });

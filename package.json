@@ -76,6 +76,9 @@
       "react",
       "enzyme",
       "jasmine-enzyme"
+    ],
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/enzyme-to-json/serializer"
     ]
   },
   "babel": {

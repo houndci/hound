@@ -6,7 +6,6 @@ exports[`test renders appropriately 1`] = `
     method="post">
     <button
       className="repo-tools-private-button"
-      onClick={undefined}
       type="submit">
       <span>
         Include private repos

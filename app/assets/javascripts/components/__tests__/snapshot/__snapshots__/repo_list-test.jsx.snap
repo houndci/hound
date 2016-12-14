@@ -1,19 +1,17 @@
 exports[`test renders a list of repos appropriately 1`] = `
-<ul
-  className="repos">
-  <li
-    className="repo">
-    <div
-      className="repo-name">
-      Test repo
-    </div>
-    <div
-      className="repo-activation-toggle">
-      <div
-        className="repo-restricted">
-        Only repo admins can activate
-      </div>
-    </div>
-  </li>
-</ul>
+<PopulatedRepoList
+  filterTerm=""
+  isProcessingId={null}
+  onRepoClicked={[Function]}
+  repos={
+    Array [
+      Object {
+        "id": 1,
+        "name": "Test repo",
+        "owner": Object {
+          "id": 1,
+        },
+      },
+    ]
+  } />
 `;

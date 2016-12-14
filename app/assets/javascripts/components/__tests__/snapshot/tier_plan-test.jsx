@@ -8,7 +8,7 @@ it('renders appropriately (current plan)', () => {
     current: true
   }
 
-  const component = renderer.create(
+  const wrapper = shallow(
     <TierPlan
       isCurrent={true}
       isNew={true}
@@ -16,7 +16,5 @@ it('renders appropriately (current plan)', () => {
       plan={plan}
     />
   );
-
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });
