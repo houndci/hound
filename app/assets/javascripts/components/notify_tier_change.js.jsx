@@ -65,6 +65,8 @@ class NotifyTierChange extends React.Component {
   render() {
     const { authenticity_token, repo_id, repo_name } = this.props;
 
+    const tierUsage = this.getTierUsage();
+
     return (
       <section className="tier-change-container">
         <aside className="tier-change-plans">
@@ -76,7 +78,7 @@ class NotifyTierChange extends React.Component {
           <section className="tier-change-description">
             <div className="allowance large">
               Private Repos
-              <strong>{this.getTierUsage()}/{this.getTierUsage()}</strong>
+              <strong>{tierUsage}/{tierUsage}</strong>
             </div>
 
             <p><strong>Activating "{repo_name}" will change the price you pay
