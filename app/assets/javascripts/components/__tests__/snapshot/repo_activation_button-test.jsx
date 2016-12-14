@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import RepoActivationButton from '../repo_activation_button.js';
+import RepoActivationButton from '../../repo_activation_button.js';
 
 it('renders a button appropriately', () => {
   const repo = {

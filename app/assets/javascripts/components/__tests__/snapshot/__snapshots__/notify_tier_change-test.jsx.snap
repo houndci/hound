@@ -1,0 +1,309 @@
+exports[`NotifyTierChange snapshots renders plans appropriately (Chihuahua -> Labrador) 1`] = `
+<section
+  className="tier-change-container">
+  <aside
+    className="tier-change-plans">
+    <h3>
+      Plans
+    </h3>
+    <div
+      className="plan plan-vertical current">
+      <div
+        className="marker-wrapper">
+        <span
+          className="current-plan">
+          Current Plan
+        </span>
+      </div>
+      <div
+        className="plan-divider">
+        <h5
+          className="plan-title">
+          Chihuahua
+        </h5>
+        <div
+          className="plan-allowance">
+          Up to 
+          <strong>
+            4
+          </strong>
+           Repos
+        </div>
+      </div>
+      <div
+        className="plan-price">
+        $
+        49
+         
+        <small>
+          month
+        </small>
+      </div>
+    </div>
+    <div
+      className="plan plan-vertical new">
+      <div
+        className="marker-wrapper">
+        <span
+          className="new-plan">
+          New Plan
+        </span>
+      </div>
+      <div
+        className="plan-divider">
+        <h5
+          className="plan-title">
+          Labrador
+        </h5>
+        <div
+          className="plan-allowance">
+          Up to 
+          <strong>
+            10
+          </strong>
+           Repos
+        </div>
+      </div>
+      <div
+        className="plan-price">
+        $
+        99
+         
+        <small>
+          month
+        </small>
+      </div>
+    </div>
+    <div
+      className="plan plan-vertical">
+      <div
+        className="plan-divider">
+        <h5
+          className="plan-title">
+          Great Dane
+        </h5>
+        <div
+          className="plan-allowance">
+          Up to 
+          <strong>
+            30
+          </strong>
+           Repos
+        </div>
+      </div>
+      <div
+        className="plan-price">
+        $
+        249
+         
+        <small>
+          month
+        </small>
+      </div>
+    </div>
+  </aside>
+  <div
+    className="tier-change-content">
+    <h1>
+      Pricing: Change of Plans
+    </h1>
+    <section
+      className="tier-change-description">
+      <div
+        className="allowance large">
+        Private Repos
+        <strong>
+          4
+          /
+          4
+        </strong>
+      </div>
+      <p>
+        <strong>
+          Activating \"
+          Test repo
+          \" will change the price you pay per month.
+        </strong>
+      </p>
+      <p>
+        You\'ll be charged an extra $
+        50
+         a month ($
+        99
+         total).
+      </p>
+      <p>
+        Upgrade to continue your activation of \"
+        Test repo
+        \"
+      </p>
+    </section>
+    <a
+      className="repo-toggle tier-change-accept"
+      href="javascript:void(0);"
+      onClick={[Function]}>
+      Upgrade
+    </a>
+    <a
+      className="button tier-change-cancel"
+      href="/repos">
+      Cancel
+    </a>
+  </div>
+</section>
+`;
+
+exports[`NotifyTierChange snapshots renders plans appropriately (Labrador -> Great Dane) 1`] = `
+<section
+  className="tier-change-container">
+  <aside
+    className="tier-change-plans">
+    <h3>
+      Plans
+    </h3>
+    <div
+      className="plan plan-vertical">
+      <div
+        className="plan-divider">
+        <h5
+          className="plan-title">
+          Chihuahua
+        </h5>
+        <div
+          className="plan-allowance">
+          Up to 
+          <strong>
+            4
+          </strong>
+           Repos
+        </div>
+      </div>
+      <div
+        className="plan-price">
+        $
+        49
+         
+        <small>
+          month
+        </small>
+      </div>
+    </div>
+    <div
+      className="plan plan-vertical current">
+      <div
+        className="marker-wrapper">
+        <span
+          className="current-plan">
+          Current Plan
+        </span>
+      </div>
+      <div
+        className="plan-divider">
+        <h5
+          className="plan-title">
+          Labrador
+        </h5>
+        <div
+          className="plan-allowance">
+          Up to 
+          <strong>
+            10
+          </strong>
+           Repos
+        </div>
+      </div>
+      <div
+        className="plan-price">
+        $
+        99
+         
+        <small>
+          month
+        </small>
+      </div>
+    </div>
+    <div
+      className="plan plan-vertical new">
+      <div
+        className="marker-wrapper">
+        <span
+          className="new-plan">
+          New Plan
+        </span>
+      </div>
+      <div
+        className="plan-divider">
+        <h5
+          className="plan-title">
+          Great Dane
+        </h5>
+        <div
+          className="plan-allowance">
+          Up to 
+          <strong>
+            30
+          </strong>
+           Repos
+        </div>
+      </div>
+      <div
+        className="plan-price">
+        $
+        249
+         
+        <small>
+          month
+        </small>
+      </div>
+    </div>
+  </aside>
+  <div
+    className="tier-change-content">
+    <h1>
+      Pricing: Change of Plans
+    </h1>
+    <section
+      className="tier-change-description">
+      <div
+        className="allowance large">
+        Private Repos
+        <strong>
+          10
+          /
+          10
+        </strong>
+      </div>
+      <p>
+        <strong>
+          Activating \"
+          Test repo
+          \" will change the price you pay per month.
+        </strong>
+      </p>
+      <p>
+        You\'ll be charged an extra $
+        150
+         a month ($
+        249
+         total).
+      </p>
+      <p>
+        Upgrade to continue your activation of \"
+        Test repo
+        \"
+      </p>
+    </section>
+    <a
+      className="repo-toggle tier-change-accept"
+      href="javascript:void(0);"
+      onClick={[Function]}>
+      Upgrade
+    </a>
+    <a
+      className="button tier-change-cancel"
+      href="/repos">
+      Cancel
+    </a>
+  </div>
+</section>
+`;

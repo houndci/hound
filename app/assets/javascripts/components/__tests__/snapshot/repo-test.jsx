@@ -1,9 +1,10 @@
 import React from 'react';
+import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import UpgradeSubscriptionLink from '../upgrade_subscription_link.js';
+import Repo from '../../repo.js';
 
-it('renders appropriately', () => {
+it('renders a repo appropriately', () => {
   const repo = {
     id: 1,
     name: "Test repo",
@@ -12,13 +13,17 @@ it('renders appropriately', () => {
     }
   }
 
-  const component = renderer.create(
-    <UpgradeSubscriptionLink
-      authenticityToken={"csrf_token"}
-      repoId={repo.id}
-    />
-  );
+  const onRepoClicked = jest.genMockFunction();
 
+  const component = renderer.create(
+    <Repo
+      repo={repo}
+      key={repo.id}
+      onRepoClicked={onRepoClicked}
+      isProcessingId={null}
+    />
+
+  );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });

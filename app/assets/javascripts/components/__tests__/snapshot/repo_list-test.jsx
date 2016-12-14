@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import RepoList from '../repo_list.js';
+import RepoList from '../../repo_list.js';
 
 it('renders a list of repos appropriately', () => {
   const repos = [

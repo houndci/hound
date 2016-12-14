@@ -2,30 +2,26 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import OrganizationsList from '../organizations_list.js';
+import Organization from '../../organization.js';
 
-it('renders a list of organizations appropriately', () => {
-  const organizations = [
-    { id: 1, name: "Test org" }
-  ]
+it('renders an organization with ID appropriately (no repo processing)', () => {
+  const org = {
+    id: 1,
+    name: "Test org"
+  }
   const repos = [
-    {
-      id: 1,
-      name: "Test repo",
-      owner: {
-        id: 1
-      }
-    }
+    {id: 1, name: "Test repo"}
   ]
 
   const onRepoClicked = jest.genMockFunction();
 
   const component = renderer.create(
-    <OrganizationsList
-      organizations={organizations}
+    <Organization
+      name={org.name}
+      key={org.id}
       repos={repos}
-      filterTerm={""}
       onRepoClicked={onRepoClicked}
+      filterTerm={""}
       isProcessingId={null}
     />
 

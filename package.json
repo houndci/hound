@@ -6,8 +6,8 @@
     "build": "webpack --config webpack.config.babel.js",
     "build:watch": "webpack -w --config webpack.config.babel.js",
     "build:prod": "webpack -p --config webpack.config.babel.js",
-    "test": "jest app/assets/javascripts/components/__tests__/*-test.jsx",
-    "test:watch": "jest --watch app/assets/javascripts/components/__tests__/*-test.jsx"
+    "test": "jest app/assets/javascripts/components/__tests__/snapshot/*-test.jsx",
+    "test:watch": "jest --watch app/assets/javascripts/components/__tests__/snapshot/*-test.jsx"
   },
   "engines": {
     "node": "7.1",
@@ -47,6 +47,7 @@
     "eslint-plugin-react": "^3.16.1",
     "file-loader": "^0.8.5",
     "jest": "^17.0.3",
+    "jest-enzyme": "^2.0.0",
     "node-sass": "^3.4.2",
     "react-addons-test-utils": "^15.3.2",
     "react-test-renderer": "^15.4.1",
@@ -60,9 +61,11 @@
     "url": "git+https://github.com/houndci/hound.git"
   },
   "jest": {
+    "setupTestFrameworkScriptFile": "node_modules/jest-enzyme/lib/index.js",
     "unmockedModulePathPatterns": [
-      "node_modules/react/",
-      "node_modules/enzyme/"
+      "react",
+      "enzyme",
+      "jasmine-enzyme"
     ]
   },
   "babel": {

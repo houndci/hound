@@ -1,12 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import UpdateAccountEmail from '../update_account_email.js';
+import UpdateAccountCreditCard from '../../update_account_credit_card.js';
 
 it('renders appropriately', () => {
   const component = renderer.create(
-    <UpdateAccountEmail
-      addressChanged={false}
+    <UpdateAccountCreditCard
+      authenticity_token={"csrf_token"}
+      stripe_customer_id_present={true}
     />
   );
 

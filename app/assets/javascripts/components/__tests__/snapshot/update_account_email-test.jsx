@@ -1,11 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import UpdateAccountEmailMessage from '../update_account_email_message.js';
+import UpdateAccountEmail from '../../update_account_email.js';
 
 it('renders appropriately', () => {
   const component = renderer.create(
-    <UpdateAccountEmailMessage
+    <UpdateAccountEmail
       addressChanged={false}
     />
   );

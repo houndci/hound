@@ -1,13 +1,12 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import ReposSyncSpinner from '../repos_sync_spinner.js';
+import EmptyRepoList from '../../empty_repo_list.js';
 
-it('renders appropriately', () => {
+it('renders an empty unordered list', () => {
   const component = renderer.create(
-    <ReposSyncSpinner />
+    <EmptyRepoList />
   );
-
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });

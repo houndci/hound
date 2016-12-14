@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import ReposContainer from '../repos_container.js';
+import RepoToolsSearch from '../../repo_tools_search.js';
 
 const Hound = window.Hound = global.Hound = {
   settings: {
@@ -10,14 +10,10 @@ const Hound = window.Hound = global.Hound = {
 };
 
 it('renders appropriately', () => {
-  const onRefreshClicked = jest.genMockFunction();
+  const onSearchInput = jest.genMockFunction();
 
   const component = renderer.create(
-    <ReposContainer
-      authenticity_token={"csrf_token"}
-      has_private_access={false}
-      userHasCard={false}
-    />
+    <RepoToolsSearch onSearchInput={onSearchInput} />
   );
 
   let tree = component.toJSON();

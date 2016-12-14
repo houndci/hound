@@ -1,9 +1,10 @@
 import React from 'react';
+import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import ReposView from '../repos_view.js';
+import OrganizationsList from '../../organizations_list.js';
 
-it('renders appropriately', () => {
+it('renders a list of organizations appropriately', () => {
   const organizations = [
     { id: 1, name: "Test org" }
   ]
@@ -17,17 +18,18 @@ it('renders appropriately', () => {
     }
   ]
 
+  const onRepoClicked = jest.genMockFunction();
+
   const component = renderer.create(
-    <ReposView
-      isSyncing={false}
+    <OrganizationsList
       organizations={organizations}
       repos={repos}
       filterTerm={""}
-      onRepoClicked={(event) => onRepoClicked}
+      onRepoClicked={onRepoClicked}
       isProcessingId={null}
-     />
-  );
+    />
 
+  );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });
