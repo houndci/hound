@@ -1,4 +1,4 @@
-import EmptyRepoList from '../../empty_repo_list.js';
+import EmptyRepoList from '../empty_repo_list.js';
 
 it('renders an empty unordered list', () => {
   const wrapper = shallow(

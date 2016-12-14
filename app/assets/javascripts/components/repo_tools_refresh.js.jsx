@@ -1,5 +1,3 @@
-import React from 'react';
-
 class RepoToolsRefresh extends React.Component {
   buttonText(isSyncing) {
     if (isSyncing) {

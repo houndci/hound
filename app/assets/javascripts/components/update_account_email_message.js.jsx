@@ -1,5 +1,3 @@
-import React from 'react';
-
 class UpdateAccountEmailMessage extends React.Component {
   render() {
     if (this.props.addressChanged === null) {

@@ -1,6 +1,3 @@
-import React from 'react';
-import _ from 'lodash';
-
 import Organization from './organization.js';
 
 class OrganizationsList extends React.Component {

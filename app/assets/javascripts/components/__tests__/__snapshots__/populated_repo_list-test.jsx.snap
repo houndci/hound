@@ -1,0 +1,50 @@
+exports[`test filters a list of repos appropriately 1`] = `
+<ul
+  className="repos">
+  <Repo
+    isProcessingId={null}
+    onRepoClicked={[Function]}
+    repo={
+      Object {
+        "id": 666,
+        "name": "Hydra/deathray",
+      }
+    } />
+</ul>
+`;
+
+exports[`test renders a list of repos appropriately 1`] = `
+<ul
+  className="repos">
+  <Repo
+    isProcessingId={null}
+    onRepoClicked={[Function]}
+    repo={
+      Object {
+        "id": 1,
+        "name": "Test repo",
+        "owner": Object {
+          "id": 1,
+        },
+      }
+    } />
+</ul>
+`;
+
+exports[`test renders a list of repos appropriately 2`] = `
+<ul
+  className="repos">
+  <Repo
+    isProcessingId={null}
+    onRepoClicked={[Function]}
+    repo={
+      Object {
+        "id": 1,
+        "name": "Test repo",
+        "owner": Object {
+          "id": 1,
+        },
+      }
+    } />
+</ul>
+`;

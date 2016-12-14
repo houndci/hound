@@ -1,6 +1,6 @@
-import OrganizationsList from '../../organizations_list.js';
+import ReposView from '../repos_view.js';
 
-it('renders a list of organizations appropriately', () => {
+it('renders appropriately', () => {
   const organizations = [
     { id: 1, name: "Test org" }
   ]
@@ -14,16 +14,15 @@ it('renders a list of organizations appropriately', () => {
     }
   ]
 
-  const onRepoClicked = jest.genMockFunction();
-
   const wrapper = shallow(
-    <OrganizationsList
+    <ReposView
+      isSyncing={false}
       organizations={organizations}
       repos={repos}
       filterTerm={""}
-      onRepoClicked={onRepoClicked}
+      onRepoClicked={(event) => onRepoClicked}
       isProcessingId={null}
-    />
+     />
   );
   expect(wrapper).toMatchSnapshot();
 });

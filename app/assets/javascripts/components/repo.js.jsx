@@ -1,6 +1,3 @@
-import React from 'react';
-import classNames from 'classnames';
-
 import RepoActivationButton from './repo_activation_button.js';
 
 class Repo extends React.Component {

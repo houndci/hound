@@ -1,0 +1,22 @@
+exports[`test renders appropriately with Show Private button (not syncing) 1`] = `
+<div
+  className="repo-tools">
+  <RepoToolsSearch
+    onSearchInput={[Function]} />
+  <RepoToolsPrivate />
+  <RepoToolsRefresh
+    isSyncing={false}
+    onRefreshClicked={[Function]} />
+</div>
+`;
+
+exports[`test renders appropriately without Show Private button (not syncing) 1`] = `
+<div
+  className="repo-tools">
+  <RepoToolsSearch
+    onSearchInput={[Function]} />
+  <RepoToolsRefresh
+    isSyncing={false}
+    onRefreshClicked={[Function]} />
+</div>
+`;

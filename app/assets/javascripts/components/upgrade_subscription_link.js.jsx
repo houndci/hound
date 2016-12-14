@@ -1,6 +1,3 @@
-import React from 'react';
-import $ from 'jquery';
-
 import * as Ajax from '../lib/ajax.js';
 
 class UpgradeSubscriptionLink extends React.Component {

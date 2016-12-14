@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Repo from './repo.js';
 
 class PopulatedRepoList extends React.Component {

@@ -11,3 +11,9 @@ exports[`test renders appropriately 1`] = `
   </a>
 </h3>
 `;
+
+exports[`test renders appropriately without Stripe customer ID 1`] = `
+<h3>
+  Monthly Billing
+</h3>
+`;

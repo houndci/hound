@@ -1,6 +1,6 @@
-import RepoActivationButton from '../../repo_activation_button.js';
+import Repo from '../repo.js';
 
-it('renders a button appropriately', () => {
+it('renders a repo appropriately', () => {
   const repo = {
     id: 1,
     name: "Test repo",
@@ -9,11 +9,12 @@ it('renders a button appropriately', () => {
     }
   }
 
-  const onRepoClicked = jest.genMockFunction();
+  const onRepoClicked = jest.fn();
 
   const wrapper = shallow(
-    <RepoActivationButton
+    <Repo
       repo={repo}
+      key={repo.id}
       onRepoClicked={onRepoClicked}
       isProcessingId={null}
     />

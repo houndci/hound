@@ -1,8 +1,19 @@
+/*jshint esversion: 6 */
+
 import React from 'react';
 global.React = React;
 
 import _ from 'lodash';
 global._ = _;
+
+import $ from 'jquery';
+global.$ = $;
+
+import classNames from 'classnames';
+global.classNames = classNames;
+
+import sinon from 'sinon';
+global.sinon = sinon;
 
 const Hound = window.Hound = global.Hound = {
   settings: {

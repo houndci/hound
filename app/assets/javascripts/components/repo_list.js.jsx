@@ -1,5 +1,3 @@
-import React from 'react';
-
 import EmptyRepoList from './empty_repo_list.js';
 import PopulatedRepoList from './populated_repo_list.js';
 

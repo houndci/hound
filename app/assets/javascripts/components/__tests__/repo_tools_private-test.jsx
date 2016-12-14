@@ -1,8 +1,8 @@
-import ReposSyncSpinner from '../../repos_sync_spinner.js';
+import RepoToolsPrivate from '../repo_tools_private.js';
 
 it('renders appropriately', () => {
   const wrapper = shallow(
-    <ReposSyncSpinner />
+    <RepoToolsPrivate />
   );
   expect(wrapper).toMatchSnapshot();
 });

@@ -1,5 +1,3 @@
-import React from 'react';
-
 class RepoToolsPrivate extends React.Component {
   render() {
     const { onPrivateClicked } = this.props;

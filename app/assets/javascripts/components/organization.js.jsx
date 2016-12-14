@@ -1,5 +1,3 @@
-import React from 'react';
-
 import RepoList from './repo_list.js';
 
 class Organization extends React.Component {

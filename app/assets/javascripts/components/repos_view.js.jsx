@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ReposSyncSpinner from './repos_sync_spinner.js';
 import OrganizationsList from './organizations_list.js';
 

@@ -1,6 +1,3 @@
-import React from 'react';
-import $ from 'jquery';
-
 import UpdateAccountEmailMessage from './update_account_email_message.js';
 
 class UpdateAccountEmail extends React.Component {

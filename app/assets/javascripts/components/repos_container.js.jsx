@@ -1,12 +1,7 @@
-import React from 'react';
-import ReactAddonsUpdate from 'react-addons-update';
-
 import RepoTools from './repo_tools.js';
 import ReposView from './repos_view.js';
 
 import * as Ajax from '../lib/ajax.js';
-
-import $ from 'jquery';
 
 class ReposContainer extends React.Component {
   state = {

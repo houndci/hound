@@ -1,6 +1,3 @@
-import React from 'react';
-import $ from 'jquery';
-
 class UpdateAccountCreditCard extends React.Component {
   componentWillMount() {
     $.ajaxSetup({

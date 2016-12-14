@@ -9,3 +9,4 @@ dump.rdb
 node_modules/
 app/assets/webpack/app-bundle.js
 app/assets/webpack/vendor-bundle.js
+npm-debug.log
