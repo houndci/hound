@@ -10,7 +10,6 @@ describe UsersController do
 
       expect(response.body).to eq(
         {
-          card_exists: false,
           id: user.id,
           refreshing_repos: user.refreshing_repos,
           subscribed_repo_count: 0,
