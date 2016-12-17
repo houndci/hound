@@ -10,7 +10,7 @@ class CompleteFileReview
   def run
     create_violations!
 
-    BuildReport.run(
+    CompleteBuild.run(
       pull_request: pull_request,
       build: build,
       token: build.user_token,

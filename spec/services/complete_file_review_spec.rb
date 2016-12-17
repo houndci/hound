@@ -25,7 +25,7 @@ describe CompleteFileReview do
 
       CompleteFileReview.run(attributes)
 
-      expect(BuildReport).to have_received(:run).with(
+      expect(CompleteBuild).to have_received(:run).with(
         pull_request: pull_request,
         build: build,
         token: Hound::GITHUB_TOKEN,
@@ -54,7 +54,7 @@ describe CompleteFileReview do
 
         CompleteFileReview.run(attributes)
 
-        expect(BuildReport).to have_received(:run).with(
+        expect(CompleteBuild).to have_received(:run).with(
           pull_request: pull_request,
           build: correct_build,
           token: Hound::GITHUB_TOKEN,
@@ -83,7 +83,7 @@ describe CompleteFileReview do
   end
 
   def stub_build_report_run
-    allow(BuildReport).to receive(:run)
+    allow(CompleteBuild).to receive(:run)
   end
 
   def stub_pull_request

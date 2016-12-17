@@ -1,4 +1,4 @@
-class BuildReport
+class CompleteBuild
   def self.run(pull_request:, build:, token:)
     new(pull_request: pull_request, build: build, token: token).run
   end

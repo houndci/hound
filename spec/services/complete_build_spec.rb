@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe BuildReport do
+describe CompleteBuild do
   describe ".run" do
     context "when build has violations" do
       context "when the build is complete" do
@@ -153,7 +153,11 @@ describe BuildReport do
     def run_service(build)
       head_commit = double("Commit", file_content: "")
       pull_request = double("PullRequest", head_commit: head_commit)
-      BuildReport.run(pull_request: pull_request, build: build, token: "abc123")
+      CompleteBuild.run(
+        pull_request: pull_request,
+        build: build,
+        token: "abc123",
+      )
     end
   end
 end
