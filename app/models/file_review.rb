@@ -1,4 +1,4 @@
-class FileReview < ActiveRecord::Base
+class FileReview < ApplicationRecord
   belongs_to :build
   has_many :violations
 

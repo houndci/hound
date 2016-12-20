@@ -34,7 +34,7 @@ RSpec.describe "POST /builds" do
         commit_id: commit_id_from_fixture,
       )
 
-      post builds_path, payload: payload
+      post builds_path, params: { payload: payload }
 
       expect(new_comment_request).to have_been_requested
     end
@@ -46,7 +46,7 @@ RSpec.describe "POST /builds" do
       stub_github_requests_with_no_violations
       comment_request = stub_new_comment_request
 
-      post builds_path, payload: payload
+      post builds_path, params: { payload: payload }
 
       expect(comment_request).not_to have_been_requested
     end

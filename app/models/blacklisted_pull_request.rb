@@ -1,2 +1,2 @@
-class BlacklistedPullRequest < ActiveRecord::Base
+class BlacklistedPullRequest < ApplicationRecord
 end

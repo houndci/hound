@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include ActiveModel::ForbiddenAttributesProtection
 
   has_many :memberships, dependent: :destroy

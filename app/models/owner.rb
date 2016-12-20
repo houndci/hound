@@ -1,4 +1,4 @@
-class Owner < ActiveRecord::Base
+class Owner < ApplicationRecord
   has_many :repos
 
   def self.upsert(github_id:, name:, organization:)
