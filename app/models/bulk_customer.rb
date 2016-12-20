@@ -1,4 +1,4 @@
-class BulkCustomer < ActiveRecord::Base
+class BulkCustomer < ApplicationRecord
   def self.unpaid_repos
     bulk_orgs = pluck(:org)
     Repo.

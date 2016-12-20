@@ -14,7 +14,7 @@ describe DeactivationsController, "#create" do
         scope: membership.user,
       ).to_json
 
-      post :create, repo_id: repo.id, format: :json
+      post :create, params: { repo_id: repo.id }, format: :json
 
       expect(response).to have_http_status(:created)
       expect(response.body).to eq expected_repo_json
@@ -41,7 +41,7 @@ describe DeactivationsController, "#create" do
       allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(membership.user)
 
-      post :create, repo_id: repo.id, format: :json
+      post :create, params: { repo_id: repo.id }, format: :json
 
       expect(response.code).to eq "502"
       expect(activator).to have_received(:deactivate)
@@ -57,7 +57,7 @@ describe DeactivationsController, "#create" do
       create(:subscription, repo: repo)
       stub_sign_in(user)
 
-      expect { post :create, repo_id: repo.id, format: :json }.
+      expect { post :create, params: { repo_id: repo.id }, format: :json }.
         to raise_error(
           DeactivationsController::CannotDeactivateRepoWithSubscription
         )
@@ -72,7 +72,7 @@ describe DeactivationsController, "#create" do
       allow(RepoActivator).to receive(:new).and_return(activator)
       stub_sign_in(user)
 
-      post :create, repo_id: repo.id, format: :json
+      post :create, params: { repo_id: repo.id }, format: :json
 
       expect(response.code).to eq "201"
     end
