@@ -4,7 +4,7 @@ describe BuildsController, '#create' do
   it 'ignores confirmation pings' do
     zen_payload = File.read('spec/support/fixtures/zen_payload.json')
 
-    post :create, payload: zen_payload
+    post :create, params: { payload: zen_payload }
 
     expect(response.status).to eq 200
   end
@@ -16,7 +16,7 @@ describe BuildsController, '#create' do
           payload_data = File.read(
             'spec/support/fixtures/pull_request_opened_event.json'
           )
-          post(:create, payload: payload_data)
+          post(:create, params: { payload: payload_data })
 
           expect(response).not_to be_redirect
         end
@@ -32,7 +32,7 @@ describe BuildsController, '#create' do
       )
       payload = Payload.new(payload_data)
 
-      post :create, payload: payload_data
+      post :create, params: { payload: payload_data }
 
       expect(SmallBuildJob).to have_received(:perform_later).with(
         payload.build_data
@@ -48,7 +48,7 @@ describe BuildsController, '#create' do
       )
       payload = Payload.new(payload_data)
 
-      post :create, payload: payload_data
+      post :create, params: { payload: payload_data }
 
       expect(LargeBuildJob).to have_received(:perform_later).with(
         payload.build_data
@@ -62,7 +62,7 @@ describe BuildsController, '#create' do
       allow(LargeBuildJob).to receive(:perform_later)
       allow(SmallBuildJob).to receive(:perform_later)
 
-      post :create, payload: payload_data
+      post :create, params: { payload: payload_data }
 
       expect(LargeBuildJob).not_to have_received(:perform_later)
       expect(SmallBuildJob).not_to have_received(:perform_later)
@@ -76,7 +76,7 @@ describe BuildsController, '#create' do
       payload = Payload.new(payload_data)
       allow(SmallBuildJob).to receive(:perform_later)
 
-      post :create, payload_data
+      post :create, body: payload_data
 
       expect(SmallBuildJob).to have_received(:perform_later).
         with(payload.build_data)

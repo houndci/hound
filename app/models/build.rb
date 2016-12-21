@@ -1,4 +1,4 @@
-class Build < ActiveRecord::Base
+class Build < ApplicationRecord
   belongs_to :repo
   belongs_to :user
   has_many :file_reviews, dependent: :destroy

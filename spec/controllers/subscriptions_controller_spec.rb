@@ -13,9 +13,11 @@ describe SubscriptionsController, "#create" do
 
       post(
         :create,
-        repo_id: repo.id,
-        card_token: "cardtoken",
-        email: "jimtom@example.com",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+          email: "jimtom@example.com",
+        },
         format: :json
       )
 
@@ -37,9 +39,11 @@ describe SubscriptionsController, "#create" do
 
       post(
         :create,
-        repo_id: repo.id,
-        card_token: "cardtoken",
-        email: "jimtom@example.com",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+          email: "jimtom@example.com",
+        },
         format: :json
       )
 
@@ -57,7 +61,7 @@ describe SubscriptionsController, "#create" do
       allow(RepoSubscriber).to receive(:subscribe).and_return(false)
       stub_sign_in(membership.user)
 
-      post :create, repo_id: repo.id, format: :json
+      post :create, params: { repo_id: repo.id }, format: :json
 
       expect(response.code).to eq "502"
       expect(activator).to have_received(:deactivate)
@@ -73,7 +77,7 @@ describe SubscriptionsController, "#create" do
       allow(Tier).to receive(:new).once.with(user).and_return(tier)
       stub_sign_in(user)
 
-      post :create, repo_id: repo.id
+      post :create, params: { repo_id: repo.id }
 
       expect(response).to have_http_status(:payment_required)
     end
@@ -95,7 +99,7 @@ describe SubscriptionsController, "#create" do
       stub_subscription_create_request(plan: plan, repo_ids: repo.id)
       stub_subscription_update_request(plan: new_plan, repo_ids: repo.id)
 
-      put :update, repo_id: repo.id
+      put :update, params: { repo_id: repo.id }
 
       expect(response).to have_http_status(:created)
       expect(JSON.parse(response.body)).to include(
@@ -127,7 +131,7 @@ describe SubscriptionsController, "#create" do
         stub_hook_creation_request(repo.name, hook_url, token)
         stub_hook_removal_request(repo.name, hook_id)
 
-        put :update, repo_id: repo.id
+        put :update, params: { repo_id: repo.id }
 
         expect(response).to have_http_status(:bad_gateway)
       end
@@ -147,8 +151,10 @@ describe SubscriptionsController, "#destroy" do
 
       delete(
         :destroy,
-        repo_id: repo.id,
-        card_token: "cardtoken",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+        },
         format: :json
       )
 
@@ -173,8 +179,10 @@ describe SubscriptionsController, "#destroy" do
 
       delete(
         :destroy,
-        repo_id: repo.id,
-        card_token: "cardtoken",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+        },
         format: :json
       )
 

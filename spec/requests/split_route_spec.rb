@@ -16,7 +16,7 @@ describe "/split" do
           "admin",
           ENV["SPLIT_ADMIN_PASSWORD"]
         )
-      get "/split", nil, { "HTTP_AUTHORIZATION" => credentials }
+      get "/split", headers: { "HTTP_AUTHORIZATION" => credentials }
 
       expect(response.status).to eq(200)
     end
