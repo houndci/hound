@@ -23,6 +23,10 @@ module ConfigurationHelper
     config_url("houndci/swift", "config/default.yml")
   end
 
+  def tslint_config_url
+    config_url("houndci/linters", "config/tslint.json")
+  end
+
   private
 
   def config_url(slug, config_file)

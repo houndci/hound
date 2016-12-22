@@ -17,6 +17,7 @@ class HoundConfig
     eslint
     remark
     python
+    tslint
   ).freeze
   CONFIG_FILE = ".hound.yml"
 
