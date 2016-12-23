@@ -1,7 +1,7 @@
-require "spec_helper"
 require "attr_extras"
 require "app/models/payload"
-require "lib/github_api"
+require "app/models/github_api"
+require "app/models/config/parser"
 
 describe Payload do
   describe '#changed_files' do

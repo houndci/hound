@@ -1,8 +1,8 @@
-require "spec_helper"
-require "lib/js_ignore"
+require "app/models/js_ignore"
 require "app/models/hound_config"
 require "app/models/config/parser"
 require "app/services/resolve_config_aliases"
+require "app/services/resolve_config_conflicts"
 require "app/services/normalize_config"
 
 describe JsIgnore do
