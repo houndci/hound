@@ -1,9 +1,6 @@
-require "attr_extras"
-require "octokit"
-require "base64"
-
+# frozen_string_literal: true
 class GithubApi
-  ORGANIZATION_TYPE = "Organization".freeze
+  ORGANIZATION_TYPE = "Organization"
 
   attr_reader :file_cache, :token
 

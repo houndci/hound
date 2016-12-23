@@ -1,5 +1,4 @@
-require "spec_helper"
-require "lib/error_message_translation"
+require "app/models/error_message_translation"
 
 describe ErrorMessageTranslation do
   describe ".from_error_response" do
