@@ -2,6 +2,7 @@
 class HoundConfig
   LINTERS = [
     Linter::CoffeeScript,
+    Linter::Credo,
     Linter::Eslint,
     Linter::Go,
     Linter::Haml,
@@ -14,6 +15,7 @@ class HoundConfig
   ].freeze
   LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
   BETA_LINTERS = %w(
+    credo
     eslint
     remark
     python

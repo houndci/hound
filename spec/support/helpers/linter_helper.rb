@@ -39,6 +39,10 @@ module LinterHelper
       swift:
         enabled: true
         config_file: config/swift.txt
+
+      credo:
+        enabled: true
+        config_file: .credo.exs
     EOS
   end
 
