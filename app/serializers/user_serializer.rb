@@ -1,6 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
   attributes(
-    :card_exists,
     :id,
     :refreshing_repos,
     :subscribed_repo_count,

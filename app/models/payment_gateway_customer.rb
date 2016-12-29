@@ -114,10 +114,6 @@ class PaymentGatewayCustomer
     def plan_name
       "basic"
     end
-
-    def quantity
-      1
-    end
   end
 
   class BlankCard

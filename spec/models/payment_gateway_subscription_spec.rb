@@ -46,10 +46,9 @@ describe PaymentGatewaySubscription do
   end
 
   class MockStripeSubscription
-    attr_accessor :quantity, :metadata, :plan
+    attr_accessor :metadata, :plan
 
     def initialize(repo_ids:)
-      @quantity = repo_ids.count
       @metadata = { "repo_ids" => repo_ids.join(",") }
     end
 
@@ -66,7 +65,6 @@ describe PaymentGatewaySubscription do
 
   class MockLegacyStripeSubscription < MockStripeSubscription
     def initialize(repo_id:)
-      @quantity = 1
       @metadata = { "repo_id" => repo_id.to_s }
     end
   end
