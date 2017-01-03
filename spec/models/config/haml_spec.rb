@@ -4,9 +4,37 @@ require "app/models/config/haml"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config/serializer"
+require "app/models/missing_owner"
 
 describe Config::Haml do
   describe "#content" do
+    context "when an owner is provided" do
+      it "merges the configuration into the owner's configuration" do
+        owner = instance_double(
+          "Owner",
+          hound_config: {
+            "linters" => {
+              "ClassAttributeWithStaticValue" => { "enabled" => true },
+            },
+          },
+        )
+        raw_config = <<~EOS
+          linters:
+            AltText:
+              enabled: true
+        EOS
+        commit = stubbed_commit("config/haml.yml" => raw_config)
+        config = build_config(commit, owner)
+
+        expect(config.content).to eq(
+          "linters" => {
+            "AltText" => { "enabled" => true },
+            "ClassAttributeWithStaticValue" => { "enabled" => true },
+          },
+        )
+      end
+    end
+
     context "when the given content is valid" do
       it "returns the content from GitHub as a hash" do
         commit = stubbed_commit(
@@ -60,7 +88,7 @@ describe Config::Haml do
     end
   end
 
-  def build_config(commit)
+  def build_config(commit, owner = MissingOwner.new)
     hound_config = double(
       "HoundConfig",
       commit: commit,
@@ -71,6 +99,6 @@ describe Config::Haml do
         },
       },
     )
-    Config::Haml.new(hound_config)
+    Config::Haml.new(hound_config, owner: owner)
   end
 end

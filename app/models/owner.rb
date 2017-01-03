@@ -12,4 +12,14 @@ class Owner < ApplicationRecord
   def has_config_repo?
     config_enabled? && config_repo.present?
   end
+
+  def hound_config
+    build_config.content
+  end
+
+  private
+
+  def build_config
+    BuildOwnerHoundConfig.run(self)
+  end
 end

@@ -62,4 +62,19 @@ describe Owner do
       end
     end
   end
+
+  describe "#hound_config" do
+    it "is the content of the owner's Hound configuration" do
+      config = instance_double(
+        "HoundConfig",
+        content: {
+          "LineLength" => { "Max" => 90 },
+        },
+      )
+      owner = create(:owner)
+      allow(BuildOwnerHoundConfig).to receive(:run).and_return(config)
+
+      expect(owner.hound_config).to eq("LineLength" => { "Max" => 90 })
+    end
+  end
 end
