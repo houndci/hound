@@ -5,19 +5,66 @@ require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config/serializer"
 require "app/models/config/json_with_comments"
+require "app/models/missing_owner"
+require "app/services/build_owner_hound_config"
 require "yaml"
 
 describe Config::Eslint do
   describe "#content" do
-    it "parses the configuration using YAML" do
-      raw_config = <<-EOS.strip_heredoc
-        rules:
-          quotes: [2, "double"]
-      EOS
-      commit = stubbed_commit("config/.eslintrc" => raw_config)
-      config = build_config(commit)
+    context "when an owner is provided" do
+      it "merges the configuration into the owner's configuration" do
+        owner = instance_double(
+          "Owner",
+          hound_config: {
+            "rules" => {
+              "no-empty" => [
+                2,
+                { "allowEmptyCatch" => true },
+              ],
+            },
+          },
+        )
+        raw_config = <<~EOS
+          {
+            "rules": {
+              "brace-style": [
+                2,
+                "1tbs",
+                { "allowSingleLine": true }
+              ]
+            }
+          }
+        EOS
+        commit = stubbed_commit("config/.eslintrc" => raw_config)
+        config = build_config(commit, owner)
 
-      expect(config.content).to eq("rules" => { "quotes" => [2, "double"] })
+        expect(config.content).to eq(
+          "rules" => {
+            "brace-style" => [
+              2,
+              "1tbs",
+              { "allowSingleLine" => true },
+            ],
+            "no-empty" => [
+              2,
+              { "allowEmptyCatch" => true },
+            ],
+          },
+        )
+      end
+    end
+
+    context "when the owner is missing" do
+      it "parses the configuration using YAML" do
+        raw_config = <<~EOS
+          rules:
+            quotes: [2, "double"]
+        EOS
+        commit = stubbed_commit("config/.eslintrc" => raw_config)
+        config = build_config(commit)
+
+        expect(config.content).to eq("rules" => { "quotes" => [2, "double"] })
+      end
     end
 
     context "when configuration is linter-flavored JSON format" do
@@ -51,7 +98,7 @@ describe Config::Eslint do
     end
   end
 
-  def build_config(commit)
+  def build_config(commit, owner = MissingOwner.new)
     hound_config = double(
       "HoundConfig",
       commit: commit,
@@ -60,6 +107,6 @@ describe Config::Eslint do
       },
     )
 
-    Config::Eslint.new(hound_config)
+    Config::Eslint.new(hound_config, owner: owner)
   end
 end
