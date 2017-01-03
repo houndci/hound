@@ -9,7 +9,9 @@
       %li
         = link_to "Docs", configuration_path, class: "docs"
       %li
-        = link_to "FAQ", faq_path, class: "faq"
+        = link_to "FAQ",
+          "https://intercom.help/hound/frequently-asked-questions",
+          class: "faq"
     %ul.pull-right{ "data-role" => "account-actions" }
       - if signed_in?
         - if current_user.subscriptions.count > 0
