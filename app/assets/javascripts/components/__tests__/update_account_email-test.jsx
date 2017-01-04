@@ -18,23 +18,6 @@ it('renders appropriately on address change', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-// it('renders appropriately on successful email update', () => {
-//   //const jQueryStub = sinon.stub($, 'ajax').yieldsTo('success');
-
-//   const wrapper = mount(
-//     <UpdateAccountEmail
-//       addressChanged={false}
-//     />
-//   );
-
-//   wrapper.find('.button-small').simulate('click');
-
-//   expect(wrapper.find('.fa-check')).to.have.length(1);
-//   expect(wrapper.props().addressChanged).toBe(true);
-
-//   //jQueryStub.restore();
-// });
-
 it('sets state appropriately on email input', () => {
   const wrapper = mount(
     <UpdateAccountEmail

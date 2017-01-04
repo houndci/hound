@@ -2,9 +2,9 @@ import NotifyTierChange from '../notify_tier_change.js';
 
 let repo = {id: 1, name: "Test repo"};
 let plans = [
-  {name: "Chihuahua", price: 49, allowance: 4},
-  {name: "Labrador", price: 99, allowance: 10},
-  {name: "Great Dane", price: 249, allowance: 30},
+  { name: "Chihuahua", price: 49, allowance: 4 },
+  { name: "Labrador", price: 99, allowance: 10 },
+  { name: "Great Dane", price: 249, allowance: 30 },
 ]
 
 function make_active_plan(target_name) {

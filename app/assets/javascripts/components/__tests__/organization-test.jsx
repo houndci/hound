@@ -6,7 +6,7 @@ it('renders an organization with ID appropriately (no repo processing)', () => {
     name: "Test org"
   }
   const repos = [
-    {id: 1, name: "Test repo"}
+    { id: 1, name: "Test repo" }
   ]
 
   const wrapper = shallow(
