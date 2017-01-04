@@ -5,6 +5,7 @@ require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config/serializer"
 require "app/models/config/json_with_comments"
+require "app/models/missing_owner"
 
 describe Config::Tslint do
   describe "#content" do

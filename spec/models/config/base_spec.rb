@@ -1,6 +1,7 @@
 require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/parser_error"
+require "app/models/missing_owner"
 require "faraday"
 require "yaml"
 

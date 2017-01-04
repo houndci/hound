@@ -63,6 +63,10 @@ module Linter
       job_name.constantize
     end
 
+    def owner
+      build.repo.owner || MissingOwner.new
+    end
+
     def config
       @config ||= ConfigBuilder.for(hound_config, name)
     end

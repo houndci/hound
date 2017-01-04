@@ -7,7 +7,7 @@ module Linter
     private
 
     def config
-      Config::CoffeeScript.new(hound_config, owner: build.repo.owner)
+      Config::CoffeeScript.new(hound_config, owner: owner)
     end
 
     def job_name

@@ -3,6 +3,7 @@ require "app/models/config/base"
 require "app/models/config/coffee_script"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
+require "app/models/missing_owner"
 
 describe Config::CoffeeScript do
   describe "#content" do

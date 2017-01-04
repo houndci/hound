@@ -1,15 +1,10 @@
 module Config
   class Ruby < Base
-    def initialize(hound_config, owner: nil)
-      super(hound_config)
-      @owner = owner
-    end
-
     def content
       if legacy?
         hound_config.content
       else
-        owner_config_content.deep_merge(parse_inherit_from(super))
+        owner_config.deep_merge(parse_inherit_from(super))
       end
     end
 
@@ -21,18 +16,6 @@ module Config
 
     def parse(file_content)
       Parser.yaml(file_content)
-    end
-
-    def owner_config_content
-      if @owner.present?
-        Config::Ruby.new(owner_hound_config).content
-      else
-        {}
-      end
-    end
-
-    def owner_hound_config
-      BuildOwnerHoundConfig.run(@owner)
     end
 
     def parse_inherit_from(config)

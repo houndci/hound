@@ -4,6 +4,7 @@ require "app/models/config/ruby"
 require "app/models/hound_config"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
+require "app/models/missing_owner"
 require "app/services/build_owner_hound_config"
 
 describe Config::Ruby do
@@ -32,17 +33,18 @@ describe Config::Ruby do
 
       context "and an owner is present" do
         it "returns the config merged with the owner's config as a hash" do
-          owner = double("Owner")
-          owner_commit = stubbed_commit(
-            "config/rubocop.yml" => '{ "Metrics/ClassLength": { "Max": 100 } }',
+          owner = instance_double(
+            "Owner",
+            hound_config: {
+              "Metrics/ClassLength" => {
+                "Max" => 100,
+              },
+            },
           )
-          owner_config = build_config(owner_commit)
           repo_commit = stubbed_commit(
             "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
           )
           config = build_config(repo_commit, owner)
-          allow(BuildOwnerHoundConfig).to receive(:run).with(owner).
-            and_return(owner_config)
 
           expect(config.content).to eq(
             "LineLength" => { "Max" => 90 },
@@ -170,7 +172,7 @@ describe Config::Ruby do
     end
   end
 
-  def build_config(commit, owner = nil)
+  def build_config(commit, owner = MissingOwner.new)
     hound_config = double(
       "HoundConfig",
       commit: commit,

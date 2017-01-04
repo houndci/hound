@@ -1,6 +1,9 @@
 module Config
   class Base
-    attr_reader_initialize :hound_config
+    def initialize(hound_config, owner: MissingOwner.new)
+      @hound_config = hound_config
+      @owner = owner
+    end
 
     def content
       @content ||= ensure_correct_type(safe_parse(load_content))
@@ -16,7 +19,12 @@ module Config
 
     private
 
+    attr_reader :hound_config, :owner
     attr_implement :parse, [:file_content]
+
+    def owner_config
+      owner.hound_config
+    end
 
     def safe_parse(content)
       parse(content)
