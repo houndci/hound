@@ -1,3 +1,4 @@
+import RepoAllowance from './repo_allowance.js';
 import RepoTools from './repo_tools.js';
 import ReposView from './repos_view.js';
 
