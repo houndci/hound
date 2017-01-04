@@ -41,7 +41,6 @@ feature "Listing Pricings" do
   end
 
   scenario "user upgrades their subscription", :js do
-    hook_url = "http://#{ENV['HOST']}/builds"
     user = create(:user, stripe_customer_id: stripe_customer_id)
     token = "letmein"
     sign_in_as(user, token)
@@ -54,10 +53,7 @@ feature "Listing Pricings" do
 
     repo = create(:repo, private: true)
     create(:membership, admin: true, repo: repo, user: user)
-    username = ENV.fetch("HOUND_GITHUB_USERNAME")
-    stub_add_collaborator_request(username, repo.name, token)
     stub_customer_find_request
-    stub_hook_creation_request(repo.name, hook_url, token)
     stub_subscription_create_request(plan: "tier1", repo_ids: repo.id)
     stub_subscription_update_request(plan: "tier2", repo_ids: repo.id)
     visit pricings_path(repo_id: repo.id)

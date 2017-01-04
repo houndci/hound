@@ -139,7 +139,6 @@ feature "Account" do
     email_address = "somebody.else@example.com"
     stub_customer_find_request
     stub_customer_update_request(email: email_address)
-    stub_repos_requests("letmein")
 
     sign_in_as(create(:user, :stripe))
     visit account_path

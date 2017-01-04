@@ -10,6 +10,11 @@ RSpec.configure do |config|
 
   config.before do
     DatabaseCleaner.clean
+    stub_request(:any, /api.github.com/).to_rack(FakeGithub)
+  end
+
+  config.before :each, type: :request do
+    FakeGithub.comments = []
   end
 
   config.infer_base_class_for_anonymous_controllers = false

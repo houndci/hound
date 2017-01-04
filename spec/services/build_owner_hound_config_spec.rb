@@ -4,6 +4,7 @@ describe BuildOwnerHoundConfig do
   describe "#run" do
     context "when the owner has a configuration set" do
       it "returns the owner's config merged with the default HoundConfig" do
+        github_api = instance_double("GithubApi", repo: "")
         owner = instance_double(
           "Owner",
           has_config_repo?: true,
@@ -15,8 +16,8 @@ describe BuildOwnerHoundConfig do
               enabled: true
           EOS
         )
-        stub_success_on_repo("thoughtbot/guides")
         allow(Commit).to receive(:new).and_return(commit)
+        allow(GithubApi).to receive(:new).and_return(github_api)
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
@@ -41,12 +42,14 @@ describe BuildOwnerHoundConfig do
 
     context "when the owner's configuration is unreachable" do
       it "returns the default HoundConfig" do
+        github_api = instance_double("GithubApi")
         owner = instance_double(
           "Owner",
           has_config_repo?: true,
           config_repo: "organization/private_style_guides",
         )
-        stub_failure_on_repo("organization/private_style_guides")
+        allow(GithubApi).to receive(:new).and_return(github_api)
+        allow(github_api).to receive(:repo).and_raise(Octokit::NotFound)
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
@@ -56,22 +59,21 @@ describe BuildOwnerHoundConfig do
 
     context "when the owner's configuration is improperly formatted" do
       it "returns the default HoundConfig" do
+        github_api = instance_double("GithubApi")
         owner = instance_double(
           "Owner",
           has_config_repo?: true,
           config_repo: "not/a/valid/repo",
         )
+        allow(GithubApi).to receive(:new).and_return(github_api)
+        allow(github_api).to receive(:repo).
+          and_raise(Octokit::InvalidRepository)
 
         owner_config = BuildOwnerHoundConfig.run(owner)
 
         expect(owner_config.content).to eq(default_hound_config)
       end
     end
-  end
-
-  def stub_failure_on_repo(repo_name)
-    stub_request(:get, %r"https://api.github.com/repos/#{repo_name}*").
-      to_return(status: 404, headers: {})
   end
 
   def default_hound_config
