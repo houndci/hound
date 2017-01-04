@@ -3,18 +3,43 @@ require "app/models/config/base"
 require "app/models/config/swift"
 require "app/models/config/parser"
 require "app/models/config/serializer"
+require "app/models/missing_owner"
 
 describe Config::Swift do
   describe "#content" do
-    it "parses the configuration using YAML" do
-      raw_config = <<-EOS.strip_heredoc
-        disabled_rules:
-          - colon
-      EOS
-      commit = stubbed_commit("config/swiftlint.yml" => raw_config)
-      config = build_config(commit)
+    context "when an owner is provided" do
+      it "merges the configuration into the owner's configuration" do
+        owner = instance_double(
+          "Owner",
+          hound_config: {
+            "excluded" => ["Carthage", "Pods"],
+          },
+        )
+        raw_config = <<~EOS
+          disabled_rules:
+            - colon
+        EOS
+        commit = stubbed_commit("config/swiftlint.yml" => raw_config)
+        config = build_config(commit, owner)
 
-      expect(config.content).to eq Config::Parser.yaml(raw_config)
+        expect(config.content).to eq(
+          "disabled_rules" => ["colon"],
+          "excluded" => ["Carthage", "Pods"],
+        )
+      end
+    end
+
+    context "when there is no owner" do
+      it "parses the configuration using YAML" do
+        raw_config = <<~EOS
+          disabled_rules:
+            - colon
+        EOS
+        commit = stubbed_commit("config/swiftlint.yml" => raw_config)
+        config = build_config(commit)
+
+        expect(config.content).to eq("disabled_rules" => ["colon"])
+      end
     end
   end
 
@@ -31,7 +56,7 @@ describe Config::Swift do
     end
   end
 
-  def build_config(commit)
+  def build_config(commit, owner = MissingOwner.new)
     hound_config = double(
       "HoundConfig",
       commit: commit,
@@ -40,6 +65,6 @@ describe Config::Swift do
       },
     )
 
-    Config::Swift.new(hound_config)
+    Config::Swift.new(hound_config, owner: owner)
   end
 end

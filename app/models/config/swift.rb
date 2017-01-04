@@ -1,5 +1,9 @@
 module Config
   class Swift < Base
+    def content
+      owner_config.deep_merge(super)
+    end
+
     def serialize(data = content)
       Serializer.yaml(data)
     end
