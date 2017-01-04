@@ -2,7 +2,9 @@ exports[`test renders a button appropriately for admin repos  1`] = `
 <button
   className="repo-toggle"
   disabled={null}
-  onClick={[Function]} />
+  onClick={[Function]}>
+  Activate
+</button>
 `;
 
 exports[`test renders a button appropriately for non-admin repos  1`] = `
@@ -16,5 +18,7 @@ exports[`test renders a disabled button appropriately for admin repos 1`] = `
 <button
   className="repo-toggle"
   disabled="disabled"
-  onClick={[Function]} />
+  onClick={[Function]}>
+  Activate
+</button>
 `;

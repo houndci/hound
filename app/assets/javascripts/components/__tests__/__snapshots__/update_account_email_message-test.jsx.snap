@@ -13,8 +13,7 @@ exports[`test renders appropriately 2`] = `
   className="inline-flash inline-flash--success"
   data-role="flash">
   <i
-    className="fa fa-check">
-    Email address updated!
-  </i>
+    className="fa fa-check" />
+  Email address updated!
 </p>
 `;
