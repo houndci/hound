@@ -4,6 +4,10 @@ module Linter
 
     private
 
+    def config
+      Config::Python.new(hound_config, owner: owner)
+    end
+
     def enqueue_job(attributes)
       Resque.push(
         "python_review",

@@ -1,7 +1,7 @@
 module Config
   class Python < Base
     def content
-      @content ||= super.presence || default_content
+      @content ||= owner_config.deep_merge(super.presence || default_content)
     end
 
     def serialize(data = content)
@@ -15,7 +15,7 @@ module Config
     end
 
     def default_content
-      ""
+      {}
     end
   end
 end
