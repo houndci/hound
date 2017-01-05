@@ -3,16 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.babel.js",
-    "build:watch": "webpack -w --config webpack.config.babel.js",
-    "build:prod": "webpack -p --config webpack.config.babel.js",
+    "build": "node_modules/webpack/bin/webpack.js --config webpack.config.babel.js",
+    "build:watch": "node_modules/webpack/bin/webpack.js -w --config webpack.config.babel.js",
+    "build:prod": "node_modules/webpack/bin/webpack.js -p --config webpack.config.babel.js",
+    "build:prod:watch": "node_modules/webpack/bin/webpack.js -p -w --config webpack.config.babel.js",
     "test": "jest app/assets/javascripts/components/__tests__/*-test.jsx",
     "test:watch": "jest --watch app/assets/javascripts/components/__tests__/*-test.jsx",
-    "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/*-test.jsx"
+    "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/*-test.jsx",
+    "heroku-postbuild": "npm run build"
   },
   "engines": {
-    "node": "7.1",
-    "npm": "3.10.9"
+    "node": "7.4",
+    "npm": "4.0.5"
   },
   "dependencies": {
     "autoprefixer": "^6.3.2",
