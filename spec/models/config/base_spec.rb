@@ -1,6 +1,8 @@
 require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/parser_error"
+require "app/models/config_content"
+require "app/models/config_content/remote"
 require "app/models/missing_owner"
 require "faraday"
 require "yaml"
@@ -19,109 +21,86 @@ end
 
 describe Config::Base do
   describe "#content" do
-    context "when there is no config content for the given linter" do
-      it "does not raise" do
-        hound_config = instance_double(
-          "HoundConfig",
-          commit: instance_double("Commit", file_content: ""),
-          content: {},
-        )
-        config = build_config(hound_config: hound_config)
-
-        expect { config.content }.not_to raise_error
-      end
-    end
-
-    context "when there is no specified filepath" do
-      it "returns a default value" do
-        config_content = {}
-        hound_config = instance_double(
-          "HoundConfig",
-          commit: double("Commit"),
-          content: {
-            "test" => config_content,
+    context "when an owner is provided" do
+      it "merges the loaded config with the owner's" do
+        commit = instance_double("Commit")
+        config_content = instance_double(
+          "ConfigContent",
+          load: {
+            "LineLength" => {
+              "Max" => 90,
+            },
           },
         )
+        content = { "test" => {} }
+        hound_config = instance_double(
+          "HoundConfig",
+          commit: commit,
+          content: content,
+        )
+        owner = instance_double(
+          "Owner",
+          hound_config: {
+            "Metrics/ClassLength" => {
+              "Max" => 100,
+            },
+          },
+        )
+        config = build_config(hound_config: hound_config, owner: owner)
+        allow(ConfigContent).to receive(:new).and_return(config_content)
+
+        expect(config.content).to eq(
+          "LineLength" => { "Max" => 90 },
+          "Metrics/ClassLength" => { "Max" => 100 },
+        )
+      end
+    end
+
+    context "when there is no owner" do
+      it "returns the loaded config" do
+        commit = instance_double("Commit")
+        config_content = instance_double(
+          "ConfigContent",
+          load: {
+            "LineLength" => {
+              "Max" => 90,
+            },
+          },
+        )
+        content = { "test" => {} }
+        hound_config = instance_double(
+          "HoundConfig",
+          commit: commit,
+          content: content,
+        )
         config = build_config(hound_config: hound_config)
+        allow(ConfigContent).to receive(:new).and_return(config_content)
 
-        expect(config.content).to eq(config_content)
+        expect(config.content).to eq("LineLength" => { "Max" => 90 })
       end
     end
 
-    context "when the filepath is a url" do
-      context "when url exists" do
-        it "returns the content of the url" do
-          hound_config = double(
-            "HoundConfig",
-            commit: double("Commit"),
-            content: {
-              "test" => {
-                "config_file" => "http://example.com/rubocop.yml",
-              },
-            },
-          )
-          response = <<-EOS.strip_heredoc
-            LineLength:
-              Max: 90
-          EOS
-          parsed_result = { "LineLength" => { "Max" => 90 } }
-          stub_request(:get, "http://example.com/rubocop.yml").
-            to_return(status: 200, body: response)
-          config = build_config(hound_config: hound_config)
-
-          expect(config.content).to eq parsed_result
-        end
-      end
-
-      context "when the url does not exist" do
-        it "raises an exception" do
-          hound_config = double(
-            "HoundConfig",
-            commit: double("Commit"),
-            content: {
-              "test" => {
-                "config_file" => "http://example.com/rubocop.yml",
-              },
-            },
-          )
-          stub_request(
-            :get,
-            "http://example.com/rubocop.yml",
-          ).to_return(
-            status: 404,
-            body: "Could not find resource",
-          )
-          config = build_config(hound_config: hound_config)
-
-          expect { config.content }.to raise_error do |exception|
-            expect(exception).to be_a Config::ParserError
-            expect(exception.message).to eq "404 Could not find resource"
-          end
-        end
-      end
-    end
-
-    context "when `parse` is not defined" do
+    context "when there is a problem loading the content" do
       it "raises an exception" do
-        hound_config = double(
+        commit = instance_double("Commit")
+        content = { "test" => {} }
+        hound_config = instance_double(
           "HoundConfig",
-          commit: double("Commit", file_content: ""),
-          content: {
-            "linter" => { "config_file" => "config-file.txt" },
-          },
+          commit: commit,
+          content: content,
         )
-        config = Config::Base.new(hound_config)
+        config = build_config(hound_config: hound_config)
+        allow(ConfigContent).to receive(:new).
+          and_raise(ConfigContent::ContentError, "Oops! Something went wrong")
 
-        expect { config.content }.to raise_error(
-          AttrExtras::MethodNotImplementedError,
-          "Implement a 'parse(file_content)' method",
-        )
+        expect { config.content }.
+          to raise_error(Config::ParserError, "Oops! Something went wrong")
       end
     end
   end
 
-  def build_config(hound_config: build_hound_config)
-    Config::Test.new(hound_config)
+  def build_config(hound_config: build_hound_config, owner: MissingOwner.new)
+    Config::Test.new(hound_config, owner: owner)
   end
 
   def build_hound_config

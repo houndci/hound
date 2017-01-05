@@ -18,8 +18,22 @@ module Config
 
     private
 
+    def ensure_correct_type(config)
+      if config.is_a? Hash
+        config
+      else
+        raise_type_error
+      end
+    end
+
     def parse(file_content = raw_content)
-      Parser.json(file_content)
+      super(file_content)
+    end
+
+    def safe_parse(content)
+      parse(content)
+    rescue JSON::ParserError, Psych::Exception => exception
+      raise_parse_error(exception.message)
     end
   end
 end

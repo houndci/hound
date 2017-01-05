@@ -3,6 +3,7 @@ require "app/models/config/base"
 require "app/models/config/coffee_script"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
+require "app/models/config_content"
 require "app/models/missing_owner"
 
 describe Config::CoffeeScript do
@@ -45,15 +46,12 @@ describe Config::CoffeeScript do
       it "raises an exception" do
         commit = stubbed_commit(
           "config/coffeescript.json" => <<-EOS.strip_heredoc
-            invalid_json
+            { invalid_json: [ }
           EOS
         )
         config = build_config(commit)
 
-        expect { config.content }.to raise_error(
-          Config::ParserError,
-          /unexpected token at 'invalid_json\n'/,
-        )
+        expect { config.content }.to raise_error(Config::ParserError)
       end
     end
   end

@@ -4,7 +4,7 @@ module Config
       if legacy?
         hound_config.content
       else
-        owner_config.deep_merge(parse_inherit_from(super))
+        parse_inherit_from(super)
       end
     end
 
@@ -13,10 +13,6 @@ module Config
     end
 
     private
-
-    def parse(file_content)
-      Parser.yaml(file_content)
-    end
 
     def parse_inherit_from(config)
       inherit_from = Array(config.fetch("inherit_from", []))
@@ -28,6 +24,12 @@ module Config
       end
 
       inherited_config.merge(config.except("inherit_from"))
+    end
+
+    def safe_parse(content)
+      parse(content)
+    rescue Psych::Exception => exception
+      raise_parse_error(exception.message)
     end
 
     def legacy?

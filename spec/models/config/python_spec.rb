@@ -4,6 +4,7 @@ require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config/python"
 require "app/models/config/serializer"
+require "app/models/config_content"
 require "app/models/missing_owner"
 require "inifile"
 
