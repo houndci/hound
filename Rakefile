@@ -10,6 +10,8 @@ task(:default).clear
 # Run webpack:build before :spec
 task default: ["webpack:build", :spec]
 
+task "assets:precompile" => "webpack:build"
+
 if defined? RSpec
   task(:spec).clear
   RSpec::Core::RakeTask.new(:spec) do |t|
