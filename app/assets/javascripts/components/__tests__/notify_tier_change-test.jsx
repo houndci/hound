@@ -9,7 +9,7 @@ let plans = [
 
 function make_active_plan(target_name) {
   return _.map(plans, (plan) => {
-    if (plan.name == target_name) {
+    if (plan.name === target_name) {
       plan.current = true;
       return plan;
     } else {

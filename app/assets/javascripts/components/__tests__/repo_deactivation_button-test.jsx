@@ -1,4 +1,4 @@
-import RepoActivationButton from '../repo_activation_button.js';
+import RepoDeactivationButton from '../repo_deactivation_button.js';
 
 it('renders a button appropriately for non-admin repos ', () => {
   const repo = {
@@ -10,7 +10,7 @@ it('renders a button appropriately for non-admin repos ', () => {
   }
 
   const wrapper = shallow(
-    <RepoActivationButton
+    <RepoDeactivationButton
       repo={repo}
       onRepoClicked={jest.fn()}
       isProcessingId={null}
@@ -30,7 +30,7 @@ it('renders a button appropriately for admin repos ', () => {
   }
 
   const wrapper = shallow(
-    <RepoActivationButton
+    <RepoDeactivationButton
       repo={repo}
       onRepoClicked={jest.fn()}
       isProcessingId={null}
@@ -50,7 +50,7 @@ it('renders a disabled button appropriately for admin repos', () => {
   }
 
   const wrapper = shallow(
-    <RepoActivationButton
+    <RepoDeactivationButton
       repo={repo}
       onRepoClicked={jest.fn()}
       isProcessingId={1}
@@ -72,7 +72,7 @@ it('calls the click handler appropriately', () => {
  const clickHandler = sinon.spy();
 
   const wrapper = shallow(
-    <RepoActivationButton
+    <RepoDeactivationButton
       repo={repo}
       onRepoClicked={clickHandler}
       isProcessingId={null}
