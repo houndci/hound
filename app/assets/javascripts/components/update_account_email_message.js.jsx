@@ -20,3 +20,5 @@ class UpdateAccountEmailMessage extends React.Component {
     }
   }
 }
+
+module.exports = UpdateAccountEmailMessage;

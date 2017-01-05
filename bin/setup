@@ -3,6 +3,9 @@
 # Set up Ruby
 bundle install
 
+# Install NPM modules
+npm install
+
 # Add binstubs to PATH via export PATH=".git/safe/../../bin:$PATH" in ~/.zshenv
 mkdir -p .git/safe
 

@@ -9,3 +9,5 @@ class ReposSyncSpinner extends React.Component {
     );
   }
 }
+
+module.exports = ReposSyncSpinner;

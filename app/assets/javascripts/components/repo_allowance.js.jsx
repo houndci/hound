@@ -14,3 +14,5 @@ class RepoAllowance extends React.Component {
     )
   }
 }
+
+module.exports = RepoAllowance;

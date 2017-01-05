@@ -23,3 +23,5 @@ class RepoToolsRefresh extends React.Component {
     );
   }
 }
+
+module.exports = RepoToolsRefresh;

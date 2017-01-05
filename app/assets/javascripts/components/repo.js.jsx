@@ -1,3 +1,6 @@
+import RepoActivationButton from './repo_activation_button.js';
+import RepoDeactivationButton from './repo_deactivation_button.js';
+
 class Repo extends React.Component {
   renderButton() {
     const { isProcessingId, repo, onRepoClicked } = this.props;
@@ -24,7 +27,7 @@ class Repo extends React.Component {
 
   render() {
     const { isProcessingId, repo } = this.props;
-    const { active, id, name, price_in_cents } = repo
+    const { active, id, name, price_in_cents } = repo;
 
     const showPrivate = !active && price_in_cents > 0;
 
@@ -52,3 +55,5 @@ class Repo extends React.Component {
     );
   }
 }
+
+module.exports = Repo;

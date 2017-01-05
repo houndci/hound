@@ -1,0 +1,16 @@
+exports[`test renders appropriately 1`] = `
+<div
+  className="repo-tools-private">
+  <form
+    action="/auth/github?access=full"
+    method="post">
+    <button
+      className="repo-tools-private-button"
+      type="submit">
+      <span>
+        Include private repos
+      </span>
+    </button>
+  </form>
+</div>
+`;

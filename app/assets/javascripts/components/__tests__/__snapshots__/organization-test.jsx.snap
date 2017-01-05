@@ -1,0 +1,28 @@
+exports[`test renders an organization with ID appropriately (no repo processing) 1`] = `
+<div
+  className="organization"
+  data-org-name="Test org">
+  <header
+    className="organization-header">
+    <h2
+      className="organization-header-title">
+      Test org
+    </h2>
+  </header>
+  <section
+    className="repo_listing">
+    <RepoList
+      filterTerm=""
+      isProcessingId={null}
+      onRepoClicked={[Function]}
+      repos={
+        Array [
+          Object {
+            "id": 1,
+            "name": "Test repo",
+          },
+        ]
+      } />
+  </section>
+</div>
+`;

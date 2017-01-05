@@ -1,3 +1,6 @@
+import EmptyRepoList from './empty_repo_list.js';
+import PopulatedRepoList from './populated_repo_list.js';
+
 class RepoList extends React.Component {
   render() {
     const {
@@ -23,3 +26,5 @@ class RepoList extends React.Component {
     }
   }
 }
+
+module.exports = RepoList;

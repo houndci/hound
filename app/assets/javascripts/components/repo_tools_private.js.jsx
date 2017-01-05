@@ -17,3 +17,5 @@ class RepoToolsPrivate extends React.Component {
     );
   }
 }
+
+module.exports = RepoToolsPrivate;

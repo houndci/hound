@@ -29,3 +29,5 @@ class RepoActivationButton extends React.Component {
     }
   }
 }
+
+module.exports = RepoActivationButton;

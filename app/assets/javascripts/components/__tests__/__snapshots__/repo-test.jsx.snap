@@ -1,0 +1,24 @@
+exports[`test renders a repo appropriately 1`] = `
+<li
+  className="repo">
+  <div
+    className="repo-name">
+    Test repo
+  </div>
+  <div
+    className="repo-activation-toggle">
+    <RepoActivationButton
+      isProcessingId={null}
+      onRepoClicked={[Function]}
+      repo={
+        Object {
+          "id": 1,
+          "name": "Test repo",
+          "owner": Object {
+            "id": 1,
+          },
+        }
+      } />
+  </div>
+</li>
+`;

@@ -1,3 +1,5 @@
+import Organization from './organization.js';
+
 class OrganizationsList extends React.Component {
   reposForOrg(org) {
     if (_.has(org, "id")) {
@@ -40,3 +42,5 @@ class OrganizationsList extends React.Component {
     );
   }
 }
+
+module.exports = OrganizationsList;

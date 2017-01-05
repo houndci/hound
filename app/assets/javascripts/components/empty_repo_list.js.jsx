@@ -3,3 +3,5 @@ class EmptyRepoList extends React.Component {
     return (<ul className="repos"></ul>);
   }
 }
+
+module.exports = EmptyRepoList;

@@ -48,3 +48,5 @@ class UpdateAccountCreditCard extends React.Component {
     }
   }
 }
+
+module.exports = UpdateAccountCreditCard;

@@ -62,3 +62,5 @@ class TierPlan extends React.Component {
     );
   }
 }
+
+module.exports = TierPlan;

@@ -12,3 +12,5 @@ class RepoToolsSearch extends React.Component {
     );
   }
 }
+
+module.exports = RepoToolsSearch;

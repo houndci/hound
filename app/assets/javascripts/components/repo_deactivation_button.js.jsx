@@ -46,3 +46,5 @@ class RepoDeactivationButton extends React.Component {
     }
   }
 }
+
+module.exports = RepoDeactivationButton;
