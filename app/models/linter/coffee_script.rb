@@ -6,10 +6,6 @@ module Linter
 
     private
 
-    def config
-      Config::CoffeeScript.new(hound_config, owner: owner)
-    end
-
     def job_name
       "CoffeelintReviewJob"
     end

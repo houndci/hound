@@ -9,10 +9,6 @@ module Linter
 
     private
 
-    def config
-      Config::Eslint.new(hound_config, owner: owner)
-    end
-
     def jsignore
       @jsignore ||= JsIgnore.new(name, hound_config, IGNORE_FILENAME)
     end
