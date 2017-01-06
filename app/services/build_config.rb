@@ -1,4 +1,4 @@
-class ConfigBuilder
+class BuildConfig
   def self.for(hound_config:, name:, owner:)
     new(hound_config: hound_config, name: name, owner: owner).config
   end

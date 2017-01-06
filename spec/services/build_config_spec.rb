@@ -1,15 +1,15 @@
 require "spec_helper"
-require "app/models/config_builder"
 require "app/models/config/base"
 require "app/models/config/ruby"
 require "app/models/config/unsupported"
 require "app/models/missing_owner"
+require "app/services/build_config"
 
-describe ConfigBuilder do
+describe BuildConfig do
   describe ".for" do
     context "when there is matching config class for the given name" do
       it "returns the matching config" do
-        config = ConfigBuilder.for(
+        config = BuildConfig.for(
           hound_config: double,
           name: "ruby",
           owner: instance_double("Owner"),
@@ -21,7 +21,7 @@ describe ConfigBuilder do
 
     context "when there is not matching config class for the given name" do
       it "returns the unsupported config" do
-        config = ConfigBuilder.for(
+        config = BuildConfig.for(
           hound_config: double,
           name: "non-existent-config",
           owner: instance_double("Owner"),
