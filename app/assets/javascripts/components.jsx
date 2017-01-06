@@ -7,6 +7,7 @@ import Repo from './components/repo.jsx';
 import RepoActivationButton from './components/repo_activation_button.jsx';
 import RepoList from './components/repo_list.jsx';
 import RepoTools from './components/repo_tools.jsx';
+import RepoToolsOrganizations from './components/repo_tools_organizations.jsx';
 import RepoToolsPrivate from './components/repo_tools_private.jsx';
 import RepoToolsRefresh from './components/repo_tools_refresh.jsx';
 import RepoToolsSearch from './components/repo_tools_search.jsx';

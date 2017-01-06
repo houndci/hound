@@ -5,7 +5,10 @@ exports[`test renders appropriately (when syncing) 1`] = `
     className="repo-tools-refresh-button"
     disabled="disabled"
     onClick={[Function]}>
-    <span />
+    <span>
+      <i
+        className="fa fa-refresh fa-fw fa-spin" />
+    </span>
   </button>
 </div>
 `;
@@ -17,7 +20,10 @@ exports[`test renders appropriately 1`] = `
     className="repo-tools-refresh-button"
     disabled={null}
     onClick={[Function]}>
-    <span />
+    <span>
+      <i
+        className="fa fa-refresh fa-fwundefined" />
+    </span>
   </button>
 </div>
 `;

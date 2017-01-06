@@ -1,0 +1,18 @@
+exports[`test renders a dropdown list containing organizations 1`] = `
+<div
+  className="repo-tools-org dropdown">
+  <i
+    className="fa fa-caret-down" />
+  <select
+    className="quick-jump">
+    <option
+      disabled={true}>
+      Quick jump to organization
+    </option>
+    <option
+      value="div[data-org-name=\'Test org\']">
+      Test org
+    </option>
+  </select>
+</div>
+`;

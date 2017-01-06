@@ -44,13 +44,13 @@
 
   &:hover,
   &:focus {
-    background-color: rgba($purple, 0.1);
-    border-color: $purple;
-    color: $purple;
+    background-color: rgba($base-accent-color, 0.1);
+    border-color: $base-accent-color;
+    color: $base-accent-color;
     outline: none;
 
     &::placeholder {
-      color: $purple;
+      color: $base-accent-color;
     }
   }
 }
@@ -69,8 +69,12 @@
   }
 }
 
-.repo-tools-refresh {
+.repo-tools-org {
   @include span-columns(3 of 12, table);
+}
+
+.repo-tools-refresh {
+  @include span-columns(1 of 12, table);
   @include media($small-screen-only) {
     display: block;
     width: 100%;
@@ -78,9 +82,10 @@
 }
 
 .repo-tools-refresh-button,
-.repo-tools-private-button {
+.repo-tools-private-button,
+.dropdown select {
   background-color: $base-background-color;
-  border: 2px solid $base-border-color;
+  border: 2px solid $base-accent-color;
   border-radius: 3px;
   color: $light-font-color;
   font-size: 1em;
@@ -95,8 +100,8 @@
   width: 100%;
 
   &:hover {
-    background-color: $purple;
-    border-color: $purple;
+    background-color: $base-accent-color;
+    border-color: $base-accent-color;
     color: $white;
   }
 

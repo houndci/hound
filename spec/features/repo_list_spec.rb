@@ -69,7 +69,7 @@ feature "Repo list", js: true do
 
     expect(page).to have_content(repo.name)
 
-    click_button I18n.t("sync_repos")
+    find(".repo-tools-refresh-button").click
 
     expect(page).to have_text("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
     expect(page).not_to have_text(repo.name)

@@ -9,3 +9,4 @@
 //= require classnames
 
 //= require sticky-header
+//= require quick-jump

@@ -1,9 +1,7 @@
 class RepoToolsRefresh extends React.Component {
-  buttonText(isSyncing) {
+  refreshIcon(isSyncing) {
     if (isSyncing) {
-      return Hound.settings.syncingButtonText;
-    } else {
-      return Hound.settings.syncNowButtonText;
+      return " fa-spin";
     }
   }
 
@@ -17,7 +15,9 @@ class RepoToolsRefresh extends React.Component {
           disabled={isSyncing ? "disabled" : null}
           onClick={onRefreshClicked}
         >
-          <span>{this.buttonText(isSyncing)}</span>
+          <span>
+            <i className={"fa fa-refresh fa-fw" + this.refreshIcon(isSyncing)}></i>
+          </span>
         </button>
       </div>
     );
