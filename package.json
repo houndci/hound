@@ -5,8 +5,6 @@
   "scripts": {
     "build": "node_modules/webpack/bin/webpack.js --config webpack.config.js",
     "build:watch": "node_modules/webpack/bin/webpack.js -w --config webpack.config.js",
-    "build:prod": "node_modules/webpack/bin/webpack.js -p --config webpack.config.js",
-    "build:prod:watch": "node_modules/webpack/bin/webpack.js -p -w --config webpack.config.js",
     "test": "jest app/assets/javascripts/components/__tests__/*-test.jsx",
     "test:watch": "jest --watch app/assets/javascripts/components/__tests__/*-test.jsx",
     "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/*-test.jsx",
