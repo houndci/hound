@@ -1,4 +1,4 @@
-import ReposView from '../repos_view.js';
+import ReposView from '../repos_view.jsx';
 
 it('renders appropriately', () => {
   const organizations = [

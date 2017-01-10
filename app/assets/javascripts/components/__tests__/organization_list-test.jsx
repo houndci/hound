@@ -1,5 +1,5 @@
-import OrganizationsList from '../organizations_list.js';
-import Organization from '../organization.js';
+import OrganizationsList from '../organizations_list.jsx';
+import Organization from '../organization.jsx';
 
 it('renders a list of organizations appropriately', () => {
   const organizations = [

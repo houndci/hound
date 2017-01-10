@@ -1,4 +1,4 @@
-import RepoDeactivationButton from '../repo_deactivation_button.js';
+import RepoDeactivationButton from '../repo_deactivation_button.jsx';
 
 it('renders a button appropriately for non-admin repos ', () => {
   const repo = {

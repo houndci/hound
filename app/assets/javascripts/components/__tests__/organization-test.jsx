@@ -1,4 +1,4 @@
-import Organization from '../organization.js';
+import Organization from '../organization.jsx';
 
 it('renders an organization with ID appropriately (no repo processing)', () => {
   const org = {
