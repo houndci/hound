@@ -1,10 +1,11 @@
 /*jshint esversion: 6 */
 
 const webpack = require('webpack');
-const path = require('path');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
+
+console.log(`preparing [${nodeEnv}] build`);
 
 const plugins = [
   new webpack.optimize.CommonsChunkPlugin({
@@ -44,7 +45,7 @@ if (isProd) {
 
 module.exports = {
   context: __dirname,
-  devtool: isProd ? 'inline-source-map' : 'eval',
+  //devtool: isProd ? 'source-map' : 'eval', not working reliably!
   entry: {
     vendor: [
       'babel-polyfill',
