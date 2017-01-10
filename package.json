@@ -7,8 +7,7 @@
     "build:watch": "node_modules/webpack/bin/webpack.js -w --config webpack.config.js",
     "test": "jest app/assets/javascripts/components/__tests__/*-test.jsx",
     "test:watch": "jest --watch app/assets/javascripts/components/__tests__/*-test.jsx",
-    "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/*-test.jsx",
-    "heroku-postbuild": "npm run build"
+    "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/*-test.jsx"
   },
   "engines": {
     "node": "7.4",

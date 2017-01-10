@@ -36,17 +36,21 @@ if (isProd) {
         if_return: true,
         join_vars: true,
       },
+      // Mangling would reduce the size of the bundle, but it made the deploys
+      // crash on Heroku. The reason is yet unknown.
+      // So, in lieu of that - let's disable it.
+      mangle: false,
       output: {
         comments: false
       },
-      sourceMap: false,
+      sourceMap: false
     })
   );
 }
 
 module.exports = {
   context: __dirname,
-  devtool: isProd ? 'hidden-source-map' : 'cheap-module-eval-source-map',
+  devtool: isProd ? false : 'inline-source-map',
   entry: {
     vendor: [
       'babel-polyfill',
@@ -57,6 +61,7 @@ module.exports = {
       'react',
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
+      'lodash'
     ],
     app: [
       './app/assets/javascripts/components.jsx',
