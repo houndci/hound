@@ -1,5 +1,5 @@
-import UpgradeSubscriptionLink from './upgrade_subscription_link.js';
-import TierPlan from './tier_plan.js';
+import UpgradeSubscriptionLink from './upgrade_subscription_link.jsx';
+import TierPlan from './tier_plan.jsx';
 
 class NotifyTierChange extends React.Component {
   getCurrentPlan() {

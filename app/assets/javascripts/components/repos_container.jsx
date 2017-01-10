@@ -1,8 +1,8 @@
-import RepoAllowance from './repo_allowance.js';
-import RepoTools from './repo_tools.js';
-import ReposView from './repos_view.js';
+import RepoAllowance from './repo_allowance.jsx';
+import RepoTools from './repo_tools.jsx';
+import ReposView from './repos_view.jsx';
 
-import * as Ajax from '../lib/ajax.js';
+import * as Ajax from '../lib/ajax.jsx';
 
 class ReposContainer extends React.Component {
   state = {

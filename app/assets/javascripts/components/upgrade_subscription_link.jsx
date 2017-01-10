@@ -1,4 +1,4 @@
-import * as Ajax from '../lib/ajax.js';
+import * as Ajax from '../lib/ajax.jsx';
 
 class UpgradeSubscriptionLink extends React.Component {
   componentWillMount() {

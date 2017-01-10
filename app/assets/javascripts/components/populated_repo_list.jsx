@@ -1,4 +1,4 @@
-import Repo from './repo.js';
+import Repo from './repo.jsx';
 
 class PopulatedRepoList extends React.Component {
   canShow(repo) {
