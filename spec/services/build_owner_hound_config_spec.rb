@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe BuildOwnerHoundConfig do
-  describe "#run" do
+  describe "#call" do
     context "when the owner has a configuration set" do
       it "returns the owner's config merged with the default HoundConfig" do
         github_api = instance_double("GithubApi", repo: "")
@@ -19,7 +19,7 @@ describe BuildOwnerHoundConfig do
         allow(Commit).to receive(:new).and_return(commit)
         allow(GithubApi).to receive(:new).and_return(github_api)
 
-        owner_config = BuildOwnerHoundConfig.run(owner)
+        owner_config = BuildOwnerHoundConfig.call(owner)
 
         expect(owner_config.content).
           to eq(default_hound_config.merge("remark" => { "enabled" => true }))
@@ -34,7 +34,7 @@ describe BuildOwnerHoundConfig do
           config_repo: "thoughtbot/guides",
         )
 
-        owner_config = BuildOwnerHoundConfig.run(owner)
+        owner_config = BuildOwnerHoundConfig.call(owner)
 
         expect(owner_config.content).to eq(default_hound_config)
       end
@@ -51,7 +51,7 @@ describe BuildOwnerHoundConfig do
         allow(GithubApi).to receive(:new).and_return(github_api)
         allow(github_api).to receive(:repo).and_raise(Octokit::NotFound)
 
-        owner_config = BuildOwnerHoundConfig.run(owner)
+        owner_config = BuildOwnerHoundConfig.call(owner)
 
         expect(owner_config.content).to eq(default_hound_config)
       end
@@ -69,7 +69,7 @@ describe BuildOwnerHoundConfig do
         allow(github_api).to receive(:repo).
           and_raise(Octokit::InvalidRepository)
 
-        owner_config = BuildOwnerHoundConfig.run(owner)
+        owner_config = BuildOwnerHoundConfig.call(owner)
 
         expect(owner_config.content).to eq(default_hound_config)
       end

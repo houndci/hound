@@ -1,16 +1,14 @@
 class CompleteFileReview
-  def self.run(attributes)
-    new(attributes).run
-  end
+  static_facade :call
 
   def initialize(attributes)
     @attributes = attributes
   end
 
-  def run
+  def call
     create_violations!
 
-    CompleteBuild.run(
+    CompleteBuild.call(
       pull_request: pull_request,
       build: build,
       token: build.user_token,

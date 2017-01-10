@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe BuildRunner do
-  describe "#run" do
+  describe "#call" do
     context "with active repo and opened pull request" do
       it "creates a build record with violations" do
         repo = create(:repo, :active)
@@ -17,7 +17,7 @@ describe BuildRunner do
         stubbed_pull_request
         stubbed_github_api
 
-        build_runner.run
+        build_runner.call
         builds = Build.where(repo_id: repo.id)
         build = builds.first
 
@@ -40,7 +40,7 @@ describe BuildRunner do
         stubbed_commenter
         stubbed_github_api
 
-        build_runner.run
+        build_runner.call
 
         expect(PullRequest).to have_received(:new).with(payload, user.token)
       end
@@ -63,7 +63,7 @@ describe BuildRunner do
         stubbed_commenter
         github_api = stubbed_github_api
 
-        build_runner.run
+        build_runner.call
 
         expect(github_api).to have_received(:create_pending_status).
           with(repo_name, "headsha", I18n.t(:pending_status))
@@ -87,7 +87,7 @@ describe BuildRunner do
         stubbed_commenter
         stubbed_github_api
 
-        build_runner.run
+        build_runner.call
 
         owner_attributes = Owner.first.slice(:name, :github_id, :organization)
         expect(owner_attributes).to eq(
@@ -104,7 +104,7 @@ describe BuildRunner do
         repo = create(:repo, :inactive)
         build_runner = make_build_runner(repo: repo)
 
-        build_runner.run
+        build_runner.call
 
         expect(repo.builds).to be_empty
       end
@@ -118,7 +118,7 @@ describe BuildRunner do
         allow(pull_request).
           to receive_messages(opened?: false, synchronize?: false)
 
-        build_runner.run
+        build_runner.call
 
         expect(repo.builds).to be_empty
       end
@@ -138,7 +138,7 @@ describe BuildRunner do
         stubbed_pull_request
         stubbed_github_api
 
-        build_runner.run
+        build_runner.call
 
         expect(analytics).to have_tracked("Build Started").
           for_user(repo.subscription.user).
@@ -168,7 +168,7 @@ describe BuildRunner do
           ),
         )
 
-        build_runner.run
+        build_runner.call
 
         expect(github_api).to have_received(:create_error_status).with(
           repo.name,
@@ -194,7 +194,7 @@ describe BuildRunner do
         allow(github_api).to receive(:create_pending_status).
           and_raise(Octokit::NotFound)
 
-        expect { build_runner.run }.to raise_error Octokit::NotFound
+        expect { build_runner.call }.to raise_error Octokit::NotFound
 
         expect(user.reload.repos).to eq [reachable_repo]
       end
@@ -209,7 +209,7 @@ describe BuildRunner do
         force_fail_build_creation
         allow(Resque).to receive(:enqueue)
 
-        expect { build_runner.run }.
+        expect { build_runner.call }.
           to raise_error ActiveRecord::StatementInvalid
         expect(Resque).not_to have_received(:enqueue)
       end
@@ -226,7 +226,7 @@ describe BuildRunner do
         github_api = stubbed_github_api
         stubbed_pull_request_with_file("foo.whatever", "hello world")
 
-        build_runner.run
+        build_runner.call
 
         expect(github_api).to have_received(:create_success_status).with(
           repo.name,

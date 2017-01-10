@@ -1,17 +1,15 @@
 class NormalizeConfig
-  def self.run(config)
-    new(config).run
-  end
+  static_facade :call
 
   def initialize(config)
     @config = config
   end
 
-  def run
+  def call
     @config.reduce({}) do |normalized_config, (key, value)|
       normalized_key = normalize_key(key)
       if value.is_a? Hash
-        normalized_config[normalized_key] = NormalizeConfig.run(value)
+        normalized_config[normalized_key] = NormalizeConfig.call(value)
       else
         normalized_config[normalized_key] = value
       end

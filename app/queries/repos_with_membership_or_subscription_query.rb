@@ -1,9 +1,11 @@
 class ReposWithMembershipOrSubscriptionQuery
+  static_facade :call
+
   def initialize(user)
     @user = user
   end
 
-  def run
+  def call
     @user.subscribed_repos.includes(:subscription) |
       @user.repos_by_activation_ability.includes(:subscription)
   end

@@ -3,9 +3,8 @@ module Buildable
     payload = Payload.new(payload_data)
 
     unless blacklisted?(payload)
-      UpdateRepoStatus.new(payload).run
-      build_runner = BuildRunner.new(payload)
-      build_runner.run
+      UpdateRepoStatus.call(payload)
+      BuildRunner.call(payload)
     end
   end
 

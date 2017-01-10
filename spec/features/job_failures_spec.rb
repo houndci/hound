@@ -8,7 +8,7 @@ feature "Job failures" do
     Resque::Failure.backend = Resque::Failure::Redis
     cleanup_test_failures
 
-    example.run
+    example.call
 
     cleanup_test_failures
     Resque::Failure.backend = previous_backend

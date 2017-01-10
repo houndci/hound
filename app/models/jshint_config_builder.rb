@@ -1,11 +1,8 @@
 class JshintConfigBuilder
+  static_facade :call
   pattr_initialize :hound_config
 
-  def self.for(hound_config)
-    new(hound_config).config
-  end
-
-  def config
+  def call
     Config::Jshint.new(load_content)
   end
 

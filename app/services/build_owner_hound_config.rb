@@ -2,15 +2,13 @@
 class BuildOwnerHoundConfig
   LATEST_SHA = "HEAD"
 
-  def self.run(*args)
-    new(*args).run
-  end
+  static_facade :call
 
   def initialize(owner)
     @owner = owner
   end
 
-  def run
+  def call
     if owner.has_config_repo? && config_repo_reachable?
       commit = Commit.new(config_repo.name, LATEST_SHA, github)
       HoundConfig.new(commit)

@@ -1,7 +1,5 @@
 class BuildConfig
-  def self.for(hound_config:, name:, owner:)
-    new(hound_config: hound_config, name: name, owner: owner).config
-  end
+  static_facade :call
 
   def initialize(hound_config:, name:, owner:)
     @hound_config = hound_config
@@ -9,7 +7,7 @@ class BuildConfig
     @owner = owner
   end
 
-  def config
+  def call
     config_class.new(hound_config, owner: owner)
   end
 

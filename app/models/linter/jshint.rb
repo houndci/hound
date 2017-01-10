@@ -14,15 +14,15 @@ module Linter
     end
 
     def local_config
-      @_config ||= JshintConfigBuilder.for(hound_config)
+      @_config ||= JshintConfigBuilder.call(hound_config)
     end
 
     def owner_config
-      @_owner_config ||= JshintConfigBuilder.for(owner_hound_config)
+      @_owner_config ||= JshintConfigBuilder.call(owner_hound_config)
     end
 
     def owner_hound_config
-      BuildOwnerHoundConfig.run(build.repo.owner)
+      BuildOwnerHoundConfig.call(build.repo.owner)
     end
 
     def jsignore

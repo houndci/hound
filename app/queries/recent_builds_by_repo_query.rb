@@ -1,15 +1,13 @@
 class RecentBuildsByRepoQuery
   NUMBER_OF_BUILDS = 20
 
-  def self.run(*args)
-    new(*args).run
-  end
+  static_facade :call
 
   def initialize(user:)
     @user = user
   end
 
-  def run
+  def call
     Build.find_by_sql([<<-SQL, user_id: @user.id, limit: NUMBER_OF_BUILDS])
       WITH user_builds AS (
         SELECT

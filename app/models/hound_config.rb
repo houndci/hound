@@ -49,15 +49,15 @@ class HoundConfig
   end
 
   def resolved_aliases_config
-    ResolveConfigAliases.run(normalized_config)
+    ResolveConfigAliases.call(normalized_config)
   end
 
   def normalized_config
-    NormalizeConfig.run(parsed_config)
+    NormalizeConfig.call(parsed_config)
   end
 
   def resolved_conflicts_config
-    ResolveConfigConflicts.run(resolved_aliases_config)
+    ResolveConfigConflicts.call(resolved_aliases_config)
   end
 
   def parsed_config

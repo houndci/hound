@@ -1,7 +1,5 @@
 class CompleteBuild
-  def self.run(pull_request:, build:, token:)
-    new(pull_request: pull_request, build: build, token: token).run
-  end
+  static_facade :call
 
   def initialize(pull_request:, build:, token:)
     @build = build
@@ -10,7 +8,7 @@ class CompleteBuild
     @commenter = Commenter.new(pull_request)
   end
 
-  def run
+  def call
     if build.completed?
       commenter.comment_on_violations(priority_violations)
       set_commit_status

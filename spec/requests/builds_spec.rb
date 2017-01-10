@@ -46,7 +46,7 @@ RSpec.describe "POST /builds" do
 
   def stub_review_job(klass, violations:)
     allow(klass).to receive(:perform) do |attributes|
-      CompleteFileReview.run(
+      CompleteFileReview.call(
         "commit_sha" => attributes.fetch("commit_sha"),
         "filename" => attributes.fetch("filename"),
         "linter_name" => attributes.fetch("linter_name"),

@@ -144,6 +144,6 @@ describe Linter::Jshint do
   end
 
   def stub_owner_hound_config(config)
-    allow(BuildOwnerHoundConfig).to receive(:run).and_return(config)
+    allow(BuildOwnerHoundConfig).to receive(:call).and_return(config)
   end
 end

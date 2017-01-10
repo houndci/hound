@@ -14,8 +14,8 @@ class Owner < ApplicationRecord
   end
 
   def config_content(linter_name)
-    BuildConfig.for(
-      hound_config: BuildOwnerHoundConfig.run(self),
+    BuildConfig.call(
+      hound_config: BuildOwnerHoundConfig.call(self),
       name: linter_name,
       owner: MissingOwner.new,
     ).content

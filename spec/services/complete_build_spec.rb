@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe CompleteBuild do
-  describe ".run" do
+  describe ".call" do
     context "when build has violations" do
       context "when the build is complete" do
         it "comments a maximum number of times" do
@@ -153,7 +153,7 @@ describe CompleteBuild do
     def run_service(build)
       head_commit = double("Commit", file_content: "")
       pull_request = double("PullRequest", head_commit: head_commit)
-      CompleteBuild.run(
+      CompleteBuild.call(
         pull_request: pull_request,
         build: build,
         token: "abc123",

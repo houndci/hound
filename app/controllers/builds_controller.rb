@@ -39,6 +39,6 @@ class BuildsController < ApplicationController
   end
 
   def recent_builds_by_repo
-    RecentBuildsByRepoQuery.run(user: current_user)
+    RecentBuildsByRepoQuery.call(user: current_user)
   end
 end

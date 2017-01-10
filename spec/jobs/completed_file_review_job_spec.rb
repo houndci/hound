@@ -3,16 +3,16 @@ require "rails_helper"
 describe CompletedFileReviewJob do
   describe ".perform" do
     it "calls `CompleteFileReview`" do
-      allow(CompleteFileReview).to receive(:run)
+      allow(CompleteFileReview).to receive(:call)
 
       CompletedFileReviewJob.perform(attributes)
 
-      expect(CompleteFileReview).to have_received(:run).with(attributes)
+      expect(CompleteFileReview).to have_received(:call).with(attributes)
     end
 
     context "when build doesn't exist" do
       it "enqueues job with a 30 second delay" do
-        allow(CompleteFileReview).to receive(:run).
+        allow(CompleteFileReview).to receive(:call).
           and_raise(ActiveRecord::RecordNotFound)
         allow(Resque).to receive(:enqueue_in)
 
@@ -25,7 +25,7 @@ describe CompletedFileReviewJob do
 
     context "when Resque process is killed" do
       it "enqueues job" do
-        allow(CompleteFileReview).to receive(:run).
+        allow(CompleteFileReview).to receive(:call).
           and_raise(Resque::TermException.new(1))
         allow(Resque).to receive(:enqueue)
 

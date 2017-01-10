@@ -5,15 +5,13 @@ class ResolveConfigAliases
     "coffeescript" => "coffee_script",
   }.freeze
 
-  def self.run(config)
-    new(config).run
-  end
+  static_facade :call
 
   def initialize(config)
     @config = config
   end
 
-  def run
+  def call
     @config.reduce({}) do |resolved_config, (key, value)|
       if ALIASES.keys.include? key
         resolved_config[ALIASES[key]] = value

@@ -5,7 +5,7 @@ require "app/models/config/jshint"
 require "app/models/jshint_config_builder"
 
 describe JshintConfigBuilder do
-  describe ".for" do
+  describe ".call" do
     context "when there is a jshint configuration" do
       it "takes a hound config and returns a jshint config with content" do
         commit = stubbed_commit(".jshintrc" => <<~CON)
@@ -21,7 +21,7 @@ describe JshintConfigBuilder do
           content: { "jshint" => { "config_file" => ".jshintrc" } },
         )
 
-        config = JshintConfigBuilder.for(hound_config)
+        config = JshintConfigBuilder.call(hound_config)
 
         expect(config).to be_a(Config::Jshint)
         expect(config.content).to eq(
@@ -39,7 +39,7 @@ describe JshintConfigBuilder do
           content: {},
         )
 
-        config = JshintConfigBuilder.for(hound_config)
+        config = JshintConfigBuilder.call(hound_config)
 
         expect(config).to be_a(Config::Jshint)
         expect(config.content).to eq({})
