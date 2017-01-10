@@ -5,6 +5,7 @@ require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config_content"
 require "app/models/missing_owner"
+require "app/services/build_config"
 
 describe Config::CoffeeScript do
   describe "#content" do
@@ -16,6 +17,8 @@ describe Config::CoffeeScript do
           EOS
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::CoffeeScript", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         result = config.content
 
@@ -33,6 +36,8 @@ describe Config::CoffeeScript do
           EOS
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::CoffeeScript", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         result = config.content
 
@@ -50,6 +55,8 @@ describe Config::CoffeeScript do
           EOS
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::CoffeeScript", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect { config.content }.to raise_error(Config::ParserError)
       end

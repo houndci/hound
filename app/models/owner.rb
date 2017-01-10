@@ -14,12 +14,6 @@ class Owner < ApplicationRecord
   end
 
   def hound_config
-    build_config.content
-  end
-
-  private
-
-  def build_config
     BuildOwnerHoundConfig.run(self)
   end
 end

@@ -158,7 +158,15 @@ describe BuildRunner do
         )
         invalid_config_file(pull_request, "config/rubocop.yml" => "!")
         github_api = stubbed_github_api
+        style_checker = instance_double("StyleChecker")
         stubbed_commenter
+        allow(StyleChecker).to receive(:new).and_return(style_checker)
+        allow(style_checker).to receive(:review_files).and_raise(
+          Config::ParserError.new(
+            I18n.t(:config_error_status, linter_name: "ruby"),
+            linter_name: "ruby",
+          ),
+        )
 
         build_runner.run
 

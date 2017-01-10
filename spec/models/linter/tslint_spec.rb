@@ -23,6 +23,8 @@ describe Linter::Tslint do
     it "returns a saved and incomplete file review" do
       commit_file = build_commit_file(filename: "lib/a.ts")
       linter = build_linter
+      owner_config = instance_double("Config::Tslint", serialize: {})
+      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       result = linter.file_review(commit_file)
 

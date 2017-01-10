@@ -4,27 +4,32 @@ require "app/models/config/haml"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config/serializer"
+require "app/models/config_content"
 require "app/models/missing_owner"
+require "app/services/build_config"
 
 describe Config::Haml do
   describe "#content" do
     context "when an owner is provided" do
       it "merges the configuration into the owner's configuration" do
-        owner = instance_double(
-          "Owner",
-          hound_config: {
-            "linters" => {
-              "ClassAttributeWithStaticValue" => { "enabled" => true },
-            },
-          },
-        )
         raw_config = <<~EOS
           linters:
             AltText:
               enabled: true
         EOS
         commit = stubbed_commit("config/haml.yml" => raw_config)
+        hound_config = instance_double("HoundConfig")
+        owner = instance_double("Owner", hound_config: hound_config)
         config = build_config(commit, owner)
+        owner_config = instance_double(
+          "Config::Haml",
+          content: {
+            "linters" => {
+              "ClassAttributeWithStaticValue" => { "enabled" => true },
+            },
+          },
+        )
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq(
           "linters" => {
@@ -45,6 +50,8 @@ describe Config::Haml do
           EOS
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::Haml", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq(
           "linters" => { "AltText" => { "enabled" => true } },
@@ -61,6 +68,8 @@ describe Config::Haml do
             EOS
           )
           config = build_config(commit)
+          owner_config = instance_double("Config::Haml", content: {})
+          allow(BuildConfig).to receive(:for).and_return(owner_config)
 
           expect { config.content }.to raise_error(
             Config::ParserError,
@@ -78,6 +87,8 @@ describe Config::Haml do
             EOS
           )
           config = build_config(commit)
+          owner_config = instance_double("Config::Haml", content: {})
+          allow(BuildConfig).to receive(:for).and_return(owner_config)
 
           expect { config.content }.to raise_error(
             Config::ParserError,

@@ -5,7 +5,9 @@ require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config/serializer"
 require "app/models/config/json_with_comments"
+require "app/models/config_content"
 require "app/models/missing_owner"
+require "app/services/build_config"
 require "app/services/build_owner_hound_config"
 require "yaml"
 
@@ -13,17 +15,6 @@ describe Config::Eslint do
   describe "#content" do
     context "when an owner is provided" do
       it "merges the configuration into the owner's configuration" do
-        owner = instance_double(
-          "Owner",
-          hound_config: {
-            "rules" => {
-              "no-empty" => [
-                2,
-                { "allowEmptyCatch" => true },
-              ],
-            },
-          },
-        )
         raw_config = <<~EOS
           {
             "rules": {
@@ -36,7 +27,21 @@ describe Config::Eslint do
           }
         EOS
         commit = stubbed_commit("config/.eslintrc" => raw_config)
+        hound_config = instance_double("HoundConfig")
+        owner = instance_double("Owner", hound_config: hound_config)
         config = build_config(commit, owner)
+        owner_config = instance_double(
+          "Config::Eslint",
+          content: {
+            "rules" => {
+              "no-empty" => [
+                2,
+                { "allowEmptyCatch" => true },
+              ],
+            },
+          },
+        )
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq(
           "rules" => {
@@ -62,6 +67,8 @@ describe Config::Eslint do
         EOS
         commit = stubbed_commit("config/.eslintrc" => raw_config)
         config = build_config(commit)
+        owner_config = instance_double("Config::Eslint", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq("rules" => { "quotes" => [2, "double"] })
       end
@@ -77,6 +84,8 @@ describe Config::Eslint do
         EOS
         commit = stubbed_commit("config/.eslintrc" => raw_config)
         config = build_config(commit)
+        owner_config = instance_double("Config::Eslint", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq("foo" => 1, "bar" => 2)
       end
@@ -91,6 +100,8 @@ describe Config::Eslint do
       EOS
       commit = stubbed_commit("config/.eslintrc" => raw_config)
       config = build_config(commit)
+      owner_config = instance_double("Config::Eslint", content: {})
+      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.serialize).to eq(
         "{\"rules\":{\"quotes\":[2,\"double\"]}}",

@@ -4,7 +4,9 @@ require "app/models/config/ruby"
 require "app/models/hound_config"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
+require "app/models/config_content"
 require "app/models/missing_owner"
+require "app/services/build_config"
 require "app/services/build_owner_hound_config"
 
 describe Config::Ruby do
@@ -27,24 +29,29 @@ describe Config::Ruby do
           "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::Ruby", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq("LineLength" => { "Max" => 90 })
       end
 
       context "and an owner is present" do
         it "returns the config merged with the owner's config as a hash" do
-          owner = instance_double(
-            "Owner",
-            hound_config: {
+          repo_commit = stubbed_commit(
+            "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
+          )
+          hound_config = instance_double("HoundConfig")
+          owner = instance_double("Owner", hound_config: hound_config)
+          config = build_config(repo_commit, owner)
+          owner_config = instance_double(
+            "Config::Ruby",
+            content: {
               "Metrics/ClassLength" => {
                 "Max" => 100,
               },
             },
           )
-          repo_commit = stubbed_commit(
-            "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
-          )
-          config = build_config(repo_commit, owner)
+          allow(BuildConfig).to receive(:for).and_return(owner_config)
 
           expect(config.content).to eq(
             "LineLength" => { "Max" => 90 },
@@ -64,6 +71,8 @@ describe Config::Ruby do
       )
 
       config = build_config(commit)
+      owner_config = instance_double("Config::Ruby", content: {})
+      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.content.to_yaml).to eq <<-YML.strip_heredoc
         ---
@@ -98,6 +107,8 @@ describe Config::Ruby do
         "config/overrides.yml" => overrides,
       )
       config = build_config(commit)
+      owner_config = instance_double("Config::Ruby", content: {})
+      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.content).to eq(
         "LineLength" => { "Max" => 40 },
@@ -119,6 +130,8 @@ describe Config::Ruby do
           "config/rubocop_todo.yml" => rubocop_todo,
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::Ruby", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq(
           "Style/Encoding" => { "Enabled" => true },
@@ -135,6 +148,8 @@ describe Config::Ruby do
           "config/rubocop_todo.yml" => rubocop_todo,
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::Ruby", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect { config.content }.to raise_error(Config::ParserError)
       end
@@ -146,6 +161,8 @@ describe Config::Ruby do
       it "raises a type exception" do
         commit = stubbed_commit("config/rubocop.yml" => "[]")
         config = build_config(commit)
+        owner_config = instance_double("Config::Ruby", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect { config.content }.to raise_error(
           Config::ParserError,
@@ -163,6 +180,8 @@ describe Config::Ruby do
           EOS
         )
         config = build_config(commit)
+        owner_config = instance_double("Config::Ruby", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect { config.content }.to raise_error(
           Config::ParserError,

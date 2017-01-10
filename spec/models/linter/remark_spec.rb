@@ -31,6 +31,8 @@ describe Linter::Remark do
     it "returns a saved and incomplete file review" do
       commit_file = build_commit_file(filename: "lib/a.md")
       linter = build_linter
+      owner_config = instance_double("Config::Remark", serialize: {})
+      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       result = linter.file_review(commit_file)
 

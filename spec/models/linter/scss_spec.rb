@@ -23,6 +23,8 @@ describe Linter::Scss do
     it "returns a saved and incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file(filename: "lib/a.scss")
+      owner_config = instance_double("Config::Scss", serialize: {})
+      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       result = linter.file_review(commit_file)
 

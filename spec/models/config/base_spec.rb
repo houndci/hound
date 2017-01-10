@@ -4,6 +4,7 @@ require "app/models/config/parser_error"
 require "app/models/config_content"
 require "app/models/config_content/remote"
 require "app/models/missing_owner"
+require "app/services/build_config"
 require "faraday"
 require "yaml"
 
@@ -38,15 +39,17 @@ describe Config::Base do
           commit: commit,
           content: content,
         )
-        owner = instance_double(
-          "Owner",
-          hound_config: {
+        owner = instance_double("Owner", hound_config: hound_config)
+        owner_config = instance_double(
+          "Config::Base",
+          content: {
             "Metrics/ClassLength" => {
               "Max" => 100,
             },
           },
         )
         config = build_config(hound_config: hound_config, owner: owner)
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
         allow(ConfigContent).to receive(:new).and_return(config_content)
 
         expect(config.content).to eq(
@@ -74,6 +77,8 @@ describe Config::Base do
           content: content,
         )
         config = build_config(hound_config: hound_config)
+        owner_config = instance_double("Config::Base", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
         allow(ConfigContent).to receive(:new).and_return(config_content)
 
         expect(config.content).to eq("LineLength" => { "Max" => 90 })
@@ -90,6 +95,8 @@ describe Config::Base do
           content: content,
         )
         config = build_config(hound_config: hound_config)
+        owner_config = instance_double("Config::Base", content: {})
+        allow(BuildConfig).to receive(:for).and_return(owner_config)
         allow(ConfigContent).to receive(:new).
           and_raise(ConfigContent::ContentError, "Oops! Something went wrong")
 

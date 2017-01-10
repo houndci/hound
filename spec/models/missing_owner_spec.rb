@@ -3,8 +3,8 @@ require "app/models/missing_owner"
 
 RSpec.describe MissingOwner do
   describe "#hound_config" do
-    it "is an empty hash" do
-      expect(MissingOwner.new.hound_config).to eq({})
+    it "is a missing Hound configuration" do
+      expect(MissingOwner.new.hound_config.content).to eq({})
     end
   end
 end
