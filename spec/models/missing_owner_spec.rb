@@ -1,10 +1,9 @@
-require "spec_helper"
 require "app/models/missing_owner"
 
 RSpec.describe MissingOwner do
-  describe "#hound_config" do
+  describe "#config_content" do
     it "is a missing Hound configuration" do
-      expect(MissingOwner.new.hound_config.content).to eq({})
+      expect(MissingOwner.new.config_content("anything")).to eq({})
     end
   end
 end

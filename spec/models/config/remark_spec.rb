@@ -5,7 +5,6 @@ require "app/models/config/parser"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
-require "app/services/build_config"
 
 describe Config::Remark do
   describe "#content" do
@@ -17,8 +16,6 @@ describe Config::Remark do
       EOS
       commit = stubbed_commit("config/.remarkrc" => raw_config)
       config = build_config(commit)
-      owner_config = instance_double("Config::Remark", content: {})
-      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.content).to eq Config::Parser.json(raw_config)
     end
@@ -33,8 +30,6 @@ describe Config::Remark do
       EOS
       commit = stubbed_commit("config/.remarkrc" => raw_config)
       config = build_config(commit)
-      owner_config = instance_double("Config::Remark", content: {})
-      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.serialize).to eq "{\"heading-style\":\"setext\"}"
     end

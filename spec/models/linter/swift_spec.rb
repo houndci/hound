@@ -23,8 +23,6 @@ describe Linter::Swift do
     it "returns a saved, incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file(filename: "a.swift")
-      owner_config = instance_double("Swift::Config", serialize: {})
-      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       result = linter.file_review(commit_file)
 

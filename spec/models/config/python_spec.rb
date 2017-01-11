@@ -1,4 +1,3 @@
-require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
@@ -6,7 +5,6 @@ require "app/models/config/python"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
-require "app/services/build_config"
 require "inifile"
 
 describe Config::Python do
@@ -18,18 +16,13 @@ describe Config::Python do
           max-line-length = 160
         EOS
         commit = stubbed_commit("config/python.ini" => raw_config)
-        hound_config = instance_double("HoundConfig")
-        owner = instance_double("Owner", hound_config: hound_config)
-        config = build_config(commit, owner: owner)
-        owner_config = instance_double(
-          "Config::Python",
-          content: {
-            "flake8" => {
-              "max-complexity" => 10,
-            },
+        owner_config_content = {
+          "flake8" => {
+            "max-complexity" => 10,
           },
-        )
-        allow(BuildConfig).to receive(:for).and_return(owner_config)
+        }
+        owner = instance_double("Owner", config_content: owner_config_content)
+        config = build_config(commit, owner: owner)
 
         expect(config.content).to eq(
           "flake8" => {
@@ -48,8 +41,6 @@ describe Config::Python do
         EOS
         commit = stubbed_commit("config/python.ini" => raw_config)
         config = build_config(commit)
-        owner_config = instance_double("Config::Python", content: {})
-        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq("flake8" => { "max-line-length" => 160 })
       end
@@ -63,8 +54,6 @@ describe Config::Python do
           content: {},
         )
         config = Config::Python.new(hound_config)
-        owner_config = instance_double("Config::Python", content: {})
-        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq({})
       end
@@ -79,8 +68,6 @@ describe Config::Python do
       EOS
       commit = stubbed_commit("config/python.ini" => raw_config)
       config = build_config(commit)
-      owner_config = instance_double("Config::Python", content: {})
-      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.serialize).to eq raw_config
     end

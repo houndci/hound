@@ -1,7 +1,5 @@
 class MissingOwner
-  MissingHoundConfig = Struct.new(:content)
-
-  def hound_config
-    MissingHoundConfig.new({})
+  def config_content(*)
+    {}
   end
 end

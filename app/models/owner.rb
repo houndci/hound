@@ -13,7 +13,11 @@ class Owner < ApplicationRecord
     config_enabled? && config_repo.present?
   end
 
-  def hound_config
-    BuildOwnerHoundConfig.run(self)
+  def config_content(linter_name)
+    BuildConfig.for(
+      hound_config: BuildOwnerHoundConfig.run(self),
+      name: linter_name,
+      owner: MissingOwner.new,
+    ).content
   end
 end

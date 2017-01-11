@@ -32,11 +32,7 @@ module Config
     end
 
     def owner_config
-      BuildConfig.for(
-        hound_config: owner.hound_config,
-        name: linter_name,
-        owner: MissingOwner.new,
-      ).content
+      owner.config_content(linter_name)
     end
 
     def parse(content)
