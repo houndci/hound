@@ -5,8 +5,6 @@ require "app/models/config/parser"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
-require "app/services/build_config"
-require "app/services/build_owner_hound_config"
 
 describe Config::Scss do
   describe "#content" do
@@ -20,21 +18,16 @@ describe Config::Scss do
               space_after_bang: false
         EOS
         commit = stubbed_commit("config/scss.yml" => raw_config)
-        hound_config = instance_double("HoundConfig")
-        owner = instance_double("Owner", hound_config: hound_config)
-        config = build_config(commit, owner)
-        owner_config = instance_double(
-          "Config::Scss",
-          content: {
-            "linters" => {
-              "BemDepth" => {
-                "enabled" => false,
-                "max_elements" => 1,
-              },
+        owner_config = {
+          "linters" => {
+            "BemDepth" => {
+              "enabled" => false,
+              "max_elements" => 1,
             },
           },
-        )
-        allow(BuildConfig).to receive(:for).and_return(owner_config)
+        }
+        owner = instance_double("Owner", config_content: owner_config)
+        config = build_config(commit, owner)
 
         expect(config.content).to eq(
           "linters" => {
@@ -63,8 +56,6 @@ describe Config::Scss do
         EOS
         commit = stubbed_commit("config/scss.yml" => raw_config)
         config = build_config(commit)
-        owner_config = instance_double("Config::Scss", content: {})
-        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq(
           "linters" => {
@@ -90,8 +81,6 @@ describe Config::Scss do
       EOS
       commit = stubbed_commit("config/scss.yml" => raw_config)
       config = build_config(commit)
-      owner_config = instance_double("Config::Scss", content: {})
-      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.serialize).to eq <<-EOS.strip_heredoc
         ---

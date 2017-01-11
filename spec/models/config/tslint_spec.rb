@@ -7,7 +7,6 @@ require "app/models/config/serializer"
 require "app/models/config/json_with_comments"
 require "app/models/config_content"
 require "app/models/missing_owner"
-require "app/services/build_config"
 
 describe Config::Tslint do
   describe "#content" do
@@ -21,8 +20,6 @@ describe Config::Tslint do
       EOS
       commit = stubbed_commit("config/tslint.json" => raw_config)
       config = build_config(commit)
-      owner_config = instance_double("Config::Tslint", content: {})
-      allow(BuildConfig).to receive(:for).and_return(owner_config)
 
       expect(config.content).to eq("rules" => { "no-constructor-vars" => true })
     end
@@ -37,8 +34,6 @@ describe Config::Tslint do
         EOS
         commit = stubbed_commit("config/tslint.json" => raw_config)
         config = build_config(commit)
-        owner_config = instance_double("Config::Tslint", content: {})
-        allow(BuildConfig).to receive(:for).and_return(owner_config)
 
         expect(config.content).to eq("foo" => 1, "bar" => 2)
       end
