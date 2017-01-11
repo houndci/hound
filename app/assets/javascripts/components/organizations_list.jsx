@@ -1,4 +1,4 @@
-import Organization from './organization.js';
+import Organization from './organization.jsx';
 
 class OrganizationsList extends React.Component {
   reposForOrg(org) {

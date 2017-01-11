@@ -1,4 +1,4 @@
-import RepoAllowance from '../repo_allowance.js';
+import RepoAllowance from '../repo_allowance.jsx';
 
 it('renders the allowance header', () => {
   const wrapper = shallow(

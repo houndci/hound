@@ -1,4 +1,4 @@
-import UpdateAccountEmail from '../update_account_email.js';
+import UpdateAccountEmail from '../update_account_email.jsx';
 
 it('renders appropriately', () => {
   const wrapper = shallow(

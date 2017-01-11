@@ -1,5 +1,5 @@
-import ReposSyncSpinner from './repos_sync_spinner.js';
-import OrganizationsList from './organizations_list.js';
+import ReposSyncSpinner from './repos_sync_spinner.jsx';
+import OrganizationsList from './organizations_list.jsx';
 
 class ReposView extends React.Component {
   render() {

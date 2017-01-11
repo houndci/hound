@@ -1,4 +1,4 @@
-import PopulatedRepoList from '../populated_repo_list.js';
+import PopulatedRepoList from '../populated_repo_list.jsx';
 
 it('renders a list of repos appropriately', () => {
   const organizations = [

@@ -1,4 +1,4 @@
-import RepoTools from '../repo_tools.js';
+import RepoTools from '../repo_tools.jsx';
 
 it('renders appropriately without Show Private button (not syncing)', () => {
   const has_private_access = true;

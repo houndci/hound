@@ -1,4 +1,4 @@
-import UpdateAccountCreditCard from '../update_account_credit_card.js';
+import UpdateAccountCreditCard from '../update_account_credit_card.jsx';
 
 it('renders appropriately', () => {
   const wrapper = shallow(

@@ -1,5 +1,5 @@
-import ReposContainer from '../repos_container.js';
-import * as Ajax from '../../lib/ajax.js';
+import ReposContainer from '../repos_container.jsx';
+import * as Ajax from '../../lib/ajax.jsx';
 
 it('renders appropriately', () => {
   const wrapper = shallow(

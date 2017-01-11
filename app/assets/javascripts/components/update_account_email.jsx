@@ -1,4 +1,4 @@
-import UpdateAccountEmailMessage from './update_account_email_message.js';
+import UpdateAccountEmailMessage from './update_account_email_message.jsx';
 
 class UpdateAccountEmail extends React.Component {
   state = {

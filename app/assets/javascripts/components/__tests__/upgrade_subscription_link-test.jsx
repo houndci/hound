@@ -1,5 +1,5 @@
-import UpgradeSubscriptionLink from '../upgrade_subscription_link.js';
-import * as Ajax from '../../lib/ajax.js';
+import UpgradeSubscriptionLink from '../upgrade_subscription_link.jsx';
+import * as Ajax from '../../lib/ajax.jsx';
 
 it('renders appropriately', () => {
   const repo = {

@@ -1,5 +1,5 @@
-import EmptyRepoList from './empty_repo_list.js';
-import PopulatedRepoList from './populated_repo_list.js';
+import EmptyRepoList from './empty_repo_list.jsx';
+import PopulatedRepoList from './populated_repo_list.jsx';
 
 class RepoList extends React.Component {
   render() {

@@ -1,5 +1,5 @@
-import RepoActivationButton from './repo_activation_button.js';
-import RepoDeactivationButton from './repo_deactivation_button.js';
+import RepoActivationButton from './repo_activation_button.jsx';
+import RepoDeactivationButton from './repo_deactivation_button.jsx';
 
 class Repo extends React.Component {
   renderButton() {

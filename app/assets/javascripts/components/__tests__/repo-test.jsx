@@ -1,4 +1,4 @@
-import Repo from '../repo.js';
+import Repo from '../repo.jsx';
 
 it('renders a repo appropriately', () => {
   const repo = {
