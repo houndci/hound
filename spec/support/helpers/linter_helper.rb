@@ -3,15 +3,11 @@ module LinterHelper
     head_commit = double("Commit", file_content: "{}")
     stub_commit_to_return_hound_config(head_commit)
     stub_commit_to_return_extra_files(head_commit, extra_files)
-    described_class.new(
-      hound_config: HoundConfig.new(head_commit),
-      build: build,
-      repository_owner_name: "ralph",
-    )
+    described_class.new hound_config: HoundConfig.new(head_commit), build: build
   end
 
   def raw_hound_config
-    <<-EOS.strip_heredoc
+    <<~EOS
       ruby:
         enabled: true
         config_file: config/rubocop.yml
@@ -56,17 +52,6 @@ module LinterHelper
       allow(commit).to receive(:file_content).with(filename).
         and_return(contents)
     end
-  end
-
-  def stubbed_commit(configuration)
-    commit = double("Commit")
-
-    configuration.each do |filename, contents|
-      allow(commit).to receive(:file_content).with(filename).
-        and_return(contents)
-    end
-
-    commit
   end
 
   def stub_commit_on_repo(repo:, sha:, files:)

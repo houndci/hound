@@ -14,10 +14,9 @@ describe Config::Swift do
           disabled_rules:
             - colon
         EOS
-        commit = stubbed_commit("config/swiftlint.yml" => raw_config)
         owner_config = { "excluded" => ["Carthage", "Pods"] }
         owner = instance_double("Owner", config_content: owner_config)
-        config = build_config(commit, owner)
+        config = build_config(raw_config, owner)
 
         expect(config.content).to eq(
           "disabled_rules" => ["colon"],
@@ -32,8 +31,7 @@ describe Config::Swift do
           disabled_rules:
             - colon
         EOS
-        commit = stubbed_commit("config/swiftlint.yml" => raw_config)
-        config = build_config(commit)
+        config = build_config(raw_config)
 
         expect(config.content).to eq("disabled_rules" => ["colon"])
       end
@@ -42,26 +40,13 @@ describe Config::Swift do
 
   describe "#serialize" do
     it "serializes the parsed content into YAML" do
-      raw_config = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         disabled_rules:
           - colon
       EOS
-      commit = stubbed_commit("config/swiftlint.yml" => raw_config)
-      config = build_config(commit)
+      config = build_config(raw_config)
 
       expect(config.serialize).to eq "---\ndisabled_rules:\n- colon\n"
     end
-  end
-
-  def build_config(commit, owner = MissingOwner.new)
-    hound_config = double(
-      "HoundConfig",
-      commit: commit,
-      content: {
-        "swift" => { "enabled": true, "config_file" => "config/swiftlint.yml" },
-      },
-    )
-
-    Config::Swift.new(hound_config, owner: owner)
   end
 end

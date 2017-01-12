@@ -15,14 +15,13 @@ describe Config::Python do
           [flake8]
           max-line-length = 160
         EOS
-        commit = stubbed_commit("config/python.ini" => raw_config)
         owner_config_content = {
           "flake8" => {
             "max-complexity" => 10,
           },
         }
         owner = instance_double("Owner", config_content: owner_config_content)
-        config = build_config(commit, owner: owner)
+        config = build_config(raw_config, owner)
 
         expect(config.content).to eq(
           "flake8" => {
@@ -39,8 +38,7 @@ describe Config::Python do
           [flake8]
           max-line-length = 160
         EOS
-        commit = stubbed_commit("config/python.ini" => raw_config)
-        config = build_config(commit)
+        config = build_config(raw_config)
 
         expect(config.content).to eq("flake8" => { "max-line-length" => 160 })
       end
@@ -62,26 +60,13 @@ describe Config::Python do
 
   describe "#serialize" do
     it "returns the parsed content back to INI" do
-      raw_config = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         [flake8]
         max-line-length = 160
       EOS
-      commit = stubbed_commit("config/python.ini" => raw_config)
-      config = build_config(commit)
+      config = build_config(raw_config)
 
       expect(config.serialize).to eq raw_config
     end
-  end
-
-  def build_config(commit, owner: MissingOwner.new)
-    hound_config = double(
-      "HoundConfig",
-      commit: commit,
-      content: {
-        "python" => { "enabled": true, "config_file" => "config/python.ini" },
-      },
-    )
-
-    Config::Python.new(hound_config, owner: owner)
   end
 end

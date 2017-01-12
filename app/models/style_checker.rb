@@ -23,11 +23,7 @@ class StyleChecker
   end
 
   def build_linter(linter_class)
-    linter_class.new(
-      hound_config: hound_config,
-      build: build,
-      repository_owner_name: pull_request.repository_owner_name,
-    )
+    linter_class.new(hound_config: hound_config, build: build)
   end
 
   def hound_config

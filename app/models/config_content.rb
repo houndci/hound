@@ -1,7 +1,7 @@
 class ConfigContent
   ContentError = Class.new(StandardError)
 
-  def initialize(commit:, file_path: nil, parser:)
+  def initialize(commit:, file_path:, parser:)
     @commit = commit
     @file_path = file_path
     @parser = parser

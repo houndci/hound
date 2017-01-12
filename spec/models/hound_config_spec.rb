@@ -1,4 +1,3 @@
-require "spec_helper"
 require "app/models/config/parser"
 require "app/services/normalize_config"
 require "app/services/resolve_config_aliases"
@@ -8,8 +7,8 @@ require "app/models/hound_config"
 describe HoundConfig do
   describe "#content" do
     it "returns the contents of .hound.yml, merged with the default config" do
-      commit = stubbed_commit(
-        ".hound.yml" => <<-EOS.strip_heredoc
+      commit = stub_commit(
+        ".hound.yml" => <<~EOS
           ruby:
             config_file: config/rubocop.yml
         EOS
@@ -26,7 +25,7 @@ describe HoundConfig do
   describe "#linter_enabled?" do
     context "given a supported language" do
       it "returns true for all of them" do
-        commit = stubbed_commit(".hound.yml" => "")
+        commit = stub_commit(".hound.yml" => "")
         hound_config = HoundConfig.new(commit)
 
         enabled_by_default =
@@ -39,8 +38,8 @@ describe HoundConfig do
 
     context "when the given language is disabled" do
       it "returns false" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             ruby:
               enabled: false
           EOS
@@ -53,8 +52,8 @@ describe HoundConfig do
 
     context "when the given language is enabled" do
       it "returns true" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             remark:
               enabled: true
           EOS
@@ -67,8 +66,8 @@ describe HoundConfig do
 
     context "when the given language is an alias, and is disabled" do
       it "returns false" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             java_script:
               enabled: false
           EOS
@@ -82,8 +81,8 @@ describe HoundConfig do
     context "when the given language conflicts with an enabled linter" do
       it "returns false" do
         stub_const("ResolveConfigConflicts::CONFLICTS", "eslint" => "jshint")
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             eslint:
               enabled: true
           EOS
@@ -97,7 +96,7 @@ describe HoundConfig do
 
     context "given an unsupported language" do
       it "returns false" do
-        commit = stubbed_commit(".hound.yml" => "")
+        commit = stub_commit(".hound.yml" => "")
         hound_config = HoundConfig.new(commit)
         unsupported_linter = "some_random_linter"
 
@@ -107,8 +106,8 @@ describe HoundConfig do
 
     context "when the enabled key is capitalized" do
       it "returns true" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             python:
               Enabled: true
           EOS
@@ -121,8 +120,8 @@ describe HoundConfig do
 
     context "when the given language has underscores in it" do
       it "converts them and returns true" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             coffeescript:
               enabled: true
           EOS
@@ -137,8 +136,8 @@ describe HoundConfig do
   describe "#fail_on_violations?" do
     context "when the setting is turned on" do
       it "returns true" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             fail_on_violations: true
           EOS
         )
@@ -150,8 +149,8 @@ describe HoundConfig do
 
     context "when the setting is turned off" do
       it "returns false" do
-        commit = stubbed_commit(
-          ".hound.yml" => <<-EOS.strip_heredoc
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
             fail_on_violations: false
           EOS
         )
@@ -163,7 +162,7 @@ describe HoundConfig do
 
     context "when the setting is unconfigured" do
       it "returns false" do
-        commit = stubbed_commit(".hound.yml" => "")
+        commit = stub_commit(".hound.yml" => "")
         hound_config = HoundConfig.new(commit)
 
         expect(hound_config.fail_on_violations?).to eq false

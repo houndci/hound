@@ -72,7 +72,7 @@ describe Linter::Remark do
   end
 
   def raw_hound_config
-    <<-EOS.strip_heredoc
+    <<~EOS
       remark:
         enabled: true
         config_file: config/.remarkrc

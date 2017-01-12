@@ -15,14 +15,13 @@ describe Config::Haml do
             AltText:
               enabled: true
         EOS
-        commit = stubbed_commit("config/haml.yml" => raw_config)
         owner_config = {
           "linters" => {
             "ClassAttributeWithStaticValue" => { "enabled" => true },
           },
         }
         owner = instance_double("Owner", config_content: owner_config)
-        config = build_config(commit, owner)
+        config = build_config(raw_config, owner)
 
         expect(config.content).to eq(
           "linters" => {
@@ -35,14 +34,12 @@ describe Config::Haml do
 
     context "when the given content is valid" do
       it "returns the content from GitHub as a hash" do
-        commit = stubbed_commit(
-          "config/haml.yml" => <<-EOS.strip_heredoc
-            linters:
-              AltText:
-                enabled: true
-          EOS
-        )
-        config = build_config(commit)
+        raw_config = <<~EOS
+          linters:
+            AltText:
+              enabled: true
+        EOS
+        config = build_config(raw_config)
 
         expect(config.content).to eq(
           "linters" => { "AltText" => { "enabled" => true } },
@@ -53,29 +50,25 @@ describe Config::Haml do
     context "when the given content is invalid" do
       context "when the result is not a hash" do
         it "raises a type exception" do
-          commit = stubbed_commit(
-            "config/haml.yml" => <<-EOS.strip_heredoc
-              !
-            EOS
-          )
-          config = build_config(commit)
+          raw_config = <<~EOS
+            !
+          EOS
+          config = build_config(raw_config)
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            %r("config/haml\.yml" must be a Hash),
+            %r("config/.+\..+" must be a Hash),
           )
         end
       end
 
       context "when the content is invalid yaml" do
         it "raises an exception" do
-          commit = stubbed_commit(
-            "config/haml.yml" => <<-EOS.strip_heredoc
-              ruby: !ruby/object
-                ;foo:
-            EOS
-          )
-          config = build_config(commit)
+          raw_config = <<~EOS
+            ruby: !ruby/object
+              ;foo:
+          EOS
+          config = build_config(raw_config)
 
           expect { config.content }.to raise_error(
             Config::ParserError,
@@ -84,19 +77,5 @@ describe Config::Haml do
         end
       end
     end
-  end
-
-  def build_config(commit, owner = MissingOwner.new)
-    hound_config = double(
-      "HoundConfig",
-      commit: commit,
-      content: {
-        "haml" => {
-          "enabled" => true,
-          "config_file" => "config/haml.yml",
-        },
-      },
-    )
-    Config::Haml.new(hound_config, owner: owner)
   end
 end

@@ -10,7 +10,7 @@ describe BuildOwnerHoundConfig do
           has_config_repo?: true,
           config_repo: "thoughtbot/guides",
         )
-        commit = stubbed_commit(
+        commit = stub_commit(
           ".hound.yml" => <<~EOS
             remark:
               enabled: true

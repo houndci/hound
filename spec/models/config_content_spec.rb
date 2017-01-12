@@ -49,8 +49,13 @@ RSpec.describe ConfigContent do
       it "is an empty hash" do
         commit = instance_double("Commit")
         parser = ->(_) {}
+        config_content = ConfigContent.new(
+          commit: commit,
+          file_path: nil,
+          parser: parser,
+        )
 
-        expect(ConfigContent.new(commit: commit, parser: parser).load).to eq({})
+        expect(config_content.load).to eq({})
       end
     end
 

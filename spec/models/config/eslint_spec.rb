@@ -6,7 +6,6 @@ require "app/models/config/serializer"
 require "app/models/config/json_with_comments"
 require "app/models/config_content"
 require "app/models/missing_owner"
-require "yaml"
 
 describe Config::Eslint do
   describe "#content" do
@@ -23,7 +22,6 @@ describe Config::Eslint do
             }
           }
         EOS
-        commit = stubbed_commit("config/.eslintrc" => raw_config)
         owner_config = {
           "rules" => {
             "no-empty" => [
@@ -33,7 +31,7 @@ describe Config::Eslint do
           },
         }
         owner = instance_double("Owner", config_content: owner_config)
-        config = build_config(commit, owner)
+        config = build_config(raw_config, owner)
 
         expect(config.content).to eq(
           "rules" => {
@@ -57,8 +55,7 @@ describe Config::Eslint do
           rules:
             quotes: [2, "double"]
         EOS
-        commit = stubbed_commit("config/.eslintrc" => raw_config)
-        config = build_config(commit)
+        config = build_config(raw_config)
 
         expect(config.content).to eq("rules" => { "quotes" => [2, "double"] })
       end
@@ -66,14 +63,13 @@ describe Config::Eslint do
 
     context "when configuration is linter-flavored JSON format" do
       it "parses the configuration" do
-        raw_config = <<-EOS.strip_heredoc
+        raw_config = <<~EOS
           {
             "foo": 1, // eslint JSON flavor can have comments
             "bar": 2,
           }
         EOS
-        commit = stubbed_commit("config/.eslintrc" => raw_config)
-        config = build_config(commit)
+        config = build_config(raw_config)
 
         expect(config.content).to eq("foo" => 1, "bar" => 2)
       end
@@ -82,28 +78,15 @@ describe Config::Eslint do
 
   describe "#serialize" do
     it "serializes the content into JSON" do
-      raw_config = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         rules:
           quotes: [2, "double"]
       EOS
-      commit = stubbed_commit("config/.eslintrc" => raw_config)
-      config = build_config(commit)
+      config = build_config(raw_config)
 
       expect(config.serialize).to eq(
         "{\"rules\":{\"quotes\":[2,\"double\"]}}",
       )
     end
-  end
-
-  def build_config(commit, owner = MissingOwner.new)
-    hound_config = double(
-      "HoundConfig",
-      commit: commit,
-      content: {
-        "eslint" => { "enabled": true, "config_file" => "config/.eslintrc" },
-      },
-    )
-
-    Config::Eslint.new(hound_config, owner: owner)
   end
 end

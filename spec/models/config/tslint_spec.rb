@@ -18,8 +18,7 @@ describe Config::Tslint do
           }
         }
       EOS
-      commit = stubbed_commit("config/tslint.json" => raw_config)
-      config = build_config(commit)
+      config = build_config(raw_config)
 
       expect(config.content).to eq("rules" => { "no-constructor-vars" => true })
     end
@@ -32,23 +31,10 @@ describe Config::Tslint do
             "bar": 2,
           }
         EOS
-        commit = stubbed_commit("config/tslint.json" => raw_config)
-        config = build_config(commit)
+        config = build_config(raw_config)
 
         expect(config.content).to eq("foo" => 1, "bar" => 2)
       end
     end
-  end
-
-  def build_config(commit)
-    hound_config = instance_double(
-      "HoundConfig",
-      commit: commit,
-      content: {
-        "tslint" => { "enabled": true, "config_file" => "config/tslint.json" },
-      },
-    )
-
-    Config::Tslint.new(hound_config)
   end
 end
