@@ -4,4 +4,4 @@ machine:
 
 test:
   override:
-    - bundle exec rake && npm run test
+    - bundle exec rake

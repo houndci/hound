@@ -8,7 +8,7 @@ Houndapp::Application.load_tasks
 task(:default).clear
 
 # Run webpack:build before :spec
-task default: ["webpack:build", :spec]
+task default: ["webpack:build", "spec", "js:spec", "bundler:audit"]
 
 task "assets:precompile" => "webpack:build"
 
@@ -18,5 +18,3 @@ if defined? RSpec
     t.verbose = false
   end
 end
-
-task default: "bundler:audit"
