@@ -161,14 +161,14 @@
       %p
         Hound uses
         = link_to "JSHint", "https://github.com/jshint/jshint", target: :blank
-        with this
-        = link_to "config", jshint_config_url, target: :blank
-        by default.
+        to review JavaScript code by default.
 
       %p
-        To change the way JSHint is configured, copy the
-        = link_to "default config file", jshint_config_url, target: :blank
-        into your project, make changes and reference the file in your
+        To change the way JSHint is configured, add
+        %em.code-inline .jshintrc
+        file to your project,
+        specify your desired configuration
+        and reference the file in your
         %em.code-inline .hound.yml
 
       %p
@@ -178,14 +178,20 @@
               config_file: .jshintrc
 
       %p
+        Check out
+        = link_to "JSHint configuration", "http://jshint.com/docs/options/",
+          target: :blank
+        for supported options.
+
+      %p
         To ignore certain files and directories, add
         %em.code-inline .jshintignore
         file to your project,
         include in it path patterns for files/directories that you want ignored,
         and reference the ignore file in your
         %em.code-inline .hound.yml
-        \. See
-        = link_to "linter docs", "http://jshint.com/docs/cli/", target: :blank
+        file. See
+        = link_to "linter docs", "http://jshint.com/docs/cli", target: :blank
         for more info ("Ignoring Files" section).
 
         %code.code-block
@@ -196,6 +202,7 @@
       %p
         To disable JavaScript style checking, add the following to your
         %em.code-inline .hound.yml
+        file.
 
         %code.code-block
           :preserve
