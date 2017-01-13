@@ -36,7 +36,7 @@
         %li
           = link_to "Pricing", root_path(anchor: "pricing"), class: "pricing"
         %li
-          - options = { target: "_blank", class: "tweet-us" }
+          - options = new_window_options(class: "tweet-us")
           = link_to "https://twitter.com/houndci", options do
             %span @houndci
         %li.auth-container
