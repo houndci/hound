@@ -57,3 +57,7 @@ app.UpdateAccountCreditCard = UpdateAccountCreditCard;
 app.UpdateAccountEmail = UpdateAccountEmail;
 app.UpdateAccountEmailMessage = UpdateAccountEmailMessage;
 app.UpgradeSubscriptionLink = UpgradeSubscriptionLink;
+
+
+import MainAppRoot from './mainAppRoot.jsx';
+app.MainAppRoot = window.MainAppRoot = global.MainAppRoot = MainAppRoot;
