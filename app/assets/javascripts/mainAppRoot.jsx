@@ -6,6 +6,8 @@ import MainApp from './apps/mainApp.js';
 import configureStore from './store/configureStore.js';
 import {setCounter} from './actions/counter.js';
 
+import DevTools from './components/devTools.jsx';
+
 const store = configureStore();
 
 export default class MainAppRoot extends Component {
@@ -15,7 +17,10 @@ export default class MainAppRoot extends Component {
   render() {
     return (
       <Provider store={store}>
-        <MainApp />
+        <div>
+          <MainApp />
+          <DevTools />
+        </div>
       </Provider>
     );
   }
