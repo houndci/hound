@@ -61,7 +61,12 @@ module.exports = {
       'react',
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
-      'lodash'
+      'lodash',
+      'redux',
+      'react-redux',
+      'redux-devtools',
+      'redux-devtools-log-monitor',
+      'redux-devtools-dock-monitor'
     ],
     app: [
       './app/assets/javascripts/components.jsx',
