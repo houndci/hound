@@ -15,7 +15,11 @@ describe Config::Go do
           enabled: true
       EOS
       commit = instance_double("Commit", file_content: raw_content)
-      hound_config = double("HoundConfig", commit: commit, content: content)
+      hound_config = instance_double(
+        "HoundConfig",
+        commit: commit,
+        content: content,
+      )
       owner = instance_double("Owner", config_content: {})
       allow(ConfigContent).to receive(:new).and_return(config_content)
       config = Config::Go.new(hound_config, owner: owner)
