@@ -46,7 +46,7 @@ describe Linter::Go do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: Config::Go::DEFAULT_CONFIG,
+        config: {},
       )
     end
   end
