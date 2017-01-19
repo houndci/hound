@@ -6,18 +6,22 @@ feature "Repo list", js: true do
 
   scenario "user views list of repos" do
     user = create(:user, token_scopes: "public_repo,user:email")
-    restricted_repo = create(:repo, name: "inaccessible-repo")
-    activatable_repo = create(:repo, name: "thoughtbot/my-repo")
+    restricted_repo = create(
+      :repo,
+      name: "#{user.username}/inaccessible-repo",
+    )
+    organization = "thoughtbot"
+    activatable_repo = create(:repo, name: "#{organization}/my-repo")
     create(:membership, repo: activatable_repo, user: user, admin: true)
     create(:membership, repo: restricted_repo, user: user, admin: false)
 
     sign_in_as(user)
 
-    within ".repo:nth-of-type(1)" do
+    within "[data-org-name=#{organization}]" do
       expect(page).to have_text activatable_repo.name
       expect(page).to have_css ".repo-toggle"
     end
-    within ".repo:nth-of-type(2)" do
+    within "[data-org-name=#{user.username}]" do
       expect(page).to have_text restricted_repo.name
       expect(page).to have_text I18n.t("cannot_activate_repo")
       expect(page).not_to have_css ".repo-toggle"
@@ -32,9 +36,6 @@ feature "Repo list", js: true do
   end
 
   scenario "user sees onboarding" do
-    token = "letmein"
-    stub_repos_requests(token)
-
     sign_in_as(user)
 
     expect(page).to have_content I18n.t("onboarding.title")
@@ -50,8 +51,8 @@ feature "Repo list", js: true do
   end
 
   scenario "user filters list" do
-    repo1 = create_repo(name: "foo")
-    repo2 = create_repo(name: "bar")
+    repo1 = create_repo(name: "#{user.username}/foo")
+    repo2 = create_repo(name: "#{user.username}/bar")
 
     sign_in_as(user)
     find(".repo-search-tools-input").set("fo")
@@ -63,7 +64,6 @@ feature "Repo list", js: true do
   scenario "user syncs repos" do
     token = "letmein"
     repo = create_repo(name: "user1/test-repo")
-    stub_repos_requests(token)
 
     sign_in_as(user, token)
 
@@ -71,14 +71,11 @@ feature "Repo list", js: true do
 
     click_button I18n.t("sync_repos")
 
-    expect(page).to have_text("jimtom/My-Private-Repo")
+    expect(page).to have_text("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
     expect(page).not_to have_text(repo.name)
   end
 
   scenario "user signs up" do
-    token = "letmein"
-
-    stub_repos_requests(token)
     sign_in_as(user)
 
     expect(page).to have_content I18n.t("sign_out")
@@ -86,11 +83,6 @@ feature "Repo list", js: true do
 
   scenario "user activates repo" do
     token = "letmein"
-    repo = create_repo(private: false)
-    hook_url = "http://#{ENV["HOST"]}/builds"
-    stub_repo_request(repo.name, token)
-    stub_add_collaborator_request(username, repo.name, token)
-    stub_hook_creation_request(repo.name, hook_url, token)
 
     sign_in_as(user, token)
     find(".repo .repo-toggle").click
@@ -106,10 +98,6 @@ feature "Repo list", js: true do
 
   scenario "user with admin access activates organization repo" do
     token = "letmein"
-    repo = create_repo(private: false, name: "testing/repo")
-    hook_url = "http://#{ENV["HOST"]}/builds"
-    stub_repo_with_org_request(repo.name, token)
-    stub_hook_creation_request(repo.name, hook_url, token)
 
     sign_in_as(user, token)
     find(".repos .repo-toggle").click
@@ -125,10 +113,7 @@ feature "Repo list", js: true do
 
   scenario "user deactivates repo" do
     token = "letmein"
-    repo = create_repo(:active)
-    stub_repo_request(repo.name, token)
-    stub_hook_removal_request(repo.name, repo.hook_id)
-    stub_remove_collaborator_request(username, repo.name, token)
+    create_repo(:active)
 
     sign_in_as(user, token)
     find(".repos .repo-toggle").click
@@ -144,10 +129,7 @@ feature "Repo list", js: true do
 
   scenario "user deactivates private repo without subscription" do
     token = "letmein"
-    repo = create_repo(:active, private: true)
-    stub_repo_request(repo.name, token)
-    stub_hook_removal_request(repo.name, repo.hook_id)
-    stub_remove_collaborator_request(username, repo.name, token)
+    create_repo(:active, private: true)
 
     sign_in_as(user, token)
     find(".repos .repo-toggle").click

@@ -1,0 +1,17 @@
+exports[`test renders the allowance header 1`] = `
+<div
+  className="allowance">
+  Private Repos 
+  <strong>
+    <span
+      data-role="subscribed-repo-count">
+      4
+    </span>
+     / 
+    <span
+      data-role="tier-allowance">
+      10
+    </span>
+  </strong>
+</div>
+`;

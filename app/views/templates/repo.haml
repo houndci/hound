@@ -1,9 +1,0 @@
-.repo-name
-  {{ repo.name }}
-.repo-activation-toggle{ "ng-class": "{ 'repo-activation-toggle--private': repo.private }" }
-  %span.repo-private-label Private - $12
-  %button.repo-toggle{ "ng-click": "toggle()",
-    "ng-disabled": "processing",
-    "ng-if": "repo.admin" }
-  .repo-restricted{ "ng-if": "!repo.admin" }
-    = t("cannot_activate_repo")

@@ -1,0 +1,137 @@
+.plan-category {
+  @include span-columns(12 of 12);
+  color: $base-accent-color;
+  margin-bottom: $medium-spacing;
+  text-align: center;
+
+  .fa {
+    margin-right: 0.5em;
+  }
+
+  &.open-source {
+    color: $base-font-color;
+  }
+}
+
+.plan {
+  @include padding($medium-spacing 0 $medium-spacing $large-spacing);
+  @include span-columns(4 of 12);
+  border: 2px solid $base-secondary-color;
+  border-radius: $base-border-radius;
+  margin-bottom: $medium-spacing;
+  position: relative;
+
+  @include media($medium-large-screen-only) {
+    padding-left: $medium-spacing;
+  }
+
+  @include media($medium-screen-down) {
+    @include span-columns(4);
+    @include omega;
+    padding-left: $large-spacing;
+  }
+
+  &:nth-of-type(3n) {
+    @include omega;
+  }
+
+  &::before {
+    @include position(absolute, 0 null null 0);
+    @include size(20px 100%);
+    background-image: image-url("pricing_pattern.svg");
+    content: "";
+    display: block;
+  }
+}
+
+.plan-open-source {
+  @include shift(4 of 12);
+  border-color: $light-font-color;
+
+  @include media($medium-screen-down) {
+    @include shift(0);
+  }
+
+  &::before {
+    background-image: image-url("pricing_pattern_os.svg");
+  }
+
+  .plan-price {
+    color: $base-font-color;
+  }
+}
+
+.plan-title,
+.plan-allowance {
+  font-size: 1.4em;
+}
+
+.plan-title {
+  margin-bottom: 0.6em;
+}
+
+.plan-allowance {
+  margin-bottom: $base-spacing;
+}
+
+.plan-price {
+  color: $base-accent-color;
+  font-size: 2.3em;
+  font-weight: $font-weight-light;
+  line-height: 1;
+
+  @include media($medium-large-screen-only) {
+    font-size: 2.1em;
+  }
+
+  small {
+    font-size: 60%;
+  }
+
+  .open-source {
+    color: $base-font-color;
+  }
+}
+
+.plan-vertical {
+  @include border-width(0 0 1px 0);
+  border-bottom: 1px dotted;
+  border-color: $light-font-color;
+  border-radius: 0;
+  margin-left: 0.5em;
+  padding-left: 0;
+  padding-top: 0;
+  position: static;
+  width: 100%;
+
+  &.current {
+    .plan-price {
+      color: $base-accent-color;
+    }
+  }
+
+  &.new {
+    .plan-price {
+      color: darken($green, 20%);
+    }
+  }
+
+  .plan-divider {
+    float: left;
+  }
+
+  .plan-title,
+  .plan-allowance {
+    font-size: 1.2em;
+  }
+
+  .plan-allowance {
+    margin-bottom: 0;
+  }
+
+  .plan-price {
+    color: $base-font-color;
+    float: right;
+    font-size: 1.8em;
+  }
+}

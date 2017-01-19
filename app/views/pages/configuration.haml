@@ -35,7 +35,7 @@
       %p
         If this page doesn't help you find what you are looking for,
         please tweet at us
-        = link_to "@houndci", "https://twitter.com/houndci", target: :blank
+        = link_to "@houndci", "https://twitter.com/houndci", new_window_options
         or email us at #{mail_to "hound@thoughtbot.com"}
         and we will help you out.
 
@@ -81,7 +81,7 @@
         Hound can be configured to use
         = link_to "GitHub's Status API",
           "https://github.com/blog/1935-see-results-from-all-pull-request-status-checks",
-          target: :blank
+          new_window_options
         to mark a pull request as failed if any violations are found.
         To do so, add the following to your
         %em.code-inline .hound.yml
@@ -96,21 +96,23 @@
         Hound uses
         = link_to "RuboCop",
           "https://github.com/bbatsov/rubocop",
-          target: :blank
+          new_window_options
         to review Ruby code.
 
       %p
         By default, Hound uses the
         = succeed "." do
-          = link_to "default RuboCop config", rubocop_config_url, target: :blank
+          = link_to "default RuboCop config",
+            rubocop_config_url,
+            new_window_options
         To change the way RuboCop is configured, add a
-        %em.code-inline .rucobop.yml
+        %em.code-inline .rubocop.yml
         file to your project, configure it as desired
         (see the
         = succeed ")," do
-          = link_to("RuboCop docs",
+          = link_to "RuboCop docs",
             "http://rubocop.readthedocs.io/en/latest/",
-            target: :blank)
+            new_window_options
         and reference it in
         %em.code-inline .hound.yml
 
@@ -133,7 +135,7 @@
 
       %p
         Hound uses
-        = link_to "CoffeeLint", "http://www.coffeelint.org", target: :blank
+        = link_to "CoffeeLint", "http://www.coffeelint.org", new_window_options
         with the default configuration.
 
       %p
@@ -160,15 +162,16 @@
 
       %p
         Hound uses
-        = link_to "JSHint", "https://github.com/jshint/jshint", target: :blank
-        with this
-        = link_to "config", jshint_config_url, target: :blank
-        by default.
+        = link_to "JSHint", "https://github.com/jshint/jshint",
+          new_window_options
+        to review JavaScript code by default.
 
       %p
-        To change the way JSHint is configured, copy the
-        = link_to "default config file", jshint_config_url, target: :blank
-        into your project, make changes and reference the file in your
+        To change the way JSHint is configured, add
+        %em.code-inline .jshintrc
+        file to your project,
+        specify your desired configuration
+        and reference the file in your
         %em.code-inline .hound.yml
 
       %p
@@ -178,14 +181,21 @@
               config_file: .jshintrc
 
       %p
+        Check out
+        = link_to "JSHint configuration", "http://jshint.com/docs/options/",
+          new_window_options
+        for supported options.
+
+      %p
         To ignore certain files and directories, add
         %em.code-inline .jshintignore
         file to your project,
         include in it path patterns for files/directories that you want ignored,
         and reference the ignore file in your
         %em.code-inline .hound.yml
-        \. See
-        = link_to "linter docs", "http://jshint.com/docs/cli/", target: :blank
+        file. See
+        = link_to "linter docs", "http://jshint.com/docs/cli",
+          new_window_options
         for more info ("Ignoring Files" section).
 
         %code.code-block
@@ -196,6 +206,7 @@
       %p
         To disable JavaScript style checking, add the following to your
         %em.code-inline .hound.yml
+        file.
 
         %code.code-block
           :preserve
@@ -207,9 +218,9 @@
 
       %p
         Hound uses
-        = link_to "ESLint", "http://eslint.org/", target: :blank
+        = link_to "ESLint", "http://eslint.org/", new_window_options
         with this
-        = link_to "config", eslint_config_url, target: :blank
+        = link_to "config", eslint_config_url, new_window_options
         by default.
 
       %p
@@ -240,7 +251,7 @@
         For more information on configuring ESLint rules, see the
         = link_to "ESLint Rules Documentation",
           "http://eslint.org/docs/rules/",
-          target: :blank
+          new_window_options
 
       %p
         To ignore certain files and directories, add
@@ -252,7 +263,7 @@
         \. See
         = link_to "linter docs",
           "http://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories",
-          target: :blank
+          new_window_options
         for more info.
 
         %code.code-block
@@ -267,14 +278,14 @@
         Hound uses
         = link_to "scss-lint",
           "https://github.com/causes/scss-lint",
-          target: :blank
+          new_window_options
         with this
-        = link_to "config", scss_config_url, target: :blank
+        = link_to "config", scss_config_url, new_window_options
         by default.
 
       %p
         To change the way scss-lint is configured, simply copy the
-        = link_to "default config file", scss_config_url, target: :blank
+        = link_to "default config file", scss_config_url, new_window_options
         into your project, make changes and reference the file in your
         %em.code-inline .hound.yml
 
@@ -312,14 +323,14 @@
         Hound uses
         = link_to "haml-lint",
           "https://github.com/brigade/haml-lint",
-          target: :blank
+          new_window_options
         with this
-        = link_to "config", haml_config_url, target: :blank
+        = link_to "config", haml_config_url, new_window_options
         by default.
 
       %p
         To change the way haml-lint is configured, simply copy the
-        = link_to "default config file", haml_config_url, target: :blank
+        = link_to "default config file", haml_config_url, new_window_options
         into your project, make changes and reference the file in your
         %em.code-inline .hound.yml
 
@@ -357,11 +368,11 @@
         Hound uses
         = link_to "Flake8",
           "http://flake8.readthedocs.org/en/latest/",
-          target: :blank
+          new_window_options
         with this
         = link_to "default config",
           "http://flake8.readthedocs.org/en/latest/config.html#default",
-          target: :blank
+          new_window_options
         by default.
 
       %p
@@ -377,7 +388,7 @@
         To change the way Flake8 is configured, create a
         = link_to ".ini file",
           "http://flake8.readthedocs.org/en/latest/config.html#per-project",
-          target: :blank
+          new_window_options
         with your custom configuration and reference the file in
         %em.code-inline .hound.yml
 
@@ -395,14 +406,14 @@
         Hound uses
         = link_to "SwiftLint",
           "https://github.com/realm/SwiftLint",
-          target: :blank
+          new_window_options
         with this
-        = link_to "config", swift_config_url, target: :blank
+        = link_to "config", swift_config_url, new_window_options
         by default.
 
       %p
         To change the way SwiftLint is configured, copy the
-        = link_to "default config file", swift_config_url, target: :blank
+        = link_to "default config file", swift_config_url, new_window_options
         into your project, make changes and reference the file in your
         %em.code-inline .hound.yml
 
@@ -428,13 +439,13 @@
         , you can read about it on the
         = link_to "SwiftLint Configuration Documentation",
           "https://github.com/realm/SwiftLint#configuration",
-          target: :blank
+          new_window_options
 
     %article.docs-article
       %h3 Didn't find what you where looking for?
 
       %p
         Please tweet at us
-        = link_to "@houndci", "https://twitter.com/houndci", target: :blank
+        = link_to "@houndci", "https://twitter.com/houndci", new_window_options
         or email us at #{mail_to "hound@thoughtbot.com"}
         and we will help you out.

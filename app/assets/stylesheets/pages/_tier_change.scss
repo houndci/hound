@@ -1,0 +1,51 @@
+.tier-change-container {
+  @extend %content-frame;
+  position: relative;
+}
+
+.tier-change-plans {
+  @extend %content-aside;
+
+  h3 {
+    margin-left: 0.5em;
+  }
+
+  .plan:last-of-type {
+    border-bottom: 0;
+    margin-bottom: 0;
+  }
+}
+
+.tier-change-content {
+  @extend %content-main;
+  text-align: center;
+
+  h1 {
+    margin-bottom: $small-spacing;
+  }
+
+  .repo-toggle {
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.tier-change-description {
+  margin-bottom: $medium-spacing;
+
+  .allowance {
+    margin-bottom: $base-spacing;
+  }
+}
+
+.tier-change-accept {
+  border-radius: 100px;
+  font-size: 1.2em;
+  margin-bottom: $small-spacing;
+  padding: 0.6em 1.5em;
+}
+
+.tier-change-cancel {
+  display: block;
+}

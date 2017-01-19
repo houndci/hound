@@ -1,7 +1,5 @@
 class RebuildPullRequest
-  def self.call(*args)
-    new(*args).call
-  end
+  static_facade :call
 
   def initialize(repo:, pull_request_number:)
     @repo = repo

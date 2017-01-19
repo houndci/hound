@@ -1,7 +1,5 @@
 class ReportInvalidConfig
-  def self.run(**args)
-    new(**args).run
-  end
+  static_facade :call
 
   def initialize(pull_request_number:, commit_sha:, linter_name:, message: "")
     @pull_request_number = pull_request_number
@@ -10,7 +8,7 @@ class ReportInvalidConfig
     @message = message
   end
 
-  def run
+  def call
     commit_status.set_config_error(message)
   end
 

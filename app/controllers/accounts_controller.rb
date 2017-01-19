@@ -2,11 +2,7 @@ class AccountsController < ApplicationController
   before_action :validate_billable_email, only: :update
 
   def show
-    @account_page = AccountPage.new(
-      repos: find_subscribed_repos,
-      billable_email: current_user.billable_email,
-      payment_gateway_subscriptions: current_user.payment_gateway_subscriptions,
-    )
+    @account_page = AccountPage.new(current_user)
   end
 
   def update
@@ -34,9 +30,5 @@ class AccountsController < ApplicationController
 
   def new_billable_email
     params[:billable_email]
-  end
-
-  def find_subscribed_repos
-    current_user.subscribed_repos.order(:name)
   end
 end

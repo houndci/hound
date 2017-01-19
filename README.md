@@ -17,7 +17,7 @@ see our [FAQ] or email [hound@thoughtbot.com].
 To contribute to the Hound codebase,
 see the [CONTRIBUTING.md] file.
 
-[FAQ]: https://houndci.com/faq
+[FAQ]: https://intercom.help/hound/frequently-asked-questions
 [hound@thoughtbot.com]: mailto:hound@thoughtbot.com
 [CONTRIBUTING.md]: CONTRIBUTING.md
 

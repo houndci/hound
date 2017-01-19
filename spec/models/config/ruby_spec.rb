@@ -1,16 +1,16 @@
-require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/ruby"
 require "app/models/hound_config"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
-require "app/services/build_owner_hound_config"
+require "app/models/config_content"
+require "app/models/missing_owner"
 
 describe Config::Ruby do
   describe "#content" do
     context "when the hound config is a legacy config" do
       it "returns the HoundConfig's content as a hash" do
-        hound_config = double(
+        hound_config = instance_double(
           "HoundConfig",
           content: { "LineLength" => { "Max" => 90 } },
         )
@@ -22,27 +22,18 @@ describe Config::Ruby do
 
     context "when the hound config is not a legacy config" do
       it "returns the content from GitHub as a hash" do
-        commit = stubbed_commit(
-          "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
-        )
-        config = build_config(commit)
+        raw_config = '{ "LineLength": { "Max": 90 } }'
+        config = build_config(raw_config)
 
         expect(config.content).to eq("LineLength" => { "Max" => 90 })
       end
 
       context "and an owner is present" do
         it "returns the config merged with the owner's config as a hash" do
-          owner = double("Owner")
-          owner_commit = stubbed_commit(
-            "config/rubocop.yml" => '{ "Metrics/ClassLength": { "Max": 100 } }',
-          )
-          owner_config = build_config(owner_commit)
-          repo_commit = stubbed_commit(
-            "config/rubocop.yml" => '{ "LineLength": { "Max": 90 } }',
-          )
-          config = build_config(repo_commit, owner)
-          allow(BuildOwnerHoundConfig).to receive(:run).with(owner).
-            and_return(owner_config)
+          raw_config = '{ "LineLength": { "Max": 90 } }'
+          owner_config = { "Metrics/ClassLength" => { "Max" => 100 } }
+          owner = instance_double("Owner", config_content: owner_config)
+          config = build_config(raw_config, owner)
 
           expect(config.content).to eq(
             "LineLength" => { "Max" => 90 },
@@ -53,17 +44,13 @@ describe Config::Ruby do
     end
 
     it "dumps the config content to yaml" do
-      rubocop = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         Style/Encoding:
           Enabled: true
       EOS
-      commit = stubbed_commit(
-        "config/rubocop.yml" => rubocop,
-      )
+      config = build_config(raw_config)
 
-      config = build_config(commit)
-
-      expect(config.content.to_yaml).to eq <<-YML.strip_heredoc
+      expect(config.content.to_yaml).to eq <<~YML
         ---
         Style/Encoding:
           Enabled: true
@@ -73,29 +60,30 @@ describe Config::Ruby do
 
   context "when the configuration uses `inherit_from`" do
     it "returns the merged configuration using `inherit_from`" do
-      rubocop = <<-EOS.strip_heredoc
+      rubocop = <<~EOS
         inherit_from:
           - config/base.yml
           - config/overrides.yml
         Style/Encoding:
           Enabled: true
       EOS
-      base = <<-EOS.strip_heredoc
+      base = <<~EOS
         LineLength:
           Max: 40
       EOS
-      overrides = <<-EOS.strip_heredoc
+      overrides = <<~EOS
         Style/HashSyntax:
           EnforcedStyle: hash_rockets
         Style/Encoding:
           Enabled: false
       EOS
-      commit = stubbed_commit(
+      commit = stub_commit(
         "config/rubocop.yml" => rubocop,
         "config/base.yml" => base,
         "config/overrides.yml" => overrides,
       )
-      config = build_config(commit)
+      hound_config = build_hound_config(commit, "config/rubocop.yml")
+      config = described_class.new(hound_config)
 
       expect(config.content).to eq(
         "LineLength" => { "Max" => 40 },
@@ -106,17 +94,18 @@ describe Config::Ruby do
 
     context "with an empty `inherit_from`" do
       it "returns the merged configuration using `inherit_from`" do
-        rubocop = <<-EOS.strip_heredoc
+        rubocop = <<~EOS
           inherit_from: config/rubocop_todo.yml
           Style/Encoding:
             Enabled: true
         EOS
         rubocop_todo = "# this is an empty file"
-        commit = stubbed_commit(
+        commit = stub_commit(
           "config/rubocop.yml" => rubocop,
           "config/rubocop_todo.yml" => rubocop_todo,
         )
-        config = build_config(commit)
+        hound_config = build_hound_config(commit, "config/rubocop.yml")
+        config = described_class.new(hound_config)
 
         expect(config.content).to eq(
           "Style/Encoding" => { "Enabled" => true },
@@ -128,11 +117,12 @@ describe Config::Ruby do
       it "raises a parser error" do
         rubocop = "inherit_from: config/rubocop_todo.yml"
         rubocop_todo = "foo: bar: "
-        commit = stubbed_commit(
+        commit = stub_commit(
           "config/rubocop.yml" => rubocop,
           "config/rubocop_todo.yml" => rubocop_todo,
         )
-        config = build_config(commit)
+        hound_config = build_hound_config(commit, "config/rubocop.yml")
+        config = described_class.new(hound_config)
 
         expect { config.content }.to raise_error(Config::ParserError)
       end
@@ -142,25 +132,22 @@ describe Config::Ruby do
   context "when the given content is invalid" do
     context "when the result is not a hash" do
       it "raises a type exception" do
-        commit = stubbed_commit("config/rubocop.yml" => "[]")
-        config = build_config(commit)
+        config = build_config("[]")
 
         expect { config.content }.to raise_error(
           Config::ParserError,
-          %r("config/rubocop\.yml" must be a Hash),
+          %r("config/.+\..+" must be a Hash),
         )
       end
     end
 
     context "when the content is invalid yaml" do
       it "raises an exception" do
-        commit = stubbed_commit(
-          "config/rubocop.yml" => <<-EOS.strip_heredoc
-            ruby: !ruby/object
-              ;foo:
-          EOS
-        )
-        config = build_config(commit)
+        raw_config = <<~EOS
+          ruby: !ruby/object
+            ;foo:
+        EOS
+        config = build_config(raw_config)
 
         expect { config.content }.to raise_error(
           Config::ParserError,
@@ -168,19 +155,5 @@ describe Config::Ruby do
         )
       end
     end
-  end
-
-  def build_config(commit, owner = nil)
-    hound_config = double(
-      "HoundConfig",
-      commit: commit,
-      content: {
-        "ruby" => {
-          "config_file" => "config/rubocop.yml",
-        },
-      },
-    )
-
-    Config::Ruby.new(hound_config, owner: owner)
   end
 end

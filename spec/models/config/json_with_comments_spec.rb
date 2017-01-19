@@ -4,7 +4,7 @@ describe Config::JsonWithComments do
   describe "#without_comments" do
     context "with mixed comments" do
       it "returns raw JSON content without comments" do
-        config = <<-TEXT.strip_heredoc
+        config = <<~TEXT
           /* start
             of
             file */
@@ -18,7 +18,7 @@ describe Config::JsonWithComments do
 
         result = described_class.new(config).without_comments
 
-        expect(result).to eq <<-TEXT.strip_heredoc
+        expect(result).to eq <<~TEXT
           {
             "foo": 1,
             "bar": 2,
@@ -30,7 +30,7 @@ describe Config::JsonWithComments do
 
     context "with single line comments" do
       it "returns raw JSON content without comments" do
-        config = <<-TEXT.strip_heredoc
+        config = <<~TEXT
           {
             "foo": 1, // comments here
             "bar": 2,
@@ -39,7 +39,7 @@ describe Config::JsonWithComments do
 
         result = described_class.new(config).without_comments
 
-        expect(result).to eq <<-TEXT.strip_heredoc
+        expect(result).to eq <<~TEXT
           {
             "foo": 1,
             "bar": 2,

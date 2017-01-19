@@ -4,7 +4,7 @@
     "interval":"month",
     "name":"Personal",
     "created":1412705163,
-    "amount":900,
+    "amount":4900,
     "currency":"usd",
     "id":"private",
     "object":"plan",

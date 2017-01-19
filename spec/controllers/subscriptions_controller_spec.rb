@@ -5,6 +5,7 @@ describe SubscriptionsController, "#create" do
     it "subscribes the user to the repo" do
       repo = create(:repo, private: true)
       membership = create(:membership, repo: repo)
+      create(:subscription, repo: repo, user: membership.user)
       activator = double(:repo_activator, activate: true)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(true)
@@ -12,9 +13,11 @@ describe SubscriptionsController, "#create" do
 
       post(
         :create,
-        repo_id: repo.id,
-        card_token: "cardtoken",
-        email: "jimtom@example.com",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+          email: "jimtom@example.com",
+        },
         format: :json
       )
 
@@ -36,9 +39,11 @@ describe SubscriptionsController, "#create" do
 
       post(
         :create,
-        repo_id: repo.id,
-        card_token: "cardtoken",
-        email: "jimtom@example.com",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+          email: "jimtom@example.com",
+        },
         format: :json
       )
 
@@ -50,15 +55,63 @@ describe SubscriptionsController, "#create" do
     it "deactivates repo" do
       membership = create(:membership)
       repo = membership.repo
+      create(:subscription, repo: repo, user: membership.user)
       activator = double(:repo_activator, activate: true, deactivate: nil)
       allow(RepoActivator).to receive(:new).and_return(activator)
       allow(RepoSubscriber).to receive(:subscribe).and_return(false)
       stub_sign_in(membership.user)
 
-      post :create, repo_id: repo.id, format: :json
+      post :create, params: { repo_id: repo.id }, format: :json
 
       expect(response.code).to eq "502"
       expect(activator).to have_received(:deactivate)
+    end
+  end
+
+  context "when the current tier is full" do
+    it "notifies that payment is required" do
+      membership = create(:membership)
+      repo = membership.repo
+      tier = instance_double("Tier", full?: true)
+      user = membership.user
+      allow(Tier).to receive(:new).once.with(user).and_return(tier)
+      stub_sign_in(user)
+
+      post :create, params: { repo_id: repo.id }
+
+      expect(response).to have_http_status(:payment_required)
+    end
+  end
+
+  describe "#update" do
+    context "when the subscription cannot be created" do
+      it "returns 'Bad Gateway'" do
+        repo = instance_double(
+          "Repo",
+          as_json: { active: true },
+          name: "TEST_REPO_NAME",
+          private?: true,
+        )
+        repo_activator = instance_double(
+          "RepoActivator",
+          activate: false,
+          deactivate: true,
+        )
+        repos = class_double(Repo, find_by: repo)
+        user = instance_double(
+          "User",
+          email: "TEST_USER_EMAIL",
+          repos: repos,
+          token: "TEST_USER_TOKEN",
+        )
+        users = class_double(User, first: user)
+        allow(RepoActivator).to receive(:new).and_return(repo_activator)
+        allow(User).to receive(:where).and_return(users)
+
+        put :update, params: { repo_id: 1 }
+
+        expect(response).to have_http_status(:bad_gateway)
+      end
     end
   end
 end
@@ -75,8 +128,10 @@ describe SubscriptionsController, "#destroy" do
 
       delete(
         :destroy,
-        repo_id: repo.id,
-        card_token: "cardtoken",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+        },
         format: :json
       )
 
@@ -101,8 +156,10 @@ describe SubscriptionsController, "#destroy" do
 
       delete(
         :destroy,
-        repo_id: repo.id,
-        card_token: "cardtoken",
+        params: {
+          repo_id: repo.id,
+          card_token: "cardtoken",
+        },
         format: :json
       )
 

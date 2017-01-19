@@ -1,7 +1,7 @@
 # Hold file, line number, and violation message values.
 # Built by style guides.
 # Printed by Commenter.
-class Violation < ActiveRecord::Base
+class Violation < ApplicationRecord
   belongs_to :file_review
 
   delegate :count, to: :messages, prefix: true

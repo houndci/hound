@@ -4,10 +4,9 @@ module Linter
       self::FILE_REGEXP === filename
     end
 
-    def initialize(hound_config:, build:, repository_owner_name: "")
+    def initialize(hound_config:, build:)
       @hound_config = hound_config
       @build = build
-      @repository_owner_name = repository_owner_name
     end
 
     def file_review(commit_file)
@@ -37,7 +36,7 @@ module Linter
 
     private
 
-    attr_reader :hound_config, :build, :repository_owner_name
+    attr_reader :hound_config, :build
 
     def build_review_job_attributes(commit_file)
       {
@@ -63,8 +62,16 @@ module Linter
       job_name.constantize
     end
 
+    def owner
+      build.repo.owner || MissingOwner.new
+    end
+
     def config
-      @config ||= ConfigBuilder.for(hound_config, name)
+      @_config ||= BuildConfig.call(
+        hound_config: hound_config,
+        name: name,
+        owner: owner,
+      )
     end
   end
 end

@@ -15,7 +15,11 @@ class RepoSerializer < ActiveModel::Serializer
   )
 
   def price_in_cents
-    object.plan_price * 100
+    if object.private?
+      scope.tier_price * 100
+    else
+      0
+    end
   end
 
   def price_in_dollars

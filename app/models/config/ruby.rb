@@ -1,15 +1,10 @@
 module Config
   class Ruby < Base
-    def initialize(hound_config, owner: nil)
-      super(hound_config)
-      @owner = owner
-    end
-
     def content
       if legacy?
         hound_config.content
       else
-        owner_config_content.deep_merge(parse_inherit_from(super))
+        parse_inherit_from(super)
       end
     end
 
@@ -18,22 +13,6 @@ module Config
     end
 
     private
-
-    def parse(file_content)
-      Parser.yaml(file_content)
-    end
-
-    def owner_config_content
-      if @owner.present?
-        Config::Ruby.new(owner_hound_config).content
-      else
-        {}
-      end
-    end
-
-    def owner_hound_config
-      BuildOwnerHoundConfig.run(@owner)
-    end
 
     def parse_inherit_from(config)
       inherit_from = Array(config.fetch("inherit_from", []))
@@ -45,6 +24,12 @@ module Config
       end
 
       inherited_config.merge(config.except("inherit_from"))
+    end
+
+    def safe_parse(content)
+      parse(content)
+    rescue Psych::Exception => exception
+      raise_parse_error(exception.message)
     end
 
     def legacy?

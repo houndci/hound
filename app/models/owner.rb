@@ -1,4 +1,4 @@
-class Owner < ActiveRecord::Base
+class Owner < ApplicationRecord
   has_many :repos
 
   def self.upsert(github_id:, name:, organization:)
@@ -11,5 +11,13 @@ class Owner < ActiveRecord::Base
 
   def has_config_repo?
     config_enabled? && config_repo.present?
+  end
+
+  def config_content(linter_name)
+    BuildConfig.call(
+      hound_config: BuildOwnerHoundConfig.call(self),
+      name: linter_name,
+      owner: MissingOwner.new,
+    ).content
   end
 end

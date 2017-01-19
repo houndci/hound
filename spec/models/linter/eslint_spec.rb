@@ -122,7 +122,7 @@ describe Linter::Eslint do
   end
 
   def raw_hound_config
-    <<-EOS.strip_heredoc
+    <<~EOS
       eslint:
         enabled: true
         config_file: config/.eslintrc

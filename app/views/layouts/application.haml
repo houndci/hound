@@ -1,5 +1,5 @@
 !!!
-%html{"ng-app" => "Hound"}
+%html
   %head
     %meta{ content: "width=device-width,initial-scale=1", name: "viewport" }
     %title
@@ -16,7 +16,7 @@
       .flash{ class: key }
         = value
 
-    .content
+    .content{ class: content_for(:container_class) }
       = yield
 
     = render "application/footer"

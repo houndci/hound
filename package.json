@@ -1,0 +1,102 @@
+{
+  "name": "houndci",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "node_modules/webpack/bin/webpack.js --config webpack.config.js",
+    "build:watch": "node_modules/webpack/bin/webpack.js -w --config webpack.config.js",
+    "test": "jest app/assets/javascripts/components/__tests__/*-test.jsx",
+    "test:watch": "jest --watch app/assets/javascripts/components/__tests__/*-test.jsx",
+    "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/*-test.jsx"
+  },
+  "engines": {
+    "node": "7.4",
+    "npm": "4.0.5"
+  },
+  "dependencies": {
+    "autoprefixer": "^6.3.2",
+    "babel-core": "^6.7.2",
+    "babel-loader": "^6.2.2",
+    "babel-polyfill": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-preset-stage-1": "^6.16.0",
+    "babel-preset-stage-2": "^6.5.0",
+    "babel-runtime": "^6.6.1",
+    "classnames": "^2.2.5",
+    "css-loader": "^0.23.1",
+    "es5-shim": "^4.5.2",
+    "es6-promise": "^3.1.2",
+    "expose-loader": "^0.7.1",
+    "imports-loader": "^0.6.5",
+    "jquery": "^3.1.1",
+    "jquery-ujs": "^1.2.2",
+    "loader-utils": "^0.2.12",
+    "lodash": "^4.3.0",
+    "react": "^15.3.0",
+    "react-addons-update": "^15.3.2",
+    "react-dom": "^15.3.0",
+    "webpack": "^2.1.0-beta.28"
+  },
+  "devDependencies": {
+    "babel-jest": "^17.0.2",
+    "babel-plugin-react-transform": "^2.0.0",
+    "enzyme": "^2.6.0",
+    "enzyme-to-json": "^1.4.4",
+    "file-loader": "^0.8.5",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^17.0.3",
+    "jest-enzyme": "^2.0.0",
+    "node-sass": "^3.4.2",
+    "react-addons-test-utils": "^15.4.1",
+    "react-test-renderer": "^15.4.1",
+    "react-transform-hmr": "^1.0.2",
+    "sass-loader": "^3.1.2",
+    "sinon": "^1.17.6",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "babel-core": "^6.7.2",
+    "babel-eslint": "^7.1.0",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-class-properties": "^6.6.0",
+    "babel-plugin-transform-runtime": "^6.6.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "css-loader": "0.14.5",
+    "eslint": "^3.10.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/houndci/hound.git"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^.+\\.(css|scss)$": "identity-obj-proxy"
+    },
+    "setupFiles": [
+      "./app/assets/javascripts/components/__tests__/jestsetup.js"
+    ],
+    "setupTestFrameworkScriptFile": "node_modules/jest-enzyme/lib/index.js",
+    "unmockedModulePathPatterns": [
+      "react",
+      "enzyme",
+      "jasmine-enzyme"
+    ],
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/enzyme-to-json/serializer"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+    ]
+  }
+}

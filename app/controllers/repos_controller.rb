@@ -8,7 +8,7 @@ class ReposController < ApplicationController
           current_user.repos.clear
         end
 
-        repos = ReposWithMembershipOrSubscriptionQuery.new(current_user).run
+        repos = ReposWithMembershipOrSubscriptionQuery.call(current_user)
 
         render json: repos
       end

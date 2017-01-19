@@ -24,6 +24,22 @@ FactoryGirl.define do
     linter_name "ruby"
   end
 
+  factory :pricing do
+    id "tier1"
+    price 49
+    range 1..4
+    title "Chihuahua"
+
+    trait :tier2 do
+      id "tier2"
+      price 99
+      range 5..10
+      title "Labrador"
+    end
+
+    initialize_with { new(id: id, price: price, range: range, title: title) }
+  end
+
   factory :repo do
     trait(:active) { active true }
     trait(:inactive) { active false }
@@ -32,6 +48,7 @@ FactoryGirl.define do
       in_organization true
       private true
     end
+    trait(:private) { private true }
 
     sequence(:name) { |n| "user/repo#{n}" }
     github_id
@@ -41,14 +58,21 @@ FactoryGirl.define do
 
   factory :user do
     username { generate(:github_name) }
+
+    trait(:with_github_scopes) { token_scopes "public_repo,user:email" }
+    trait(:stripe) { stripe_customer_id "cus_2e3fqARc1uHtCv" }
   end
 
   factory :membership do
+    trait(:admin) { admin true }
+    trait(:private) { association :repo, :private }
+
     user
     repo
   end
 
   factory :subscription do
+    trait(:active) { association :repo, :active }
     trait(:inactive) { deleted_at { 1.day.ago } }
 
     sequence(:stripe_subscription_id) { |n| "stripesubscription#{n}" }

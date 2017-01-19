@@ -7,7 +7,7 @@ describe AccountsController do
         user = create(:user, stripe_customer_id: "customer-id")
         stub_sign_in(user)
 
-        patch :update, billable_email: "", format: :json
+        patch :update, params: { billable_email: "" }, format: :json
 
         response_body = JSON.parse(response.body)
         expect(response).to have_http_status(:unprocessable_entity)
@@ -21,7 +21,11 @@ describe AccountsController do
           invalid_email = "newemail"
           stub_sign_in(user)
 
-          patch :update, billable_email: invalid_email, format: :json
+          patch(
+            :update,
+            params: { billable_email: invalid_email },
+            format: :json,
+          )
 
           response_body = JSON.parse(response.body)
           expect(response).to have_http_status(:unprocessable_entity)
@@ -41,7 +45,7 @@ describe AccountsController do
           stub_customer_find_request(customer_id)
           update_request = stub_customer_update_request(email: new_email)
 
-          patch :update, billable_email: new_email, format: :json
+          patch :update, params: { billable_email: new_email }, format: :json
 
           expect(response).to be_ok
           expect(update_request).to have_been_requested
@@ -58,7 +62,7 @@ describe AccountsController do
         stub_customer_find_request(customer_id)
         stub_failed_customer_update_request(email: new_email)
 
-        patch :update, billable_email: new_email, format: :json
+        patch :update, params: { billable_email: new_email }, format: :json
 
         expect(response).to have_http_status(:bad_gateway)
       end

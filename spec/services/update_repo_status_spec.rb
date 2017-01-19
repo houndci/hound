@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe UpdateRepoStatus do
-  describe "#run" do
+  describe "#call" do
     it "updates the repo name" do
       expected_repo_name = "foo/bar"
       repo = create(:repo, :active)
@@ -12,7 +12,7 @@ describe UpdateRepoStatus do
         private_repo?: repo.private,
       )
 
-      UpdateRepoStatus.new(payload).run
+      UpdateRepoStatus.new(payload).call
 
       repo.reload
       expect(repo.name).to eq(expected_repo_name)
@@ -28,7 +28,7 @@ describe UpdateRepoStatus do
         private_repo?: expected_status,
       )
 
-      UpdateRepoStatus.new(payload).run
+      UpdateRepoStatus.new(payload).call
 
       repo.reload
       expect(repo.private).to eq(expected_status)

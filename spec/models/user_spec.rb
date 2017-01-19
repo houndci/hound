@@ -6,6 +6,47 @@ describe User do
   it { should validate_presence_of :username }
   it { should have_many(:memberships).dependent(:destroy) }
 
+  describe "#current_tier" do
+    it "returns the current tier identifier" do
+      pricing = Pricing.new(id: "basic", price: 0, range: 0..0, title: "Hound")
+      user = create(:user)
+
+      expect(user.current_tier).to eq pricing
+    end
+  end
+
+  describe "#next_tier" do
+    it "returns the next tier identifier" do
+      user = build(:user)
+      id = "NEXT_TIER_ID"
+      tier = instance_double("Tier", next: id)
+      allow(Tier).to receive(:new).once.with(user).and_return(tier)
+
+      expect(user.next_tier).to eq id
+    end
+  end
+
+  describe "#tier_max" do
+    it "returns the current tier's allowance" do
+      allowance = 10
+      pricing = instance_double("Pricing", allowance: allowance)
+      tier = instance_double("Tier", current: pricing)
+      user = User.new
+      allow(Tier).to receive(:new).once.with(user).and_return(tier)
+
+      expect(user.tier_max).to eq allowance
+    end
+  end
+
+  describe "#tier_price" do
+    it "returns the price of the next tier" do
+      subscription = create(:subscription)
+      user = subscription.user
+
+      expect(user.tier_price).to eq 49
+    end
+  end
+
   describe "#subscribed_repos" do
     it "returns subscribed repos" do
       user = create(:user)
@@ -145,6 +186,21 @@ describe User do
 
         expect(user).not_to have_access_to_private_repos
       end
+    end
+  end
+
+  describe "#payment_gateway_subscription" do
+    it "returns the subscriptions for the payment gateway customer" do
+      subscription = instance_double("PaymentGatewaySubscription")
+      customer = instance_double(
+        "PaymentGatewayCustomer",
+        subscription: subscription,
+      )
+      user = User.new
+      allow(PaymentGatewayCustomer).to receive(:new).once.with(user).
+        and_return(customer)
+
+      expect(user.payment_gateway_subscription).to eq subscription
     end
   end
 end

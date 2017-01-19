@@ -573,6 +573,8 @@ Rails/HasAndBelongsToMany:
   Enabled: true
   Include:
   - app/models/**/*.rb
+Rails/HttpPositionalArguments:
+  Enabled: false
 Rails/Output:
   Description: Checks for calls to puts, print, etc.
   Enabled: true

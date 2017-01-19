@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe ReportInvalidConfig do
-  describe ".run" do
+  describe ".call" do
     context "given a custom message" do
       it "reports the file as an invalid config file to Github" do
         commit_status = stubbed_commit_status(:set_config_error)
@@ -11,7 +11,7 @@ describe ReportInvalidConfig do
         linter_name = "ruby"
         message = "Invalid ruby file, woff"
 
-        ReportInvalidConfig.run(
+        ReportInvalidConfig.call(
           pull_request_number: pull_request_number,
           commit_sha: commit_sha,
           linter_name: linter_name,
@@ -34,7 +34,7 @@ describe ReportInvalidConfig do
         commit_sha = "abc123"
         linter_name = "ruby"
 
-        ReportInvalidConfig.run(
+        ReportInvalidConfig.call(
           pull_request_number: pull_request_number,
           commit_sha: commit_sha,
           linter_name: linter_name,

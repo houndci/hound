@@ -1,0 +1,25 @@
+exports[`test renders appropriately 1`] = `
+<OrganizationsList
+  filterTerm=""
+  isProcessingId={null}
+  onRepoClicked={[Function]}
+  organizations={
+    Array [
+      Object {
+        "id": 1,
+        "name": "Test org",
+      },
+    ]
+  }
+  repos={
+    Array [
+      Object {
+        "id": 1,
+        "name": "Test repo",
+        "owner": Object {
+          "id": 1,
+        },
+      },
+    ]
+  } />
+`;

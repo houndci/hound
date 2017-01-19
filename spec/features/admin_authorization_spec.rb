@@ -2,7 +2,6 @@ require "rails_helper"
 
 feature "Admin authorization" do
   scenario "admin accesses dashboard" do
-    stub_repos_requests(token)
     stub_admin_usernames(["admin_user", "other_admin_user"])
     admin = create(:user, username: "admin_user")
 
@@ -13,8 +12,6 @@ feature "Admin authorization" do
   end
 
   scenario "non-admin cannot access dashboard" do
-    stub_repos_requests(token)
-    stub_admin_usernames(["admin_user", "other_admin_user"])
     non_admin = create(:user, username: "not_admin_user")
 
     sign_in_as(non_admin, token)

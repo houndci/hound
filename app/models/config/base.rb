@@ -1,9 +1,14 @@
 module Config
   class Base
-    attr_reader_initialize :hound_config
+    def initialize(hound_config, owner: MissingOwner.new)
+      @hound_config = hound_config
+      @owner = owner
+    end
 
     def content
-      @content ||= ensure_correct_type(safe_parse(load_content))
+      @content ||= owner_config.deep_merge(load)
+    rescue ConfigContent::ContentError => exception
+      raise_parse_error(exception.message)
     end
 
     def serialize(data = content)
@@ -16,54 +21,22 @@ module Config
 
     private
 
-    attr_implement :parse, [:file_content]
+    attr_reader :hound_config, :owner
 
-    def safe_parse(content)
-      parse(content)
-    rescue JSON::ParserError, Psych::Exception => exception
-      raise_parse_error(exception.message)
+    def load
+      ConfigContent.new(
+        commit: commit,
+        file_path: file_path,
+        parser: ->(content) { parse(content) },
+      ).load
     end
 
-    def ensure_correct_type(config)
-      if config.is_a? Hash
-        config
-      else
-        raise_type_error
-      end
+    def owner_config
+      owner.config_content(linter_name)
     end
 
-    def raise_type_error
-      raise_parse_error(%{"#{file_path}" must be a Hash})
-    end
-
-    def load_content
-      if file_path
-        if url?
-          fetch_url
-        else
-          commit.file_content(file_path)
-        end
-      else
-        default_content
-      end
-    end
-
-    def fetch_url
-      response = Faraday.new.get(file_path)
-
-      if response.success?
-        response.body
-      else
-        raise_parse_error("#{response.status} #{response.body}")
-      end
-    end
-
-    def url?
-      URI::regexp(%w(http https)).match(file_path)
-    end
-
-    def default_content
-      "{}"
+    def parse(content)
+      Parser.yaml(content)
     end
 
     def raise_parse_error(message)

@@ -10,4 +10,8 @@ module ApplicationHelper
       where(memberships: { user_id: current_user.id }).
       empty?
   end
+
+  def new_window_options(options = {})
+    options.merge(target: "_blank", rel: "noopener noreferrer")
+  end
 end

@@ -15,15 +15,17 @@ Houndapp::Application.routes.draw do
   get "/sign_out", to: "sessions#destroy"
   get "/configuration", to: "pages#configuration"
   get "/faq", to: "pages#show", id: "faq"
+  get "/tier_change", to: "pages#show", id: "tier_change"
 
   resource :account, only: [:show, :update]
   resources :builds, only: [:create, :index]
+  resources :pricings, only: [:index]
 
   resources :repos, only: [:index] do
     with_options(defaults: { format: :json }) do
       resource :activation, only: [:create]
       resource :deactivation, only: [:create]
-      resource :subscription, only: [:create, :destroy]
+      resource :subscription, only: [:create, :update, :destroy]
     end
 
     resources :rebuilds, only: [:create]

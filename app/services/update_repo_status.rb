@@ -1,7 +1,8 @@
 class UpdateRepoStatus
+  static_facade :call
   pattr_initialize :payload
 
-  def run
+  def call
     if repo
       repo.update(repo_attributes)
     end

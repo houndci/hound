@@ -3,10 +3,6 @@ module ConfigurationHelper
     config_url("bbatsov/rubocop", "config/enabled.yml")
   end
 
-  def jshint_config_url
-    config_url("houndci/linters", "config/jshintrc")
-  end
-
   def eslint_config_url
     config_url("houndci/linters", "config/eslintrc")
   end
@@ -21,6 +17,10 @@ module ConfigurationHelper
 
   def swift_config_url
     config_url("houndci/swift", "config/default.yml")
+  end
+
+  def tslint_config_url
+    config_url("houndci/linters", "config/tslint.json")
   end
 
   private

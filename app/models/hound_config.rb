@@ -2,6 +2,7 @@
 class HoundConfig
   LINTERS = [
     Linter::CoffeeScript,
+    Linter::Credo,
     Linter::Eslint,
     Linter::Go,
     Linter::Haml,
@@ -14,9 +15,11 @@ class HoundConfig
   ].freeze
   LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
   BETA_LINTERS = %w(
+    credo
     eslint
     remark
     python
+    tslint
   ).freeze
   CONFIG_FILE = ".hound.yml"
 
@@ -46,15 +49,15 @@ class HoundConfig
   end
 
   def resolved_aliases_config
-    ResolveConfigAliases.run(normalized_config)
+    ResolveConfigAliases.call(normalized_config)
   end
 
   def normalized_config
-    NormalizeConfig.run(parsed_config)
+    NormalizeConfig.call(parsed_config)
   end
 
   def resolved_conflicts_config
-    ResolveConfigConflicts.run(resolved_aliases_config)
+    ResolveConfigConflicts.call(resolved_aliases_config)
   end
 
   def parsed_config

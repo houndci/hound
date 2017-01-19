@@ -8,7 +8,7 @@ describe CreditCardsController, "#update" do
       allow(PaymentGatewayCustomer).to receive(:new).and_return(customer)
       stub_sign_in(create(:user))
 
-      put :update, card_token: card_token, format: :json
+      put :update, params: { card_token: card_token }, format: :json
 
       expect(response).to have_http_status(:success)
       expect(customer).to have_received(:update_card).with(card_token)
@@ -37,6 +37,6 @@ describe CreditCardsController, "#update" do
     allow(PaymentGatewayCustomer).to receive(:new).and_return(customer)
     stub_sign_in(create(:user))
 
-    put :update, card_token: "cardtoken", format: :json
+    put :update, params: { card_token: "cardtoken" }, format: :json
   end
 end

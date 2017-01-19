@@ -3,43 +3,50 @@ require "app/models/config/base"
 require "app/models/config/swift"
 require "app/models/config/parser"
 require "app/models/config/serializer"
+require "app/models/config_content"
+require "app/models/missing_owner"
 
 describe Config::Swift do
   describe "#content" do
-    it "parses the configuration using YAML" do
-      raw_config = <<-EOS.strip_heredoc
-        disabled_rules:
-          - colon
-      EOS
-      commit = stubbed_commit("config/swiftlint.yml" => raw_config)
-      config = build_config(commit)
+    context "when an owner is provided" do
+      it "merges the configuration into the owner's configuration" do
+        raw_config = <<~EOS
+          disabled_rules:
+            - colon
+        EOS
+        owner_config = { "excluded" => ["Carthage", "Pods"] }
+        owner = instance_double("Owner", config_content: owner_config)
+        config = build_config(raw_config, owner)
 
-      expect(config.content).to eq Config::Parser.yaml(raw_config)
+        expect(config.content).to eq(
+          "disabled_rules" => ["colon"],
+          "excluded" => ["Carthage", "Pods"],
+        )
+      end
+    end
+
+    context "when there is no owner" do
+      it "parses the configuration using YAML" do
+        raw_config = <<~EOS
+          disabled_rules:
+            - colon
+        EOS
+        config = build_config(raw_config)
+
+        expect(config.content).to eq("disabled_rules" => ["colon"])
+      end
     end
   end
 
   describe "#serialize" do
     it "serializes the parsed content into YAML" do
-      raw_config = <<-EOS.strip_heredoc
+      raw_config = <<~EOS
         disabled_rules:
           - colon
       EOS
-      commit = stubbed_commit("config/swiftlint.yml" => raw_config)
-      config = build_config(commit)
+      config = build_config(raw_config)
 
       expect(config.serialize).to eq "---\ndisabled_rules:\n- colon\n"
     end
-  end
-
-  def build_config(commit)
-    hound_config = double(
-      "HoundConfig",
-      commit: commit,
-      content: {
-        "swift" => { "enabled": true, "config_file" => "config/swiftlint.yml" },
-      },
-    )
-
-    Config::Swift.new(hound_config)
   end
 end

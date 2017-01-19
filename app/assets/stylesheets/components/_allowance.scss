@@ -1,0 +1,23 @@
+.allowance {
+  border: 2px solid $base-accent-color;
+  border-radius: 100px;
+  color: $base-accent-color;
+  line-height: 40px;
+  padding: 0 $small-spacing;
+
+  strong {
+    border-left: 1px dotted $base-accent-color;
+    margin-left: $small-spacing;
+    padding-left: $small-spacing;
+  }
+
+  &.stressed {
+    color: $red;
+  }
+
+  &.large {
+    display: inline-block;
+    font-size: 1.3em;
+    line-height: 60px;
+  }
+}

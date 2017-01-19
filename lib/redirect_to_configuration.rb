@@ -1,5 +1,5 @@
 class RedirectToConfiguration
-  CONFIG_REGEX = %r{^/configuration.}
+  CONFIG_REGEX = %r{^/configuration.} unless defined?(CONFIG_REGEX)
 
   def initialize(app)
     @app = app

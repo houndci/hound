@@ -4,7 +4,6 @@ feature 'User authentication' do
   scenario "existing user signs in" do
     token = "usergithubtoken"
     user = create(:user)
-    stub_repos_requests(token)
 
     sign_in_as(user, token)
 
@@ -16,7 +15,6 @@ feature 'User authentication' do
     token = "usergithubtoken"
     username = "croaky"
     user = build(:user, username: username)
-    stub_repos_requests(token)
 
     sign_in_as(user, token)
 
@@ -26,7 +24,6 @@ feature 'User authentication' do
   scenario 'user signs out' do
     token = "usergithubtoken"
     user = create(:user)
-    stub_repos_requests(token)
 
     sign_in_as(user, token)
     find('a[href="/sign_out"]').click

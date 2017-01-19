@@ -1,6 +1,38 @@
 .global-header {
-  @include outer-container;
+  @include transition(height 0.2s ease-in-out);
+  background-color: $white;
   height: 120px;
+  width: 100%;
+
+  @include media($medium-screen-down--header) {
+    height: auto;
+    padding: 1em 2em;
+    text-align: center;
+  }
+
+  &.repo-index {
+    position: fixed;
+    z-index: $z-index-front;
+  }
+
+  &.shrunk {
+    border-bottom: 2px solid $base-accent-color;
+    height: 80px;
+
+    @include media($medium-screen-down--header) {
+      height: auto;
+      padding: 0;
+    }
+
+    @include media($small-screen-only) {
+      padding: 0.5em;
+    }
+  }
+}
+
+.global-header-wrapper {
+  @include outer-container;
+  height: 100%;
   padding: 0 0.5em;
 
   @include media($medium-screen-down--header) {
@@ -89,8 +121,8 @@
 
     li {
       display: table-cell;
-      vertical-align: middle;
       text-align: center;
+      vertical-align: middle;
 
       @include media($medium-screen-down--header) {
         display: inline-block;

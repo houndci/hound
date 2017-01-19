@@ -9,7 +9,7 @@ class CompletedFileReviewJob
   # violations
   #   [{ line: 123, message: "WAT" }]
   def self.perform(attributes)
-    CompleteFileReview.run(attributes)
+    CompleteFileReview.call(attributes)
   rescue ActiveRecord::RecordNotFound
     Resque.enqueue_in(30, self, attributes)
   rescue Resque::TermException

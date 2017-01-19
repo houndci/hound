@@ -27,6 +27,7 @@ $base-font-color: rgb(100, 100, 100);
 $light-font-color: rgb(190, 190, 190);
 $medium-font-color: rgb(140, 140, 140);
 $base-accent-color: $purple;
+$base-secondary-color: lighten($purple, 10%);
 $table-heading-background-color: rgb(245, 245, 245);
 $code-background-color: rgba(#99abc0, 0.25);
 
@@ -39,12 +40,14 @@ $medium-header-breakpoint: 850px;
 
 $small-screen-size: 540px;
 $medium-screen-size: 760px;
+$medium-large-screen-size: 57.5em;
 $large-screen-size: 920px;
 
 $small-screen-only: new-breakpoint(max-width $small-screen-size 2);
 $medium-screen-down--header: new-breakpoint(max-width ($medium-header-breakpoint - 1px) 4);
 $medium-screen-down: new-breakpoint(max-width ($medium-screen-size - 1px) 4);
 $medium-screen-up: new-breakpoint(min-width $medium-screen-size 12);
+$medium-large-screen-only: new-breakpoint(max-width $medium-large-screen-size 8);
 $large-screen-down: new-breakpoint(max-width ($large-screen-size - 1px) 8);
 $large-screen-up: new-breakpoint(min-width $large-screen-size 12);
 
@@ -69,3 +72,6 @@ $font-size-base: 1em;
 $base-transition-timing: 0.2s;
 $base-easing: cubic-bezier(0.39, 0.575, 0.565, 1);
 $base-transition: all $base-transition-timing $base-easing;
+
+// Z-Indices
+$z-index-front: 100;

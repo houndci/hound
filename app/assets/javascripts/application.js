@@ -1,12 +1,11 @@
-//= require angular
-//= require angular-resource
 //= require lodash
+//= require jquery3
 //= require namespaced
-//= require_self
-//= require_tree .
 
-App = angular.module('Hound', ['ngResource']);
+//= require vendor-bundle
+//= require app-bundle
 
-App.config(['$httpProvider', function($httpProvider) {
-  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-}]);
+//= require react_ujs
+//= require classnames
+
+//= require sticky-header

@@ -7,27 +7,23 @@ describe Buildable do
 
   describe "#perform" do
     it 'runs build runner' do
-      build_runner = double(:build_runner, run: nil)
       payload = stub_payload(payload_data)
-      allow(BuildRunner).to receive(:new).and_return(build_runner)
+      allow(BuildRunner).to receive(:call)
 
       BuildableTestJob.perform_now(payload_data)
 
       expect(Payload).to have_received(:new).with(payload_data)
-      expect(BuildRunner).to have_received(:new).with(payload)
-      expect(build_runner).to have_received(:run)
+      expect(BuildRunner).to have_received(:call).with(payload)
     end
 
     it "runs repo updater" do
-      repo_updater = double("RepoUpdater", run: nil)
       payload = stub_payload(payload_data)
-      allow(UpdateRepoStatus).to receive(:new).and_return(repo_updater)
+      allow(UpdateRepoStatus).to receive(:call)
 
       BuildableTestJob.perform_now(payload_data)
 
       expect(Payload).to have_received(:new).with(payload_data)
-      expect(UpdateRepoStatus).to have_received(:new).with(payload)
-      expect(repo_updater).to have_received(:run)
+      expect(UpdateRepoStatus).to have_received(:call).with(payload)
     end
 
     context "when the pull request has been blacklisted" do

@@ -1,7 +1,8 @@
 class BuildRunner
+  static_facade :call
   pattr_initialize :payload
 
-  def run
+  def call
     if repo && relevant_pull_request?
       review_pull_request
     end
@@ -88,7 +89,7 @@ class BuildRunner
   end
 
   def report_config_file_as_invalid(exception)
-    ReportInvalidConfig.run(
+    ReportInvalidConfig.call(
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       linter_name: exception.linter_name,

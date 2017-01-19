@@ -11,9 +11,10 @@ describe UsersController do
       expect(response.body).to eq(
         {
           id: user.id,
+          refreshing_repos: user.refreshing_repos,
+          subscribed_repo_count: 0,
+          tier_allowance: 0,
           username: user.username,
-          card_exists: false,
-          refreshing_repos: user.refreshing_repos
         }.to_json
       )
     end

@@ -1,14 +1,14 @@
 require "rails_helper"
 
 describe CompleteFileReview do
-  describe ".run" do
+  describe ".call" do
     it "completes FileReview with violations" do
       file_review = create_file_review
       stub_build_report_run
       stub_pull_request
       stub_payload
 
-      CompleteFileReview.run(attributes)
+      CompleteFileReview.call(attributes)
 
       file_review.reload
       expect(file_review).to be_completed
@@ -23,9 +23,9 @@ describe CompleteFileReview do
       pull_request = stub_pull_request
       payload = stub_payload
 
-      CompleteFileReview.run(attributes)
+      CompleteFileReview.call(attributes)
 
-      expect(BuildReport).to have_received(:run).with(
+      expect(CompleteBuild).to have_received(:call).with(
         pull_request: pull_request,
         build: build,
         token: Hound::GITHUB_TOKEN,
@@ -52,9 +52,9 @@ describe CompleteFileReview do
         pull_request = stub_pull_request
         stub_payload
 
-        CompleteFileReview.run(attributes)
+        CompleteFileReview.call(attributes)
 
-        expect(BuildReport).to have_received(:run).with(
+        expect(CompleteBuild).to have_received(:call).with(
           pull_request: pull_request,
           build: correct_build,
           token: Hound::GITHUB_TOKEN,
@@ -83,7 +83,7 @@ describe CompleteFileReview do
   end
 
   def stub_build_report_run
-    allow(BuildReport).to receive(:run)
+    allow(CompleteBuild).to receive(:call)
   end
 
   def stub_pull_request
