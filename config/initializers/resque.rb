@@ -1,4 +1,3 @@
-require "ext/active_job/base"
 require "resque-sentry"
 require "resque/failure/redis"
 require "resque/failure/multiple"
