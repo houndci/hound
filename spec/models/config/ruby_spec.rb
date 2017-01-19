@@ -60,12 +60,12 @@ describe Config::Ruby do
 
   context "when the configuration uses `inherit_from`" do
     it "returns the merged configuration using `inherit_from`" do
-      rubocop = <<~EOS
+      repo_config = <<~EOS
         inherit_from:
           - config/base.yml
           - config/overrides.yml
-        Style/Encoding:
-          Enabled: true
+        Style/StringLiterals:
+          EnforcedStyle: single_quotes
       EOS
       base = <<~EOS
         LineLength:
@@ -74,21 +74,28 @@ describe Config::Ruby do
       overrides = <<~EOS
         Style/HashSyntax:
           EnforcedStyle: hash_rockets
-        Style/Encoding:
-          Enabled: false
       EOS
       commit = stub_commit(
-        "config/rubocop.yml" => rubocop,
+        "config/rubocop.yml" => repo_config,
         "config/base.yml" => base,
         "config/overrides.yml" => overrides,
       )
+      owner_config = {
+        "Style/StringLiterals" => {
+          "EnforcedStyle" => "double_quotes",
+        },
+        "Style/HashSyntax" => {
+          "EnforcedStyle" => "ruby19",
+        },
+      }
+      owner = instance_double("Owner", config_content: owner_config)
       hound_config = build_hound_config(commit, "config/rubocop.yml")
-      config = described_class.new(hound_config)
+      config = Config::Ruby.new(hound_config, owner: owner)
 
       expect(config.content).to eq(
         "LineLength" => { "Max" => 40 },
         "Style/HashSyntax" => { "EnforcedStyle" => "hash_rockets" },
-        "Style/Encoding" => { "Enabled" => true },
+        "Style/StringLiterals" => { "EnforcedStyle" => "single_quotes" },
       )
     end
 
