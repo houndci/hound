@@ -14,8 +14,6 @@ class StyleChecker
       each { |linter| linter.file_review(commit_file) }
   end
 
-  private
-
   def find_able_linters(filename)
     HoundConfig::LINTERS.
       select { |linter_class| linter_class.can_lint?(filename) }.
