@@ -1,9 +1,11 @@
 FROM quay.io/netguru/ng-ruby:2.3.1
 
+## Update Nodejs & NPM
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
+  apt-get install -y nodejs
+
 # this app uses passenger
 RUN /opt/passenger/install
-# this app uses nodejs for assets precompilation
-RUN /opt/node/install
 
 RUN apt-get update && apt-get install -y libpq-dev
 
@@ -21,6 +23,7 @@ WORKDIR $APP_HOME
 ADD Gemfile* $APP_HOME/
 RUN bundle install --jobs=8 --retry=3  --without development test --deployment
 
+ADD package.json $APP_HOME/
 RUN npm install --silent --no-spin
 
 ADD . $APP_HOME/
