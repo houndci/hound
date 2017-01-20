@@ -21,6 +21,8 @@ WORKDIR $APP_HOME
 ADD Gemfile* $APP_HOME/
 RUN bundle install --jobs=8 --retry=3  --without development test --deployment
 
+RUN npm install --silent --no-spin
+
 ADD . $APP_HOME/
 ADD docker/production/entrypoint.sh /entrypoint.sh
 
