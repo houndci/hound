@@ -74,6 +74,8 @@ describe ActivationsController, "#create" do
   end
 
   context "when repo is not public" do
+    before { Plan::PRICES[:private] = 12 }
+
     it "does not activate" do
       repo = create(:repo, private: true)
       user = create(:user)
@@ -86,5 +88,7 @@ describe ActivationsController, "#create" do
         to raise_error(ActivationsController::CannotActivatePaidRepo)
       expect(activator).not_to have_received(:activate)
     end
+
+    after { Plan::PRICES[:private] = 0 }
   end
 end

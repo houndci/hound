@@ -98,6 +98,18 @@ describe RepoSubscriber do
 
         expect(result).to be_falsy
       end
+
+      it "reports raised exceptions to Rollbar" do
+        repo = build_stubbed(:repo)
+        user = create(:user)
+        stub_customer_create_request(user)
+        stub_failed_subscription_create_request(user.current_tier.id)
+        allow(Rollbar).to receive(:error)
+
+        RepoSubscriber.subscribe(repo, user, "cardtoken")
+
+        expect(Rollbar).to have_received(:error)
+      end
     end
 
     context "when repo subscription fails to create" do
@@ -167,6 +179,18 @@ describe RepoSubscriber do
         result = RepoSubscriber.unsubscribe(repo, user)
 
         expect(result).to be_falsy
+      end
+
+      it "reports raised exceptions to Rollbar" do
+        repo = build_stubbed(:repo)
+        user = build_stubbed(:user, repos: [repo])
+        stub_customer_create_request(user)
+        stub_failed_subscription_destroy_request
+        allow(Rollbar).to receive(:error)
+
+        RepoSubscriber.unsubscribe(repo, user)
+
+        expect(Rollbar).to have_received(:error)
       end
     end
   end
