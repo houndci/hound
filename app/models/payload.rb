@@ -29,6 +29,18 @@ class Payload
     pull_request["changed_files"] || 0
   end
 
+  def pull_request_additions
+    pull_request["additions"]
+  end
+
+  def pull_request_deletions
+    pull_request["deletions"]
+  end
+
+  def pull_request_user
+    pull_request["user"]["login"]
+  end
+
   def ping?
     data["zen"]
   end
@@ -55,6 +67,9 @@ class Payload
       "action" => action,
       "pull_request" => {
         "changed_files" => changed_files,
+        "user" => pull_request_user,
+        "additions" => pull_request_additions,
+        "deletions" => pull_request_deletions,
         "head" => {
           "sha" => head_sha,
         }

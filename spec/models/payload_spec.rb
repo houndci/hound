@@ -1,6 +1,7 @@
 require "spec_helper"
 require "attr_extras"
 require "app/models/payload"
+require "app/models/config/parser"
 require "lib/github_api"
 
 describe Payload do
@@ -191,6 +192,9 @@ describe Payload do
           "action" => "opened",
           "pull_request" => {
             "changed_files" => 1,
+            "user" => "salbertson",
+            "additions" => 3,
+            "deletions" => 0,
             "head" => {
               "sha" => "498b81cd038f8a3ac02f035a8537b7ddcff38a81",
             }
