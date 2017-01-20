@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.feature "User activates a repo", :js do
+  before { Plan::PRICES[:private] = 12 }
+
   scenario "user upgrades from free tier" do
     user = create(:user, :with_github_scopes, :stripe)
     membership = create(:membership, :admin, :private, user: user)
@@ -33,4 +35,6 @@ RSpec.feature "User activates a repo", :js do
 
     expect(page).to have_text "Private Repos 2 / 4"
   end
+
+  after { Plan::PRICES[:private] = 0 }
 end
