@@ -6,21 +6,16 @@ class PullRequest
   pattr_initialize :payload, :token
 
   def comments
-    @comments ||= user_github.pull_request_comments(full_repo_name, number)
+    @comments ||= user_github.pull_request_comments(repo_name, number)
   end
 
   def commit_files
     @commit_files ||= modified_commit_files
   end
 
-  def comment_on_violation(violation)
-    hound_github.add_pull_request_comment(
-      pull_request_number: number,
-      comment: violation.messages.join(COMMENT_LINE_DELIMITER),
-      commit: head_commit,
-      filename: violation.filename,
-      patch_position: violation.patch_position
-    )
+  def comment_on_violations(violations)
+    comments = violations.map { |violation| build_comment(violation) }
+    hound_github.create_pull_request_review(repo_name, number, comments)
   end
 
   def repository_owner_name
@@ -36,7 +31,7 @@ class PullRequest
   end
 
   def head_commit
-    @head_commit ||= Commit.new(full_repo_name, payload.head_sha, user_github)
+    @head_commit ||= Commit.new(repo_name, payload.head_sha, user_github)
   end
 
   private
@@ -52,11 +47,19 @@ class PullRequest
   end
 
   def modified_github_files
-    github_files = user_github.pull_request_files(full_repo_name, number)
+    github_files = user_github.pull_request_files(repo_name, number)
 
     github_files.select do |github_file|
       github_file.status != FILE_REMOVED_STATUS
     end
+  end
+
+  def build_comment(violation)
+    {
+      path: violation.filename,
+      position: violation.patch_position,
+      body: violation.messages.join(COMMENT_LINE_DELIMITER),
+    }
   end
 
   def user_github
@@ -71,7 +74,7 @@ class PullRequest
     payload.pull_request_number
   end
 
-  def full_repo_name
+  def repo_name
     payload.full_repo_name
   end
 end

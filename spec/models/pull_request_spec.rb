@@ -59,23 +59,25 @@ describe PullRequest do
     end
   end
 
-  describe "#comment_on_violation" do
-    it "posts a comment to GitHub for the Hound user" do
+  describe "#comment_on_violations" do
+    it "posts a review with comments to GitHub as the Hound user" do
       payload = payload_stub
-      github = double(:github_client, add_pull_request_comment: nil)
+      github = instance_double("GithubApi", create_pull_request_review: nil)
       pull_request = pull_request_stub(github, payload)
       violation = violation_stub
-      commit = double("Commit")
-      allow(Commit).to receive(:new).and_return(commit)
 
-      pull_request.comment_on_violation(violation)
+      pull_request.comment_on_violations([violation])
 
-      expect(github).to have_received(:add_pull_request_comment).with(
-        pull_request_number: payload.pull_request_number,
-        commit: commit,
-        comment: violation.messages.first,
-        filename: violation.filename,
-        patch_position: violation.patch_position,
+      expect(github).to have_received(:create_pull_request_review).with(
+        "org/repo",
+        payload.pull_request_number,
+        [
+          {
+            path: violation.filename,
+            position: violation.patch_position,
+            body: violation.messages.join,
+          },
+        ],
       )
     end
   end

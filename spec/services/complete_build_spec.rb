@@ -4,29 +4,28 @@ describe CompleteBuild do
   describe ".call" do
     context "when build has violations" do
       context "when the build is complete" do
-        it "comments a maximum number of times" do
-          stub_const("Hound::MAX_COMMENTS", 1)
-          commenter = stubbed_commenter(comment_on_violations: true)
-          file_review = create(
-            :file_review,
-            :completed,
-            violations: build_list(:violation, 2),
-          )
+        it "makes comments only for new violations and repects max limit" do
+          stub_const("Hound::MAX_COMMENTS", 2)
+          build = stub_build(["foo", "bar", "baz"])
+          existing_comment = build_comment("foo")
+          pull_request = stub_pull_request([existing_comment])
           stubbed_github_api
 
-          run_service(file_review.build)
+          CompleteBuild.call(
+            pull_request: pull_request,
+            build: build,
+            token: "abc123",
+          )
 
-          expect(commenter).to have_received(:comment_on_violations) do |arg|
-            expect(arg.size).to eq 1
-            expect(arg.first).to be_a Violation
+          expect(pull_request).to have_received(:comment_on_violations) do |arg|
+            expect(arg.flat_map(&:messages)).to match_array ["bar"]
           end
         end
 
         context "when fail on violations is disabled" do
           it "sets GitHub status to complete" do
-            build = build_stubbed(:build, violations_count: 1)
-            stubbed_commenter
             stubbed_hound_config(fail_on_violations?: false)
+            build = stub_build(["foo"])
             github_api = stubbed_github_api
 
             run_service(build)
@@ -41,8 +40,7 @@ describe CompleteBuild do
 
         context "when fail on violations is enabled" do
           it "sets GitHub status to failed" do
-            build = build_stubbed(:build, violations_count: 1)
-            stubbed_commenter
+            build = stub_build(["foo"])
             stubbed_hound_config(fail_on_violations?: true)
             github_api = stubbed_github_api
 
@@ -58,31 +56,18 @@ describe CompleteBuild do
       end
 
       context "when the build is not complete" do
-        it "does not comment" do
-          commenter = stubbed_commenter(comment_on_violations: true)
-          file_review = create(
-            :file_review,
-            violations: build_list(:violation, 2),
-            completed_at: nil,
-          )
-          stubbed_github_api
-
-          run_service(file_review.build)
-
-          expect(commenter).not_to have_received(:comment_on_violations)
-        end
-
-        it "does not set GitHub status to compelte" do
-          file_review = create(
-            :file_review,
-            completed_at: nil,
-            violations: [build(:violation)],
-          )
-          stubbed_commenter
+        it "does not comment and does not set success status" do
+          build = stub_build(["foo"], completed?: false)
+          pull_request = stub_pull_request
           github_api = stubbed_github_api
 
-          run_service(file_review.build)
+          CompleteBuild.call(
+            pull_request: pull_request,
+            build: build,
+            token: "abc123",
+          )
 
+          expect(pull_request).not_to have_received(:comment_on_violations)
           expect(github_api).not_to have_received(:create_success_status)
         end
       end
@@ -90,20 +75,15 @@ describe CompleteBuild do
 
     context "when build does not have violations" do
       it "sets GitHub status to complete" do
-        file_review = create(
-          :file_review,
-          completed_at: Time.current,
-          violations: [],
-        )
-        stubbed_commenter
+        build = stub_build([])
         stubbed_hound_config(fail_on_violations?: false)
         github_api = stubbed_github_api
 
-        run_service(file_review.build)
+        run_service(build)
 
         expect(github_api).to have_received(:create_success_status).with(
-          file_review.build.repo_name,
-          file_review.build.commit_sha,
+          build.repo_name,
+          build.commit_sha,
           I18n.t(:complete_status, count: 0),
         )
       end
@@ -114,7 +94,6 @@ describe CompleteBuild do
         repo = create(:repo, :active, github_id: 123, private: true)
         build = create(:build, repo: repo)
         create(:subscription, repo: repo)
-        stubbed_commenter
         stubbed_github_api
 
         run_service(build)
@@ -125,15 +104,8 @@ describe CompleteBuild do
       end
     end
 
-    def stubbed_commenter(options = {})
-      commenter = double(:commenter, options).as_null_object
-      allow(Commenter).to receive(:new).and_return(commenter)
-
-      commenter
-    end
-
     def stubbed_github_api
-      github_api = double(
+      github_api = instance_double(
         "GithubApi",
         create_success_status: nil,
         create_error_status: nil,
@@ -144,17 +116,49 @@ describe CompleteBuild do
     end
 
     def stubbed_hound_config(options = {})
-      hound_config = double("HoundConfig", options)
+      hound_config = instance_double("HoundConfig", options)
       allow(HoundConfig).to receive(:new).and_return(hound_config)
 
       hound_config
     end
 
+    def stub_build(violation_messages, attributes = {})
+      violations = violation_messages.map do |violation_message|
+        instance_double(
+          "Violation",
+          filename: "app/anything.rb",
+          patch_position: 1,
+          messages: [violation_message],
+        )
+      end
+      default_attributes = {
+        completed?: true,
+        repo: instance_double("Repo", subscription: false),
+        repo_name: "foo/bar",
+        commit_sha: "abc123",
+        violations: violations,
+        violations_count: violations.size,
+      }
+      instance_double("Build", default_attributes.merge(attributes))
+    end
+
+    def stub_pull_request(comments = [])
+      head_commit = instance_double("Commit", file_content: "")
+      instance_double(
+        "PullRequest",
+        head_commit: head_commit,
+        comments: comments,
+        comment_on_violations: nil,
+      )
+    end
+
+    def build_comment(body)
+      OpenStruct.new(path: "app/anything.rb", position: 1, body: body)
+    end
+
     def run_service(build)
-      head_commit = double("Commit", file_content: "")
-      pull_request = double("PullRequest", head_commit: head_commit)
       CompleteBuild.call(
-        pull_request: pull_request,
+        pull_request: stub_pull_request,
         build: build,
         token: "abc123",
       )
