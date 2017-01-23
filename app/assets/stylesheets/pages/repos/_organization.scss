@@ -14,7 +14,7 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 1em 2em;
+  padding: 1em;
 
   @include media($large-screen-down) {
     flex-direction: column;
@@ -23,10 +23,17 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
 }
 
 .organization-header-config {
+  display: flex;
+
+  @include media($medium-screen-down) {
+    display: block;
+  }
+}
+
+.organization-header-source {
   align-items: center;
   display: flex;
   flex-direction: row;
-  text-align: right;
 }
 
 .organization-header-label {
@@ -64,9 +71,14 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
 .organization-header-toggle {
   align-items: center;
   display: flex;
+  padding: $xsmall-spacing;
 
   @include media($large-screen-down) {
     margin: 1em auto;
+  }
+
+  @include media($medium-screen-down) {
+    padding: $xsmall-spacing 0;
   }
 }
 

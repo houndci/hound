@@ -36,6 +36,9 @@ class OrganizationsList extends React.Component {
             onRepoClicked={onRepoClicked}
             filterTerm={filterTerm}
             isProcessingId={isProcessingId}
+            configEnabled={org.config_enabled}
+            configRepo={org.config_repo}
+            ownerId={org.id}
           />
         ))}
       </ul>

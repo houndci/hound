@@ -33,6 +33,15 @@ export function activateRepo(repo) {
   });
 }
 
+export function updateOwner(id, params) {
+  $.ajax({
+    url: `/owners/${id}`,
+    type: "PUT",
+    dataType: "json",
+    data: { owner: params }
+  });
+}
+
 export function upgradeSubscription(id) {
   return $.ajax({
     dataType: "json",

@@ -8,6 +8,15 @@ exports[`test renders an organization with ID appropriately (no repo processing)
       className="organization-header-title">
       Test org
     </h2>
+    <OrganizationConfiguration
+      repos={
+        Array [
+          Object {
+            "id": 1,
+            "name": "Test repo",
+          },
+        ]
+      } />
   </header>
   <section
     className="repo_listing">
