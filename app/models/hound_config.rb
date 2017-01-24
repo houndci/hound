@@ -4,6 +4,7 @@ class HoundConfig
     Linter::CoffeeScript,
     Linter::Credo,
     Linter::Eslint,
+    Linter::Flog,
     Linter::Go,
     Linter::Haml,
     Linter::Jshint,
@@ -17,6 +18,7 @@ class HoundConfig
   BETA_LINTERS = %w(
     credo
     eslint
+    flog
     remark
     python
     tslint
