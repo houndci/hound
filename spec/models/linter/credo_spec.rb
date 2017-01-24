@@ -1,29 +1,8 @@
-require "rails_helper"
+require "spec_helper"
 
 describe Linter::Credo do
-  describe ".can_lint?" do
-    context "given an .ex file" do
-      it "returns true" do
-        result = Linter::Credo.can_lint?("foo.ex")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given an .exs file" do
-      it "returns true" do
-        result = Linter::Credo.can_lint?("foo.exs")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-markdown file" do
-      it "returns false" do
-        result = Linter::Credo.can_lint?("foo.txt")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.ex foo.exs) }
+    let(:not_lintable_files) { %w(foo.txt) }
   end
 end

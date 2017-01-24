@@ -1,38 +1,9 @@
 require "rails_helper"
 
 describe Linter::Eslint do
-  describe ".can_lint?" do
-    context "given an .es6 file" do
-      it "returns true" do
-        result = Linter::Eslint.can_lint?("foo.es6")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a .js file" do
-      it "returns true" do
-        result = Linter::Eslint.can_lint?("foo.js")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a .jsx file" do
-      it "returns true" do
-        result = Linter::Eslint.can_lint?("foo.jsx")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-eslint file" do
-      it "returns false" do
-        result = Linter::Eslint.can_lint?("foo.js.coffee")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.es6 foo.js foo.jsx) }
+    let(:not_lintable_files) { %w(foo.js.coffee) }
   end
 
   describe "#file_review" do

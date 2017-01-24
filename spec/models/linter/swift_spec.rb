@@ -1,22 +1,9 @@
 require "rails_helper"
 
 describe Linter::Swift do
-  describe ".can_lint?" do
-    context "given a .swift file" do
-      it "returns true" do
-        result = Linter::Swift.can_lint?("foo.swift")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-swift file" do
-      it "returns false" do
-        result = Linter::Swift.can_lint?("foo.c")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.swift) }
+    let(:not_lintable_files) { %w(foo.c) }
   end
 
   describe "#file_review" do

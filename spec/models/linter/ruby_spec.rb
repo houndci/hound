@@ -1,30 +1,9 @@
 require "rails_helper"
 
 describe Linter::Ruby do
-  describe ".can_lint?" do
-    context "given a .rb file" do
-      it "returns true" do
-        result = Linter::Ruby.can_lint?("foo.rb")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a .rake file" do
-      it "returns true" do
-        result = Linter::Ruby.can_lint?("foo.rake")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-ruby file" do
-      it "returns false" do
-        result = Linter::Ruby.can_lint?("foo.js")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.rb foo.rake) }
+    let(:not_lintable_files) { %w(foo.js) }
   end
 
   describe "#file_review" do

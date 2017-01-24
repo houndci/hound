@@ -1,22 +1,9 @@
 require "rails_helper"
 
 describe Linter::Go do
-  describe ".can_lint?" do
-    context "given a .go file" do
-      it "returns true" do
-        result = Linter::Go.can_lint?("foo.go")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-go file" do
-      it "returns false" do
-        result = Linter::Go.can_lint?("foo.rb")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.go) }
+    let(:not_lintable_files) { %w(foo.rb) }
   end
 
   describe "#file_review" do

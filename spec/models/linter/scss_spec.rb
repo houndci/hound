@@ -1,22 +1,9 @@
 require "rails_helper"
 
 describe Linter::Scss do
-  describe ".can_lint?" do
-    context "given an .scss file" do
-      it "returns true" do
-        result = Linter::Scss.can_lint?("foo.scss")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-scss file" do
-      it "returns false" do
-        result = Linter::Scss.can_lint?("foo.css")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.scss) }
+    let(:not_lintable_files) { %w(foo.css) }
   end
 
   describe "#file_review" do
