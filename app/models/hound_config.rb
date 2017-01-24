@@ -10,6 +10,7 @@ class HoundConfig
     Linter::Jshint,
     Linter::Remark,
     Linter::Python,
+    Linter::Reek,
     Linter::Ruby,
     Linter::Scss,
     Linter::Swift,
@@ -19,6 +20,7 @@ class HoundConfig
     credo
     eslint
     flog
+    reek
     remark
     python
     tslint
