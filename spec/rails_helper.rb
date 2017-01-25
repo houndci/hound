@@ -1,5 +1,4 @@
 ENV["RAILS_ENV"] ||= "test"
-ENV["ENABLE_HTTPS"] = "no"
 
 require "config/environment"
 require "rspec/rails"
