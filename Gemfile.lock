@@ -159,6 +159,9 @@ GEM
     minitest (5.10.1)
     momentjs-rails (2.15.1)
       railties (>= 3.1)
+    money (6.7.1)
+      i18n (>= 0.6.4, <= 0.7.0)
+      sixarm_ruby_unaccent (>= 1.1.1, < 2)
     mono_logger (1.1.0)
     multi_json (1.12.1)
     multi_xml (0.6.0)
@@ -302,6 +305,7 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.0.beta2)
       tilt (~> 2.0)
+    sixarm_ruby_unaccent (1.1.1)
     split (2.2.0)
       redis (>= 2.1)
       simple-random (>= 0.9.3)
@@ -313,7 +317,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    stripe (1.57.1)
+    stripe (1.58.0)
       rest-client (>= 1.4, < 4.0)
     thor (0.19.1)
     thread_safe (0.3.5)
@@ -365,6 +369,7 @@ DEPENDENCIES
   inifile
   jquery-rails (>= 4.2.0)
   launchy
+  money
   neat
   normalize-rails
   octokit

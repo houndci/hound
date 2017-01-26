@@ -1,0 +1,33 @@
+<p><b>Source:</b> <%= @invoice.source %></p>
+
+<p><b>Date:</b> <%= @invoice.date %></p>
+
+<table>
+  <tr>
+    <th>Description</th>
+
+    <th>Qty</th>
+
+    <th>Amount</th>
+  </tr>
+
+  <% @invoice.line_items.each do |line_item| %>
+    <td><%= line_item.description %></td>
+
+    <td><%= line_item.quantity %></td>
+
+    <td><%= number_to_currency(line_item.amount) %></td>
+  <% end %>
+
+  <tr>
+    <td colspan="2">Subtotal</td>
+
+    <td><%= number_to_currency(@invoice.subtotal) %></td>
+  </tr>
+
+  <tr>
+    <td colspan="2">Total</td>
+
+    <td><%= number_to_currency(@invoice.total) %></td>
+  </tr>
+</table>

@@ -67,6 +67,10 @@ class User < ApplicationRecord
     end
   end
 
+  def invoices
+    payment_gateway_customer.charges
+  end
+
   def payment_gateway_subscription
     @_payment_gateway_subscription ||= payment_gateway_customer.subscription
   end

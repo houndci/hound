@@ -10,6 +10,10 @@ class PaymentGatewayCustomer
     customer.email
   end
 
+  def charges
+    Charges.new(customer)
+  end
+
   def customer
     @customer ||= begin
       if user.stripe_customer_id.present?
