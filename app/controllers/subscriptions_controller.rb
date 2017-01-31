@@ -6,7 +6,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     if Tier.new(current_user).full?
-      head 402
+      render json: {}, status: :payment_required
     elsif activator.activate && create_subscription
       render json: repo, status: :created
     else

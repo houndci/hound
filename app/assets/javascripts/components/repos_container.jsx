@@ -11,7 +11,6 @@ class ReposContainer extends React.Component {
     filterTerm: null,
     repos: [],
     organizations: [],
-    userHasCard: this.props.userHasCard
   }
 
   fetchReposAndOrgs() {
@@ -90,17 +89,6 @@ class ReposContainer extends React.Component {
     });
   }
 
-  activatePaidRepo(repo) {
-    if (this.state.userHasCard) {
-      this.createSubscriptionWithExistingCard(repo);
-    } else {
-      this.showCreditCardForm(
-        repo,
-        (token) => this.createSubscriptionWithNewCard(repo, token)
-      );
-    }
-  }
-
   updateSubscribedRepoCount() {
     this.getUser().then(user => {
       const subscribedRepoCount = user.subscribed_repo_count;
@@ -151,20 +139,6 @@ class ReposContainer extends React.Component {
     }).catch(error => this.onSubscriptionError(repo, error));
   }
 
-  createSubscriptionWithNewCard(repo, stripeToken) {
-    Ajax.createSubscription({
-      repo_id: repo.id,
-      card_token: stripeToken.id,
-      email_address: stripeToken.email
-    }).then( resp => {
-      this.activateAndTrackRepoSubscription(
-        repo, resp.stripe_subscription_id
-      );
-    }).then( () => {
-      this.setState({ userHasCard: true });
-    }).catch(error => this.onSubscriptionError(repo, error));
-  }
-
   activateFreeRepo(repo) {
     Ajax.activateRepo(
       repo
@@ -189,27 +163,13 @@ class ReposContainer extends React.Component {
       }
     } else {
       if (repo.price_in_dollars > 0) {
-        this.activatePaidRepo(repo);
+        this.createSubscriptionWithExistingCard(repo);
       } else {
         this.activateFreeRepo(repo);
       }
     }
 
     this.setState({isProcessingId: null});
-  }
-
-  showCreditCardForm(options, successCallback) {
-    StripeCheckout.configure({
-      key: Hound.settings.stripePublishableKey,
-      image: Hound.settings.iconPath,
-      token: successCallback
-    }).open({
-      name: options.full_plan_name,
-      amount: options.price_in_cents,
-      email: Hound.settings.userEmailAddress,
-      panelLabel: options.buttonText || "{{amount}} per month",
-      allowRememberMe: false
-    });
   }
 
   getUser() {

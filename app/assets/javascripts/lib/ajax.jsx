@@ -42,11 +42,12 @@ export function updateOwner(id, params) {
   });
 }
 
-export function upgradeSubscription(id) {
+export function upgradeSubscription(id, params) {
   return $.ajax({
-    dataType: "json",
-    type: "PUT",
     url: `/repos/${id}/subscription.json`,
+    type: "PUT",
+    dataType: "json",
+    data: params,
     success: () => {
       document.location.href = "/repos";
     }

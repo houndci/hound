@@ -60,7 +60,13 @@ class NotifyTierChange extends React.Component {
   }
 
   render() {
-    const { authenticity_token, repo_id, repo_name } = this.props;
+    const {
+      authenticity_token,
+      next_tier,
+      repo_id,
+      repo_name,
+      user_has_card,
+    } = this.props;
 
     const tierUsage = this.getTierUsage();
 
@@ -89,7 +95,9 @@ class NotifyTierChange extends React.Component {
 
           <UpgradeSubscriptionLink
             authenticityToken={authenticity_token}
+            nextTier={next_tier}
             repoId={repo_id}
+            userHasCard={user_has_card}
           />
           <a className="button tier-change-cancel" href="/repos">Cancel</a>
         </div>
