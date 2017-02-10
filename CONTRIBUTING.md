@@ -161,6 +161,9 @@ and services being used, and the default configuration for each linter.
  * [houndci/scss](https://github.com/houndci/scss)
  * [config](https://raw.githubusercontent.com/houndci/scss/master/config/default.yml)
 
+ *Note:* for more information on the SCSS configuration options, please refer to
+ the [scss-lint documentation](https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md).
+
 1. Haml
  * [haml-lint](https://github.com/brigade/haml-lint)
  * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/haml.yml)
