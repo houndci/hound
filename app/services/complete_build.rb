@@ -13,7 +13,9 @@ class CompleteBuild
       new_violations = priority_violations.select do |violation|
         commenting_policy.comment_on?(violation)
       end
-      pull_request.comment_on_violations(new_violations)
+      if new_violations.any?
+        pull_request.comment_on_violations(new_violations)
+      end
       set_commit_status
       track_subscribed_build_completed
     end

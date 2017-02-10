@@ -87,6 +87,21 @@ describe CompleteBuild do
           I18n.t(:complete_status, count: 0),
         )
       end
+
+      it "does not send a PR review" do
+        stub_const("Hound::MAX_COMMENTS", 2)
+        build = stub_build([])
+        pull_request = stub_pull_request([])
+        stubbed_github_api
+
+        CompleteBuild.call(
+          pull_request: pull_request,
+          build: build,
+          token: "abc123",
+        )
+
+        expect(pull_request).not_to have_received(:comment_on_violations)
+      end
     end
 
     context "with subscribed private repo and opened pull request" do
