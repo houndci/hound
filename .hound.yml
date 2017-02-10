@@ -1,4 +1,2 @@
-fail_on_violations: true
-
 ruby:
   config_file: .ruby-style.yml
