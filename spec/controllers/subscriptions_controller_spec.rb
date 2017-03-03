@@ -104,9 +104,8 @@ describe SubscriptionsController, "#create" do
           repos: repos,
           token: "TEST_USER_TOKEN",
         )
-        users = class_double(User, first: user)
         allow(RepoActivator).to receive(:new).and_return(repo_activator)
-        allow(User).to receive(:where).and_return(users)
+        allow(User).to receive(:find_by).and_return(user)
 
         put :update, params: { repo_id: 1 }
 

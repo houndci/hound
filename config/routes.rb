@@ -4,6 +4,7 @@ Houndapp::Application.routes.draw do
       resources dashboard_resource
     end
 
+    resources :masquerades, param: :username, only: [:show, :destroy]
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 

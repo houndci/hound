@@ -4,6 +4,7 @@ en:
   syncing_repos: "Loading..."
   authenticate: "Sign In with GitHub"
   sign_out: "Sign Out"
+  stop_masquerading: "Stop Masquerading"
   active_repos: "Active repos"
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."

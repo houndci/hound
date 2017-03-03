@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :capture_campaign_params
   before_action :authenticate
 
-  helper_method :current_user, :signed_in?
+  helper_method :current_user, :signed_in?, :masquerading?
 
   private
 
@@ -40,16 +40,28 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.where(remember_token: session[:remember_token]).first
+    @_current_user ||= find_user_or_masqerade
   end
 
   def analytics
-    @analytics ||= Analytics.new(current_user, session[:campaign_params])
+    @_analytics ||= Analytics.new(current_user, session[:campaign_params])
+  end
+
+  def masquerading?
+    session[:masqueraded_user_id]
   end
 
   protected
 
   def verified_request?
     super || valid_authenticity_token?(session, request.headers["X-XSRF-TOKEN"])
+  end
+
+  def find_user_or_masqerade
+    if masquerading?
+      User.find_by(id: session[:masqueraded_user_id])
+    else
+      User.find_by(remember_token: session[:remember_token])
+    end
   end
 end
