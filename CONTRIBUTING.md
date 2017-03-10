@@ -222,6 +222,15 @@ outbound `ReportInvalidConfigJob` queue:
 * `pull_request_number` - The GitHub pull request number. This is provided by
   the inbound queue.
 
+## Deploying
+If you have previously run the `bin/setup` script, you can deploy to staging
+and production with:
+
+```sh
+% bin/deploy staging
+% bin/deploy production
+```
+
 ## Contributor License Agreement
 
 If you submit a Contribution to this application's source code, you hereby grant
