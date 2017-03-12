@@ -14,6 +14,7 @@ class HoundConfig
     Linter::Ruby,
     Linter::Scss,
     Linter::Swift,
+    Linter::Tslint,
   ].freeze
   LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
   BETA_LINTERS = %w(
