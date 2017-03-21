@@ -142,39 +142,49 @@ To better understand the architecture of Hound, here is a list of the linters
 and services being used, and the default configuration for each linter.
 
 1. Ruby
- * [RuboCop](https://github.com/bbatsov/rubocop)
- * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/ruby.yml)
+  * Rubocop
+    * [rubocop](https://github.com/bbatsov/rubocop)
+    * [config](https://github.com/houndci/linters/blob/master/config/rubocop.yml)
+  * Reek
+    * [reek](https://github.com/troessner/reek)
+    * [config](https://github.com/troessner/reek/blob/master/defaults.reek)
 
 1. CoffeeScript
- * [CoffeeLint](https://github.com/clutchski/coffeelint)
- * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/coffeescript.json)
+  * [coffeelint](https://github.com/clutchski/coffeelint)
+  * [config](https://github.com/clutchski/coffeelint/blob/master/coffeelint.json)
 
 1. JavaScript
   * JSHint
-    * [houndci/jshint](https://github.com/houndci/jshint)
-    * [config](https://raw.githubusercontent.com/houndci/jshint/master/config/.jshintrc)
+    * [jshint](https://github.com/jshint/jshint)
+    * [config](https://github.com/jshint/jshint/blob/master/.jshintrc)
   * ESLint
-    * [houndci/eslint](https://github.com/houndci/eslint)
-    * [config](https://raw.githubusercontent.com/houndci/eslint/master/config/.eslintrc)
+    * [eslint](https://github.com/eslint/eslint)
+    * [config](https://github.com/houndci/linters/blob/master/config/eslintrc)
 
 1. SCSS
- * [houndci/scss](https://github.com/houndci/scss)
- * [config](https://raw.githubusercontent.com/houndci/scss/master/config/default.yml)
+  * [scss-lint](https://github.com/brigade/scss-lint)
+  * [config](https://github.com/houndci/linters/blob/master/config/scss.yml)
 
 1. Haml
- * [haml-lint](https://github.com/brigade/haml-lint)
- * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/haml.yml)
+  * [haml-lint](https://github.com/brigade/haml-lint)
+  * [config](https://github.com/houndci/linters/blob/master/config/haml.yml)
 
 1. Go
- * [houndci/go](https://github.com/houndci/go)
+  * [houndci/go](https://github.com/houndci/go)
+
+1. Python (beta)
+  * [houndci/python](https://github.com/houndci/python)
+
+1. Elixir
+  * [rrrene/credo](https://github.com/rrrene/credo)
 
 1. Markdown (beta)
- * [houndci/remark](https://github.com/houndci/remark)
- * [config](https://github.com/wooorm/remark-lint#rules)
+  * [houndci/remark](https://github.com/houndci/remark)
+  * [config](https://github.com/wooorm/remark-lint#rules)
 
 1. Swift (beta)
- * [houndci/swift](https://github.com/houndci/swift)
- * [config](https://github.com/houndci/swift/blob/master/config/default.yml)
+  * [houndci/swift](https://github.com/houndci/swift)
+  * [config](https://github.com/houndci/swift/blob/master/config/default.yml)
 
 ### Writing a Linter
 
@@ -223,6 +233,7 @@ outbound `ReportInvalidConfigJob` queue:
   the inbound queue.
 
 ## Deploying
+
 If you have previously run the `bin/setup` script, you can deploy to staging
 and production with:
 
