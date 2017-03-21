@@ -21,9 +21,7 @@ Here are a few technical guidelines to follow:
 
 ## Configure Hound on Your Local Development Environment
 
-1. After cloning the repository, run the setup script
-
-    `./bin/setup`
+1. After cloning the repository, run the setup script: `./bin/setup`
 
 1. Make sure that postgres, and redis, are both installed and running locally.
 
@@ -56,21 +54,20 @@ local Hound server you'll need to have ngrok or something similar set up.
 To get started with ngrok, sign up for an [ngrok] account and configure ngrok
 locally by installing ngrok and running:
 
-    `ngrok authtoken <your-token>`
+```sh
+ngrok authtoken <your-token>
+```
 
 1. Launch ngrok on port 5000 (we recommend running ngrok with a custom subdomain
    for easy and persistent configuration, but this requires a paid ngrok account.
    You can still run Hound with a free ngrok account, but it will require keeping
-   the GitHub developer application configuration and your  `.env.local` files up
+   the GitHub developer application configuration and your `.env.local` files up
    to date if your ngrok subdomain changes).
 
- * If you're using a custom subdomain:
+   * If you're using a custom subdomain:
+     `ngrok http -subdomain=<your-initials>-hound 5000`
 
-    `ngrok http -subdomain=<your-initials>-hound 5000`
-
- * If you're using a free ngrok plan:
-
-    `ngrok http 5000`
+   * If you're using a free ngrok plan: `ngrok http 5000`
 
 1. Set the `HOST` variable in your `.env.local` to your ngrok host, e.g.
    `<your-subdomain>.ngrok.io`.
@@ -142,39 +139,32 @@ To better understand the architecture of Hound, here is a list of the linters
 and services being used, and the default configuration for each linter.
 
 1. Ruby
- * [RuboCop](https://github.com/bbatsov/rubocop)
- * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/ruby.yml)
-
+   * [RuboCop](https://github.com/bbatsov/rubocop)
+   * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/ruby.yml)
 1. CoffeeScript
- * [CoffeeLint](https://github.com/clutchski/coffeelint)
- * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/coffeescript.json)
-
+   * [CoffeeLint](https://github.com/clutchski/coffeelint)
+   * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/coffeescript.json)
 1. JavaScript
-  * JSHint
-    * [houndci/jshint](https://github.com/houndci/jshint)
-    * [config](https://raw.githubusercontent.com/houndci/jshint/master/config/.jshintrc)
-  * ESLint
-    * [houndci/eslint](https://github.com/houndci/eslint)
-    * [config](https://raw.githubusercontent.com/houndci/eslint/master/config/.eslintrc)
-
+   * JSHint
+     * [houndci/jshint](https://github.com/houndci/jshint)
+     * [config](https://raw.githubusercontent.com/houndci/jshint/master/config/.jshintrc)
+   * ESLint
+     * [houndci/eslint](https://github.com/houndci/eslint)
+     * [config](https://raw.githubusercontent.com/houndci/eslint/master/config/.eslintrc)
 1. SCSS
- * [houndci/scss](https://github.com/houndci/scss)
- * [config](https://raw.githubusercontent.com/houndci/scss/master/config/default.yml)
-
+   * [houndci/scss](https://github.com/houndci/scss)
+   * [config](https://raw.githubusercontent.com/houndci/scss/master/config/default.yml)
 1. Haml
- * [haml-lint](https://github.com/brigade/haml-lint)
- * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/haml.yml)
-
+   * [haml-lint](https://github.com/brigade/haml-lint)
+   * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/haml.yml)
 1. Go
- * [houndci/go](https://github.com/houndci/go)
-
+   * [houndci/go](https://github.com/houndci/go)
 1. Markdown (beta)
- * [houndci/remark](https://github.com/houndci/remark)
- * [config](https://github.com/wooorm/remark-lint#rules)
-
+   * [houndci/remark](https://github.com/houndci/remark)
+   * [config](https://github.com/wooorm/remark-lint#rules)
 1. Swift (beta)
- * [houndci/swift](https://github.com/houndci/swift)
- * [config](https://github.com/houndci/swift/blob/master/config/default.yml)
+   * [houndci/swift](https://github.com/houndci/swift)
+   * [config](https://github.com/houndci/swift/blob/master/config/default.yml)
 
 ### Writing a Linter
 
@@ -223,6 +213,7 @@ outbound `ReportInvalidConfigJob` queue:
   the inbound queue.
 
 ## Deploying
+
 If you have previously run the `bin/setup` script, you can deploy to staging
 and production with:
 
