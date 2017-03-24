@@ -1,5 +1,8 @@
 class ResolveConfigConflicts
-  CONFLICTS = { "eslint" => "jshint" }.freeze
+  CONFLICTS = {
+    "eslint" => "jshint",
+    "stylelint" => "scss",
+  }.freeze
 
   static_facade :call
 
