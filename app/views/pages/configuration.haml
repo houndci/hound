@@ -20,9 +20,13 @@
       %li
         = link_to "Swift", "#swift", class: "docs-nav-link"
       %li
-        = link_to "ESLint (beta)", "#eslint", class: "docs-nav-link"
+        = link_to "ESLint", "#eslint", class: "docs-nav-link"
       %li
-        = link_to "Python (beta)", "#python", class: "docs-nav-link"
+        = link_to "Python", "#python", class: "docs-nav-link"
+      %li
+        = link_to "TSLint", "#tslint", class: "docs-nav-link"
+      %li
+        = link_to "Elixir", "#elixir", class: "docs-nav-link"
 
   %section.docs-content
     %article.docs-article
@@ -42,8 +46,17 @@
     %article.docs-article#configuration
       %h3 Hound Configuration
 
+      %p The following linters are enabled by default:
       %p
-        All supported linters, except the ones in beta, are enabled by default.
+        %ul
+          %li RuboCop (Ruby)
+          %li CoffeeLint (CoffeeScript)
+          %li JavaScript (JSHint)
+          %li SCSS (SCSSLint)
+          %li Haml (HAMLLint)
+          %li Go (golint)
+          %li Swift (SwiftLint)
+      %p All other linters must be explicitly enabled.
 
       %p
         Hound will look for a custom configuration file named
@@ -213,64 +226,6 @@
             jshint:
               enabled: false
 
-    %article.docs-article#eslint
-      %h3 ESLint (beta)
-
-      %p
-        Hound uses
-        = link_to "ESLint", "http://eslint.org/", new_window_options
-        with this
-        = link_to "config", eslint_config_url, new_window_options
-        by default.
-
-      %p
-        To enable ESLint style checking, add the following to your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            eslint:
-              enabled: true
-
-      %p
-        To change the way ESLint is configured, add
-        %em.code-inline .eslintrc
-        file to your project,
-        specify your desired configuration
-        and reference the file in your
-        %em.code-inline .hound.yml
-
-      %p
-        %code.code-block
-          :preserve
-            eslint:
-              enabled: true
-              config_file: .eslintrc
-
-      %p
-        For more information on configuring ESLint rules, see the
-        = link_to "ESLint Rules Documentation",
-          "http://eslint.org/docs/rules/",
-          new_window_options
-
-      %p
-        To ignore certain files and directories, add
-        %em.code-inline .eslintignore
-        file to your project,
-        include in it path patterns for files/directories that you want ignored,
-        and reference the ignore file in your
-        %em.code-inline .hound.yml
-        \. See
-        = link_to "linter docs",
-          "http://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories",
-          new_window_options
-        for more info.
-
-        %code.code-block
-          :preserve
-            eslint:
-              ignore_file: .eslintignore
-
     %article.docs-article#scss
       %h3 SCSS
 
@@ -353,6 +308,13 @@
       %h3 Go
 
       %p
+        Hound uses
+        = link_to "Golint",
+          "https://github.com/golang/lint",
+          new_window_options
+        to review Go code.
+
+      %p
         To disable Go style checking, add the following to your
         %em.code-inline .hound.yml
 
@@ -360,44 +322,6 @@
           :preserve
             go:
               enabled: false
-
-    %article.docs-article#python
-      %h3 Python (beta)
-
-      %p
-        Hound uses
-        = link_to "Flake8",
-          "http://flake8.readthedocs.org/en/latest/",
-          new_window_options
-        with this
-        = link_to "default config",
-          "http://flake8.readthedocs.org/en/latest/config.html#default",
-          new_window_options
-        by default.
-
-      %p
-        To enable Python style checking, add the following to your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            python:
-              enabled: true
-
-      %p
-        To change the way Flake8 is configured, create a
-        = link_to ".ini file",
-          "http://flake8.readthedocs.org/en/latest/config.html#per-project",
-          new_window_options
-        with your custom configuration and reference the file in
-        %em.code-inline .hound.yml
-
-      %p
-        %code.code-block
-          :preserve
-            python:
-              enabled: true
-              config_file: .flake8.ini
 
     %article.docs-article#swift
       %h3 Swift
@@ -440,6 +364,178 @@
         = link_to "SwiftLint Configuration Documentation",
           "https://github.com/realm/SwiftLint#configuration",
           new_window_options
+
+    %article.docs-article#eslint
+      %h3 ESLint
+
+      %p
+        Hound uses
+        = link_to "ESLint", "http://eslint.org/", new_window_options
+        with this
+        = link_to "config", eslint_config_url, new_window_options
+        by default.
+
+      %p
+        To enable ESLint style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            eslint:
+              enabled: true
+
+      %p
+        To change the way ESLint is configured, add
+        %em.code-inline .eslintrc
+        file to your project,
+        specify your desired configuration
+        and reference the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            eslint:
+              enabled: true
+              config_file: .eslintrc
+
+      %p
+        For more information on configuring ESLint rules, see the
+        = link_to "ESLint Rules Documentation",
+          "http://eslint.org/docs/rules/",
+          new_window_options
+
+      %p
+        To ignore certain files and directories, add
+        %em.code-inline .eslintignore
+        file to your project,
+        include in it path patterns for files/directories that you want ignored,
+        and reference the ignore file in your
+        %em.code-inline .hound.yml
+        \. See
+        = link_to "linter docs",
+          "http://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories",
+          new_window_options
+        for more info.
+
+        %code.code-block
+          :preserve
+            eslint:
+              ignore_file: .eslintignore
+
+    %article.docs-article#python
+      %h3 Python
+
+      %p
+        Hound uses
+        = link_to "Flake8",
+          "http://flake8.readthedocs.org/en/latest/",
+          new_window_options
+        with this
+        = link_to "default config",
+          "http://flake8.readthedocs.org/en/latest/config.html#default",
+          new_window_options
+        by default.
+
+      %p
+        To enable Python style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            python:
+              enabled: true
+
+      %p
+        To change the way Flake8 is configured, create a
+        = link_to ".ini file",
+          "http://flake8.readthedocs.org/en/latest/config.html#per-project",
+          new_window_options
+        with your custom configuration and reference the file in
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            python:
+              enabled: true
+              config_file: .flake8.ini
+
+    %article.docs-article#tslint
+      %h3 TSLint
+      %p
+        Hound uses
+        = link_to "TSLint",
+          "https://palantir.github.io/tslint/",
+          new_window_options
+        to review TypeScript code.
+
+      %p
+        To enable TypeScript style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            tslint:
+              enabled: true
+
+      %p
+        To change the way TSLint is configured, add a
+        %em.code-inline tslint.json
+        file to your project, configure it as desired
+        (see the
+        = succeed ")," do
+          = link_to "TSLint rules",
+            "https://palantir.github.io/tslint/rules/",
+            new_window_options
+        and reference it in
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            tslint:
+              config_file: tslint.json
+
+    %article.docs-article#elixir
+      %h3 Elixir
+      %p
+        Hound uses
+        = link_to "Credo",
+          "http://credo-ci.org/",
+          new_window_options
+        to review Elixir code.
+
+      %p
+        To enable Elixir style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            elixir:
+              enabled: true
+
+      %p
+        By default, Hound uses the
+        = succeed "." do
+          = link_to "Credo's Elixir Style Guide",
+            "https://github.com/rrrene/elixir-style-guide",
+            new_window_options
+        To change the way Credo is configured, add a
+        %em.code-inline .credo.exs
+        file to your project, configure it as desired
+        (see the
+        = succeed ")," do
+          = link_to "Credo docs",
+            "http://credo-ci.org/",
+            new_window_options
+        and reference it in
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            elixir:
+              enabled: true
+              config_file: .credo.exs
 
     %article.docs-article
       %h3 Didn't find what you where looking for?
