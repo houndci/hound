@@ -23,7 +23,7 @@ gem "omniauth-github"
 gem "paranoia", "~> 2.2"
 gem "pg"
 gem "puma"
-gem "rails", "5.0.1"
+gem "rails", "5.1.0.rc1"
 gem "rails-assets-classnames", source: "https://rails-assets.org"
 gem "rails-assets-es5-shim", source: "https://rails-assets.org"
 gem "rails-assets-lodash", source: "https://rails-assets.org"
@@ -51,7 +51,7 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "foreman"
-  gem "rspec-rails", ">= 3.4"
+  gem "rspec-rails", github: "rspec/rspec-rails", branch: "rails-5.1-compat"
 end
 
 group :test do
