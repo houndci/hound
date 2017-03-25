@@ -1,11 +1,11 @@
 GIT
-  remote: git://github.com/DatabaseCleaner/database_cleaner.git
+  remote: https://github.com/DatabaseCleaner/database_cleaner.git
   revision: f30d5be108aa5edadfc16c480be3ed23cfbe0e05
   specs:
     database_cleaner (1.6.0)
 
 GIT
-  remote: git://github.com/rspec/rspec-rails.git
+  remote: https://github.com/rspec/rspec-rails.git
   revision: f53ee46d34adb3dc5c6a589baa0de8152d9ecf80
   branch: rails-5.1-compat
   specs:
@@ -19,7 +19,7 @@ GIT
       rspec-support (= 3.6.0.beta2)
 
 GIT
-  remote: git://github.com/rubysherpas/paranoia.git
+  remote: https://github.com/rubysherpas/paranoia.git
   revision: 9e43d569abf077aa95ac11f3151fbdde7dd219b5
   branch: core
   specs:

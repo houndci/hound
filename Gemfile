@@ -21,7 +21,9 @@ gem "neat"
 gem "normalize-rails"
 gem "octokit"
 gem "omniauth-github"
-gem "paranoia", github: "rubysherpas/paranoia", branch: "core"
+gem "paranoia",
+  git: "https://github.com/rubysherpas/paranoia.git",
+  branch: "core"
 gem "pg"
 gem "puma"
 gem "rails", "5.1.0.rc1"
@@ -52,13 +54,16 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "foreman"
-  gem "rspec-rails", github: "rspec/rspec-rails", branch: "rails-5.1-compat"
+  gem "rspec-rails",
+    git: "https://github.com/rspec/rspec-rails.git",
+    branch: "rails-5.1-compat"
 end
 
 group :test do
   gem "capybara", ">= 2.4.0"
   gem "capybara-webkit", "~> 1.6"
-  gem "database_cleaner", github: "DatabaseCleaner/database_cleaner"
+  gem "database_cleaner",
+    git: "https://github.com/DatabaseCleaner/database_cleaner.git"
   gem "factory_girl_rails"
   gem "launchy"
   gem "shoulda-matchers"
