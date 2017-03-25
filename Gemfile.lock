@@ -123,6 +123,7 @@ GEM
     email_validator (1.6.0)
       activemodel
     erubi (1.6.0)
+    erubis (2.7.0)
     execjs (2.7.0)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
@@ -364,6 +365,7 @@ DEPENDENCIES
   database_cleaner
   dotenv-rails
   email_validator
+  erubis
   factory_girl_rails
   faraday
   font-awesome-rails
