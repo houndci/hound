@@ -12,6 +12,14 @@ GIT
       rspec-mocks (= 3.6.0.beta2)
       rspec-support (= 3.6.0.beta2)
 
+GIT
+  remote: git://github.com/rubysherpas/paranoia.git
+  revision: 9e43d569abf077aa95ac11f3151fbdde7dd219b5
+  branch: core
+  specs:
+    paranoia (2.2.1)
+      activerecord (>= 4.0, < 5.1)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -205,8 +213,6 @@ GEM
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    paranoia (2.2.0)
-      activerecord (>= 4.0, < 5.1)
     pg (0.19.0)
     public_suffix (2.0.5)
     puma (3.4.0)
@@ -379,7 +385,7 @@ DEPENDENCIES
   normalize-rails
   octokit
   omniauth-github
-  paranoia (~> 2.2)
+  paranoia!
   pg
   puma
   rack-timeout
