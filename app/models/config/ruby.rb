@@ -37,7 +37,11 @@ module Config
     end
 
     def legacy?
-      (configured_languages & HoundConfig::LINTER_NAMES).empty?
+      (configured_languages & all_linter_names).empty?
+    end
+
+    def all_linter_names
+      HoundConfig::LINTERS.keys.map { |klass| klass.name.demodulize.underscore }
     end
 
     def configured_languages

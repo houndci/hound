@@ -1,31 +1,21 @@
 # frozen_string_literal: true
 class HoundConfig
-  LINTERS = [
-    Linter::CoffeeScript,
-    Linter::Credo,
-    Linter::Eslint,
-    Linter::Flog,
-    Linter::Go,
-    Linter::Haml,
-    Linter::Jshint,
-    Linter::Remark,
-    Linter::Python,
-    Linter::Reek,
-    Linter::Ruby,
-    Linter::Scss,
-    Linter::Swift,
-    Linter::Tslint,
-  ].freeze
-  LINTER_NAMES = LINTERS.map { |klass| klass.name.demodulize.underscore }.freeze
-  BETA_LINTERS = %w(
-    credo
-    eslint
-    flog
-    reek
-    remark
-    python
-    tslint
-  ).freeze
+  LINTERS = {
+    Linter::CoffeeScript => { default: true },
+    Linter::Credo => { default: false },
+    Linter::Eslint => { default: false },
+    Linter::Flog => { default: false },
+    Linter::Go => { default: true },
+    Linter::Haml => { default: true },
+    Linter::Jshint => { default: true },
+    Linter::Python => { default: false },
+    Linter::Reek => { default: false },
+    Linter::Remark => { default: false },
+    Linter::Ruby => { default: true },
+    Linter::Scss => { default: true },
+    Linter::Swift => { default: true },
+    Linter::Tslint => { default: false },
+  }.freeze
   CONFIG_FILE = ".hound.yml"
 
   attr_reader_initialize :commit
@@ -48,8 +38,9 @@ class HoundConfig
   private
 
   def default_config
-    LINTER_NAMES.each.with_object({}) do |name, config|
-      config[name] = { "enabled" => !BETA_LINTERS.include?(name) }
+    LINTERS.each.with_object({}) do |(linter_class, config), result|
+      name = linter_class.name.demodulize.underscore
+      result[name] = { "enabled" => config[:default] }
     end
   end
 

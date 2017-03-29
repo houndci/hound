@@ -15,7 +15,7 @@ class StyleChecker
   end
 
   def find_able_linters(filename)
-    HoundConfig::LINTERS.
+    HoundConfig::LINTERS.keys.
       select { |linter_class| linter_class.can_lint?(filename) }.
       map { |linter_class| build_linter(linter_class) }
   end

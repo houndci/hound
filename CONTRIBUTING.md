@@ -159,10 +159,10 @@ and services being used, and the default configuration for each linter.
    * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/haml.yml)
 1. Go
    * [houndci/go](https://github.com/houndci/go)
-1. Markdown (beta)
+1. Markdown
    * [houndci/remark](https://github.com/houndci/remark)
    * [config](https://github.com/wooorm/remark-lint#rules)
-1. Swift (beta)
+1. Swift
    * [houndci/swift](https://github.com/houndci/swift)
    * [config](https://github.com/houndci/swift/blob/master/config/default.yml)
 
