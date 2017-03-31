@@ -13,7 +13,7 @@ describe Owner do
         new_owner = Owner.upsert(
           github_id: github_id,
           name: name,
-          organization: organization
+          organization: organization,
         )
 
         expect(new_owner).to be_persisted
@@ -28,7 +28,7 @@ describe Owner do
         updated_owner = Owner.upsert(
           github_id: owner.github_id,
           name: new_name,
-          organization: true
+          organization: true,
         )
 
         expect(updated_owner.name).to eq new_name
@@ -44,7 +44,7 @@ describe Owner do
         updated_owner = Owner.upsert(
           github_id: new_id,
           name: "ralphbot",
-          organization: true
+          organization: true,
         )
 
         expect(updated_owner.name).to eq "ralphbot"
