@@ -6,7 +6,7 @@ class Owner < ApplicationRecord
     owner.update!(
       github_id: github_id,
       name: name,
-      organization: organization
+      organization: organization,
     )
     owner
   end
