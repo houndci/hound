@@ -2,10 +2,12 @@ class Owner < ApplicationRecord
   has_many :repos
 
   def self.upsert(github_id:, name:, organization:)
-    owner = find_or_initialize_by(github_id: github_id)
-    owner.name = name
-    owner.organization = organization
-    owner.save!
+    owner = find_by(github_id: github_id) || find_by(name: name) || Owner.new
+    owner.update!(
+      github_id: github_id,
+      name: name,
+      organization: organization
+    )
     owner
   end
 

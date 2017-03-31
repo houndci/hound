@@ -35,6 +35,22 @@ describe Owner do
         expect(updated_owner.organization).to eq true
       end
     end
+
+    context "when name exists" do
+      it "uses existing owner" do
+        create(:owner, github_id: 1234, name: "ralphbot")
+
+        new_id = 567
+        updated_owner = Owner.upsert(
+          github_id: new_id,
+          name: "ralphbot",
+          organization: true
+        )
+
+        expect(updated_owner.name).to eq "ralphbot"
+        expect(updated_owner.github_id).to eq new_id
+      end
+    end
   end
 
   describe "#has_config_repo?" do
