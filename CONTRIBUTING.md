@@ -23,7 +23,7 @@ Here are a few technical guidelines to follow:
 
 1. After cloning the repository, run the setup script: `./bin/setup`
 
-1. Make sure that postgres, and redis, are both installed and running locally.
+1. Make sure that Postgres, and Redis, are both installed and running locally.
 
 1. Log into your GitHub account and go to your [developer application settings].
 
@@ -135,36 +135,60 @@ To test Stripe payments on staging use this fake credit card number.
 
 ## Linters
 
-To better understand the architecture of Hound, here is a list of the linters
-and services being used, and the default configuration for each linter.
+The main Hound app (this app) receives PR hooks from GitHub, then it
+communicates with the [Linters](https://github.com/houndci/linters) app
+(or a few individual linter services) to review changed files in the PR.
+Linters communcate back with vioaltions they found, and the Hound app sends
+comments back to GitHub.
+
+Here is the list of all the linters and where to find them,
+as well as any default configuration they might use:
 
 1. Ruby
-   * [RuboCop](https://github.com/bbatsov/rubocop)
-   * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/ruby.yml)
+    * RuboCop
+      * [RuboCop](https://github.com/bbatsov/rubocop)
+      * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/rubocop)
+    * Flog
+      * [Flog](https://github.com/seattlerb/flog)
+      * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/flog)
+    * Reek
+      * [Reek](https://github.com/troessner/reek)
+      * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/reek)
 1. CoffeeScript
-   * [CoffeeLint](https://github.com/clutchski/coffeelint)
-   * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/coffeescript.json)
+    * [CoffeeLint](https://github.com/clutchski/coffeelint)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/coffeelint)
 1. JavaScript
-   * JSHint
-     * [houndci/jshint](https://github.com/houndci/jshint)
-     * [config](https://raw.githubusercontent.com/houndci/jshint/master/config/.jshintrc)
-   * ESLint
-     * [houndci/eslint](https://github.com/houndci/eslint)
-     * [config](https://raw.githubusercontent.com/houndci/eslint/master/config/.eslintrc)
+    * JSHint
+      * [JSHint](https://github.com/jshint/jshint)
+      * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/jshint)
+    * ESLint
+      * [ESLint](https://github.com/eslint/eslint)
+      * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/eslint)
+      * [default config](https://raw.githubusercontent.com/houndci/linters/master/config/eslintrc)
+1. TypeScript
+    * [TSLint](https://github.com/palantir/tslint)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/tslint)
 1. SCSS
-   * [houndci/scss](https://github.com/houndci/scss)
-   * [config](https://raw.githubusercontent.com/houndci/scss/master/config/default.yml)
+    * [SCSS-Lint](https://github.com/brigade/scss-lint)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/scss_lint)
+    * [default config](https://raw.githubusercontent.com/houndci/linters/master/config/scss.yml)
 1. Haml
-   * [haml-lint](https://github.com/brigade/haml-lint)
-   * [config](https://raw.githubusercontent.com/houndci/hound/master/config/style_guides/haml.yml)
+    * [HAML-Lint](https://github.com/brigade/haml-lint)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/haml_lint)
+    * [default config](https://raw.githubusercontent.com/houndci/linters/master/config/haml.yml)
+1. Elixir
+    * [Credo](https://github.com/rrrene/credo)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/credo)
 1. Go
-   * [houndci/go](https://github.com/houndci/go)
+    * [Golint](https://github.com/golang/lint)
+    * [houndci/go](https://github.com/houndci/go)
 1. Markdown
-   * [houndci/remark](https://github.com/houndci/remark)
-   * [config](https://github.com/wooorm/remark-lint#rules)
+    * [Remark](https://github.com/wooorm/remark)
+    * [houndci/remark](https://github.com/houndci/remark)
 1. Swift
-   * [houndci/swift](https://github.com/houndci/swift)
-   * [config](https://github.com/houndci/swift/blob/master/config/default.yml)
+    * [SwiftLint](https://github.com/realm/SwiftLint)
+    * [houndci/swift](https://github.com/houndci/swift)
+    * [default config](https://raw.githubusercontent.com/houndci/swift/master/config/default.yml)
 
 ### Writing a Linter
 
