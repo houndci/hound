@@ -4,7 +4,7 @@ require "rails_helper"
 describe Linter::Stylelint do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.scss) }
-    let(:not_lintable_files) { %w(foo.xxx) }
+    let(:not_lintable_files) { %w(foo.sass) }
   end
 
   describe "#file_review" do
@@ -41,7 +41,7 @@ describe Linter::Stylelint do
   end
 
   def stub_scss_config(config = {})
-    stubbed_scss_config = double(
+    stubbed_scss_config = instance_double(
       "StylelintConfig",
       content: config,
       serialize: config.to_s,
