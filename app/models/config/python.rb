@@ -7,7 +7,8 @@ module Config
     private
 
     def parse(file_content)
-      Parser.ini(file_content)
+      content = SanitizeIniFile.call(file_content)
+      Parser.ini(content)
     end
   end
 end
