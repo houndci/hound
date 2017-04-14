@@ -13,6 +13,7 @@ class HoundConfig
     Linter::Remark => { default: false },
     Linter::Ruby => { default: true },
     Linter::Scss => { default: true },
+    Linter::SlimLint => { default: false },
     Linter::Stylelint => { default: false },
     Linter::Swift => { default: true },
     Linter::Tslint => { default: false },
