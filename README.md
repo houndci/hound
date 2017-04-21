@@ -8,7 +8,7 @@ This codebase is the Rails app for
 [Hound](http://houndci.com),
 a hosted service
 that reviews GitHub pull requests
-for Ruby, JavaScript, CoffeeScript, and SCSS
+for CoffeeScript, Go, HAML, JavaScript, Ruby, SCSS, and Swift
 style guide violations.
 
 If you have questions about the service,
