@@ -197,16 +197,20 @@ describe GithubApi do
   describe "#create_pending_status" do
     it "makes request to GitHub for creating a pending status" do
       api = GithubApi.new(Hound::GITHUB_TOKEN)
-      request = stub_status_request(
-        "test/repo",
-        "sha",
-        "pending",
-        "description"
-      )
+      request = stub_status_request("test/repo", "sha", "pending", "foo bar")
 
-      api.create_pending_status("test/repo", "sha", "description")
+      api.create_pending_status("test/repo", "sha", "foo bar")
 
       expect(request).to have_been_requested
+    end
+
+    it "does not raise when a status cannot be set" do
+      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      url = "https://api.github.com/repos/test/repo/statuses/sha"
+      stub_request(:post, url).to_return(status: 404)
+
+      expect { api.create_pending_status("test/repo", "sha", "foo bar") }.
+        not_to raise_error
     end
   end
 
