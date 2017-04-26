@@ -7,6 +7,17 @@ class Owner < ApplicationRecord
     owner.organization = organization
     owner.save!
     owner
+
+  rescue ActiveRecord::RecordNotUnique => exception
+    Raven.capture_exception(
+      exception,
+      extra: {
+        github_id: github_id,
+        name: name,
+      },
+    )
+
+    raise exception
   end
 
   def has_config_repo?

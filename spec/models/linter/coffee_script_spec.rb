@@ -1,38 +1,9 @@
 require "rails_helper"
 
 describe Linter::CoffeeScript do
-  describe ".can_lint?" do
-    context "given a .coffee file" do
-      it "returns true" do
-        result = Linter::CoffeeScript.can_lint?("foo.coffee")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a .coffee.erb file" do
-      it "returns true" do
-        result = Linter::CoffeeScript.can_lint?("foo.coffee.erb")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a .coffee.js file" do
-      it "returns true" do
-        result = Linter::CoffeeScript.can_lint?("foo.coffee.js")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-coffee file" do
-      it "returns false" do
-        result = Linter::CoffeeScript.can_lint?("foo.js")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.coffee foo.coffee.erb foo.coffee.js) }
+    let(:not_lintable_files) { %w(foo.js) }
   end
 
   describe "#file_review" do
@@ -69,13 +40,13 @@ describe Linter::CoffeeScript do
   end
 
   def stub_coffeelint_config(config = {})
-    stubbged_config = instance_double(
+    stubbed_config = instance_double(
       Config::CoffeeScript,
       content: config,
       serialize: Config::Serializer.json(config),
     )
-    allow(Config::CoffeeScript).to receive(:new).and_return(stubbged_config)
+    allow(Config::CoffeeScript).to receive(:new).and_return(stubbed_config)
 
-    stubbged_config
+    stubbed_config
   end
 end

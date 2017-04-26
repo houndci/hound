@@ -4,6 +4,7 @@ en:
   syncing_repos: "Loading..."
   authenticate: "Sign In with GitHub"
   sign_out: "Sign Out"
+  stop_masquerading: "Stop Masquerading"
   active_repos: "Active repos"
   search_placeholder: "Search by repo"
   pending_status: "Hound is busy reviewing changes..."
@@ -18,10 +19,6 @@ en:
   hound_error_status: "We've encountered an error while reviewing your code."
 
   account:
-    bulk_pricing:
-      "If you'd like to pay for Hound in bulk on a monthly or annual
-      basis we're happy to make that happen. Email %{mail_to} with your
-      GitHub org name and the number of repos you'd like to activate."
     billable_email:
       invalid: "Email is invalid"
 
@@ -63,3 +60,11 @@ en:
   rebuilds:
     create:
       success: "Rebuild triggered"
+
+  home:
+    index:
+      title: "GitHub Code Review Tool for JS, Ruby, Swift, and more"
+      description:
+        "Hound is the GitHub code review tool the thoughtbot team wanted but
+        never got, so they built it. You can use it too. Now checking Ruby, JS,
+        Swift, CoffeeScript, Go, Elixir and more."

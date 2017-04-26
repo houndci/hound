@@ -1,22 +1,9 @@
 require "rails_helper"
 
 describe Linter::Tslint do
-  describe ".can_lint?" do
-    context "given a .ts file" do
-      it "returns true" do
-        result = Linter::Tslint.can_lint?("foo.ts")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-typescript file" do
-      it "returns false" do
-        result = Linter::Tslint.can_lint?("foo.js.coffee")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.ts) }
+    let(:not_lintable_files) { %w(foo.js.coffee) }
   end
 
   describe "#file_review" do

@@ -1,30 +1,9 @@
 require "rails_helper"
 
 describe Linter::Jshint do
-  describe ".can_lint?" do
-    context "given a .js file" do
-      it "returns true" do
-        result = Linter::Jshint.can_lint?("foo.js")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a .js.coffee file" do
-      it "returns false" do
-        result = Linter::Jshint.can_lint?("foo.js.coffee")
-
-        expect(result).to eq false
-      end
-    end
-
-    context "given a non-js file" do
-      it "returns false" do
-        result = Linter::Jshint.can_lint?("foo.rb")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.js) }
+    let(:not_lintable_files) { %w(foo.js.coffee foo.rb) }
   end
 
   describe "#file_included?" do

@@ -27,11 +27,11 @@ RSpec.describe Tier do
     end
 
     context "when the user has no repos" do
-      it "returns false" do
+      it "is full" do
         user = create(:user)
         tier = Tier.new(user)
 
-        expect(tier).to_not be_full
+        expect(tier).to be_full
       end
     end
 

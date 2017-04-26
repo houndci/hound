@@ -48,16 +48,21 @@ Using OAuth2 means we do not access your GitHub password
 and that you can revoke our access at any time.
 
 Your GitHub token is needed in order to fetch file content, comments, repo
-information and update Pull Request status. This token is stored in our
-Postgres database on Heroku and is base64 encoded using a protected key.
+information and update Pull Request status. This token is encrypted and encoded
+using `ActiveSupport::MessageEncryptor` and stored in our Postgres database on Heroku.
+`ActiveSupport::MessageEncryptor` [uses `aes-256-cbc`][message-encryptor]
+for encryption and base64 for encoding.
 
 To browse the portions of the codebase related to authentication,
 try `grep`ing for the following terms:
 
 ```bash
 grep -R omniauth app
-grep -R github_token app
+grep -R token app
 ```
+
+[message-encryptor]:
+https://github.com/rails/rails/blob/2af7338bdf32790a28e388a99dada84db0af1b5f/activesupport/lib/active_support/message_encryptor.rb#L35
 
 What happens when Hound refreshes your GitHub repositories
 ----------------------------------------------------------

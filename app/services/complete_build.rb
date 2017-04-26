@@ -5,12 +5,17 @@ class CompleteBuild
     @build = build
     @pull_request = pull_request
     @token = token
-    @commenter = Commenter.new(pull_request)
+    @commenting_policy = CommentingPolicy.new(pull_request)
   end
 
   def call
     if build.completed?
-      commenter.comment_on_violations(priority_violations)
+      new_violations = priority_violations.select do |violation|
+        commenting_policy.comment_on?(violation)
+      end
+      if new_violations.any?
+        pull_request.comment_on_violations(new_violations)
+      end
       set_commit_status
       track_subscribed_build_completed
     end
@@ -18,7 +23,7 @@ class CompleteBuild
 
   private
 
-  attr_reader :build, :commenter, :token, :pull_request
+  attr_reader :build, :commenting_policy, :token, :pull_request
 
   def priority_violations
     build.violations.take(Hound::MAX_COMMENTS)

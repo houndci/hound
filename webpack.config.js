@@ -69,7 +69,7 @@ module.exports = {
   },
   output: {
     filename: '[name]-bundle.js',
-    path: './app/assets/webpack',
+    path: __dirname + '/app/assets/webpack',
   },
   plugins,
   module: {

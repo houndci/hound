@@ -4,6 +4,31 @@ describe Owner do
   it { should have_many(:repos) }
 
   describe ".upsert" do
+    context "when name exists" do
+      it "captures exception, notifies raven, and raises to caller" do
+        existing_name = "ralphbot"
+        new_id = 567
+        create(:owner, github_id: 1234, name: existing_name)
+        allow(Raven).to receive(:capture_exception)
+
+        expect do
+          Owner.upsert(
+            github_id: new_id,
+            name: existing_name,
+            organization: true,
+          )
+        end.to raise_exception(ActiveRecord::RecordNotUnique)
+
+        expect(Raven).to have_received(:capture_exception).with(
+          instance_of(ActiveRecord::RecordNotUnique),
+          extra: {
+            github_id: new_id,
+            name: existing_name,
+          },
+        )
+      end
+    end
+
     context "when owner does not exist" do
       it "creates owner" do
         github_id = 1234

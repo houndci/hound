@@ -76,7 +76,6 @@ module GithubApiHelper
           "Accept" => "application/vnd.github.v3+json",
           "Authorization" => "token #{token}",
           "Content-Type" => "application/json",
-          "User-Agent" => "Octokit Ruby Gem 4.1.1",
         }
       ).
       to_return(
@@ -129,18 +128,12 @@ module GithubApiHelper
     )
   end
 
-  def stub_comment_request(full_repo_name, pull_request_number, comment, commit_sha, file, line_number)
-    stub_request(
-      :post,
-      "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/comments"
-    ).with(
-      body: {
-        body: comment,
-        commit_id: commit_sha,
-        path: file,
-        position: line_number
-      }.to_json
-    ).to_return(status: 200)
+  def stub_review_request(repo_name, pr_number, comments)
+    url = "https://api.github.com/repos/#{repo_name}/pulls/#{pr_number}/reviews"
+
+    stub_request(:post, url).
+      with(body: { event: "COMMENT", comments: comments }.to_json).
+      to_return(status: 200)
   end
 
   def stub_pull_request_comments_request(

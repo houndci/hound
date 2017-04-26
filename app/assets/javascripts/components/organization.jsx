@@ -1,3 +1,4 @@
+import OrganizationConfiguration from "./organization_configuration.jsx";
 import RepoList from './repo_list.jsx';
 
 class Organization extends React.Component {
@@ -7,13 +8,23 @@ class Organization extends React.Component {
       onRepoClicked,
       isProcessingId,
       repos,
+      configEnabled,
+      configRepo,
       filterTerm,
+      ownerId,
     } = this.props;
 
     return (
       <div className="organization" data-org-name={name}>
         <header className="organization-header">
           <h2 className="organization-header-title">{name}</h2>
+
+          <OrganizationConfiguration
+            enabled={configEnabled}
+            id={ownerId}
+            repo={configRepo}
+            repos={repos}
+          />
         </header>
         <section className="repo_listing">
           <RepoList

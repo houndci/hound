@@ -1,6 +1,19 @@
 machine:
+  services:
+    - redis
+
   node:
     version: 7.4.0
+
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
+dependencies:
+  override:
+    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
 
 test:
   override:

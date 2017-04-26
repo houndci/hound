@@ -1,5 +1,5 @@
 namespace :js do
   task spec: "webpack:build" do
-    sh "npm run test"
+    sh "yarn run test"
   end
 end

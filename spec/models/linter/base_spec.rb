@@ -10,15 +10,10 @@ module Linter
   end
 end
 
-describe Linter::Base do
-  describe ".can_lint?" do
-    it "uses the FILE_REGEXP to determine the match" do
-      yes_lint = Linter::Test.can_lint?("foo.yes")
-      no_lint = Linter::Test.can_lint?("foo.no")
-
-      expect(yes_lint).to eq true
-      expect(no_lint).to eq false
-    end
+describe Linter::Test do
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.yes) }
+    let(:not_lintable_files) { %w(foo.no bar.nope) }
   end
 
   describe "#file_included?" do

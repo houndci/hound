@@ -1,30 +1,9 @@
 require "rails_helper"
 
 describe Linter::Remark do
-  describe ".can_lint?" do
-    context "given an .md file" do
-      it "returns true" do
-        result = Linter::Remark.can_lint?("foo.md")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given an .markdown file" do
-      it "returns true" do
-        result = Linter::Remark.can_lint?("foo.markdown")
-
-        expect(result).to eq true
-      end
-    end
-
-    context "given a non-markdown file" do
-      it "returns false" do
-        result = Linter::Remark.can_lint?("foo.txt")
-
-        expect(result).to eq false
-      end
-    end
+  it_behaves_like "a linter" do
+    let(:lintable_files) { %w(foo.md foo.markdown) }
+    let(:not_lintable_files) { %w(foo.txt) }
   end
 
   describe "#file_review" do

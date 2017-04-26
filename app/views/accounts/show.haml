@@ -16,8 +16,6 @@
           price: pricing.price,
         )
 
-    %p.message= t("account.bulk_pricing", mail_to: mail_to("hound@thoughtbot.com")).html_safe
-
   .account-content
     %article.billing-breakdown
       = react_component("app.UpdateAccountCreditCard",

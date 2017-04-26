@@ -22,6 +22,20 @@ describe RepoSynchronization do
       expect(user.reload.repos.first).to be_in_organization
     end
 
+    context "when there is an 'ActiveRecord::RecordNotUnique' exception" do
+      it "finishes the synchronization" do
+        repo = stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
+        user = create(:user)
+        synchronization = RepoSynchronization.new(user)
+        allow(synchronization).to receive(:repo_attributes).
+          and_raise(ActiveRecord::RecordNotUnique)
+
+        result = synchronization.start
+
+        expect(result).to eq [repo]
+      end
+    end
+
     context "when the user is a repo admin" do
       it "the memberships admin flag is true" do
         stub_github_api_repos(
@@ -153,6 +167,8 @@ describe RepoSynchronization do
 
       api = double("GithubApi", repos: [repo])
       allow(GithubApi).to receive(:new).and_return(api)
+
+      repo
     end
 
     def build_github_repo(id:, name:)

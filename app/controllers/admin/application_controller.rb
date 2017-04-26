@@ -2,7 +2,15 @@ module Admin
   class ApplicationController < Administrate::ApplicationController
     before_action :authenticate_admin
 
+    helper_method :sidebar_resources
+
     private
+
+    def sidebar_resources
+      Administrate::Namespace.new(namespace).resources.select do |resource|
+        DashboardManifest::DASHBOARDS.include?(resource)
+      end
+    end
 
     def authenticate_admin
       unless github_admin?

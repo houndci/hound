@@ -16,7 +16,7 @@ RSpec.feature "User activates a repo", :js do
     sign_in_as(user, "letmein")
     click_on "Activate"
 
-    expect(page).to have_text "Private Repos 1 / 4"
+    expect(page).to have_text "Pricing: Change of Plans"
   end
 
   scenario "user upgrades within a tier" do
