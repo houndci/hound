@@ -93,10 +93,15 @@ class BuildRunner
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       linter_name: exception.linter_name,
+      details_url: configuration_url,
     )
   end
 
   def set_no_violations_status
     commit_status.set_success(0)
+  end
+
+  def configuration_url
+    Rails.application.routes.url_helpers.configuration_url(host: Hound::HOST)
   end
 end

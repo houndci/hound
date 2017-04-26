@@ -201,6 +201,34 @@ describe BuildRunner do
       end
     end
 
+    context "when config parse error is found" do
+      it "reports the config file as invalid" do
+        repo = create(:repo, :active)
+        payload = stubbed_payload(
+          github_repo_id: repo.github_id,
+          pull_request_number: 5,
+          head_sha: "123abc",
+          full_repo_name: repo.name,
+        )
+        build_runner = BuildRunner.new(payload)
+        github_api = stubbed_github_api
+        allow(github_api).to receive(:create_pending_status).
+          and_raise(
+            Config::ParserError.new("some message", linter_name: "somelinter"),
+          )
+        allow(ReportInvalidConfig).to receive(:call)
+
+        build_runner.call
+
+        expect(ReportInvalidConfig).to have_received(:call).with(
+          pull_request_number: payload.pull_request_number,
+          commit_sha: payload.head_sha,
+          linter_name: "somelinter",
+          details_url: config_url,
+        )
+      end
+    end
+
     context "when no files need to be reviewed" do
       it "sets the final status as passing" do
         repo = create(:repo, :active)
