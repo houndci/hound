@@ -5,11 +5,11 @@ describe Owner do
 
   describe ".upsert" do
     context "when name exists" do
-      it "captures exception, notifies raven, and raises to caller" do
+      it "captures exception, notifies rollbar, and raises to caller" do
         existing_name = "ralphbot"
         new_id = 567
         create(:owner, github_id: 1234, name: existing_name)
-        allow(Raven).to receive(:capture_exception)
+        allow(Rollbar).to receive(:error)
 
         expect do
           Owner.upsert(
@@ -19,12 +19,10 @@ describe Owner do
           )
         end.to raise_exception(ActiveRecord::RecordNotUnique)
 
-        expect(Raven).to have_received(:capture_exception).with(
+        expect(Rollbar).to have_received(:error).with(
           instance_of(ActiveRecord::RecordNotUnique),
-          extra: {
-            github_id: new_id,
-            name: existing_name,
-          },
+          github_id: new_id,
+          name: existing_name,
         )
       end
     end

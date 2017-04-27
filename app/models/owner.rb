@@ -9,12 +9,10 @@ class Owner < ApplicationRecord
     owner
 
   rescue ActiveRecord::RecordNotUnique => exception
-    Raven.capture_exception(
+    Rollbar.error(
       exception,
-      extra: {
-        github_id: github_id,
-        name: name,
-      },
+      github_id: github_id,
+      name: name,
     )
 
     raise exception
