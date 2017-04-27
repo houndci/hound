@@ -2,6 +2,8 @@ require "app/models/config/parser"
 require "app/services/normalize_config"
 require "app/services/resolve_config_aliases"
 require "app/services/resolve_config_conflicts"
+
+Dir["app/models/linter/*.rb"].each { |f| require f }
 require "app/models/hound_config"
 
 describe HoundConfig do
@@ -28,10 +30,11 @@ describe HoundConfig do
         commit = stub_commit(".hound.yml" => "")
         hound_config = HoundConfig.new(commit)
 
-        enabled_by_default =
-          HoundConfig::LINTER_NAMES - HoundConfig::BETA_LINTERS
-        enabled_by_default.each do |language|
-          expect(hound_config).to be_enabled_for(language)
+        enabled_by_default = HoundConfig::LINTERS.
+          select { |_, config| config[:default] }
+        Hash(enabled_by_default).keys.each do |linter_name|
+          expect(hound_config).
+            to be_enabled_for(linter_name.name.demodulize.underscore)
         end
       end
     end

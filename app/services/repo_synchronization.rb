@@ -8,17 +8,25 @@ class RepoSynchronization
 
     Repo.transaction do
       repos.each do |resource|
-        attributes = repo_attributes(resource.to_hash)
-        repo = Repo.find_or_create_with(attributes)
-        user.memberships.create!(
-          repo: repo,
-          admin: resource.to_hash[:permissions][:admin],
-        )
+        begin
+          create_user_membership_from!(resource)
+        rescue ActiveRecord::RecordNotUnique
+          next
+        end
       end
     end
   end
 
   private
+
+  def create_user_membership_from!(resource)
+    attributes = repo_attributes(resource.to_hash)
+    repo = Repo.find_or_create_with(attributes)
+    user.memberships.create!(
+      repo: repo,
+      admin: resource.to_hash[:permissions][:admin],
+    )
+  end
 
   def api
     @api ||= GithubApi.new(user.token)

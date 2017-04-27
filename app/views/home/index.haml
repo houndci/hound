@@ -1,4 +1,5 @@
-- content_for :page_title, "Hound"
+- content_for :page_title, I18n.t("home.index.title")
+- content_for :meta_description, I18n.t("home.index.description")
 - content_for :body_class, "home home-index"
 - content_for :header_class, "home-header"
 
@@ -7,7 +8,7 @@
     .inner-wrapper
       .hero
         %h1
-          Your code, always in style.
+          Code review tool for GitHub pull requests
         %h2
           Hound comments on style violations in GitHub pull requests, allowing
           you and your team to better review and maintain a clean codebase.

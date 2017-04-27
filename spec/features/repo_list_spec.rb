@@ -142,6 +142,22 @@ feature "Repo list", js: true do
     expect(user.repos.active.count).to eq(0)
   end
 
+  scenario "user enables organization-wide config" do
+    owner = create(:owner, github_id: 1, name: "TEST_GITHUB_LOGIN")
+    create(:repo, owner: owner)
+
+    sign_in_as(user)
+    find(".toggle-switch").click
+    wait_for_ajax
+    find(".organization-header-select").
+      select("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
+    wait_for_ajax
+
+    expect(owner.reload).to be_config_enabled
+    expect(owner.reload.config_repo).
+      to eq "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME"
+  end
+
   def create_repo(*options)
     repo = create(:repo, *options)
     create(:membership, repo: repo, user: user, admin: true)

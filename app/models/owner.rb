@@ -7,6 +7,15 @@ class Owner < ApplicationRecord
     owner.organization = organization
     owner.save!
     owner
+
+  rescue ActiveRecord::RecordNotUnique => exception
+    Rollbar.error(
+      exception,
+      github_id: github_id,
+      name: name,
+    )
+
+    raise exception
   end
 
   def has_config_repo?

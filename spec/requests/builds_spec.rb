@@ -13,24 +13,30 @@ RSpec.describe "POST /builds" do
   context "with violations" do
     it "makes a new comment and cleans up resolved one" do
       existing_comment_violation = { line: 5, message: "Line is too long." }
-      new_violation = { line: 9, message: "Trailing whitespace detected." }
-      violations = [existing_comment_violation, new_violation]
+      new_violation1 = { line: 3, message: "Trailing whitespace detected." }
+      new_violation2 = { line: 9, message: "Avoid empty else-clauses." }
+      violations = [new_violation1, existing_comment_violation, new_violation2]
       create(:repo, :active, github_id: repo_id, name: repo_name)
       stub_review_job(RubocopReviewJob, violations: violations)
 
       post builds_path, params: { payload: payload }
 
-      comments = FakeGithub.comments
-      comment = comments.first
-      expect(comments.size).to eq 1
-      expect(comment).to have_attributes(
-        body: "Trailing whitespace detected.",
-        commit_id: pr_sha,
-        path: "path/to/test_github_file.rb",
-        position: 9,
-        pull_id: "2",
-        repo: "life",
-      )
+      expect(FakeGithub.comments).to match_array [
+        {
+          body: new_violation1[:message],
+          path: "path/to/test_github_file.rb",
+          position: new_violation1[:line],
+          pr_number: "2",
+          repo: "life",
+        },
+        {
+          body: new_violation2[:message],
+          path: "path/to/test_github_file.rb",
+          position: new_violation2[:line],
+          pr_number: "2",
+          repo: "life",
+        },
+      ]
     end
   end
 

@@ -63,7 +63,7 @@ class PaymentGatewaySubscription
   end
 
   def append_repo_id_to_metadata(repo_id)
-    repo_ids = current_repo_ids + [repo_id]
+    repo_ids = (current_repo_ids + [repo_id.to_s]).uniq
 
     if metadata["repo_id"]
       metadata["repo_id"] = nil

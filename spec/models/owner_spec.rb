@@ -4,6 +4,29 @@ describe Owner do
   it { should have_many(:repos) }
 
   describe ".upsert" do
+    context "when name exists" do
+      it "captures exception, notifies rollbar, and raises to caller" do
+        existing_name = "ralphbot"
+        new_id = 567
+        create(:owner, github_id: 1234, name: existing_name)
+        allow(Rollbar).to receive(:error)
+
+        expect do
+          Owner.upsert(
+            github_id: new_id,
+            name: existing_name,
+            organization: true,
+          )
+        end.to raise_exception(ActiveRecord::RecordNotUnique)
+
+        expect(Rollbar).to have_received(:error).with(
+          instance_of(ActiveRecord::RecordNotUnique),
+          github_id: new_id,
+          name: existing_name,
+        )
+      end
+    end
+
     context "when owner does not exist" do
       it "creates owner" do
         github_id = 1234

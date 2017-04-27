@@ -4,6 +4,11 @@ FROM quay.io/netguru/ng-ruby:2.3.1
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
   apt-get install -y nodejs
 
+# install yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y yarn
+
 # this app uses passenger
 RUN /opt/passenger/install
 
@@ -25,7 +30,8 @@ ADD Gemfile* $APP_HOME/
 RUN bundle install --jobs=8 --retry=3  --without development test --deployment
 
 ADD package.json $APP_HOME/
-RUN npm install --silent --no-spin
+ADD yarn.lock $APP_HOME/
+RUN yarn --no-emoji --no-progress --non-interactive
 
 ADD . $APP_HOME/
 ADD docker/production/entrypoint.sh /entrypoint.sh

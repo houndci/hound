@@ -31,7 +31,12 @@
               .avatar{ style: "background-image: url('#{avatar}')" }
             %span= current_user.username
         %li
-          = link_to t("sign_out"), sign_out_path, class: "sign-out"
+          - if masquerading?
+            = link_to t("stop_masquerading"),
+              admin_masquerade_path(current_user.username),
+              method: :delete
+          - else
+            = link_to t("sign_out"), sign_out_path, class: "sign-out"
       - else
         %li
           = link_to "Pricing", root_path(anchor: "pricing"), class: "pricing"

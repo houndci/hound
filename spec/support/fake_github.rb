@@ -1,8 +1,6 @@
 require "sinatra"
 
 class FakeGithub < Sinatra::Base
-  Comment = Struct.new(:body, :commit_id, :path, :position, :pull_id, :repo)
-
   cattr_accessor :comments
   self.comments = []
 
@@ -47,14 +45,18 @@ class FakeGithub < Sinatra::Base
     request.body.rewind
     request_payload = JSON.parse(request.body.read)
 
-    comments << Comment.new(
-      request_payload["body"],
-      request_payload["commit_id"],
-      request_payload["path"],
-      request_payload["position"],
-      params[:number],
-      params[:repo],
-    )
+    comments << build_comment(request_payload, params)
+
+    content_type :json
+    status 201
+  end
+
+  post "/repos/:owner/:repo/pulls/:number/reviews" do
+    request_payload = JSON.parse(request.body.read)
+
+    request_payload["comments"].each do |comment|
+      comments << build_comment(comment, params)
+    end
 
     content_type :json
     status 201
@@ -97,5 +99,15 @@ class FakeGithub < Sinatra::Base
 
   def read_fixture(filename)
     File.read(File.join("spec", "support", "fixtures", filename))
+  end
+
+  def build_comment(comment, params)
+    {
+      body: comment["body"],
+      path: comment["path"],
+      position: comment["position"],
+      pr_number: params[:number],
+      repo: params[:repo],
+    }
   end
 end

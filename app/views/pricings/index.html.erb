@@ -1,7 +1,11 @@
+<%= render "settings" %>
+
 <%= react_component(
   "app.NotifyTierChange",
   authenticity_token: form_authenticity_token,
+  next_tier: current_user.next_tier,
   plans: @pricings,
   repo_id: @repo.id,
   repo_name: @repo.name,
+  user_has_card: current_user.stripe_customer_id.present?,
 ) %>

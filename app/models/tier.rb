@@ -10,7 +10,7 @@ class Tier
   end
 
   def full?
-    has_repos? && pricing_changes?
+    pricing_changes?
   end
 
   def next
@@ -27,10 +27,6 @@ class Tier
 
   def count
     repos.count
-  end
-
-  def has_repos?
-    count.positive?
   end
 
   def previous_repo_count

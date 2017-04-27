@@ -22,11 +22,14 @@ it('renders appropriately', () => {
 
 it('renders appropriately', () => {
   const ajaxSpy = sinon.spy(Ajax, 'upgradeSubscription');
+  const nextTier = { price: 49, title: "Chihuahua" }
 
   const wrapper = mount(
     <UpgradeSubscriptionLink
       authenticityToken={"csrf_token"}
+      nextTier={nextTier}
       repoId={1}
+      userHasCard={true}
     />
   );
 

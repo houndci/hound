@@ -5,6 +5,7 @@ require "app/models/config/python"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
+require "app/services/sanitize_ini_file"
 require "inifile"
 
 describe Config::Python do
@@ -14,6 +15,12 @@ describe Config::Python do
         raw_config = <<~EOS
           [flake8]
           max-line-length = 160
+          ignore =
+            # E221 multiple spaces before operator
+            E221,
+            # E222 multiple spaces after operator
+            E222
+          max-complexity = 20
         EOS
         owner_config_content = {
           "flake8" => {
@@ -25,8 +32,9 @@ describe Config::Python do
 
         expect(config.content).to eq(
           "flake8" => {
-            "max-complexity" => 10,
+            "max-complexity" => 20,
             "max-line-length" => 160,
+            "ignore" => "E221,E222",
           },
         )
       end
@@ -46,9 +54,9 @@ describe Config::Python do
 
     context "when there is no config content for the given linter" do
       it "is an empty hash" do
-        hound_config = double(
+        hound_config = instance_double(
           "HoundConfig",
-          commit: double("Commit"),
+          commit: instance_double("Commit"),
           content: {},
         )
         config = Config::Python.new(hound_config)
@@ -63,6 +71,7 @@ describe Config::Python do
       raw_config = <<~EOS
         [flake8]
         max-line-length = 160
+        ignore = E222, E221
       EOS
       config = build_config(raw_config)
 

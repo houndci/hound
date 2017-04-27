@@ -4,6 +4,7 @@ Houndapp::Application.routes.draw do
       resources dashboard_resource
     end
 
+    resources :masquerades, param: :username, only: [:show, :destroy]
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 
@@ -19,6 +20,7 @@ Houndapp::Application.routes.draw do
 
   resource :account, only: [:show, :update]
   resources :builds, only: [:create, :index]
+  resources :owners, only: [:update]
   resources :pricings, only: [:index]
 
   resources :repos, only: [:index] do

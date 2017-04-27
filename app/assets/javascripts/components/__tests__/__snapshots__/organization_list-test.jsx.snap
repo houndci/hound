@@ -6,6 +6,7 @@ exports[`test renders a list of organizations appropriately 1`] = `
     isProcessingId={null}
     name="Test org"
     onRepoClicked={[Function]}
+    ownerId={1}
     repos={
       Array [
         Object {
