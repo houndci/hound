@@ -153,6 +153,11 @@ Style/FileName:
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-files
   Enabled: false
   Exclude: []
+Style/FrozenStringLiteralComment:
+  Description: >-
+    Add the frozen_string_literal comment to the top of files
+    to help transition from Ruby 2.3.0 to Ruby 3.0.
+  Enabled: false
 Style/FirstParameterIndentation:
   Description: Checks the indentation of the first parameter in a method call.
   Enabled: true
