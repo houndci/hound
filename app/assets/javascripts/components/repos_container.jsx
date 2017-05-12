@@ -162,7 +162,7 @@ class ReposContainer extends React.Component {
         this.deactivateUnsubscribedRepo(repo);
       }
     } else {
-      if (repo.price_in_dollars > 0) {
+      if (repo.price_in_cents > 0) {
         this.createSubscriptionWithExistingCard(repo);
       } else {
         this.activateFreeRepo(repo);
@@ -218,7 +218,7 @@ class ReposContainer extends React.Component {
 
     if (repo.private) {
       eventName = "Private Repo Activated";
-      price = repo.price_in_dollars;
+      price = repo.price_in_cents / 100;
     } else {
       eventName = "Public Repo Activated";
       price = 0.0;

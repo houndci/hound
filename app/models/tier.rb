@@ -26,7 +26,7 @@ class Tier
   attr_reader :user
 
   def count
-    repos.count
+    @count ||= repos.count
   end
 
   def previous_repo_count
