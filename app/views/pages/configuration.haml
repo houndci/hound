@@ -27,6 +27,8 @@
         = link_to "TSLint", "#tslint", class: "docs-nav-link"
       %li
         = link_to "Elixir", "#elixir", class: "docs-nav-link"
+      %li
+        = link_to "Sass-lint", "#sass-lint", class: "docs-nav-link"
 
   %section.docs-content
     %article.docs-article
@@ -536,6 +538,40 @@
             elixir:
               enabled: true
               config_file: .credo.exs
+
+    %article.docs-article#sass-lint
+      %h3 Sass-lint
+      %p
+        Hound uses
+        = link_to "sass-lint",
+          "https://github.com/sasstools/sass-lint",
+          new_window_options
+        with this
+        = link_to "config", sass_lint_config_url, new_window_options
+        by default.
+
+      %p
+        To enable Sass-lint style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            sass-lint:
+              enabled: true
+      %p
+        To change the way Sass-lint is configured, add
+        %em.code-inline .sass-lint.yml
+        file to your project,
+        specify your desired configuration
+        and refreence the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            sass-lint:
+              enabled: true
+              config_file: .sass-lint.yml
 
     %article.docs-article
       %h3 Didn't find what you where looking for?
