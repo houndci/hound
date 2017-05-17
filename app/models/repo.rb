@@ -62,6 +62,10 @@ class Repo < ApplicationRecord
     users.where.not(token: nil)
   end
 
+  def public?
+    !private?
+  end
+
   private
 
   def organization

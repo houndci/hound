@@ -2,7 +2,7 @@ class ActivationsController < ApplicationController
   class FailedToActivate < StandardError; end
   class CannotActivatePaidRepo < StandardError; end
 
-  before_action :check_repo_plan
+  before_action :ensure_repo_allowed
 
   def create
     if activator.activate
@@ -15,8 +15,8 @@ class ActivationsController < ApplicationController
 
   private
 
-  def check_repo_plan
-    if repo.plan_price > 0
+  def ensure_repo_allowed
+    if repo.private? && !repo.bulk?
       raise CannotActivatePaidRepo
     end
   end

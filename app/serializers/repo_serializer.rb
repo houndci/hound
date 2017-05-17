@@ -13,10 +13,10 @@ class RepoSerializer < ActiveModel::Serializer
   )
 
   def price_in_cents
-    if object.private?
-      scope.tier_price * 100
-    else
+    if object.public? || object.bulk?
       0
+    else
+      scope.tier_price * 100
     end
   end
 

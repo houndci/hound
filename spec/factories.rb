@@ -65,7 +65,6 @@ FactoryGirl.define do
 
   factory :membership do
     trait(:admin) { admin true }
-    trait(:private) { association :repo, :private }
 
     user
     repo
