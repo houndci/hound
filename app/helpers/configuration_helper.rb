@@ -23,6 +23,10 @@ module ConfigurationHelper
     config_url("houndci/linters", "config/tslint.json")
   end
 
+  def sass_lint_config_url
+    config_url("sasstools/sass-lint", "lib/config/sass-lint.yml")
+  end
+
   private
 
   def config_url(slug, config_file)

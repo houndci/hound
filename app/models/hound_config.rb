@@ -12,6 +12,7 @@ class HoundConfig
     Linter::Reek => { default: false },
     Linter::Remark => { default: false },
     Linter::Ruby => { default: true },
+    Linter::SassLint => { default: false },
     Linter::Scss => { default: true },
     Linter::SlimLint => { default: false },
     Linter::Stylelint => { default: false },
