@@ -37,4 +37,20 @@ describe Build do
       end
     end
   end
+
+  describe "#review_errors" do
+    it "returns a list of unique linter errors" do
+      file_review1 = create(:file_review, error: "invalid config\n some file1")
+      file_review2 = create(:file_review, error: "invalid config\n some file2")
+      file_review3 = create(:file_review, error: "rule is invalid\n some file1")
+      file_reviews = [file_review1, file_review2, file_review3]
+      build = create(:build, file_reviews: file_reviews)
+
+      result = build.review_errors
+
+      expect(result.size).to eq 2
+      expect(result.first).to start_with("invalid config")
+      expect(result.second).to start_with("rule is invalid")
+    end
+  end
 end

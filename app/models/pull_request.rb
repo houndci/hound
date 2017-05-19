@@ -13,9 +13,14 @@ class PullRequest
     @commit_files ||= modified_commit_files
   end
 
-  def comment_on_violations(violations)
+  def make_comments(violations, errors)
     comments = violations.map { |violation| build_comment(violation) }
-    hound_github.create_pull_request_review(repo_name, number, comments)
+    hound_github.create_pull_request_review(
+      repo_name,
+      number,
+      comments,
+      format_errors(errors),
+    )
   end
 
   def repository_owner_name
@@ -60,6 +65,20 @@ class PullRequest
       position: violation.patch_position,
       body: violation.messages.join(COMMENT_LINE_DELIMITER),
     }
+  end
+
+  def format_errors(errors)
+    if errors.any?
+      error_details = errors.map { |error| build_error_details(error) }
+      ["Some files could not be reviewed due to errors:"].
+        concat(error_details).join
+    end
+  end
+
+  def build_error_details(error)
+    summary = error.lines.first.strip.truncate(80)
+    details = error.lines.map(&:rstrip).join(COMMENT_LINE_DELIMITER)
+    "<details><summary>#{summary}</summary><pre>#{details}</pre></details>"
   end
 
   def user_github

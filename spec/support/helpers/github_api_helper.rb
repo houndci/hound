@@ -128,11 +128,11 @@ module GithubApiHelper
     )
   end
 
-  def stub_review_request(repo_name, pr_number, comments)
+  def stub_review_request(repo_name, pr_number, comments, body)
     url = "https://api.github.com/repos/#{repo_name}/pulls/#{pr_number}/reviews"
 
     stub_request(:post, url).
-      with(body: { event: "COMMENT", comments: comments }.to_json).
+      with(body: { event: "COMMENT", body: body, comments: comments }.to_json).
       to_return(status: 200)
   end
 

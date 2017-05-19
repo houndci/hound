@@ -14,9 +14,10 @@ describe CompleteFileReview do
       expect(file_review).to be_completed
       expect(file_review.violations.size).to eq 1
       expect(file_review.build.violations_count).to eq 1
+      expect(file_review.error).to eq attributes["error"]
     end
 
-    it "runs Build Report" do
+    it "runs completes the build" do
       file_review = create_file_review
       build = file_review.build
       stub_build_report_run
@@ -63,13 +64,14 @@ describe CompleteFileReview do
     end
   end
 
-  let(:attributes) do
+  def attributes
     {
       "filename" => "test.scss",
       "commit_sha" => "abc123",
       "pull_request_number" => 123,
       "patch" => File.read("spec/support/fixtures/patch.diff"),
       "violations" => ["line" => 14, "message" => "woohoo"],
+      "error" => "Your linter config is invalid",
     }
   end
 

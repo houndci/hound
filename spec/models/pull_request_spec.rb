@@ -59,14 +59,15 @@ describe PullRequest do
     end
   end
 
-  describe "#comment_on_violations" do
+  describe "#make_comments" do
     it "posts a review with comments to GitHub as the Hound user" do
       payload = payload_stub
       github = instance_double("GithubApi", create_pull_request_review: nil)
       pull_request = pull_request_stub(github, payload)
       violation = violation_stub
+      review_errors = ["invalid config", "foo\n  bar"]
 
-      pull_request.comment_on_violations([violation])
+      pull_request.make_comments([violation], review_errors)
 
       expect(github).to have_received(:create_pull_request_review).with(
         "org/repo",
@@ -78,6 +79,11 @@ describe PullRequest do
             body: violation.messages.join,
           },
         ],
+        "Some files could not be reviewed due to errors:" \
+        "<details><summary>invalid config</summary>" \
+        "<pre>invalid config</pre></details>" \
+        "<details><summary>foo</summary>" \
+        "<pre>foo<br>  bar</pre></details>",
       )
     end
   end

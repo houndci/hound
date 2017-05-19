@@ -18,6 +18,11 @@ class Build < ApplicationRecord
     (user && user.token) || Hound::GITHUB_TOKEN
   end
 
+  def review_errors
+    file_reviews.where.not(error: [nil, ""]).pluck("DISTINCT error").
+      uniq { |error| error.lines.first }
+  end
+
   private
 
   def generate_uuid
