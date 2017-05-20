@@ -16,7 +16,7 @@ class RepoSerializer < ActiveModel::Serializer
     if object.public? || object.bulk?
       0
     else
-      scope.tier_price * 100
+      scope.next_plan_price * 100
     end
   end
 

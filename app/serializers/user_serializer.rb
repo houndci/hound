@@ -3,7 +3,7 @@ class UserSerializer < ActiveModel::Serializer
     :id,
     :refreshing_repos,
     :subscribed_repo_count,
-    :tier_allowance,
+    :plan_max,
     :username,
   )
 
@@ -13,9 +13,5 @@ class UserSerializer < ActiveModel::Serializer
 
   def subscribed_repo_count
     object.subscribed_repos.count
-  end
-
-  def tier_allowance
-    object.current_tier.allowance
   end
 end

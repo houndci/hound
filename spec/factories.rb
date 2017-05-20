@@ -24,13 +24,13 @@ FactoryGirl.define do
     linter_name "ruby"
   end
 
-  factory :pricing do
+  factory :plan do
     id "tier1"
     price 49
     range 1..4
     title "Chihuahua"
 
-    trait :tier2 do
+    trait :plan2 do
       id "tier2"
       price 99
       range 5..10
@@ -76,7 +76,7 @@ FactoryGirl.define do
 
     sequence(:stripe_subscription_id) { |n| "stripesubscription#{n}" }
 
-    price { repo.plan_price }
+    price Plan::PLANS[1][:price]
     repo
     user
   end

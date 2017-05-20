@@ -1,12 +1,12 @@
 require "rails_helper"
 
-feature "Listing Pricings" do
+feature "Plans" do
   scenario "shows all available plans", :js do
     user = create(:user)
     repo = create(:repo)
     sign_in_as(user, "letmein")
 
-    visit pricings_path(repo_id: repo.id)
+    visit plans_path(repo_id: repo.id)
 
     plans = page.all(".plan")
     expect(plans.count).to eq 4
@@ -56,7 +56,7 @@ feature "Listing Pricings" do
     stub_customer_find_request
     stub_subscription_create_request(plan: "tier1", repo_ids: repo.id)
     stub_subscription_update_request(plan: "tier2", repo_ids: repo.id)
-    visit pricings_path(repo_id: repo.id)
+    visit plans_path(repo_id: repo.id)
 
     click_on "Upgrade"
     wait_for_ajax

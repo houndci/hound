@@ -20,7 +20,7 @@ feature "Account" do
     expect(page).to have_text("Update Credit Card")
   end
 
-  scenario "returns a list of all pricings", :js do
+  scenario "returns a list of all plans", :js do
     user = create(:user)
     sign_in_as(user, "letmein")
 

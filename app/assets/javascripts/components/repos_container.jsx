@@ -92,7 +92,7 @@ class ReposContainer extends React.Component {
   updateSubscribedRepoCount() {
     this.getUser().then(user => {
       const subscribedRepoCount = user.subscribed_repo_count;
-      const tierAllowance = user.tier_allowance;
+      const tierAllowance = user.plan_max;
 
       if (subscribedRepoCount === 0) {
         $("[data-role='allowance-container']").remove();
@@ -123,7 +123,7 @@ class ReposContainer extends React.Component {
 
   onSubscriptionError(repo, error) {
     if (error.status === 402) {
-      document.location.href = `/pricings?repo_id=${repo.id}`;
+      document.location.href = `/plans?repo_id=${repo.id}`;
     } else {
       alert("Your subscription could not be activated.");
     }

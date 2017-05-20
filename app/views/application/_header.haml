@@ -23,7 +23,7 @@
                   #{current_user.subscribed_repos.count}
                 \/
                 %span{ "data-role" => "tier-allowance" }
-                  #{current_user.tier_max}
+                  #{current_user.plan_max}
         %li
           = link_to account_path, class: "account" do
             - if current_user.email.present?
