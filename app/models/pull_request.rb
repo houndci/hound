@@ -72,6 +72,8 @@ class PullRequest
       error_details = errors.map { |error| build_error_details(error) }
       ["Some files could not be reviewed due to errors:"].
         concat(error_details).join
+    else
+      ""
     end
   end
 
