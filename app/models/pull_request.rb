@@ -19,7 +19,7 @@ class PullRequest
       repo_name,
       number,
       comments,
-      format_errors(errors),
+      ReviewBody.new(errors).to_s,
     )
   end
 
@@ -65,22 +65,6 @@ class PullRequest
       position: violation.patch_position,
       body: violation.messages.join(COMMENT_LINE_DELIMITER),
     }
-  end
-
-  def format_errors(errors)
-    if errors.any?
-      error_details = errors.map { |error| build_error_details(error) }
-      ["Some files could not be reviewed due to errors:"].
-        concat(error_details).join
-    else
-      ""
-    end
-  end
-
-  def build_error_details(error)
-    summary = error.lines.first.strip.truncate(80)
-    details = error.lines.map(&:rstrip).join(COMMENT_LINE_DELIMITER)
-    "<details><summary>#{summary}</summary><pre>#{details}</pre></details>"
   end
 
   def user_github
