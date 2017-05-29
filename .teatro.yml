@@ -1,0 +1,5 @@
+stage:
+  before:
+    - cp Procfile.teatro Procfile
+    - cp config/database.teatro.yml config/database.yml
+    - cp .teatro.env .env
