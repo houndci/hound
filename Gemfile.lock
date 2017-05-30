@@ -367,7 +367,7 @@ DEPENDENCIES
   inifile
   jquery-rails (>= 4.2.0)
   launchy
-  neat
+  neat (~> 1.8)
   normalize-rails
   octokit
   omniauth-github
