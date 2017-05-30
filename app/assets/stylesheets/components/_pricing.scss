@@ -38,7 +38,7 @@
 
   &::before {
     @include position(absolute, 0 null null 0);
-    @include size(20px 100%);
+    @include size(20px, 100%);
     background-image: image-url("pricing_pattern.svg");
     content: "";
     display: block;
