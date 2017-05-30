@@ -47,7 +47,7 @@
 
 .plan-open-source {
   @include shift(4 of 12);
-  border-color: $light-font-color;
+  border-color: $base-border-color;
 
   @include media($medium-screen-down) {
     @include shift(0);
@@ -97,7 +97,7 @@
 .plan-vertical {
   @include border-width(0 0 1px 0);
   border-bottom: 1px dotted;
-  border-color: $light-font-color;
+  border-color: $base-border-color;
   border-radius: 0;
   margin-left: 0.5em;
   padding-left: 0;

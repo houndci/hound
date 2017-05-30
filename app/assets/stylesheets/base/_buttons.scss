@@ -1,10 +1,11 @@
 button:disabled {
-  border-color: $inactive-color;
-  color: $inactive-color;
+  border-color: $base-border-color;
+  color: $base-font-color;
 
   &:hover {
     background-color: transparent;
-    color: $inactive-color;
+    border-color: $base-border-color;
+    color: $base-font-color;
   }
 }
 

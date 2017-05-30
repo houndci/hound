@@ -25,7 +25,7 @@
   border: 2px solid $base-border-color;
   border-radius: 3px;
   box-sizing: border-box;
-  color: $light-font-color;
+  color: $base-font-color;
   display: block;
   font-weight: $font-weight-normal;
   height: 60px;
@@ -36,7 +36,7 @@
   width: 100%;
 
   &::placeholder {
-    color: $light-font-color;
+    color: $base-font-color;
     font-weight: $font-weight-normal;
     letter-spacing: 1px;
     transition: color $base-transition-timing $base-easing;
@@ -82,7 +82,7 @@
   background-color: $base-background-color;
   border: 2px solid $base-border-color;
   border-radius: 3px;
-  color: $light-font-color;
+  color: $base-font-color;
   font-size: 1em;
   font-weight: $font-weight-normal;
   height: 60px;
