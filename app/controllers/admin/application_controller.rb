@@ -2,11 +2,11 @@ module Admin
   class ApplicationController < Administrate::ApplicationController
     before_action :authenticate_admin
 
-    helper_method :sidebar_resources
+    helper_method :navigation_resources
 
     private
 
-    def sidebar_resources
+    def navigation_resources
       Administrate::Namespace.new(namespace).resources.select do |resource|
         DashboardManifest::DASHBOARDS.include?(resource)
       end
