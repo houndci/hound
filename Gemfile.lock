@@ -58,7 +58,7 @@ GEM
     analytics-ruby (2.0.6)
     arel (7.1.4)
     attr_extras (4.4.0)
-    autoprefixer-rails (6.5.4)
+    autoprefixer-rails (6.7.7.2)
       execjs
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
