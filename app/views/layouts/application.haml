@@ -3,7 +3,7 @@
   %head
     %meta{ content: "width=device-width,initial-scale=1", name: "viewport" }
     %title
-      = [content_for(:page_title), "Hound"].compact.uniq.join(" | ")
+      = [content_for(:page_title), "Hound"].compact.uniq.join(" - ")
     - if content_for? :meta_description
       %meta{ content: content_for(:meta_description) }
     %link{ href: "//fonts.googleapis.com/css?family=Lato:300,400,700,900", rel: "stylesheet", type:"text/css" }
