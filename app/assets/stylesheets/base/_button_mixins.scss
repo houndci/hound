@@ -1,8 +1,6 @@
 @mixin button($type: $outline, $base-color: $purple, $hover-color: $purple) {
-  @include transition(all 0.15s linear);
-  @include user-select(none);
-  border-radius: 40px;
   border: 2px solid $base-color;
+  border-radius: 40px;
   display: inline-block;
   font-size: 0.8em;
   font-weight: $font-weight-normal;
@@ -13,6 +11,8 @@
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  transition: background 0.15s linear, color 0.15s linear;
+  user-select: none;
   vertical-align: middle;
 
   @if $type == "outline" {
