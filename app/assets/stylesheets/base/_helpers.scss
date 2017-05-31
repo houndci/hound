@@ -19,10 +19,6 @@
 
 .content {
   @include outer-container;
-
-  &.repo-index {
-    padding-top: 10em;
-  }
 }
 
 .inner-wrapper {

@@ -18,6 +18,7 @@ $light-gold: lighten($gold, 50%);
 $tan: rgb(255, 220, 173);
 $white: #fff;
 $black: #000;
+$light-gray: rgb(230, 230, 230);
 
 $ruby: rgb(193, 30, 29);
 $javascript: rgb(246, 221, 0);
@@ -54,7 +55,6 @@ $medium-large-screen-size: 57.5em;
 $large-screen-size: 920px;
 
 $small-screen-only: new-breakpoint(max-width $small-screen-size 2);
-$medium-screen-down--header: new-breakpoint(max-width ($medium-header-breakpoint - 1px) 4);
 $medium-screen-down: new-breakpoint(max-width ($medium-screen-size - 1px) 4);
 $medium-screen-up: new-breakpoint(min-width $medium-screen-size 12);
 $medium-large-screen-only: new-breakpoint(max-width $medium-large-screen-size 8);
@@ -86,6 +86,3 @@ $font-size-xxlarge: 3.8em;
 $base-transition-timing: 0.2s;
 $base-easing: cubic-bezier(0.39, 0.575, 0.565, 1);
 $base-transition: all $base-transition-timing $base-easing;
-
-// Z-Indices
-$z-index-front: 100;

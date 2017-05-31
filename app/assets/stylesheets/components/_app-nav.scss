@@ -1,0 +1,60 @@
+$_app-nav-layout-breakpoint: 42em;
+
+.app-nav {
+  font-weight: $font-weight-normal;
+
+  a {
+    color: $base-font-color;
+
+    &:hover {
+      color: $base-accent-color;
+    }
+  }
+}
+
+.app-nav__container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+
+  @media (min-width: $_app-nav-layout-breakpoint) {
+    flex-direction: row;
+  }
+}
+
+.app-nav__logo {
+  display: block;
+
+  @media (max-width: $_app-nav-layout-breakpoint) {
+    margin-bottom: $base-spacing;
+  }
+
+  @media (min-width: $_app-nav-layout-breakpoint) {
+    margin-right: $base-spacing;
+  }
+}
+
+.app-nav__item:not(:first-of-type) {
+  margin-left: $base-spacing;
+}
+
+.app-nav__app-items {
+  @media (max-width: $_app-nav-layout-breakpoint) {
+    margin-bottom: $base-spacing;
+  }
+}
+
+.app-nav__user-items {
+  align-items: center;
+  display: flex;
+
+  @media (min-width: $_app-nav-layout-breakpoint) {
+    margin-left: auto;
+  }
+}
+
+.app-nav__account-link {
+  align-items: center;
+  display: flex;
+}

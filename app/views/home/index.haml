@@ -1,7 +1,6 @@
 - content_for :page_title, I18n.t("home.index.title")
 - content_for :meta_description, I18n.t("home.index.description")
 - content_for :body_class, "home home-index"
-- content_for :header_class, "home-header"
 
 %section
   .section-content
@@ -16,7 +15,8 @@
         .home-hero-cta
           = link_to "/auth/github",
             class: "button button--primary button--large" do
-            %i.fa.fa-github.button__icon
+            %svg.icon.button__icon{ "aria-hidden" => "true" }
+              %use{ "xlink:href" => "/images/icons.svg#github" }
             = t("authenticate")
 
     .home-languages

@@ -8,7 +8,6 @@
   font-family: $font-family-default;
   font-size: modular-scale(0);
   font-weight: $font-weight-normal;
-  line-height: 1;
   padding: modular-scale(-2) modular-scale(1);
   text-decoration: none;
   transition: background-color $base-transition-timing $base-easing,
@@ -56,4 +55,6 @@
 .button__icon {
   display: inline-block;
   margin-right: modular-scale(-6);
+  position: relative;
+  top: modular-scale(-11);
 }

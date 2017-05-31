@@ -1,0 +1,50 @@
+%nav.app-nav{ role: "navigation" }
+  .app-nav__container
+    = link_to repos_path, class: "line-height-zero" do
+      %svg.logo.app-nav__logo{ role: "img" }
+        %title Hound
+        %use{ "xlink:href" => "/images/icons.svg#hound" }
+
+    .app-nav__app-items
+      = link_to "Docs", configuration_path, class: "app-nav__item"
+
+      = link_to "FAQ",
+        "https://intercom.help/hound/frequently-asked-questions",
+        class: "app-nav__item"
+
+      - unless signed_in?
+        = link_to "Pricing",
+          root_path(anchor: "pricing"),
+          class: "app-nav__item"
+
+    .app-nav__user-items
+      - if signed_in?
+        - if current_user.subscriptions.count > 0
+          .allowance{ "data-role" => "allowance-container" }
+            Private Repos
+            %strong
+              %span{ "data-role" => "subscribed-repo-count" }
+                #{current_user.subscribed_repos.count}
+              \/
+              %span{ "data-role" => "tier-allowance" }
+                #{current_user.plan_max}
+
+        = link_to account_path, class: "app-nav__item app-nav__account-link" do
+          - if current_user.email.present?
+            .avatar.margin-right-x-small
+              = image_tag avatar_url(current_user), alt: ""
+          = current_user.username
+
+        - if masquerading?
+          = link_to t("stop_masquerading"),
+            admin_masquerade_path(current_user.username),
+            method: :delete,
+            class: "app-nav__item"
+        - else
+          = link_to t("sign_out"), sign_out_path, class: "app-nav__item"
+
+      - else
+        = link_to "/auth/github", class: "button " do
+          %svg.icon.button__icon{ "aria-hidden" => "true" }
+            %use{ "xlink:href" => "/images/icons.svg#github" }
+          = t("authenticate")

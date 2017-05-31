@@ -12,13 +12,13 @@ feature "Admin masquerades as user" do
     visit admin_masquerade_path(user.username)
 
     expect(current_path).to eq(repos_path)
-    within "header .account" do
+    within ".app-nav" do
       expect(page).to have_text(user.username)
     end
 
     click_on "Stop Masquerading"
 
-    within "header .account" do
+    within ".app-nav" do
       expect(page).to have_text(admin.username)
     end
   end

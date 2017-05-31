@@ -14,7 +14,7 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body{ class: content_for(:body_class) || "hound" }
-    = render "application/header"
+    = render "application/app_nav"
     - user_facing_flashes.each do |key, value|
       .flash{ class: key }
         = value
