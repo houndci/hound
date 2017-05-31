@@ -12,6 +12,7 @@ gem "coffee-rails"
 gem "email_validator"
 gem "faraday"
 gem "font-awesome-rails"
+gem "haml", "5.0.0.beta.2"
 gem "haml-rails"
 gem "high_voltage"
 gem "inifile"
@@ -20,10 +21,12 @@ gem "neat"
 gem "normalize-rails"
 gem "octokit"
 gem "omniauth-github"
-gem "paranoia", "~> 2.2"
+gem "paranoia",
+  git: "https://github.com/rubysherpas/paranoia.git",
+  branch: "core"
 gem "pg"
 gem "puma"
-gem "rails", "5.0.0.1"
+gem "rails", "5.1.0.rc1"
 gem "rails-assets-classnames", source: "https://rails-assets.org"
 gem "rails-assets-es5-shim", source: "https://rails-assets.org"
 gem "rails-assets-lodash", source: "https://rails-assets.org"
@@ -51,13 +54,16 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "foreman"
-  gem "rspec-rails", ">= 3.4"
+  gem "rspec-rails",
+    git: "https://github.com/rspec/rspec-rails.git",
+    branch: "rails-5.1-compat"
 end
 
 group :test do
   gem "capybara", ">= 2.4.0"
   gem "capybara-webkit", "~> 1.6"
-  gem "database_cleaner"
+  gem "database_cleaner",
+    git: "https://github.com/DatabaseCleaner/database_cleaner.git"
   gem "factory_girl_rails"
   gem "launchy"
   gem "shoulda-matchers"
