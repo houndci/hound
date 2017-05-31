@@ -1,5 +1,12 @@
-$sans-serif: "Lato", sans-serif;
-$serif: "Georgia", serif;
+$font-family-default: "Lato", $font-stack-system;
+$font-family-heading: $font-stack-georgia;
+$font-family-code: $font-stack-monaco;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+$base-line-height: 1.4;
 
 $green: rgb(132, 240, 156);
 $purple: rgb(168, 115, 209);
@@ -67,10 +74,6 @@ $large-spacing: $base-spacing * 3;
 
 $letter-spacing-base: 1px;
 $letter-spacing-large: 2px;
-
-$font-weight-light: 300;
-$font-weight-normal: 400;
-$font-weight-bold: 700;
 
 $font-size-small: 0.875em;
 $font-size-base: 1em;

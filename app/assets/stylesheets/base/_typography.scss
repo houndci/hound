@@ -1,7 +1,10 @@
 body {
   background-color: $white;
   color: $base-font-color;
-  font: $font-weight-light 1em / 1.4 "Lato";
+  font-family: $font-family-default;
+  font-size: 1em;
+  font-weight: $font-weight-light;
+  line-height: $base-line-height;
 }
 
 a {
