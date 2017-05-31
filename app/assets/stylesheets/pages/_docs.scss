@@ -30,28 +30,6 @@
   }
 }
 
-.docs-list {
-  @include margin(0 0 $base-spacing $base-spacing);
-  list-style: disc;
-}
-
-.docs-list-item {
-  margin-bottom: $small-spacing;
-}
-
-.docs-message {
-  background-color: $light-gold;
-  border: 1px solid $gold;
-  border-radius: $small-border-radius;
-  color: $dark-gold;
-  font-size: $font-size-small;
-  padding: $small-spacing;
-
-  @include media($large-screen-up) {
-    font-size: $font-size-base;
-  }
-}
-
 .docs-nav {
   display: none;
 
