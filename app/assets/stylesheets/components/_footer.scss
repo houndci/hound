@@ -8,7 +8,7 @@ footer {
     li {
       display: inline-block;
 
-      ~ li:before {
+      ~ li::before {
         border-left: 1px solid $base-border-color;
         content: "";
         display: inline-block;

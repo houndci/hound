@@ -47,9 +47,9 @@
       }
     }
 
-    &:before {
+    &::before {
       @include size(24px);
-      @include position(absolute, -2px 0 0 0px);
+      @include position(absolute, -2px 0 0 0);
       background-color: rgba($purple, 0.1);
       border-radius: 50%;
       border: 2px solid $base-accent-color;
@@ -62,7 +62,7 @@
       text-align: center;
     }
 
-    &.current-step:before {
+    &.current-step::before {
       background-color: $green;
       border-color: darken($green, 30%);
       color: darken($green, 40%);
