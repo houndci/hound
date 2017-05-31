@@ -307,16 +307,11 @@ GEM
       faraday (>= 0.7.6, < 1.0)
     shoulda-matchers (2.6.2)
       activesupport (>= 3.0.0)
-    simple-random (1.0.3)
     sinatra (2.0.0.beta2)
       mustermann (= 1.0.0.beta2)
       rack (~> 2.0)
       rack-protection (= 2.0.0.beta2)
       tilt (~> 2.0)
-    split (2.2.0)
-      redis (>= 2.1)
-      simple-random (>= 0.9.3)
-      sinatra (>= 1.2.6)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -400,7 +395,6 @@ DEPENDENCIES
   sentry-raven (>= 0.12.2)
   shoulda-matchers
   sinatra (= 2.0.0.beta2)
-  split
   stripe
   thor (= 0.19.1)
   uglifier (>= 2.7.2)
