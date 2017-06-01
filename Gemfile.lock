@@ -225,6 +225,7 @@ GEM
     rails-assets-classnames (2.2.5)
     rails-assets-es5-shim (4.5.9)
     rails-assets-lodash (4.13.1)
+    rails-assets-normalize-css (7.0.0)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -372,7 +373,6 @@ DEPENDENCIES
   jquery-rails (>= 4.2.0)
   launchy
   neat (~> 1.8)
-  normalize-rails
   octokit
   omniauth-github
   paranoia (~> 2.2)
@@ -383,6 +383,7 @@ DEPENDENCIES
   rails-assets-classnames!
   rails-assets-es5-shim!
   rails-assets-lodash!
+  rails-assets-normalize-css!
   rails_12factor
   react-rails
   record_tag_helper
