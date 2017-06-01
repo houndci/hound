@@ -5,6 +5,7 @@ exports[`test renders appropriately 1`] = `
     onPrivateClicked={[Function]}
     onRefreshClicked={[Function]}
     onSearchInput={[Function]}
+    organizations={Array []}
     showPrivateButton={true} />
   <ReposView
     filterTerm={null}

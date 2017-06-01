@@ -243,6 +243,7 @@ class ReposContainer extends React.Component {
           onRefreshClicked={this.onRefreshClicked.bind(this)}
           onPrivateClicked={this.onPrivateClicked}
           isSyncing={this.state.isSyncing}
+          organizations={this.state.organizations}
         />
         <ReposView
           isSyncing={this.state.isSyncing}

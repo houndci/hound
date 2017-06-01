@@ -1,0 +1,16 @@
+.dropdown {
+  padding-right: 1em;
+  position: relative;
+
+  i {
+    position: absolute;
+    right: 40px;
+    top: 24px;
+  }
+
+  select {
+    @include appearance(none);
+    background: none;
+    border: 0;
+  }
+}
