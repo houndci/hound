@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Repo < ApplicationRecord
   has_many :builds
   has_many :memberships, dependent: :destroy
