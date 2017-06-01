@@ -1,0 +1,59 @@
+.button {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid rgba($black, 0.5);
+  border-radius: modular-scale(100);
+  color: $base-font-color;
+  display: inline-block;
+  font-family: $font-family-default;
+  font-size: modular-scale(0);
+  font-weight: $font-weight-normal;
+  line-height: 1;
+  padding: modular-scale(-2) modular-scale(1);
+  text-decoration: none;
+  transition: background-color $base-transition-timing $base-easing,
+              border-color $base-transition-timing $base-easing,
+              color $base-transition-timing $base-easing;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: tint($base-accent-color, 95%);
+    border-color: $base-accent-color;
+    color: $base-accent-color;
+  }
+}
+
+.button--inverted {
+  border-color: $white;
+  color: $white;
+
+  &:hover {
+    background-color: $white;
+    border-color: $white;
+    color: $base-accent-color;
+  }
+}
+
+.button--primary {
+  background-color: $base-accent-color;
+  border-color: $base-accent-color;
+  color: $white;
+
+  &:hover {
+    background-color: shade($base-accent-color, 15%);
+    border-color: shade($base-accent-color, 15%);
+    color: $white;
+  }
+}
+
+.button--large {
+  font-size: modular-scale(1);
+  padding: modular-scale(-1) modular-scale(2);
+}
+
+.button__icon {
+  display: inline-block;
+  margin-right: modular-scale(-6);
+}

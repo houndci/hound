@@ -15,9 +15,3 @@
 .home-security-actions {
   padding-top: $medium-spacing;
 }
-
-.home-security-actions-policy {
-  @include small-button(outline, $white, $purple);
-  padding-left: $base-spacing;
-  padding-right: $base-spacing;
-}

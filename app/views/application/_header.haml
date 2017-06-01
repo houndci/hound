@@ -45,4 +45,6 @@
           = link_to "https://twitter.com/houndci", options do
             %span @houndci
         %li.auth-container
-          = render "application/auth_button"
+          = link_to "/auth/github", class: "button" do
+            %i.fa.fa-github.button__icon
+            = t("authenticate")

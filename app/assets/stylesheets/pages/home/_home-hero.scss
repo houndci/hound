@@ -47,13 +47,4 @@
   @include media($medium-screen-up) {
     padding-top: $large-spacing;
   }
-
-  .auth {
-    @include large-button(solid, $purple, lighten($purple, 10%));
-    padding: $small-spacing $base-spacing;
-
-    @include media($medium-screen-up) {
-      padding: $small-spacing ($base-spacing * 2);
-    }
-  }
 }

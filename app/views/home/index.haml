@@ -14,7 +14,10 @@
           you and your team to better review and maintain a clean codebase.
 
         .home-hero-cta
-          = render "application/auth_button"
+          = link_to "/auth/github",
+            class: "button button--primary button--large" do
+            %i.fa.fa-github.button__icon
+            = t("authenticate")
 
     .home-languages
       %h4.home-heading--small.home-languages-heading Currently style checking
@@ -156,5 +159,5 @@
 
       .home-security-actions
         = link_to "https://github.com/houndci/hound/blob/master/doc/SECURITY.md",
-          new_window_options(class: "home-security-actions-policy") do
+          new_window_options(class: "button button--inverted") do
           %span Read our security policy
