@@ -19,7 +19,7 @@
       .flash{ class: key }
         = value
 
-    .content
+    %main.content{ role: "main" }
       = yield
 
     = render "application/footer"
