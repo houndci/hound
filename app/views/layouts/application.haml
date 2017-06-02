@@ -19,7 +19,7 @@
       .flash{ class: key }
         = value
 
-    .content{ class: content_for(:container_class) }
+    .content
       = yield
 
     = render "application/footer"
