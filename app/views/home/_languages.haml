@@ -13,8 +13,8 @@
         = image_tag "languages/go.svg", alt: ""
       %p.home-languages-list-item-heading Go
     %li.home-languages-list-item
-      .home-languages-list-item-logo
-        = image_tag "languages/haml.svg", alt: ""
+      %svg.home-languages-list-item-logo-svg{ "aria-hidden" => "true" }
+        %use{ "xlink:href" => "/images/icons.svg#haml" }
       %p.home-languages-list-item-heading Haml
     %li.home-languages-list-item
       %svg.home-languages-list-item-logo-svg{ "aria-hidden" => "true" }
