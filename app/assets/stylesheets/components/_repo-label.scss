@@ -1,0 +1,30 @@
+.repo-label {
+  color: $medium-font-color;
+  display: none;
+  margin-right: $small-spacing;
+  position: relative;
+  transition: color $base-transition-timing $base-easing;
+  vertical-align: middle;
+
+  @include media($small-screen-only) {
+    margin-left: $base-spacing;
+    margin-top: $xxsmall-spacing;
+  }
+
+  .fa {
+    font-size: $font-size-icon;
+    margin-right: 6px;
+  }
+
+  &:hover {
+    color: $highlight-color;
+  }
+}
+
+.repo-activation-toggle--private {
+  min-width: 250px;
+
+  .repo-label {
+    display: inline-block;
+  }
+}
