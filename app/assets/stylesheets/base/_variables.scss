@@ -6,37 +6,30 @@ $font-weight-light: 300;
 $font-weight-normal: 400;
 $font-weight-bold: 700;
 
+$font-size-small: 0.875em;
+$font-size-base: 1em;
+$font-size-medium: 1.25em;
+$font-size-large: 2.7em;
+$font-size-xlarge: 3em;
+$font-size-xxlarge: 3.8em;
+
 $base-line-height: 1.4;
 
+$black: #000;
+$gold: rgb(226, 206, 0);
 $green: rgb(132, 240, 156);
+$light-gray: rgb(230, 230, 230);
 $purple: rgb(168, 115, 209);
 $red: rgb(255, 123, 123);
-$teal: #379a75;
-$gold: rgb(226, 206, 0);
-$dark-gold: darken($gold, 10%);
-$light-gold: lighten($gold, 50%);
-$tan: rgb(255, 220, 173);
 $white: #fff;
-$black: #000;
-$light-gray: rgb(230, 230, 230);
-
-$ruby: rgb(193, 30, 29);
-$javascript: rgb(246, 221, 0);
-$coffee-script: rgb(19, 18, 38);
-$scss: rgb(196, 73, 137);
-
-$active-color: $teal;
-$repo-list-toggle-size: 1.5rem;
 
 $base-text-shadow: 0 1px 2px rgba($black, 0.2);
-
 $base-background-color: rgb(248, 248, 248);
 $base-border-color: rgb(220, 220, 220);
 $base-font-color: rgb(100, 100, 100);
 $medium-font-color: rgb(140, 140, 140);
 $base-accent-color: $purple;
 $base-secondary-color: lighten($purple, 10%);
-$table-heading-background-color: rgb(245, 245, 245);
 $code-background-color: rgba(#99abc0, 0.25);
 
 $home-gradient-top: rgb(196, 115, 209);
@@ -46,8 +39,6 @@ $icon-font: "FontAwesome";
 $icon-dropdown: "\f0d7";
 $icon-dropup: "\f0d8";
 $icon-lock: "\f023";
-
-$medium-header-breakpoint: 850px;
 
 $small-screen-size: 540px;
 $medium-screen-size: 760px;
@@ -63,8 +54,6 @@ $large-screen-up: new-breakpoint(min-width $large-screen-size 12);
 
 $base-border: 1px solid $base-border-color;
 $base-border-radius: 5px;
-$large-border-radius: $base-border-radius + 1px;
-$small-border-radius: $base-border-radius - 2px;
 
 $base-spacing: 1.25em;
 $xsmall-spacing: $base-spacing * 0.5;
@@ -74,13 +63,6 @@ $large-spacing: $base-spacing * 3;
 
 $letter-spacing-base: 1px;
 $letter-spacing-large: 2px;
-
-$font-size-small: 0.875em;
-$font-size-base: 1em;
-$font-size-medium: 1.25em;
-$font-size-large: 2.7em;
-$font-size-xlarge: 3em;
-$font-size-xxlarge: 3.8em;
 
 // Transition
 $base-transition-timing: 0.2s;
