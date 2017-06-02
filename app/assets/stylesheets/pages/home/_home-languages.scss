@@ -77,6 +77,11 @@
   }
 }
 
+.home-languages-list-item-logo-svg {
+  @include size(6.25rem);
+  margin-bottom: $small-spacing;
+}
+
 .home-languages-list-item-heading {
   margin-bottom: 0;
 }
