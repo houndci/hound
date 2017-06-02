@@ -4,15 +4,17 @@
     %ol.onboarding-steps
       %li.step
         - if current_user.has_active_repos?
-          %h4= t("onboarding.step_one_alt_title", count: current_user.repos.active.count )
+          %strong
+            = t("onboarding.step_one_alt_title",
+              count: current_user.repos.active.count )
         - else
-          %h4= t("onboarding.step_one_title")
+          %strong= t("onboarding.step_one_title")
         %p
           = t("onboarding.step_one_desc")
           = link_to(t("onboarding.step_one_link"), account_path)
       %li.step.current-step
-        %h4= t("onboarding.step_two_title")
+        %strong= t("onboarding.step_two_title")
         %p= t("onboarding.step_two_desc")
       %li.step
-        %h4= t("onboarding.step_three_title")
+        %strong= t("onboarding.step_three_title")
         %p= t("onboarding.step_three_desc")

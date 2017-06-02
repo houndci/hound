@@ -8,7 +8,7 @@
       .home-hero
         %h1.home-hero-heading
           Code review tool for GitHub pull requests
-        %h2.home-hero-subheading
+        %p.home-hero-subheading
           Hound comments on style violations in GitHub pull requests, allowing
           you and your team to better review and maintain a clean codebase.
 
@@ -20,42 +20,42 @@
             = t("authenticate")
 
     .home-languages
-      %h4.home-heading--small.home-languages-heading Currently style checking
+      %h2.home-heading--small.home-languages-heading Currently style checking
 
       .inner-wrapper
         %ul.home-languages-list
           %li.home-languages-list-item
             .home-languages-list-item-logo
               = image_tag "languages/coffeescript.svg", alt: ""
-            %h5.home-languages-list-item-heading CoffeeScript
+            %p.home-languages-list-item-heading CoffeeScript
           %li.home-languages-list-item
             .home-languages-list-item-logo
               = image_tag "languages/go.svg", alt: ""
-            %h5.home-languages-list-item-heading Go
+            %p.home-languages-list-item-heading Go
           %li.home-languages-list-item
             .home-languages-list-item-logo
               = image_tag "languages/haml.svg", alt: ""
-            %h5.home-languages-list-item-heading Haml
+            %p.home-languages-list-item-heading Haml
           %li.home-languages-list-item
             .home-languages-list-item-logo
               = image_tag "languages/javascript.svg", alt: ""
-            %h5.home-languages-list-item-heading JavaScript
+            %p.home-languages-list-item-heading JavaScript
           %li.home-languages-list-item
             .home-languages-list-item-logo
               = image_tag "languages/ruby.svg", alt: ""
-            %h5.home-languages-list-item-heading Ruby
+            %p.home-languages-list-item-heading Ruby
           %li.home-languages-list-item
             .home-languages-list-item-logo
               = image_tag "languages/sass.svg", alt: ""
-            %h5.home-languages-list-item-heading Scss
+            %p.home-languages-list-item-heading Scss
           %li.home-languages-list-item
             .home-languages-list-item-logo
               = image_tag "languages/swift.svg", alt: ""
-            %h5.home-languages-list-item-heading Swift
+            %p.home-languages-list-item-heading Swift
 
 %section.home-importance
   .section-content
-    %h3.home-heading--large.home-importance-heading.section-title
+    %h2.home-heading--large.home-importance-heading.section-title
       Why does style matter?
 
     .inner-wrapper
@@ -63,7 +63,7 @@
         .home-importance-icon
           %i.fa.fa-bolt
         .home-importance-text
-          %h4.home-heading--small Convention
+          %p.home-heading--small Convention
           %p
             Defining and sticking with a style guide helps reduce the amount of
             decisions that developers need to make when writing code, helping to
@@ -73,7 +73,7 @@
         .home-importance-icon
           %i.fa.fa-ellipsis-h
         .home-importance-text
-          %h4.home-heading--small Consistency
+          %p.home-heading--small Consistency
           %p
             When every line of code is written in the same style, the whole
             codebase becomes easier to read, understand and de-bug. It also
@@ -84,7 +84,7 @@
         .home-importance-icon
           %i.fa.fa-magic
         .home-importance-text
-          %h4.home-heading--small Awesomeness
+          %p.home-heading--small Awesomeness
           %p
             A clean codebase is a reflection of a cohesive team. It gives the
             impression of a team working well together towards a common goal,
@@ -94,8 +94,8 @@
   .section-content
     %article.value-section
       .value-text
-        %h3.home-heading--large
-          Write code, submit a pull request, get review from Hound.
+        %h2.home-heading--large
+          How it works.
         %p
           Hound integrates with your existing workflow by reviewing and commenting
           on code the moment a GitHub pull request is opened or updated.
@@ -104,7 +104,7 @@
 
     %article.value-section
       .value-text
-        %h3.home-heading--large
+        %h2.home-heading--large
           Save time, get better reviews.
         %p
           Automated style checking with Hound gives developers more time to
@@ -117,7 +117,7 @@
     %figure.configuration-image
       = image_tag "home-page/guides.png"
     .configuration-text
-      %h4.home-heading--small
+      %h2.home-heading--small
         Use our guides or configure your own.
       %p
         Hound's default style guides build upon accepted industry standards and
@@ -130,18 +130,18 @@
 %section.home-pricing
   .section-content#pricing
     .section-title
-      %h3.home-pricing-heading.home-heading--large
-        Hound keeps your code style in check.
+      %h2.home-pricing-heading.home-heading--large
+        Pricing.
 
     %article.plans
       .inner-wrapper
-        %h4.plan-category
+        %h3.plan-category
           %i.fa.fa-book
           Private Repos
 
         = render(partial: @home.private_plans, as: :plan)
 
-        %h4.plan-category.open-source
+        %h3.plan-category.open-source
           %i.fa.fa-code-fork
           Open Source
 
@@ -150,7 +150,7 @@
 %section.home-security
   .section-content
     %article
-      %h4.home-heading--small
+      %h2.home-heading--small
         Uncomfortable giving us access to your code?
       %p
         Don’t worry, we get it. Our mission is to help you maintain a clean code
