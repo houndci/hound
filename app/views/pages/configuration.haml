@@ -12,7 +12,7 @@
       %li
         = link_to "JavaScript", "#javascript", class: "docs-nav-link"
       %li
-        = link_to "SCSS", "#scss", class: "docs-nav-link"
+        = link_to "SCSS-Lint", "#scss", class: "docs-nav-link"
       %li
         = link_to "Haml", "#haml", class: "docs-nav-link"
       %li
@@ -28,7 +28,7 @@
       %li
         = link_to "Elixir", "#elixir", class: "docs-nav-link"
       %li
-        = link_to "Sass-lint", "#sass-lint", class: "docs-nav-link"
+        = link_to "Sass Lint", "#sass-lint", class: "docs-nav-link"
 
   %section.docs-content
     %article.docs-article
@@ -54,7 +54,7 @@
           %li RuboCop (Ruby)
           %li CoffeeLint (CoffeeScript)
           %li JavaScript (JSHint)
-          %li SCSS (SCSSLint)
+          %li SCSS (SCSS-Lint)
           %li Haml (HAMLLint)
           %li Go (golint)
           %li Swift (SwiftLint)
@@ -229,11 +229,11 @@
               enabled: false
 
     %article.docs-article#scss
-      %h2 SCSS
+      %h2 SCSS-Lint
 
       %p
         Hound uses
-        = link_to "scss-lint",
+        = link_to "SCSS-Lint",
           "https://github.com/causes/scss-lint",
           new_window_options
         with this
@@ -241,7 +241,7 @@
         by default.
 
       %p
-        To change the way scss-lint is configured, simply copy the
+        To change the way SCSS-Lint is configured, simply copy the
         = link_to "default config file", scss_config_url, new_window_options
         into your project, make changes and reference the file in your
         %em.code-inline .hound.yml
@@ -540,10 +540,10 @@
               config_file: .credo.exs
 
     %article.docs-article#sass-lint
-      %h2 Sass-lint
+      %h2 Sass Lint
       %p
         Hound uses
-        = link_to "sass-lint",
+        = link_to "Sass Lint",
           "https://github.com/sasstools/sass-lint",
           new_window_options
         with this
@@ -551,7 +551,7 @@
         by default.
 
       %p
-        To enable Sass-lint style checking, add the following to your
+        To enable Sass Lint style checking, add the following to your
         %em.code-inline .hound.yml
 
         %code.code-block
@@ -559,7 +559,7 @@
             sass-lint:
               enabled: true
       %p
-        To change the way Sass-lint is configured, add
+        To change the way Sass Lint is configured, add
         %em.code-inline .sass-lint.yml
         file to your project,
         specify your desired configuration
