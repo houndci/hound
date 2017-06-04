@@ -15,6 +15,11 @@ a {
   &:hover {
     color: darken($purple, 5%);
   }
+
+  &:focus {
+    outline: $focus-outline;
+    outline-offset: $focus-outline-offset;
+  }
 }
 
 h1,

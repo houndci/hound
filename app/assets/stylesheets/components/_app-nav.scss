@@ -29,10 +29,6 @@ $_app-nav-layout-breakpoint: 42em;
   @media (max-width: $_app-nav-layout-breakpoint) {
     margin-bottom: $base-spacing;
   }
-
-  @media (min-width: $_app-nav-layout-breakpoint) {
-    margin-right: $base-spacing;
-  }
 }
 
 .app-nav__item:not(:first-of-type) {
@@ -42,6 +38,10 @@ $_app-nav-layout-breakpoint: 42em;
 .app-nav__app-items {
   @media (max-width: $_app-nav-layout-breakpoint) {
     margin-bottom: $base-spacing;
+  }
+
+  @media (min-width: $_app-nav-layout-breakpoint) {
+    margin-left: $base-spacing;
   }
 }
 

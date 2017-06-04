@@ -22,6 +22,11 @@
     border-color: $base-accent-color;
     color: $base-accent-color;
   }
+
+  &:focus {
+    outline: $focus-outline;
+    outline-offset: $focus-outline-offset;
+  }
 }
 
 .button--inverted {
