@@ -8,7 +8,7 @@ module Admin
 
     def navigation_resources
       Administrate::Namespace.new(namespace).resources.select do |resource|
-        DashboardManifest::DASHBOARDS.include?(resource)
+        DashboardManifest::DASHBOARDS.include?(resource.name)
       end
     end
 
