@@ -18,7 +18,37 @@ describe ReportInvalidConfig do
           message: message,
         )
 
-        expect(commit_status).to have_received(:set_config_error).with(message)
+        expect(commit_status).to(
+          have_received(:set_config_error).with(message, nil),
+        )
+        expect(Build).to have_received(:find_by!).with(
+          pull_request_number: pull_request_number,
+          commit_sha: commit_sha,
+        )
+      end
+    end
+
+    context "given a details URL" do
+      it "reports the file as an invalid config file to Github with a details link" do
+        commit_status = stubbed_commit_status(:set_config_error)
+        stubbed_build(repo_name: "houndci/hound")
+        pull_request_number = "42"
+        commit_sha = "abc123"
+        linter_name = "ruby"
+        message = "Invalid ruby file, woff"
+        details_url = "http://example.com"
+
+        ReportInvalidConfig.call(
+          pull_request_number: pull_request_number,
+          commit_sha: commit_sha,
+          linter_name: linter_name,
+          message: message,
+          details_url: details_url,
+        )
+
+        expect(commit_status).to(
+          have_received(:set_config_error).with(message, details_url),
+        )
         expect(Build).to have_received(:find_by!).with(
           pull_request_number: pull_request_number,
           commit_sha: commit_sha,
@@ -43,7 +73,7 @@ describe ReportInvalidConfig do
         expected_message =
           "Error parsing config for: ruby. Click \"details\" for assistance."
         expect(commit_status).to have_received(:set_config_error).
-          with(expected_message)
+          with(expected_message, nil)
         expect(Build).to have_received(:find_by!).with(
           pull_request_number: pull_request_number,
           commit_sha: commit_sha,

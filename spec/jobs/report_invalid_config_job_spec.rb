@@ -8,6 +8,7 @@ describe ReportInvalidConfigJob do
         "commit_sha" => "abc123",
         "linter_name" => "ruby",
         "message" => "Could not parse the given config file",
+        "details_url" => "http://example.com/configuration",
       }
       allow(ReportInvalidConfig).to receive(:call)
 
@@ -18,6 +19,7 @@ describe ReportInvalidConfigJob do
         commit_sha: attributes["commit_sha"],
         linter_name: attributes["linter_name"],
         message: attributes["message"],
+        details_url: attributes["details_url"],
       )
     end
   end

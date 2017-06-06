@@ -82,7 +82,7 @@ describe CommitStatus do
         token: token,
       )
 
-      commit_status.set_config_error(message)
+      commit_status.set_config_error(message, configuration_url)
 
       expect(github_api).to have_received(:create_error_status).with(
         repo_name,
