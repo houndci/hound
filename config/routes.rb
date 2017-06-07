@@ -16,6 +16,8 @@ Houndapp::Application.routes.draw do
   get "/configuration", to: "pages#configuration"
   get "/faq", to: "pages#show", id: "faq"
 
+  get "/owners/:owner/:repo/configs/:linter", to: "linter_configs#show"
+
   resource :account, only: [:show, :update]
   resources :builds, only: [:create, :index]
   resources :owners, only: [:update]
