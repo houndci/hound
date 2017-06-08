@@ -45,6 +45,4 @@ RSpec.feature "User activates a repo", :js do
 
     expect(page).to have_text "Private Repos 2 / 4"
   end
-
-  after { Plan::PRICES[:private] = 0 }
 end
