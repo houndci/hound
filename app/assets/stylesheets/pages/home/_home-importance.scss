@@ -1,0 +1,71 @@
+.home-importance {
+  background: $purple
+              linear-gradient(160deg, $home-gradient-top, $home-gradient-bottom);
+  color: $white;
+  padding: $large-spacing 1em ($large-spacing * 2);
+
+  @include media($medium-screen-up) {
+    padding: ($large-spacing * 2) $base-spacing ($large-spacing * 3);
+  }
+}
+
+.home-importance-heading {
+  border-bottom: 1px solid rgba($white, 0.2);
+  margin: 0 auto $medium-spacing;
+  padding: 0 ($base-spacing * 2) $base-spacing;
+  text-shadow: $base-text-shadow;
+}
+
+.home-importance-item {
+  @include span-columns(10 of 12);
+  @include shift(1);
+
+  @include media($medium-screen-up) {
+    @include span-columns(8 of 12);
+    @include shift(2);
+  }
+
+  @include media($large-screen-up) {
+    @include span-columns(4 of 12);
+    @include shift(0);
+  }
+
+  &:not(:last-child) {
+    margin-bottom: $large-spacing;
+
+    @include media($large-screen-up) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.home-importance-icon {
+  margin-bottom: $base-spacing;
+
+  .fa {
+    @include size(100px);
+    background: rgba($black, 0.15);
+    border: 1px solid $white;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: $font-size-xxlarge;
+
+    &::before {
+      @include position(relative, 20px null null);
+    }
+  }
+}
+
+.home-importance-text {
+  text-shadow: $base-text-shadow;
+
+  @include media($medium-screen-up) {
+    padding: 0 5%;
+  }
+}
+
+.home-importance-text,
+.home-importance-icon {
+  text-align: center;
+  width: 100%;
+}

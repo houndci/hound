@@ -77,7 +77,7 @@ class NotifyTierChange extends React.Component {
           {this.renderTierPlans()}
         </aside>
         <div className="tier-change-content">
-          <h1>Pricing: Change of Plans</h1>
+          <h1>Change of Plans</h1>
           <section className="tier-change-description">
             <div className="allowance large">
               Private Repos

@@ -17,7 +17,7 @@ describe CompleteBuild do
             token: "abc123",
           )
 
-          expect(pull_request).to have_received(:comment_on_violations) do |arg|
+          expect(pull_request).to have_received(:make_comments) do |arg|
             expect(arg.flat_map(&:messages)).to match_array ["bar"]
           end
         end
@@ -67,7 +67,7 @@ describe CompleteBuild do
             token: "abc123",
           )
 
-          expect(pull_request).not_to have_received(:comment_on_violations)
+          expect(pull_request).not_to have_received(:make_comments)
           expect(github_api).not_to have_received(:create_success_status)
         end
       end
@@ -100,7 +100,24 @@ describe CompleteBuild do
           token: "abc123",
         )
 
-        expect(pull_request).not_to have_received(:comment_on_violations)
+        expect(pull_request).not_to have_received(:make_comments)
+      end
+    end
+
+    context "when build has file review errors" do
+      it "adds a comment to pull request review" do
+        build = stub_build([], review_errors: ["cannot parse config"])
+        pull_request = stub_pull_request
+        stubbed_github_api
+
+        CompleteBuild.call(
+          pull_request: pull_request,
+          build: build,
+          token: "abc123",
+        )
+
+        expect(pull_request).to have_received(:make_comments).
+          with([], ["cannot parse config"])
       end
     end
 
@@ -148,6 +165,7 @@ describe CompleteBuild do
       end
       default_attributes = {
         completed?: true,
+        review_errors: [],
         repo: instance_double("Repo", subscription: false),
         repo_name: "foo/bar",
         commit_sha: "abc123",
@@ -163,7 +181,7 @@ describe CompleteBuild do
         "PullRequest",
         head_commit: head_commit,
         comments: comments,
-        comment_on_violations: nil,
+        make_comments: nil,
       )
     end
 

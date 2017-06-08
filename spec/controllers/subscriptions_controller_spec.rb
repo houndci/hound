@@ -68,13 +68,11 @@ describe SubscriptionsController, "#create" do
     end
   end
 
-  context "when the current tier is full" do
+  context "when the current plan is full" do
     it "notifies that payment is required" do
       membership = create(:membership)
       repo = membership.repo
-      tier = instance_double("Tier", full?: true)
       user = membership.user
-      allow(Tier).to receive(:new).once.with(user).and_return(tier)
       stub_sign_in(user)
 
       post :create, params: { repo_id: repo.id }
@@ -173,7 +171,7 @@ describe SubscriptionsController, "#destroy" do
           properties: {
             name: repo.name,
             private: true,
-            revenue: -repo.plan_price,
+            revenue: -subscribed_user.next_plan_price,
           }
         )
     end

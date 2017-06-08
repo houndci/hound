@@ -6,7 +6,8 @@ feature "Admin authorization" do
     admin = create(:user, username: "admin_user")
 
     sign_in_as(admin, token)
-    visit admin_bulk_customers_path
+    visit admin_blacklisted_pull_requests_path
+    click_link "Bulk Customers"
 
     expect(page).to have_admin_bulk_customers_header
   end

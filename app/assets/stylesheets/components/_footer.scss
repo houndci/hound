@@ -1,22 +1,12 @@
-footer {
-  padding: 4em 1em;
+.app-footer {
+  padding: $large-spacing $base-spacing;
   text-align: center;
+}
 
-  ul.footer-nav {
-    margin-bottom: 4em;
+.app-footer__nav {
+  margin-bottom: $base-spacing;
+}
 
-    li {
-      display: inline-block;
-
-      ~ li:before {
-        border-left: 1px solid $base-border-color;
-        content: "";
-        display: inline-block;
-        height: 1em;
-        margin-left: 0.5em;
-        padding-left: 0.5em;
-        vertical-align: middle;
-      }
-    }
-  }
+.app-footer__nav-link:not(:first-of-type) {
+  margin-left: $base-spacing;
 }

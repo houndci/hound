@@ -5,29 +5,29 @@ class Home
     @user = user
   end
 
-  def open_source_pricings
-    open_source_repos.map { |pricing| present(pricing) }
+  def open_source_plans
+    open_source_repos.map { |plan| present(plan) }
   end
 
-  def private_pricings
-    private_repos.map { |pricing| present(pricing) }
+  def private_plans
+    private_repos.map { |plan| present(plan) }
   end
 
   private
 
-  def present(pricing)
-    PricingPresenter.new(pricing: pricing, user: user)
+  def present(plan)
+    PlanPresenter.new(plan: plan, user: user)
   end
 
-  def pricings
-    Pricing.all
+  def plans
+    Plan.all
   end
 
   def private_repos
-    pricings.reject(&:open_source?)
+    plans.reject(&:open_source?)
   end
 
   def open_source_repos
-    pricings.select(&:open_source?)
+    plans.select(&:open_source?)
   end
 end

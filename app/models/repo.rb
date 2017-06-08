@@ -5,9 +5,6 @@ class Repo < ApplicationRecord
   has_one :subscription
   has_many :users, through: :memberships
 
-  delegate :type, :price, to: :plan, prefix: true
-  delegate :price, to: :subscription, prefix: true
-
   validates :github_id, uniqueness: true, presence: true
 
   def self.active
@@ -60,6 +57,10 @@ class Repo < ApplicationRecord
 
   def users_with_token
     users.where.not(token: nil)
+  end
+
+  def public?
+    !private?
   end
 
   private

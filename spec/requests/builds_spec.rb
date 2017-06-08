@@ -17,10 +17,19 @@ RSpec.describe "POST /builds" do
       new_violation2 = { line: 9, message: "Avoid empty else-clauses." }
       violations = [new_violation1, existing_comment_violation, new_violation2]
       create(:repo, :active, github_id: repo_id, name: repo_name)
-      stub_review_job(RubocopReviewJob, violations: violations)
+      stub_review_job(
+        RubocopReviewJob,
+        violations: violations,
+        error: "invalid config syntax",
+      )
 
       post builds_path, params: { payload: payload }
 
+      expect(FakeGithub.review_body).to eq(
+        "Some files could not be reviewed due to errors:" \
+        "<details><summary>invalid config syntax</summary>" \
+        "<pre>invalid config syntax</pre></details>",
+      )
       expect(FakeGithub.comments).to match_array [
         {
           body: new_violation1[:message],
@@ -50,7 +59,7 @@ RSpec.describe "POST /builds" do
     end
   end
 
-  def stub_review_job(klass, violations:)
+  def stub_review_job(klass, violations:, error:)
     allow(klass).to receive(:perform) do |attributes|
       CompleteFileReview.call(
         "commit_sha" => attributes.fetch("commit_sha"),
@@ -59,6 +68,7 @@ RSpec.describe "POST /builds" do
         "patch" => attributes.fetch("patch"),
         "pull_request_number" => attributes.fetch("pull_request_number"),
         "violations" => violations.map(&:stringify_keys),
+        "error" => error,
       )
     end
   end

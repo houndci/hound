@@ -20,8 +20,7 @@
     for (var i = 0; i < links.length; i++) {
       window.analytics.trackLink(
         links[i],
-        "Clicked Sign In",
-        { variation: "#{ab_test("auth_button")}" }
+        "Clicked Sign In"
       );
     }
 

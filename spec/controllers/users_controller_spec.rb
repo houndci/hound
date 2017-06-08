@@ -13,7 +13,7 @@ describe UsersController do
           id: user.id,
           refreshing_repos: user.refreshing_repos,
           subscribed_repo_count: 0,
-          tier_allowance: 0,
+          plan_max: 0,
           username: user.username,
         }.to_json
       )

@@ -1,7 +1,7 @@
 require "sinatra"
 
 class FakeGithub < Sinatra::Base
-  cattr_accessor :comments
+  cattr_accessor :comments, :review_body
   self.comments = []
 
   put "/repos/:owner/:repo/collaborators/:username" do
@@ -41,18 +41,9 @@ class FakeGithub < Sinatra::Base
     ].to_json
   end
 
-  post "/repos/:owner/:repo/pulls/:number/comments" do
-    request.body.rewind
-    request_payload = JSON.parse(request.body.read)
-
-    comments << build_comment(request_payload, params)
-
-    content_type :json
-    status 201
-  end
-
   post "/repos/:owner/:repo/pulls/:number/reviews" do
     request_payload = JSON.parse(request.body.read)
+    self.review_body = request_payload["body"]
 
     request_payload["comments"].each do |comment|
       comments << build_comment(comment, params)

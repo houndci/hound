@@ -19,12 +19,12 @@
 
 .content {
   @include outer-container;
-
-  &.repo-index {
-    padding-top: 10em;
-  }
 }
 
 .inner-wrapper {
   @include clearfix;
+}
+
+img {
+  max-width: 100%;
 }

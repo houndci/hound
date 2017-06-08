@@ -1,4 +1,7 @@
 fail_on_violations: true
 
 ruby:
-  config_file: .ruby-style.yml
+  config_file: .rubocop.yml
+
+scss:
+  config_file: .scss-lint.yml
