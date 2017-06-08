@@ -102,7 +102,7 @@ describe RepoSubscriber do
         user = create(:user)
         stub_customer_create_request(user)
         stub_failed_subscription_create_request(user.current_plan.id)
-        allow(Raven).to receive(:capture_exception)
+        allow(Rollbar).to receive(:error)
 
         RepoSubscriber.subscribe(repo, user, "cardtoken")
 
