@@ -257,10 +257,10 @@ GEM
       tilt
     record_tag_helper (1.0.0)
       actionview (~> 5.x)
-    redis (3.3.2)
-    redis-namespace (1.5.2)
+    redis (3.3.3)
+    redis-namespace (1.5.3)
       redis (~> 3.0, >= 3.0.4)
-    resque (1.26.0)
+    resque (1.27.4)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
       redis-namespace (~> 1.3)
@@ -396,7 +396,7 @@ DEPENDENCIES
   rails_12factor
   react-rails
   record_tag_helper
-  resque (>= 1.25.0)
+  resque (>= 1.27.4)
   resque-scheduler
   resque-sentry
   rest-client (>= 1.8.0)
