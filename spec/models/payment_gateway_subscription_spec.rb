@@ -3,45 +3,41 @@ require "rails_helper"
 describe PaymentGatewaySubscription do
   describe "#subscribe" do
     it "sets the plan to the upgraded tier" do
-      plan = "tier1"
-      succ = instance_double("Pricing")
+      plan_id = "tier1"
       repo_id = 1
       stripe_subscription = MockStripeSubscription.new(repo_ids: ["1"])
-      tier = instance_double("Tier")
+      next_plan = instance_double("Plan", id: plan_id)
+      user = instance_double("User", next_plan: next_plan)
       subscription = PaymentGatewaySubscription.new(
         stripe_subscription: stripe_subscription,
-        tier: tier,
+        user: user,
       )
-      allow(succ).to receive(:id).once.with(no_args).and_return(plan)
-      allow(tier).to receive(:next).once.with(no_args).and_return(succ)
 
       subscription.subscribe(repo_id)
 
       expect(stripe_subscription).to be_saved
       expect(stripe_subscription.metadata).to eq("repo_ids" => repo_id.to_s)
-      expect(stripe_subscription.plan).to eq plan
+      expect(stripe_subscription.plan).to eq plan_id
     end
   end
 
   describe "#unsubscribe" do
     it "sets the plan to the downgraded tier" do
-      plan = "basic"
-      previous = instance_double("Pricing")
+      plan_id = "basic"
       repo_id = 1
       stripe_subscription = MockStripeSubscription.new(repo_ids: [repo_id])
-      tier = instance_double("Tier")
+      plan = instance_double("Plan", id: plan_id)
+      user = instance_double("User", previous_plan: plan)
       subscription = PaymentGatewaySubscription.new(
         stripe_subscription: stripe_subscription,
-        tier: tier,
+        user: user,
       )
-      allow(previous).to receive(:id).once.with(no_args).and_return(plan)
-      allow(tier).to receive(:previous).once.with(no_args).and_return(previous)
 
       subscription.unsubscribe(repo_id)
 
       expect(stripe_subscription).to be_saved
       expect(stripe_subscription.metadata).to eq("repo_ids" => nil)
-      expect(stripe_subscription.plan).to eq plan
+      expect(stripe_subscription.plan).to eq plan_id
     end
   end
 

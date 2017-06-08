@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161021231021) do
+ActiveRecord::Schema.define(version: 20170505220736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +60,7 @@ ActiveRecord::Schema.define(version: 20161021231021) do
     t.datetime "updated_at",   null: false
     t.string   "filename",     null: false
     t.string   "linter_name",  null: false
+    t.string   "error"
   end
 
   add_index "file_reviews", ["build_id"], name: "index_file_reviews_on_build_id", using: :btree

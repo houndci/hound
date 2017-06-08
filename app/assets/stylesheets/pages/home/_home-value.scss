@@ -1,0 +1,50 @@
+.value {
+  padding: $large-spacing $base-spacing ($large-spacing * 2);
+
+  @include media($large-screen-up) {
+    padding: ($large-spacing * 2) 0 ($large-spacing * 3);
+  }
+}
+
+.value-section {
+  @include span-columns(10 of 12);
+  @include shift(1);
+  text-align: center;
+
+  @include media($medium-screen-up) {
+    @include span-columns(8 of 12);
+    @include shift(2);
+  }
+
+  &:not(:first-child) {
+    border-top: $base-border;
+    margin-top: $large-spacing;
+    padding-top: $large-spacing;
+
+    @include media($medium-screen-up) {
+      margin-top: $large-spacing * 2;
+      padding-top: $large-spacing * 2;
+    }
+  }
+}
+
+.value-text {
+  margin-bottom: $large-spacing;
+
+  @include media($medium-screen-up) {
+    margin-bottom: $large-spacing * 1.5;
+  }
+
+  h3 {
+    margin-bottom: $xsmall-spacing;
+  }
+
+  p {
+    font-size: $font-size-medium;
+    line-height: 1.6;
+  }
+}
+
+.value-image {
+  width: 100%;
+}

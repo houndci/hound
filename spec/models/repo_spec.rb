@@ -59,24 +59,6 @@ describe Repo do
     end
   end
 
-  describe "#plan_type" do
-    context "when repo is public" do
-      it "returns public plan type" do
-        repo = Repo.new(private: false)
-
-        expect(repo.plan_type).to eq "public"
-      end
-    end
-
-    context "when repo is private" do
-      it "returns private plan type" do
-        repo = Repo.new(private: true)
-
-        expect(repo.plan_type).to eq "private"
-      end
-    end
-  end
-
   describe "#activate" do
     it "updates repo active value to true" do
       repo = create(:repo, active: false)

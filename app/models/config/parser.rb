@@ -1,7 +1,7 @@
 module Config
   class Parser
     def self.yaml(content)
-      YAML.safe_load(content, [Regexp])
+      YAML.safe_load(content, [Regexp, Symbol])
     end
 
     def self.json(content)

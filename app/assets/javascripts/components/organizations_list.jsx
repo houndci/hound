@@ -27,7 +27,7 @@ class OrganizationsList extends React.Component {
     } = this.props;
 
     return (
-      <ul className="organizations">
+      <section className="organizations">
         {organizations.map( org => (
           <Organization
             name={org.name}
@@ -41,7 +41,7 @@ class OrganizationsList extends React.Component {
             ownerId={org.id}
           />
         ))}
-      </ul>
+      </section>
     );
   }
 }

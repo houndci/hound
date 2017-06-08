@@ -2,13 +2,11 @@ require "rails_helper"
 
 RSpec.describe AccountPage do
   describe "#allowance" do
-    it "returns the allowance of the current tier" do
+    it "returns the allowance of the current plan" do
       allowance = 10
-      pricing = instance_double("Pricing", allowance: allowance)
-      tier = instance_double("Tier", current: pricing)
-      user = instance_double("User")
+      plan = instance_double("Plan", allowance: allowance)
+      user = instance_double("User", current_plan: plan)
       page = AccountPage.new(user)
-      allow(Tier).to receive(:new).once.with(user).and_return(tier)
 
       expect(page.allowance).to eq allowance
     end
@@ -35,43 +33,43 @@ RSpec.describe AccountPage do
   end
 
   describe "#plan" do
-    it "returns the name of the current tier" do
-      plan = "Chihuahua"
-      pricing = instance_double("Pricing", title: plan)
-      tier = instance_double("Tier", current: pricing)
-      user = instance_double("User")
+    it "returns the name of the current plan" do
+      plan_name = "Chihuahua"
+      plan = instance_double("Plan", title: plan_name)
+      user = instance_double("User", current_plan: plan)
       page = AccountPage.new(user)
-      allow(Tier).to receive(:new).once.with(user).and_return(tier)
 
-      expect(page.plan).to eq plan
+      expect(page.plan).to eq plan_name
     end
   end
 
-  describe "#pricings" do
-    it "returns all of the presentable, available pricings" do
-      presenter = instance_double("PricingPresenter")
-      pricing = instance_double("Pricing")
+  describe "#plans" do
+    it "returns all of the presentable, available plans" do
+      presenter = instance_double("PlanPresenter")
+      plan = instance_double("Plan")
       user = instance_double("User")
       page = AccountPage.new(user)
-      allow(Pricing).to receive(:all).once.with(no_args).and_return([pricing])
-      allow(PricingPresenter).to receive(:new).once.with(
-        pricing: pricing,
+      allow(Plan).to receive(:all).once.with(no_args).and_return([plan])
+      allow(PlanPresenter).to receive(:new).once.with(
+        plan: plan,
         user: user,
       ).and_return(presenter)
 
-      expect(page.pricings).to eq [presenter]
+      expect(page.plans).to eq [presenter]
     end
   end
 
   describe "#remaining" do
-    it "returns the number of remaining repos available in the current tier" do
-      pricing = instance_double("Pricing", allowance: 10)
+    it "returns the number of remaining repos available in the current plan" do
+      plan = instance_double("Plan", allowance: 10)
       remaining = 9
       repos = class_double("Repo", count: 1)
-      tier = instance_double("Tier", current: pricing)
-      user = instance_double("User", subscribed_repos: repos)
+      user = instance_double(
+        "User",
+        current_plan: plan,
+        subscribed_repos: repos,
+      )
       page = AccountPage.new(user)
-      allow(Tier).to receive(:new).once.with(user).and_return(tier)
 
       expect(page.remaining).to eq remaining
     end

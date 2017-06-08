@@ -1,5 +1,5 @@
 exports[`test renders a list of organizations appropriately 1`] = `
-<ul
+<section
   className="organizations">
   <Organization
     filterTerm=""
@@ -18,5 +18,5 @@ exports[`test renders a list of organizations appropriately 1`] = `
         },
       ]
     } />
-</ul>
+</section>
 `;

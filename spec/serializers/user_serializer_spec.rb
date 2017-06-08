@@ -11,13 +11,13 @@ RSpec.describe UserSerializer do
     end
   end
 
-  describe "#tier_allowance" do
-    it "is the number of subscriptions allowed within the current tier" do
-      current_tier = instance_double(Pricing, allowance: 4)
-      user = instance_double(User, current_tier: current_tier)
+  describe "#plan_max" do
+    it "returns the number of subscriptions allowed within the current plan" do
+      subscription = create(:subscription)
+      user = create(:user, subscriptions: [subscription])
       serializer = UserSerializer.new(user)
 
-      expect(serializer.tier_allowance).to eq 4
+      expect(serializer.plan_max).to eq 4
     end
   end
 end

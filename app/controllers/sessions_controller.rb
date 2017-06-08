@@ -9,7 +9,6 @@ class SessionsController < ApplicationController
       update_scopes
     end
 
-    ab_finished("auth_button")
     redirect_to repos_path
   end
 

@@ -1,8 +1,8 @@
 .onboarding {
-  @include animation(pulse-in 0.4s ease-in-out);
-  @include animation-delay(0.2s);
-  @include animation-fill-mode(both);
-  @include background-image(linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209)));
+  animation: pulse-in 0.4s ease-in-out;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+  background-image: linear-gradient(160deg, rgb(196, 115, 209), rgb(153, 115, 209));
   border-radius: 6px;
   margin-bottom: 2em;
   opacity: 0;
@@ -47,9 +47,9 @@
       }
     }
 
-    &:before {
+    &::before {
       @include size(24px);
-      @include position(absolute, -2px 0 0 0px);
+      @include position(absolute, -2px 0 0 0);
       background-color: rgba($purple, 0.1);
       border-radius: 50%;
       border: 2px solid $base-accent-color;
@@ -62,7 +62,7 @@
       text-align: center;
     }
 
-    &.current-step:before {
+    &.current-step::before {
       background-color: $green;
       border-color: darken($green, 30%);
       color: darken($green, 40%);
@@ -75,7 +75,6 @@
     }
 
     p {
-      color: $light-font-color;
       margin: 0;
     }
   }

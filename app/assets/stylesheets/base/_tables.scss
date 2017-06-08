@@ -1,3 +1,5 @@
+$_table-heading-background-color: rgb(245, 245, 245);
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -16,8 +18,7 @@ table {
   }
 
   th {
-    background-color: $table-heading-background-color;
-    color: $light-font-color;
+    background-color: $_table-heading-background-color;
     font-size: 0.8em;
     font-weight: 600;
     letter-spacing: 1px;

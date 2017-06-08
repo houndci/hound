@@ -1,4 +1,4 @@
-- content_for :page_title, "Configuration"
+- content_for :page_title, "Documentation"
 
 .docs
   %nav.docs-nav
@@ -12,7 +12,7 @@
       %li
         = link_to "JavaScript", "#javascript", class: "docs-nav-link"
       %li
-        = link_to "SCSS", "#scss", class: "docs-nav-link"
+        = link_to "SCSS-Lint", "#scss", class: "docs-nav-link"
       %li
         = link_to "Haml", "#haml", class: "docs-nav-link"
       %li
@@ -27,10 +27,12 @@
         = link_to "TSLint", "#tslint", class: "docs-nav-link"
       %li
         = link_to "Elixir", "#elixir", class: "docs-nav-link"
+      %li
+        = link_to "Sass Lint", "#sass-lint", class: "docs-nav-link"
 
   %section.docs-content
     %article.docs-article
-      %h1 Hound Documentation
+      %h1 Documentation
       %p
         Want to modify style rules to better suit your preferences?
         Below you will find documentation on configuring style rules for each
@@ -44,7 +46,7 @@
         and we will help you out.
 
     %article.docs-article#configuration
-      %h3 Hound Configuration
+      %h2 Hound Configuration
 
       %p The following linters are enabled by default:
       %p
@@ -52,7 +54,7 @@
           %li RuboCop (Ruby)
           %li CoffeeLint (CoffeeScript)
           %li JavaScript (JSHint)
-          %li SCSS (SCSSLint)
+          %li SCSS (SCSS-Lint)
           %li Haml (HAMLLint)
           %li Go (golint)
           %li Swift (SwiftLint)
@@ -104,7 +106,7 @@
           fail_on_violations: true
 
     %article.docs-article#ruby
-      %h3 Ruby
+      %h2 Ruby
       %p
         Hound uses
         = link_to "RuboCop",
@@ -144,7 +146,7 @@
               enabled: false
 
     %article.docs-article#coffeescript
-      %h3 CoffeeScript
+      %h2 CoffeeScript
 
       %p
         Hound uses
@@ -171,7 +173,7 @@
               enabled: false
 
     %article.docs-article#javascript
-      %h3 JavaScript
+      %h2 JavaScript
 
       %p
         Hound uses
@@ -227,11 +229,11 @@
               enabled: false
 
     %article.docs-article#scss
-      %h3 SCSS
+      %h2 SCSS-Lint
 
       %p
         Hound uses
-        = link_to "scss-lint",
+        = link_to "SCSS-Lint",
           "https://github.com/causes/scss-lint",
           new_window_options
         with this
@@ -239,7 +241,7 @@
         by default.
 
       %p
-        To change the way scss-lint is configured, simply copy the
+        To change the way SCSS-Lint is configured, simply copy the
         = link_to "default config file", scss_config_url, new_window_options
         into your project, make changes and reference the file in your
         %em.code-inline .hound.yml
@@ -272,7 +274,7 @@
               enabled: false
 
     %article.docs-article#haml
-      %h3 Haml
+      %h2 Haml
 
       %p
         Hound uses
@@ -305,7 +307,7 @@
               enabled: false
 
     %article.docs-article#go
-      %h3 Go
+      %h2 Go
 
       %p
         Hound uses
@@ -324,7 +326,7 @@
               enabled: false
 
     %article.docs-article#swift
-      %h3 Swift
+      %h2 Swift
 
       %p
         Hound uses
@@ -366,7 +368,7 @@
           new_window_options
 
     %article.docs-article#eslint
-      %h3 ESLint
+      %h2 ESLint
 
       %p
         Hound uses
@@ -424,7 +426,7 @@
               ignore_file: .eslintignore
 
     %article.docs-article#python
-      %h3 Python
+      %h2 Python
 
       %p
         Hound uses
@@ -462,7 +464,7 @@
               config_file: .flake8.ini
 
     %article.docs-article#tslint
-      %h3 TSLint
+      %h2 TSLint
       %p
         Hound uses
         = link_to "TSLint",
@@ -497,7 +499,7 @@
               config_file: tslint.json
 
     %article.docs-article#elixir
-      %h3 Elixir
+      %h2 Elixir
       %p
         Hound uses
         = link_to "Credo",
@@ -536,6 +538,40 @@
             elixir:
               enabled: true
               config_file: .credo.exs
+
+    %article.docs-article#sass-lint
+      %h2 Sass Lint
+      %p
+        Hound uses
+        = link_to "Sass Lint",
+          "https://github.com/sasstools/sass-lint",
+          new_window_options
+        with this
+        = link_to "config", sass_lint_config_url, new_window_options
+        by default.
+
+      %p
+        To enable Sass Lint style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            sass-lint:
+              enabled: true
+      %p
+        To change the way Sass Lint is configured, add
+        %em.code-inline .sass-lint.yml
+        file to your project,
+        specify your desired configuration
+        and refreence the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            sass-lint:
+              enabled: true
+              config_file: .sass-lint.yml
 
     %article.docs-article
       %h3 Didn't find what you where looking for?

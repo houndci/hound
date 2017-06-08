@@ -11,16 +11,22 @@ class User < ApplicationRecord
 
   before_create :generate_remember_token
 
-  def current_tier
-    tier.current
+  delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
+
+  def plan_upgrade?
+    plan_selector.upgrade?
   end
 
-  def next_tier
-    tier.next
+  def current_plan_price
+    current_plan.price
   end
 
-  def tier_price
-    next_tier.price
+  def next_plan_price
+    next_plan.price
+  end
+
+  def plan_max
+    current_plan.allowance
   end
 
   def to_s
@@ -29,10 +35,6 @@ class User < ApplicationRecord
 
   def active_repos
     repos.active
-  end
-
-  def tier_max
-    current_tier.allowance
   end
 
   def billable_email
@@ -89,8 +91,8 @@ class User < ApplicationRecord
     @payment_gateway_customer ||= PaymentGatewayCustomer.new(self)
   end
 
-  def tier
-    @_tier ||= Tier.new(self)
+  def plan_selector
+    @_plan_selector ||= PlanSelector.new(self)
   end
 
   def generate_remember_token

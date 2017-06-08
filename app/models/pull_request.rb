@@ -13,9 +13,14 @@ class PullRequest
     @commit_files ||= modified_commit_files
   end
 
-  def comment_on_violations(violations)
+  def make_comments(violations, errors)
     comments = violations.map { |violation| build_comment(violation) }
-    hound_github.create_pull_request_review(repo_name, number, comments)
+    hound_github.create_pull_request_review(
+      repo_name,
+      number,
+      comments,
+      ReviewBody.new(errors).to_s,
+    )
   end
 
   def repository_owner_name

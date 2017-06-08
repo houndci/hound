@@ -3,31 +3,21 @@ class RepoSerializer < ActiveModel::Serializer
     :admin,
     :active,
     :name,
-    :full_plan_name,
     :github_id,
     :id,
     :in_organization,
     :owner,
     :price_in_cents,
-    :price_in_dollars,
     :private,
     :stripe_subscription_id,
   )
 
   def price_in_cents
-    if object.private?
-      scope.tier_price * 100
-    else
+    if object.public? || object.bulk?
       0
+    else
+      scope.next_plan_price * 100
     end
-  end
-
-  def price_in_dollars
-    object.plan_price
-  end
-
-  def full_plan_name
-    "#{object.plan_type} repo".titleize
   end
 
   def admin
@@ -37,7 +27,7 @@ class RepoSerializer < ActiveModel::Serializer
   private
 
   def membership
-    @membership ||= object.memberships.find_by(user_id: scope.id)
+    @membership ||= object.memberships.detect { |m| m.user_id == scope.id }
   end
 
   def has_admin_membership?
@@ -45,6 +35,6 @@ class RepoSerializer < ActiveModel::Serializer
   end
 
   def has_subscription?
-    scope.subscribed_repos.include?(object)
+    object.subscription&.user_id == scope.id
   end
 end
