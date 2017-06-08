@@ -1,0 +1,50 @@
+.home-hero {
+  padding: ($base-spacing * 2) $base-spacing $large-spacing;
+
+  @include media($medium-screen-up) {
+    @include span-columns(10 of 12);
+    @include shift(1);
+    padding: $large-spacing $base-spacing ($large-spacing * 2);
+  }
+
+  @include media($large-screen-up) {
+    @include span-columns(8 of 12);
+    @include shift(2);
+    padding: ($large-spacing * 1.5) 0 ($large-spacing * 2.5);
+    text-align: center;
+  }
+}
+
+.home-hero-heading {
+  font-size: $font-size-xxlarge;
+  font-weight: $font-weight-light;
+  letter-spacing: $letter-spacing-base;
+  margin-bottom: $xsmall-spacing;
+
+  @include media($medium-screen-down) {
+    font-size: $font-size-xlarge;
+  }
+
+  @include media($small-screen-only) {
+    font-size: $font-size-large;
+  }
+}
+
+.home-hero-subheading {
+  font-size: $font-size-base;
+  font-weight: $font-weight-light;
+  letter-spacing: $letter-spacing-base;
+  margin-bottom: 0;
+
+  @include media($medium-screen-up) {
+    font-size: $font-size-medium;
+  }
+}
+
+.home-hero-cta {
+  padding-top: $medium-spacing;
+
+  @include media($medium-screen-up) {
+    padding-top: $large-spacing;
+  }
+}

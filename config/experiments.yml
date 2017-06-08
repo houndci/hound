@@ -1,5 +1,0 @@
-auth_button:
-  alternatives:
-    - "Sign In with GitHub"
-    - "Set Up Hound"
-  resettable: false

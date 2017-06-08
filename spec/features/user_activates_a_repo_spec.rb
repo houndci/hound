@@ -1,14 +1,24 @@
 require "rails_helper"
 
 RSpec.feature "User activates a repo", :js do
-  before { Plan::PRICES[:private] = 12 }
+  scenario "bulk user activates a repo" do
+    user = create(:user, :with_github_scopes)
+    repo = create(:repo, :private, name: "foo/bar")
+    create(:bulk_customer, org: "foo")
+    create(:membership, :admin, repo: repo, user: user)
 
-  scenario "user upgrades from free tier" do
+    sign_in_as(user, "letmein")
+    click_on "Activate"
+
+    expect(page).to have_text "Active"
+  end
+
+  scenario "user upgrades from free plan" do
     user = create(:user, :with_github_scopes, :stripe)
-    membership = create(:membership, :admin, :private, user: user)
-    current_plan = user.current_tier.id
-    upgraded_plan = user.next_tier.id
-    repo = membership.repo
+    repo = create(:repo, :private)
+    create(:membership, :admin, repo: repo, user: user)
+    current_plan = user.current_plan.id
+    upgraded_plan = user.next_plan.id
     stub_customer_find_request
     stub_subscription_create_request(plan: current_plan, repo_ids: repo.id)
     stub_subscription_update_request(plan: upgraded_plan, repo_ids: repo.id)
@@ -16,16 +26,16 @@ RSpec.feature "User activates a repo", :js do
     sign_in_as(user, "letmein")
     click_on "Activate"
 
-    expect(page).to have_text "Pricing: Change of Plans"
+    expect(page).to have_text "Change of Plans"
   end
 
-  scenario "user upgrades within a tier" do
+  scenario "user upgrades within a plan" do
     user = create(:user, :with_github_scopes, :stripe)
-    membership = create(:membership, :admin, :private, user: user)
+    repo = create(:repo, :private)
+    create(:membership, :admin, repo: repo, user: user)
     create(:subscription, :active, user: user)
-    current_plan = user.current_tier.id
-    upgraded_plan = user.next_tier.id
-    repo = membership.repo
+    current_plan = user.current_plan.id
+    upgraded_plan = user.next_plan.id
     stub_customer_find_request
     stub_subscription_create_request(plan: current_plan, repo_ids: repo.id)
     stub_subscription_update_request(plan: upgraded_plan, repo_ids: repo.id)
@@ -35,6 +45,4 @@ RSpec.feature "User activates a repo", :js do
 
     expect(page).to have_text "Private Repos 2 / 4"
   end
-
-  after { Plan::PRICES[:private] = 0 }
 end

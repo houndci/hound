@@ -43,7 +43,7 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Chihuahua -> La
   <div
     className="tier-change-content">
     <h1>
-      Pricing: Change of Plans
+      Change of Plans
     </h1>
     <section
       className="tier-change-description">
@@ -133,7 +133,7 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Labrador -> Gre
   <div
     className="tier-change-content">
     <h1>
-      Pricing: Change of Plans
+      Change of Plans
     </h1>
     <section
       className="tier-change-description">

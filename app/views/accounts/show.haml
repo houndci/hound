@@ -7,13 +7,13 @@
     %h3
       Plans
 
-    - @account_page.pricings.each do |pricing|
+    - @account_page.plans.each do |plan|
       = render("shared/plan_vertical",
-          allowance: pricing.allowance,
-          current: pricing.current?,
-          name: pricing.title,
-          new: pricing.next?,
-          price: pricing.price,
+          allowance: plan.allowance,
+          current: plan.current?,
+          name: plan.title,
+          new: plan.next?,
+          price: plan.price,
         )
 
   .account-content

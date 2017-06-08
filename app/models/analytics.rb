@@ -26,7 +26,7 @@ class Analytics
       properties: {
         name: repo.name,
         private: repo.private,
-        revenue: -repo.plan_price,
+        revenue: lost_revenue,
       }
     )
   end
@@ -53,6 +53,8 @@ class Analytics
 
   private
 
+  attr_reader :user
+
   def track(options)
     backend.track({
       active_repos_count: user.repos.active.count,
@@ -60,5 +62,11 @@ class Analytics
     }.merge(options))
   end
 
-  attr_reader :user
+  def lost_revenue
+    if user.current_plan == user.next_plan
+      0
+    else
+      user.current_plan_price - user.next_plan_price
+    end
+  end
 end

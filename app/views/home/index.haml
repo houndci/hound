@@ -1,91 +1,102 @@
 - content_for :page_title, I18n.t("home.index.title")
 - content_for :meta_description, I18n.t("home.index.description")
 - content_for :body_class, "home home-index"
-- content_for :header_class, "home-header"
 
-%section.intro
+%section
   .section-content
     .inner-wrapper
-      .hero
-        %h1
+      .home-hero
+        %h1.home-hero-heading
           Code review tool for GitHub pull requests
-        %h2
+        %p.home-hero-subheading
           Hound comments on style violations in GitHub pull requests, allowing
           you and your team to better review and maintain a clean codebase.
 
-        .cta
-          = render "application/auth_button"
+        .home-hero-cta
+          = link_to "/auth/github",
+            class: "button button--primary button--large" do
+            %svg.icon.button__icon{ "aria-hidden" => "true" }
+              %use{ "xlink:href" => "/images/icons.svg#github" }
+            = t("authenticate")
 
-    .supported-languages
-      %h4 Currently style checking
+    .home-languages
+      %h2.home-heading--small.home-languages-heading Currently style checking
 
       .inner-wrapper
-        %ul.languages
-          %li.language
-            .language-logo
-              = image_tag "languages/coffeescript.svg"
-            %h5 CoffeeScript
-          %li.language
-            .language-logo
-              = image_tag "languages/go.svg"
-            %h5 Go
-          %li.language
-            .language-logo
-              = image_tag "languages/haml.svg"
-            %h5 Haml
-          %li.language
-            .language-logo
-              = image_tag "languages/javascript.svg"
-            %h5 JavaScript
-          %li.language
-            .language-logo
-              = image_tag "languages/ruby.svg"
-            %h5 Ruby
-          %li.language
-            .language-logo
-              = image_tag "languages/sass.svg"
-            %h5 Scss
-          %li.language
-            .language-logo
-              = image_tag "languages/swift.svg"
-            %h5 Swift
+        %ul.home-languages-list
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/coffeescript.svg", alt: ""
+            %p.home-languages-list-item-heading CoffeeScript
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/elixir.svg", alt: ""
+            %p.home-languages-list-item-heading Elixir
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/go.svg", alt: ""
+            %p.home-languages-list-item-heading Go
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/haml.svg", alt: ""
+            %p.home-languages-list-item-heading Haml
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/javascript.svg", alt: ""
+            %p.home-languages-list-item-heading JavaScript
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/python.svg", alt: ""
+            %p.home-languages-list-item-heading Python
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/ruby.svg", alt: ""
+            %p.home-languages-list-item-heading Ruby
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/sass.svg", alt: ""
+            %p.home-languages-list-item-heading Sass
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/swift.svg", alt: ""
+            %p.home-languages-list-item-heading Swift
+          %li.home-languages-list-item
+            .home-languages-list-item-logo
+              = image_tag "languages/typescript.svg", alt: ""
+            %p.home-languages-list-item-heading TypeScript
 
-%section.importance
+%section.home-importance
   .section-content
-    .section-title
-      %h3
-        Why does style matter?
+    %h2.home-heading--large.home-importance-heading.section-title
+      Why does style matter?
 
     .inner-wrapper
-      %article
-        %figure.media-object
-          .icon
-            %i.fa.fa-bolt
-        .media-body
-          %h4 Convention
+      %article.home-importance-item
+        .home-importance-icon
+          %i.fa.fa-bolt
+        .home-importance-text
+          %p.home-heading--small Convention
           %p
             Defining and sticking with a style guide helps reduce the amount of
             decisions that developers need to make when writing code, helping to
             keep their focus on logic, not semantics and formatting.
 
-      %article
-        %figure.media-object
-          .icon
-            %i.fa.fa-ellipsis-h
-        .media-body
-          %h4 Consistency
+      %article.home-importance-item
+        .home-importance-icon
+          %i.fa.fa-ellipsis-h
+        .home-importance-text
+          %p.home-heading--small Consistency
           %p
             When every line of code is written in the same style, the whole
             codebase becomes easier to read, understand and de-bug. It also
             helps prevent areas of the codebase from being “owned” by one
             person's unique style vs. the team.
 
-      %article
-        %figure.media-object
-          .icon
-            %i.fa.fa-magic
-        .media-body
-          %h4 Awesomeness
+      %article.home-importance-item
+        .home-importance-icon
+          %i.fa.fa-magic
+        .home-importance-text
+          %p.home-heading--small Awesomeness
           %p
             A clean codebase is a reflection of a cohesive team. It gives the
             impression of a team working well together towards a common goal,
@@ -93,49 +104,32 @@
 
 %section.value
   .section-content
-    %article
-      .media-body
-        %h3
-          Write code, submit a pull request, get review from Hound.
+    %article.value-section
+      .value-text
+        %h2.home-heading--large
+          How it works.
         %p
           Hound integrates with your existing workflow by reviewing and commenting
           on code the moment a GitHub pull request is opened or updated.
 
-      %figure.media-object
-        = image_tag "home-page/hound_flow.png"
+      = image_tag "home-page/hound_flow.png", class: "value-image"
 
-    %article
-      .media-body
-        %h3
+    %article.value-section
+      .value-text
+        %h2.home-heading--large
           Save time, get better reviews.
         %p
           Automated style checking with Hound gives developers more time to
           give the kind of code review that humans are best at giving.
 
-      %figure.media-object
-        = image_tag "home-page/review_example.png"
-
-%section.support
-  .section-content
-    .section-title
-      %h4 Hound is helping save time and maintain clean codebases for:
-    %article
-      %ul.customers
-        %li.customer
-          = image_tag("customers/turing_school.svg")
-        %li.customer
-          = image_tag("customers/turing_school.svg")
-        %li.customer
-          = image_tag("customers/turing_school.svg")
-        %li.customer
-          = image_tag("customers/turing_school.svg")
+      = image_tag "home-page/review_example.png", class: "value-image"
 
 %section.configuration
   .section-content
-    %figure.media-object
+    %figure.configuration-image
       = image_tag "home-page/guides.png"
-    .media-body
-      %h4
+    .configuration-text
+      %h2.home-heading--small
         Use our guides or configure your own.
       %p
         Hound's default style guides build upon accepted industry standards and
@@ -145,37 +139,37 @@
         Hound provides the ability to customize your guides to best suit your
         team's needs.
 
-%section.pricing
+%section.home-pricing
   .section-content#pricing
     .section-title
-      %h3
-        Hound keeps your code style in check.
+      %h2.home-pricing-heading.home-heading--large
+        Pricing.
 
     %article.plans
       .inner-wrapper
-        %h4.plan-category
+        %h3.plan-category
           %i.fa.fa-book
           Private Repos
 
-        = render(partial: @home.private_pricings, as: :plan)
+        = render(partial: @home.private_plans, as: :plan)
 
-        %h4.plan-category.open-source
+        %h3.plan-category.open-source
           %i.fa.fa-code-fork
           Open Source
 
-        = render(partial: @home.open_source_pricings, as: :plan)
+        = render(partial: @home.open_source_plans, as: :plan)
 
-%section.security
+%section.home-security
   .section-content
     %article
-      %h4
+      %h2.home-heading--small
         Uncomfortable giving us access to your code?
       %p
         Don’t worry, we get it. Our mission is to help you maintain a clean code
         base, nothing more. Our security documentation details what kind of
         access we need and why.
 
-      .actions
+      .home-security-actions
         = link_to "https://github.com/houndci/hound/blob/master/doc/SECURITY.md",
-          new_window_options(class: "security-policy") do
+          new_window_options(class: "button button--inverted") do
           %span Read our security policy

@@ -6,44 +6,36 @@ describe User do
   it { should validate_presence_of :username }
   it { should have_many(:memberships).dependent(:destroy) }
 
-  describe "#current_tier" do
-    it "returns the current tier identifier" do
-      pricing = Pricing.new(id: "basic", price: 0, range: 0..0, title: "Hound")
-      user = create(:user)
-
-      expect(user.current_tier).to eq pricing
-    end
-  end
-
-  describe "#next_tier" do
-    it "returns the next tier identifier" do
-      user = build(:user)
-      id = "NEXT_TIER_ID"
-      tier = instance_double("Tier", next: id)
-      allow(Tier).to receive(:new).once.with(user).and_return(tier)
-
-      expect(user.next_tier).to eq id
-    end
-  end
-
-  describe "#tier_max" do
-    it "returns the current tier's allowance" do
-      allowance = 10
-      pricing = instance_double("Pricing", allowance: allowance)
-      tier = instance_double("Tier", current: pricing)
+  describe "#current_plan" do
+    it "returns the current plan" do
       user = User.new
-      allow(Tier).to receive(:new).once.with(user).and_return(tier)
 
-      expect(user.tier_max).to eq allowance
+      expect(user.current_plan).to eq Plan.new(Plan::PLANS[0])
     end
   end
 
-  describe "#tier_price" do
-    it "returns the price of the next tier" do
+  describe "#next_plan" do
+    it "returns the next plan" do
+      user = User.new
+
+      expect(user.next_plan).to eq Plan.new(Plan::PLANS[1])
+    end
+  end
+
+  describe "#plan_max" do
+    it "returns the current plan's allowance" do
+      user = User.new(subscribed_repos: Array.new(5) { Repo.new })
+
+      expect(user.plan_max).to eq Plan::PLANS[2][:range].max
+    end
+  end
+
+  describe "#next_plan_price" do
+    it "returns the price of the next plan" do
       subscription = create(:subscription)
       user = subscription.user
 
-      expect(user.tier_price).to eq 49
+      expect(user.next_plan_price).to eq 49
     end
   end
 

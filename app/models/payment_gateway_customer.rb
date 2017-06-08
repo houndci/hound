@@ -32,7 +32,7 @@ class PaymentGatewayCustomer
   def retrieve_subscription(subscription_id)
     PaymentGatewaySubscription.new(
       stripe_subscription: customer.subscriptions.retrieve(subscription_id),
-      tier: tier,
+      user: user,
     )
   end
 
@@ -54,7 +54,7 @@ class PaymentGatewayCustomer
   def create_subscription(options)
     PaymentGatewaySubscription.new(
       stripe_subscription: customer.subscriptions.create(options),
-      tier: tier,
+      user: user,
     )
   end
 
@@ -67,13 +67,9 @@ class PaymentGatewayCustomer
     customer.subscriptions.map do |subscription|
       PaymentGatewaySubscription.new(
         stripe_subscription: subscription,
-        tier: tier,
+        user: user,
       )
     end
-  end
-
-  def tier
-    Tier.new(user)
   end
 
   class NoRecord

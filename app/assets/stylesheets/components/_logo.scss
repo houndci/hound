@@ -1,0 +1,14 @@
+$_logo-aspect-ratio: 217 / 50;
+$_logo-height: 2.5rem;
+$_logo-color: $purple;
+
+.logo {
+  fill: $_logo-color;
+  height: $_logo-height;
+  transition: fill $base-transition-timing $base-easing;
+  width: $_logo-height * $_logo-aspect-ratio;
+
+  &:hover {
+    fill: shade($_logo-color, 15%);
+  }
+}

@@ -1,16 +1,24 @@
 body {
   background-color: $white;
   color: $base-font-color;
-  font: $font-weight-light 1em / 1.4 "Lato";
+  font-family: $font-family-default;
+  font-size: 1em;
+  font-weight: $font-weight-light;
+  line-height: $base-line-height;
 }
 
 a {
-  @include transition(all 0.15s linear);
   color: darken($purple, 5%);
   text-decoration: none;
+  transition: color 0.15s linear;
 
   &:hover {
     color: darken($purple, 5%);
+  }
+
+  &:focus {
+    outline: $focus-outline;
+    outline-offset: $focus-outline-offset;
   }
 }
 

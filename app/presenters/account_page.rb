@@ -4,7 +4,7 @@ class AccountPage
   end
 
   def allowance
-    current_tier.allowance
+    current_plan.allowance
   end
 
   def billable_email
@@ -16,12 +16,12 @@ class AccountPage
   end
 
   def plan
-    current_tier.title
+    current_plan.title
   end
 
-  def pricings
-    Pricing.all.map do |pricing|
-      PricingPresenter.new(pricing: pricing, user: user)
+  def plans
+    Plan.all.map do |plan|
+      PlanPresenter.new(plan: plan, user: user)
     end
   end
 
@@ -45,8 +45,8 @@ class AccountPage
 
   attr_reader :user
 
-  def current_tier
-    tier.current
+  def current_plan
+    user.current_plan
   end
 
   def repo_count
@@ -55,9 +55,5 @@ class AccountPage
 
   def subscribed_repos
     user.subscribed_repos
-  end
-
-  def tier
-    Tier.new(user)
   end
 end

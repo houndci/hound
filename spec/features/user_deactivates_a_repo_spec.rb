@@ -33,17 +33,14 @@ feature "user deactivates a repo", js: true do
     end
   end
 
-  scenario "user downgrades within a tier" do
+  scenario "user deactivates within a plan" do
     user = create(:user, :with_github_scopes, :stripe)
     first_subscription = create(:subscription, :active, user: user)
     second_subscription = create(:subscription, :active, user: user)
-    tier = Tier.new(user)
-    previous_tier = tier.previous
-    downgraded_plan = previous_tier.id
     stub_customer_find_request
     stub_subscription_find_request(first_subscription)
     stub_subscription_find_request(second_subscription)
-    stub_subscription_update_request(plan: downgraded_plan, repo_ids: "")
+    stub_subscription_update_request(plan: "tier1", repo_ids: "")
 
     sign_in_as(user, "letmein")
     find(".repo--active:nth-of-type(1) .repo-toggle").click
@@ -51,19 +48,14 @@ feature "user deactivates a repo", js: true do
     expect(page).to have_text "Private Repos 1 / 4"
   end
 
-  scenario "user downgrades from another tier" do
+  scenario "user downgrades to lower plan" do
     user = create(:user, :with_github_scopes, :stripe)
-    4.times do
+    5.times do
       subscription = create(:subscription, :active, user: user)
       stub_subscription_find_request(subscription)
     end
-    subscription = create(:subscription, :active, user: user)
-    stub_subscription_find_request(subscription)
-    tier = Tier.new(user)
-    previous_tier = tier.previous
-    downgraded_plan = previous_tier.id
     stub_customer_find_request
-    stub_subscription_update_request(plan: downgraded_plan, repo_ids: "")
+    stub_subscription_update_request(plan: "tier1", repo_ids: "")
 
     sign_in_as(user, "letmein")
     find(".repo--active:nth-of-type(1) .repo-toggle").click
@@ -75,11 +67,8 @@ feature "user deactivates a repo", js: true do
     user = create(:user, :with_github_scopes, :stripe)
     subscription = create(:subscription, :active, user: user)
     stub_subscription_find_request(subscription)
-    tier = Tier.new(user)
-    previous_tier = tier.previous
-    downgraded_plan = previous_tier.id
     stub_customer_find_request
-    stub_subscription_update_request(plan: downgraded_plan, repo_ids: "")
+    stub_subscription_update_request(plan: "basic", repo_ids: "")
 
     sign_in_as(user, "letmein")
     find(".repo--active:nth-of-type(1) .repo-toggle").click

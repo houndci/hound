@@ -1,5 +1,5 @@
 class PaymentGatewaySubscription
-  attr_reader :stripe_subscription, :tier
+  attr_reader :stripe_subscription, :user
 
   delegate(
     :id,
@@ -11,14 +11,14 @@ class PaymentGatewaySubscription
     to: :stripe_subscription,
   )
 
-  def initialize(stripe_subscription:, tier:)
+  def initialize(stripe_subscription:, user:)
     @stripe_subscription = stripe_subscription
-    @tier = tier
+    @user = user
   end
 
   def subscribe(repo_id)
     append_repo_id_to_metadata(repo_id)
-    self.plan = tier.next.id
+    self.plan = user.next_plan.id
     save
   end
 
@@ -51,11 +51,7 @@ class PaymentGatewaySubscription
   end
 
   def downgraded_plan
-    previous_tier.id
-  end
-
-  def previous_tier
-    tier.previous
+    user.previous_plan.id
   end
 
   def stripe_plan

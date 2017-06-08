@@ -164,9 +164,20 @@ describe GithubApi do
         { path: "test/test.rb", position: 10, body: "test comment 1" },
         { path: "test/test.rb", position: 15, body: "test comment 2" },
       ]
-      request = stub_review_request(repo_name, pull_request_number, comments)
+      body = "something bad happened"
+      request = stub_review_request(
+        repo_name,
+        pull_request_number,
+        comments,
+        body,
+      )
 
-      api.create_pull_request_review(repo_name, pull_request_number, comments)
+      api.create_pull_request_review(
+        repo_name,
+        pull_request_number,
+        comments,
+        body,
+      )
 
       expect(request).to have_been_requested
     end

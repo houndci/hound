@@ -4,7 +4,6 @@
   border-bottom-left-radius: $base-border-radius - 1px;
   border-bottom-right-radius: $base-border-radius - 1px;
   border-top: 2px solid $base-border-color;
-  color: $light-font-color;
   font-weight: $font-weight-normal;
   padding: $small-spacing 0;
   text-align: center;
@@ -39,17 +38,12 @@
 .build-pull-request,
 .build-sha {
   font-weight: $font-weight-light;
-
-  span {
-    color: $light-font-color;
-  }
 }
 
 .build-time {
   span {
     background-color: $base-background-color;
     border-radius: $base-border-radius;
-    color: $light-font-color;
     font-size: 0.75em;
     padding: ($xsmall-spacing / 2) $xsmall-spacing;
   }
