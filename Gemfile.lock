@@ -393,7 +393,6 @@ DEPENDENCIES
   launchy
   lograge
   neat (~> 1.8)
-  normalize-rails
   octokit
   omniauth-github
   paranoia (~> 2.2)
@@ -405,7 +404,6 @@ DEPENDENCIES
   rails-assets-es5-shim!
   rails-assets-lodash!
   rails-assets-normalize-css!
-  rails_12factor
   react-rails
   record_tag_helper
   resque (>= 1.25.0)
