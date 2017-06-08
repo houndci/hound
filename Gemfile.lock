@@ -55,7 +55,8 @@ GEM
       normalize-rails (>= 3.0)
       sass-rails (~> 5.0)
       selectize-rails (~> 0.6)
-    analytics-ruby (2.0.6)
+    analytics-ruby (2.2.2)
+      commander (~> 4.4)
     arel (7.1.4)
     attr_extras (4.4.0)
     autoprefixer-rails (6.7.7.2)
@@ -92,6 +93,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     columnize (0.8.9)
+    commander (4.4.3)
+      highline (~> 1.7.2)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.0)
     crack (0.4.3)
@@ -133,6 +136,7 @@ GEM
     hashdiff (0.3.0)
     hashie (3.4.6)
     high_voltage (3.0.0)
+    highline (1.7.8)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
@@ -352,7 +356,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (= 0.9.5)
   administrate (= 0.7.0)
-  analytics-ruby (~> 2.0.0)
+  analytics-ruby (~> 2.2.2)
   attr_extras
   autoprefixer-rails
   bourbon (>= 5.0.0.beta.7)
