@@ -15,18 +15,7 @@ class ReviewBody
       output = HEADER
       room_left = MAX_BODY_LENGTH - output.size
 
-      errors.each do |error|
-        error_details = build_error_details(error, room_left - 1)
-
-        if error_details
-          room_left -= (error_details.size + 1)
-          output += "\n#{error_details}"
-        else
-          break
-        end
-      end
-
-      output
+      output + build_errors(errors, room_left)
     else
       ""
     end
@@ -35,6 +24,21 @@ class ReviewBody
   private
 
   attr_reader :errors
+
+  def build_errors(errors, room_left)
+    head, *tail = errors
+    error_details = "\n" + build_error_details(head, room_left - 1)
+
+    if (room_left - error_details.size) >= 0
+      if tail.any?
+        error_details + build_errors(tail, room_left - error_details.size)
+      else
+        error_details
+      end
+    else
+      ""
+    end
+  end
 
   def build_error_details(error, room_left)
     summary = error_summary(error)
