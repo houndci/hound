@@ -12,9 +12,7 @@ class UpdateAccountEmailMessage extends React.Component {
     } else {
       return (
         <p className="inline-flash inline-flash--error">
-          <i className="fa fa-exclamation-circle">
-            There was a problem updating your email. Please try again.
-          </i>
+          There was a problem updating your email. Please try again.
         </p>
       );
     }

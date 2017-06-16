@@ -36,8 +36,7 @@ class Repo extends React.Component {
         className={
           classNames(
             "repo",
-            {"repo--active": active},
-            {"repo--processing": isProcessingId === id}
+            {"repo--active": active}
           )
         }
       >

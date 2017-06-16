@@ -72,8 +72,6 @@
 
     .inner-wrapper
       %article.home-importance-item
-        .home-importance-icon
-          %i.fa.fa-bolt
         .home-importance-text
           %p.home-heading--small Convention
           %p
@@ -82,8 +80,6 @@
             keep their focus on logic, not semantics and formatting.
 
       %article.home-importance-item
-        .home-importance-icon
-          %i.fa.fa-ellipsis-h
         .home-importance-text
           %p.home-heading--small Consistency
           %p
@@ -93,8 +89,6 @@
             person's unique style vs. the team.
 
       %article.home-importance-item
-        .home-importance-icon
-          %i.fa.fa-magic
         .home-importance-text
           %p.home-heading--small Awesomeness
           %p
@@ -148,13 +142,11 @@
     %article.plans
       .inner-wrapper
         %h3.plan-category
-          %i.fa.fa-book
           Private Repos
 
         = render(partial: @home.private_plans, as: :plan)
 
         %h3.plan-category.open-source
-          %i.fa.fa-code-fork
           Open Source
 
         = render(partial: @home.open_source_plans, as: :plan)

@@ -36,7 +36,6 @@ class UpdateAccountCreditCard extends React.Component {
         <h3>
           Monthly Billing
           <a href="#" className="update-card" onClick={this.onUpdateCreditCard.bind(this)}>
-            <i className="fa fa-credit-card"></i>
             Update Credit Card
           </a>
         </h3>

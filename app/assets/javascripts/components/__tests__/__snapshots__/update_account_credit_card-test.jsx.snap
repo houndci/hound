@@ -5,8 +5,6 @@ exports[`test renders appropriately 1`] = `
     className="update-card"
     href="#"
     onClick={[Function]}>
-    <i
-      className="fa fa-credit-card" />
     Update Credit Card
   </a>
 </h3>

@@ -15,18 +15,6 @@
   }
 }
 
-.repo--processing {
-  &::before {
-    @extend .fa-spin;
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .repo-name {
-    padding-left: 1.5em;
-  }
-}
-
 .repo--active .repo-toggle {
   background-color: $green;
   border-color: darken($green, 30%);
