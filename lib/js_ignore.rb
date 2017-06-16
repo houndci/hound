@@ -1,18 +1,21 @@
 class JsIgnore
   DEFAULT_EXCLUDED_PATHS = %w(
-    vendor/*
-    node_modules/*
+    vendor/**/*
+    node_modules/**/*
+    bower_components/**/*
   ).freeze
 
   attr_private_initialize :linter_name, :hound_config, :default_filename
 
-  def file_included?(commit_file)
-    excluded_paths.none? do |pattern|
-      File.fnmatch?(pattern, commit_file.filename)
-    end
+  def file_included?(filename)
+    !pathspec.match(filename)
   end
 
   private
+
+  def pathspec
+    @_pathspec ||= PathSpec.new(excluded_paths)
+  end
 
   def excluded_paths
     DEFAULT_EXCLUDED_PATHS + ignored_paths

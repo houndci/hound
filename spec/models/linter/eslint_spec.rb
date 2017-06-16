@@ -43,8 +43,11 @@ describe Linter::Eslint do
     context "file is in excluded file list" do
       it "returns false" do
         stub_eslint_config
-        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
-        commit_file = double("CommitFile", filename: "foo.js")
+        linter = build_linter(
+          Linter::Eslint,
+          Linter::Eslint::IGNORE_FILENAME => "config/",
+        )
+        commit_file = instance_double("CommitFile", filename: "config/foo.js")
 
         expect(linter.file_included?(commit_file)).to eq false
       end

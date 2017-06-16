@@ -4,7 +4,7 @@ module Linter
     IGNORE_FILENAME = ".eslintignore".freeze
 
     def file_included?(commit_file)
-      jsignore.file_included?(commit_file)
+      jsignore.file_included?(commit_file.filename)
     end
 
     private
