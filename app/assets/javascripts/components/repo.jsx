@@ -28,8 +28,7 @@ class Repo extends React.Component {
   render() {
     const { isProcessingId, repo } = this.props;
     const { active, id, name, price_in_cents } = repo;
-
-    const showPrivate = !active && price_in_cents > 0;
+    const showPrivate = price_in_cents > 0;
 
     return (
       <li
@@ -44,10 +43,13 @@ class Repo extends React.Component {
           {name}
         </div>
 
-        <div className={classNames(
-          "repo-activation-toggle",
-          {"repo-activation-toggle--private": showPrivate}
-        )}>
+        { showPrivate &&
+          <span className="badge margin-left-small">
+            Private
+          </span>
+        }
+
+        <div className="repo-activation-toggle">
           {this.renderButton()}
         </div>
       </li>
