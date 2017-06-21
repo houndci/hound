@@ -14,10 +14,6 @@ class GithubApi
     @file_cache = {}
   end
 
-  def client
-    @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
-  end
-
   def scopes
     client.scopes(token).join(",")
   end
@@ -129,7 +125,17 @@ class GithubApi
     )
   end
 
+  def repository?(repo_name)
+    client.repository?(repo_name)
+  rescue Octokit::Unauthorized
+    false
+  end
+
   private
+
+  def client
+    @_client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
+  end
 
   def create_status(repo:, sha:, state:, description:, target_url: nil)
     client.create_status(
