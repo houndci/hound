@@ -155,7 +155,7 @@ GEM
       activerecord
       kaminari-core (= 1.0.1)
     kaminari-core (1.0.1)
-    launchy (2.4.2)
+    launchy (2.4.3)
       addressable (~> 2.3)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
