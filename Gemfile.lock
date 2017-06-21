@@ -199,8 +199,8 @@ GEM
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    paranoia (2.2.0)
-      activerecord (>= 4.0, < 5.1)
+    paranoia (2.3.1)
+      activerecord (>= 4.0, < 5.2)
     pg (0.21.0)
     public_suffix (2.0.5)
     puma (3.4.0)
@@ -375,7 +375,7 @@ DEPENDENCIES
   neat (~> 1.8)
   octokit
   omniauth-github
-  paranoia (~> 2.2)
+  paranoia (~> 2.3)
   pg
   puma
   rack-timeout
