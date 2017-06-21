@@ -103,9 +103,10 @@ GEM
     diff-lcs (1.2.5)
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
-    dotenv (2.0.1)
-    dotenv-rails (2.0.1)
-      dotenv (= 2.0.1)
+    dotenv (2.2.1)
+    dotenv-rails (2.2.1)
+      dotenv (= 2.2.1)
+      railties (>= 3.2, < 5.2)
     email_validator (1.6.0)
       activemodel
     erubis (2.7.0)
@@ -407,4 +408,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.15.0
+   1.15.1
