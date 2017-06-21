@@ -334,6 +334,7 @@ describe BuildRunner do
       create_pending_status: nil,
       create_success_status: nil,
       create_error_status: nil,
+      repository?: true,
     )
     allow(GithubApi).to receive(:new).and_return(github_api)
 
