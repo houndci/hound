@@ -48,6 +48,11 @@ class Repo extends React.Component {
           "repo-activation-toggle",
           {"repo-activation-toggle--private": showPrivate}
         )}>
+          <label className="repo-label tooltip">
+            <i className="fa fa-lock"></i>
+            <span className="tooltip--message">Private Repo</span>
+          </label>
+
           {this.renderButton()}
         </div>
       </li>

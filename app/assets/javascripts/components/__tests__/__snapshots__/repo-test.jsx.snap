@@ -7,6 +7,15 @@ exports[`test renders a repo appropriately 1`] = `
   </div>
   <div
     className="repo-activation-toggle">
+    <label
+      className="repo-label tooltip">
+      <i
+        className="fa fa-lock" />
+      <span
+        className="tooltip--message">
+        Private Repo
+      </span>
+    </label>
     <RepoActivationButton
       isProcessingId={null}
       onRepoClicked={[Function]}

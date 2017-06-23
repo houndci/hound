@@ -1,0 +1,37 @@
+.tooltip {
+  position: relative;
+
+  &:hover {
+    .tooltip--message {
+      display: block;
+    }
+  }
+}
+
+.tooltip--message {
+  @include position (absolute, 50% 100% null null);
+  background: $highlight-color-light;
+  border: 1px solid $highlight-color;
+  border-radius: $base-border-radius;
+  color: $highlight-color-dark;
+  display: none;
+  margin-right: $small-spacing;
+  padding: $xxsmall-spacing $xsmall-spacing;
+  transform: translateY(-50%);
+  white-space: nowrap;
+
+  &::before,
+  &::after {
+    @include position (absolute, 50% null null 100%);
+    @include size(0);
+    border: 6px solid transparent;
+    border-left: 6px solid $highlight-color;
+    content: "";
+    transform: translateY(-50%);
+  }
+
+  &::after {
+    border-left-color: $highlight-color-light;
+    margin-left: -1px;
+  }
+}

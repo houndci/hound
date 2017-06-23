@@ -11,7 +11,7 @@
   @include media($small-screen-only) {
     display: block;
     height: auto;
-    padding: 1em 0;
+    padding: 1em;
   }
 }
 
@@ -58,10 +58,6 @@
     padding: 0;
     text-align: left;
   }
-}
-
-.repo-activation-toggle--private {
-  min-width: 250px;
 }
 
 .repo-toggle {
