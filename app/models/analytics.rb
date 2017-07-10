@@ -7,7 +7,7 @@ class Analytics
   end
 
   def track_signed_in
-    track(event: "Signed In")
+    track(event: 'Signed In')
   end
 
   def track_repo_activation_failed(repo)
