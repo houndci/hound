@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "2.3.1"
 
 gem "active_model_serializers", "0.9.5"
-gem "administrate", git: "https://github.com/thoughtbot/administrate"
+gem "administrate", "0.7.0"
 gem "analytics-ruby", "~> 2.2.2", require: "segment/analytics"
 gem "attr_extras"
 gem "autoprefixer-rails"
@@ -22,7 +22,7 @@ gem "paranoia", "~> 2.2"
 gem "pathspec"
 gem "pg"
 gem "puma"
-gem "rails", "~> 5.1.1"
+gem "rails", "5.0.0.1"
 gem "rails-assets-classnames", source: "https://rails-assets.org"
 gem "rails-assets-es5-shim", source: "https://rails-assets.org"
 gem "rails-assets-lodash", source: "https://rails-assets.org"
@@ -50,7 +50,7 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "foreman"
-  gem "rspec-rails"
+  gem "rspec-rails", ">= 3.4"
 end
 
 group :test do
