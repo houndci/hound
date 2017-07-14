@@ -13,15 +13,12 @@
   }
 
   p {
-    letter-spacing: $letter-spacing-base;
     margin: 0;
   }
 }
 
 .home-heading--large {
   font-size: 1.8em;
-  font-weight: $font-weight-light;
-  letter-spacing: $letter-spacing-base;
   margin-bottom: $xsmall-spacing;
 
   @include media($medium-screen-up) {
@@ -35,7 +32,6 @@
 
 .home-heading--small {
   font-size: $font-size-medium;
-  font-weight: $font-weight-bold;
-  letter-spacing: $letter-spacing-base;
+  font-weight: $font-weight-medium;
   margin-bottom: $xsmall-spacing;
 }

@@ -28,7 +28,6 @@
   @include ellipsis;
   color: $medium-font-color;
   font-size: 1.5em;
-  font-weight: $font-weight-light;
   line-height: 1;
   padding-bottom: 2px;
   transition: $base-transition;
@@ -36,8 +35,7 @@
   @include media($small-screen-only) {
     display: block;
     font-size: 1.2em;
-    font-weight: $font-weight-normal;
-    letter-spacing: 1px;
+    font-weight: $font-weight-regular;
     margin-bottom: 0.6em;
   }
 }
@@ -63,8 +61,7 @@
   border-radius: 20px;
   color: $purple;
   display: inline-block;
-  font-weight: $font-weight-normal;
-  letter-spacing: 1px;
+  font-weight: $font-weight-regular;
   padding: 0.4em 1em;
   text-align: center;
   transition: none;

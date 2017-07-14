@@ -29,7 +29,6 @@
 
   .update-card {
     float: right;
-    font-weight: $font-weight-light;
 
     i.fa {
       display: inline-block;
@@ -71,7 +70,6 @@
 
   input[type="text"],
   input[type="email"] {
-    font-weight: $font-weight-light;
     min-width: 20em;
     padding: 0.5em;
   }

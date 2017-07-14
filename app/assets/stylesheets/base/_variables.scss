@@ -1,10 +1,10 @@
-$font-family-default: "Lato", $font-stack-system;
-$font-family-heading: $font-stack-georgia;
+$font-family-default: "Tofino", $font-stack-system;
+$font-family-heading: $font-family-default;
 $font-family-code: $font-stack-monaco;
 
-$font-weight-light: 300;
-$font-weight-normal: 400;
-$font-weight-bold: 700;
+$font-weight-book: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
 
 $font-size-small: 0.875em;
 $font-size-base: 1em;
@@ -13,7 +13,8 @@ $font-size-large: 2.7em;
 $font-size-xlarge: 3em;
 $font-size-xxlarge: 3.8em;
 
-$base-line-height: 1.4;
+$line-height-default: 1.7;
+$line-height-heading: 1.3;
 
 $black: #000;
 $gold: rgb(226, 206, 0);
@@ -56,9 +57,6 @@ $small-spacing: $base-spacing * 0.75;
 $medium-spacing: $base-spacing * 1.5;
 $large-spacing: $base-spacing * 3;
 
-$letter-spacing-base: 1px;
-$letter-spacing-large: 2px;
-
 // Focus
 $focus-outline-color: transparentize($base-accent-color, 0.4);
 $focus-outline-width: 3px;
@@ -69,3 +67,9 @@ $focus-outline-offset: 2px;
 $base-transition-timing: 0.2s;
 $base-easing: cubic-bezier(0.39, 0.575, 0.565, 1);
 $base-transition: all $base-transition-timing $base-easing;
+
+// Bourbon library settings
+$bourbon: (
+  "global-font-file-formats": "woff",
+  "rails-asset-pipeline": true,
+);
