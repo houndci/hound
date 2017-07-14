@@ -43,16 +43,15 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
-    administrate (0.7.0)
-      actionpack (>= 4.2, < 5.1)
-      actionview (>= 4.2, < 5.1)
-      activerecord (>= 4.2, < 5.1)
-      autoprefixer-rails (~> 6.0)
+    administrate (0.8.1)
+      actionpack (>= 4.2, < 5.2)
+      actionview (>= 4.2, < 5.2)
+      activerecord (>= 4.2, < 5.2)
+      autoprefixer-rails (>= 6.0)
       datetime_picker_rails (~> 0.0.7)
       jquery-rails (>= 4.0)
       kaminari (>= 1.0)
       momentjs-rails (~> 2.8)
-      normalize-rails (>= 3.0)
       sass-rails (~> 5.0)
       selectize-rails (~> 0.6)
     analytics-ruby (2.2.2)
@@ -183,7 +182,6 @@ GEM
     nio4r (1.2.1)
     nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
-    normalize-rails (4.1.1)
     oauth2 (1.2.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -353,7 +351,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (= 0.9.5)
-  administrate (= 0.7.0)
+  administrate (= 0.8.1)
   analytics-ruby (~> 2.2.2)
   attr_extras
   autoprefixer-rails
@@ -408,4 +406,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.15.0
+   1.15.1
