@@ -10,8 +10,8 @@ class TierPlan extends React.Component {
   renderCurrentPlan() {
     if (this.getIsCurrent()) {
       return (
-        <div className="marker-wrapper">
-          <span className="current-plan">Current Plan</span>
+        <div className="plan-marker__wrapper">
+          <span className="plan-marker plan-marker--current">Current Plan</span>
         </div>
       )
     }
@@ -20,8 +20,8 @@ class TierPlan extends React.Component {
   renderNewPlan() {
     if (this.getIsNew()) {
       return (
-        <div className="marker-wrapper">
-          <span className="new-plan">New Plan</span>
+        <div className="plan-marker__wrapper">
+          <span className="plan-marker plan-marker--new">New Plan</span>
         </div>
       )
     }

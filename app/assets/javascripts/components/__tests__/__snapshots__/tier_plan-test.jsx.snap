@@ -2,16 +2,16 @@ exports[`test renders appropriately (bulk) 1`] = `
 <div
   className="plan plan-vertical current new">
   <div
-    className="marker-wrapper">
+    className="plan-marker__wrapper">
     <span
-      className="current-plan">
+      className="plan-marker plan-marker--current">
       Current Plan
     </span>
   </div>
   <div
-    className="marker-wrapper">
+    className="plan-marker__wrapper">
     <span
-      className="new-plan">
+      className="plan-marker plan-marker--new">
       New Plan
     </span>
   </div>
@@ -41,16 +41,16 @@ exports[`test renders appropriately (current plan) 1`] = `
 <div
   className="plan plan-vertical current new">
   <div
-    className="marker-wrapper">
+    className="plan-marker__wrapper">
     <span
-      className="current-plan">
+      className="plan-marker plan-marker--current">
       Current Plan
     </span>
   </div>
   <div
-    className="marker-wrapper">
+    className="plan-marker__wrapper">
     <span
-      className="new-plan">
+      className="plan-marker plan-marker--new">
       New Plan
     </span>
   </div>
@@ -115,9 +115,9 @@ exports[`test renders appropriately (new plan) 1`] = `
 <div
   className="plan plan-vertical new">
   <div
-    className="marker-wrapper">
+    className="plan-marker__wrapper">
     <span
-      className="new-plan">
+      className="plan-marker plan-marker--new">
       New Plan
     </span>
   </div>
