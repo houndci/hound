@@ -5,7 +5,6 @@ class UpdateAccountEmailMessage extends React.Component {
     } else if (this.props.addressChanged === true) {
       return (
         <p className="inline-flash inline-flash--success" data-role="flash">
-          <i className="fa fa-check"></i>
           Email address updated!
         </p>
       );
