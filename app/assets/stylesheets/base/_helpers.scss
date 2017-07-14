@@ -1,7 +1,3 @@
 .content {
   @include outer-container;
 }
-
-.inner-wrapper {
-  @include clearfix;
-}
