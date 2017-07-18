@@ -58,7 +58,7 @@ GEM
       commander (~> 4.4)
     arel (7.1.4)
     attr_extras (4.4.0)
-    autoprefixer-rails (6.7.7.2)
+    autoprefixer-rails (7.1.2.3)
       execjs
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
@@ -406,4 +406,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.15.1
+   1.15.2
