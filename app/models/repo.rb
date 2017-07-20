@@ -63,11 +63,11 @@ class Repo < ApplicationRecord
     !private?
   end
 
-  private
-
   def organization
     name && name.split("/").first
   end
+
+  private
 
   def self.report_update_failure(error, attributes)
     Raven.capture_exception(

@@ -9,8 +9,12 @@ class ReposController < ApplicationController
         end
 
         repos = ReposWithMembershipOrSubscriptionQuery.call(current_user)
+        bulk_customers = BulkCustomer.where(org: repos.map(&:organization).uniq)
 
-        render json: repos
+        render(
+          json: repos,
+          bulk_customers_by_org: bulk_customers.index_by(&:org)
+        )
       end
     end
   end

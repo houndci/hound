@@ -13,7 +13,7 @@ class RepoSerializer < ActiveModel::Serializer
   )
 
   def price_in_cents
-    if object.public? || object.bulk?
+    if object.public? || serialization_options[:bulk_customers_by_org][object.organization]
       0
     else
       scope.next_plan_price * 100
