@@ -33,7 +33,7 @@ describe ReposController do
           :repo,
           in_organization: true,
           private: true,
-          name: "yeehaw/wat"
+          name: "yeehaw/wat",
         )
         create(:bulk_customer, org: "yeehaw")
         user = create(:user)
