@@ -13,7 +13,7 @@ class RepoSerializer < ActiveModel::Serializer
   )
 
   def price_in_cents
-    if object.public? || bulk_customers_by_org[object.organization]
+    if object.public? || bulk?
       0
     else
       scope.next_plan_price * 100
@@ -36,6 +36,14 @@ class RepoSerializer < ActiveModel::Serializer
 
   def has_subscription?
     object.subscription&.user_id == scope.id
+  end
+
+  def bulk?
+    if bulk_customers_by_org
+      bulk_customers_by_org[object.organization]
+    else
+      object.bulk?
+    end
   end
 
   def bulk_customers_by_org
