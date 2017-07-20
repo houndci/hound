@@ -29,7 +29,12 @@ describe ReposController do
 
     context "when current user is a bulk member of a repo" do
       it "returns 0 price in cents for that repo" do
-        repo = create(:repo, in_organization: true, private: true, name: "yeehaw/wat")
+        repo = create(
+          :repo,
+          in_organization: true,
+          private: true,
+          name: "yeehaw/wat"
+        )
         create(:bulk_customer, org: "yeehaw")
         user = create(:user)
         user.repos << repo

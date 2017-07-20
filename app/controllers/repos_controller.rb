@@ -12,7 +12,7 @@ class ReposController < ApplicationController
 
         render(
           json: repos,
-          bulk_customers_by_org: find_bulk_customers(repos).index_by(&:org)
+          bulk_customers_by_org: find_bulk_customers(repos).index_by(&:org),
         )
       end
     end
