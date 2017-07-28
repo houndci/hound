@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactAddonsUpdate from 'react-addons-update'
 
 import RepoAllowance from './RepoAllowance'
 import RepoTools from './RepoTools'

@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactAddonsUpdate from 'react-addons-update'
 
 import App from './ReposContainer/components/App'
 
