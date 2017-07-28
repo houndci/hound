@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest app/assets/javascripts/components/__tests__/*-test.jsx",
-    "test:watch": "jest --watch app/assets/javascripts/components/__tests__/*-test.jsx",
-    "test:coverage": "jest --coverage app/assets/javascripts/components/__tests__/*-test.jsx"
+    "test": "jest app/javascript/__tests__/*-test.jsx",
+    "test:watch": "jest --watch app/javascript/__tests__/*-test.jsx",
+    "test:coverage": "jest --coverage app/javascript/__tests__/*-test.jsx"
   },
   "engines": {
     "node": "7.4",
@@ -58,7 +58,7 @@
   "devDependencies": {
     "babel-core": "^6.7.2",
     "babel-eslint": "^7.1.0",
-    "babel-jest": "^17.0.2",
+    "babel-jest": "^20.0.3",
     "babel-loader": "^6.2.4",
     "babel-plugin-react-transform": "^2.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -80,7 +80,7 @@
     "jest-enzyme": "^2.0.0",
     "node-sass": "^4.5.3",
     "react-addons-test-utils": "^15.4.1",
-    "react-test-renderer": "^15.4.1",
+    "react-test-renderer": "^15.6.1",
     "react-transform-hmr": "^1.0.2",
     "sass-loader": "^6.0.6",
     "sinon": "^1.17.6",
@@ -97,7 +97,7 @@
       "^.+\\.(css|scss)$": "identity-obj-proxy"
     },
     "setupFiles": [
-      "./app/assets/javascripts/components/__tests__/jestsetup.js"
+      "./app/javascript/__tests__/jestsetup.js"
     ],
     "setupTestFrameworkScriptFile": "node_modules/jest-enzyme/lib/index.js",
     "unmockedModulePathPatterns": [

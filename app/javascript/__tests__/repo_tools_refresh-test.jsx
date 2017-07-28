@@ -1,4 +1,4 @@
-import RepoToolsRefresh from '../repo_tools_refresh.jsx';
+import RepoToolsRefresh from '../components/ReposContainer/components/RepoTools/RepoToolsRefresh';
 
 it('renders appropriately', () => {
   const onRefreshClicked = jest.fn();

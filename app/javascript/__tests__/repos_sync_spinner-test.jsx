@@ -1,4 +1,4 @@
-import ReposSyncSpinner from '../repos_sync_spinner.jsx';
+import ReposSyncSpinner from '../components/ReposContainer/components/ReposView/ReposSyncSpinner';
 
 it('renders appropriately', () => {
   const wrapper = shallow(

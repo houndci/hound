@@ -1,4 +1,4 @@
-import TierPlan from '../tier_plan.jsx';
+import TierPlan from '../components/NotifyTierChange/components/TierPlan';
 
 it('renders appropriately (current plan)', () => {
   const plan = {

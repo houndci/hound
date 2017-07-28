@@ -1,4 +1,4 @@
-import NotifyTierChange from '../notify_tier_change.jsx';
+import NotifyTierChange from '../components/NotifyTierChange.jsx';
 
 let repo = {id: 1, name: "Test repo"};
 let plans = [

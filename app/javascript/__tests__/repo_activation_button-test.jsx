@@ -1,4 +1,4 @@
-import RepoActivationButton from '../repo_activation_button.jsx';
+import RepoActivationButton from '../components/ReposContainer/components/Repo/RepoActivationButton';
 
 it('renders a button appropriately for non-admin repos ', () => {
   const repo = {

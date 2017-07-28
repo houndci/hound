@@ -1,5 +1,5 @@
-import UpgradeSubscriptionLink from '../upgrade_subscription_link.jsx';
-import * as Ajax from '../../lib/ajax.jsx';
+import UpgradeSubscriptionLink from '../components/NotifyTierChange/components/UpgradeSubscriptionLink.jsx';
+import * as Ajax from '../modules/Ajax';
 
 it('renders appropriately', () => {
   const repo = {
