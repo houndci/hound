@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 
 import RepoActivationButton from './Repo/RepoActivationButton'
 import RepoDeactivationButton from './Repo/RepoDeactivationButton'
