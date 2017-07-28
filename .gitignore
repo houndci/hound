@@ -10,4 +10,5 @@ node_modules/
 app/assets/webpack/app-bundle.js
 app/assets/webpack/vendor-bundle.js
 yarn-debug.log*
-yarn-error.log*
+yarn-error.log*/public/packs
+/node_modules
