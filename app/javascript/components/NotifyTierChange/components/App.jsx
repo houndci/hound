@@ -1,7 +1,7 @@
 import React from 'react'
 
-import UpgradeSubscriptionLink from './components/UpgradeSubscriptionLink'
-import TierPlan from './components/TierPlan'
+import UpgradeSubscriptionLink from './UpgradeSubscriptionLink'
+import TierPlan from './TierPlan'
 
 export default class App extends React.Component {
   getCurrentPlan() {

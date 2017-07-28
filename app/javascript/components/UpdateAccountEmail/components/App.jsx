@@ -1,6 +1,6 @@
 import React from 'react'
 
-import UpdateAccountEmailMessage from './components/UpdateAccountEmailMessage'
+import UpdateAccountEmailMessage from './UpdateAccountEmailMessage'
 
 export default class UpdateAccountEmail extends React.Component {
   state = {
