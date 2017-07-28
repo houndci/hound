@@ -39,7 +39,7 @@
     "jquery-ujs": "^1.2.2",
     "js-yaml": "^3.9.0",
     "loader-utils": "^0.2.12",
-    "lodash": "^4.3.0",
+    "lodash": "^4.17.4",
     "path-complete-extname": "^0.1.0",
     "postcss-loader": "^2.0.6",
     "postcss-smart-import": "^0.7.5",
