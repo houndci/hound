@@ -6,8 +6,7 @@
   = render 'onboarding'
 
 %section.organization-list{ 'organization-list' => '' }
-= react_component("app.ReposContainer",
-    authenticity_token: form_authenticity_token,
-    has_private_access: current_user.has_access_to_private_repos?,
-    userHasCard: current_user.stripe_customer_id.present?,
-  )
+
+= javascript_pack_tag("repos_container")
+= react_component("ReposContainer")
+
