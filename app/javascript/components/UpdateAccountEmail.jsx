@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactAddonsUpdate from 'react-addons-update'
 
-import App from './ReposContainer/components/App'
+import App from './UpdateAccountEmail/components/App'
 
-export default class ReposContainer extends React.Component {
+export default class UpdateAccountEmail extends React.Component {
   render() {
     return(
       <App />

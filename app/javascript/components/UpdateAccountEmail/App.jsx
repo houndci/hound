@@ -1,6 +1,8 @@
-import UpdateAccountEmailMessage from './update_account_email_message.jsx';
+import React from 'react'
 
-class UpdateAccountEmail extends React.Component {
+import UpdateAccountEmailMessage from './components/UpdateAccountEmailMessage'
+
+export default class UpdateAccountEmail extends React.Component {
   state = {
     emailAddress: null,
     emailInput: null,
@@ -12,11 +14,11 @@ class UpdateAccountEmail extends React.Component {
       headers: {
         "X-XSRF-Token": this.props.authenticity_token
       }
-    });
+    })
   }
 
   onUpdateEmail(event) {
-    event.preventDefault();
+    event.preventDefault()
 
     $.ajax({
       url: "/account.json",
@@ -24,16 +26,16 @@ class UpdateAccountEmail extends React.Component {
       data: { billable_email: this.state.emailInput },
       dataType: "text",
       success: () => {
-        this.setState({ addressChanged: true });
+        this.setState({ addressChanged: true })
       },
       error: () => {
-        this.setState({ addressChanged: false });
+        this.setState({ addressChanged: false })
       }
-    });
+    })
   }
 
   render() {
-    const placeholder = this.state.emailAddress || this.props.billable_email;
+    const placeholder = this.state.emailAddress || this.props.billable_email
 
     return (
       <article className="account-details">
@@ -64,8 +66,6 @@ class UpdateAccountEmail extends React.Component {
           </div>
         </form>
       </article>
-    );
+    )
   }
 }
-
-module.exports = UpdateAccountEmail;

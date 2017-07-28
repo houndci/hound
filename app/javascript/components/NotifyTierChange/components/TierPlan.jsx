@@ -1,13 +1,13 @@
 import classNames from 'classnames'
 import React from 'react'
 
-class TierPlan extends React.Component {
+export default class TierPlan extends React.Component {
   getIsCurrent() {
-    return this.props.isCurrent;
+    return this.props.isCurrent
   }
 
   getIsNew() {
-    return this.props.isNew;
+    return this.props.isNew
   }
 
   renderCurrentPlan() {
@@ -31,9 +31,9 @@ class TierPlan extends React.Component {
   }
 
   render() {
-    const plan = this.props.plan;
+    const plan = this.props.plan
 
-    let allowance = null;
+    let allowance = null
 
     if (plan.allowance > 0) {
       allowance = <div className="plan-allowance">
@@ -62,8 +62,6 @@ class TierPlan extends React.Component {
         </div>
         <div className="plan-price">${plan.price} <small>month</small></div>
       </div>
-    );
+    )
   }
 }
-
-module.exports = TierPlan;

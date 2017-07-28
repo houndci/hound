@@ -5880,11 +5880,11 @@ react-addons-test-utils@^15.4.1:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-addons-update@^15.3.2:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-addons-update/-/react-addons-update-15.4.2.tgz#43a9578e3b46bc5f7eed2ba52560dd57a8aff918"
+react-addons-update@^15.6.0:
+  version "15.6.0"
+  resolved "https://registry.yarnpkg.com/react-addons-update/-/react-addons-update-15.6.0.tgz#67f8d5a3d3d8ac7ccfa452565a8310065178e748"
   dependencies:
-    fbjs "^0.8.4"
+    fbjs "^0.8.9"
     object-assign "^4.1.0"
 
 react-deep-force-update@^1.0.0:
