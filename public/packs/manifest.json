@@ -1,3 +1,6 @@
 {
-  "repos_container.js": "https://127.0.0.1:8080/packs/repos_container.js"
+  "notify_tier_change.js": "https://127.0.0.1:8080/packs/notify_tier_change.js",
+  "repos_container.js": "https://127.0.0.1:8080/packs/repos_container.js",
+  "update_account_credit_card.js": "https://127.0.0.1:8080/packs/update_account_credit_card.js",
+  "update_account_email.js": "https://127.0.0.1:8080/packs/update_account_email.js"
 }
