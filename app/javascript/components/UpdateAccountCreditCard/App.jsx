@@ -1,10 +1,12 @@
-class UpdateAccountCreditCard extends React.Component {
+import React from 'react'
+
+export default class UpdateAccountCreditCard extends React.Component {
   componentWillMount() {
     $.ajaxSetup({
       headers: {
         "X-XSRF-Token": this.props.authenticity_token
       }
-    });
+    })
   }
 
   updateCustomerCreditCard(stripeToken) {
@@ -13,11 +15,11 @@ class UpdateAccountCreditCard extends React.Component {
       type: "PUT",
       data: { card_token: stripeToken.id },
       dataType: "json"
-    });
+    })
   }
 
   onUpdateCreditCard(event) {
-    event.preventDefault();
+    event.preventDefault()
 
     StripeCheckout.configure({
       key: Hound.settings.stripePublishableKey,
@@ -27,7 +29,7 @@ class UpdateAccountCreditCard extends React.Component {
       email: $("input[type=email]").attr("placeholder"),
       panelLabel: "Update Card",
       allowRememberMe: false
-    });
+    })
   }
 
   render() {
@@ -39,13 +41,11 @@ class UpdateAccountCreditCard extends React.Component {
             Update Credit Card
           </a>
         </h3>
-      );
+      )
     } else {
       return (
         <h3>Monthly Billing</h3>
-      );
+      )
     }
   }
 }
-
-module.exports = UpdateAccountCreditCard;

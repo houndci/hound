@@ -18,7 +18,7 @@
 
   .account-content
     %article.billing-breakdown
-      = react_component("app.UpdateAccountCreditCard",
+      = react_component("UpdateAccountCreditCard",
           authenticity_token: form_authenticity_token,
           stripe_customer_id_present: current_user.stripe_customer_id.present?,
         )
@@ -54,7 +54,7 @@
                   )
 
     - if current_user.stripe_customer_id.present?
-      = react_component("app.UpdateAccountEmail",
+      = react_component("UpdateAccountEmail",
           authenticity_token: form_authenticity_token,
           billable_email: @account_page.billable_email,
         )

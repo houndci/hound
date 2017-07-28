@@ -1,17 +1,18 @@
-import * as Ajax from '../lib/ajax.jsx';
+import React from 'react'
+import * as Ajax from '../../../modules/Ajax'
 
-class UpgradeSubscriptionLink extends React.Component {
+export default class UpgradeSubscriptionLink extends React.Component {
   componentWillMount() {
-    $.ajaxSetup({ headers: { "X-XSRF-Token": this.props.authenticityToken } });
+    $.ajaxSetup({ headers: { "X-XSRF-Token": this.props.authenticityToken } })
   }
 
   upgradeWithNewCard(token) {
-    const { repoId } = this.props;
+    const { repoId } = this.props
     Ajax.upgradeSubscription(repoId, { card_token: token.id })
   }
 
   checkout() {
-    const { stripePublishableKey, iconPath } = Hound.settings;
+    const { stripePublishableKey, iconPath } = Hound.settings
 
     return StripeCheckout.configure({
       key: stripePublishableKey,
@@ -21,8 +22,8 @@ class UpgradeSubscriptionLink extends React.Component {
   }
 
   showCreditCardForm() {
-    const { userEmailAddress } = Hound.settings;
-    const { price, title } = this.props.nextTier;
+    const { userEmailAddress } = Hound.settings
+    const { price, title } = this.props.nextTier
 
     this.checkout().open({
       name: title,
@@ -30,16 +31,16 @@ class UpgradeSubscriptionLink extends React.Component {
       email: userEmailAddress,
       panelLabel: "{{amount}} per month",
       allowRememberMe: false
-    });
+    })
   }
 
   handleClick() {
-    const { repoId, userHasCard } = this.props;
+    const { repoId, userHasCard } = this.props
 
     if (userHasCard) {
-      Ajax.upgradeSubscription(repoId);
+      Ajax.upgradeSubscription(repoId)
     } else {
-      this.showCreditCardForm();
+      this.showCreditCardForm()
     }
   }
 
@@ -47,11 +48,9 @@ class UpgradeSubscriptionLink extends React.Component {
     return(
       <a
         className="repo-toggle tier-change-accept"
-        href="javascript:void(0);"
+        href="javascript:void(0)"
         onClick={() => this.handleClick()}
       >Upgrade</a>
-    );
+    )
   }
 }
-
-module.exports = UpgradeSubscriptionLink;
