@@ -1,5 +1,5 @@
-import OrganizationsList from '../organizations_list.jsx';
-import Organization from '../organization.jsx';
+import OrganizationsList from '../components/ReposContainer/components/ReposView/OrganizationsList';
+import Organization from '../components/ReposContainer/components/Organization';
 
 it('renders a list of organizations appropriately', () => {
   const organizations = [

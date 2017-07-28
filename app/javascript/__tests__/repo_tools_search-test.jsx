@@ -1,4 +1,4 @@
-import RepoToolsSearch from '../repo_tools_search.jsx';
+import RepoToolsSearch from '../components/ReposContainer/components/RepoTools/RepoToolsSearch';
 
 it('renders appropriately', () => {
   const onSearchInput = jest.fn();

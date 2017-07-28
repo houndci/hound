@@ -1,4 +1,4 @@
-import RepoToolsPrivate from '../repo_tools_private.jsx';
+import RepoToolsPrivate from '../components/ReposContainer/components/RepoTools/RepoToolsPrivate';
 
 it('renders appropriately', () => {
   const wrapper = shallow(

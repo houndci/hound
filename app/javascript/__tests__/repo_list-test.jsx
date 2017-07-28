@@ -1,4 +1,4 @@
-import RepoList from '../repo_list.jsx';
+import RepoList from '../components/ReposContainer/components/Organization/RepoList';
 
 it('renders a list of repos appropriately', () => {
   const repos = [
