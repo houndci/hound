@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import RepoActivationButton from './repo_activation_button.jsx';
 import RepoDeactivationButton from './repo_deactivation_button.jsx';
 

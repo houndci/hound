@@ -1,3 +1,6 @@
+import classNames from 'classnames'
+import React from 'react'
+
 class TierPlan extends React.Component {
   getIsCurrent() {
     return this.props.isCurrent;
