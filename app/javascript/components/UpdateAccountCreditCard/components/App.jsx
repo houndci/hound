@@ -42,7 +42,7 @@ export default class UpdateAccountCreditCard extends React.Component {
       return (
         <h3>
           Monthly Billing
-          <a href="#" className="update-card" onClick={this.onUpdateCreditCard.bind(this)}>
+          <a href="#" className="update-card" onClick={(event) =>this.onUpdateCreditCard(event)}>
             Update Credit Card
           </a>
         </h3>

@@ -66,7 +66,7 @@ export default class UpdateAccountEmail extends React.Component {
           <div className="form-actions">
             <button
               className="button-small"
-              onClick={this.onUpdateEmail.bind(this)}
+              onClick={(event) => this.onUpdateEmail(event)}
             >
               Update Email
             </button>

@@ -19,7 +19,7 @@ export default class PopulatedRepoList extends React.Component {
 
     return (
       <ul className="repos">
-        {repos.filter(this.canShow.bind(this)).map( repo => (
+        {repos.filter((repo) => this.canShow(repo)).map( repo => (
           <Repo
             repo={repo}
             key={repo.id}

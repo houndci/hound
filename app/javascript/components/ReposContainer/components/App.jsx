@@ -39,7 +39,7 @@ export default class App extends React.Component {
       url: "/repos.json",
       type: "GET",
       dataType: "json",
-      success: this.onFetchReposAndOrgsSuccess.bind(this),
+      success: (data) => this.onFetchReposAndOrgsSuccess(data),
       error: () => {
         alert("Your repos failed to load.")
       }
@@ -194,7 +194,7 @@ export default class App extends React.Component {
   handleSync() {
     this.getUser().then(data => {
       if (data.refreshing_repos) {
-        setTimeout(this.handleSync.bind(this), 1000)
+        setTimeout(() => this.handleSync(), 1000)
       } else {
         this.fetchReposAndOrgs()
       }
@@ -208,7 +208,7 @@ export default class App extends React.Component {
       url: "/repo_syncs.json",
       type: "POST",
       dataType: "text", // to trigger success() on 201 and empty response
-      success: this.handleSync.bind(this),
+      success: () => this.handleSync(),
       error: () => {
         this.setState({isSyncing: false})
         alert("Your repos failed to sync.")
