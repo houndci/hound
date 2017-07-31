@@ -1,4 +1,4 @@
-import Organization from '../components/ReposContainer/components/Organization.jsx';
+import Organization from '../components/ReposContainer/components/Organization'
 
 it('renders an organization with ID appropriately (no repo processing)', () => {
   const org = {
@@ -18,6 +18,6 @@ it('renders an organization with ID appropriately (no repo processing)', () => {
       filterTerm={""}
       isProcessingId={null}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})

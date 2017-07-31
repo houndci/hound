@@ -1,5 +1,5 @@
-import ReposContainer from '../components/ReposContainer';
-import * as Ajax from '../modules/Ajax';
+import ReposContainer from '../components/ReposContainer'
+import * as Ajax from '../modules/Ajax'
 
 it('renders appropriately', () => {
   const wrapper = shallow(
@@ -8,9 +8,9 @@ it('renders appropriately', () => {
       has_private_access={false}
       userHasCard={false}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 it('sets the filterTerm appropriately on text input', () => {
   const wrapper = mount(
@@ -19,15 +19,15 @@ it('sets the filterTerm appropriately on text input', () => {
       has_private_access={false}
       userHasCard={false}
     />
-  );
-  const textInput = wrapper.find('.repo-search-tools-input');
-  textInput.simulate('change', {target: {value: "new text"}});
+  )
+  const textInput = wrapper.find('.repo-search-tools-input')
+  textInput.simulate('change', {target: {value: "new text"}})
 
-  expect(wrapper.state('filterTerm')).toBe('new text');
-});
+  expect(wrapper.state('filterTerm')).toBe('new text')
+})
 
 it('fetches repos and organizations on mount', () => {
-  let stub = sinon.stub(ReposContainer.prototype, 'fetchReposAndOrgs');
+  let stub = sinon.stub(ReposContainer.prototype, 'fetchReposAndOrgs')
 
   const wrapper = mount(
     <ReposContainer
@@ -35,8 +35,8 @@ it('fetches repos and organizations on mount', () => {
       has_private_access={false}
       userHasCard={false}
     />
-  );
+  )
 
-  expect(stub.callCount).toBe(1);
-  stub.restore();
-});
+  expect(stub.callCount).toBe(1)
+  stub.restore()
+})

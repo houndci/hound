@@ -1,4 +1,4 @@
-import RepoAllowance from '../components/ReposContainer/components/RepoAllowance';
+import RepoAllowance from '../components/ReposContainer/components/RepoAllowance'
 
 it('renders the allowance header', () => {
   const wrapper = shallow(
@@ -6,6 +6,6 @@ it('renders the allowance header', () => {
       subscribedRepoCount={4}
       tierAllowance={10}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})

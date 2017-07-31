@@ -1,4 +1,4 @@
-import TierPlan from '../components/NotifyTierChange/components/TierPlan';
+import TierPlan from '../components/NotifyTierChange/components/TierPlan'
 
 it('renders appropriately (current plan)', () => {
   const plan = {
@@ -15,9 +15,9 @@ it('renders appropriately (current plan)', () => {
       key={plan.name}
       plan={plan}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 it('renders appropriately (new plan)', () => {
   const plan = {
@@ -34,9 +34,9 @@ it('renders appropriately (new plan)', () => {
       key={plan.name}
       plan={plan}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 it('renders appropriately (neither current nor new plan)', () => {
   const plan = {
@@ -53,9 +53,9 @@ it('renders appropriately (neither current nor new plan)', () => {
       key={plan.name}
       plan={plan}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 
 it('renders appropriately (bulk)', () => {
@@ -73,6 +73,6 @@ it('renders appropriately (bulk)', () => {
       key={plan.name}
       plan={plan}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})

@@ -1,4 +1,4 @@
-import RepoActivationButton from '../components/ReposContainer/components/Repo/RepoActivationButton';
+import RepoActivationButton from '../components/ReposContainer/components/Repo/RepoActivationButton'
 
 it('renders a button appropriately for non-admin repos ', () => {
   const repo = {
@@ -15,9 +15,9 @@ it('renders a button appropriately for non-admin repos ', () => {
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 it('renders a button appropriately for admin repos ', () => {
   const repo = {
@@ -35,9 +35,9 @@ it('renders a button appropriately for admin repos ', () => {
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 it('renders a disabled button appropriately for admin repos', () => {
   const repo = {
@@ -55,9 +55,9 @@ it('renders a disabled button appropriately for admin repos', () => {
       onRepoClicked={jest.fn()}
       isProcessingId={1}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 it('calls the click handler appropriately', () => {
   const repo = {
@@ -69,7 +69,7 @@ it('calls the click handler appropriately', () => {
     }
   }
 
- const clickHandler = sinon.spy();
+ const clickHandler = sinon.spy()
 
   const wrapper = shallow(
     <RepoActivationButton
@@ -77,8 +77,8 @@ it('calls the click handler appropriately', () => {
       onRepoClicked={clickHandler}
       isProcessingId={null}
     />
-  );
+  )
 
-  wrapper.find('button').simulate('click');
-  expect(clickHandler.calledWith(repo.id)).toBe(true);
-});
+  wrapper.find('button').simulate('click')
+  expect(clickHandler.calledWith(repo.id)).toBe(true)
+})

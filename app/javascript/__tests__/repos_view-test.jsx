@@ -1,4 +1,4 @@
-import ReposView from '../components/ReposContainer/components/ReposView';
+import ReposView from '../components/ReposContainer/components/ReposView'
 
 it('renders appropriately', () => {
   const organizations = [
@@ -23,6 +23,6 @@ it('renders appropriately', () => {
       onRepoClicked={(event) => onRepoClicked}
       isProcessingId={null}
      />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})

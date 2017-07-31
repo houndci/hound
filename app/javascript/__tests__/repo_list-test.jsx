@@ -1,4 +1,4 @@
-import RepoList from '../components/ReposContainer/components/Organization/RepoList';
+import RepoList from '../components/ReposContainer/components/Organization/RepoList'
 
 it('renders a list of repos appropriately', () => {
   const repos = [
@@ -11,7 +11,7 @@ it('renders a list of repos appropriately', () => {
     }
   ]
 
-  const onRepoClicked = jest.fn();
+  const onRepoClicked = jest.fn()
 
   const wrapper = shallow(
     <RepoList
@@ -20,6 +20,6 @@ it('renders a list of repos appropriately', () => {
       isProcessingId={null}
       filterTerm={""}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})

@@ -1,5 +1,5 @@
-import OrganizationsList from '../components/ReposContainer/components/ReposView/OrganizationsList';
-import Organization from '../components/ReposContainer/components/Organization';
+import OrganizationsList from '../components/ReposContainer/components/ReposView/OrganizationsList'
+import Organization from '../components/ReposContainer/components/Organization'
 
 it('renders a list of organizations appropriately', () => {
   const organizations = [
@@ -23,9 +23,9 @@ it('renders a list of organizations appropriately', () => {
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
 
 it('filters a list of organizations appropriately', () => {
   const organizations = [
@@ -51,20 +51,20 @@ it('filters a list of organizations appropriately', () => {
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
-  );
-  const organizationsFound = wrapper.find(Organization).nodes;
-  expect(organizationsFound.length).toBe(3);
+  )
+  const organizationsFound = wrapper.find(Organization).nodes
+  expect(organizationsFound.length).toBe(3)
 
-  expect(organizationsFound[0].props.name).toBe("Test org 1");
-  expect(organizationsFound[0].props.repos.length).toBe(0);
+  expect(organizationsFound[0].props.name).toBe("Test org 1")
+  expect(organizationsFound[0].props.repos.length).toBe(0)
 
-  expect(organizationsFound[1].props.name).toBe("Test org 2");
-  expect(organizationsFound[1].props.repos.length).toBe(1);
-  expect(organizationsFound[1].props.repos[0].id).toBe(1);
+  expect(organizationsFound[1].props.name).toBe("Test org 2")
+  expect(organizationsFound[1].props.repos.length).toBe(1)
+  expect(organizationsFound[1].props.repos[0].id).toBe(1)
 
-  expect(organizationsFound[2].props.name).toBe("Test org 3");
-  expect(organizationsFound[2].props.repos.length).toBe(0);
-});
+  expect(organizationsFound[2].props.name).toBe("Test org 3")
+  expect(organizationsFound[2].props.repos.length).toBe(0)
+})
 
 it('filters a list of organizations appropriately', () => {
   const organizations = [
@@ -87,17 +87,17 @@ it('filters a list of organizations appropriately', () => {
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
-  );
-  const organizationsFound = wrapper.find(Organization).nodes;
-  expect(organizationsFound.length).toBe(3);
+  )
+  const organizationsFound = wrapper.find(Organization).nodes
+  expect(organizationsFound.length).toBe(3)
 
-  expect(organizationsFound[0].props.name).toBe("S.H.I.E.L.D.");
-  expect(organizationsFound[0].props.repos.length).toBe(0);
+  expect(organizationsFound[0].props.name).toBe("S.H.I.E.L.D.")
+  expect(organizationsFound[0].props.repos.length).toBe(0)
 
-  expect(organizationsFound[1].props.name).toBe("H.A.M.M.E.R.");
-  expect(organizationsFound[1].props.repos.length).toBe(0);
+  expect(organizationsFound[1].props.name).toBe("H.A.M.M.E.R.")
+  expect(organizationsFound[1].props.repos.length).toBe(0)
 
-  expect(organizationsFound[2].props.name).toBe("Hydra");
-  expect(organizationsFound[2].props.repos.length).toBe(1);
-  expect(organizationsFound[2].props.repos[0].name).toBe("Hydra/deathray");
-});
+  expect(organizationsFound[2].props.name).toBe("Hydra")
+  expect(organizationsFound[2].props.repos.length).toBe(1)
+  expect(organizationsFound[2].props.repos[0].name).toBe("Hydra/deathray")
+})
