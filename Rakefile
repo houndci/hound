@@ -7,14 +7,11 @@ require File.expand_path('../config/application', __FILE__)
 Houndapp::Application.load_tasks
 task(:default).clear
 
-# Run webpack:build before :spec
-task default: ["webpack:build", "spec", "js:spec", "bundler:audit"]
-
-task "assets:precompile" => "webpack:build"
-
 if defined? RSpec
   task(:spec).clear
   RSpec::Core::RakeTask.new(:spec) do |t|
     t.verbose = false
   end
 end
+
+task default: ["spec", "js:spec", "bundler:audit"]

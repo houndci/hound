@@ -1,0 +1,3 @@
+exports[`test renders appropriately 1`] = `<UpdateAccountCreditCard />`;
+
+exports[`test renders appropriately without Stripe customer ID 1`] = `<UpdateAccountCreditCard />`;

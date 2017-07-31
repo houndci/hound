@@ -1,0 +1,3 @@
+exports[`NotifyTierChange snapshots renders plans appropriately (Chihuahua -> Labrador) 1`] = `<App />`;
+
+exports[`NotifyTierChange snapshots renders plans appropriately (Labrador -> Great Dane) 1`] = `<App />`;
