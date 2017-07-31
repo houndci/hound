@@ -13,3 +13,5 @@ if defined? RSpec
     t.verbose = false
   end
 end
+
+task default: ["spec", "js:spec", "bundler:audit"]
