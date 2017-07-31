@@ -49,7 +49,6 @@ end
 
 group :development, :test do
   gem "bundler-audit", require: false
-  gem "resque-web", require: "resque_web"
   gem "byebug"
   gem "dotenv-rails"
   gem "foreman"
