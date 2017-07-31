@@ -41,8 +41,5 @@ Houndapp::Application.routes.draw do
     get status_code, to: "errors#show", code: status_code
   end
 
-  require "resque_web"
-  mount ResqueWeb::Engine => "/resque_web" if Rails.env.development?
-
   root to: "home#index"
 end
