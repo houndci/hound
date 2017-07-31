@@ -1,12 +1,15 @@
 /*jshint esversion: 6 */
 
 import React from 'react'
+import $ from 'jquery'
+
+import { getCSRFfromHead } from '../../../modules/Utils'
 
 export default class UpdateAccountCreditCard extends React.Component {
   componentWillMount() {
     $.ajaxSetup({
       headers: {
-        "X-XSRF-Token": this.props.authenticity_token
+        "X-XSRF-Token": getCSRFfromHead()
       }
     })
   }

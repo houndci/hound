@@ -1,7 +1,9 @@
 /*jshint esversion: 6 */
 
 import React from 'react'
+import $ from 'jquery'
 
+import { getCSRFfromHead } from '../../../modules/Utils'
 import UpdateAccountEmailMessage from './UpdateAccountEmailMessage'
 
 export default class UpdateAccountEmail extends React.Component {
@@ -17,7 +19,7 @@ export default class UpdateAccountEmail extends React.Component {
   componentWillMount() {
     $.ajaxSetup({
       headers: {
-        "X-XSRF-Token": this.props.authenticity_token
+        "X-XSRF-Token": getCSRFfromHead()
       }
     })
   }

@@ -1,7 +1,9 @@
 /*jshint esversion: 6 */
 
 import React from 'react'
+import _ from 'lodash'
 
+import { getCSRFfromHead } from '../../../modules/Utils'
 import UpgradeSubscriptionLink from './UpgradeSubscriptionLink'
 import TierPlan from './TierPlan'
 
@@ -65,7 +67,6 @@ export default class App extends React.Component {
 
   render() {
     const {
-      authenticity_token,
       next_tier,
       repo_id,
       repo_name,
@@ -98,7 +99,7 @@ export default class App extends React.Component {
           </section>
 
           <UpgradeSubscriptionLink
-            authenticityToken={authenticity_token}
+            authenticityToken={getCSRFfromHead()}
             nextTier={next_tier}
             repoId={repo_id}
             userHasCard={user_has_card}

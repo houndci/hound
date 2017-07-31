@@ -1,6 +1,8 @@
 /*jshint esversion: 6 */
 
 import React from 'react'
+import $ from 'jquery'
+
 import * as Ajax from '../../../modules/Ajax'
 
 export default class UpgradeSubscriptionLink extends React.Component {

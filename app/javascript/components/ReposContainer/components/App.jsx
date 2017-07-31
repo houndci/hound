@@ -2,12 +2,15 @@
 
 import React from 'react'
 import ReactAddonsUpdate from 'react-addons-update'
+import _ from 'lodash'
+import $ from 'jquery'
 
 import RepoAllowance from './RepoAllowance'
 import RepoTools from './RepoTools'
 import ReposView from './ReposView'
 
 import * as Ajax from '../../../modules/Ajax'
+import { getCSRFfromHead } from '../../../modules/Utils'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -19,6 +22,16 @@ export default class App extends React.Component {
       repos: [],
       organizations: [],
     }
+  }
+
+  componentWillMount() {
+    $.ajaxSetup({
+      headers: {
+        "X-XSRF-Token": getCSRFfromHead()
+      }
+    })
+    this.setState({isSyncing: true})
+    this.fetchReposAndOrgs()
   }
 
   fetchReposAndOrgs() {
@@ -54,16 +67,6 @@ export default class App extends React.Component {
 
   orgName(name) {
     return _.split(name, "/")[0]
-  }
-
-  componentWillMount() {
-    $.ajaxSetup({
-      headers: {
-        "X-XSRF-Token": this.props.authenticity_token
-      }
-    })
-    this.setState({isSyncing: true})
-    this.fetchReposAndOrgs()
   }
 
   commitRepoToState(repo) {
