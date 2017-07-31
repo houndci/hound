@@ -59,9 +59,16 @@ feature "Plans" do
     visit plans_path(repo_id: repo.id)
 
     click_on "Upgrade"
-    wait_for_ajax
 
-    expect(current_path).to eq repos_path
+    begin
+      Timeout.timeout(10) do
+        break if current_path == repos_path
+        sleep 1
+      end
+    rescue Timeout::Error
+      raise "Timeout waiting for Upgrade to redirect"
+    end
+
     expect(page).to have_text "Private Repos 5 / 10"
   end
 end

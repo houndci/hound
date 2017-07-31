@@ -149,6 +149,7 @@ feature "Repo list", js: true do
     sign_in_as(user)
     find(".toggle-switch").click
     wait_for_ajax
+
     find(".organization-header-select").
       select("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
     wait_for_ajax

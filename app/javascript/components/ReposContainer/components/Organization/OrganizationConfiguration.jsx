@@ -1,30 +1,22 @@
 /*jshint esversion: 6 */
 
-import React from "react"
-import classNames from "classnames"
-import $ from "jquery"
+import React from 'react'
+import classNames from 'classnames'
+import $ from 'jquery'
 
-import * as Ajax from "../../../../modules/Ajax"
+import * as Ajax from '../../../../modules/Ajax'
 
 export default class OrganizationConfiguration extends React.Component {
   constructor(props) {
     super(props)
 
-    let repo = ""
+    let repo = ''
 
     if (props.repo) {
       repo = props.repo
     }
 
     this.state = { enabled: !!props.enabled, repo }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.renderRepoOptions = this.renderRepoOptions.bind(this)
-    this.renderRepoSelect = this.renderRepoSelect.bind(this)
-    this.setEnabled = this.setEnabled.bind(this)
-    this.setRepo = this.setRepo.bind(this)
-    this.toggle = this.toggle.bind(this)
-    this.updateOwner = this.updateOwner.bind(this)
   }
 
   setEnabled(enabled) {
@@ -57,14 +49,14 @@ export default class OrganizationConfiguration extends React.Component {
   renderRepoSelect() {
     if (this.state.enabled) {
       return (
-        <div className="organization-header-source">
-          <span className="organization-header-label">
+        <div className='organization-header-source'>
+          <span className='organization-header-label'>
             Use .hound.yml from
           </span>
 
           <select
-            className="organization-header-select"
-            onChange={this.handleChange}
+            className='organization-header-select'
+            onChange={() => this.handleChange()}
             value={this.state.repo}
           >
             {this.renderRepoOptions()}
@@ -87,22 +79,22 @@ export default class OrganizationConfiguration extends React.Component {
   render() {
     const switchId = `toggle-${this.props.id}`
     return (
-      <div className="organization-header-config">
-        <div className="organization-header-toggle">
-          <span className="organization-header-label">
+      <div className='organization-header-config'>
+        <div className='organization-header-toggle'>
+          <span className='organization-header-label'>
             Use organization-wide config
           </span>
 
           <input
             id={switchId}
             checked={this.state.enabled}
-            className="organization-header-toggle-input"
-            onChange={this.toggle}
-            type="checkbox"
-            name="toggle"
+            className='organization-header-toggle-input'
+            onChange={() => this.toggle()}
+            type='checkbox'
+            name='toggle'
           />
 
-          <label className="toggle-switch" htmlFor={switchId} />
+          <label className='toggle-switch' htmlFor={switchId} />
         </div>
 
         {this.renderRepoSelect()}
