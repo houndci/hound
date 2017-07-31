@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
 /* eslint global-require: 0 */
