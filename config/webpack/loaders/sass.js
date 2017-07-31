@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const { env } = require('../configuration.js')
 

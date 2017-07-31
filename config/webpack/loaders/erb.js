@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 module.exports = {
   test: /\.erb$/,
   enforce: 'pre',
