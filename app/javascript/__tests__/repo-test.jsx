@@ -1,4 +1,4 @@
-import Repo from '../components/ReposContainer/components/Repo';
+import Repo from '../components/ReposContainer/components/Repo'
 
 it('renders a repo appropriately', () => {
   const repo = {
@@ -9,7 +9,7 @@ it('renders a repo appropriately', () => {
     }
   }
 
-  const onRepoClicked = jest.fn();
+  const onRepoClicked = jest.fn()
 
   const wrapper = shallow(
     <Repo
@@ -18,6 +18,6 @@ it('renders a repo appropriately', () => {
       onRepoClicked={onRepoClicked}
       isProcessingId={null}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})

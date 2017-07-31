@@ -1,4 +1,4 @@
-import PopulatedRepoList from '../components/ReposContainer/components/Organization/RepoList/PopulatedRepoList';
+import PopulatedRepoList from '../components/ReposContainer/components/Organization/RepoList/PopulatedRepoList'
 
 it('renders a list of repos appropriately', () => {
   const organizations = [
@@ -21,8 +21,8 @@ it('renders a list of repos appropriately', () => {
       isProcessingId={null}
       filterTerm={null}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
+  )
+  expect(wrapper).toMatchSnapshot()
 
   const wrapper2 = shallow(
     <PopulatedRepoList
@@ -31,9 +31,9 @@ it('renders a list of repos appropriately', () => {
       isProcessingId={null}
       filterTerm={""}
     />
-  );
-  expect(wrapper2).toMatchSnapshot();
-});
+  )
+  expect(wrapper2).toMatchSnapshot()
+})
 
 it('filters a list of repos appropriately', () => {
   const organizations = [
@@ -63,6 +63,6 @@ it('filters a list of repos appropriately', () => {
       isProcessingId={null}
       filterTerm={"Hydra"}
     />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+  )
+  expect(wrapper).toMatchSnapshot()
+})
