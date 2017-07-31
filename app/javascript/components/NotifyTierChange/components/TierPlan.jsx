@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 import classNames from 'classnames'
 import React from 'react'
 

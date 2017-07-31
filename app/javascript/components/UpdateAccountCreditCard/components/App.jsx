@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 import React from 'react'
 
 export default class UpdateAccountCreditCard extends React.Component {
