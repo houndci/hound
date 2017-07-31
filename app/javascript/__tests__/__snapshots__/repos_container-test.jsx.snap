@@ -1,1 +1,17 @@
-exports[`test renders appropriately 1`] = `<App />`;
+exports[`test renders appropriately 1`] = `
+<div>
+  <RepoTools
+    isSyncing={true}
+    onPrivateClicked={[Function]}
+    onRefreshClicked={[Function]}
+    onSearchInput={[Function]}
+    showPrivateButton={true} />
+  <ReposView
+    filterTerm={null}
+    isProcessingId={null}
+    isSyncing={true}
+    onRepoClicked={[Function]}
+    organizations={Array []}
+    repos={Array []} />
+</div>
+`;

@@ -1,4 +1,4 @@
-import ReposContainer from '../components/ReposContainer'
+import ReposContainer from '../components/ReposContainer/components/App'
 import * as Ajax from '../modules/Ajax'
 
 it('renders appropriately', () => {

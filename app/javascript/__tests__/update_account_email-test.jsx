@@ -1,4 +1,4 @@
-import UpdateAccountEmail from '../components/UpdateAccountEmail'
+import UpdateAccountEmail from '../components/UpdateAccountEmail/components/App'
 
 it('renders appropriately', () => {
   const wrapper = shallow(
