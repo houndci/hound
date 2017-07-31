@@ -14,4 +14,4 @@ if defined? RSpec
   end
 end
 
-task default: ["spec", "js:spec", "bundler:audit"]
+task default: ["assets:clobber", "spec", "js:spec", "bundler:audit"]
