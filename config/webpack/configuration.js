@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 // Common configuration for webpacker loaded from config/webpacker.yml
 
 const { join, resolve } = require('path')
