@@ -10,12 +10,15 @@ import ReposView from './ReposView'
 import * as Ajax from '../../../modules/Ajax'
 
 export default class App extends React.Component {
-  state = {
-    isSyncing: false,
-    isProcessingId: null,
-    filterTerm: null,
-    repos: [],
-    organizations: [],
+  constructor(props) {
+    super(props)
+    this.state = {
+      isSyncing: false,
+      isProcessingId: null,
+      filterTerm: null,
+      repos: [],
+      organizations: [],
+    }
   }
 
   fetchReposAndOrgs() {

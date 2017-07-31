@@ -5,10 +5,13 @@ import React from 'react'
 import UpdateAccountEmailMessage from './UpdateAccountEmailMessage'
 
 export default class UpdateAccountEmail extends React.Component {
-  state = {
-    emailAddress: null,
-    emailInput: null,
-    addressChanged: null
+  constructor(props) {
+    super(props)
+    this.state = {
+      emailAddress: null,
+      emailInput: null,
+      addressChanged: null
+    }
   }
 
   componentWillMount() {

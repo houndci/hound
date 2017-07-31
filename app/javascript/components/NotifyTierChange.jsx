@@ -8,7 +8,7 @@ import App from './NotifyTierChange/components/App'
 export default class NotifyTierChange extends React.Component {
   render() {
     return(
-      <App />
+      <App {...this.props} />
     )
   }
 }
