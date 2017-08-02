@@ -156,6 +156,9 @@ feature "Repo list", js: true do
     wait_for_ajax
 
     expect(owner.reload).to be_config_enabled
+    # JS testing is dark and full of terrors
+    # see https://stackoverflow.com/questions/15191304/capybara-testing-javascript-failure-to-refresh-count
+    page.find('body')
     expect(owner.reload.config_repo).
       to eq "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME"
   end
