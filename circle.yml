@@ -1,20 +1,32 @@
-machine:
-  services:
-    - redis
+version: 2
+jobs:
+  build:
+    working_directory: ~/hound
+    docker:
+      - image: circleci/ruby:2.3-node
+        environment:
+          RAILS_ENV: test
+      - image: circleci/postgres:9.5-alpine
+    steps:
+      - checkout
 
-  node:
-    version: 7.4.0
+      # Restore bundle cache
+      - type: cache-restore
+        key: rails-demo-{{ checksum "Gemfile.lock" }}
 
-  environment:
-    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
 
-dependencies:
-  override:
-    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
-    - yarn
-  cache_directories:
-    - ~/.cache/yarn
+      # Store bundle cache
+      - type: cache-save
+        key: rails-demo-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
 
-test:
-  override:
-    - bundle exec rake
+      # Database setup
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
+      # Run rspec in parallel
+      - type: shell
+        command: bundle exec rake
