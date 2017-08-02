@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-import UpdateAccountEmail from 'components/UpdateAccountEmail'
-import WebpackerReact from 'webpacker-react'
+import UpdateAccountEmail from 'components/UpdateAccountEmail';
+import WebpackerReact from 'webpacker-react';
 
-WebpackerReact.setup({UpdateAccountEmail})
+WebpackerReact.setup({UpdateAccountEmail});

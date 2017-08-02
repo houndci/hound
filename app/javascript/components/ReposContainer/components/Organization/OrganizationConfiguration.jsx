@@ -1,51 +1,51 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import classNames from 'classnames'
-import $ from 'jquery'
+import React from 'react';
+import classNames from 'classnames';
+import $ from 'jquery';
 
-import 'object-assign-shim'
+import 'object-assign-shim';
 
-import * as Ajax from '../../../../modules/Ajax'
+import * as Ajax from '../../../../modules/Ajax';
 
 export default class OrganizationConfiguration extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    let repo = ''
+    let repo = '';
 
     if (props.repo) {
-      repo = props.repo
+      repo = props.repo;
     }
 
-    this.state = { enabled: !!props.enabled, repo }
+    this.state = { enabled: !!props.enabled, repo };
   }
 
   setEnabled(enabled) {
-    this.setState({ enabled })
-    this.updateOwner({ config_enabled: enabled })
+    this.setState({ enabled });
+    this.updateOwner({ config_enabled: enabled });
   }
 
   setRepo(repo) {
-    this.setState({ repo })
-    this.updateOwner({ config_repo: repo })
+    this.setState({ repo });
+    this.updateOwner({ config_repo: repo });
   }
 
   handleChange(event) {
-    this.setRepo(event.target.value)
+    this.setRepo(event.target.value);
   }
 
   toggle() {
-    const enabled = !this.state.enabled
-    this.setEnabled(enabled)
+    const enabled = !this.state.enabled;
+    this.setEnabled(enabled);
   }
 
   updateOwner(options) {
     const currentState = {
       config_enabled: this.state.enabled,
       config_repo: this.state.repo,
-    }
-    Ajax.updateOwner(this.props.id, Object.assign({}, currentState, options))
+    };
+    Ajax.updateOwner(this.props.id, Object.assign({}, currentState, options));
   }
 
   renderRepoSelect() {
@@ -64,9 +64,9 @@ export default class OrganizationConfiguration extends React.Component {
             {this.renderRepoOptions()}
           </select>
         </div>
-      )
+      );
     } else {
-      return null
+      return null;
     }
   }
 
@@ -75,11 +75,11 @@ export default class OrganizationConfiguration extends React.Component {
       this.props.repos.map(repo => (
         <option key={repo.id} value={repo.name}>{repo.name}</option>
       ))
-    )
+    );
   }
 
   render() {
-    const switchId = `toggle-${this.props.id}`
+    const switchId = `toggle-${this.props.id}`;
     return (
       <div className='organization-header-config'>
         <div className='organization-header-toggle'>
@@ -101,6 +101,6 @@ export default class OrganizationConfiguration extends React.Component {
 
         {this.renderRepoSelect()}
       </div>
-    )
+    );
   }
 }

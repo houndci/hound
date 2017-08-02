@@ -1,27 +1,27 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import ReactAddonsUpdate from 'react-addons-update'
-import _ from 'lodash'
-import $ from 'jquery'
+import React from 'react';
+import ReactAddonsUpdate from 'react-addons-update';
+import _ from 'lodash';
+import $ from 'jquery';
 
-import RepoAllowance from './RepoAllowance'
-import RepoTools from './RepoTools'
-import ReposView from './ReposView'
+import RepoAllowance from './RepoAllowance';
+import RepoTools from './RepoTools';
+import ReposView from './ReposView';
 
-import * as Ajax from '../../../modules/Ajax'
-import { getCSRFfromHead } from '../../../modules/Utils'
+import * as Ajax from '../../../modules/Ajax';
+import { getCSRFfromHead } from '../../../modules/Utils';
 
 export default class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isSyncing: false,
       isProcessingId: null,
       filterTerm: null,
       repos: [],
       organizations: [],
-    }
+    };
   }
 
   componentWillMount() {
@@ -29,9 +29,9 @@ export default class App extends React.Component {
       headers: {
         "X-XSRF-Token": getCSRFfromHead()
       }
-    })
-    this.setState({isSyncing: true})
-    this.fetchReposAndOrgs()
+    });
+    this.setState({isSyncing: true});
+    this.fetchReposAndOrgs();
   }
 
   fetchReposAndOrgs() {
@@ -41,72 +41,72 @@ export default class App extends React.Component {
       dataType: "json",
       success: (data) => this.onFetchReposAndOrgsSuccess(data),
       error: () => {
-        alert("Your repos failed to load.")
+        alert("Your repos failed to load.");
       }
-    })
+    });
   }
 
   onFetchReposAndOrgsSuccess(data) {
     if (data.length === 0) {
-      this.onRefreshClicked()
+      this.onRefreshClicked();
     } else {
-      this.setState({repos: data})
+      this.setState({repos: data});
 
       const organizations = data.map( repo => {
         return (repo.owner || {
           name: this.orgName(repo.name)
-        })
-      })
+        });
+      });
       this.setState({
         organizations: _.uniqWith(organizations, _.isEqual)
-      })
+      });
 
-      this.setState({isSyncing: false})
+      this.setState({isSyncing: false});
     }
   }
 
   orgName(name) {
-    return _.split(name, "/")[0]
+    return _.split(name, "/")[0];
   }
 
   commitRepoToState(repo) {
-    const repoIdx = _.findIndex(this.state.repos, {id: repo.id})
+    const repoIdx = _.findIndex(this.state.repos, {id: repo.id});
 
     const newRepos = ReactAddonsUpdate(
       this.state.repos, {
         [repoIdx]: {$set: repo}
       }
-    )
-    this.setState({repos: newRepos})
+    );
+    this.setState({repos: newRepos});
   }
 
   deactivateSubscribedRepo(repo) {
     Ajax.deleteSubscription(repo).then( () => {
-      repo.active = false
-      repo.stripe_subscription_id = null
-      this.commitRepoToState(repo)
-      this.updateSubscribedRepoCount()
+      repo.active = false;
+      repo.stripe_subscription_id = null;
+      this.commitRepoToState(repo);
+      this.updateSubscribedRepoCount();
     }).catch( () => {
-      alert("Your repo could not be disabled.")
-    })
+      alert("Your repo could not be disabled.");
+    });
   }
 
   deactivateUnsubscribedRepo(repo) {
     Ajax.deactivateRepo(repo).then( () => {
-      repo.active = false
-      this.commitRepoToState(repo)
+      repo.active = false;
+      this.commitRepoToState(repo);
     }).catch( () => {
-      alert("Your repo could not be disabled.")
-    })
+      alert("Your repo could not be disabled.");
+    });
   }
 
   updateSubscribedRepoCount() {
     this.getUser().then(user => {
-      const subscribedRepoCount = user.subscribed_repo_count
-      const tierAllowance = user.plan_max
+      const subscribedRepoCount = user.subscribed_repo_count;
+      const tierAllowance = user.plan_max;
 
       if (subscribedRepoCount === 0) {
-        $("[data-role='allowance-container']").remove()
+        $("[data-role='allowance-container']").remove();
       } else if (subscribedRepoCount === 1 && $(".allowance").length === 0) {
         ReactDOM.render(
           <RepoAllowance
@@ -114,29 +114,29 @@ export default class App extends React.Component {
             tierAllowance={tierAllowance}
           />,
           $("[data-role='account-actions']")
-            .prepend("<li data-role='allowance-container'></li>")
-            .children()[0]
-        )
+          .prepend("<li data-role='allowance-container'></li>")
+          .children()[0]
+        );
       } else {
-        $("[data-role='subscribed-repo-count']").text(subscribedRepoCount)
-        $("[data-role='tier-allowance']").text(tierAllowance)
+        $("[data-role='subscribed-repo-count']").text(subscribedRepoCount);
+        $("[data-role='tier-allowance']").text(tierAllowance);
       }
-    })
+    });
   }
 
   activateAndTrackRepoSubscription(repo, stripeSubscriptionId) {
-    repo.active = true
-    repo.stripe_subscription_id = stripeSubscriptionId
-    this.trackRepoActivated(repo)
-    this.commitRepoToState(repo)
-    this.updateSubscribedRepoCount()
+    repo.active = true;
+    repo.stripe_subscription_id = stripeSubscriptionId;
+    this.trackRepoActivated(repo);
+    this.commitRepoToState(repo);
+    this.updateSubscribedRepoCount();
   }
 
   onSubscriptionError(repo, error) {
     if (error.status === 402) {
-      document.location.href = `/plans?repo_id=${repo.id}`
+      document.location.href = `/plans?repo_id=${repo.id}`;
     } else {
-      alert("Your subscription could not be activated.")
+      alert("Your subscription could not be activated.");
     }
   }
 
@@ -146,41 +146,41 @@ export default class App extends React.Component {
     }).then( resp => {
       this.activateAndTrackRepoSubscription(
         repo, resp.stripe_subscription_id
-      )
-    }).catch(error => this.onSubscriptionError(repo, error))
+      );
+    }).catch(error => this.onSubscriptionError(repo, error));
   }
 
   activateFreeRepo(repo) {
     Ajax.activateRepo(
       repo
     ).then( resp => {
-      repo.active = true
-      this.trackRepoActivated(repo)
-      this.commitRepoToState(repo)
+      repo.active = true;
+      this.trackRepoActivated(repo);
+      this.commitRepoToState(repo);
     }).catch( () => {
-      alert("Your repo could not be enabled.")
-    })
+      alert("Your repo could not be enabled.");
+    });
   }
 
   onRepoClicked(id) {
-    this.setState({isProcessingId: id})
-    const repo = _.find(this.state.repos, {id: id})
+    this.setState({isProcessingId: id});
+    const repo = _.find(this.state.repos, {id: id});
 
     if (repo.active) {
       if (repo.stripe_subscription_id) {
-        this.deactivateSubscribedRepo(repo)
+        this.deactivateSubscribedRepo(repo);
       } else {
-        this.deactivateUnsubscribedRepo(repo)
+        this.deactivateUnsubscribedRepo(repo);
       }
     } else {
       if (repo.price_in_cents > 0) {
-        this.createSubscriptionWithExistingCard(repo)
+        this.createSubscriptionWithExistingCard(repo);
       } else {
-        this.activateFreeRepo(repo)
+        this.activateFreeRepo(repo);
       }
     }
 
-    this.setState({isProcessingId: null})
+    this.setState({isProcessingId: null});
   }
 
   getUser() {
@@ -188,21 +188,21 @@ export default class App extends React.Component {
       url: "/user.json",
       type: "GET",
       dataType: "json",
-    })
+    });
   }
 
   handleSync() {
     this.getUser().then(data => {
       if (data.refreshing_repos) {
-        setTimeout(() => this.handleSync(), 1000)
+        setTimeout(() => this.handleSync(), 1000);
       } else {
-        this.fetchReposAndOrgs()
+        this.fetchReposAndOrgs();
       }
-    })
+    });
   }
 
   onRefreshClicked(event) {
-    this.setState({isSyncing: true})
+    this.setState({isSyncing: true});
 
     $.ajax({
       url: "/repo_syncs.json",
@@ -210,29 +210,29 @@ export default class App extends React.Component {
       dataType: "text", // to trigger success() on 201 and empty response
       success: () => this.handleSync(),
       error: () => {
-        this.setState({isSyncing: false})
-        alert("Your repos failed to sync.")
+        this.setState({isSyncing: false});
+        alert("Your repos failed to sync.");
       }
-    })
+    });
   }
 
   onPrivateClicked(event) {
-    $.post("/auth/github?access=full")
+    $.post("/auth/github?access=full");
   }
 
   onSearchInput(event) {
-    this.setState({filterTerm: event.target.value})
+    this.setState({filterTerm: event.target.value});
   }
 
   trackRepoActivated(repo) {
-    let eventName = null, price = null
+    let eventName = null, price = null;
 
     if (repo.private) {
-      eventName = "Private Repo Activated"
-      price = repo.price_in_cents / 100
+      eventName = "Private Repo Activated";
+      price = repo.price_in_cents / 100;
     } else {
-      eventName = "Public Repo Activated"
-      price = 0.0
+      eventName = "Public Repo Activated";
+      price = 0.0;
     }
 
     window.analytics.track(eventName, {
@@ -240,11 +240,11 @@ export default class App extends React.Component {
         name: repo.name,
         revenue: price
       }
-    })
+    });
   }
 
   render() {
-    const { has_private_access } = this.props
+    const { has_private_access } = this.props;
 
     return (
       <div>
@@ -264,6 +264,6 @@ export default class App extends React.Component {
           isProcessingId={this.state.isProcessingId}
          />
       </div>
-    )
+    );
   }
 }

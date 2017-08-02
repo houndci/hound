@@ -1,21 +1,21 @@
-import React from 'react'
+import React from 'react';
 
-import Repo from './../../Repo'
+import Repo from './../../Repo';
 
 export default class PopulatedRepoList extends React.Component {
   canShow(repo) {
-    const { filterTerm } = this.props
+    const { filterTerm } = this.props;
 
     if (filterTerm === null) {
-      return true
+      return true;
     } else {
-      const repoName = repo.name.toLowerCase()
-      return repoName.indexOf(filterTerm.toLowerCase()) !== -1
+      const repoName = repo.name.toLowerCase();
+      return repoName.indexOf(filterTerm.toLowerCase()) !== -1;
     }
   }
 
   render() {
-    const { repos, onRepoClicked, isProcessingId } = this.props
+    const { repos, onRepoClicked, isProcessingId } = this.props;
 
     return (
       <ul className="repos">
@@ -28,6 +28,6 @@ export default class PopulatedRepoList extends React.Component {
           />
         ))}
       </ul>
-    )
+    );
   }
 }

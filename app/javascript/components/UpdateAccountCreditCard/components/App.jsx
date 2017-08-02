@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import $ from 'jquery'
+import React from 'react';
+import $ from 'jquery';
 
-import { getCSRFfromHead } from '../../../modules/Utils'
+import { getCSRFfromHead } from '../../../modules/Utils';
 
 export default class UpdateAccountCreditCard extends React.Component {
   componentWillMount() {
@@ -11,7 +11,7 @@ export default class UpdateAccountCreditCard extends React.Component {
       headers: {
         "X-XSRF-Token": getCSRFfromHead()
       }
-    })
+    });
   }
 
   updateCustomerCreditCard(stripeToken) {
@@ -20,11 +20,11 @@ export default class UpdateAccountCreditCard extends React.Component {
       type: "PUT",
       data: { card_token: stripeToken.id },
       dataType: "json"
-    })
+    });
   }
 
   onUpdateCreditCard(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     StripeCheckout.configure({
       key: Hound.settings.stripePublishableKey,
@@ -34,7 +34,7 @@ export default class UpdateAccountCreditCard extends React.Component {
       email: $("input[type=email]").attr("placeholder"),
       panelLabel: "Update Card",
       allowRememberMe: false
-    })
+    });
   }
 
   render() {
@@ -46,11 +46,11 @@ export default class UpdateAccountCreditCard extends React.Component {
             Update Credit Card
           </a>
         </h3>
-      )
+      );
     } else {
       return (
         <h3>Monthly Billing</h3>
-      )
+      );
     }
   }
 }

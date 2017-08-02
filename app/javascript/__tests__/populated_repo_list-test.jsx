@@ -1,9 +1,11 @@
-import PopulatedRepoList from '../components/ReposContainer/components/Organization/RepoList/PopulatedRepoList'
+/*jshint esversion: 6 */
+
+import PopulatedRepoList from '../components/ReposContainer/components/Organization/RepoList/PopulatedRepoList';
 
 it('renders a list of repos appropriately', () => {
   const organizations = [
     { id: 1, name: "Test org" }
-  ]
+  ];
   const repos = [
     {
       id: 1,
@@ -12,7 +14,7 @@ it('renders a list of repos appropriately', () => {
         id: 1
       }
     }
-  ]
+  ];
 
   const wrapper = shallow(
     <PopulatedRepoList
@@ -21,8 +23,8 @@ it('renders a list of repos appropriately', () => {
       isProcessingId={null}
       filterTerm={null}
     />
-  )
-  expect(wrapper).toMatchSnapshot()
+  );
+  expect(wrapper).toMatchSnapshot();
 
   const wrapper2 = shallow(
     <PopulatedRepoList
@@ -31,16 +33,16 @@ it('renders a list of repos appropriately', () => {
       isProcessingId={null}
       filterTerm={""}
     />
-  )
-  expect(wrapper2).toMatchSnapshot()
-})
+  );
+  expect(wrapper2).toMatchSnapshot();
+});
 
 it('filters a list of repos appropriately', () => {
   const organizations = [
     { name: "S.H.I.E.L.D." },
     { name: "H.A.M.M.E.R." },
     { name: "Hydra" },
-  ]
+  ];
   const repos = [
     {
       id: 666,
@@ -54,7 +56,7 @@ it('filters a list of repos appropriately', () => {
       id: 302,
       name: "H.A.M.M.E.R./iron_man_suit_knockoff",
     }
-  ]
+  ];
 
   const wrapper = shallow(
     <PopulatedRepoList
@@ -63,6 +65,6 @@ it('filters a list of repos appropriately', () => {
       isProcessingId={null}
       filterTerm={"Hydra"}
     />
-  )
-  expect(wrapper).toMatchSnapshot()
-})
+  );
+  expect(wrapper).toMatchSnapshot();
+});

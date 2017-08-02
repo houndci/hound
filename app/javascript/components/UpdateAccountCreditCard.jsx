@@ -1,15 +1,14 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import ReactAddonsUpdate from 'react-addons-update'
+import React from 'react';
 
-import App from './UpdateAccountCreditCard/components/App'
+import App from './UpdateAccountCreditCard/components/App';
 
 export default class UpdateAccountCreditCard extends React.Component {
   render() {
     return(
       <App {...this.props} />
-    )
+    );
   }
 }
 

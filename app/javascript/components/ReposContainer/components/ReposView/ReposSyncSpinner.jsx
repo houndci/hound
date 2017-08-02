@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
 export default class ReposSyncSpinner extends React.Component {
   render() {

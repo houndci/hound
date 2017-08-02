@@ -1,10 +1,10 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
-import RepoToolsSearch from './RepoTools/RepoToolsSearch'
-import RepoToolsRefresh from './RepoTools/RepoToolsRefresh'
-import RepoToolsPrivate from './RepoTools/RepoToolsPrivate'
+import RepoToolsSearch from './RepoTools/RepoToolsSearch';
+import RepoToolsRefresh from './RepoTools/RepoToolsRefresh';
+import RepoToolsPrivate from './RepoTools/RepoToolsPrivate';
 
 export default class RepoTools extends React.Component {
   render() {
@@ -13,7 +13,7 @@ export default class RepoTools extends React.Component {
       showPrivateButton,
       isSyncing,
       onRefreshClicked,
-    } = this.props
+    } = this.props;
 
     return (
       <div className="repo-tools">
@@ -24,6 +24,6 @@ export default class RepoTools extends React.Component {
           onRefreshClicked={onRefreshClicked}
         />
       </div>
-    )
+    );
   }
 }

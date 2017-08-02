@@ -1,55 +1,55 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import _ from 'lodash'
+import React from 'react';
+import _ from 'lodash';
 
-import { getCSRFfromHead } from '../../../modules/Utils'
-import UpgradeSubscriptionLink from './UpgradeSubscriptionLink'
-import TierPlan from './TierPlan'
+import { getCSRFfromHead } from '../../../modules/Utils';
+import UpgradeSubscriptionLink from './UpgradeSubscriptionLink';
+import TierPlan from './TierPlan';
 
 export default class App extends React.Component {
   getCurrentPlan() {
-    return this.getPlan(this.getCurrentPlanIndex())
+    return this.getPlan(this.getCurrentPlanIndex());
   }
 
   getCurrentPlanIndex() {
-    return _.findIndex(this.getPlans(), { current: true })
+    return _.findIndex(this.getPlans(), { current: true });
   }
 
   getCurrentPrice() {
-    return this.getCurrentPlan().price
+    return this.getCurrentPlan().price;
   }
 
   getExtraCharge() {
-    return this.getNewPrice() - this.getCurrentPrice()
+    return this.getNewPrice() - this.getCurrentPrice();
   }
 
   getNewPlan() {
-    return this.getPlan(this.getCurrentPlanIndex() + 1)
+    return this.getPlan(this.getCurrentPlanIndex() + 1);
   }
 
   getNewPrice() {
-    return this.getNewPlan().price
+    return this.getNewPlan().price;
   }
 
   getPlan(id) {
-    return this.getPlans()[id]
+    return this.getPlans()[id];
   }
 
   getPlans() {
-    return this.props.plans
+    return this.props.plans;
   }
 
   getTierUsage() {
-    return this.getCurrentPlan().allowance
+    return this.getCurrentPlan().allowance;
   }
 
   isCurrentPlan(plan) {
-    return plan === this.getCurrentPlan()
+    return plan === this.getCurrentPlan();
   }
 
   isNewPlan(plan) {
-    return plan === this.getNewPlan()
+    return plan === this.getNewPlan();
   }
 
   renderTierPlans() {
@@ -62,7 +62,7 @@ export default class App extends React.Component {
           plan={plan}
         />
       ))
-    )
+    );
   }
 
   render() {
@@ -71,9 +71,9 @@ export default class App extends React.Component {
       repo_id,
       repo_name,
       user_has_card,
-    } = this.props
+    } = this.props;
 
-    const tierUsage = this.getTierUsage()
+    const tierUsage = this.getTierUsage();
 
     return (
       <section className="tier-change-container">
@@ -107,6 +107,6 @@ export default class App extends React.Component {
           <a className="button tier-change-cancel" href="/repos">Cancel</a>
         </div>
       </section>
-  )
+    );
   }
 }

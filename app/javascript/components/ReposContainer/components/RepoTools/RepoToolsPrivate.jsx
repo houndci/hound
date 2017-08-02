@@ -1,10 +1,10 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
 export default class RepoToolsPrivate extends React.Component {
   render() {
-    const { onPrivateClicked } = this.props
+    const { onPrivateClicked } = this.props;
 
     return (
       <div className="repo-tools-private">
@@ -18,6 +18,6 @@ export default class RepoToolsPrivate extends React.Component {
           </button>
         </form>
       </div>
-    )
+    );
   }
 }

@@ -1,9 +1,11 @@
-import ReposView from '../components/ReposContainer/components/ReposView'
+/*jshint esversion: 6 */
+
+import ReposView from '../components/ReposContainer/components/ReposView';
 
 it('renders appropriately', () => {
   const organizations = [
     { id: 1, name: "Test org" }
-  ]
+  ];
   const repos = [
     {
       id: 1,
@@ -12,7 +14,7 @@ it('renders appropriately', () => {
         id: 1
       }
     }
-  ]
+  ];
 
   const wrapper = shallow(
     <ReposView
@@ -23,6 +25,6 @@ it('renders appropriately', () => {
       onRepoClicked={(event) => onRepoClicked}
       isProcessingId={null}
      />
-  )
-  expect(wrapper).toMatchSnapshot()
-})
+  );
+  expect(wrapper).toMatchSnapshot();
+});

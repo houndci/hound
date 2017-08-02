@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
 export default class RepoToolsSearch extends React.Component {
   render() {
@@ -13,6 +13,6 @@ export default class RepoToolsSearch extends React.Component {
           onChange={this.props.onSearchInput}
         />
       </div>
-    )
+    );
   }
 }

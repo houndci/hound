@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-import $ from 'jquery'
+import $ from 'jquery';
 
 export function createSubscription(subscriptionOptions) {
   return $.ajax({
@@ -8,7 +8,7 @@ export function createSubscription(subscriptionOptions) {
     type: "POST",
     data: subscriptionOptions,
     dataType: "json"
-  })
+  });
 }
 
 export function deleteSubscription(repo) {
@@ -16,7 +16,7 @@ export function deleteSubscription(repo) {
     url: `/repos/${repo.id}/subscription`,
     type: "DELETE",
     dataType: "json"
-  })
+  });
 }
 
 export function deactivateRepo(repo) {
@@ -24,7 +24,7 @@ export function deactivateRepo(repo) {
     url: `/repos/${repo.id}/deactivation`,
     type: "POST",
     dataType: "text"
-  })
+  });
 }
 
 export function activateRepo(repo) {
@@ -32,7 +32,7 @@ export function activateRepo(repo) {
     url: `/repos/${repo.id}/activation`,
     type: "POST",
     dataType: "text"
-  })
+  });
 }
 
 export function updateOwner(id, params) {
@@ -41,7 +41,7 @@ export function updateOwner(id, params) {
     type: "PUT",
     dataType: "json",
     data: { owner: params }
-  })
+  });
 }
 
 export function upgradeSubscription(id, params) {
@@ -51,8 +51,8 @@ export function upgradeSubscription(id, params) {
     dataType: "json",
     data: params,
     success: () => {
-      document.location.href = "/repos"
+      document.location.href = "/repos";
     }
-  })
+  });
 }
 

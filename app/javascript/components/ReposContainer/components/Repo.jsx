@@ -1,15 +1,15 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import classNames from 'classnames'
+import React from 'react';
+import classNames from 'classnames';
 
-import RepoActivationButton from './Repo/RepoActivationButton'
-import RepoDeactivationButton from './Repo/RepoDeactivationButton'
+import RepoActivationButton from './Repo/RepoActivationButton';
+import RepoDeactivationButton from './Repo/RepoDeactivationButton';
 
 export default class Repo extends React.Component {
   renderButton() {
-    const { isProcessingId, repo, onRepoClicked } = this.props
-    const { active } = repo
+    const { isProcessingId, repo, onRepoClicked } = this.props;
+    const { active } = repo;
 
     if (active) {
       return (
@@ -18,7 +18,7 @@ export default class Repo extends React.Component {
           onRepoClicked={onRepoClicked}
           isProcessingId={isProcessingId}
         />
-      )
+      );
     } else {
       return (
         <RepoActivationButton
@@ -26,14 +26,14 @@ export default class Repo extends React.Component {
           onRepoClicked={onRepoClicked}
           isProcessingId={isProcessingId}
         />
-      )
+      );
     }
   }
 
   render() {
-    const { isProcessingId, repo } = this.props
-    const { active, id, name, price_in_cents } = repo
-    const showPrivate = price_in_cents > 0
+    const { isProcessingId, repo } = this.props;
+    const { active, id, name, price_in_cents } = repo;
+    const showPrivate = price_in_cents > 0;
 
     return (
       <li
@@ -58,7 +58,7 @@ export default class Repo extends React.Component {
           {this.renderButton()}
         </div>
       </li>
-    )
+    );
   }
 }
 

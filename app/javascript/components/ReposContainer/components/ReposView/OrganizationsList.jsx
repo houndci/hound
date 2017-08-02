@@ -1,25 +1,25 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import _ from 'lodash'
+import React from 'react';
+import _ from 'lodash';
 
-import Organization from '../Organization'
+import Organization from '../Organization';
 
 export default class OrganizationsList extends React.Component {
   reposForOrg(org) {
     if (_.has(org, "id")) {
       return _.filter(this.props.repos, (repo) => {
-        return repo.owner.id === org.id
-      })
+        return repo.owner.id === org.id;
+      });
     } else {
       return _.filter(this.props.repos, (repo) => {
-        return this.orgName(repo.name) === org.name
-      })
+        return this.orgName(repo.name) === org.name;
+      });
     }
   }
 
   orgName(name) {
-    return _.split(name, "/")[0]
+    return _.split(name, "/")[0];
   }
 
   render() {
@@ -29,7 +29,7 @@ export default class OrganizationsList extends React.Component {
       filterTerm,
       isProcessingId,
       organizations,
-    } = this.props
+    } = this.props;
 
     return (
       <section className="organizations">
@@ -47,6 +47,6 @@ export default class OrganizationsList extends React.Component {
           />
         ))}
       </section>
-    )
+    );
   }
 }

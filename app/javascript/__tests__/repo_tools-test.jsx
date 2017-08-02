@@ -1,7 +1,9 @@
-import RepoTools from '../components/ReposContainer/components/RepoTools'
+/*jshint esversion: 6 */
+
+import RepoTools from '../components/ReposContainer/components/RepoTools';
 
 it('renders appropriately without Show Private button (not syncing)', () => {
-  const has_private_access = true
+  const has_private_access = true;
 
   const wrapper = shallow(
     <RepoTools
@@ -11,12 +13,12 @@ it('renders appropriately without Show Private button (not syncing)', () => {
       onPrivateClicked={(event) => jest.fn()}
       isSyncing={false}
     />
-  )
-  expect(wrapper).toMatchSnapshot()
-})
+  );
+  expect(wrapper).toMatchSnapshot();
+});
 
 it('renders appropriately with Show Private button (not syncing)', () => {
-  const has_private_access = false
+  const has_private_access = false;
 
   const wrapper = shallow(
     <RepoTools
@@ -26,6 +28,6 @@ it('renders appropriately with Show Private button (not syncing)', () => {
       onPrivateClicked={(event) => jest.fn()}
       isSyncing={false}
     />
-  )
-  expect(wrapper).toMatchSnapshot()
-})
+  );
+  expect(wrapper).toMatchSnapshot();
+});

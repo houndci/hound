@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
-import OrganizationConfiguration from "./Organization/OrganizationConfiguration"
-import RepoList from './Organization/RepoList'
+import OrganizationConfiguration from "./Organization/OrganizationConfiguration";
+import RepoList from './Organization/RepoList';
 
 export default class Organization extends React.Component {
   render() {
@@ -16,7 +16,7 @@ export default class Organization extends React.Component {
       configRepo,
       filterTerm,
       ownerId,
-    } = this.props
+    } = this.props;
 
     return (
       <div className="organization" data-org-name={name}>
@@ -39,6 +39,6 @@ export default class Organization extends React.Component {
           />
         </section>
       </div>
-    )
+    );
   }
 }

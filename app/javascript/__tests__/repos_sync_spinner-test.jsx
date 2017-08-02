@@ -1,8 +1,10 @@
-import ReposSyncSpinner from '../components/ReposContainer/components/ReposView/ReposSyncSpinner'
+/*jshint esversion: 6 */
+
+import ReposSyncSpinner from '../components/ReposContainer/components/ReposView/ReposSyncSpinner';
 
 it('renders appropriately', () => {
   const wrapper = shallow(
     <ReposSyncSpinner />
-  )
-  expect(wrapper).toMatchSnapshot()
-})
+  );
+  expect(wrapper).toMatchSnapshot();
+});

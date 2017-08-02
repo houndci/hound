@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
-import EmptyRepoList from './RepoList/EmptyRepoList'
-import PopulatedRepoList from './RepoList/PopulatedRepoList'
+import EmptyRepoList from './RepoList/EmptyRepoList';
+import PopulatedRepoList from './RepoList/PopulatedRepoList';
 
 export default class RepoList extends React.Component {
   render() {
@@ -12,7 +12,7 @@ export default class RepoList extends React.Component {
       onRepoClicked,
       isProcessingId,
       filterTerm,
-    } = this.props
+    } = this.props;
 
     if (repos.length > 0) {
       return (
@@ -22,11 +22,11 @@ export default class RepoList extends React.Component {
           isProcessingId={isProcessingId}
           filterTerm={filterTerm}
         />
-      )
+      );
     } else {
       return (
         <EmptyRepoList />
-      )
+      );
     }
   }
 }

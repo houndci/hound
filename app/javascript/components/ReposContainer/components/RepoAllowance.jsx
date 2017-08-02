@@ -1,10 +1,10 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
 export default class RepoAllowance extends React.Component {
   render() {
-    const { subscribedRepoCount, tierAllowance } = this.props
+    const { subscribedRepoCount, tierAllowance } = this.props;
 
     return(
       <div className="allowance">
@@ -15,6 +15,6 @@ export default class RepoAllowance extends React.Component {
           <span data-role="tier-allowance">{tierAllowance}</span>
         </strong>
       </div>
-    )
+    );
   }
 }

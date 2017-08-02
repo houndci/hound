@@ -1,18 +1,18 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
 export default class RepoToolsRefresh extends React.Component {
   buttonText(isSyncing) {
     if (isSyncing) {
-      return Hound.settings.syncingButtonText
+      return Hound.settings.syncingButtonText;
     } else {
-      return Hound.settings.syncNowButtonText
+      return Hound.settings.syncNowButtonText;
     }
   }
 
   render() {
-    const { isSyncing, onRefreshClicked } = this.props
+    const { isSyncing, onRefreshClicked } = this.props;
 
     return (
       <div className="repo-tools-refresh">
@@ -24,6 +24,6 @@ export default class RepoToolsRefresh extends React.Component {
           <span>{this.buttonText(isSyncing)}</span>
         </button>
       </div>
-    )
+    );
   }
 }

@@ -1,33 +1,33 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
 export default class RepoDeactivationButton extends React.Component {
   constructor() {
-    super()
+    super();
 
-    this.state = { buttonText: "Active" }
+    this.state = { buttonText: "Active" };
   }
 
   onMouseOutButton() {
-    this.setState({ buttonText: "Active" })
+    this.setState({ buttonText: "Active" });
   }
 
   onMouseOverButton() {
-    this.setState({ buttonText: "Deactivate" })
+    this.setState({ buttonText: "Deactivate" });
   }
 
   getDisabledState() {
-    const { isProcessingId, repo } = this.props
-    const { id } = repo
+    const { isProcessingId, repo } = this.props;
+    const { id } = repo;
 
-    return (isProcessingId === id) ? "disabled" : null
+    return (isProcessingId === id) ? "disabled" : null;
   }
 
   render() {
-    const { buttonText } = this.state
-    const { repo, onRepoClicked } = this.props
-    const { admin, id } = repo
+    const { buttonText } = this.state;
+    const { repo, onRepoClicked } = this.props;
+    const { admin, id } = repo;
 
     if (admin) {
       return (
@@ -40,13 +40,13 @@ export default class RepoDeactivationButton extends React.Component {
         >
           {buttonText}
         </button>
-      )
+      );
     } else {
       return (
         <div className="repo-restricted">
           Only repo admins can activate
         </div>
-      )
+      );
     }
   }
 }

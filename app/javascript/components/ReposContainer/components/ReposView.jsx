@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
+import React from 'react';
 
-import ReposSyncSpinner from './ReposView/ReposSyncSpinner'
-import OrganizationsList from './ReposView/OrganizationsList'
+import ReposSyncSpinner from './ReposView/ReposSyncSpinner';
+import OrganizationsList from './ReposView/OrganizationsList';
 
 export default class ReposView extends React.Component {
   render() {
@@ -14,12 +14,12 @@ export default class ReposView extends React.Component {
       filterTerm,
       onRepoClicked,
       isProcessingId
-    } = this.props
+    } = this.props;
 
     if (isSyncing) {
       return (
         <ReposSyncSpinner/>
-      )
+      );
     } else {
       return (
         <OrganizationsList
@@ -29,7 +29,7 @@ export default class ReposView extends React.Component {
           onRepoClicked={onRepoClicked}
           isProcessingId={isProcessingId}
         />
-      )
+      );
     }
   }
 }

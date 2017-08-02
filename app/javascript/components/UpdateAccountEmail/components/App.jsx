@@ -1,19 +1,19 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import $ from 'jquery'
+import React from 'react';
+import $ from 'jquery';
 
-import { getCSRFfromHead } from '../../../modules/Utils'
-import UpdateAccountEmailMessage from './UpdateAccountEmailMessage'
+import { getCSRFfromHead } from '../../../modules/Utils';
+import UpdateAccountEmailMessage from './UpdateAccountEmailMessage';
 
 export default class UpdateAccountEmail extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       emailAddress: null,
       emailInput: null,
       addressChanged: null
-    }
+    };
   }
 
   componentWillMount() {
@@ -21,11 +21,11 @@ export default class UpdateAccountEmail extends React.Component {
       headers: {
         "X-XSRF-Token": getCSRFfromHead()
       }
-    })
+    });
   }
 
   onUpdateEmail(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     $.ajax({
       url: "/account.json",
@@ -33,16 +33,16 @@ export default class UpdateAccountEmail extends React.Component {
       data: { billable_email: this.state.emailInput },
       dataType: "text",
       success: () => {
-        this.setState({ addressChanged: true })
+        this.setState({ addressChanged: true });
       },
       error: () => {
-        this.setState({ addressChanged: false })
+        this.setState({ addressChanged: false });
       }
-    })
+    });
   }
 
   render() {
-    const placeholder = this.state.emailAddress || this.props.billable_email
+    const placeholder = this.state.emailAddress || this.props.billable_email;
 
     return (
       <article className="account-details">
@@ -73,6 +73,6 @@ export default class UpdateAccountEmail extends React.Component {
           </div>
         </form>
       </article>
-    )
+    );
   }
 }

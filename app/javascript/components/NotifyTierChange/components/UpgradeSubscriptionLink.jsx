@@ -1,10 +1,10 @@
 /*jshint esversion: 6 */
 
-import React from 'react'
-import $ from 'jquery'
+import React from 'react';
+import $ from 'jquery';
 
-import * as Ajax from '../../../modules/Ajax'
-import { getCSRFfromHead } from '../../../modules/Utils'
+import * as Ajax from '../../../modules/Ajax';
+import { getCSRFfromHead } from '../../../modules/Utils';
 
 export default class UpgradeSubscriptionLink extends React.Component {
   componentWillMount() {
@@ -12,27 +12,27 @@ export default class UpgradeSubscriptionLink extends React.Component {
       headers: {
         "X-XSRF-Token": getCSRFfromHead()
       }
-    })
+    });
   }
 
   upgradeWithNewCard(token) {
-    const { repoId } = this.props
-    Ajax.upgradeSubscription(repoId, { card_token: token.id })
+    const { repoId } = this.props;
+    Ajax.upgradeSubscription(repoId, { card_token: token.id });
   }
 
   checkout() {
-    const { stripePublishableKey, iconPath } = Hound.settings
+    const { stripePublishableKey, iconPath } = Hound.settings;
 
     return StripeCheckout.configure({
       key: stripePublishableKey,
       image: iconPath,
       token: (token) => this.upgradeWithNewCard(token),
-    })
+    });
   }
 
   showCreditCardForm() {
-    const { userEmailAddress } = Hound.settings
-    const { price, title } = this.props.nextTier
+    const { userEmailAddress } = Hound.settings;
+    const { price, title } = this.props.nextTier;
 
     this.checkout().open({
       name: title,
@@ -40,16 +40,16 @@ export default class UpgradeSubscriptionLink extends React.Component {
       email: userEmailAddress,
       panelLabel: "{{amount}} per month",
       allowRememberMe: false
-    })
+    });
   }
 
   handleClick() {
-    const { repoId, userHasCard } = this.props
+    const { repoId, userHasCard } = this.props;
 
     if (userHasCard) {
-      Ajax.upgradeSubscription(repoId)
+      Ajax.upgradeSubscription(repoId);
     } else {
-      this.showCreditCardForm()
+      this.showCreditCardForm();
     }
   }
 
@@ -60,6 +60,6 @@ export default class UpgradeSubscriptionLink extends React.Component {
         href="javascript:void(0)"
         onClick={() => this.handleClick()}
       >Upgrade</a>
-    )
+    );
   }
 }
