@@ -13,6 +13,7 @@ jobs:
           POSTGRES_USER: houndci
           POSTGRES_DB: houndci-test
           POSTGRES_PASSWORD: ""
+      - image: redis:3.2.10-alpine
     steps:
       - checkout
 
@@ -20,9 +21,12 @@ jobs:
       - type: cache-restore
         key: houndci-{{ checksum "Gemfile.lock" }}
 
+      # Restore yarn cache
+      - type: cache-restore
+        key: houndci-yarn-{{ checksum "yarn.lock" }}
 
       # Install System Dependencies (for capybara-webkit)
-      - run: sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x xvfb
+      - run: sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
 
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
@@ -44,6 +48,9 @@ jobs:
 
       # Wait for DB
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      # Wait for Redis
+      - run: dockerize -wait tcp://localhost:6379 -timeout 1m
 
       # Database setup
       - run: bundle exec rake db:create
