@@ -26,8 +26,18 @@ jobs:
         name: Restore yarn cache
         key: houndci-yarn-{{ checksum "yarn.lock" }}
 
+      - type: cache-restore
+        name: Restore apt cache
+        key: houndci-apt-{{ checksum "Gemfile.lock" }}
+
+      # create apt cache folder if not existing
+      - run: mkdir -p ~/.cache/apt
+
+      # Install System Dependencies from cache (for capybara-webkit)
+      - run: sudo dpkg -i ~/.cache/apt/*.deb
+
       # Install System Dependencies (for capybara-webkit)
-      - run: sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+      - run: sudo apt-get install -o=dir::cache=~/.cache/apt qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
 
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
@@ -46,6 +56,12 @@ jobs:
         key: houndci-yarn-{{ checksum "yarn.lock" }}
         paths:
           - ~/.cache/yarn
+
+      - type: cache-save
+        name: Store apt cache
+        key: houndci-apt-{{ checksum "Gemfile.lock" }}
+        paths:
+          - ~/.cache/apt
 
       # Wait for DB
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
