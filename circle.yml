@@ -30,14 +30,11 @@ jobs:
         name: Restore apt cache
         key: houndci-apt-{{ checksum "Gemfile.lock" }}
 
-      # create apt cache folder if not existing
-      - run: mkdir -p ~/.cache/apt
-
       # Install System Dependencies from cache (for capybara-webkit)
-      - run: sudo dpkg -i ~/.cache/apt/*.deb
+      - run: sudo dpkg -i /home/circleci/.cache/apt/archives/*.deb || true
 
       # Install System Dependencies (for capybara-webkit)
-      - run: sudo apt-get install -o=dir::cache=~/.cache/apt qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+      - run: mkdir -p /home/circleci/.cache/apt/archives/partial && touch /home/circleci/.cache/apt/archives/lock && chmod 640 /home/circleci/.cache/apt/archives/lock && sudo apt-get install -o=dir::cache=/home/circleci/.cache/apt qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
 
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
