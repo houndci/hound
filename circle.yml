@@ -6,6 +6,7 @@ jobs:
       - image: circleci/ruby:2.3-node
         environment:
           RAILS_ENV: test
+          CIRCLECI: true
           PGHOST: 127.0.0.1
           PGUSER: houndci
       - image: circleci/postgres:9.5-alpine
