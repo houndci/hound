@@ -45,7 +45,7 @@ jobs:
         name: Store yarn cache
         key: houndci-yarn-{{ checksum "yarn.lock" }}
         paths:
-          - ~/.yarn-cache
+          - ~/.cache/yarn
 
       # Wait for DB
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
