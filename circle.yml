@@ -40,7 +40,7 @@ jobs:
       - run: bundle install --path vendor/bundle
 
       # Yarn install
-      - run: yarn install
+      - run: yarn config set yarn-offline-mirror ~/.cache/yarn && yarn install
 
       - type: cache-save
         name: Store bundle cache
