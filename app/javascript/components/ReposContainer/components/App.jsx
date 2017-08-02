@@ -250,9 +250,9 @@ export default class App extends React.Component {
       <div>
         <RepoTools
           showPrivateButton={!has_private_access}
-          onSearchInput={this.onSearchInput.bind(this)}
-          onRefreshClicked={this.onRefreshClicked.bind(this)}
-          onPrivateClicked={this.onPrivateClicked}
+          onSearchInput={(event) => this.onSearchInput(event)}
+          onRefreshClicked={(event) => this.onRefreshClicked(event)}
+          onPrivateClicked={(event) => this.onPrivateClicked(event)}
           isSyncing={this.state.isSyncing}
         />
         <ReposView
@@ -260,7 +260,7 @@ export default class App extends React.Component {
           organizations={this.state.organizations}
           repos={this.state.repos}
           filterTerm={this.state.filterTerm}
-          onRepoClicked={this.onRepoClicked.bind(this)}
+          onRepoClicked={(event) => this.onRepoClicked(event)}
           isProcessingId={this.state.isProcessingId}
          />
       </div>

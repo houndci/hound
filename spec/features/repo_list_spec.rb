@@ -147,6 +147,7 @@ feature "Repo list", js: true do
     create(:repo, owner: owner)
 
     sign_in_as(user)
+
     find(".toggle-switch").click
     wait_for_ajax
 

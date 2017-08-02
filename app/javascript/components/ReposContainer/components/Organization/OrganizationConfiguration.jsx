@@ -4,6 +4,8 @@ import React from 'react'
 import classNames from 'classnames'
 import $ from 'jquery'
 
+import 'object-assign-shim'
+
 import * as Ajax from '../../../../modules/Ajax'
 
 export default class OrganizationConfiguration extends React.Component {
@@ -56,7 +58,7 @@ export default class OrganizationConfiguration extends React.Component {
 
           <select
             className='organization-header-select'
-            onChange={() => this.handleChange()}
+            onChange={(event) => this.handleChange(event)}
             value={this.state.repo}
           >
             {this.renderRepoOptions()}
