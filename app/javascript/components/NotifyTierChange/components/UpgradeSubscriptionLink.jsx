@@ -4,10 +4,15 @@ import React from 'react'
 import $ from 'jquery'
 
 import * as Ajax from '../../../modules/Ajax'
+import { getCSRFfromHead } from '../../../modules/Utils'
 
 export default class UpgradeSubscriptionLink extends React.Component {
   componentWillMount() {
-    $.ajaxSetup({ headers: { "X-XSRF-Token": this.props.authenticityToken } })
+    $.ajaxSetup({
+      headers: {
+        "X-XSRF-Token": getCSRFfromHead()
+      }
+    })
   }
 
   upgradeWithNewCard(token) {
