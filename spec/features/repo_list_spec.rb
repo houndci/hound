@@ -155,6 +155,7 @@ feature "Repo list", js: true do
       select("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
     wait_for_ajax
 
+    page.find("body")
     expect(owner.reload).to be_config_enabled
     # JS testing is dark and full of terrors
     # see https://stackoverflow.com/questions/15191304/capybara-testing-javascript-failure-to-refresh-count
