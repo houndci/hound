@@ -160,7 +160,7 @@ feature "Repo list", js: true do
     owner.reload && page.find("body")
     expect(owner).to be_config_enabled
 
-    sleep 2 if ENV['CIRCLECI']
+    sleep 2 if ENV["CIRCLECI"]
 
     owner.reload && page.find("body")
     expect(owner.reload.config_repo).
