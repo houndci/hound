@@ -21,8 +21,8 @@ jobs:
         key: houndci-{{ checksum "Gemfile.lock" }}
 
 
-      # Install System Dependencies
-      - run: sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+      # Install System Dependencies (for capybara-webkit)
+      - run: sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x xvfb
 
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
@@ -51,4 +51,4 @@ jobs:
 
       # Run rspec in parallel
       - type: shell
-        command: bundle exec rake
+        command: xvfb-run --auto-servernum bundle exec rake
