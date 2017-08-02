@@ -18,12 +18,12 @@ jobs:
     steps:
       - checkout
 
-      # Restore bundle cache
       - type: cache-restore
+        name: Restore bundle cache
         key: houndci-{{ checksum "Gemfile.lock" }}
 
-      # Restore yarn cache
       - type: cache-restore
+        name: Restore yarn cache
         key: houndci-yarn-{{ checksum "yarn.lock" }}
 
       # Install System Dependencies (for capybara-webkit)
@@ -35,8 +35,8 @@ jobs:
       # Yarn install
       - run: yarn install
 
-      # Store bundle cache
       - type: cache-save
+        name: Store bundle cache
         key: houndci-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
