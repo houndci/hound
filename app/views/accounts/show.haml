@@ -8,20 +8,20 @@
       Plans
 
     - @account_page.plans.each do |plan|
-      = render("shared/plan_vertical",|
-          allowance: plan.allowance,  |
-          current: plan.current?,     |
-          name: plan.title,           |
-          new: plan.next?,            |
-          price: plan.price,          |
-        )                             |
+      = render("shared/plan_vertical",
+          allowance: plan.allowance,
+          current: plan.current?,
+          name: plan.title,
+          new: plan.next?,
+          price: plan.price,
+        )
 
   .account-content
     %article.billing-breakdown
-      = react_component("app.UpdateAccountCreditCard",                         |
-          authenticity_token: form_authenticity_token,                         |
-          stripe_customer_id_present: current_user.stripe_customer_id.present?,|
-        )                                                                      |
+      = react_component("app.UpdateAccountCreditCard",
+          authenticity_token: form_authenticity_token,
+          stripe_customer_id_present: current_user.stripe_customer_id.present?,
+        )
       %table.itemized-receipt
         %thead
           %tr
@@ -54,10 +54,10 @@
                   )
 
     - if current_user.stripe_customer_id.present?
-      = react_component("app.UpdateAccountEmail",      |
-          authenticity_token: form_authenticity_token, |
-          billable_email: @account_page.billable_email,|
-        )                                              |
+      = react_component("app.UpdateAccountEmail",
+          authenticity_token: form_authenticity_token,
+          billable_email: @account_page.billable_email,
+        )
     %article.active-private-repos
       - if @account_page.repos.any?
         %h3 Active Private Repos
