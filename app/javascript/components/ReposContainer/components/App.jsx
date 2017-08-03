@@ -114,8 +114,8 @@ export default class App extends React.Component {
             tierAllowance={tierAllowance}
           />,
           $("[data-role='account-actions']")
-          .prepend("<li data-role='allowance-container'></li>")
-          .children()[0]
+            .prepend("<li data-role='allowance-container'></li>")
+            .children()[0]
         );
       } else {
         $("[data-role='subscribed-repo-count']").text(subscribedRepoCount);

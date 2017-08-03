@@ -57,7 +57,7 @@ export default class UpgradeSubscriptionLink extends React.Component {
     return(
       <a
         className="repo-toggle tier-change-accept"
-        href="javascript:void(0)"
+        href="javascript:void(0);"
         onClick={() => this.handleClick()}
       >Upgrade</a>
     );

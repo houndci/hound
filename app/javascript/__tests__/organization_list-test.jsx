@@ -1,16 +1,16 @@
 /*jshint esversion: 6 */
 
-import OrganizationsList from '../components/ReposContainer/components/ReposView/OrganizationsList';
-import Organization from '../components/ReposContainer/components/Organization';
+import OrganizationsList from "../components/ReposContainer/components/ReposView/OrganizationsList";
+import Organization from "../components/ReposContainer/components/Organization";
 
-it('renders a list of organizations appropriately', () => {
+it("renders a list of organizations appropriately", () => {
   const organizations = [
-    { id: 1, name: 'Test org' }
+    { id: 1, name: "Test org" }
   ];
   const repos = [
     {
       id: 1,
-      name: 'Test repo',
+      name: "Test repo",
       owner: {
         id: 1
       }
@@ -21,7 +21,7 @@ it('renders a list of organizations appropriately', () => {
     <OrganizationsList
       organizations={organizations}
       repos={repos}
-      filterTerm={''}
+      filterTerm={""}
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
@@ -29,17 +29,17 @@ it('renders a list of organizations appropriately', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-it('filters a list of organizations appropriately', () => {
+it("filters a list of organizations appropriately", () => {
   const organizations = [
-    { id: 1, name: 'Test org 1' },
-    { id: 2, name: 'Test org 2' },
-    { id: 3, name: 'Test org 3' },
+    { id: 1, name: "Test org 1" },
+    { id: 2, name: "Test org 2" },
+    { id: 3, name: "Test org 3" },
   ];
 
   const repos = [
     {
       id: 1,
-      name: 'Test repo',
+      name: "Test repo",
       owner: {
         id: 2
       }
@@ -50,7 +50,7 @@ it('filters a list of organizations appropriately', () => {
     <OrganizationsList
       organizations={organizations}
       repos={repos}
-      filterTerm={''}
+      filterTerm={""}
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
@@ -58,28 +58,28 @@ it('filters a list of organizations appropriately', () => {
   const organizationsFound = wrapper.find(Organization).nodes;
   expect(organizationsFound.length).toBe(3);
 
-  expect(organizationsFound[0].props.name).toBe('Test org 1');
+  expect(organizationsFound[0].props.name).toBe("Test org 1");
   expect(organizationsFound[0].props.repos.length).toBe(0);
 
-  expect(organizationsFound[1].props.name).toBe('Test org 2');
+  expect(organizationsFound[1].props.name).toBe("Test org 2");
   expect(organizationsFound[1].props.repos.length).toBe(1);
   expect(organizationsFound[1].props.repos[0].id).toBe(1);
 
-  expect(organizationsFound[2].props.name).toBe('Test org 3');
+  expect(organizationsFound[2].props.name).toBe("Test org 3");
   expect(organizationsFound[2].props.repos.length).toBe(0);
 });
 
-it('filters a list of organizations appropriately', () => {
+it("filters a list of organizations appropriately", () => {
   const organizations = [
-    { name: 'S.H.I.E.L.D.' },
-    { name: 'H.A.M.M.E.R.' },
-    { name: 'Hydra' },
+    { name: "S.H.I.E.L.D." },
+    { name: "H.A.M.M.E.R." },
+    { name: "Hydra" },
   ];
 
   const repos = [
     {
       id: 666,
-      name: 'Hydra/deathray',
+      name: "Hydra/deathray",
     }
   ];
 
@@ -87,7 +87,7 @@ it('filters a list of organizations appropriately', () => {
     <OrganizationsList
       organizations={organizations}
       repos={repos}
-      filterTerm={''}
+      filterTerm={""}
       onRepoClicked={jest.fn()}
       isProcessingId={null}
     />
@@ -95,13 +95,13 @@ it('filters a list of organizations appropriately', () => {
   const organizationsFound = wrapper.find(Organization).nodes;
   expect(organizationsFound.length).toBe(3);
 
-  expect(organizationsFound[0].props.name).toBe('S.H.I.E.L.D.');
+  expect(organizationsFound[0].props.name).toBe("S.H.I.E.L.D.");
   expect(organizationsFound[0].props.repos.length).toBe(0);
 
-  expect(organizationsFound[1].props.name).toBe('H.A.M.M.E.R.');
+  expect(organizationsFound[1].props.name).toBe("H.A.M.M.E.R.");
   expect(organizationsFound[1].props.repos.length).toBe(0);
 
-  expect(organizationsFound[2].props.name).toBe('Hydra');
+  expect(organizationsFound[2].props.name).toBe("Hydra");
   expect(organizationsFound[2].props.repos.length).toBe(1);
-  expect(organizationsFound[2].props.repos[0].name).toBe('Hydra/deathray');
+  expect(organizationsFound[2].props.repos[0].name).toBe("Hydra/deathray");
 });
