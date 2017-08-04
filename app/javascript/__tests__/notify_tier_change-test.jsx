@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import NotifyTierChange from "../components/NotifyTierChange";
 
 let repo = {id: 1, name: "Test repo"};

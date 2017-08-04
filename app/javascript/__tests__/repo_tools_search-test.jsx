@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import RepoToolsSearch from '../components/ReposContainer/components/RepoTools/RepoToolsSearch';
 
 it('renders appropriately', () => {

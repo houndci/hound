@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import Repo from '../components/ReposContainer/components/Repo';
 
 it('renders a repo appropriately', () => {

@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 const { env, publicPath } = require('../configuration.js');
 
 module.exports = {

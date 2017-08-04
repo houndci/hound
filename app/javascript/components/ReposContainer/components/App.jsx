@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import React from 'react';
 import ReactAddonsUpdate from 'react-addons-update';
 import _ from 'lodash';

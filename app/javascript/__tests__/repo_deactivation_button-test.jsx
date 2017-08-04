@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import RepoDeactivationButton from '../components/ReposContainer/components/Repo/RepoDeactivationButton';
 
 it('renders a button appropriately for non-admin repos ', () => {

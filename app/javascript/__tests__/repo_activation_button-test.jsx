@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import RepoActivationButton from '../components/ReposContainer/components/Repo/RepoActivationButton';
 
 it('renders a button appropriately for non-admin repos ', () => {

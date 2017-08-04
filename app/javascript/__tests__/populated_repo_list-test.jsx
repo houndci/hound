@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import PopulatedRepoList from '../components/ReposContainer/components/Organization/RepoList/PopulatedRepoList';
 
 it('renders a list of repos appropriately', () => {

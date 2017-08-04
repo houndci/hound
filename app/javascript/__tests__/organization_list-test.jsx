@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import OrganizationsList from "../components/ReposContainer/components/ReposView/OrganizationsList";
 import Organization from "../components/ReposContainer/components/Organization";
 

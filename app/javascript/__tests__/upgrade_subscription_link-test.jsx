@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import UpgradeSubscriptionLink from '../components/NotifyTierChange/components/UpgradeSubscriptionLink';
 import * as Ajax from '../modules/Ajax';
 

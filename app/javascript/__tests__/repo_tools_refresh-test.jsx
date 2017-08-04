@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import RepoToolsRefresh from '../components/ReposContainer/components/RepoTools/RepoToolsRefresh';
 
 it('renders appropriately', () => {

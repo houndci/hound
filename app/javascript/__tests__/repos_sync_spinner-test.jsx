@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import ReposSyncSpinner from '../components/ReposContainer/components/ReposView/ReposSyncSpinner';
 
 it('renders appropriately', () => {

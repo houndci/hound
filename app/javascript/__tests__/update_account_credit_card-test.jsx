@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import UpdateAccountCreditCard from '../components/UpdateAccountCreditCard';
 
 it('renders appropriately', () => {

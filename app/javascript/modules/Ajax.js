@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import $ from 'jquery';
 
 export function createSubscription(subscriptionOptions) {

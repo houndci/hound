@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import UpdateAccountEmailMessage from '../components/UpdateAccountEmail/components/UpdateAccountEmailMessage';
 
 it('renders appropriately', () => {

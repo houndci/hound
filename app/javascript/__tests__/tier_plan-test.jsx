@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import TierPlan from '../components/NotifyTierChange/components/TierPlan';
 
 it('renders appropriately (current plan)', () => {

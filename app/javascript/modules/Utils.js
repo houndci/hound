@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 export function getCSRFfromHead() {
   if (process.env.NODE_ENV === 'test') {
     return "csrf_token";

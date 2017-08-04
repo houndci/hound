@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import RepoAllowance from '../components/ReposContainer/components/RepoAllowance';
 
 it('renders the allowance header', () => {

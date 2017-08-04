@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import React from 'react';
 
 export default class RepoToolsSearch extends React.Component {

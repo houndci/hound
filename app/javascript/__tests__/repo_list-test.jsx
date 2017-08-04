@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import RepoList from '../components/ReposContainer/components/Organization/RepoList';
 
 it('renders a list of repos appropriately', () => {

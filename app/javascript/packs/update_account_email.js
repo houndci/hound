@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import UpdateAccountEmail from 'components/UpdateAccountEmail';
 import WebpackerReact from 'webpacker-react';
 

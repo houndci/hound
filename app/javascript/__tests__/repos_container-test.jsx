@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import ReposContainer from '../components/ReposContainer/components/App';
 import * as Ajax from '../modules/Ajax';
 

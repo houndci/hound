@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import Organization from "../components/ReposContainer/components/Organization";
 
 it("renders an organization with ID appropriately (no repo processing)", () => {

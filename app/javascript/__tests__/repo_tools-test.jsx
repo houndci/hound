@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 import RepoTools from '../components/ReposContainer/components/RepoTools';
 
 it('renders appropriately without Show Private button (not syncing)', () => {
