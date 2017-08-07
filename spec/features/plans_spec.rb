@@ -60,15 +60,19 @@ feature "Plans" do
 
     click_on "Upgrade"
 
-    begin
-      Timeout.timeout(10) do
-        break if current_path == repos_path
-        sleep 1
-      end
-    rescue Timeout::Error
-      raise "Timeout waiting for Upgrade to redirect"
-    end
+    wait_until_path_is(repos_path, "Timeout waiting for Upgrade to redirect")
 
     expect(page).to have_text "Private Repos 5 / 10"
+  end
+end
+
+def wait_until_path_is(path, message)
+  begin
+    Timeout.timeout(10) do
+      break if current_path == path
+      sleep 1
+    end
+  rescue Timeout::Error
+    raise message
   end
 end
