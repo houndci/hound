@@ -67,12 +67,10 @@ feature "Plans" do
 end
 
 def wait_until_path_is(path, message)
-  begin
-    Timeout.timeout(10) do
-      break if current_path == path
-      sleep 1
-    end
-  rescue Timeout::Error
-    raise message
+  Timeout.timeout(10) do
+    break if current_path == path
+    sleep 1
   end
+rescue Timeout::Error
+  raise message
 end
