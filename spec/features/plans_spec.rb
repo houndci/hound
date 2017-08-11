@@ -64,13 +64,13 @@ feature "Plans" do
 
     expect(page).to have_text "Private Repos 5 / 10"
   end
-end
 
-def wait_until_path_is(path, message)
-  Timeout.timeout(10) do
-    break if current_path == path
-    sleep 1
+  def wait_until_path_is(path, message)
+    Timeout.timeout(10) do
+      break if current_path == path
+      sleep 1
+    end
+  rescue Timeout::Error
+    raise message
   end
-rescue Timeout::Error
-  raise message
 end
