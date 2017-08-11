@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.3.1"
+ruby "2.3.4"
 
 gem "active_model_serializers", "0.9.5"
 gem "administrate", "0.8.1"
@@ -23,11 +23,7 @@ gem "pathspec"
 gem "pg"
 gem "puma"
 gem "rails", "5.0.0.1"
-gem "rails-assets-classnames", source: "https://rails-assets.org"
-gem "rails-assets-es5-shim", source: "https://rails-assets.org"
-gem "rails-assets-lodash", source: "https://rails-assets.org"
 gem "rails-assets-normalize-css", source: "https://rails-assets.org"
-gem "react-rails"
 gem "record_tag_helper"
 gem "resque", ">= 1.27.4"
 gem "resque-scheduler"
@@ -38,6 +34,8 @@ gem "sinatra", "2.0.0"
 gem "stripe"
 gem "thor", "0.19.1"
 gem "uglifier", ">= 2.7.2"
+gem "webpacker", "~> 2.0"
+gem "webpacker-react", "~> 0.3.1"
 
 group :staging, :production do
   gem "rack-timeout"

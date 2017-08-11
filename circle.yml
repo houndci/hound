@@ -1,20 +1,75 @@
-machine:
-  services:
-    - redis
+version: 2
+jobs:
+  build:
+    working_directory: ~/hound
+    docker:
+      - image: circleci/ruby:2.3-node
+        environment:
+          RAILS_ENV: test
+          CIRCLECI: true
+          PGHOST: 127.0.0.1
+          PGUSER: houndci
+      - image: circleci/postgres:9.5-alpine
+        environment:
+          POSTGRES_USER: houndci
+          POSTGRES_DB: houndci-test
+          POSTGRES_PASSWORD: ""
+      - image: redis:3.2.10-alpine
+    steps:
+      - checkout
 
-  node:
-    version: 7.4.0
+      - type: cache-restore
+        name: Restore bundle cache
+        key: houndci-{{ checksum "Gemfile.lock" }}
 
-  environment:
-    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+      - type: cache-restore
+        name: Restore yarn cache
+        key: houndci-yarn-{{ checksum "yarn.lock" }}
 
-dependencies:
-  override:
-    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
-    - yarn
-  cache_directories:
-    - ~/.cache/yarn
+      - type: cache-restore
+        name: Restore apt cache
+        key: houndci-apt-{{ checksum "Gemfile.lock" }}
 
-test:
-  override:
-    - bundle exec rake
+      # Install System Dependencies from cache (for capybara-webkit)
+      - run: sudo dpkg -i /home/circleci/.cache/apt/archives/*.deb || true
+
+      # Install System Dependencies (for capybara-webkit)
+      - run: mkdir -p /home/circleci/.cache/apt/archives/partial && touch /home/circleci/.cache/apt/archives/lock && chmod 640 /home/circleci/.cache/apt/archives/lock && sudo apt-get install -o=dir::cache=/home/circleci/.cache/apt qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
+
+      # Yarn install
+      - run: yarn config set yarn-offline-mirror ~/.cache/yarn && yarn install
+
+      - type: cache-save
+        name: Store bundle cache
+        key: houndci-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - type: cache-save
+        name: Store yarn cache
+        key: houndci-yarn-{{ checksum "yarn.lock" }}
+        paths:
+          - ~/.cache/yarn
+
+      - type: cache-save
+        name: Store apt cache
+        key: houndci-apt-{{ checksum "Gemfile.lock" }}
+        paths:
+          - ~/.cache/apt
+
+      # Wait for DB
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      # Wait for Redis
+      - run: dockerize -wait tcp://localhost:6379 -timeout 1m
+
+      # Database setup
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
+      # Run rspec in parallel
+      - type: shell
+        command: xvfb-run --auto-servernum bundle exec rake

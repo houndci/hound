@@ -147,13 +147,20 @@ feature "Repo list", js: true do
     create(:repo, owner: owner)
 
     sign_in_as(user)
+
     find(".toggle-switch").click
     wait_for_ajax
+
     find(".organization-header-select").
       select("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
     wait_for_ajax
 
+    sleep 10 if ENV["CIRCLECI"]
+
     expect(owner.reload).to be_config_enabled
+    # JS testing is dark and full of terrors
+    # see https://stackoverflow.com/questions/15191304/capybara-testing-javascript-failure-to-refresh-count
+    page.find("body") && owner.reload
     expect(owner.reload.config_repo).
       to eq "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME"
   end
