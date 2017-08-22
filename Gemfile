@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.3.4"
+ruby "2.4.1"
 
 gem "active_model_serializers", "0.9.5"
 gem "administrate", "0.8.1"
@@ -22,7 +22,7 @@ gem "paranoia", "~> 2.2"
 gem "pathspec"
 gem "pg"
 gem "puma"
-gem "rails", "5.0.0.1"
+gem "rails", "5.0.1"
 gem "rails-assets-normalize-css", source: "https://rails-assets.org"
 gem "record_tag_helper"
 gem "resque", ">= 1.27.4"
