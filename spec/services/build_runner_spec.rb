@@ -243,7 +243,6 @@ describe BuildRunner do
         config: double(:config),
         opened?: true,
         head_commit: head_commit,
-        repository_owner_name: "test",
       )
       allow(PullRequest).to receive(:new).and_return(pull_request)
 
