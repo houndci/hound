@@ -53,6 +53,7 @@ feature "Plans" do
 
     repo = create(:repo, private: true)
     create(:membership, admin: true, repo: repo, user: user)
+    stub_repository_invitations(repo.name)
     stub_customer_find_request
     stub_subscription_create_request(plan: "tier1", repo_ids: repo.id)
     stub_subscription_update_request(plan: "tier2", repo_ids: repo.id)

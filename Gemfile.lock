@@ -41,8 +41,8 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.5.1)
-      public_suffix (~> 2.0, >= 2.0.2)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     administrate (0.8.1)
       actionpack (>= 4.2, < 5.2)
       actionview (>= 4.2, < 5.2)
@@ -207,7 +207,7 @@ GEM
       activerecord (>= 4.0, < 5.1)
     pathspec (0.1.0)
     pg (0.19.0)
-    public_suffix (2.0.5)
+    public_suffix (3.0.0)
     puma (3.9.1)
     rack (2.0.3)
     rack-protection (2.0.0)
@@ -415,4 +415,4 @@ RUBY VERSION
    ruby 2.3.4p301
 
 BUNDLED WITH
-   1.15.3
+   1.15.4

@@ -6,6 +6,7 @@ RSpec.feature "User activates a repo", :js do
     repo = create(:repo, :private, name: "foo/bar")
     create(:bulk_customer, org: "foo")
     create(:membership, :admin, repo: repo, user: user)
+    stub_repository_invitations(repo.name)
 
     sign_in_as(user, "letmein")
     click_on "Activate"
@@ -39,6 +40,7 @@ RSpec.feature "User activates a repo", :js do
     stub_customer_find_request
     stub_subscription_create_request(plan: current_plan, repo_ids: repo.id)
     stub_subscription_update_request(plan: upgraded_plan, repo_ids: repo.id)
+    stub_repository_invitations(repo.name)
 
     sign_in_as(user, "letmein")
     click_on "Activate"
