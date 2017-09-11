@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::Python do
+describe Linter::Flake8 do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.py) }
     let(:not_lintable_files) { %w(foo.rb) }
@@ -10,7 +10,7 @@ describe Linter::Python do
     it "returns a saved, incomplete file review" do
       linter = build_linter
       commit_file = build_commit_file
-      stub_python_config
+      stub_flake8_config
 
       result = linter.file_review(commit_file)
 
@@ -22,19 +22,19 @@ describe Linter::Python do
       allow(Resque).to receive(:push)
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
-      stub_python_config("config")
+      stub_flake8_config("config")
       commit_file = build_commit_file
 
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:push).with(
-        "python_review",
+        "linters",
         {
-          class: "review.PythonReviewJob",
+          class: "LintersJob",
           args: [
             filename: commit_file.filename,
             commit_sha: build.commit_sha,
-            linter_name: "python",
+            linter_name: "flake8",
             pull_request_number: build.pull_request_number,
             patch: commit_file.patch,
             content: commit_file.content,
@@ -62,14 +62,14 @@ describe Linter::Python do
     )
   end
 
-  def stub_python_config(config = "config")
-    stubbed_python_config = double(
-      "PythonConfig",
+  def stub_flake8_config(config = "config")
+    stubbed_flake8_config = double(
+      "Flake8Config",
       content: config,
       serialize: config,
     )
-    allow(Config::Python).to receive(:new).and_return(stubbed_python_config)
+    allow(Config::Flake8).to receive(:new).and_return(stubbed_flake8_config)
 
-    stubbed_python_config
+    stubbed_flake8_config
   end
 end

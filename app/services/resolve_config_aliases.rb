@@ -3,6 +3,7 @@ class ResolveConfigAliases
     "javascript" => "jshint",
     "java_script" => "jshint",
     "coffeescript" => "coffee_script",
+    "python" => "flake8",
   }.freeze
 
   static_facade :call
