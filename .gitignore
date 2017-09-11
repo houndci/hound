@@ -10,3 +10,6 @@ yarn-debug.log*
 yarn-error.log*
 public/packs
 public/packs-test
+/public/packs
+/public/packs-test
+/node_modules
