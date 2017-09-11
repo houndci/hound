@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 export function createSubscription(subscriptionOptions) {
   return $.ajax({
@@ -34,7 +34,7 @@ export function activateRepo(repo) {
 }
 
 export function updateOwner(id, params) {
-  $.ajax({
+  return $.ajax({
     url: `/owners/${id}`,
     type: "PUT",
     dataType: "json",
@@ -53,4 +53,3 @@ export function upgradeSubscription(id, params) {
     }
   });
 }
-

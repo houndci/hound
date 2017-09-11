@@ -16,7 +16,11 @@ export default class OrganizationConfiguration extends React.Component {
       repo = props.repo;
     }
 
-    this.state = { enabled: !!props.enabled, repo };
+    this.state = {
+      configUpdated: false,
+      enabled: !!props.enabled,
+      repo
+    };
   }
 
   setEnabled(enabled) {
@@ -41,26 +45,31 @@ export default class OrganizationConfiguration extends React.Component {
   updateOwner(options) {
     const currentState = {
       config_enabled: this.state.enabled,
-      config_repo: this.state.repo,
+      config_repo: this.state.repo
     };
-    Ajax.updateOwner(this.props.id, Object.assign({}, currentState, options));
+
+    this.setState({ configUpdated: false });
+    Ajax.updateOwner(this.props.id, { ...currentState, ...options }).then(() =>
+      this.setState({ configUpdated: true })
+    );
   }
 
   renderRepoSelect() {
     if (this.state.enabled) {
       return (
         <div className="organization-header-source">
-          <span className="organization-header-label">
-            Use .hound.yml from
-          </span>
-
+          <span className="organization-header-label">Use .hound.yml from</span>
           <select
             className="organization-header-select"
-            onChange={(event) => this.handleChange(event)}
+            onChange={event => this.handleChange(event)}
             value={this.state.repo}
           >
             {this.renderRepoOptions()}
           </select>
+          <div className="inline-flash--success config-enabled">
+            {this.state.configUpdated &&
+              <span data-role="config-saved">&#10004;</span>}
+          </div>
         </div>
       );
     } else {
@@ -69,10 +78,10 @@ export default class OrganizationConfiguration extends React.Component {
   }
 
   renderRepoOptions() {
-    return (
-      this.props.repos.map(repo => (
-        <option key={repo.id} value={repo.name}>{repo.name}</option>
-      ))
+    return this.props.repos.map(repo =>
+      <option key={repo.id} value={repo.name}>
+        {repo.name}
+      </option>
     );
   }
 

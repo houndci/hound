@@ -34,6 +34,10 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
   align-items: center;
   display: flex;
   flex-direction: row;
+
+  .config-enabled {
+    width: 1em;
+  }
 }
 
 .organization-header-label {

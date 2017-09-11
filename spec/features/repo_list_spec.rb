@@ -143,26 +143,21 @@ feature "Repo list", js: true do
   end
 
   scenario "user enables organization-wide config" do
-    owner = create(:owner, github_id: 1, name: "TEST_GITHUB_LOGIN")
-    create(:repo, owner: owner)
+    owner = create(:owner, github_id: 1, name: "test")
+    create(:repo, owner: owner, users: [user], name: "test/abc")
+    repo = create(:repo, owner: owner, users: [user], name: "test/def")
 
     sign_in_as(user)
 
     find(".toggle-switch").click
     wait_for_ajax
+    find(".organization-header-select").select(repo.name)
 
-    find(".organization-header-select").
-      select("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
-    wait_for_ajax
-
-    sleep 10 if ENV["CIRCLECI"]
-
-    expect(owner.reload).to be_config_enabled
-    # JS testing is dark and full of terrors
-    # see https://stackoverflow.com/questions/15191304/capybara-testing-javascript-failure-to-refresh-count
-    page.find("body") && owner.reload
-    expect(owner.reload.config_repo).
-      to eq "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME"
+    expect(page).to have_css("[data-role='config-saved']")
+    expect(owner.reload).to have_attributes(
+      config_enabled?: true,
+      config_repo: repo.name,
+    )
   end
 
   def create_repo(*options)
