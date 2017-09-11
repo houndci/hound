@@ -1,14 +1,14 @@
 require "app/models/config/base"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
-require "app/models/config/python"
+require "app/models/config/flake8"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
 require "app/services/sanitize_ini_file"
 require "inifile"
 
-describe Config::Python do
+describe Config::Flake8 do
   describe "#content" do
     context "when an owner is provided" do
       it "merges the parsed config with the owner's" do
@@ -59,7 +59,7 @@ describe Config::Python do
           commit: instance_double("Commit"),
           content: {},
         )
-        config = Config::Python.new(hound_config)
+        config = Config::Flake8.new(hound_config)
 
         expect(config.content).to eq({})
       end
