@@ -63,8 +63,6 @@ class Repo < ApplicationRecord
     !private?
   end
 
-  private
-
   def organization
     name && name.split("/").first
   end
