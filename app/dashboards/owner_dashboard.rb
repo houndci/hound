@@ -10,11 +10,11 @@ class OwnerDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     name: Field::String,
-    organization?: Field::Boolean,
-    whitelisted?: Field::Boolean,
-    config_enabled?: Field::Boolean,
+    organization: Field::Boolean,
+    whitelisted: Field::Boolean,
+    config_enabled: Field::Boolean,
     config_repo: Field::String,
-    private_active_repos_count: Field::Number,
+    active_private_repos_count: Field::Number,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -24,9 +24,9 @@ class OwnerDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :name,
-    :private_active_repos_count,
-    :whitelisted?,
-    :config_enabled?,
+    :active_private_repos_count,
+    :whitelisted,
+    :config_enabled,
     :config_repo,
   ]
 
@@ -39,8 +39,8 @@ class OwnerDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
-    :whitelisted?,
-    :config_enabled?,
+    :whitelisted,
+    :config_enabled,
     :config_repo,
   ]
 

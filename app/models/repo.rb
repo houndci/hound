@@ -11,6 +11,10 @@ class Repo < ApplicationRecord
     where(active: true)
   end
 
+  def self.private
+    where(private: true)
+  end
+
   def self.find_or_create_with(attributes)
     repo = find_by(github_id: attributes[:github_id]) ||
       find_by(name: attributes[:name]) ||

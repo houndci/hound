@@ -2,7 +2,7 @@ en:
   helpers:
     label:
       owner:
-        private_active_repos_count: Private active repos
+        active_private_repos_count: Active private repos
 
   sync_repos: "Refresh repo list"
   include_private_repos: "Include private repos"
