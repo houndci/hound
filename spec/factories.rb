@@ -52,6 +52,8 @@ FactoryGirl.define do
 
     sequence(:name) { |n| "user/repo#{n}" }
     github_id
+    owner
+
     private false
     in_organization false
   end
@@ -92,11 +94,5 @@ FactoryGirl.define do
   factory :owner do
     github_id
     name { generate(:github_name) }
-  end
-
-  factory :bulk_customer do
-    org "bulk_org"
-    interval "monthly"
-    repo_limit 5
   end
 end

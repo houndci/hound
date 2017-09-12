@@ -6,22 +6,19 @@ feature "Repo list", js: true do
 
   scenario "user views list of repos" do
     user = create(:user, token_scopes: "public_repo,user:email")
-    restricted_repo = create(
-      :repo,
-      name: "#{user.username}/inaccessible-repo",
-    )
-    organization = "thoughtbot"
-    activatable_repo = create(:repo, name: "#{organization}/my-repo")
+    org = create(:owner, name: "thoughtbot")
+    restricted_repo = create(:repo, name: "#{user.username}/inaccessible-repo")
+    activatable_repo = create(:repo, owner: org, name: "#{org.name}/my-repo")
     create(:membership, repo: activatable_repo, user: user, admin: true)
     create(:membership, repo: restricted_repo, user: user, admin: false)
 
     sign_in_as(user)
 
-    within "[data-org-name=#{organization}]" do
+    within "[data-org-name=#{org.name}]" do
       expect(page).to have_text activatable_repo.name
       expect(page).to have_css ".repo-toggle"
     end
-    within "[data-org-name=#{user.username}]" do
+    within "[data-org-name=#{restricted_repo.owner.name}]" do
       expect(page).to have_text restricted_repo.name
       expect(page).to have_text I18n.t("cannot_activate_repo")
       expect(page).not_to have_css ".repo-toggle"

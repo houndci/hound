@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class BulkCustomerDashboard < Administrate::BaseDashboard
+class OwnerDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -9,14 +9,12 @@ class BulkCustomerDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    org: Field::String,
-    description: Field::String,
-    interval: Field::String,
-    repo_limit: Field::Number,
-    current_repos: Field::Number,
-    subscription_token: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    name: Field::String,
+    organization?: Field::Boolean,
+    whitelisted?: Field::Boolean,
+    config_enabled?: Field::Boolean,
+    config_repo: Field::String,
+    private_active_repos_count: Field::Number,
   }
 
   # COLLECTION_ATTRIBUTES
@@ -25,10 +23,11 @@ class BulkCustomerDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :org,
-    :description,
-    :repo_limit,
-    :current_repos,
+    :name,
+    :private_active_repos_count,
+    :whitelisted?,
+    :config_enabled?,
+    :config_repo,
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -39,18 +38,16 @@ class BulkCustomerDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :org,
-    :description,
-    :interval,
-    :repo_limit,
-    :current_repos,
-    :subscription_token,
+    :name,
+    :whitelisted?,
+    :config_enabled?,
+    :config_repo,
   ]
 
   # Overwrite this method to customize how bulk customers are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(bulk_customer)
-  #   "BulkCustomer ##{bulk_customer.id}"
+  # def display_resource(owner)
+  #   "Owner ##{owner.id}"
   # end
 end

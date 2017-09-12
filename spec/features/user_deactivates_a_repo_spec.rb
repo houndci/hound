@@ -43,7 +43,7 @@ feature "user deactivates a repo", js: true do
     stub_subscription_update_request(plan: "tier1", repo_ids: "")
 
     sign_in_as(user, "letmein")
-    find(".repo--active:nth-of-type(1) .repo-toggle").click
+    find(".organization:nth-of-type(1) .repo-toggle").click
 
     expect(page).to have_text "Private Repos 1 / 4"
   end
@@ -58,7 +58,7 @@ feature "user deactivates a repo", js: true do
     stub_subscription_update_request(plan: "tier1", repo_ids: "")
 
     sign_in_as(user, "letmein")
-    find(".repo--active:nth-of-type(1) .repo-toggle").click
+    find(".organization:nth-of-type(1) .repo-toggle").click
 
     expect(page).to have_text "Private Repos 4 / 4"
   end

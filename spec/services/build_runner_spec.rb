@@ -66,7 +66,7 @@ describe BuildRunner do
       it "upserts repository owner" do
         owner_github_id = 56789
         owner_name = "john"
-        repo = create(:repo, :active)
+        repo = create(:repo, :active, owner: nil)
         payload = stubbed_payload(
           github_repo_id: repo.github_id,
           full_repo_name: "test/repo",
@@ -81,13 +81,11 @@ describe BuildRunner do
 
         build_runner.call
 
-        owner_attributes = Owner.first.slice(:name, :github_id, :organization)
-        expect(owner_attributes).to eq(
-          "name" => owner_name,
-          "github_id" => owner_github_id,
-          "organization" => true,
+        expect(repo.reload.owner).to have_attributes(
+          name: owner_name,
+          github_id: owner_github_id,
+          organization: true,
         )
-        expect(repo.reload.owner).to eq Owner.first
       end
     end
 
