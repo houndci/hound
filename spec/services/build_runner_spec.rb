@@ -16,10 +16,9 @@ describe BuildRunner do
         stubbed_github_api
 
         build_runner.call
-        builds = Build.where(repo_id: repo.id)
-        build = builds.first
 
-        expect(builds.size).to eq 1
+        build = repo.builds.first
+        expect(repo.builds.size).to eq 1
         expect(build).to eq repo.builds.last
         expect(build.violations.count).to be >= 1
         expect(build.pull_request_number).to eq 5
@@ -165,16 +164,12 @@ describe BuildRunner do
         unreachable_repo = create(:repo, :active)
         user = create(:user, token: "user_test_token")
         user.repos += [reachable_repo, unreachable_repo]
-        payload = stubbed_payload(
-          github_repo_id: unreachable_repo.github_id,
-          full_repo_name: unreachable_repo.name,
-        )
-        build_runner = BuildRunner.new(payload)
+        build_runner = make_build_runner(repo: unreachable_repo)
         github_api = stubbed_github_api
-        allow(github_api).to receive(:create_pending_status).
-          and_raise(Octokit::NotFound)
+        allow(github_api).to receive(:repository?).and_return(false)
+        stubbed_pull_request_with_file("test.rb", "")
 
-        expect { build_runner.call }.to raise_error Octokit::NotFound
+        build_runner.call
 
         expect(user.reload.repos).to eq [reachable_repo]
       end
@@ -213,6 +208,24 @@ describe BuildRunner do
           stubbed_payload.head_sha,
           I18n.t(:complete_status, count: 0),
         )
+      end
+    end
+
+    context "when status cannot be updated" do
+      it "does not error" do
+        status_not_found = "POST https://api.github.com/repos/foo/bar/" \
+          "statuses/123abc: 404 - Not Found // See: https://dev.github.com"
+        repo = create(:repo, :active)
+        build_runner = make_build_runner(repo: repo)
+        github_api = stubbed_github_api
+        stubbed_pull_request_with_file("foo.rb", "puts 5 * 6")
+        allow(github_api).to receive(:create_pending_status).
+          and_raise(Octokit::NotFound.new(message: status_not_found))
+
+        expect { build_runner.call }.not_to raise_error
+
+        expect(repo.builds.size).to eq 1
+        expect(repo.builds.map(&:file_reviews).size).to eq 1
       end
     end
 
@@ -299,6 +312,7 @@ describe BuildRunner do
         repo.name,
         "somesha",
         I18n.t(:hound_error_status),
+        nil,
       )
     end
   end
