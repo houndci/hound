@@ -21,7 +21,7 @@ class Owner < ApplicationRecord
   end
 
   def active_private_repos_count
-    repos.active.private.count
+    repos.active.where(private: true).count
   end
 
   def has_config_repo?
