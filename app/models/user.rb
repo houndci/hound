@@ -80,6 +80,10 @@ class User < ApplicationRecord
       order("LOWER(name) ASC")
   end
 
+  def card_exists?
+    stripe_customer_id.present?
+  end
+
   private
 
   def crypt

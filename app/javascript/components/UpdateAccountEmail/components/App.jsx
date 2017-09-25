@@ -25,6 +25,10 @@ export default class UpdateAccountEmail extends React.Component {
   onUpdateEmail(event) {
     event.preventDefault();
 
+    if (this.state.emailInput == null) {
+      return;
+    }
+
     $.ajax({
       url: "/account.json",
       type: "PUT",
@@ -63,7 +67,7 @@ export default class UpdateAccountEmail extends React.Component {
           </div>
           <div className="form-actions">
             <button
-              className="button-small"
+              className="repo-toggle"
               onClick={(event) => this.onUpdateEmail(event)}
             >
               Update Email
