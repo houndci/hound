@@ -25,6 +25,10 @@ export default class UpdateAccountEmail extends React.Component {
   onUpdateEmail(event) {
     event.preventDefault();
 
+    if (this.state.emailInput == null) {
+      return;
+    }
+
     $.ajax({
       url: "/account.json",
       type: "PUT",
