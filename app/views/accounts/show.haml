@@ -54,9 +54,9 @@
                   )
 
       - if current_user.stripe_customer_id.present?
-        %script{src:"https://static.accountdock.com/app.min.js"}
-        %div{class:"billing-container"}
-          %button{id:"billing", class:"repo-toggle billing-button"} View Billing
+        %script{ src:"https://static.accountdock.com/app.min.js" }
+        .billing-container
+          %button.repo-toggle.billing-button{ id: "billing" } View Billing
         :javascript
           var handler = AccountDock.configure({
             key: '#{ENV['ACCOUNTDOCK_API_KEY']}',
