@@ -98,7 +98,7 @@ GEM
       momentjs-rails (>= 2.8.1)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
-    domain_name (0.5.20161129)
+    domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.2.1)
     dotenv-rails (2.2.1)
@@ -171,7 +171,7 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mini_portile2 (2.2.0)
+    mini_portile2 (2.3.0)
     minitest (5.10.3)
     momentjs-rails (2.17.1)
       railties (>= 3.1)
@@ -185,8 +185,8 @@ GEM
       thor (~> 0.19)
     netrc (0.11.0)
     nio4r (2.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     oauth2 (1.2.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -270,7 +270,7 @@ GEM
     resque-sentry (1.2.0)
       resque (>= 1.18.0)
       sentry-raven (>= 0.4.6)
-    rest-client (2.0.0)
+    rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
@@ -341,7 +341,7 @@ GEM
       json (>= 1.8.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.2)
+    unf_ext (0.0.7.4)
     vegas (0.1.11)
       rack (>= 1.0.0)
     webmock (3.0.1)
@@ -387,6 +387,7 @@ DEPENDENCIES
   jquery-rails (>= 4.2.0)
   launchy
   neat (~> 1.9)
+  nokogiri (>= 1.8.1)
   octokit
   omniauth-github
   paranoia (~> 2.2)
@@ -401,7 +402,7 @@ DEPENDENCIES
   resque (>= 1.27.4)
   resque-scheduler
   resque-sentry
-  rest-client (>= 1.8.0)
+  rest-client (>= 2.0.1)
   rspec-rails (>= 3.4)
   sass-rails
   sentry-raven (>= 0.12.2)
