@@ -53,11 +53,32 @@
                     precision: 0,
                   )
 
+      - if current_user.stripe_customer_id.present?
+        %script{src:"https://static.accountdock.com/app.min.js"}
+        %div{class:"billing-container"}
+          %button{id:"billing", class:"repo-toggle billing-button"} View Billing
+        :javascript
+          var handler = AccountDock.configure({
+            key: '#{ENV['ACCOUNTDOCK_API_KEY']}',
+            customer: '#{current_user.stripe_customer_id}'
+          });
+          $(function(){
+            $('#billing').on(
+              'click',
+              function(event) {
+                event.preventDefault();
+                handler.open();
+              }
+            );
+          });
+
+
     - if current_user.stripe_customer_id.present?
       = javascript_pack_tag "update_account_email"
       = react_component("UpdateAccountEmail",
           billable_email: @account_page.billable_email,
         )
+
     %article.active-private-repos
       - if @account_page.repos.any?
         %h3 Active Private Repos

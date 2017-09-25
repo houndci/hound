@@ -67,7 +67,7 @@ export default class UpdateAccountEmail extends React.Component {
           </div>
           <div className="form-actions">
             <button
-              className="button-small"
+              className="repo-toggle"
               onClick={(event) => this.onUpdateEmail(event)}
             >
               Update Email
