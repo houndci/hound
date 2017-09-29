@@ -20,7 +20,7 @@
     %article.billing-breakdown
       = javascript_pack_tag "update_account_credit_card"
       = react_component("UpdateAccountCreditCard",
-          stripe_customer_id_present: current_user.stripe_customer_id.present?,
+          stripe_customer_id_present: current_user.card_exists?,
         )
       %table.itemized-receipt
         %thead
@@ -53,10 +53,10 @@
                     precision: 0,
                   )
 
-      - if current_user.stripe_customer_id.present?
+      - if current_user.card_exists?
         = render(partial: "shared/account_dock", locals: { account_key: ENV["ACCOUNTDOCK_API_KEY"], stripe_customer_id: current_user.stripe_customer_id})
 
-    - if current_user.stripe_customer_id.present?
+    - if current_user.card_exists?
       = javascript_pack_tag "update_account_email"
       = react_component("UpdateAccountEmail",
           billable_email: @account_page.billable_email,
