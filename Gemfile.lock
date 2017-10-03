@@ -93,7 +93,6 @@ GEM
     concurrent-ruby (1.0.5)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    database_cleaner (1.6.1)
     datetime_picker_rails (0.0.7)
       momentjs-rails (>= 2.8.1)
     debugger-linecache (1.2.0)
@@ -375,7 +374,6 @@ DEPENDENCIES
   capybara (>= 2.4.0)
   capybara-webkit (~> 1.6)
   coffee-rails
-  database_cleaner
   dotenv-rails
   email_validator
   factory_girl_rails
