@@ -9,7 +9,6 @@ RSpec.configure do |config|
   Analytics.backend = FakeAnalyticsRuby.new
 
   config.before do
-    DatabaseCleaner.clean
     stub_request(:any, /api.github.com/).to_rack(FakeGithub)
   end
 
@@ -19,6 +18,7 @@ RSpec.configure do |config|
 
   config.infer_base_class_for_anonymous_controllers = false
   config.infer_spec_type_from_file_location!
+  config.use_transactional_fixtures = true
   config.include AnalyticsHelper
   config.include AuthenticationHelper
   config.include CommitFileHelper
@@ -26,7 +26,6 @@ RSpec.configure do |config|
   config.include HttpsHelper
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
-  DatabaseCleaner.strategy = :truncation
   ActiveJob::Base.queue_adapter = :resque
 end
 

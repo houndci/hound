@@ -55,7 +55,6 @@ end
 group :test do
   gem "capybara", ">= 2.4.0"
   gem "capybara-webkit", "~> 1.6"
-  gem "database_cleaner"
   gem "factory_girl_rails"
   gem "launchy"
   gem "shoulda-matchers"
