@@ -145,9 +145,9 @@ feature "Repo list", js: true do
     repo = create(:repo, owner: owner, users: [user], name: "test/def")
 
     sign_in_as(user)
-
     find(".toggle-switch").click
     wait_for_ajax
+    select_config_repo(repo.name)
     find(".organization-header-select").select(repo.name)
 
     expect(page).to have_css("[data-role='config-saved']")
@@ -162,5 +162,13 @@ feature "Repo list", js: true do
     create(:membership, repo: repo, user: user, admin: true)
 
     repo
+  end
+
+  def select_config_repo(repo_name)
+    find(".organization-header-select").select(repo_name)
+    # this expect is needed to make sure the saved check mark is hidden when
+    # the option is chosen from the dropdown.
+    # Then we can re-assert the checkmark is visible again after AJAX completes.
+    expect(page).not_to have_css("[data-role='config-saved']")
   end
 end
