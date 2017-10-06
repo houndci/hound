@@ -35,8 +35,8 @@ feature "user deactivates a repo", js: true do
 
   scenario "user deactivates within a plan" do
     user = create(:user, :with_github_scopes, :stripe)
-    first_subscription = create(:subscription, :active, user: user)
-    second_subscription = create(:subscription, :active, user: user)
+    first_subscription = create(:subscription, user: user)
+    second_subscription = create(:subscription, user: user)
     stub_customer_find_request
     stub_subscription_find_request(first_subscription)
     stub_subscription_find_request(second_subscription)
@@ -51,7 +51,7 @@ feature "user deactivates a repo", js: true do
   scenario "user downgrades to lower plan" do
     user = create(:user, :with_github_scopes, :stripe)
     5.times do
-      subscription = create(:subscription, :active, user: user)
+      subscription = create(:subscription, user: user)
       stub_subscription_find_request(subscription)
     end
     stub_customer_find_request
@@ -65,7 +65,7 @@ feature "user deactivates a repo", js: true do
 
   scenario "user downgrades to free tier" do
     user = create(:user, :with_github_scopes, :stripe)
-    subscription = create(:subscription, :active, user: user)
+    subscription = create(:subscription, user: user)
     stub_subscription_find_request(subscription)
     stub_customer_find_request
     stub_subscription_update_request(plan: "basic", repo_ids: "")

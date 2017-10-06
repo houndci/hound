@@ -73,13 +73,12 @@ FactoryGirl.define do
   end
 
   factory :subscription do
-    trait(:active) { association :repo, :active }
     trait(:inactive) { deleted_at { 1.day.ago } }
 
     sequence(:stripe_subscription_id) { |n| "stripesubscription#{n}" }
 
+    association :repo, :active, :private
     price Plan::PLANS[1][:price]
-    repo
     user
   end
 

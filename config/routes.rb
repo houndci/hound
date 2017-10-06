@@ -20,6 +20,7 @@ Houndapp::Application.routes.draw do
   resources :builds, only: [:create, :index]
   resources :owners, only: [:update]
   resources :plans, only: [:index]
+  resources :deleted_subscriptions, only: [:create]
 
   resources :repos, only: [:index] do
     with_options(defaults: { format: :json }) do

@@ -8,12 +8,11 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   Analytics.backend = FakeAnalyticsRuby.new
 
-  config.before do
-    stub_request(:any, /api.github.com/).to_rack(FakeGithub)
-  end
-
-  config.before :each, type: :request do
-    FakeGithub.comments = []
+  %i(request feature).each do |type|
+    config.before :each, type: type do
+      stub_request(:any, /api.github.com/).to_rack(FakeGithub)
+      FakeGithub.comments = []
+    end
   end
 
   config.infer_base_class_for_anonymous_controllers = false

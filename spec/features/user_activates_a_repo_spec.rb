@@ -34,7 +34,7 @@ RSpec.feature "User activates a repo", :js do
     user = create(:user, :with_github_scopes, :stripe)
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)
-    create(:subscription, :active, user: user)
+    create(:subscription, user: user)
     current_plan = user.current_plan.id
     upgraded_plan = user.next_plan.id
     stub_customer_find_request
