@@ -1,4 +1,4 @@
-class JsIgnore
+class IgnoreFile
   DEFAULT_EXCLUDED_PATHS = %w(
     vendor/**/*
     node_modules/**/*

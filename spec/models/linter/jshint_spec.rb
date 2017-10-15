@@ -7,24 +7,17 @@ describe Linter::Jshint do
   end
 
   describe "#file_included?" do
-    context "file is in excluded file list" do
-      it "returns false" do
-        linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
-        commit_file = double("CommitFile", filename: "foo.js")
-
-        expect(linter.file_included?(commit_file)).to eq false
-      end
-    end
-
-    context "file is not excluded" do
+    context "when file does not match any ignore patterns" do
       it "returns true" do
         linter = build_linter(nil, Linter::Jshint::IGNORE_FILENAME => "foo.js")
         commit_file = double("CommitFile", filename: "bar.js")
 
         expect(linter.file_included?(commit_file)).to eq true
       end
+    end
 
-      it "matches a glob pattern" do
+    context "when file matches an ignore pattern" do
+      it "returns false" do
         linter = build_linter(
           nil,
           Linter::Jshint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",

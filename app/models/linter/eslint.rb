@@ -4,13 +4,13 @@ module Linter
     IGNORE_FILENAME = ".eslintignore".freeze
 
     def file_included?(commit_file)
-      jsignore.file_included?(commit_file.filename)
+      ignore_file.file_included?(commit_file.filename)
     end
 
     private
 
-    def jsignore
-      @jsignore ||= JsIgnore.new(name, hound_config, IGNORE_FILENAME)
+    def ignore_file
+      @_ignore_file ||= IgnoreFile.new(name, hound_config, IGNORE_FILENAME)
     end
   end
 end
