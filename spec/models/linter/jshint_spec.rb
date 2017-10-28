@@ -50,8 +50,14 @@ describe Linter::Jshint do
 
     context "when the owner has no config enabled" do
       it "schedules a review job with the local config" do
+        config = <<~EOS
+          {
+            // Define globals exposed by modern browsers.
+            "browser": true
+          }
+        EOS
         build = create(:build)
-        linter = build_linter(build, stub_config_files('{"asi": true}'))
+        linter = build_linter(build, stub_config_files(config))
         commit_file = build_commit_file(filename: "lib/a.js")
         allow(Resque).to receive(:enqueue)
 
@@ -60,7 +66,7 @@ describe Linter::Jshint do
         expect(Resque).to have_received(:enqueue).with(
           JshintReviewJob,
           commit_sha: build.commit_sha,
-          config: '{"asi":true}',
+          config: '{"browser":true}',
           content: commit_file.content,
           filename: commit_file.filename,
           linter_name: "jshint",
