@@ -4,8 +4,9 @@ RSpec.feature "User activates a repo", :js do
   scenario "that is whitelisted" do
     user = create(:user, :with_github_scopes)
     repo = create(:repo, :private, name: "foo/bar")
-    create(:owner, whitelisted: true, repos: [repo])
+    owner = create(:owner, whitelisted: true, repos: [repo])
     create(:membership, :admin, repo: repo, user: user)
+    create(:ownership, user: user, owner: owner)
     stub_repository_invitations(repo.name)
 
     sign_in_as(user, "letmein")
@@ -18,6 +19,7 @@ RSpec.feature "User activates a repo", :js do
     user = create(:user, :with_github_scopes, :stripe)
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)
+    create(:ownership, user: user)
     current_plan = user.current_plan.id
     upgraded_plan = user.next_plan.id
     stub_customer_find_request
@@ -34,6 +36,7 @@ RSpec.feature "User activates a repo", :js do
     user = create(:user, :with_github_scopes, :stripe)
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)
+    create(:ownership, user: user)
     create(:subscription, user: user)
     current_plan = user.current_plan.id
     upgraded_plan = user.next_plan.id

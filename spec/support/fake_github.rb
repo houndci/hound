@@ -83,11 +83,16 @@ class FakeGithub < Sinatra::Base
       {
         full_name: "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME",
         id: 1,
-        owner: { id: 1, login: "TEST_GITHUB_LOGIN" },
+        owner: { id: 1, login: "TEST_GITHUB_LOGIN", type: "Organization" },
         permissions: { admin: true },
         private: false,
       },
     ].to_json
+  end
+
+  get "/user/memberships/orgs/:org" do
+    content_type :json
+    { role: "admin" }.to_json
   end
 
   private

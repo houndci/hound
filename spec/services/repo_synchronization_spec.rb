@@ -1,10 +1,14 @@
 require "rails_helper"
 
 describe RepoSynchronization do
+  let(:api) { double("GithubApi") }
+
   describe "#start" do
     it "saves privacy flag" do
       stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
+      stub_github_api_org_membership
       user = create(:user)
+
       synchronization = RepoSynchronization.new(user)
 
       synchronization.start
@@ -14,7 +18,9 @@ describe RepoSynchronization do
 
     it "saves organization flag" do
       stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
+      stub_github_api_org_membership
       user = create(:user)
+
       synchronization = RepoSynchronization.new(user)
 
       synchronization.start
@@ -22,56 +28,12 @@ describe RepoSynchronization do
       expect(user.reload.repos.first).to be_in_organization
     end
 
-    context "when there is an 'ActiveRecord::RecordNotUnique' exception" do
-      it "finishes the synchronization" do
-        repo = stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
-        user = create(:user)
-        synchronization = RepoSynchronization.new(user)
-        allow(synchronization).to receive(:repo_attributes).
-          and_raise(ActiveRecord::RecordNotUnique)
-
-        result = synchronization.start
-
-        expect(result).to eq [repo]
-      end
-    end
-
-    context "when the user is a repo admin" do
-      it "the memberships admin flag is true" do
-        stub_github_api_repos(
-          repo_id: 456,
-          repo_name: "user/newrepo",
-          admin: true,
-        )
-        user = create(:user)
-        synchronization = RepoSynchronization.new(user)
-
-        synchronization.start
-
-        expect(user.memberships.first).to be_admin
-      end
-    end
-
-    context "when the user is not a repo admin" do
-      it "the membership admin flag is false" do
-        stub_github_api_repos(
-          repo_id: 456,
-          repo_name: "user/newrepo",
-          admin: false,
-        )
-        user = create(:user)
-        synchronization = RepoSynchronization.new(user)
-
-        synchronization.start
-
-        expect(user.memberships.first).not_to be_admin
-      end
-    end
-
     it "replaces existing repos" do
       stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
       membership = create(:membership)
       user = membership.user
+      stub_github_api_org_membership
+
       synchronization = RepoSynchronization.new(user)
 
       synchronization.start
@@ -91,8 +53,10 @@ describe RepoSynchronization do
         create(:membership, user: user, repo: repo2)
         github_repo1 = build_github_repo(id: repo1.github_id, name: "backup")
         github_repo2 = build_github_repo(id: repo2.github_id, name: "site")
-        api = instance_double("GithubApi", repos: [github_repo1, github_repo2])
+        allow(api).to receive(:repos).and_return([github_repo1, github_repo2])
         allow(GithubApi).to receive(:new).and_return(api)
+        stub_github_api_org_membership
+
         synchronization = RepoSynchronization.new(user)
 
         synchronization.start
@@ -105,12 +69,50 @@ describe RepoSynchronization do
       end
     end
 
+    context "when the user is a repo admin" do
+      it "the memberships admin flag is true" do
+        stub_github_api_repos(
+          repo_id: 456,
+          repo_name: "user/newrepo",
+          admin: true,
+        )
+        stub_github_api_org_membership
+        user = create(:user)
+
+        synchronization = RepoSynchronization.new(user)
+
+        synchronization.start
+
+        expect(user.memberships.first).to be_admin
+      end
+    end
+
+    context "when the user is not a repo admin" do
+      it "the membership admin flag is false" do
+        stub_github_api_repos(
+          repo_id: 456,
+          repo_name: "user/newrepo",
+          admin: false,
+        )
+        stub_github_api_org_membership
+        user = create(:user)
+
+        synchronization = RepoSynchronization.new(user)
+
+        synchronization.start
+
+        expect(user.memberships.first).not_to be_admin
+      end
+    end
+
     context "when a repo membership already exists" do
       it "creates another membership" do
         first_membership = create(:membership)
         repo = first_membership.repo
         stub_github_api_repos(repo_id: repo.github_id, repo_name: repo.name)
+        stub_github_api_org_membership
         second_user = create(:user)
+
         synchronization = RepoSynchronization.new(second_user)
 
         synchronization.start
@@ -130,6 +132,8 @@ describe RepoSynchronization do
             repo_name: "foo/bar",
             owner_id: owner_github_id,
           )
+          stub_github_api_org_membership
+
           synchronization = RepoSynchronization.new(user)
 
           synchronization.start
@@ -150,12 +154,80 @@ describe RepoSynchronization do
             repo_name: "foo/bar",
             owner_id: owner.github_id,
           )
+          stub_github_api_org_membership
+
           synchronization = RepoSynchronization.new(user)
 
           synchronization.start
 
           owner = Owner.find_by(github_id: owner.github_id)
           expect(owner.repos.map(&:github_id)).to eq([repo_github_id])
+        end
+      end
+
+      context "when the user is an organization owner" do
+        it "creates an ownership" do
+          owner = create(:owner)
+          user = create(:user)
+          stub_github_api_repos(
+            repo_id: 456,
+            repo_name: "user/newrepo",
+            owner_id: owner.github_id,
+          )
+          stub_github_api_org_membership
+
+          synchronization = RepoSynchronization.new(user)
+
+          synchronization.start
+
+          user.reload
+          expect(user.ownerships.length).to eq(1)
+          expect(user.owners.first.name).to eq("thoughtbot")
+        end
+      end
+
+      context "when the user is not an organization owner" do
+        it "does not create an ownership" do
+          owner = create(:owner)
+          user = create(:user)
+          stub_github_api_repos(
+            repo_id: 456,
+            repo_name: "user/newrepo",
+            owner_id: owner.github_id,
+          )
+          stub_github_api_org_membership(owner: false)
+
+          synchronization = RepoSynchronization.new(user)
+
+          synchronization.start
+
+          user.reload
+          expect(user.ownerships).to be_empty
+        end
+      end
+
+      context "when the user is not an organization" do
+        it "creates an ownership" do
+          owner = create(:owner)
+          user = create(:user, username: "thoughtbot")
+          github_repo1 = build_github_repo(
+            id: 456,
+            name: "newrepo",
+            type: "User",
+          )
+          github_repo1[:owner][:id] = owner.github_id
+          allow(api).to receive(:repos).and_return([github_repo1])
+          allow(GithubApi).to receive(:new).and_return(api)
+
+          expect(api).not_to receive(:org_membership)
+
+          synchronization = RepoSynchronization.new(user)
+
+          synchronization.start
+
+          user.reload
+          expect(user.ownerships.length).to eq(1)
+          expect(user.owners.first.name).to eq("thoughtbot")
         end
       end
     end
@@ -165,13 +237,22 @@ describe RepoSynchronization do
       repo[:owner][:id] = owner_id
       repo[:permissions][:admin] = admin
 
-      api = double("GithubApi", repos: [repo])
+      allow(api).to receive(:repos).and_return([repo])
       allow(GithubApi).to receive(:new).and_return(api)
 
       repo
     end
 
-    def build_github_repo(id:, name:)
+    def stub_github_api_org_membership(owner: true)
+      membership = { role: owner ? "admin" : "user" }
+
+      allow(api).to receive(:org_membership).and_return(membership)
+      allow(GithubApi).to receive(:new).and_return(api)
+
+      membership
+    end
+
+    def build_github_repo(id:, name:, type: "Organization")
       {
         full_name: name,
         id: id,
@@ -179,7 +260,7 @@ describe RepoSynchronization do
         owner: {
           id: 123,
           login: "thoughtbot",
-          type: "Organization",
+          type: type,
         },
         permissions: {
           admin: false,

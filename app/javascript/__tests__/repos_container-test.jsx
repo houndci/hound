@@ -27,7 +27,7 @@ it('sets the filterTerm appropriately on text input', () => {
 });
 
 it('fetches repos and organizations on mount', () => {
-  let stub = sinon.stub(ReposContainer.prototype, 'fetchReposAndOrgs');
+  let stub = sinon.stub(ReposContainer.prototype, 'fetchUserOwnerships');
 
   const wrapper = mount(
     <ReposContainer

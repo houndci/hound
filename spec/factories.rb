@@ -94,4 +94,9 @@ FactoryGirl.define do
     github_id
     name { generate(:github_name) }
   end
+
+  factory :ownership do
+    user
+    owner
+  end
 end

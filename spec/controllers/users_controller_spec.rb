@@ -15,7 +15,8 @@ describe UsersController do
           subscribed_repo_count: 0,
           plan_max: 0,
           username: user.username,
-        }.to_json
+          owners: [],
+        }.to_json,
       )
     end
   end

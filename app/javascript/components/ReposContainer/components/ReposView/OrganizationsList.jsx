@@ -42,6 +42,7 @@ export default class OrganizationsList extends React.Component {
             configEnabled={org.config_enabled}
             configRepo={org.config_repo}
             ownerId={org.id}
+            userIsOrgOwner={org.isOwner}
           />
         ))}
       </section>

@@ -19,6 +19,7 @@ export default class App extends React.Component {
       filterTerm: null,
       repos: [],
       organizations: [],
+      ownerships: []
     };
   }
 
@@ -29,7 +30,25 @@ export default class App extends React.Component {
       }
     });
     this.setState({isSyncing: true});
-    this.fetchReposAndOrgs();
+    this.fetchUserOwnerships();
+  }
+
+  fetchUserOwnerships() {
+    this.getUser().then(user => this.onFetchUserOwnershipsSuccess(user));
+  }
+
+  onFetchUserOwnershipsSuccess(user) {
+    if (user.owners.length === 0) {
+      this.onRefreshClicked();
+    } else {
+      const ownerships = user.owners.map(owner => {
+        return (owner.name);
+      });
+
+      this.setState({ ownerships: ownerships })
+
+      this.fetchReposAndOrgs();
+    }
   }
 
   fetchReposAndOrgs() {
@@ -55,8 +74,13 @@ export default class App extends React.Component {
           name: this.orgName(repo.name)
         });
       });
+
       this.setState({
-        organizations: _.uniqWith(organizations, _.isEqual)
+        organizations: _.uniqWith(organizations, _.isEqual).map(org => {
+          org.isOwner = _.indexOf(this.state.ownerships, org.name) >= 0
+
+          return org;
+        })
       });
 
       this.setState({isSyncing: false});
@@ -194,7 +218,7 @@ export default class App extends React.Component {
       if (data.refreshing_repos) {
         setTimeout(() => this.handleSync(), 1000);
       } else {
-        this.fetchReposAndOrgs();
+        this.onFetchUserOwnershipsSuccess(data);
       }
     });
   }

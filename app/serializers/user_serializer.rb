@@ -5,6 +5,7 @@ class UserSerializer < ActiveModel::Serializer
     :subscribed_repo_count,
     :plan_max,
     :username,
+    :owners,
   )
 
   def card_exists
