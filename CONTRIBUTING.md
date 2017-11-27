@@ -140,7 +140,7 @@ To test Stripe payments on staging use this fake credit card number.
 The main Hound app (this app) receives PR hooks from GitHub, then it
 communicates with the [Linters](https://github.com/houndci/linters) app
 (or a few individual linter services) to review changed files in the PR.
-Linters communcate back with vioaltions they found, and the Hound app sends
+Linters communicate back with violations they found, and the Hound app sends
 comments back to GitHub.
 
 Here is the list of all the linters and where to find them,
