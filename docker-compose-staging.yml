@@ -16,6 +16,8 @@ services:
     networks:
       - frontend
       - hound-pr
+    external_links:
+      - postgres_ambassador:postgres
 
   resque-high:
     build:
@@ -36,6 +38,8 @@ services:
     hostname: netguru.hound-pr.staging.resque-high
     networks:
       - hound-pr
+    external_links:
+      - postgres_ambassador:postgres
 
   resque-low:
     build:
@@ -56,6 +60,8 @@ services:
     hostname: netguru.hound-pr.staging.resque-low
     networks:
       - hound-pr
+    external_links:
+      - postgres_ambassador:postgres
 
   resque-medium:
     build:
@@ -76,6 +82,8 @@ services:
     hostname: netguru.hound-pr.staging.resque-medium
     networks:
       - hound-pr
+    external_links:
+      - postgres_ambassador:postgres
 
   resque-scheduler:
     build:
@@ -92,6 +100,8 @@ services:
     hostname: netguru.hound-pr.staging.resque-scheduler
     networks:
       - hound-pr
+    external_links:
+      - postgres_ambassador:postgres
 
   redis:
     image: redis:4.0

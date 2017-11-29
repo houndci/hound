@@ -13,5 +13,5 @@ on_worker_boot do
   ActiveRecord::Base.establish_connection
 
   # Reconnect resque's redis after worker boots
-  Resque.redis = ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379")
+  # Resque.redis = ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379")
 end
