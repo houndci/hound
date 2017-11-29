@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.staging
-    command: dumb-init puma -C config/puma.rb
+    command: dumb-init bundle dumb-init puma -C config/puma.rb
     volumes:
       - ${SHARED_PATH}/log:/app/log
       - ${SHARED_PATH}/public/assets:/app/public/assets
@@ -17,6 +17,8 @@ services:
       - frontend
       - hound-pr
       - databases
+    expose:
+      - "3000"
 
   resque-high:
     build:
