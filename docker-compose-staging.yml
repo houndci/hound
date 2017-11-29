@@ -1,0 +1,113 @@
+version: "3.2"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.staging
+    command: dumb-init puma -C config/puma.rb
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound-pr
+      - netguru.stage=staging
+    hostname: netguru.hound-pr.staging.web
+    networks:
+      - frontend
+      - hound-pr
+
+  resque-high:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.staging
+    command: dumb-init bundle exec rake resque:work
+    environment:
+      - TERM_CHILD=1
+      - RESQUE_TERM_TIMEOUT=8
+      - QUEUE=high,medium
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound-pr
+      - netguru.stage=staging
+    hostname: netguru.hound-pr.staging.resque-high
+    networks:
+      - hound-pr
+
+  resque-low:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.staging
+    command: dumb-init bundle exec rake resque:work
+    environment:
+      - TERM_CHILD=1
+      - RESQUE_TERM_TIMEOUT=8
+      - QUEUE=low,medium
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound-pr
+      - netguru.stage=staging
+    hostname: netguru.hound-pr.staging.resque-low
+    networks:
+      - hound-pr
+
+  resque-medium:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.staging
+    command: dumb-init bundle exec rake resque:work
+    environment:
+      - TERM_CHILD=1
+      - RESQUE_TERM_TIMEOUT=8
+      - QUEUE=medium
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound-pr
+      - netguru.stage=staging
+    hostname: netguru.hound-pr.staging.resque-medium
+    networks:
+      - hound-pr
+
+  resque-scheduler:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.staging
+    command: dumb-init bundle exec rake resque:scheduler
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound-pr
+      - netguru.stage=staging
+    hostname: netguru.hound-pr.staging.resque-scheduler
+    networks:
+      - hound-pr
+
+  redis:
+    image: redis:4.0
+    volumes:
+      - ${SHARED_PATH}/redis/data:/data
+    networks:
+      - hound-pr
+    labels:
+      - netguru.appname=hound-pr
+      - netguru.stage=staging
+
+networks:
+  frontend:
+    external:
+      name: frontend
+
+  hound-pr:
+    external:
+      name: hound-pr
