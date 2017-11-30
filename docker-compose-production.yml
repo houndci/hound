@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.production
-    command: dumb-init bundle dumb-init puma -C config/puma.rb
+    command: dumb-init bundle exec puma -C config/puma.rb
     volumes:
       - ${SHARED_PATH}/log:/app/log
       - ${SHARED_PATH}/public/assets:/app/public/assets
