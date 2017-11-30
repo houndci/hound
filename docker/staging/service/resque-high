@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd /var/www/app
-TERM_CHILD=1 RESQUE_TERM_TIMEOUT=8 QUEUE=high,medium exec bundle exec rake resque:work
