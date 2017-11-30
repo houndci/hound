@@ -40,9 +40,6 @@ gem "stripe"
 gem "thor", "0.19.1"
 gem "uglifier", ">= 2.7.2"
 
-gem 'capistrano', '~> 3.4.0'
-gem 'capistrano-docker', git: 'https://github.com/netguru/capistrano-docker.git', tag: 'v0.2.7'
-
 group :staging, :production do
   gem "lograge"
   gem "rack-timeout"
