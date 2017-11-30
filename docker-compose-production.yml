@@ -16,6 +16,7 @@ services:
     networks:
       - frontend
       - hound
+      - bridge
     expose:
       - "3000"
     restart: always
@@ -120,3 +121,6 @@ networks:
     external:
       name: hound
 
+  bridge:
+    external:
+      name: bridge
