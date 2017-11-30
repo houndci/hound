@@ -7,5 +7,5 @@ Houndapp::Application.configure do
   config.lograge.custom_options = lambda do |event|
     { params: event.payload[:params].reject { |k| %w(controller action).include? k } }
   end
-  config.public_file_server.enabled = ENV.fetch("RAILS_PUBLIC_FILE_SERVER", false)
+  config.public_file_server.enabled = ENV.fetch("RAILS_SERVE_STATIC_FILES", false)
 end

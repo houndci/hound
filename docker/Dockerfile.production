@@ -1,0 +1,28 @@
+FROM quay.io/netguru/baseimage:0.10.1
+
+ENV RUBY_VERSION 2.3.1
+
+## Install Ruby & Dependencies
+RUN \
+  apt-get update -q && \
+  apt-get install -q libcurl3 && \
+  ruby-install --system --cleanup ruby $RUBY_VERSION -- --disable-install-rdoc && \
+  gem install bundler
+
+## Copy Gemfile & bundle
+ADD Gemfile* $APP_HOME/
+RUN bundle install --jobs=8 --retry=3 --without development test --deployment
+
+## Copy package/yarn and install
+ADD package.json yarn.lock $APP_HOME/
+RUN yarn --no-emoji --no-progress --non-interactive
+
+## Add rest of code
+ADD . $APP_HOME/
+
+ENV RAILS_ENV production
+ENV RAILS_MAX_THREADS 4
+ENV RAILS_SERVE_STATIC_FILES true
+ENV NODE_ENV production
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -3,20 +3,19 @@ services:
   web:
     build:
       context: .
-      dockerfile: docker/Dockerfile.staging
+      dockerfile: docker/Dockerfile.production
     command: dumb-init bundle dumb-init puma -C config/puma.rb
     volumes:
       - ${SHARED_PATH}/log:/app/log
       - ${SHARED_PATH}/public/assets:/app/public/assets
     env_file: ${SHARED_PATH}/secrets.env
     labels:
-      - netguru.appname=hound-pr
-      - netguru.stage=staging
-    hostname: netguru.hound-pr.staging.web
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.web
     networks:
       - frontend
-      - hound-pr
-      - databases
+      - hound
     expose:
       - "3000"
     restart: always
@@ -24,7 +23,7 @@ services:
   resque-high:
     build:
       context: .
-      dockerfile: docker/Dockerfile.staging
+      dockerfile: docker/Dockerfile.production
     command: dumb-init bundle exec rake resque:work
     environment:
       - TERM_CHILD=1
@@ -35,18 +34,17 @@ services:
       - ${SHARED_PATH}/public/assets:/app/public/assets
     env_file: ${SHARED_PATH}/secrets.env
     labels:
-      - netguru.appname=hound-pr
-      - netguru.stage=staging
-    hostname: netguru.hound-pr.staging.resque-high
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-high
     networks:
-      - hound-pr
-      - databases
+      - hound
     restart: always
 
   resque-low:
     build:
       context: .
-      dockerfile: docker/Dockerfile.staging
+      dockerfile: docker/Dockerfile.production
     command: dumb-init bundle exec rake resque:work
     environment:
       - TERM_CHILD=1
@@ -57,18 +55,17 @@ services:
       - ${SHARED_PATH}/public/assets:/app/public/assets
     env_file: ${SHARED_PATH}/secrets.env
     labels:
-      - netguru.appname=hound-pr
-      - netguru.stage=staging
-    hostname: netguru.hound-pr.staging.resque-low
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-low
     networks:
-      - hound-pr
-      - databases
+      - hound
     restart: always
 
   resque-medium:
     build:
       context: .
-      dockerfile: docker/Dockerfile.staging
+      dockerfile: docker/Dockerfile.production
     command: dumb-init bundle exec rake resque:work
     environment:
       - TERM_CHILD=1
@@ -79,30 +76,28 @@ services:
       - ${SHARED_PATH}/public/assets:/app/public/assets
     env_file: ${SHARED_PATH}/secrets.env
     labels:
-      - netguru.appname=hound-pr
-      - netguru.stage=staging
-    hostname: netguru.hound-pr.staging.resque-medium
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-medium
     networks:
-      - hound-pr
-      - databases
+      - hound
     restart: always
 
   resque-scheduler:
     build:
       context: .
-      dockerfile: docker/Dockerfile.staging
+      dockerfile: docker/Dockerfile.production
     command: dumb-init bundle exec rake resque:scheduler
     volumes:
       - ${SHARED_PATH}/log:/app/log
       - ${SHARED_PATH}/public/assets:/app/public/assets
     env_file: ${SHARED_PATH}/secrets.env
     labels:
-      - netguru.appname=hound-pr
-      - netguru.stage=staging
-    hostname: netguru.hound-pr.staging.resque-scheduler
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-scheduler
     networks:
-      - hound-pr
-      - databases
+      - hound
     restart: always
 
   redis:
@@ -110,10 +105,10 @@ services:
     volumes:
       - ${SHARED_PATH}/redis/data:/data
     networks:
-      - hound-pr
+      - hound
     labels:
-      - netguru.appname=hound-pr
-      - netguru.stage=staging
+      - netguru.appname=hound
+      - netguru.stage=production
     restart: always
 
 networks:
@@ -121,11 +116,7 @@ networks:
     external:
       name: frontend
 
-  hound-pr:
+  hound:
     external:
-      name: hound-pr
-
-  databases:
-    external:
-      name: databases
+      name: hound
 
