@@ -65,8 +65,15 @@ Houndapp::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   config.lograge.enabled = true
   config.lograge.custom_options = lambda do |event|
-    { params: event.payload[:params].reject { |k| %w(controller action).include? k } }
+    {
+      params: event.payload[:params].reject { |k| %w(controller action).include? k },
+      time: event.time,
+    }
   end
+
+  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+  log_file = Rails.root.join("log/#{Rails.env}.log")
+  config.logger.extend(ActiveSupport::Logger.broadcast(Logger.new(log_file)))
 
   config.react.variant = :production
 end
