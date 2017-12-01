@@ -30,3 +30,5 @@ Retryable.retry_attempts = ENV.fetch("RESQUE_RETRY_ATTEMPTS", 10).to_i
 Resque::Scheduler.configure do |c|
   c.quiet = true
 end
+
+Resque.logger.formatter = Resque::VeryVerboseFormatter.new
