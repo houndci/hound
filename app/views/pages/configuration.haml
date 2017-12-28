@@ -29,6 +29,8 @@
         = link_to "Elixir", "#elixir", class: "docs-nav-link"
       %li
         = link_to "Sass Lint", "#sass-lint", class: "docs-nav-link"
+      %li
+        = link_to "ShellCheck", "#shellcheck", class: "docs-nav-link"
 
   %section.docs-content
     %article.docs-article
@@ -563,7 +565,7 @@
         %em.code-inline .sass-lint.yml
         file to your project,
         specify your desired configuration
-        and refreence the file in your
+        and reference the file in your
         %em.code-inline .hound.yml
 
       %p
@@ -572,6 +574,51 @@
             sass-lint:
               enabled: true
               config_file: .sass-lint.yml
+
+    %article.docs-article#shellcheck
+      %h2 ShellCheck
+      %p
+        Hound uses
+        = link_to "ShellCheck",
+          "https://github.com/koalaman/shellcheck",
+          new_window_options
+        to review shell scripts.
+
+      %p
+        To enable ShellCheck style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            shellcheck:
+              enabled: true
+      %p
+        To tell ShellCheck to ignore certain codes, add
+        %em.code-inline .shellcheck.yml
+        file to your project (or give it another name if you like),
+        include in it codes you want ignored, and reference the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            shellcheck:
+              enabled: true
+              config_file: .shellcheck.yml
+
+      %p
+        Example config file:
+        %code.code-block
+          :preserve
+            exclude:
+              - CODE1
+              - CODE2
+
+        See
+        = link_to "ShellCheck wiki",
+          "https://github.com/koalaman/shellcheck/wiki",
+          new_window_options
+        for information on ShellCheck codes.
 
     %article.docs-article
       %h3 Didn't find what you where looking for?
