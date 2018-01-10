@@ -4,7 +4,7 @@
 
 %section
   .section-content
-    .inner-wrapper
+    .clearfix
       .home-hero
         %h1.home-hero-heading
           Code review tool for GitHub pull requests
@@ -22,7 +22,7 @@
     .home-languages
       %h2.home-heading--small.home-languages-heading Currently style checking
 
-      .inner-wrapper
+      .clearfix
         %ul.home-languages-list
           %li.home-languages-list-item
             .home-languages-list-item-logo
@@ -70,10 +70,8 @@
     %h2.home-heading--large.home-importance-heading.section-title
       Why does style matter?
 
-    .inner-wrapper
+    .clearfix
       %article.home-importance-item
-        .home-importance-icon
-          %i.fa.fa-bolt
         .home-importance-text
           %p.home-heading--small Convention
           %p
@@ -82,8 +80,6 @@
             keep their focus on logic, not semantics and formatting.
 
       %article.home-importance-item
-        .home-importance-icon
-          %i.fa.fa-ellipsis-h
         .home-importance-text
           %p.home-heading--small Consistency
           %p
@@ -93,8 +89,6 @@
             person's unique style vs. the team.
 
       %article.home-importance-item
-        .home-importance-icon
-          %i.fa.fa-magic
         .home-importance-text
           %p.home-heading--small Awesomeness
           %p
@@ -146,15 +140,13 @@
         Pricing.
 
     %article.plans
-      .inner-wrapper
+      .clearfix
         %h3.plan-category
-          %i.fa.fa-book
           Private Repos
 
         = render(partial: @home.private_plans, as: :plan)
 
         %h3.plan-category.open-source
-          %i.fa.fa-code-fork
           Open Source
 
         = render(partial: @home.open_source_plans, as: :plan)

@@ -17,8 +17,6 @@
 
 .home-hero-heading {
   font-size: $font-size-xxlarge;
-  font-weight: $font-weight-light;
-  letter-spacing: $letter-spacing-base;
   margin-bottom: $xsmall-spacing;
 
   @include media($medium-screen-down) {
@@ -32,8 +30,6 @@
 
 .home-hero-subheading {
   font-size: $font-size-base;
-  font-weight: $font-weight-light;
-  letter-spacing: $letter-spacing-base;
   margin-bottom: 0;
 
   @include media($medium-screen-up) {

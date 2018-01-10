@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 machine:
   services:
     - redis

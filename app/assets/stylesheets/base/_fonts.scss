@@ -1,0 +1,55 @@
+$_font-host-url: "https://font.thoughtbot.com/hound/";
+
+@include font-face(
+  "Tofino",
+  "#{$_font-host-url}Tofino-Book",
+  $asset-pipeline: false
+) {
+  font-style: normal;
+  font-weight: $font-weight-book;
+}
+
+@include font-face(
+  "Tofino",
+  "#{$_font-host-url}Tofino-BookItalic",
+  $asset-pipeline: false
+) {
+  font-style: italic;
+  font-weight: $font-weight-book;
+}
+
+@include font-face(
+  "Tofino",
+  "#{$_font-host-url}Tofino-Regular",
+  $asset-pipeline: false
+) {
+  font-style: normal;
+  font-weight: $font-weight-regular;
+}
+
+@include font-face(
+  "Tofino",
+  "#{$_font-host-url}Tofino-RegularItalic",
+  $asset-pipeline: false
+) {
+  font-style: italic;
+  font-weight: $font-weight-regular;
+}
+
+@include font-face(
+  "Tofino",
+  "#{$_font-host-url}Tofino-Medium",
+  $asset-pipeline: false
+) {
+  font-style: normal;
+  font-weight: $font-weight-medium;
+}
+
+@include font-face(
+  "Tofino",
+  "#{$_font-host-url}Tofino-MediumItalic",
+  $asset-pipeline: false
+) {
+  font-style: italic;
+  font-weight: $font-weight-medium;
+}
