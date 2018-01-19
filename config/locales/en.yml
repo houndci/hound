@@ -1,4 +1,9 @@
 en:
+  helpers:
+    label:
+      owner:
+        active_private_repos_count: Active private repos
+
   sync_repos: "Refresh repo list"
   include_private_repos: "Include private repos"
   syncing_repos: "Loading..."

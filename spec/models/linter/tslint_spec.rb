@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe Linter::Tslint do
   it_behaves_like "a linter" do
-    let(:lintable_files) { %w(foo.ts) }
+    let(:lintable_files) { %w(foo.ts foo.tsx) }
     let(:not_lintable_files) { %w(foo.js.coffee) }
   end
 

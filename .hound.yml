@@ -5,3 +5,6 @@ ruby:
 
 scss:
   config_file: .scss-lint.yml
+
+jshint:
+  config_file: .jshintrc
