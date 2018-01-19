@@ -34,6 +34,10 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
   align-items: center;
   display: flex;
   flex-direction: row;
+
+  .config-enabled {
+    width: 1em;
+  }
 }
 
 .organization-header-label {
@@ -60,8 +64,7 @@ $dropdown-arrow: $white image-url("select-arrow.svg") no-repeat;
 
 .organization-header-title {
   @include ellipsis;
-  font-weight: bold;
-  letter-spacing: 0;
+  font-weight: $font-weight-medium;
   line-height: 1.4;
   margin-bottom: 0;
 }

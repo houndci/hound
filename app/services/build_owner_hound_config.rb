@@ -31,7 +31,7 @@ class BuildOwnerHoundConfig
 
   def config_repo_reachable?
     !!github.repo(config_repo.name)
-  rescue Octokit::InvalidRepository, Octokit::NotFound
+  rescue Octokit::InvalidRepository, Octokit::NotFound, Octokit::Unauthorized
     false
   end
 

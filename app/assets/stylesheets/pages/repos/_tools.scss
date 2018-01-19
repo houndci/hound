@@ -27,9 +27,8 @@
   box-sizing: border-box;
   color: $base-font-color;
   display: block;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-regular;
   height: 60px;
-  letter-spacing: 1px;
   margin: 0;
   padding: 0.8em 1em;
   transition: $base-transition;
@@ -37,8 +36,7 @@
 
   &::placeholder {
     color: $base-font-color;
-    font-weight: $font-weight-normal;
-    letter-spacing: 1px;
+    font-weight: $font-weight-regular;
     transition: color $base-transition-timing $base-easing;
   }
 
@@ -84,9 +82,8 @@
   border-radius: 3px;
   color: $base-font-color;
   font-size: 1em;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-regular;
   height: 60px;
-  letter-spacing: 1px;
   margin: 0;
   padding: 0.8em 1em;
   text-align: center;

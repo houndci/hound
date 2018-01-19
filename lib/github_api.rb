@@ -14,10 +14,6 @@ class GithubApi
     @file_cache = {}
   end
 
-  def client
-    @client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
-  end
-
   def scopes
     client.scopes(token).join(",")
   end
@@ -112,24 +108,35 @@ class GithubApi
     )
   end
 
+  def accept_invitation(repo_name)
+    repo_invitation = find_invitation_for_repo(repo_name)
+
+    if repo_invitation
+      accept_repository_invitation(repo_invitation)
+    else
+      raise "Invitation for Hound to #{repo_name} not found"
+    end
+  end
+
   def add_collaborator(repo_name, username)
-    client.add_collaborator(
-      repo_name,
-      username,
-      accept: "application/vnd.github.ironman-preview+json",
-    )
+    client.add_collaborator(repo_name, username)
   end
 
   def remove_collaborator(repo_name, username)
-    # not sure if we need the accept header
-    client.remove_collaborator(
-      repo_name,
-      username,
-      accept: "application/vnd.github.ironman-preview+json",
-    )
+    client.remove_collaborator(repo_name, username)
+  end
+
+  def repository?(repo_name)
+    client.repository?(repo_name)
+  rescue Octokit::Unauthorized
+    false
   end
 
   private
+
+  def client
+    @_client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
+  end
 
   def create_status(repo:, sha:, state:, description:, target_url: nil)
     client.create_status(
@@ -140,5 +147,22 @@ class GithubApi
       description: description,
       target_url: target_url
     )
+  end
+
+  def find_invitation_for_repo(repo_name)
+    invitations = client.user_repository_invitations(
+      accept: "application/vnd.github.swamp-thing-preview",
+    )
+    invitations.detect do |invitation|
+      invitation.repository.full_name == repo_name
+    end
+  end
+
+  def accept_repository_invitation(invitation)
+    response = client.accept_repository_invitation(
+      invitation.id,
+      accept: "application/vnd.github.swamp-thing-preview",
+    )
+    response == ""
   end
 end
