@@ -13,6 +13,33 @@ describe Repo do
     expect(subject).to validate_uniqueness_of(:github_id)
   end
 
+  describe "#bulk?" do
+    context "when repo is bulk" do
+      it "returns true" do
+        create(:bulk_customer, org: "thoughtbot")
+        repo = Repo.new(name: "thoughtbot/hub")
+
+        expect(repo).to be_bulk
+      end
+    end
+
+    context "when repo is not bulk" do
+      it "returns false" do
+        repo = Repo.new(name: "jimbob/hound")
+
+        expect(repo).not_to be_bulk
+      end
+    end
+
+    context "without name" do
+      it "returns false" do
+        repo = Repo.new(name: nil)
+
+        expect(repo).not_to be_bulk
+      end
+    end
+  end
+
   describe "#stripe_subscription_id" do
     context "when subscription is nil" do
       it "returns nil" do

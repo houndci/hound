@@ -1,8 +1,8 @@
 class DashboardManifest
   DASHBOARDS = [
     :blacklisted_pull_requests,
+    :bulk_customers,
     :job_failures,
-    :owners,
   ]
-  ROOT_DASHBOARD = :owners
+  ROOT_DASHBOARD = :bulk_customers
 end

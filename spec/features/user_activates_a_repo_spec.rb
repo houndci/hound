@@ -1,12 +1,11 @@
 require "rails_helper"
 
 RSpec.feature "User activates a repo", :js do
-  scenario "that is whitelisted" do
+  scenario "bulk user activates a repo" do
     user = create(:user, :with_github_scopes)
     repo = create(:repo, :private, name: "foo/bar")
-    create(:owner, whitelisted: true, repos: [repo])
+    create(:bulk_customer, org: "foo")
     create(:membership, :admin, repo: repo, user: user)
-    stub_repository_invitations(repo.name)
 
     sign_in_as(user, "letmein")
     click_on "Activate"
@@ -34,13 +33,12 @@ RSpec.feature "User activates a repo", :js do
     user = create(:user, :with_github_scopes, :stripe)
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)
-    create(:subscription, user: user)
+    create(:subscription, :active, user: user)
     current_plan = user.current_plan.id
     upgraded_plan = user.next_plan.id
     stub_customer_find_request
     stub_subscription_create_request(plan: current_plan, repo_ids: repo.id)
     stub_subscription_update_request(plan: upgraded_plan, repo_ids: repo.id)
-    stub_repository_invitations(repo.name)
 
     sign_in_as(user, "letmein")
     click_on "Activate"

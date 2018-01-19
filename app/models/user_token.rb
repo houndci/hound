@@ -6,23 +6,12 @@ class UserToken
   end
 
   def user
-    @_user ||= users_with_token.shuffle.detect(-> { hound_user }) do |user|
-      can_reach_repository?(user)
-    end
+    @user ||= users_with_token.sample || user_with_default_token
   end
 
   private
 
-  def can_reach_repository?(user)
-    if GithubApi.new(user.token).repository?(repo.name)
-      true
-    else
-      repo.remove_membership(user)
-      false
-    end
-  end
-
-  def hound_user
+  def user_with_default_token
     User.new(token: Hound::GITHUB_TOKEN)
   end
 

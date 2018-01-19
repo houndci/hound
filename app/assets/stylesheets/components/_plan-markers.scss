@@ -1,5 +1,7 @@
-.plan-marker {
+%plan-marker {
   border-radius: 100px;
+  border-style: solid;
+  border-width: 1px;
   display: inline-block;
   font-size: 0.8em;
   margin-bottom: $small-spacing;
@@ -7,18 +9,20 @@
   text-transform: uppercase;
 }
 
-.plan-marker--current {
-  background-color: lighten($gold, 50%);
-  border: 1px solid lighten($gold, 3%);
+.current-plan {
+  @extend %plan-marker;
+  background: lighten($gold, 50%);
+  border-color: lighten($gold, 3%);
   color: darken($gold, 10%);
 }
 
-.plan-marker--new {
-  background-color: lighten($green, 10%);
-  border: 1px solid darken($green, 20%);
+.new-plan {
+  @extend %plan-marker;
+  background: lighten($green, 10%);
+  border-color: darken($green, 20%);
   color: darken($green, 40%);
 }
 
-.plan-marker__wrapper {
+.marker-wrapper {
   display: block;
 }

@@ -3,7 +3,7 @@ machine:
     - redis
 
   node:
-    version: 8.4.0
+    version: 7.4.0
 
   environment:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"

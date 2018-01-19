@@ -8,16 +8,17 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   Analytics.backend = FakeAnalyticsRuby.new
 
-  %i(request feature).each do |type|
-    config.before :each, type: type do
-      stub_request(:any, /api.github.com/).to_rack(FakeGithub)
-      FakeGithub.comments = []
-    end
+  config.before do
+    DatabaseCleaner.clean
+    stub_request(:any, /api.github.com/).to_rack(FakeGithub)
+  end
+
+  config.before :each, type: :request do
+    FakeGithub.comments = []
   end
 
   config.infer_base_class_for_anonymous_controllers = false
   config.infer_spec_type_from_file_location!
-  config.use_transactional_fixtures = true
   config.include AnalyticsHelper
   config.include AuthenticationHelper
   config.include CommitFileHelper
@@ -25,6 +26,7 @@ RSpec.configure do |config|
   config.include HttpsHelper
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
+  DatabaseCleaner.strategy = :truncation
   ActiveJob::Base.queue_adapter = :resque
 end
 

@@ -40,7 +40,17 @@ describe Linter::Eslint do
   end
 
   describe "#file_included?" do
-    context "when file does not match any ignore patterns" do
+    context "file is in excluded file list" do
+      it "returns false" do
+        stub_eslint_config
+        linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
+        commit_file = double("CommitFile", filename: "foo.js")
+
+        expect(linter.file_included?(commit_file)).to eq false
+      end
+    end
+
+    context "file is not excluded" do
       it "returns true" do
         stub_eslint_config
         linter = build_linter(nil, Linter::Eslint::IGNORE_FILENAME => "foo.js")
@@ -48,26 +58,20 @@ describe Linter::Eslint do
 
         expect(linter.file_included?(commit_file)).to eq true
       end
-    end
 
-    context "when file matches an ignore pattern" do
-      it "returns false" do
+      it "matches a glob pattern" do
         stub_eslint_config
-        ignore_file_content = <<~EOS
-          app/javascripts/**/*.js
-          vendor/*
-        EOS
         linter = build_linter(
           nil,
-          Linter::Eslint::IGNORE_FILENAME => ignore_file_content,
+          Linter::Eslint::IGNORE_FILENAME => "app/javascripts/*.js\nvendor/*",
         )
         commit_file1 = double(
           "CommitFile",
-          filename: "app/javascripts/foo.js",
+          filename: "app/javascripts/bar.js",
         )
         commit_file2 = double(
           "CommitFile",
-          filename: "vendor/javascripts/bar/baz.js",
+          filename: "vendor/javascripts/foo.js",
         )
 
         expect(linter.file_included?(commit_file1)).to be false
