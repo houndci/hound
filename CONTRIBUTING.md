@@ -72,8 +72,7 @@ ngrok authtoken <your-token>
 1. Set the `HOST` variable in your `.env.local` to your ngrok host, e.g.
    `<your-subdomain>.ngrok.io`.
 
-1. Change `ENABLE_HTTPS` to 'yes' in the `.env.local` file. You might need to allow
-  insecure access to localhost (see [this link] for a possible workaround).
+1. Change `ENABLE_HTTPS` to 'yes' in the `.env.local` file.
 
 1. Log into your GitHub account and go to your [developer application settings].
 
@@ -107,7 +106,6 @@ ngrok authtoken <your-token>
 [ngrok]: https://ngrok.com
 [personal access token]: https://github.com/settings/tokens
 [developer application settings]: https://github.com/settings/developers
-[this link]: https://superuser.com/questions/772762/how-can-i-disable-security-checks-for-localhost#903159
 
 ## Testing
 

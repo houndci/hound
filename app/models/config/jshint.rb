@@ -3,11 +3,5 @@ module Config
     def serialize(data = content)
       Serializer.json(data)
     end
-
-    private
-
-    def parse(content)
-      Parser.json(content)
-    end
   end
 end

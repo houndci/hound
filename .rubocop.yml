@@ -8,56 +8,6 @@ AllCops:
   - "db/**/*"
   DisplayCopNames: false
   StyleGuideCopsOnly: false
-Naming/AccessorMethodName:
-  Description: Check the naming of accessor methods for get_/set_.
-  Enabled: false
-Naming/AsciiIdentifiers:
-  Description: Use only ascii symbols in identifiers.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#english-identifiers
-  Enabled: false
-Naming/BinaryOperatorParameterName:
-  Description: When defining binary operators, name the argument other.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#other-arg
-  Enabled: false
-Naming/ClassAndModuleCamelCase:
-  Description: Use CamelCase for classes and modules.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#camelcase-classes
-  Enabled: true
-Naming/ConstantName:
-  Description: Constants should use SCREAMING_SNAKE_CASE.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#screaming-snake-case
-  Enabled: true
-Naming/FileName:
-  Description: Use snake_case for source file names.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-files
-  Enabled: false
-  Exclude: []
-Naming/MethodName:
-  Description: Use the configured style when naming methods.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-symbols-methods-vars
-  Enabled: true
-  EnforcedStyle: snake_case
-  SupportedStyles:
-  - snake_case
-  - camelCase
-Naming/PredicateName:
-  Description: Check the names of predicate methods.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#bool-methods-qmark
-  Enabled: true
-  NamePrefix:
-  - is_
-  - has_
-  - have_
-  NamePrefixBlacklist:
-  - is_
-Naming/VariableName:
-  Description: Use the configured style when naming variables.
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-symbols-methods-vars
-  Enabled: true
-  EnforcedStyle: snake_case
-  SupportedStyles:
-  - snake_case
-  - camelCase
 Rails:
   Enabled: true
 Style/AndOr:
@@ -124,6 +74,15 @@ Style/Encoding:
   Description: Use UTF-8 as the source file encoding.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#utf-8
   Enabled: false
+  EnforcedStyle: always
+  SupportedStyles:
+  - when_needed
+  - always
+Style/FileName:
+  Description: Use snake_case for source file names.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-files
+  Enabled: false
+  Exclude: []
 Style/FrozenStringLiteralComment:
   Description: >-
     Add the frozen_string_literal comment to the top of files
@@ -200,6 +159,14 @@ Style/MethodDefParentheses:
   SupportedStyles:
   - require_parentheses
   - require_no_parentheses
+Style/MethodName:
+  Description: Use the configured style when naming methods.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-symbols-methods-vars
+  Enabled: true
+  EnforcedStyle: snake_case
+  SupportedStyles:
+  - snake_case
+  - camelCase
 Style/NumericLiterals:
   Description: Add underscores to large numeric literals to improve their readability.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#underscores-in-numerics
@@ -233,6 +200,16 @@ Style/PercentQLiterals:
   SupportedStyles:
   - lower_case_q
   - upper_case_q
+Style/PredicateName:
+  Description: Check the names of predicate methods.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#bool-methods-qmark
+  Enabled: true
+  NamePrefix:
+  - is_
+  - has_
+  - have_
+  NamePrefixBlacklist:
+  - is_
 Style/RaiseArgs:
   Description: Checks the arguments passed to raise/fail.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#exception-class-messages
@@ -344,6 +321,14 @@ Style/TrivialAccessors:
   - to_str
   - to_s
   - to_sym
+Style/VariableName:
+  Description: Use the configured style when naming variables.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-symbols-methods-vars
+  Enabled: true
+  EnforcedStyle: snake_case
+  SupportedStyles:
+  - snake_case
+  - camelCase
 Style/WhileUntilModifier:
   Description: Favor modifier while/until usage when you have a single-line body.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#while-as-a-modifier
@@ -475,6 +460,9 @@ Style/SymbolArray:
   Description: Use %i or %I for arrays of symbols.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-i
   Enabled: false
+Style/AccessorMethodName:
+  Description: Check the naming of accessor methods for get_/set_.
+  Enabled: false
 Style/Alias:
   Description: Use alias_method instead of alias.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#alias-method
@@ -486,6 +474,10 @@ Style/ArrayJoin:
 Style/AsciiComments:
   Description: Use only ascii symbols in comments.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#english-comments
+  Enabled: false
+Style/AsciiIdentifiers:
+  Description: Use only ascii symbols in identifiers.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#english-identifiers
   Enabled: false
 Style/Attr:
   Description: Checks for uses of Module#attr.
@@ -512,6 +504,10 @@ Style/CharacterLiteral:
   Description: Checks for uses of character literals.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-character-literals
   Enabled: false
+Style/ClassAndModuleCamelCase:
+  Description: Use CamelCase for classes and modules.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#camelcase-classes
+  Enabled: true
 Style/ClassMethods:
   Description: Use self when defining module/class methods.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#def-self-singletons
@@ -524,6 +520,10 @@ Style/ColonMethodCall:
   Description: 'Do not use :: for method call.'
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#double-colons
   Enabled: false
+Style/ConstantName:
+  Description: Constants should use SCREAMING_SNAKE_CASE.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#screaming-snake-case
+  Enabled: true
 Style/DefWithParentheses:
   Description: Use def with parentheses when there are arguments.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#method-parens
@@ -612,6 +612,10 @@ Style/Not:
 Style/OneLineConditional:
   Description: Favor the ternary operator(?:) over if/then/else/end constructs.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#ternary-operator
+  Enabled: false
+Style/OpMethod:
+  Description: When defining binary operators, name the argument other.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#other-arg
   Enabled: false
 Style/PerlBackrefs:
   Description: Avoid Perl-style regex back references.
@@ -996,6 +1000,10 @@ Lint/EnsureReturn:
 Lint/HandleExceptions:
   Description: Don't suppress exception.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#dont-hide-exceptions
+  Enabled: false
+Lint/InvalidCharacterLiteral:
+  Description: Checks for invalid character literals with a non-escaped whitespace
+    character.
   Enabled: false
 Lint/LiteralInCondition:
   Description: Checks of literals used in conditions.

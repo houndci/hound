@@ -1,0 +1,149 @@
+exports[`test renders appropriately (bulk) 1`] = `
+<div
+  className="plan plan-vertical current new">
+  <div
+    className="marker-wrapper">
+    <span
+      className="current-plan">
+      Current Plan
+    </span>
+  </div>
+  <div
+    className="marker-wrapper">
+    <span
+      className="new-plan">
+      New Plan
+    </span>
+  </div>
+  <div
+    className="plan-divider">
+    <h5
+      className="plan-title">
+      Bulk
+    </h5>
+    <div
+      className="plan-allowance">
+      Unlimited
+    </div>
+  </div>
+  <div
+    className="plan-price">
+    $
+     
+    <small>
+      month
+    </small>
+  </div>
+</div>
+`;
+
+exports[`test renders appropriately (current plan) 1`] = `
+<div
+  className="plan plan-vertical current new">
+  <div
+    className="marker-wrapper">
+    <span
+      className="current-plan">
+      Current Plan
+    </span>
+  </div>
+  <div
+    className="marker-wrapper">
+    <span
+      className="new-plan">
+      New Plan
+    </span>
+  </div>
+  <div
+    className="plan-divider">
+    <h5
+      className="plan-title">
+      Chihuahua
+    </h5>
+    <div
+      className="plan-allowance">
+      Up to 
+      <strong>
+        4
+      </strong>
+       Repos
+    </div>
+  </div>
+  <div
+    className="plan-price">
+    $
+    49
+     
+    <small>
+      month
+    </small>
+  </div>
+</div>
+`;
+
+exports[`test renders appropriately (neither current nor new plan) 1`] = `
+<div
+  className="plan plan-vertical">
+  <div
+    className="plan-divider">
+    <h5
+      className="plan-title">
+      Chihuahua
+    </h5>
+    <div
+      className="plan-allowance">
+      Up to 
+      <strong>
+        4
+      </strong>
+       Repos
+    </div>
+  </div>
+  <div
+    className="plan-price">
+    $
+    49
+     
+    <small>
+      month
+    </small>
+  </div>
+</div>
+`;
+
+exports[`test renders appropriately (new plan) 1`] = `
+<div
+  className="plan plan-vertical new">
+  <div
+    className="marker-wrapper">
+    <span
+      className="new-plan">
+      New Plan
+    </span>
+  </div>
+  <div
+    className="plan-divider">
+    <h5
+      className="plan-title">
+      Chihuahua
+    </h5>
+    <div
+      className="plan-allowance">
+      Up to 
+      <strong>
+        4
+      </strong>
+       Repos
+    </div>
+  </div>
+  <div
+    className="plan-price">
+    $
+    49
+     
+    <small>
+      month
+    </small>
+  </div>
+</div>
+`;

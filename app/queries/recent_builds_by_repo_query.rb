@@ -1,5 +1,5 @@
 class RecentBuildsByRepoQuery
-  NUMBER_OF_BUILDS = 10
+  NUMBER_OF_BUILDS = 20
 
   static_facade :call
 
@@ -20,7 +20,6 @@ class RecentBuildsByRepoQuery
             ON repos.id = memberships.repo_id
         WHERE
           memberships.user_id = :user_id
-        LIMIT 1000
       ),
       recent_builds_by_pull_request AS (
         SELECT distinct ON (repo_id, pull_request_number)

@@ -20,7 +20,8 @@ table {
   th {
     background-color: $_table-heading-background-color;
     font-size: 0.8em;
-    font-weight: $font-weight-medium;
+    font-weight: 600;
+    letter-spacing: 1px;
     padding: 1em 1.4em;
     text-transform: uppercase;
   }

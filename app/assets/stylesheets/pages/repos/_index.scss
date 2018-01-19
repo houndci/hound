@@ -1,14 +1,29 @@
 .repo {
   @include clearfix;
-  align-items: center;
   border-top: 1px solid $base-border-color;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   padding: 1em;
+  position: relative;
+  width: 100%;
 
   @include media($small-screen-only) {
     display: block;
     height: auto;
     padding: 1em 0;
+  }
+}
+
+.repo--processing {
+  &::before {
+    @extend .fa-spin;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .repo-name {
+    padding-left: 1.5em;
   }
 }
 
@@ -28,14 +43,16 @@
   @include ellipsis;
   color: $medium-font-color;
   font-size: 1.5em;
-  line-height: 1;
+  font-weight: $font-weight-light;
+  height: 100%;
   padding-bottom: 2px;
   transition: $base-transition;
 
   @include media($small-screen-only) {
     display: block;
     font-size: 1.2em;
-    font-weight: $font-weight-regular;
+    font-weight: $font-weight-normal;
+    letter-spacing: 1px;
     margin-bottom: 0.6em;
   }
 }
@@ -55,13 +72,18 @@
   }
 }
 
+.repo-activation-toggle--private {
+  min-width: 250px;
+}
+
 .repo-toggle {
   background: rgba($purple, 0.1);
   border: 2px solid $purple;
   border-radius: 20px;
   color: $purple;
   display: inline-block;
-  font-weight: $font-weight-regular;
+  font-weight: $font-weight-normal;
+  letter-spacing: 1px;
   padding: 0.4em 1em;
   text-align: center;
   transition: none;

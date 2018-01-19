@@ -111,13 +111,13 @@ describe HoundConfig do
       it "returns true" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
-            flake8:
+            python:
               Enabled: true
           EOS
         )
         hound_config = HoundConfig.new(commit)
 
-        expect(hound_config).to be_enabled_for("flake8")
+        expect(hound_config).to be_enabled_for("python")
       end
     end
 
