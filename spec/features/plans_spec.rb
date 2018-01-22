@@ -53,15 +53,25 @@ feature "Plans" do
 
     repo = create(:repo, private: true)
     create(:membership, admin: true, repo: repo, user: user)
+    stub_repository_invitations(repo.name)
     stub_customer_find_request
     stub_subscription_create_request(plan: "tier1", repo_ids: repo.id)
     stub_subscription_update_request(plan: "tier2", repo_ids: repo.id)
     visit plans_path(repo_id: repo.id)
 
     click_on "Upgrade"
-    wait_for_ajax
 
-    expect(current_path).to eq repos_path
+    wait_until_path_is(repos_path, "Timeout waiting for Upgrade to redirect")
+
     expect(page).to have_text "Private Repos 5 / 10"
+  end
+
+  def wait_until_path_is(path, message)
+    Timeout.timeout(10) do
+      break if current_path == path
+      sleep 1
+    end
+  rescue Timeout::Error
+    raise message
   end
 end

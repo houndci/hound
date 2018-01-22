@@ -74,7 +74,6 @@ describe StyleChecker do
       file_content: "",
       head_commit: stubbed_head_commit,
       commit_files: [],
-      repository_owner_name: "some_org"
     }
 
     double("PullRequest", defaults.merge(options))

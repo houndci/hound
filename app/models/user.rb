@@ -4,8 +4,8 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :repos, through: :memberships
   has_many :builds, through: :repos
-  has_many :subscribed_repos, through: :subscriptions, source: :repo
   has_many :subscriptions
+  has_many :subscribed_repos, through: :subscriptions, source: :repo
 
   validates :username, presence: true
 
@@ -84,7 +84,7 @@ class User < ApplicationRecord
 
   def crypt
     secret_key_base = Rails.application.secrets.secret_key_base
-    ActiveSupport::MessageEncryptor.new(secret_key_base)
+    ActiveSupport::MessageEncryptor.new(secret_key_base[0, 32], secret_key_base)
   end
 
   def payment_gateway_customer

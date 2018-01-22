@@ -1,4 +1,3 @@
-require "lib/js_ignore"
 require "app/models/config/base"
 require "app/models/config/jshint"
 require "app/models/config/parser"
