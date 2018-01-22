@@ -1,3 +1,30 @@
+.va-wrapper {
+  @include size(100%);
+  display: table;
+}
+
+.va-cell {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
 .content {
   @include outer-container;
+}
+
+.inner-wrapper {
+  @include clearfix;
+}
+
+img {
+  max-width: 100%;
 }

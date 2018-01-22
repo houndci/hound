@@ -4,10 +4,6 @@ class FakeGithub < Sinatra::Base
   cattr_accessor :comments, :review_body
   self.comments = []
 
-  patch "/user/repository_invitations/:invitation_id" do
-    status 204
-  end
-
   put "/repos/:owner/:repo/collaborators/:username" do
     status 204
   end

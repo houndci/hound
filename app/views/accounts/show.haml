@@ -18,8 +18,8 @@
 
   .account-content
     %article.billing-breakdown
-      = javascript_pack_tag "update_account_credit_card"
-      = react_component("UpdateAccountCreditCard",
+      = react_component("app.UpdateAccountCreditCard",
+          authenticity_token: form_authenticity_token,
           stripe_customer_id_present: current_user.stripe_customer_id.present?,
         )
       %table.itemized-receipt
@@ -54,8 +54,8 @@
                   )
 
     - if current_user.stripe_customer_id.present?
-      = javascript_pack_tag "update_account_email"
-      = react_component("UpdateAccountEmail",
+      = react_component("app.UpdateAccountEmail",
+          authenticity_token: form_authenticity_token,
           billable_email: @account_page.billable_email,
         )
     %article.active-private-repos

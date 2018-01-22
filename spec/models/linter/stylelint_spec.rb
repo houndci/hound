@@ -40,40 +40,6 @@ describe Linter::Stylelint do
     end
   end
 
-  describe "#file_included?" do
-    context "when file does not match any ignore patterns" do
-      it "returns true" do
-        ignore_file_content = <<~EOS
-          public/**/*.scss
-          vendor/*
-        EOS
-        linter = build_linter(
-          nil,
-          Linter::Stylelint::IGNORE_FILENAME => ignore_file_content,
-        )
-        commit_file = build_commit_file(filename: "app/assets/foo/a.scss")
-
-        expect(linter.file_included?(commit_file)).to eq true
-      end
-    end
-
-    context "when file matches ignore pattern" do
-      it "returns false" do
-        ignore_file_content = <<~EOS
-          app/assets/**/*.scss
-          vendor/*
-        EOS
-        linter = build_linter(
-          nil,
-          Linter::Stylelint::IGNORE_FILENAME => ignore_file_content,
-        )
-        commit_file = build_commit_file(filename: "app/assets/foo/a.scss")
-
-        expect(linter.file_included?(commit_file)).to eq false
-      end
-    end
-  end
-
   def stub_scss_config(config = {})
     stubbed_scss_config = instance_double(
       "StylelintConfig",

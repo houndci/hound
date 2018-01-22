@@ -65,7 +65,6 @@ describe CommitStatus do
         repo_name,
         sha,
         I18n.t(:complete_status, count: violation_count),
-        nil,
       )
     end
   end
@@ -112,7 +111,6 @@ describe CommitStatus do
         repo_name,
         sha,
         I18n.t(:hound_error_status),
-        nil,
       )
     end
   end

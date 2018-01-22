@@ -4,6 +4,10 @@
   margin: $medium-spacing 0;
   text-align: center;
 
+  .fa {
+    margin-right: 0.5em;
+  }
+
   &.open-source {
     color: $base-font-color;
   }
@@ -74,6 +78,7 @@
 .plan-price {
   color: $base-accent-color;
   font-size: 2.3em;
+  font-weight: $font-weight-light;
   line-height: 1;
 
   @include media($medium-large-screen-only) {
