@@ -43,10 +43,6 @@ class Repo < ApplicationRecord
     end
   end
 
-  def bulk?
-    BulkCustomer.where(org: organization).any?
-  end
-
   def total_violations
     builds.sum(:violations_count)
   end

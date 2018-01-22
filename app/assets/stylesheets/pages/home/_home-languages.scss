@@ -34,8 +34,7 @@
   background: $white;
   display: inline-block;
   font-family: $font-family-heading;
-  font-style: italic;
-  font-weight: $font-weight-light;
+  font-weight: $font-weight-book;
   margin: 2px 0 $base-spacing;
   padding: 0 $small-spacing;
   position: relative;
@@ -79,9 +78,5 @@
 }
 
 .home-languages-list-item-heading {
-  font-size: $font-size-small;
-  font-weight: $font-weight-bold;
-  letter-spacing: $letter-spacing-large;
   margin-bottom: 0;
-  text-transform: uppercase;
 }

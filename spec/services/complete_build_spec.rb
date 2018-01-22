@@ -50,6 +50,7 @@ describe CompleteBuild do
               build.repo_name,
               build.commit_sha,
               "1 violation found.",
+              nil,
             )
           end
         end

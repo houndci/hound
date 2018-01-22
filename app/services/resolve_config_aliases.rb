@@ -1,8 +1,12 @@
 class ResolveConfigAliases
   ALIASES = {
-    "javascript" => "jshint",
-    "java_script" => "jshint",
     "coffeescript" => "coffee_script",
+    "java_script" => "jshint",
+    "javascript" => "jshint",
+    "python" => "flake8",
+    "sass-lint" => "sass_lint",
+    "scss-lint" => "scss",
+    "scss_lint" => "scss",
   }.freeze
 
   static_facade :call
