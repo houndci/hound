@@ -56,7 +56,7 @@
       color: $base-accent-color;
       counter-increment: step;
       content: counter(step);
-      font-weight: $font-weight-medium;
+      font-weight: 600;
       font-size: 0.8em;
       line-height: 20px;
       text-align: center;
@@ -70,7 +70,7 @@
 
     h4 {
       color: $base-font-color;
-      font-weight: $font-weight-medium;
+      font-weight: 600;
       margin-bottom: 0.4em;
     }
 

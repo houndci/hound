@@ -6,19 +6,22 @@ feature "Repo list", js: true do
 
   scenario "user views list of repos" do
     user = create(:user, token_scopes: "public_repo,user:email")
-    org = create(:owner, name: "thoughtbot")
-    restricted_repo = create(:repo, name: "#{user.username}/inaccessible-repo")
-    activatable_repo = create(:repo, owner: org, name: "#{org.name}/my-repo")
+    restricted_repo = create(
+      :repo,
+      name: "#{user.username}/inaccessible-repo",
+    )
+    organization = "thoughtbot"
+    activatable_repo = create(:repo, name: "#{organization}/my-repo")
     create(:membership, repo: activatable_repo, user: user, admin: true)
     create(:membership, repo: restricted_repo, user: user, admin: false)
 
     sign_in_as(user)
 
-    within "[data-org-name=#{org.name}]" do
+    within "[data-org-name=#{organization}]" do
       expect(page).to have_text activatable_repo.name
       expect(page).to have_css ".repo-toggle"
     end
-    within "[data-org-name=#{restricted_repo.owner.name}]" do
+    within "[data-org-name=#{user.username}]" do
       expect(page).to have_text restricted_repo.name
       expect(page).to have_text I18n.t("cannot_activate_repo")
       expect(page).not_to have_css ".repo-toggle"
@@ -140,21 +143,19 @@ feature "Repo list", js: true do
   end
 
   scenario "user enables organization-wide config" do
-    owner = create(:owner, github_id: 1, name: "test")
-    create(:repo, owner: owner, users: [user], name: "test/abc")
-    repo = create(:repo, owner: owner, users: [user], name: "test/def")
+    owner = create(:owner, github_id: 1, name: "TEST_GITHUB_LOGIN")
+    create(:repo, owner: owner)
 
     sign_in_as(user)
     find(".toggle-switch").click
     wait_for_ajax
-    select_config_repo(repo.name)
-    find(".organization-header-select").select(repo.name)
+    find(".organization-header-select").
+      select("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
+    wait_for_ajax
 
-    expect(page).to have_css("[data-role='config-saved']")
-    expect(owner.reload).to have_attributes(
-      config_enabled?: true,
-      config_repo: repo.name,
-    )
+    expect(owner.reload).to be_config_enabled
+    expect(owner.reload.config_repo).
+      to eq "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME"
   end
 
   def create_repo(*options)
@@ -162,13 +163,5 @@ feature "Repo list", js: true do
     create(:membership, repo: repo, user: user, admin: true)
 
     repo
-  end
-
-  def select_config_repo(repo_name)
-    find(".organization-header-select").select(repo_name)
-    # this expect is needed to make sure the saved check mark is hidden when
-    # the option is chosen from the dropdown.
-    # Then we can re-assert the checkmark is visible again after AJAX completes.
-    expect(page).not_to have_css("[data-role='config-saved']")
   end
 end

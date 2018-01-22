@@ -79,8 +79,6 @@ describe RepoActivator do
 
           expect(api).to have_received(:add_collaborator).
             with(repo.name, Hound::GITHUB_USERNAME)
-          expect(api).to have_received(:accept_invitation).
-            with(repo.name)
         end
 
         it "marks repo as active" do
@@ -226,12 +224,7 @@ describe RepoActivator do
       it "does not raise" do
         repo = build(:repo, private: true)
         activator = build_activator(repo: repo)
-        github = instance_double(
-          "GithubApi",
-          create_hook: nil,
-          add_collaborator: nil,
-          accept_invitation: true,
-        )
+        github = double("GithubApi", create_hook: nil, add_collaborator: true)
         allow(GithubApi).to receive(:new).and_return(github)
 
         expect { activator.activate }.not_to raise_error
@@ -361,15 +354,11 @@ describe RepoActivator do
   end
 
   def stub_github_api
-    api = instance_double(
-      "GithubApi",
-      remove_hook: true,
-      add_collaborator: nil,
-      remove_collaborator: true,
-      accept_invitation: true,
-    )
     hook = double(:hook, id: 1)
+    api = double(:github_api, remove_hook: true)
     allow(api).to receive(:create_hook).and_yield(hook)
+    allow(api).to receive(:add_collaborator).and_return(true)
+    allow(api).to receive(:remove_collaborator).and_return(true)
     allow(GithubApi).to receive(:new).and_return(api)
     api
   end

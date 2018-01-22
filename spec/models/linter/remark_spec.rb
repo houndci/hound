@@ -27,7 +27,7 @@ describe Linter::Remark do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        LintersJob,
+        RemarkReviewJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
         linter_name: "remark",

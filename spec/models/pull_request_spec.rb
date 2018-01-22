@@ -79,18 +79,11 @@ describe PullRequest do
             body: violation.messages.join,
           },
         ],
-        <<~EOS.chomp
-          Some files could not be reviewed due to errors:
-          <details>
-          <summary>invalid config</summary>
-          <pre>invalid config</pre>
-          </details>
-          <details>
-          <summary>foo</summary>
-          <pre>foo
-            bar</pre>
-          </details>
-        EOS
+        "Some files could not be reviewed due to errors:" \
+          "<details><summary>invalid config</summary>" \
+          "<pre>invalid config</pre></details>" \
+          "<details><summary>foo</summary>" \
+          "<pre>foo<br>  bar</pre></details>",
       )
     end
   end
