@@ -83,8 +83,6 @@ module GithubApiHelper
       )
   end
 
-  private
-
   def stub_repos_requests(token)
     repos_url = "https://api.github.com/user/repos"
 
@@ -165,6 +163,17 @@ module GithubApiHelper
       body: status_request_body(description, state, target_url),
     ).to_return(status_request_return_value)
   end
+
+  def stub_repository_invitations(repo_name)
+    url = "https://api.github.com/user/repository_invitations?per_page=100"
+    stub_request(:get, url).
+      to_return(
+        headers: { "Content-Type" => "application/json; charset=utf-8" },
+        body: [{ id: 1234, repository: { full_name: repo_name } }].to_json,
+      )
+  end
+
+  private
 
   def status_request_return_value
     {

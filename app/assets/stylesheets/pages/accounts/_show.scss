@@ -29,12 +29,6 @@
 
   .update-card {
     float: right;
-    font-weight: $font-weight-light;
-
-    i.fa {
-      display: inline-block;
-      margin-right: 0.2em;
-    }
   }
 
   .itemized-receipt,
@@ -71,7 +65,6 @@
 
   input[type="text"],
   input[type="email"] {
-    font-weight: $font-weight-light;
     min-width: 20em;
     padding: 0.5em;
   }
