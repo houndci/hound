@@ -16,7 +16,7 @@ class ActivationsController < ApplicationController
   private
 
   def ensure_repo_allowed
-    if repo.private? && !repo.owner.whitelisted?
+    if repo.private? && !repo.bulk?
       raise CannotActivatePaidRepo
     end
   end

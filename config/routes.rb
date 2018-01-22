@@ -20,7 +20,6 @@ Houndapp::Application.routes.draw do
   resources :builds, only: [:create, :index]
   resources :owners, only: [:update]
   resources :plans, only: [:index]
-  resources :deleted_subscriptions, only: [:create]
 
   resources :repos, only: [:index] do
     with_options(defaults: { format: :json }) do
@@ -34,7 +33,7 @@ Houndapp::Application.routes.draw do
 
   with_options(defaults: { format: :json }) do
     resource :credit_card, only: [:update]
-    resources :repo_syncs, only: [:create]
+    resources :repo_syncs, only: [:index, :create]
     resource :user, only: [:show]
   end
 

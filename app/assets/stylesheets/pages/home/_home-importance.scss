@@ -39,6 +39,23 @@
   }
 }
 
+.home-importance-icon {
+  margin-bottom: $base-spacing;
+
+  .fa {
+    @include size(100px);
+    background: rgba($black, 0.15);
+    border: 1px solid $white;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: $font-size-xxlarge;
+
+    &::before {
+      @include position(relative, 20px null null);
+    }
+  }
+}
+
 .home-importance-text {
   text-shadow: $base-text-shadow;
 
