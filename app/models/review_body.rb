@@ -2,9 +2,9 @@
 class ReviewBody
   MAX_BODY_LENGTH = 65536
   SUMMARY_LENGTH = 80
-  LINE_DELIMITER = "<br>"
   HEADER = "Some files could not be reviewed due to errors:"
-  DETAILS_FORMAT = "<details><summary>%s</summary><pre>%s</pre></details>"
+  DETAILS_FORMAT = "<details>\n<summary>%s</summary>\n<pre>%s</pre>\n</details>"
+  FORMAT_PLACEHOLDER_CHARCTERS = 4
 
   def initialize(errors)
     @errors = errors
@@ -12,8 +12,10 @@ class ReviewBody
 
   def to_s
     if errors.any?
-      error_details = errors.map { |error| build_error_details(error) }
-      [HEADER].concat(error_details).join
+      output = HEADER
+      room_left = MAX_BODY_LENGTH - output.size
+
+      output + build_errors(errors, room_left)
     else
       ""
     end
@@ -23,33 +25,32 @@ class ReviewBody
 
   attr_reader :errors
 
-  def build_error_details(error)
-    summary = error_summary(error)
-    details = error[0...(allowed_error_length - summary.length)].
-      lines.
-      map(&:rstrip).
-      join(LINE_DELIMITER)
+  def build_errors(errors, room_left)
+    head, *tail = errors
+    error_details = "\n" + build_error_details(head, room_left - 1)
 
-    sprintf(DETAILS_FORMAT, summary, details)
+    if (room_left - error_details.size) >= 0
+      if tail.any?
+        error_details + build_errors(tail, room_left - error_details.size)
+      else
+        error_details
+      end
+    else
+      ""
+    end
+  end
+
+  def build_error_details(error, room_left)
+    summary = error_summary(error)
+    allowed_size = room_left -
+      (summary.size + DETAILS_FORMAT.size - FORMAT_PLACEHOLDER_CHARCTERS)
+
+    if allowed_size > 0
+      sprintf(DETAILS_FORMAT, summary, error[0...allowed_size])
+    end
   end
 
   def error_summary(error)
     error.lines.first.strip.truncate(SUMMARY_LENGTH)
-  end
-
-  def allowed_error_length
-    (MAX_BODY_LENGTH - formatting_characters_size) / errors.size
-  end
-
-  def formatting_characters_size
-    HEADER.length + all_detail_formats_length + all_lines_delimiters_length
-  end
-
-  def all_detail_formats_length
-    DETAILS_FORMAT.size * errors.size
-  end
-
-  def all_lines_delimiters_length
-    (errors.flat_map(&:lines).size - errors.size) * LINE_DELIMITER.length
   end
 end

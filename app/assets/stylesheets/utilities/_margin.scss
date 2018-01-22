@@ -1,3 +1,7 @@
 .margin-right-x-small {
-  margin-right: $xsmall-spacing;
+  margin-right: $xsmall-spacing !important;
+}
+
+.margin-left-small {
+  margin-left: $small-spacing !important;
 }

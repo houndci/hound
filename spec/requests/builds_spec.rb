@@ -25,11 +25,13 @@ RSpec.describe "POST /builds" do
 
       post builds_path, params: { payload: payload }
 
-      expect(FakeGithub.review_body).to eq(
-        "Some files could not be reviewed due to errors:" \
-        "<details><summary>invalid config syntax</summary>" \
-        "<pre>invalid config syntax</pre></details>",
-      )
+      expect(FakeGithub.review_body).to eq <<~EOS.chomp
+        Some files could not be reviewed due to errors:
+        <details>
+        <summary>invalid config syntax</summary>
+        <pre>invalid config syntax</pre>
+        </details>
+      EOS
       expect(FakeGithub.comments).to match_array [
         {
           body: new_violation1[:message],

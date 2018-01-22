@@ -4,7 +4,7 @@
   border-bottom-left-radius: $base-border-radius - 1px;
   border-bottom-right-radius: $base-border-radius - 1px;
   border-top: 2px solid $base-border-color;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-regular;
   padding: $small-spacing 0;
   text-align: center;
   transition: $base-transition;
@@ -37,7 +37,7 @@
 
 .build-pull-request,
 .build-sha {
-  font-weight: $font-weight-light;
+  font-weight: $font-weight-book;
 }
 
 .build-time {
@@ -58,8 +58,7 @@
 
 .build-org-repo {
   font-size: 1.2em;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: $font-weight-medium;
 }
 
 .build-time,

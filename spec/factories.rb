@@ -52,6 +52,8 @@ FactoryGirl.define do
 
     sequence(:name) { |n| "user/repo#{n}" }
     github_id
+    owner
+
     private false
     in_organization false
   end
@@ -71,13 +73,12 @@ FactoryGirl.define do
   end
 
   factory :subscription do
-    trait(:active) { association :repo, :active }
     trait(:inactive) { deleted_at { 1.day.ago } }
 
     sequence(:stripe_subscription_id) { |n| "stripesubscription#{n}" }
 
+    association :repo, :active, :private
     price Plan::PLANS[1][:price]
-    repo
     user
   end
 
@@ -92,11 +93,5 @@ FactoryGirl.define do
   factory :owner do
     github_id
     name { generate(:github_name) }
-  end
-
-  factory :bulk_customer do
-    org "bulk_org"
-    interval "monthly"
-    repo_limit 5
   end
 end
