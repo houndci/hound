@@ -1,4 +1,4 @@
-class AssociateViolationsWithFileReviews < ActiveRecord::Migration
+class AssociateViolationsWithFileReviews < ActiveRecord::Migration[4.2]
   class Violation < ActiveRecord::Base
     belongs_to :file_review
   end

@@ -1,4 +1,4 @@
-class BackfillTimestampsAddNullConstraints < ActiveRecord::Migration
+class BackfillTimestampsAddNullConstraints < ActiveRecord::Migration[4.2]
   def up
     updates_sql = <<-SQL
       UPDATE memberships

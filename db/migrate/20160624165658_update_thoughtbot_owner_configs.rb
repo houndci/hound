@@ -1,4 +1,4 @@
-class UpdateThoughtbotOwnerConfigs < ActiveRecord::Migration
+class UpdateThoughtbotOwnerConfigs < ActiveRecord::Migration[4.2]
   def up
     execute <<~SQL
       UPDATE

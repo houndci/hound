@@ -1,4 +1,4 @@
-class AddAdminToMemberships < ActiveRecord::Migration
+class AddAdminToMemberships < ActiveRecord::Migration[4.2]
   def up
     add_column :memberships, :admin, :boolean
 

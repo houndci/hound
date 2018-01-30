@@ -1,4 +1,4 @@
-class RemoveStyleConfig < ActiveRecord::Migration
+class RemoveStyleConfig < ActiveRecord::Migration[4.2]
   def up
     drop_table :style_configs
   end

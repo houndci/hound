@@ -1,4 +1,4 @@
-class CreateBlacklistedPullRequests < ActiveRecord::Migration
+class CreateBlacklistedPullRequests < ActiveRecord::Migration[4.2]
   def change
     create_table :blacklisted_pull_requests do |t|
       t.string :full_repo_name, null: false

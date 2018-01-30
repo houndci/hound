@@ -1,4 +1,4 @@
-class AddGithubIdUniquenessOnRepos < ActiveRecord::Migration
+class AddGithubIdUniquenessOnRepos < ActiveRecord::Migration[4.2]
   def up
     remove_uniqueness(:full_github_name)
     add_uniqueness(:github_id)

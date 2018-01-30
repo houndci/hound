@@ -1,4 +1,4 @@
-class AddUniqueConstraintToMemberships < ActiveRecord::Migration
+class AddUniqueConstraintToMemberships < ActiveRecord::Migration[4.2]
   def self.up
     transaction do
       remove_duplicate_memberships
