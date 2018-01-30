@@ -1,4 +1,4 @@
-class CreateFileReviews < ActiveRecord::Migration
+class CreateFileReviews < ActiveRecord::Migration[4.2]
   def change
     create_table :file_reviews do |t|
       t.belongs_to :build, index: true, foreign_key: true, null: false

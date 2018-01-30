@@ -1,4 +1,4 @@
-class AddConfigToOwner < ActiveRecord::Migration
+class AddConfigToOwner < ActiveRecord::Migration[4.2]
   def up
     add_column :owners, :config_enabled, :boolean, null: false, default: false
     add_column :owners, :config_repo, :string

@@ -1,4 +1,4 @@
-class CreateBulkCustomers < ActiveRecord::Migration
+class CreateBulkCustomers < ActiveRecord::Migration[4.2]
   def change
     create_table :bulk_customers do |t|
       t.timestamps null: false
