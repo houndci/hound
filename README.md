@@ -25,5 +25,5 @@ see the [CONTRIBUTING.md] file.
 
 The names and logos for Hound are trademarks of thoughtbot, inc.
 
-Hound is Copyright © 2012-2017 thoughtbot, inc. It is free software, and may be
+Hound is Copyright © 2012-2018 thoughtbot, inc. It is free software, and may be
 redistributed under the terms specified in the [LICENSE](LICENSE) file.
