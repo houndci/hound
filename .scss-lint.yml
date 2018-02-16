@@ -129,6 +129,7 @@ linters:
   PropertySpelling:
     enabled: true
     extra_properties:
+      - font-display
       - font-variant-numeric
       - text-decoration-skip
 
