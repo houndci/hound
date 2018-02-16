@@ -184,7 +184,7 @@ GEM
       thor (~> 0.19)
     netrc (0.11.0)
     nio4r (2.1.0)
-    nokogiri (1.8.1)
+    nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     oauth2 (1.2.0)
       faraday (>= 0.8, < 0.10)
@@ -385,7 +385,7 @@ DEPENDENCIES
   jquery-rails (>= 4.2.0)
   launchy
   neat (~> 1.9)
-  nokogiri (>= 1.8.1)
+  nokogiri (>= 1.8.2)
   octokit
   omniauth-github
   paranoia (~> 2.2)
