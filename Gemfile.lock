@@ -58,7 +58,7 @@ GEM
       commander (~> 4.4)
     arel (8.0.0)
     attr_extras (4.4.0)
-    autoprefixer-rails (7.1.4)
+    autoprefixer-rails (8.0.0)
       execjs
     bourbon (5.0.0)
       sass (~> 3.4)
