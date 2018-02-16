@@ -33,9 +33,6 @@ jobs:
       # Install System Dependencies from cache (for capybara-webkit)
       - run: sudo dpkg -i /home/circleci/.cache/apt/archives/*.deb || true
 
-      # Install System Dependencies (for capybara-webkit)
-      - run: mkdir -p /home/circleci/.cache/apt/archives/partial && touch /home/circleci/.cache/apt/archives/lock && chmod 640 /home/circleci/.cache/apt/archives/lock && sudo apt-get install -o=dir::cache=/home/circleci/.cache/apt qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
 
