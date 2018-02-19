@@ -1,27 +1,29 @@
 - content_for(:title) do
   Job Failures
 
-%header.header
-  %h1.header__heading
+%header.main-content__header{ role: "banner" }
+  %h1.main-content__page-title#page-title
     = content_for(:title)
 
-%table.collection-data{ "aria-labelledby": "page-title" }
-  %thead
-    %tr
-      %td.cell-label.cell-label--string.cell-label--false
-        Error message
-      %td.cell-label.cell-label--string.cell-label--false
-        Failure indexes
-      %td
-
-  %tbody
-    - resources.each do |error_message, job_failures|
+%section.main-content__body.main-content__body--flush
+  %table{ "aria-labelledby": "page-title" }
+    %thead
       %tr
-        %td.cell-data.cell-data--string.preserve-whitespace
-          = error_message
-        %td.cell-data.cell-data--array
-          = job_failures.map(&:index).join(", ")
-        %td
-          = link_to "Remove",
-            admin_job_failure_path(job_failures.map(&:index).join(",")),
-            method: :delete
+        %th.cell-label.cell-label--string.cell-label--false{ scope: "col" }
+          Error message
+        %th.cell-label.cell-label--string.cell-label--false{ scope: "col" }
+          Failure indexes
+        %th{ scope: "col" }
+
+    %tbody
+      - resources.each do |error_message, job_failures|
+        %tr
+          %td.cell-data.cell-data--string
+            = error_message
+          %td.cell-data.cell-data--array
+            = job_failures.map(&:index).join(", ")
+          %td
+            = link_to "Remove",
+              admin_job_failure_path(job_failures.map(&:index).join(",")),
+              method: :delete,
+              class: "text-color-red"
