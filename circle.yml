@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/hound
     docker:
-      - image: circleci/ruby:2.4.1-node
+      - image: circleci/ruby:2.5.0-node
         environment:
           RAILS_ENV: test
           CIRCLECI: true
