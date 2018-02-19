@@ -121,7 +121,7 @@ GEM
       thor (~> 0.19.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    haml (5.0.3)
+    haml (5.0.4)
       temple (>= 0.8.0)
       tilt
     haml-rails (1.0.0)
@@ -416,7 +416,7 @@ DEPENDENCIES
   webpacker-react (~> 0.3.1)
 
 RUBY VERSION
-   ruby 2.4.1p111
+   ruby 2.5.0p0
 
 BUNDLED WITH
    1.16.1
