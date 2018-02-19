@@ -7,10 +7,6 @@
     "test:watch": "jest --watch app/javascript/__tests__/*-test.jsx",
     "test:coverage": "jest --coverage app/javascript/__tests__/*-test.jsx"
   },
-  "engines": {
-    "node": "^8.4.0",
-    "yarn": "^1.0.1"
-  },
   "dependencies": {
     "@rails/webpacker": "^3.0.1",
     "autoprefixer": "^7.1.2",
