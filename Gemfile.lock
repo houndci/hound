@@ -77,9 +77,8 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.14.0)
-      capybara (>= 2.3.0, < 2.14.0)
-      json
+    childprocess (0.8.0)
+      ffi (~> 1.0, >= 1.0.11)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.2.x)
@@ -294,6 +293,7 @@ GEM
     rspec-support (3.5.0)
     ruby_parser (3.10.1)
       sexp_processor (~> 4.9)
+    rubyzip (1.2.1)
     rufus-scheduler (3.3.1)
       tzinfo
     safe_yaml (1.0.4)
@@ -312,6 +312,9 @@ GEM
       addressable (>= 2.3.5, < 2.6)
       faraday (~> 0.8, < 1.0)
     selectize-rails (0.12.4)
+    selenium-webdriver (3.9.0)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.2)
     sentry-raven (2.2.0)
       faraday (>= 0.7.6, < 1.0)
     sexp_processor (4.10.0)
@@ -374,7 +377,6 @@ DEPENDENCIES
   bundler-audit
   byebug
   capybara (>= 2.4.0)
-  capybara-webkit (~> 1.6)
   coffee-rails
   dotenv-rails
   email_validator
@@ -405,6 +407,7 @@ DEPENDENCIES
   rest-client (>= 2.0.1)
   rspec-rails (>= 3.4)
   sass-rails
+  selenium-webdriver
   sentry-raven (>= 0.12.2)
   shoulda-matchers
   sinatra (~> 2.0)
