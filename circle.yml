@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/hound
     docker:
-      - image: circleci/ruby:2.5.0-node
+      - image: circleci/ruby:2.5.0-node-browsers
         environment:
           RAILS_ENV: test
           CIRCLECI: true
@@ -26,16 +26,6 @@ jobs:
         name: Restore yarn cache
         key: houndci-yarn-{{ checksum "yarn.lock" }}
 
-      - type: cache-restore
-        name: Restore apt cache
-        key: houndci-apt-{{ checksum "Gemfile.lock" }}
-
-      # Install System Dependencies from cache (for capybara-webkit)
-      - run: sudo dpkg -i /home/circleci/.cache/apt/archives/*.deb || true
-
-      # Install System Dependencies (for capybara-webkit)
-      - run: mkdir -p /home/circleci/.cache/apt/archives/partial && touch /home/circleci/.cache/apt/archives/lock && chmod 640 /home/circleci/.cache/apt/archives/lock && sudo apt-get update && sudo apt-get install -o=dir::cache=/home/circleci/.cache/apt qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
 
@@ -53,12 +43,6 @@ jobs:
         key: houndci-yarn-{{ checksum "yarn.lock" }}
         paths:
           - ~/.cache/yarn
-
-      - type: cache-save
-        name: Store apt cache
-        key: houndci-apt-{{ checksum "Gemfile.lock" }}
-        paths:
-          - ~/.cache/apt
 
       # Wait for DB
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
