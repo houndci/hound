@@ -135,6 +135,24 @@ describe RepoActivator do
           expect(result).to be_truthy
         end
       end
+
+      context "when repo can be accessed" do
+        it "activates the repo without accepting an invitation" do
+          repo = create(:repo, private: true)
+          activator = build_activator(repo: repo)
+          github_api = stub_github_api(
+            add_collaborator: true,
+            repository?: true,
+          )
+          allow(github_api).to receive(:accept_invitation).
+            and_raise("invitation not found")
+          allow(GithubApi).to receive(:new).and_return(github_api)
+
+          result = activator.activate
+
+          expect(result).to eq true
+        end
+      end
     end
 
     context "when repo activation succeeds" do
@@ -226,13 +244,7 @@ describe RepoActivator do
       it "does not raise" do
         repo = build(:repo, private: true)
         activator = build_activator(repo: repo)
-        github = instance_double(
-          "GithubApi",
-          create_hook: nil,
-          add_collaborator: nil,
-          accept_invitation: true,
-        )
-        allow(GithubApi).to receive(:new).and_return(github)
+        stub_github_api(create_hook: nil)
 
         expect { activator.activate }.not_to raise_error
       end
@@ -360,14 +372,15 @@ describe RepoActivator do
     RepoActivator.new(github_token: token, repo: repo)
   end
 
-  def stub_github_api
-    api = instance_double(
-      "GithubApi",
+  def stub_github_api(options = {})
+    default_options = {
       remove_hook: true,
       add_collaborator: nil,
       remove_collaborator: true,
       accept_invitation: true,
-    )
+      repository?: false,
+    }
+    api = instance_double("GithubApi", default_options.merge(options))
     hook = double(:hook, id: 1)
     allow(api).to receive(:create_hook).and_yield(hook)
     allow(GithubApi).to receive(:new).and_return(api)
