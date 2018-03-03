@@ -10,8 +10,8 @@ RSpec.configure do |config|
 
   %i(request feature).each do |type|
     config.before :each, type: type do
-      stub_request(:any, /api.github.com/).to_rack(FakeGithub)
-      FakeGithub.comments = []
+      stub_request(:any, /api.github.com/).to_rack(FakeGitHub)
+      FakeGitHub.comments = []
     end
   end
 

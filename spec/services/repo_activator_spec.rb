@@ -146,7 +146,7 @@ describe RepoActivator do
           )
           allow(github_api).to receive(:accept_invitation).
             and_raise("invitation not found")
-          allow(GithubApi).to receive(:new).and_return(github_api)
+          allow(GitHubApi).to receive(:new).and_return(github_api)
 
           result = activator.activate
 
@@ -338,7 +338,7 @@ describe RepoActivator do
     context "when repo deactivation fails" do
       it "returns false" do
         activator = build_activator
-        allow(GithubApi).to receive(:new).and_raise(Octokit::Error.new)
+        allow(GitHubApi).to receive(:new).and_raise(Octokit::Error.new)
 
         result = activator.deactivate
 
@@ -348,7 +348,7 @@ describe RepoActivator do
       it "only swallows Octokit errors" do
         error = StandardError.new("this should bubble through")
         activator = build_activator
-        expect(GithubApi).to receive(:new).and_raise(error)
+        expect(GitHubApi).to receive(:new).and_raise(error)
 
         expect { activator.deactivate }.to raise_error(error)
       end
@@ -380,10 +380,10 @@ describe RepoActivator do
       accept_invitation: true,
       repository?: false,
     }
-    api = instance_double("GithubApi", default_options.merge(options))
+    api = instance_double("GitHubApi", default_options.merge(options))
     hook = double(:hook, id: 1)
     allow(api).to receive(:create_hook).and_yield(hook)
-    allow(GithubApi).to receive(:new).and_return(api)
+    allow(GitHubApi).to receive(:new).and_return(api)
     api
   end
 end

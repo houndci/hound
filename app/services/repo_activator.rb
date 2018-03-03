@@ -67,11 +67,11 @@ class RepoActivator
   end
 
   def hound_github
-    @hound_github ||= GithubApi.new(Hound::GITHUB_TOKEN)
+    @hound_github ||= GitHubApi.new(Hound::GITHUB_TOKEN)
   end
 
   def github
-    @github ||= GithubApi.new(github_token)
+    @github ||= GitHubApi.new(github_token)
   end
 
   def create_webhook

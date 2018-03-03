@@ -341,13 +341,13 @@ describe BuildRunner do
 
   def stubbed_github_api
     github_api = instance_double(
-      "GithubApi",
+      "GitHubApi",
       create_pending_status: nil,
       create_success_status: nil,
       create_error_status: nil,
       repository?: true,
     )
-    allow(GithubApi).to receive(:new).and_return(github_api)
+    allow(GitHubApi).to receive(:new).and_return(github_api)
 
     github_api
   end

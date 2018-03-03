@@ -2,7 +2,7 @@ OmniAuth.config.logger = Rails.logger
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   setup = ->(env) do
-    options = GithubAuthOptions.new(env)
+    options = GitHubAuthOptions.new(env)
     env["omniauth.strategy"].options.merge!(options.to_hash)
   end
 

@@ -68,8 +68,8 @@ describe UserToken do
 
   def stub_github(token, options = {})
     default_options = { repository?: true }
-    github_stub = instance_double("GithubApi", default_options.merge(options))
-    allow(GithubApi).to receive(:new).with(token).and_return(github_stub)
+    github_stub = instance_double("GitHubApi", default_options.merge(options))
+    allow(GitHubApi).to receive(:new).with(token).and_return(github_stub)
     github_stub
   end
 end

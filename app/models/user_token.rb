@@ -14,7 +14,7 @@ class UserToken
   private
 
   def can_reach_repository?(user)
-    if GithubApi.new(user.token).repository?(repo.name)
+    if GitHubApi.new(user.token).repository?(repo.name)
       true
     else
       repo.remove_membership(user)

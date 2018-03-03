@@ -1,4 +1,4 @@
-class GithubAuthOptions
+class GitHubAuthOptions
   def initialize(env)
     @request = Rack::Request.new(env)
   end

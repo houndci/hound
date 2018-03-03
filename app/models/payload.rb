@@ -46,7 +46,7 @@ class Payload
   end
 
   def repository_owner_is_organization?
-    repository["owner"]["type"] == GithubApi::ORGANIZATION_TYPE
+    repository["owner"]["type"] == GitHubApi::ORGANIZATION_TYPE
   end
 
   def build_data
