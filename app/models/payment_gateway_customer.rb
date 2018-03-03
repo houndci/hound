@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PaymentGatewayCustomer
   attr_reader :user
 

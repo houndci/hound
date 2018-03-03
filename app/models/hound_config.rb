@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class HoundConfig
   LINTERS = {
     Linter::CoffeeScript => { default: true },

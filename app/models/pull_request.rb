@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PullRequest
   FILE_REMOVED_STATUS = "removed"
   COMMENT_LINE_DELIMITER = "<br>"

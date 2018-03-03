@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PaymentGatewaySubscription
   attr_reader :stripe_subscription, :user
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Linter
   class Jshint < Base
     FILE_REGEXP = /.+\.js\z/

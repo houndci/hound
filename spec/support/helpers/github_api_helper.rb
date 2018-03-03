@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GithubApiHelper
   def stub_add_collaborator_request(username, repo_name, user_token)
     stub_request(

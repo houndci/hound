@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ConfigurationHelper
   def rubocop_config_url
     config_url("bbatsov/rubocop", "config/enabled.yml")

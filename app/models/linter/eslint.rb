@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Linter
   class Eslint < Base
     FILE_REGEXP = /.+(\.js|\.es6|\.jsx)\z/

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RecentBuildsByRepoQuery
   NUMBER_OF_BUILDS = 10
 

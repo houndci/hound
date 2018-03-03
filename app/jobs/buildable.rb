@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Buildable
   def perform(payload_data)
     payload = Payload.new(payload_data)

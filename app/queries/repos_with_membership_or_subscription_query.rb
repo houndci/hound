@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReposWithMembershipOrSubscriptionQuery
   static_facade :call
 

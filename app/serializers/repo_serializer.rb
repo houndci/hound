@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepoSerializer < ActiveModel::Serializer
   attributes(
     :admin,

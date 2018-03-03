@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class OwnersController < Admin::ApplicationController
     before_action :default_params

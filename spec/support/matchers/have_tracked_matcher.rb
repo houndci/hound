@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec::Matchers.define :have_tracked do |event_name|
   match do |backend|
     @event_name = event_name

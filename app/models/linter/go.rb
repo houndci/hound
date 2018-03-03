@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Linter
   class Go < Base
     FILE_REGEXP = /.+\.go\z/

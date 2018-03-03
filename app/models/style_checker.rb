@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StyleChecker
   pattr_initialize :pull_request, :build
 

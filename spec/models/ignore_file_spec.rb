@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "pathspec"
 require "app/models/ignore_file"

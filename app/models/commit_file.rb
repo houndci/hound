@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitFile
   attr_reader :filename, :commit, :patch
 

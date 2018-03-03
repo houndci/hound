@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HttpsHelper
   def with_https_enabled
     stub_const("Hound::HTTPS_ENABLED", "yes")

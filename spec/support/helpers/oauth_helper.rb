@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OauthHelper
   def stub_oauth(options = {})
     OmniAuth.config.add_mock(

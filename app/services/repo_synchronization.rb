@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepoSynchronization
   pattr_initialize :user
   attr_reader :user

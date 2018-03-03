@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "attr_extras"
 require "octokit"
 require "base64"

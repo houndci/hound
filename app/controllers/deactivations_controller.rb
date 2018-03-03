@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeactivationsController < ApplicationController
   class FailedToActivate < StandardError; end
   class CannotDeactivateRepoWithSubscription < StandardError; end

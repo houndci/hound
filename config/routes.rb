@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Houndapp::Application.routes.draw do
   namespace :admin do
     DashboardManifest::DASHBOARDS.each do |dashboard_resource|

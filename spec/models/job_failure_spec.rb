@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "resque"
 require "active_model/naming"
 require "app/models/job_failure"

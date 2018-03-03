@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FakeAnalyticsRuby
   def initialize
     @tracked_events = EventsList.new([])

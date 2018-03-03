@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples "a linter" do
   describe ".can_lint?" do
     it "rejects files based on FILE_REGEXP" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "app/models/config/parser"
 require "app/services/normalize_config"
 require "app/services/resolve_config_aliases"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Hold file, line number, and violation message values.
 # Built by style guides.
 # Printed by Commenter.

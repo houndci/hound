@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreditCardsController < ApplicationController
   class CreditCardUpdateFailed < StandardError; end
 

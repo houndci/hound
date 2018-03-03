@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LinterHelper
   def build_linter(build = build(:build), extra_files = {})
     head_commit = double("Commit", file_content: "{}")

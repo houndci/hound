@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CommitFileHelper
   def build_commit_file(filename:, content: "code", line_number: 1)
     line = double(

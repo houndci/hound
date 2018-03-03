@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CompleteFileReview
   static_facade :call
 

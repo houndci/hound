@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ConfigHelper
   def stub_commit(configuration)
     commit = instance_double("Commit")

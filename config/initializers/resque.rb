@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "resque-sentry"
 require "resque/failure/redis"
 require "resque/failure/multiple"

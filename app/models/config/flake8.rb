@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Config
   class Flake8 < Base
     def serialize(data = content)

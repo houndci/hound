@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GithubAuthOptions
   def initialize(env)
     @request = Rack::Request.new(env)

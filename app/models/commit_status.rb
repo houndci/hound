@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitStatus
   def initialize(repo_name:, sha:, token:)
     @repo_name = repo_name

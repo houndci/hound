@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Config
   class Tslint < Base
     def serialize(data = content)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BuildRunner
   static_facade :call
   pattr_initialize :payload

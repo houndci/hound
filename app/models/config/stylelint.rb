@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Config
   class Stylelint < Base
     def serialize(data = content)

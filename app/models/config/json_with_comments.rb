@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Config
   class JsonWithComments
     SINGLE_LINE_COMMENT = 1

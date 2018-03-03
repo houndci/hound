@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepoSubscriber
   pattr_initialize :repo, :user, :card_token
 

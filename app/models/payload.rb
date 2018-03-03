@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Payload
   pattr_initialize :unparsed_data
 

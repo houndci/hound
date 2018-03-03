@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Build < ApplicationRecord
   belongs_to :repo
   belongs_to :user

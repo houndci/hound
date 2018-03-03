@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "app/models/config/base"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
