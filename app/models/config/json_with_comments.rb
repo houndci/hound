@@ -28,11 +28,11 @@ module Config
         unless inside_string
           if !inside_comment
             if fragment == "//"
-              result << content[offset...index].gsub(/\s*$/, "")
+              result = result + content[offset...index].gsub(/\s*$/, "")
               offset = index
               inside_comment = SINGLE_LINE_COMMENT
             elsif fragment == "/*"
-              result << content[offset...index]
+              result = result + content[offset...index]
               offset = index
               inside_comment = MULTI_LINE_COMMENT
             end
