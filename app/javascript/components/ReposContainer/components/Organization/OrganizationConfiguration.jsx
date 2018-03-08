@@ -54,6 +54,29 @@ export default class OrganizationConfiguration extends React.Component {
     );
   }
 
+  renderConfigSwitch() {
+    const switchId = `toggle-${this.props.id}`;
+
+    return (
+      <div className="organization-header-toggle">
+        <span className="organization-header-label">
+          Use organization-wide config
+        </span>
+
+        <input
+          id={switchId}
+          checked={this.state.enabled}
+          className="organization-header-toggle-input"
+          onChange={() => this.toggle()}
+          type="checkbox"
+          name="toggle"
+        />
+
+        <label className="toggle-switch" htmlFor={switchId} />
+      </div>
+    );
+  }
+
   renderRepoSelect() {
     if (this.state.enabled) {
       return (
@@ -78,36 +101,48 @@ export default class OrganizationConfiguration extends React.Component {
   }
 
   renderRepoOptions() {
-    return this.props.repos.map(repo =>
+    let repoOptions = this.props.repos.map(repo =>
       <option key={repo.id} value={repo.name}>
         {repo.name}
       </option>
     );
+
+    repoOptions.unshift(<option key="-1">None</option>);
+
+    return repoOptions;
+  }
+
+  renderReadOnlyConfigMessage() {
+    let message;
+
+    if (this.state.enabled && this.state.repo) {
+      message = `Using organization-wide config from ${this.state.repo}`;
+    } else {
+      message = 'Organization-wide config is disabled (only Organization owners can activate)';
+    }
+
+    return (
+      <div className="organization-header-toggle">
+        <span className="organization-header-label">{message}</span>
+      </div>
+    );
   }
 
   render() {
-    const switchId = `toggle-${this.props.id}`;
-    return (
-      <div className="organization-header-config">
-        <div className="organization-header-toggle">
-          <span className="organization-header-label">
-            Use organization-wide config
-          </span>
+    if (this.props.userIsOrgOwner) {
+      return (
+        <div className="organization-header-config">
+          {this.renderConfigSwitch()}
 
-          <input
-            id={switchId}
-            checked={this.state.enabled}
-            className="organization-header-toggle-input"
-            onChange={() => this.toggle()}
-            type="checkbox"
-            name="toggle"
-          />
-
-          <label className="toggle-switch" htmlFor={switchId} />
+          {this.renderRepoSelect()}
         </div>
-
-        {this.renderRepoSelect()}
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="organization-header-config">
+          {this.renderReadOnlyConfigMessage()}
+        </div>
+      );
+    }
   }
 }

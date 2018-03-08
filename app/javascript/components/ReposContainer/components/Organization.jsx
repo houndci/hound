@@ -14,6 +14,7 @@ export default class Organization extends React.Component {
       configRepo,
       filterTerm,
       ownerId,
+      userIsOrgOwner
     } = this.props;
 
     return (
@@ -26,6 +27,7 @@ export default class Organization extends React.Component {
             id={ownerId}
             repo={configRepo}
             repos={repos}
+            userIsOrgOwner={userIsOrgOwner}
           />
         </header>
         <section className="repo_listing">

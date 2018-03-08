@@ -1,0 +1,157 @@
+exports[`with a user that is an organization owner and when config is disabled renders the appropriate config options 1`] = `
+<div
+  className="organization-header-config">
+  <div
+    className="organization-header-toggle">
+    <span
+      className="organization-header-label">
+      Use organization-wide config
+    </span>
+    <input
+      checked={false}
+      className="organization-header-toggle-input"
+      id="toggle-1"
+      name="toggle"
+      onChange={[Function]}
+      type="checkbox" />
+    <label
+      className="toggle-switch"
+      htmlFor="toggle-1" />
+  </div>
+</div>
+`;
+
+exports[`with a user that is an organization owner and when config is enabled and a config repo is set renders the appropriate config options 1`] = `
+<div
+  className="organization-header-config">
+  <div
+    className="organization-header-toggle">
+    <span
+      className="organization-header-label">
+      Use organization-wide config
+    </span>
+    <input
+      checked={true}
+      className="organization-header-toggle-input"
+      id="toggle-1"
+      name="toggle"
+      onChange={[Function]}
+      type="checkbox" />
+    <label
+      className="toggle-switch"
+      htmlFor="toggle-1" />
+  </div>
+  <div
+    className="organization-header-source">
+    <span
+      className="organization-header-label">
+      Use .hound.yml from
+    </span>
+    <select
+      className="organization-header-select"
+      onChange={[Function]}
+      value="Test repo 2">
+      <option>
+        None
+      </option>
+      <option
+        value="Test repo">
+        Test repo
+      </option>
+      <option
+        value="Test repo 2">
+        Test repo 2
+      </option>
+    </select>
+    <div
+      className="inline-flash--success config-enabled" />
+  </div>
+</div>
+`;
+
+exports[`with a user that is an organization owner and when config is enabled but a repo has not been set renders the appropriate config options 1`] = `
+<div
+  className="organization-header-config">
+  <div
+    className="organization-header-toggle">
+    <span
+      className="organization-header-label">
+      Use organization-wide config
+    </span>
+    <input
+      checked={true}
+      className="organization-header-toggle-input"
+      id="toggle-1"
+      name="toggle"
+      onChange={[Function]}
+      type="checkbox" />
+    <label
+      className="toggle-switch"
+      htmlFor="toggle-1" />
+  </div>
+  <div
+    className="organization-header-source">
+    <span
+      className="organization-header-label">
+      Use .hound.yml from
+    </span>
+    <select
+      className="organization-header-select"
+      onChange={[Function]}
+      value="">
+      <option>
+        None
+      </option>
+      <option
+        value="Test repo">
+        Test repo
+      </option>
+      <option
+        value="Test repo 2">
+        Test repo 2
+      </option>
+    </select>
+    <div
+      className="inline-flash--success config-enabled" />
+  </div>
+</div>
+`;
+
+exports[`with a user that is not an organization owner and when config is disabled renders a config is disabled message 1`] = `
+<div
+  className="organization-header-config">
+  <div
+    className="organization-header-toggle">
+    <span
+      className="organization-header-label">
+      Organization-wide config is disabled (only Organization owners can activate)
+    </span>
+  </div>
+</div>
+`;
+
+exports[`with a user that is not an organization owner and when config is enabled and a config repo is set renders a config is enabled message 1`] = `
+<div
+  className="organization-header-config">
+  <div
+    className="organization-header-toggle">
+    <span
+      className="organization-header-label">
+      Using organization-wide config from Test repo 2
+    </span>
+  </div>
+</div>
+`;
+
+exports[`with a user that is not an organization owner and when config is enabled but a repo has not been set renders a config is disabled message 1`] = `
+<div
+  className="organization-header-config">
+  <div
+    className="organization-header-toggle">
+    <span
+      className="organization-header-label">
+      Organization-wide config is disabled (only Organization owners can activate)
+    </span>
+  </div>
+</div>
+`;

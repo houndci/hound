@@ -5,6 +5,8 @@ describe User do
   it { should have_many(:subscribed_repos).through(:subscriptions) }
   it { should validate_presence_of :username }
   it { should have_many(:memberships).dependent(:destroy) }
+  it { should have_many(:ownerships).dependent(:destroy) }
+  it { should have_many(:owners).through(:ownerships) }
 
   describe "#current_plan" do
     it "returns the current plan" do

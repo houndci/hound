@@ -4,6 +4,7 @@ require "octokit"
 require "base64"
 
 class GithubApi
+  ORG_OWNER_TYPE = "admin"
   ORGANIZATION_TYPE = "Organization"
   PREVIEW_API_HEADER = "application/vnd.github.black-cat-preview+json"
 
@@ -24,6 +25,10 @@ class GithubApi
 
   def repo(repo_name)
     client.repository(repo_name)
+  end
+
+  def org_membership(org_name)
+    client.organization_membership(org_name)
   end
 
   def create_hook(full_repo_name, callback_endpoint)

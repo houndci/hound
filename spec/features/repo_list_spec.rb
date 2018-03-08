@@ -5,8 +5,8 @@ feature "Repo list", js: true do
   let(:user) { create(:user, token_scopes: "public_repo,user:email") }
 
   scenario "user views list of repos" do
-    user = create(:user, token_scopes: "public_repo,user:email")
     org = create(:owner, name: "thoughtbot")
+    create(:ownership, user: user, owner: org)
     restricted_repo = create(:repo, name: "#{user.username}/inaccessible-repo")
     activatable_repo = create(:repo, owner: org, name: "#{org.name}/my-repo")
     create(:membership, repo: activatable_repo, user: user, admin: true)
@@ -48,6 +48,8 @@ feature "Repo list", js: true do
   end
 
   scenario "user filters list" do
+    org = create(:owner, name: "thoughtbot")
+    create(:ownership, user: user, owner: org)
     repo1 = create_repo(name: "#{user.username}/foo")
     repo2 = create_repo(name: "#{user.username}/bar")
 
@@ -59,10 +61,11 @@ feature "Repo list", js: true do
   end
 
   scenario "user syncs repos" do
-    token = "letmein"
-    repo = create_repo(name: "user1/test-repo")
+    org = create(:owner, name: "thoughtbot")
+    create(:ownership, user: user, owner: org)
+    repo = create_repo(name: "#{user.username}/foo")
 
-    sign_in_as(user, token)
+    sign_in_as(user)
 
     expect(page).to have_content(repo.name)
 
@@ -79,9 +82,11 @@ feature "Repo list", js: true do
   end
 
   scenario "user activates repo" do
-    token = "letmein"
+    org = create(:owner, name: user.username)
+    create(:ownership, user: user, owner: org)
+    create_repo(name: "#{user.username}/test-repo")
 
-    sign_in_as(user, token)
+    sign_in_as(user)
     find(".repo .repo-toggle").click
 
     expect(page).to have_css(".repo--active")
@@ -94,9 +99,11 @@ feature "Repo list", js: true do
   end
 
   scenario "user with admin access activates organization repo" do
-    token = "letmein"
+    org = create(:owner, name: user.username, organization: true)
+    create(:ownership, user: user, owner: org)
+    create_repo(name: "#{user.username}/test-repo", in_organization: true)
 
-    sign_in_as(user, token)
+    sign_in_as(user)
     find(".repos .repo-toggle").click
 
     expect(page).to have_css(".repo--active")
@@ -109,10 +116,15 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates repo" do
-    token = "letmein"
-    create_repo(:active)
+    org = create(:owner, name: user.username, organization: true)
+    create(:ownership, user: user, owner: org)
+    create_repo(
+      :active,
+      name: "#{user.username}/test-repo",
+      in_organization: true,
+    )
 
-    sign_in_as(user, token)
+    sign_in_as(user)
     find(".repos .repo-toggle").click
 
     expect(page).not_to have_css(".repo--active")
@@ -125,10 +137,16 @@ feature "Repo list", js: true do
   end
 
   scenario "user deactivates private repo without subscription" do
-    token = "letmein"
-    create_repo(:active, private: true)
+    org = create(:owner, name: user.username, organization: true)
+    create(:ownership, user: user, owner: org)
+    create_repo(
+      :active,
+      name: "#{user.username}/test-repo",
+      in_organization: true,
+      private: true,
+    )
 
-    sign_in_as(user, token)
+    sign_in_as(user)
     find(".repos .repo-toggle").click
 
     expect(page).not_to have_css(".repo--active")
@@ -139,8 +157,9 @@ feature "Repo list", js: true do
     expect(user.repos.active.count).to eq(0)
   end
 
-  scenario "user enables organization-wide config" do
-    owner = create(:owner, github_id: 1, name: "test")
+  scenario "user who is an owner enables organization-wide config" do
+    owner = create(:owner, name: "test")
+    create(:ownership, user: user, owner: owner)
     create(:repo, owner: owner, users: [user], name: "test/abc")
     repo = create(:repo, owner: owner, users: [user], name: "test/def")
 
@@ -155,6 +174,18 @@ feature "Repo list", js: true do
       config_enabled?: true,
       config_repo: repo.name,
     )
+  end
+
+  scenario "user who is not an owner can't enable organization-wide config" do
+    create(:ownership, user: user)
+    owner = create(:owner, name: "test")
+    create(:repo, owner: owner, users: [user], name: "test/abc")
+
+    sign_in_as(user)
+
+    expect(page).not_to have_css(".toggle-switch")
+    expect(page).not_to have_css(".organization-header-select")
+    expect(page).to have_css(".organization-header-label")
   end
 
   def create_repo(*options)

@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :builds, through: :repos
   has_many :subscriptions
   has_many :subscribed_repos, through: :subscriptions, source: :repo
+  has_many :ownerships, dependent: :destroy
+  has_many :owners, through: :ownerships
 
   validates :username, presence: true
 

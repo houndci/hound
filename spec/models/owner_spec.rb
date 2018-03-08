@@ -2,6 +2,8 @@ require "rails_helper"
 
 describe Owner do
   it { should have_many(:repos) }
+  it { should have_many(:ownerships).dependent(:destroy) }
+  it { should have_many(:users).through(:ownerships) }
 
   describe ".upsert" do
     context "when name exists" do

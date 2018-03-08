@@ -1,5 +1,7 @@
 class Owner < ApplicationRecord
   has_many :repos
+  has_many :ownerships, dependent: :destroy
+  has_many :users, through: :ownerships
 
   def self.upsert(github_id:, name:, organization:)
     owner = find_or_initialize_by(github_id: github_id)
