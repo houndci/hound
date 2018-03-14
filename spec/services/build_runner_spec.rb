@@ -189,6 +189,23 @@ describe BuildRunner do
         expect(Resque).not_to have_received(:enqueue)
       end
 
+      it "updates commit status with error to avoid hanging build" do
+        repo = create(:repo, :active)
+        build_runner = make_build_runner(repo: repo)
+        github_api = stubbed_github_api
+        stubbed_pull_request_with_file("test.scss", "")
+        force_fail_build_creation
+
+        expect { build_runner.call }.
+          to raise_error ActiveRecord::StatementInvalid
+        expect(github_api).to have_received(:create_error_status).with(
+          repo.name,
+          stubbed_payload.head_sha,
+          I18n.t(:hound_error_status, count: 0),
+          nil,
+        )
+      end
+
       def force_fail_build_creation
         allow(SecureRandom).to receive(:uuid)
       end
