@@ -1,0 +1,17 @@
+%script{ src:"https://static.accountdock.com/app.min.js" }
+.billing-container
+  %button.repo-toggle.billing-button#billing View Billing
+:javascript
+  var handler = AccountDock.configure({
+    key: "#{account_key}",
+    customer: "#{stripe_customer_id}"
+  });
+  $(function(){
+    $("#billing").on(
+      "click",
+      function(event) {
+        event.preventDefault();
+        handler.open();
+      }
+    );
+  });

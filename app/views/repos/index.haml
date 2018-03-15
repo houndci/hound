@@ -10,5 +10,5 @@
 = javascript_pack_tag("repos_container")
 = react_component("ReposContainer",
   has_private_access: current_user.has_access_to_private_repos?,
-  userHasCard: current_user.stripe_customer_id.present?,
+  userHasCard: current_user.card_exists?,
 )
