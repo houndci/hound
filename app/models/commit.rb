@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Commit
   pattr_initialize :repo_name, :sha, :github
   attr_reader :repo_name, :sha

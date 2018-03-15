@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConfigContent
   class Remote
     extend Forwardable

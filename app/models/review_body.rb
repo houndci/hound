@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ReviewBody
   MAX_BODY_LENGTH = 65536
   SUMMARY_LENGTH = 80

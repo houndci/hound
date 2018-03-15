@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "administrate/base_dashboard"
 
 class BlacklistedPullRequestDashboard < Administrate::BaseDashboard

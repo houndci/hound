@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IgnoreFile
   DEFAULT_EXCLUDED_PATHS = %w(
     vendor/**/*

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "app/models/missing_owner"
 
 RSpec.describe MissingOwner do

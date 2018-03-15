@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Patch
   RANGE_INFORMATION_LINE = /^@@ .+\+(?<line_number>\d+),/
   MODIFIED_LINE = /^\+(?!\+|\+)/

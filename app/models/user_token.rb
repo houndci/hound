@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserToken
   attr_private_initialize :repo
 

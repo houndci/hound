@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BuildsController < ApplicationController
   before_action :ignore_confirmation_pings, only: [:create]
   skip_before_action :verify_authenticity_token, only: [:create]

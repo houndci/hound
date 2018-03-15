@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StripeApiHelper
   def stripe_customer_id
     "cus_2e3fqARc1uHtCv"

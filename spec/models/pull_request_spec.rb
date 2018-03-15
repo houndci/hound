@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 require "app/models/pull_request"
 require "app/models/commit"

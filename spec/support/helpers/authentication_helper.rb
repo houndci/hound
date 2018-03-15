@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AuthenticationHelper
   def stub_sign_in(user)
     user.update(token: "letmein")

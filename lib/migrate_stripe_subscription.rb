@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MigrateStripeSubscription
   def initialize(customer)
     @customer = customer

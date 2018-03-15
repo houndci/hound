@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepoActivator
   attr_reader :errors
 

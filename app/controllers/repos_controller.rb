@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReposController < ApplicationController
   def index
     respond_to do |format|

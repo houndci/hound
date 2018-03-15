@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "app/models/config/json_with_comments"
 
 describe Config::JsonWithComments do

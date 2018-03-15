@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlanPresenter
   delegate :allowance, :open_source?, :price, :title, to: :plan
 

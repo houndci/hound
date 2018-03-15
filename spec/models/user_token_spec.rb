@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "octokit/error"
 require "lib/github_api"
 require "app/models/user_token"

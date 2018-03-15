@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OwnersController < ApplicationController
   def update
     if owner.update(owner_params)

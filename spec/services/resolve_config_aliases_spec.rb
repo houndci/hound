@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "app/services/resolve_config_aliases"
 
 describe ResolveConfigAliases do

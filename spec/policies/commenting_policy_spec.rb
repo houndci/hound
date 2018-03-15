@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "attr_extras"
 require "rails_helper"
 require "app/policies/commenting_policy"

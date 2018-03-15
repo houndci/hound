@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ResolveConfigAliases
   ALIASES = {
     "coffeescript" => "coffee_script",

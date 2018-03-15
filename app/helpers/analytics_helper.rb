@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AnalyticsHelper
   def analytics?
     Hound::SEGMENT_KEY.present?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "app/services/normalize_config"
 
 describe NormalizeConfig do

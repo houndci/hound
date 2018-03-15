@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Linter
   class SlimLint < Base
     FILE_REGEXP = /.slim\z/

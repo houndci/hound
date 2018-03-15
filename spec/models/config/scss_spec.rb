@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "app/models/config/base"
 require "app/models/config/scss"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ErrorMessageTranslation
   ERROR_CODE_AND_MESSAGE = /.*(\d{3})\s\-\s(.*)\s\/\/.*/
   FORBIDDEN_ERROR_CODE = "403"

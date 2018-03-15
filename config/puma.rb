@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 workers Integer(ENV.fetch("WEB_CONCURRENCY", 3))
 threads_count = Integer(ENV.fetch("MAX_THREADS", 5))
 threads(threads_count, threads_count)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Config
   class Serializer
     def self.yaml(data)

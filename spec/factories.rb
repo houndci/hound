@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryGirl.define do
   sequence(:github_id)
   sequence(:github_name) { |n| "github_name#{n}" }

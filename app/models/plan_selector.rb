@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlanSelector
   BULK_ID = "bulk".freeze
 

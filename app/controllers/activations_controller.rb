@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivationsController < ApplicationController
   class FailedToActivate < StandardError; end
   class CannotActivatePaidRepo < StandardError; end

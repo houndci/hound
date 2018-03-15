@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CompleteBuild
   static_facade :call
 

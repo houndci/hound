@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepoSynchronizationJob < ApplicationJob
   queue_as :high
 

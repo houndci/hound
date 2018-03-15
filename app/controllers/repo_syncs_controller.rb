@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RepoSyncsController < ApplicationController
   def create
     unless current_user.refreshing_repos?

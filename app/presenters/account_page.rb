@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountPage
   def initialize(user)
     @user = user

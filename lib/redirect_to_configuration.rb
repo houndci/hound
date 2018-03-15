@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RedirectToConfiguration
   CONFIG_REGEX = %r{^/configuration.} unless defined?(CONFIG_REGEX)
 

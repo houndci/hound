@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "app/models/review_body"
 
 RSpec.describe ReviewBody do

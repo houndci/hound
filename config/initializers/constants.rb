@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hound
   CHANGED_FILES_THRESHOLD ||= ENV.fetch("CHANGED_FILES_THRESHOLD").to_i
   HTTPS_ENABLED ||= ENV.fetch("ENABLE_HTTPS") == "yes"

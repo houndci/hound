@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "active_model/serializer_support"
 require "app/models/plan"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $: << File.expand_path("../..", __FILE__)
 
 require "active_support"

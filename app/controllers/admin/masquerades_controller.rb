@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Admin
   class MasqueradesController < Admin::ApplicationController
     def show

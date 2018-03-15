@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Config
   class ParserError < StandardError
     attr_reader :linter_name

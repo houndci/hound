@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Line
   attr_reader :number, :patch_position
 

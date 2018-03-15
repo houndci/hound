@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "app/models/config_content"
 require "app/models/config_content/remote"

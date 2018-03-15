@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RebuildsController < ApplicationController
   def create
     RebuildPullRequest.call(

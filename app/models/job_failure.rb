@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobFailure < OpenStruct
   FIRST_INDEX = 0
   extend ActiveModel::Naming

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentingPolicy
   pattr_initialize :pull_request
 

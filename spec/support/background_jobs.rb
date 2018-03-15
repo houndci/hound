@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   config.around(:each, type: :feature) do |example|
     run_background_jobs_immediately do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Config
   class Base
     def initialize(hound_config, owner: MissingOwner.new)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path("../boot", __FILE__)
 require File.expand_path("lib/redirect_to_configuration")
 

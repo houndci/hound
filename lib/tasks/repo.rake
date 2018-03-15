@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :repo do
   desc "Delete repos with no memberships"
   task remove_without_memberships: :environment do

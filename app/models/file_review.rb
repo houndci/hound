@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FileReview < ApplicationRecord
   belongs_to :build
   has_many :violations

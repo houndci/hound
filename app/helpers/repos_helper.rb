@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReposHelper
   def switch(repo)
     current_state = repo.active ? 'off' : 'on'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "stripe"
 require "app/models/payment_gateway_subscription"
