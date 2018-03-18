@@ -3,13 +3,13 @@ require "attr_extras"
 require "lib/github_api"
 require "json"
 
-describe GithubApi do
+describe GitHubApi do
   before { stub_const("Hound::GITHUB_TOKEN", "token") }
 
   describe "#repos" do
-    it "fetches all repos from Github" do
+    it "fetches all repos from GitHub" do
       token = "something"
-      api = GithubApi.new(token)
+      api = GitHubApi.new(token)
       stub_repos_requests(token)
 
       repos = api.repos
@@ -21,7 +21,7 @@ describe GithubApi do
   describe "#scopes" do
     it "returns scopes as a string" do
       token = "token"
-      api = GithubApi.new(token)
+      api = GitHubApi.new(token)
       stub_scopes_request(token: token, scopes: "repo,user:email")
 
       scopes = api.scopes
@@ -36,7 +36,7 @@ describe GithubApi do
         client = double("Octokit::Client", contents: "filecontent")
         allow(Octokit::Client).to receive(:new).and_return(client)
         token = "authtoken"
-        github = GithubApi.new(token)
+        github = GitHubApi.new(token)
         repo = "jimtom/wow"
         filename = ".hound.yml"
         sha = "abc123"
@@ -64,7 +64,7 @@ describe GithubApi do
       it "creates pull request web hook" do
         callback_endpoint = "http://example.com"
         token = "something"
-        api = GithubApi.new(token)
+        api = GitHubApi.new(token)
         request = stub_hook_creation_request(
           repo_name,
           callback_endpoint,
@@ -79,7 +79,7 @@ describe GithubApi do
       it "yields hook" do
         callback_endpoint = "http://example.com"
         token = "something"
-        api = GithubApi.new(token)
+        api = GitHubApi.new(token)
         request = stub_hook_creation_request(
           repo_name,
           callback_endpoint,
@@ -100,7 +100,7 @@ describe GithubApi do
       it "does not raise" do
         callback_endpoint = "http://example.com"
         stub_failed_hook_creation_request(repo_name, callback_endpoint)
-        api = GithubApi.new(Hound::GITHUB_TOKEN)
+        api = GitHubApi.new(Hound::GITHUB_TOKEN)
 
         expect do
           api.create_hook(repo_name, callback_endpoint)
@@ -110,7 +110,7 @@ describe GithubApi do
       it "returns true" do
         callback_endpoint = "http://example.com"
         stub_failed_hook_creation_request(repo_name, callback_endpoint)
-        api = GithubApi.new(Hound::GITHUB_TOKEN)
+        api = GitHubApi.new(Hound::GITHUB_TOKEN)
 
         expect(api.create_hook(repo_name, callback_endpoint)).to eq true
       end
@@ -121,7 +121,7 @@ describe GithubApi do
     it "removes pull request web hook" do
       hook_id = "123"
       stub_hook_removal_request(repo_name, hook_id)
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      api = GitHubApi.new(Hound::GITHUB_TOKEN)
 
       response = api.remove_hook(repo_name, hook_id)
 
@@ -131,7 +131,7 @@ describe GithubApi do
     it "yields given block" do
       hook_id = "123"
       stub_hook_removal_request(repo_name, hook_id)
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      api = GitHubApi.new(Hound::GITHUB_TOKEN)
       yielded = false
 
       api.remove_hook(repo_name, hook_id) do
@@ -144,7 +144,7 @@ describe GithubApi do
 
   describe "#pull_request_files" do
     it "returns changed files in a pull request" do
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      api = GitHubApi.new(Hound::GITHUB_TOKEN)
       pull_request = double("PullRequest", repo_name: repo_name)
       pr_number = 123
       stub_pull_request_files_request(pull_request.repo_name, pr_number)
@@ -158,7 +158,7 @@ describe GithubApi do
 
   describe "#create_pull_request_review" do
     it "adds review comments to GitHub pull request" do
-      api = GithubApi.new("authtoken")
+      api = GitHubApi.new("authtoken")
       pull_request_number = 2
       comments = [
         { path: "test/test.rb", position: 10, body: "test comment 1" },
@@ -185,7 +185,7 @@ describe GithubApi do
 
   describe "#pull_request_comments" do
     it "returns comments added to pull request" do
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      api = GitHubApi.new(Hound::GITHUB_TOKEN)
       pull_request = double("PullRequest", repo_name: repo_name)
       pull_request_id = 253
       expected_comment = "Line is too long."
@@ -207,7 +207,7 @@ describe GithubApi do
 
   describe "#create_pending_status" do
     it "makes request to GitHub for creating a pending status" do
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      api = GitHubApi.new(Hound::GITHUB_TOKEN)
       request = stub_status_request(
         "test/repo",
         "sha",
@@ -223,7 +223,7 @@ describe GithubApi do
 
   describe "#create_success_status" do
     it "makes request to GitHub for creating a success status" do
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      api = GitHubApi.new(Hound::GITHUB_TOKEN)
       request = stub_status_request(
         "test/repo",
         "sha",
@@ -239,7 +239,7 @@ describe GithubApi do
 
   describe "#create_error_status" do
     it "makes request to GitHub for creating an error status" do
-      api = GithubApi.new(Hound::GITHUB_TOKEN)
+      api = GitHubApi.new(Hound::GITHUB_TOKEN)
       request = stub_status_request(
         "test/repo",
         "sha",
@@ -256,7 +256,7 @@ describe GithubApi do
   describe "#add_collaborator" do
     it "makes a request to GitHub" do
       username = "houndci"
-      api = GithubApi.new(token)
+      api = GitHubApi.new(token)
       request = stub_add_collaborator_request(username, repo_name, token)
 
       api.add_collaborator(repo_name, username)
@@ -268,7 +268,7 @@ describe GithubApi do
   describe "#remove_collaborator" do
     it "makes a request to GitHub" do
       username = "houndci"
-      api = GithubApi.new(token)
+      api = GitHubApi.new(token)
       request = stub_remove_collaborator_request(username, repo_name, token)
 
       api.remove_collaborator(repo_name, username)

@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe CommitStatus do
   describe "#set_pending" do
-    it "sets the pending status on GithubApi" do
+    it "sets the pending status on GitHubApi" do
       github_api = stubbed_github_api(:create_pending_status)
       repo_name = "houndci/hound"
       sha = "abc123"
@@ -24,7 +24,7 @@ describe CommitStatus do
   end
 
   describe "#set_success" do
-    it "sets the create success status on GithubApi" do
+    it "sets the create success status on GitHubApi" do
       github_api = stubbed_github_api(:create_success_status)
       repo_name = "houndci/hound"
       sha = "abc123"
@@ -47,7 +47,7 @@ describe CommitStatus do
   end
 
   describe "#set_failure" do
-    it "sets the error status for GithubApi" do
+    it "sets the error status for GitHubApi" do
       github_api = stubbed_github_api(:create_error_status)
       repo_name = "houndci/hound"
       sha = "abc123"
@@ -71,7 +71,7 @@ describe CommitStatus do
   end
 
   describe "#set_config_error" do
-    it "sets the error status for GithubApi" do
+    it "sets the error status for GitHubApi" do
       github_api = stubbed_github_api(:create_error_status)
       repo_name = "houndci/hound"
       sha = "abc123"
@@ -95,7 +95,7 @@ describe CommitStatus do
   end
 
   describe "#set_internal_error" do
-    it "sets the error status for GithubApi" do
+    it "sets the error status for GitHubApi" do
       github_api = stubbed_github_api(:create_error_status)
       repo_name = "houndci/hound"
       sha = "abc123"
@@ -118,8 +118,8 @@ describe CommitStatus do
   end
 
   def stubbed_github_api(*methods)
-    github_api = double("GithubApi")
-    allow(GithubApi).to receive(:new).and_return(github_api)
+    github_api = double("GitHubApi")
+    allow(GitHubApi).to receive(:new).and_return(github_api)
 
     methods.each do |method_name|
       allow(github_api).to receive(method_name)

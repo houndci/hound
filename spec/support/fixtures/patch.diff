@@ -29,7 +29,7 @@
      valid_actions.include?(@pull_request.action)
 @@ -52,13 +48,4 @@ def repo
    def api
-     @api ||= GithubApi.new(repo.github_token)
+     @api ||= GitHubApi.new(repo.github_token)
    end
 
    def patch

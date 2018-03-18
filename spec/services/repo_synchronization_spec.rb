@@ -91,8 +91,8 @@ describe RepoSynchronization do
         create(:membership, user: user, repo: repo2)
         github_repo1 = build_github_repo(id: repo1.github_id, name: "backup")
         github_repo2 = build_github_repo(id: repo2.github_id, name: "site")
-        api = instance_double("GithubApi", repos: [github_repo1, github_repo2])
-        allow(GithubApi).to receive(:new).and_return(api)
+        api = instance_double("GitHubApi", repos: [github_repo1, github_repo2])
+        allow(GitHubApi).to receive(:new).and_return(api)
         synchronization = RepoSynchronization.new(user)
 
         synchronization.start
@@ -165,8 +165,8 @@ describe RepoSynchronization do
       repo[:owner][:id] = owner_id
       repo[:permissions][:admin] = admin
 
-      api = double("GithubApi", repos: [repo])
-      allow(GithubApi).to receive(:new).and_return(api)
+      api = double("GitHubApi", repos: [repo])
+      allow(GitHubApi).to receive(:new).and_return(api)
 
       repo
     end

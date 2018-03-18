@@ -50,7 +50,7 @@ class SessionsController < ApplicationController
   end
 
   def github
-    GithubApi.new(github_token)
+    GitHubApi.new(github_token)
   end
 
   def username

@@ -65,7 +65,7 @@ describe Commit do
 
     context "when exception contains no errors" do
       it "raises the error" do
-        github = double("GithubApi")
+        github = double("GitHubApi")
         commit = Commit.new("test/test", "abc", github)
         error = Octokit::Forbidden.new(body: { errors: [] })
         allow(github).to receive(:file_contents).and_raise(error)

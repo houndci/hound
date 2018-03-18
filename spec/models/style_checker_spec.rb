@@ -15,8 +15,8 @@ describe StyleChecker do
     end
 
     it "only fetches content for supported files" do
-      ruby_file = double("GithubFile", filename: "ruby.rb", patch: "foo")
-      bogus_file = double("GithubFile", filename: "[:facebook]", patch: "bar")
+      ruby_file = double("GitHubFile", filename: "ruby.rb", patch: "foo")
+      bogus_file = double("GitHubFile", filename: "[:facebook]", patch: "bar")
       config = <<~YAML
         ruby:
           enabled: true

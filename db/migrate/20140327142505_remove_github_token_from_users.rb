@@ -1,4 +1,4 @@
-class RemoveGithubTokenFromUsers < ActiveRecord::Migration[4.2]
+class RemoveGitHubTokenFromUsers < ActiveRecord::Migration[4.2]
   def up
     remove_column :users, :github_token
   end

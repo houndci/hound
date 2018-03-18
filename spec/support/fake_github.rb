@@ -1,6 +1,6 @@
 require "sinatra"
 
-class FakeGithub < Sinatra::Base
+class FakeGitHub < Sinatra::Base
   cattr_accessor :comments, :review_body
   self.comments = []
 
