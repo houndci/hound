@@ -55,6 +55,15 @@
       padding: 1em 1.2em;
     }
   }
+
+  .billing-container {
+    display: flex;
+
+    .billing-button {
+      margin-left: auto;
+      margin-top: 20px;
+    }
+  }
 }
 
 .account-details {
