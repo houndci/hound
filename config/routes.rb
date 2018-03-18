@@ -14,7 +14,7 @@ Houndapp::Application.routes.draw do
   get "/auth/github/callback", to: "sessions#create"
   get "/sign_out", to: "sessions#destroy"
   get "/configuration", to: "pages#configuration"
-  get "/faq", to: "pages#show", id: "faq"
+  get "/faq", to: redirect(ENV.fetch("FAQ_URL"), status: 302)
 
   resource :account, only: [:show, :update]
   resources :builds, only: [:create, :index]

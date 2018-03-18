@@ -3,9 +3,7 @@
     = link_to "Source Code",
       "https://github.com/houndci/hound",
       class: "app-footer__nav-link"
-    = link_to "FAQ",
-      "https://intercom.help/hound/frequently-asked-questions",
-      class: "app-footer__nav-link"
+    = link_to "FAQ", ENV.fetch("FAQ_URL"), class: "app-footer__nav-link"
     = link_to "Terms",
       "https://github.com/houndci/hound/blob/master/doc/TERMS.md",
       class: "app-footer__nav-link"
@@ -19,7 +17,7 @@
   %p
     Hound is maintained by #{link_to "thoughtbot", "https://thoughtbot.com/"}.
     Questions? Try the
-    #{link_to "FAQ", "https://intercom.help/hound/frequently-asked-questions"}
+    #{link_to "FAQ", ENV.fetch("FAQ_URL")}
     or tweet
     #{link_to "@houndci", "https://twitter.com/houndci", new_window_options}.
 

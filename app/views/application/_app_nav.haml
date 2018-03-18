@@ -7,10 +7,7 @@
 
     .app-nav__app-items
       = link_to "Docs", configuration_path, class: "app-nav__item"
-
-      = link_to "FAQ",
-        "https://intercom.help/hound/frequently-asked-questions",
-        class: "app-nav__item"
+      = link_to "FAQ", ENV.fetch("FAQ_URL"), class: "app-nav__item"
 
       - unless signed_in?
         = link_to "Pricing",
