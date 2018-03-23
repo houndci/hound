@@ -28,7 +28,9 @@ gem "record_tag_helper"
 gem "resque", ">= 1.27.4"
 gem "resque-scheduler"
 gem "resque-sentry"
-gem "rest-client", ">= 2.0.1"
+gem "resque-rollbar"
+gem "rest-client", ">= 1.8.0"
+gem "rollbar"
 gem "sass-rails"
 gem "sinatra", "~> 2.0"
 gem "stripe"
@@ -39,9 +41,8 @@ gem "webpacker-react", "~> 0.3.1"
 gem "nokogiri", ">= 1.8.2"
 
 group :staging, :production do
+  gem "lograge", ">= 0.7.1"
   gem "rack-timeout"
-  gem "rails_12factor"
-  gem "sentry-raven", ">= 0.12.2"
 end
 
 group :development, :test do

@@ -97,16 +97,16 @@ describe RepoSubscriber do
         expect(result).to be_falsy
       end
 
-      it "reports raised exceptions to Sentry" do
+      it "reports raised exceptions to Rollbar" do
         repo = build_stubbed(:repo)
         user = create(:user)
         stub_customer_create_request(user)
         stub_failed_subscription_create_request(user.current_plan.id)
-        allow(Raven).to receive(:capture_exception)
+        allow(Rollbar).to receive(:error)
 
         RepoSubscriber.subscribe(repo, user, "cardtoken")
 
-        expect(Raven).to have_received(:capture_exception)
+        expect(Rollbar).to have_received(:error)
       end
     end
 
@@ -179,16 +179,16 @@ describe RepoSubscriber do
         expect(result).to be_falsy
       end
 
-      it "reports raised exceptions to Sentry" do
+      it "reports raised exceptions to Rollbar" do
         repo = build_stubbed(:repo)
         user = build_stubbed(:user, repos: [repo])
         stub_customer_create_request(user)
         stub_failed_subscription_destroy_request
-        allow(Raven).to receive(:capture_exception)
+        allow(Rollbar).to receive(:error)
 
         RepoSubscriber.unsubscribe(repo, user)
 
-        expect(Raven).to have_received(:capture_exception)
+        expect(Rollbar).to have_received(:error)
       end
     end
   end

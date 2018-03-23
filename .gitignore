@@ -4,7 +4,8 @@
 /db/*.sqlite3
 /log/*.log
 /tmp
-
+dump.rdb
+*.swp
 node_modules/
 yarn-debug.log*
 yarn-error.log*

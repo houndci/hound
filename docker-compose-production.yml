@@ -1,0 +1,121 @@
+version: "3.2"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.production
+    command: dumb-init bundle exec puma -C config/puma.rb
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.web
+    networks:
+      - frontend
+      - hound
+    expose:
+      - "3000"
+    restart: always
+
+  resque-high:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.production
+    command: dumb-init bundle exec rake resque:work
+    environment:
+      - TERM_CHILD=1
+      - RESQUE_TERM_TIMEOUT=8
+      - QUEUE=high,medium
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-high
+    networks:
+      - hound
+    restart: always
+
+  resque-low:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.production
+    command: dumb-init bundle exec rake resque:work
+    environment:
+      - TERM_CHILD=1
+      - RESQUE_TERM_TIMEOUT=8
+      - QUEUE=low,medium
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-low
+    networks:
+      - hound
+    restart: always
+
+  resque-medium:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.production
+    command: dumb-init bundle exec rake resque:work
+    environment:
+      - TERM_CHILD=1
+      - RESQUE_TERM_TIMEOUT=8
+      - QUEUE=medium
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-medium
+    networks:
+      - hound
+    restart: always
+
+  resque-scheduler:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.production
+    command: dumb-init bundle exec rake resque:scheduler
+    volumes:
+      - ${SHARED_PATH}/log:/app/log
+      - ${SHARED_PATH}/public/assets:/app/public/assets
+    env_file: ${SHARED_PATH}/secrets.env
+    labels:
+      - netguru.appname=hound
+      - netguru.stage=production
+    hostname: netguru.hound.production.resque-scheduler
+    networks:
+      - hound
+    restart: always
+
+  redis:
+    image: redis:4.0
+    volumes:
+      - ${SHARED_PATH}/redis/data:/data
+    networks:
+      - hound
+    labels:
+      - netguru.appname=hound
+      - netguru.stage=production
+    restart: always
+
+networks:
+  frontend:
+    external:
+      name: frontend
+
+  hound:
+    external:
+      name: hound

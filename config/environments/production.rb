@@ -11,7 +11,7 @@ Houndapp::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.public_file_server.enabled = false
+  config.public_file_server.enabled = ENV.fetch("RAILS_SERVE_STATIC_FILES", false)
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -63,6 +63,19 @@ Houndapp::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    {
+      params: event.payload[:params].reject { |k| %w(controller action).include? k },
+      time: event.time,
+    }
+  end
+
+  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+  log_file = Rails.root.join("log/#{Rails.env}.log")
+  config.logger.extend(ActiveSupport::Logger.broadcast(Logger.new(log_file)))
+
+  config.react.variant = :production
 end
 
 Rack::Timeout.timeout = (ENV["RACK_TIMEOUT"] || 20).to_i

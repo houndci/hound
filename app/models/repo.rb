@@ -66,12 +66,10 @@ class Repo < ApplicationRecord
   end
 
   def self.report_update_failure(error, attributes)
-    Raven.capture_exception(
+    Rollbar.error(
       error,
-      extra: {
-        github_id: attributes[:github_id],
-        name: attributes[:name],
-      }
+      github_id: attributes[:github_id],
+      name: attributes[:name],
     )
   end
   private_class_method :report_update_failure

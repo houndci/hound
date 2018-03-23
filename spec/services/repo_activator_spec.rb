@@ -217,17 +217,17 @@ describe RepoActivator do
         expect(activator.errors).to match_array([error_message])
       end
 
-      it "reports raised exception to Sentry" do
+      it "reports raised exception to Rollbar" do
         repo = build(:repo, private: true)
         activator = build_activator(repo: repo)
         error = Octokit::Error.new
         api = stub_github_api
         allow(api).to receive(:add_collaborator).and_raise(error)
-        allow(Raven).to receive(:capture_exception)
+        allow(Rollbar).to receive(:error)
 
         activator.activate
 
-        expect(Raven).to have_received(:capture_exception).with(error)
+        expect(Rollbar).to have_received(:error).with(error)
       end
 
       it "only swallows Octokit errors" do

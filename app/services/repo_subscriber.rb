@@ -47,9 +47,9 @@ class RepoSubscriber
   end
 
   def report_exception(error)
-    Raven.capture_exception(
+    Rollbar.error(
       error,
-      extra: { user_id: user.id, repo_id: repo.id }
+      user_id: user.id, repo_id: repo.id
     )
   end
 

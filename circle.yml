@@ -1,59 +1,26 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/hound
-    docker:
-      - image: circleci/ruby:2.5.0-node-browsers
-        environment:
-          RAILS_ENV: test
-          CIRCLECI: true
-          PGHOST: 127.0.0.1
-          PGUSER: houndci
-      - image: circleci/postgres:9.5-alpine
-        environment:
-          POSTGRES_USER: houndci
-          POSTGRES_DB: houndci-test
-          POSTGRES_PASSWORD: ""
-      - image: redis:3.2.10-alpine
-    steps:
-      - checkout
+machine:
+  services:
+    - redis
 
-      - type: cache-restore
-        name: Restore bundle cache
-        key: houndci-{{ checksum "Gemfile.lock" }}
+  node:
+    version: 8.4.0
 
-      - type: cache-restore
-        name: Restore yarn cache
-        key: houndci-yarn-{{ checksum "yarn.lock" }}
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
 
-      # Bundle install dependencies
-      - run: bundle install --path vendor/bundle
+dependencies:
+  override:
+    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
 
-      # Yarn install
-      - run: yarn config set yarn-offline-mirror ~/.cache/yarn && yarn install
+test:
+  override:
+    - bundle exec rake
 
-      - type: cache-save
-        name: Store bundle cache
-        key: houndci-{{ checksum "Gemfile.lock" }}
-        paths:
-          - vendor/bundle
-
-      - type: cache-save
-        name: Store yarn cache
-        key: houndci-yarn-{{ checksum "yarn.lock" }}
-        paths:
-          - ~/.cache/yarn
-
-      # Wait for DB
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      # Wait for Redis
-      - run: dockerize -wait tcp://localhost:6379 -timeout 1m
-
-      # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
-
-      # Run rspec in parallel
-      - type: shell
-        command: xvfb-run --auto-servernum bundle exec rake
+deployment:
+  production:
+    branch: production
+    commands:
+      - cd deployment; bundle install; bundle exec cap production deploy
