@@ -61,15 +61,17 @@ class RepoActivator
 
   def add_hound_to_repo
     github.add_collaborator(repo.name, Hound::GITHUB_USERNAME)
-    hound_github.accept_invitation(repo.name)
+
+    hound_github.repository?(repo.name) ||
+      hound_github.accept_invitation(repo.name)
   end
 
   def hound_github
-    @hound_github ||= GithubApi.new(Hound::GITHUB_TOKEN)
+    @hound_github ||= GitHubApi.new(Hound::GITHUB_TOKEN)
   end
 
   def github
-    @github ||= GithubApi.new(github_token)
+    @github ||= GitHubApi.new(github_token)
   end
 
   def create_webhook

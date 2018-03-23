@@ -40,7 +40,7 @@ describe Config::CoffeeScript do
     end
 
     context "config with comments and trailing commas" do
-      it "returns the content from Github as a hash" do
+      it "returns the content from GitHub as a hash" do
         raw_config = <<~EOS
           {
             "arrow_spacing": {

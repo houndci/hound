@@ -5,7 +5,7 @@ describe SessionsController do
     context "with valid new user" do
       it "creates new user" do
         github_api = instance_double(
-          "GithubApi",
+          "GitHubApi",
           scopes: "public_repo,user:email",
         )
         request.env["omniauth.auth"] = stub_oauth(
@@ -13,7 +13,7 @@ describe SessionsController do
           email: "jimtom@example.com",
           token: "letmein",
         )
-        allow(GithubApi).to receive(:new).and_return(github_api)
+        allow(GitHubApi).to receive(:new).and_return(github_api)
 
         expect { post :create }.to change { User.count }.by(1)
         user = User.last

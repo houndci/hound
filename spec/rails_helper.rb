@@ -10,8 +10,8 @@ RSpec.configure do |config|
 
   %i(request feature).each do |type|
     config.before :each, type: type do
-      stub_request(:any, /api.github.com/).to_rack(FakeGithub)
-      FakeGithub.comments = []
+      stub_request(:any, /api.github.com/).to_rack(FakeGitHub)
+      FakeGitHub.comments = []
     end
   end
 
@@ -28,13 +28,24 @@ RSpec.configure do |config|
   ActiveJob::Base.queue_adapter = :resque
 end
 
-Capybara.configure do |config|
-  config.javascript_driver = :webkit
-  config.default_max_wait_time = 4
-end
-
-Capybara::Webkit.configure(&:block_unknown_urls)
-
 OmniAuth.configure do |config|
   config.test_mode = true
 end
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.register_driver :headless_chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w(headless) },
+  )
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    desired_capabilities: capabilities,
+  )
+end
+
+Capybara.javascript_driver = :headless_chrome

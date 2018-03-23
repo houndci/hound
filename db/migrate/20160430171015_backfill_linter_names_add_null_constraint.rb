@@ -1,4 +1,4 @@
-class BackfillLinterNamesAddNullConstraint < ActiveRecord::Migration
+class BackfillLinterNamesAddNullConstraint < ActiveRecord::Migration[4.2]
   def up
     sql = <<-SQL
       UPDATE file_reviews

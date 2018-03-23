@@ -5,6 +5,7 @@ $_font-host-url: "https://font.thoughtbot.com/hound/";
   "#{$_font-host-url}Tofino-Book",
   $asset-pipeline: false
 ) {
+  font-display: swap;
   font-style: normal;
   font-weight: $font-weight-book;
 }
@@ -14,6 +15,7 @@ $_font-host-url: "https://font.thoughtbot.com/hound/";
   "#{$_font-host-url}Tofino-BookItalic",
   $asset-pipeline: false
 ) {
+  font-display: swap;
   font-style: italic;
   font-weight: $font-weight-book;
 }
@@ -23,6 +25,7 @@ $_font-host-url: "https://font.thoughtbot.com/hound/";
   "#{$_font-host-url}Tofino-Regular",
   $asset-pipeline: false
 ) {
+  font-display: swap;
   font-style: normal;
   font-weight: $font-weight-regular;
 }
@@ -32,6 +35,7 @@ $_font-host-url: "https://font.thoughtbot.com/hound/";
   "#{$_font-host-url}Tofino-RegularItalic",
   $asset-pipeline: false
 ) {
+  font-display: swap;
   font-style: italic;
   font-weight: $font-weight-regular;
 }
@@ -41,6 +45,7 @@ $_font-host-url: "https://font.thoughtbot.com/hound/";
   "#{$_font-host-url}Tofino-Medium",
   $asset-pipeline: false
 ) {
+  font-display: swap;
   font-style: normal;
   font-weight: $font-weight-medium;
 }
@@ -50,6 +55,7 @@ $_font-host-url: "https://font.thoughtbot.com/hound/";
   "#{$_font-host-url}Tofino-MediumItalic",
   $asset-pipeline: false
 ) {
+  font-display: swap;
   font-style: italic;
   font-weight: $font-weight-medium;
 }

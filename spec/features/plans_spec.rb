@@ -8,18 +8,16 @@ feature "Plans" do
 
     visit plans_path(repo_id: repo.id)
 
-    plans = page.all(".plan")
-    expect(plans.count).to eq 4
+    expect(page).to have_css(".plan", count: 4)
 
-    within(plans[0]) do
+    within ".plan:nth-of-type(1)" do
       expect(page).to have_content("CURRENT PLAN")
-
       expect(find(".plan-title").text).to eq "Hound"
       expect(find(".plan-allowance").text).to eq "Unlimited"
       expect(find(".plan-price").text).to eq "$0 month"
     end
 
-    within(plans[1]) do
+    within ".plan:nth-of-type(2)" do
       expect(page).to have_content("NEW PLAN")
 
       expect(find(".plan-title").text).to eq "Chihuahua"
@@ -27,13 +25,13 @@ feature "Plans" do
       expect(find(".plan-price").text).to eq "$49 month"
     end
 
-    within(plans[2]) do
+    within ".plan:nth-of-type(3)" do
       expect(find(".plan-title").text).to eq "Labrador"
       expect(find(".plan-allowance").text).to eq "Up to 10 Repos"
       expect(find(".plan-price").text).to eq "$99 month"
     end
 
-    within(plans[3]) do
+    within ".plan:nth-of-type(4)" do
       expect(find(".plan-title").text).to eq "Great Dane"
       expect(find(".plan-allowance").text).to eq "Up to 30 Repos"
       expect(find(".plan-price").text).to eq "$249 month"
@@ -41,29 +39,30 @@ feature "Plans" do
   end
 
   scenario "user upgrades their subscription", :js do
-    user = create(:user, stripe_customer_id: stripe_customer_id)
-    token = "letmein"
-    sign_in_as(user, token)
-
-    4.times do
-      repo = create(:repo, active: true)
-      create(:membership, admin: true, repo: repo, user: user)
-      create(:subscription, repo: repo, user: user)
-    end
-
-    repo = create(:repo, private: true)
-    create(:membership, admin: true, repo: repo, user: user)
+    user = create(:user, :with_github_scopes, :stripe)
+    create_subscriptions_to_fill_tier(user)
+    repo = create(:repo, :private)
+    create(:membership, :admin, repo: repo, user: user)
     stub_repository_invitations(repo.name)
     stub_customer_find_request
     stub_subscription_create_request(plan: "tier1", repo_ids: repo.id)
     stub_subscription_update_request(plan: "tier2", repo_ids: repo.id)
-    visit plans_path(repo_id: repo.id)
 
+    sign_in_as(user)
+    visit plans_path(repo_id: repo.id)
     click_on "Upgrade"
 
     wait_until_path_is(repos_path, "Timeout waiting for Upgrade to redirect")
 
     expect(page).to have_text "Private Repos 5 / 10"
+  end
+
+  def create_subscriptions_to_fill_tier(user)
+    4.times do
+      repo = create(:repo, :active)
+      create(:membership, :admin, repo: repo, user: user)
+      create(:subscription, repo: repo, user: user)
+    end
   end
 
   def wait_until_path_is(path, message)

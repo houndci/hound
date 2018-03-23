@@ -93,9 +93,9 @@ describe CommentingPolicy do
 
   def stub_comment(options = {})
     defaults = {
-      user: double("GithubUser", login: Hound::GITHUB_USERNAME),
+      user: double("GitHubUser", login: Hound::GITHUB_USERNAME),
     }
-    double("GithubComment", defaults.merge(options))
+    double("GitHubComment", defaults.merge(options))
   end
 
   def stub_violation(options = {})

@@ -1,4 +1,4 @@
-class CreateStyleConfig < ActiveRecord::Migration
+class CreateStyleConfig < ActiveRecord::Migration[4.2]
   def change
     create_table :style_configs do |t|
       t.boolean :enabled, default: true, null: false

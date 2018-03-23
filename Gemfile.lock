@@ -58,9 +58,9 @@ GEM
       commander (~> 4.4)
     arel (8.0.0)
     attr_extras (4.4.0)
-    autoprefixer-rails (7.1.4)
+    autoprefixer-rails (8.0.0)
       execjs
-    bourbon (5.0.0.beta.8)
+    bourbon (5.0.0)
       sass (~> 3.4)
       thor (~> 0.19)
     builder (3.2.3)
@@ -77,9 +77,8 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.14.0)
-      capybara (>= 2.3.0, < 2.14.0)
-      json
+    childprocess (0.8.0)
+      ffi (~> 1.0, >= 1.0.11)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.2.x)
@@ -115,12 +114,12 @@ GEM
       railties (>= 3.0.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.18)
+    ffi (1.9.21)
     foreman (0.78.0)
       thor (~> 0.19.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    haml (5.0.3)
+    haml (5.0.4)
       temple (>= 0.8.0)
       tilt
     haml-rails (1.0.0)
@@ -183,7 +182,7 @@ GEM
     multi_json (1.12.2)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
-    mustermann (1.0.0)
+    mustermann (1.0.2)
     neat (1.9.0)
       sass (>= 3.3)
       thor (~> 0.19)
@@ -199,9 +198,9 @@ GEM
       rack (>= 1.2, < 3)
     octokit (4.7.0)
       sawyer (~> 0.8.0, >= 0.5.3)
-    omniauth (1.3.1)
-      hashie (>= 1.2, < 4)
-      rack (>= 1.0, < 3)
+    omniauth (1.8.1)
+      hashie (>= 3.4.6, < 3.6.0)
+      rack (>= 1.6.2, < 3)
     omniauth-github (1.1.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.1)
@@ -214,8 +213,8 @@ GEM
     pg (0.19.0)
     public_suffix (3.0.0)
     puma (3.9.1)
-    rack (2.0.3)
-    rack-protection (2.0.0)
+    rack (2.0.4)
+    rack-protection (2.0.1)
       rack
     rack-proxy (0.6.2)
       rack
@@ -299,10 +298,11 @@ GEM
     rspec-support (3.5.0)
     ruby_parser (3.10.1)
       sexp_processor (~> 4.9)
+    rubyzip (1.2.1)
     rufus-scheduler (3.3.1)
       tzinfo
     safe_yaml (1.0.4)
-    sass (3.5.1)
+    sass (3.5.5)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -317,15 +317,18 @@ GEM
       addressable (>= 2.3.5, < 2.6)
       faraday (~> 0.8, < 1.0)
     selectize-rails (0.12.4)
+    selenium-webdriver (3.9.0)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.2)
     sentry-raven (2.2.0)
       faraday (>= 0.7.6, < 1.0)
     sexp_processor (4.10.0)
     shoulda-matchers (2.6.2)
       activesupport (>= 3.0.0)
-    sinatra (2.0.0)
+    sinatra (2.0.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.0)
+      rack-protection (= 2.0.1)
       tilt (~> 2.0)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
@@ -375,11 +378,10 @@ DEPENDENCIES
   analytics-ruby (~> 2.2.2)
   attr_extras
   autoprefixer-rails
-  bourbon (>= 5.0.0.beta.8)
+  bourbon (~> 5.0)
   bundler-audit
   byebug
   capybara (>= 2.4.0)
-  capybara-webkit (~> 1.6)
   coffee-rails
   dotenv-rails
   email_validator
@@ -393,7 +395,7 @@ DEPENDENCIES
   launchy
   lograge (>= 0.7.1)
   neat (~> 1.9)
-  nokogiri (>= 1.8.1)
+  nokogiri (>= 1.8.2)
   octokit
   omniauth-github
   paranoia (~> 2.2)
@@ -412,8 +414,9 @@ DEPENDENCIES
   rollbar
   rspec-rails (>= 3.4)
   sass-rails
+  selenium-webdriver
   shoulda-matchers
-  sinatra (= 2.0.0)
+  sinatra (~> 2.0)
   stripe
   thor (= 0.19.1)
   uglifier (>= 2.7.2)
@@ -422,7 +425,7 @@ DEPENDENCIES
   webpacker-react (~> 0.3.1)
 
 RUBY VERSION
-   ruby 2.4.1p111
+   ruby 2.5.0p0
 
 BUNDLED WITH
    1.16.1

@@ -1,4 +1,4 @@
-class AddRepos < ActiveRecord::Migration
+class AddRepos < ActiveRecord::Migration[4.2]
   def up
     create_table :repos do |t|
       t.integer :github_id, null: false

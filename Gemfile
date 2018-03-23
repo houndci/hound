@@ -1,13 +1,13 @@
 source "https://rubygems.org"
 
-ruby "2.4.1"
+ruby "2.5.0"
 
 gem "active_model_serializers", "0.9.5"
 gem "administrate", "0.8.1"
 gem "analytics-ruby", "~> 2.2.2", require: "segment/analytics"
 gem "attr_extras"
 gem "autoprefixer-rails"
-gem "bourbon", ">= 5.0.0.beta.8"
+gem "bourbon", "~> 5.0"
 gem "coffee-rails"
 gem "email_validator"
 gem "faraday"
@@ -32,13 +32,13 @@ gem "resque-rollbar"
 gem "rest-client", ">= 1.8.0"
 gem "rollbar"
 gem "sass-rails"
-gem "sinatra", "2.0.0"
+gem "sinatra", "~> 2.0"
 gem "stripe"
 gem "thor", "0.19.1"
 gem "uglifier", ">= 2.7.2"
 gem "webpacker", "~> 3.0"
 gem "webpacker-react", "~> 0.3.1"
-gem "nokogiri", ">= 1.8.1"
+gem "nokogiri", ">= 1.8.2"
 
 group :staging, :production do
   gem "lograge", ">= 0.7.1"
@@ -55,7 +55,7 @@ end
 
 group :test do
   gem "capybara", ">= 2.4.0"
-  gem "capybara-webkit", "~> 1.6"
+  gem "selenium-webdriver"
   gem "factory_girl_rails"
   gem "launchy"
   gem "shoulda-matchers"

@@ -1,4 +1,4 @@
-class InactivateReposWithoutPrivacyOrOrgInfo < ActiveRecord::Migration
+class InactivateReposWithoutPrivacyOrOrgInfo < ActiveRecord::Migration[4.2]
   def up
     sql = <<-SQL
       UPDATE "repos"

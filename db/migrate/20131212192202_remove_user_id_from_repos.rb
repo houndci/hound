@@ -1,4 +1,4 @@
-class RemoveUserIdFromRepos < ActiveRecord::Migration
+class RemoveUserIdFromRepos < ActiveRecord::Migration[4.2]
   def up
     remove_column :repos, :user_id
   end

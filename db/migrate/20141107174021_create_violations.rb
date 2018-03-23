@@ -1,4 +1,4 @@
-class CreateViolations < ActiveRecord::Migration
+class CreateViolations < ActiveRecord::Migration[4.2]
   def up
     create_violations_table
     rename_column :builds, :violations, :violations_archive

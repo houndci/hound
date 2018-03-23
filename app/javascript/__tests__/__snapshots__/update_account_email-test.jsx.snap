@@ -20,7 +20,7 @@ exports[`test renders appropriately 1`] = `
     <div
       className="form-actions">
       <button
-        className="button-small"
+        className="repo-toggle"
         onClick={[Function]}>
         Update Email
       </button>
@@ -51,7 +51,7 @@ exports[`test renders appropriately on address change 1`] = `
     <div
       className="form-actions">
       <button
-        className="button-small"
+        className="repo-toggle"
         onClick={[Function]}>
         Update Email
       </button>

@@ -3,7 +3,7 @@ require "rails_helper"
 describe ReportInvalidConfig do
   describe ".call" do
     context "given a custom message" do
-      it "reports the file as an invalid config file to Github" do
+      it "reports the file as an invalid config file to GitHub" do
         commit_status = stubbed_commit_status(:set_config_error)
         stubbed_build(repo_name: "houndci/hound")
         pull_request_number = "42"
@@ -27,7 +27,7 @@ describe ReportInvalidConfig do
     end
 
     context "not given a custom message" do
-      it "reports the file as an invalid config file to Github" do
+      it "reports the file as an invalid config file to GitHub" do
         commit_status = stubbed_commit_status(:set_config_error)
         stubbed_build(repo_name: "houndci/hound")
         pull_request_number = "42"

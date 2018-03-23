@@ -6,5 +6,5 @@
   plans: @plans,
   repo_id: @repo.id,
   repo_name: @repo.name,
-  user_has_card: current_user.stripe_customer_id.present?,
+  user_has_card: current_user.card_exists?,
 )

@@ -1,4 +1,4 @@
-class ChangeGithubUsernameNullConstraint < ActiveRecord::Migration
+class ChangeGitHubUsernameNullConstraint < ActiveRecord::Migration[4.2]
   def up
     change_column :users, :github_username, :string, null: false
   end

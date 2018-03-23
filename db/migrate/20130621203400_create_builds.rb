@@ -1,4 +1,4 @@
-class CreateBuilds < ActiveRecord::Migration
+class CreateBuilds < ActiveRecord::Migration[4.2]
   def change
     create_table :builds do |t|
       t.text :violations

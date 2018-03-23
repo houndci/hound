@@ -62,7 +62,7 @@ describe PullRequest do
   describe "#make_comments" do
     it "posts a review with comments to GitHub as the Hound user" do
       payload = payload_stub
-      github = instance_double("GithubApi", create_pull_request_review: nil)
+      github = instance_double("GitHubApi", create_pull_request_review: nil)
       pull_request = pull_request_stub(github, payload)
       violation = violation_stub
       review_errors = ["invalid config", "foo\n  bar"]
@@ -148,7 +148,7 @@ describe PullRequest do
   end
 
   def pull_request_stub(api, payload = payload_stub)
-    allow(GithubApi).to receive(:new).and_return(api)
+    allow(GitHubApi).to receive(:new).and_return(api)
     PullRequest.new(payload, token)
   end
 end

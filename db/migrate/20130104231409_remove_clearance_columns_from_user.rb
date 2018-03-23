@@ -1,4 +1,4 @@
-class RemoveClearanceColumnsFromUser < ActiveRecord::Migration
+class RemoveClearanceColumnsFromUser < ActiveRecord::Migration[4.2]
   def up
     remove_columns(
       :users,

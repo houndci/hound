@@ -11,6 +11,9 @@ class BuildRunner
   rescue Octokit::NotFound, Octokit::Unauthorized
     remove_current_user_membership
     raise
+  rescue StandardError
+    set_internal_error
+    raise
   end
 
   def set_internal_error

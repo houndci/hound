@@ -22,7 +22,7 @@ class BuildOwnerHoundConfig
   attr_reader :owner
 
   def github
-    @_github ||= GithubApi.new(user_token)
+    @_github ||= GitHubApi.new(user_token)
   end
 
   def user_token
