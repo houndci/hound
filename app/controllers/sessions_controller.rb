@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     create_session
 
     if github_token
-      update_token
+      update_user
       update_scopes
     end
 
@@ -73,8 +73,8 @@ class SessionsController < ApplicationController
     @token_scopes ||= github.scopes
   end
 
-  def update_token
-    user.update!(token: github_token)
+  def update_user
+    user.update!(token: github_token, email: github_email)
   end
 
   def update_scopes
