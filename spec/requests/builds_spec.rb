@@ -18,7 +18,7 @@ RSpec.describe "POST /builds" do
       violations = [new_violation1, existing_comment_violation, new_violation2]
       create(:repo, :active, github_id: repo_id, name: repo_name)
       stub_review_job(
-        RubocopReviewJob,
+        LintersJob,
         violations: violations,
         error: "invalid config syntax",
       )

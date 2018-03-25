@@ -12,7 +12,7 @@ class HoundConfig
     Linter::Flake8 => { default: false },
     Linter::Reek => { default: false },
     Linter::Remark => { default: false },
-    Linter::Ruby => { default: true },
+    Linter::Rubocop => { default: true },
     Linter::SassLint => { default: false },
     Linter::Scss => { default: true },
     Linter::SlimLint => { default: false },

@@ -9,7 +9,7 @@ module LinterHelper
 
   def raw_hound_config
     <<~EOS
-      ruby:
+      rubocop:
         enabled: true
         config_file: config/rubocop.yml
 
@@ -17,7 +17,7 @@ module LinterHelper
         enabled: true
         config_file: coffeelint.json
 
-      javascript:
+      jshint:
         enabled: true
         config_file: config/javascript.json
 
