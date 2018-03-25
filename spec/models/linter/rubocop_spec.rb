@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::Ruby do
+describe Linter::Rubocop do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.rb foo.rake) }
     let(:not_lintable_files) { %w(foo.js) }
@@ -27,10 +27,10 @@ describe Linter::Ruby do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        RubocopReviewJob,
+        LintersJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "ruby",
+        linter_name: "rubocop",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
@@ -43,11 +43,11 @@ describe Linter::Ruby do
 
   def stub_ruby_config(config = {})
     stubbed_ruby_config = instance_double(
-      Config::Ruby,
+      Config::Rubocop,
       content: config,
       serialize: Config::Serializer.yaml(config),
     )
-    allow(Config::Ruby).to receive(:new).and_return(stubbed_ruby_config)
+    allow(Config::Rubocop).to receive(:new).and_return(stubbed_ruby_config)
 
     stubbed_ruby_config
   end

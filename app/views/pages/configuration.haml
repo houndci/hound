@@ -6,7 +6,7 @@
       %li
         = link_to "Hound", "#configuration", class: "docs-nav-link"
       %li
-        = link_to "Ruby", "#ruby", class: "docs-nav-link"
+        = link_to "RuboCop", "#rubocop", class: "docs-nav-link"
       %li
         = link_to "CoffeeScript", "#coffeescript", class: "docs-nav-link"
       %li
@@ -79,7 +79,7 @@
           scss:
             enabled: false
 
-          ruby:
+          rubocop:
             config_file: .rubocop.yml
 
           jshint:
@@ -105,8 +105,8 @@
         :preserve
           fail_on_violations: true
 
-    %article.docs-article#ruby
-      %h2 Ruby
+    %article.docs-article#rubocop
+      %h2 RuboCop
       %p
         Hound uses
         = link_to "RuboCop",
@@ -133,7 +133,7 @@
 
         %code.code-block
           :preserve
-            ruby:
+            rubocop:
               config_file: .rubocop.yml
 
       %p
@@ -142,7 +142,7 @@
 
         %code.code-block
           :preserve
-            ruby:
+            rubocop:
               enabled: false
 
     %article.docs-article#coffeescript

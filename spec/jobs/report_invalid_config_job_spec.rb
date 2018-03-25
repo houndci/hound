@@ -6,7 +6,7 @@ describe ReportInvalidConfigJob do
       attributes = {
         "pull_request_number" => "42",
         "commit_sha" => "abc123",
-        "linter_name" => "ruby",
+        "linter_name" => "rubocop",
         "message" => "Could not parse the given config file",
       }
       allow(ReportInvalidConfig).to receive(:call)

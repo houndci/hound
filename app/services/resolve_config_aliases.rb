@@ -4,6 +4,7 @@ class ResolveConfigAliases
     "java_script" => "jshint",
     "javascript" => "jshint",
     "python" => "flake8",
+    "ruby" => "rubocop",
     "sass-lint" => "sass_lint",
     "scss-lint" => "scss",
     "scss_lint" => "scss",

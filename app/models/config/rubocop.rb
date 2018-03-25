@@ -1,5 +1,5 @@
 module Config
-  class Ruby < Base
+  class Rubocop < Base
     def content
       if legacy?
         hound_config.content

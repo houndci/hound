@@ -1,6 +1,6 @@
 require "spec_helper"
 require "app/models/config/base"
-require "app/models/config/ruby"
+require "app/models/config/rubocop"
 require "app/models/config/unsupported"
 require "app/models/missing_owner"
 require "app/services/build_config"
@@ -11,11 +11,11 @@ describe BuildConfig do
       it "returns the matching config" do
         config = BuildConfig.call(
           hound_config: double,
-          name: "ruby",
+          name: "rubocop",
           owner: instance_double("Owner"),
         )
 
-        expect(config).to be_a(Config::Ruby)
+        expect(config).to be_a(Config::Rubocop)
       end
     end
 

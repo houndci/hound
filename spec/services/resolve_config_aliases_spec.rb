@@ -6,11 +6,12 @@ describe ResolveConfigAliases do
       it "renames them to the appropriate linter" do
         config = {
           "javascript" => { "enabled" => false },
-          "ruby" => { "enabled" => false },
+          "ruby" => { "enabled" => true },
+          "flog" => { "enabled" => false },
         }
 
         expect(ResolveConfigAliases.call(config).keys).
-          to match_array(["jshint", "ruby"])
+          to match_array(["jshint", "rubocop", "flog"])
       end
     end
   end
