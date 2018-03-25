@@ -10,6 +10,7 @@ RSpec.feature "User activates a repo", :js do
 
     sign_in_as(user, "letmein")
     click_on "Activate"
+    find("[role=navigation]").hover
 
     expect(page).to have_text "Active"
   end
