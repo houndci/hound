@@ -48,8 +48,6 @@ export default class UpgradeSubscriptionLink extends React.Component {
   }
 
   handleFailedUpgrade(response) {
-    const { intercom } = this.props;
-
     const subscriptionFailed = response &&
       response.errors &&
       response.errors.includes("There was an issue creating the subscription");
@@ -59,13 +57,17 @@ export default class UpgradeSubscriptionLink extends React.Component {
     } else {
       this.setState({ disabled: false });
 
-      if (intercom) {
-        intercom(
+      // There's probably a more elegant way to do this
+      //
+      // Intercom doesn't seem available when component is set up
+      // to include in props
+      if (window.Intercom) {
+        window.Intercom(
           "showNewMessage",
           "I cannot upgrade and activate my repo. Please help!"
         );
       } else {
-        alert("Oh no, upgrading and activating the repo failed.");
+        alert("Oh no, upgrading and activating the repo failed. Please contact us!");
       }
     }
   }

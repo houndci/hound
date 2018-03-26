@@ -98,7 +98,6 @@ export default class App extends React.Component {
             nextTier={next_tier}
             repoId={repo_id}
             userHasCard={user_has_card}
-            intercom={window.Intercom}
           />
           <a className="tier-change-cancel" href="/repos">Cancel</a>
         </div>
