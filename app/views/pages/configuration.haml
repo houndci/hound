@@ -6,29 +6,29 @@
       %li
         = link_to "Hound", "#configuration", class: "docs-nav-link"
       %li
-        = link_to "RuboCop", "#ruby", class: "docs-nav-link"
+        = link_to "Ruby", "#ruby", class: "docs-nav-link"
       %li
-        = link_to "JSHint", "#jshint", class: "docs-nav-link"
+        = link_to "CoffeeScript", "#coffeescript", class: "docs-nav-link"
       %li
-        = link_to "ESLint", "#eslint", class: "docs-nav-link"
-      %li
-        = link_to "CoffeeLint", "#coffeescript", class: "docs-nav-link"
-      %li
-        = link_to "TSLint", "#tslint", class: "docs-nav-link"
-      %li
-        = link_to "HAML-Lint", "#haml", class: "docs-nav-link"
+        = link_to "JavaScript", "#javascript", class: "docs-nav-link"
       %li
         = link_to "SCSS-Lint", "#scss", class: "docs-nav-link"
       %li
+        = link_to "Haml", "#haml", class: "docs-nav-link"
+      %li
+        = link_to "Go", "#go", class: "docs-nav-link"
+      %li
+        = link_to "Swift", "#swift", class: "docs-nav-link"
+      %li
+        = link_to "ESLint", "#eslint", class: "docs-nav-link"
+      %li
+        = link_to "Python", "#python", class: "docs-nav-link"
+      %li
+        = link_to "TSLint", "#tslint", class: "docs-nav-link"
+      %li
+        = link_to "Elixir", "#elixir", class: "docs-nav-link"
+      %li
         = link_to "Sass Lint", "#sass-lint", class: "docs-nav-link"
-      %li
-        = link_to "SwiftLint", "#swift", class: "docs-nav-link"
-      %li
-        = link_to "Flake8", "#flake8", class: "docs-nav-link"
-      %li
-        = link_to "Credo", "#credo", class: "docs-nav-link"
-      %li
-        = link_to "Golint", "#go", class: "docs-nav-link"
 
   %section.docs-content
     %article.docs-article
@@ -52,12 +52,12 @@
       %p
         %ul
           %li RuboCop (Ruby)
-          %li JSHint (JavaScript)
           %li CoffeeLint (CoffeeScript)
-          %li SCSS-Lint (Sass)
-          %li HAML-Lint (Haml)
-          %li SwiftLint (Swift)
-          %li Golint (Go)
+          %li JavaScript (JSHint)
+          %li SCSS (SCSS-Lint)
+          %li Haml (HAMLLint)
+          %li Go (golint)
+          %li Swift (SwiftLint)
       %p All other linters must be explicitly enabled.
 
       %p
@@ -106,11 +106,7 @@
           fail_on_violations: true
 
     %article.docs-article#ruby
-      %h2
-        RuboCop
-        %span.version-number v#{@versions[:rubocop]}
-        (Ruby)
-
+      %h2 Ruby
       %p
         Hound uses
         = link_to "RuboCop",
@@ -149,11 +145,35 @@
             ruby:
               enabled: false
 
-    %article.docs-article#jshint
-      %h2
-        JSHint
-        %span.version-number v#{@versions[:jshint]}
-        (JavaScript)
+    %article.docs-article#coffeescript
+      %h2 CoffeeScript
+
+      %p
+        Hound uses
+        = link_to "CoffeeLint", "http://www.coffeelint.org", new_window_options
+        with the default configuration.
+
+      %p
+        To change the way CoffeeLint is configured, add a config file to your
+        project and reference it in your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            coffeescript:
+              config_file: coffeelint.json
+
+      %p
+        To disable CoffeeScript style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            coffeescript:
+              enabled: false
+
+    %article.docs-article#javascript
+      %h2 JavaScript
 
       %p
         Hound uses
@@ -208,11 +228,147 @@
             jshint:
               enabled: false
 
+    %article.docs-article#scss
+      %h2 SCSS-Lint
+
+      %p
+        Hound uses
+        = link_to "SCSS-Lint",
+          "https://github.com/causes/scss-lint",
+          new_window_options
+        with this
+        = link_to "config", scss_config_url, new_window_options
+        by default.
+
+      %p
+        To change the way SCSS-Lint is configured, simply copy the
+        = link_to "default config file", scss_config_url, new_window_options
+        into your project, make changes and reference the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            scss:
+              config_file: .scss-lint.yml
+
+      %p
+        To ignore certain SCSS files, add
+        %em.code-inline exclude:
+        directive to your
+        %em.code-inline .scss-lint.yml
+        file, like:
+
+        %code.code-block
+          :preserve
+            exclude:
+              - "app/assets/stylesheets/plugins/**"
+
+      %p
+        To disable SCSS style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            scss:
+              enabled: false
+
+    %article.docs-article#haml
+      %h2 Haml
+
+      %p
+        Hound uses
+        = link_to "haml-lint",
+          "https://github.com/brigade/haml-lint",
+          new_window_options
+        with this
+        = link_to "config", haml_config_url, new_window_options
+        by default.
+
+      %p
+        To change the way haml-lint is configured, simply copy the
+        = link_to "default config file", haml_config_url, new_window_options
+        into your project, make changes and reference the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            haml:
+              config_file: .haml-lint.yml
+
+      %p
+        To disable Haml style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            haml:
+              enabled: false
+
+    %article.docs-article#go
+      %h2 Go
+
+      %p
+        Hound uses
+        = link_to "Golint",
+          "https://github.com/golang/lint",
+          new_window_options
+        to review Go code.
+
+      %p
+        To disable Go style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            go:
+              enabled: false
+
+    %article.docs-article#swift
+      %h2 Swift
+
+      %p
+        Hound uses
+        = link_to "SwiftLint",
+          "https://github.com/realm/SwiftLint",
+          new_window_options
+        with this
+        = link_to "config", swift_config_url, new_window_options
+        by default.
+
+      %p
+        To change the way SwiftLint is configured, copy the
+        = link_to "default config file", swift_config_url, new_window_options
+        into your project, make changes and reference the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            swift:
+              config_file: .swiftlint.yml
+
+      %p
+        To disable Swift style checking, add the following to your
+        %em.code-inline .hound.yml
+        file.
+
+        %code.code-block
+          :preserve
+            swift:
+              enabled: false
+
+      %p
+        For more information on the available configuration in your
+        %em.code-inline config_file
+        , you can read about it on the
+        = link_to "SwiftLint Configuration Documentation",
+          "https://github.com/realm/SwiftLint#configuration",
+          new_window_options
+
     %article.docs-article#eslint
-      %h2
-        ESLint
-        %span.version-number v#{@versions[:eslint]}
-        (JavaScript)
+      %h2 ESLint
 
       %p
         Hound uses
@@ -269,247 +425,8 @@
             eslint:
               ignore_file: .eslintignore
 
-    %article.docs-article#coffeescript
-      %h2
-        CoffeeLint
-        %span.version-number v#{@versions[:coffeelint]}
-        (CoffeeScript)
-
-      %p
-        Hound uses
-        = link_to "CoffeeLint", "http://www.coffeelint.org", new_window_options
-        with the default configuration.
-
-      %p
-        To change the way CoffeeLint is configured, add a config file to your
-        project and reference it in your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            coffeescript:
-              config_file: coffeelint.json
-
-      %p
-        To disable CoffeeScript style checking, add the following to your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            coffeescript:
-              enabled: false
-
-    %article.docs-article#tslint
-      %h2
-        TSLint
-        %span.version-number v#{@versions[:tslint]}
-        (TypeScript)
-
-      %p
-        Hound uses
-        = link_to "TSLint",
-          "https://palantir.github.io/tslint/",
-          new_window_options
-        to review TypeScript code.
-
-      %p
-        To enable TypeScript style checking, add the following to your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            tslint:
-              enabled: true
-
-      %p
-        To change the way TSLint is configured, add a
-        %em.code-inline tslint.json
-        file to your project, configure it as desired
-        (see the
-        = succeed ")," do
-          = link_to "TSLint rules",
-            "https://palantir.github.io/tslint/rules/",
-            new_window_options
-        and reference it in
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            tslint:
-              config_file: tslint.json
-
-    %article.docs-article#haml
-      %h2
-        HAML-Lint
-        %span.version-number v#{@versions[:haml_lint]}
-        (Haml)
-
-      %p
-        Hound uses
-        = link_to "haml-lint",
-          "https://github.com/brigade/haml-lint",
-          new_window_options
-        with this
-        = link_to "config", haml_config_url, new_window_options
-        by default.
-
-      %p
-        To change the way haml-lint is configured, simply copy the
-        = link_to "default config file", haml_config_url, new_window_options
-        into your project, make changes and reference the file in your
-        %em.code-inline .hound.yml
-
-      %p
-        %code.code-block
-          :preserve
-            haml:
-              config_file: .haml-lint.yml
-
-      %p
-        To disable Haml style checking, add the following to your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            haml:
-              enabled: false
-
-    %article.docs-article#scss
-      %h2
-        SCSS-Lint
-        %span.version-number v#{@versions[:scss_lint]}
-        (Sass)
-
-      %p
-        Hound uses
-        = link_to "SCSS-Lint",
-          "https://github.com/causes/scss-lint",
-          new_window_options
-        with this
-        = link_to "config", scss_config_url, new_window_options
-        by default.
-
-      %p
-        To change the way SCSS-Lint is configured, simply copy the
-        = link_to "default config file", scss_config_url, new_window_options
-        into your project, make changes and reference the file in your
-        %em.code-inline .hound.yml
-
-      %p
-        %code.code-block
-          :preserve
-            scss:
-              config_file: .scss-lint.yml
-
-      %p
-        To ignore certain SCSS files, add
-        %em.code-inline exclude:
-        directive to your
-        %em.code-inline .scss-lint.yml
-        file, like:
-
-        %code.code-block
-          :preserve
-            exclude:
-              - "app/assets/stylesheets/plugins/**"
-
-      %p
-        To disable SCSS style checking, add the following to your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            scss:
-              enabled: false
-
-    %article.docs-article#sass-lint
-      %h2
-        Sass Lint
-        %span.version-number v#{@versions[:"sass-lint"]}
-        (Sass)
-
-      %p
-        Hound uses
-        = link_to "Sass Lint",
-          "https://github.com/sasstools/sass-lint",
-          new_window_options
-        with this
-        = link_to "config", sass_lint_config_url, new_window_options
-        by default.
-
-      %p
-        To enable Sass Lint style checking, add the following to your
-        %em.code-inline .hound.yml
-
-        %code.code-block
-          :preserve
-            sass-lint:
-              enabled: true
-      %p
-        To change the way Sass Lint is configured, add
-        %em.code-inline .sass-lint.yml
-        file to your project,
-        specify your desired configuration
-        and refreence the file in your
-        %em.code-inline .hound.yml
-
-      %p
-        %code.code-block
-          :preserve
-            sass-lint:
-              enabled: true
-              config_file: .sass-lint.yml
-
-    %article.docs-article#swift
-      %h2
-        SwiftLint
-        %span.version-number v0.25.0
-        (Swift)
-
-      %p
-        Hound uses
-        = link_to "SwiftLint",
-          "https://github.com/realm/SwiftLint",
-          new_window_options
-        with this
-        = link_to "config", swift_config_url, new_window_options
-        by default.
-
-      %p
-        To change the way SwiftLint is configured, copy the
-        = link_to "default config file", swift_config_url, new_window_options
-        into your project, make changes and reference the file in your
-        %em.code-inline .hound.yml
-
-      %p
-        %code.code-block
-          :preserve
-            swift:
-              config_file: .swiftlint.yml
-
-      %p
-        To disable Swift style checking, add the following to your
-        %em.code-inline .hound.yml
-        file.
-
-        %code.code-block
-          :preserve
-            swift:
-              enabled: false
-
-      %p
-        For more information on the available configuration in your
-        %em.code-inline config_file
-        , you can read about it on the
-        = link_to "SwiftLint Configuration Documentation",
-          "https://github.com/realm/SwiftLint#configuration",
-          new_window_options
-
-    %article.docs-article#flake8
-      %h2
-        Flake8
-        %span.version-number v3.5.0
-        (Python)
+    %article.docs-article#python
+      %h2 Python
 
       %p
         Hound uses
@@ -546,12 +463,43 @@
               enabled: true
               config_file: .flake8.ini
 
-    %article.docs-article#credo
-      %h2
-        Credo
-        %span.version-number v0.8.10
-        (Elixir)
+    %article.docs-article#tslint
+      %h2 TSLint
+      %p
+        Hound uses
+        = link_to "TSLint",
+          "https://palantir.github.io/tslint/",
+          new_window_options
+        to review TypeScript code.
 
+      %p
+        To enable TypeScript style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            tslint:
+              enabled: true
+
+      %p
+        To change the way TSLint is configured, add a
+        %em.code-inline tslint.json
+        file to your project, configure it as desired
+        (see the
+        = succeed ")," do
+          = link_to "TSLint rules",
+            "https://palantir.github.io/tslint/rules/",
+            new_window_options
+        and reference it in
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            tslint:
+              config_file: tslint.json
+
+    %article.docs-article#elixir
+      %h2 Elixir
       %p
         Hound uses
         = link_to "Credo",
@@ -591,24 +539,39 @@
               enabled: true
               config_file: .credo.exs
 
-    %article.docs-article#go
-      %h2 Golint (Go)
-
+    %article.docs-article#sass-lint
+      %h2 Sass Lint
       %p
         Hound uses
-        = link_to "Golint",
-          "https://github.com/golang/lint",
+        = link_to "Sass Lint",
+          "https://github.com/sasstools/sass-lint",
           new_window_options
-        to review Go code.
+        with this
+        = link_to "config", sass_lint_config_url, new_window_options
+        by default.
 
       %p
-        To disable Go style checking, add the following to your
+        To enable Sass Lint style checking, add the following to your
         %em.code-inline .hound.yml
 
         %code.code-block
           :preserve
-            go:
-              enabled: false
+            sass-lint:
+              enabled: true
+      %p
+        To change the way Sass Lint is configured, add
+        %em.code-inline .sass-lint.yml
+        file to your project,
+        specify your desired configuration
+        and refreence the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            sass-lint:
+              enabled: true
+              config_file: .sass-lint.yml
 
     %article.docs-article
       %h3 Didn't find what you where looking for?
