@@ -5,7 +5,11 @@ module Config
     end
 
     def self.json(content)
-      JSON.parse(content)
+      if content.present?
+        JSON.parse(content)
+      else
+        {}
+      end
     end
 
     def self.ini(content)

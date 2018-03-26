@@ -7,25 +7,35 @@ require "app/models/missing_owner"
 
 describe Config::Jshint do
   describe "#content" do
-    it "parses the configuration using JSON" do
-      raw_config = <<~EOS
-        {
-          "maxlen": 80
-        }
-      EOS
-      config = build_config(raw_config)
+    context "when configuration is valid JSON" do
+      it "parses the configuration using JSON" do
+        raw_config = <<~JSON
+          {
+            "maxlen": 80
+          }
+        JSON
+        config = build_config(raw_config)
 
-      expect(config.content).to eq("maxlen" => 80)
+        expect(config.content).to eq("maxlen" => 80)
+      end
+    end
+
+    context "when configuration is blank" do
+      it "returns empty hash" do
+        config = build_config("")
+
+        expect(config.content).to eq({})
+      end
     end
   end
 
   describe "#serialize" do
     it "serializes the parsed content into JSON" do
-      raw_config = <<~EOS
+      raw_config = <<~JSON
         {
           "maxlen": 80
         }
-      EOS
+      JSON
       config = build_config(raw_config)
 
       expect(config.serialize).to eq "{\"maxlen\":80}"
