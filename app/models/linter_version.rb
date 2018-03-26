@@ -67,6 +67,6 @@ class LinterVersion
   end
 
   def client
-    @_client ||= GitHubApi.new(nil)
+    @_client ||= GitHubApi.new(Hound::GITHUB_TOKEN)
   end
 end
