@@ -86,6 +86,7 @@ describe SubscriptionsController, "#create" do
       it "returns 'Bad Gateway'" do
         repo = instance_double(
           "Repo",
+          id: 123,
           as_json: { active: true },
           name: "TEST_REPO_NAME",
           private?: true,
@@ -101,6 +102,7 @@ describe SubscriptionsController, "#create" do
           email: "TEST_USER_EMAIL",
           repos: repos,
           token: "TEST_USER_TOKEN",
+          username: "jimtom",
         )
         allow(RepoActivator).to receive(:new).and_return(repo_activator)
         allow(User).to receive(:find_by).and_return(user)

@@ -22,11 +22,40 @@ describe RepoSubscriber do
             repo_ids: repo.id,
           )
 
-          RepoSubscriber.subscribe(repo, user, "cardtoken")
+          RepoSubscriber.subscribe(repo, user, nil)
 
           expect(subscription_request).to have_been_requested
           expect(subscription_update_request).to have_been_requested
           expect(update_request).not_to have_been_requested
+          expect(repo.subscription.stripe_subscription_id).
+            to eq(stripe_subscription_id)
+        end
+
+        it "creates a Stripe subscription using new card" do
+          repo = create(:repo, private: true)
+          user = create(
+            :user,
+            stripe_customer_id: stripe_customer_id,
+            repos: [repo],
+          )
+          stub_customer_find_request
+          subscription_request = stub_subscription_create_request(
+            plan: user.current_plan.id,
+            repo_ids: repo.id,
+          )
+          subscription_update_request = stub_subscription_update_request(
+            plan: user.next_plan.id,
+            repo_ids: repo.id,
+          )
+          customer_update_request = stub_customer_update_request(
+            card: "card_token",
+          )
+
+          RepoSubscriber.subscribe(repo, user, "card_token")
+
+          expect(subscription_request).to have_been_requested
+          expect(subscription_update_request).to have_been_requested
+          expect(customer_update_request).to have_been_requested
           expect(repo.subscription.stripe_subscription_id).
             to eq(stripe_subscription_id)
         end
@@ -50,7 +79,7 @@ describe RepoSubscriber do
             repo_ids: repo.id,
           )
 
-          RepoSubscriber.subscribe(repo, user, "cardtoken")
+          RepoSubscriber.subscribe(repo, user, nil)
 
           expect(subscription_create_request).to have_been_requested
           expect(subscription_update_request).to have_been_requested

@@ -7,31 +7,26 @@ class SubscriptionsController < ApplicationController
   def create
     if current_user.plan_upgrade?
       render json: {}, status: :payment_required
-    elsif activator.activate && create_subscription
-      render json: repo, status: :created
     else
-      activator.deactivate
-
-      head 502
+      activate_and_create_subscription
     end
   end
 
   def update
-    if activator.activate && create_subscription
-      render json: repo, status: :created
-    else
-      activator.deactivate
-      head 502
-    end
+    activate_and_create_subscription
   end
 
   def destroy
-    if activator.deactivate && delete_subscription
-      analytics.track_repo_deactivated(repo)
+    if activator.deactivate
+      if delete_subscription
+        analytics.track_repo_deactivated(repo)
 
-      render json: repo, status: :created
+        render json: repo, status: :created
+      else
+        render_error("There was an issue deleting the subscription")
+      end
     else
-      head 502
+      render_error("There was an issue deactivating the repo")
     end
   end
 
@@ -71,5 +66,32 @@ class SubscriptionsController < ApplicationController
     if current_user.email.blank?
       current_user.update(email: params[:email])
     end
+  end
+
+  def activate_and_create_subscription
+    if activator.activate
+      if create_subscription
+        render json: repo, status: :created
+      else
+        activator.deactivate
+        render_error("There was an issue creating the subscription")
+      end
+    else
+      render_error("There was an issue activating the repo")
+    end
+  end
+
+  def render_error(error)
+    Raven.capture_message(
+      error,
+      extra: {
+        repo: repo.name,
+        repo_id: repo.id,
+        user_email: current_user.email,
+        username: current_user.username,
+      },
+    )
+
+    render json: { errors: [error] }, status: :bad_gateway
   end
 end
