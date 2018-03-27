@@ -18,6 +18,11 @@ class ResolveConfigConflicts
           resolved_config[CONFLICTS[linter]] = { "enabled" => false }
         end
         resolved_config[linter] = options
+      else
+        raise Config::ParserError.new(
+          "Missing options or invalid config format",
+          linter_name: linter
+        )
       end
       resolved_config
     end

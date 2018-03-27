@@ -1,4 +1,5 @@
 require "app/services/resolve_config_conflicts"
+require "app/models/config/parser_error"
 
 describe ResolveConfigConflicts do
   describe "#call" do
@@ -25,13 +26,12 @@ describe ResolveConfigConflicts do
     end
 
     context "given nil config options" do
-      it "skips nil options" do
-        config = { "sass_lint" => nil, "eslint" => { "enabled" => true } }
+      it "raises Config::ParserError" do
+        config = { "sass_lint" => nil }
 
-        resolved_config = ResolveConfigConflicts.call(config)
-
-        expect(resolved_config["jshint"]).to eq("enabled" => false)
-        expect(resolved_config["eslint"]).to eq("enabled" => true)
+        expect { resolved_config = ResolveConfigConflicts.call(config) }.to(
+          raise_error(Config::ParserError, /Missing options/)
+        )
       end
     end
   end
