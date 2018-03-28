@@ -1,9 +1,8 @@
+Dir["app/models/linter/*.rb"].each { |f| require f }
 require "app/models/config/parser"
 require "app/services/normalize_config"
 require "app/services/resolve_config_aliases"
 require "app/services/resolve_config_conflicts"
-
-Dir["app/models/linter/*.rb"].each { |f| require f }
 require "app/models/hound_config"
 
 describe HoundConfig do
@@ -15,7 +14,7 @@ describe HoundConfig do
             config_file: config/rubocop.yml
         EOS
       )
-      hound_config = HoundConfig.new(commit)
+      hound_config = build_hound_config(commit)
 
       expect(hound_config.content["ruby"]).to eq(
         "enabled" => true,
@@ -25,10 +24,10 @@ describe HoundConfig do
   end
 
   describe "#linter_enabled?" do
-    context "given a supported language" do
+    context "for default linters" do
       it "returns true for all of them" do
         commit = stub_commit(".hound.yml" => "")
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
         enabled_by_default = HoundConfig::LINTERS.
           select { |_, config| config[:default] }
@@ -39,35 +38,35 @@ describe HoundConfig do
       end
     end
 
-    context "when the given language is disabled" do
+    context "when the linter is disabled" do
       it "returns false" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
-            ruby:
+            rubocop:
               enabled: false
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
-        expect(hound_config).not_to be_enabled_for("ruby")
+        expect(hound_config).not_to be_enabled_for("rubocop")
       end
     end
 
-    context "when the given language is enabled" do
+    context "when linter is enabled" do
       it "returns true" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
-            remark:
+            eslint:
               enabled: true
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
-        expect(hound_config).to be_enabled_for("remark")
+        expect(hound_config).to be_enabled_for("eslint")
       end
     end
 
-    context "when the given language is an alias, and is disabled" do
+    context "when provided linter name is an alias, and is disabled" do
       it "returns false" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
@@ -75,39 +74,38 @@ describe HoundConfig do
               enabled: false
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
         expect(hound_config).not_to be_enabled_for("jshint")
       end
     end
 
-    context "when the given language conflicts with an enabled linter" do
-      it "returns false" do
-        stub_const("ResolveConfigConflicts::CONFLICTS", "eslint" => "jshint")
+    context "when enabled linter conflicts with other enabled linter" do
+      it "returns true for the provided linter" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
             eslint:
               enabled: true
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
-        expect(hound_config).not_to be_enabled_for("jshint")
         expect(hound_config).to be_enabled_for("eslint")
+        expect(hound_config).not_to be_enabled_for("jshint")
       end
     end
 
-    context "given an unsupported language" do
+    context "when provided an unsupported linter" do
       it "returns false" do
         commit = stub_commit(".hound.yml" => "")
-        hound_config = HoundConfig.new(commit)
         unsupported_linter = "some_random_linter"
+        hound_config = build_hound_config(commit)
 
         expect(hound_config).not_to be_enabled_for(unsupported_linter)
       end
     end
 
-    context "when the enabled key is capitalized" do
+    context "when the enabled key for linter is capitalized" do
       it "returns true" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
@@ -115,13 +113,13 @@ describe HoundConfig do
               Enabled: true
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
         expect(hound_config).to be_enabled_for("flake8")
       end
     end
 
-    context "when the given language has underscores in it" do
+    context "when the linter key should have underscores in it" do
       it "converts them and returns true" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
@@ -129,9 +127,42 @@ describe HoundConfig do
               enabled: true
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
         expect(hound_config).to be_enabled_for("coffee_script")
+      end
+    end
+
+    context "when linter is enabled at the owner-level" do
+      it "returns true" do
+        owner_hound_config = <<~YAML
+          flake8:
+            enabled: true
+        YAML
+        repo_hound_config = ""
+        commit = stub_commit(".hound.yml" => repo_hound_config)
+        owner = owner_stub(owner_hound_config)
+        hound_config = build_hound_config(commit, owner)
+
+        expect(hound_config).to be_enabled_for("flake8")
+      end
+    end
+
+    context "when linter enabled at owner-level but disabled at repo-level" do
+      it "returns false" do
+        owner_hound_config = <<~YAML
+          flake8:
+            enabled: true
+        YAML
+        repo_hound_config = <<~YAML
+          flake8:
+            enabled: false
+        YAML
+        commit = stub_commit(".hound.yml" => repo_hound_config)
+        owner = owner_stub(owner_hound_config)
+        hound_config = build_hound_config(commit, owner)
+
+        expect(hound_config).not_to be_enabled_for("flake8")
       end
     end
   end
@@ -144,7 +175,7 @@ describe HoundConfig do
             fail_on_violations: true
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
         expect(hound_config.fail_on_violations?).to eq true
       end
@@ -157,7 +188,7 @@ describe HoundConfig do
             fail_on_violations: false
           EOS
         )
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
         expect(hound_config.fail_on_violations?).to eq false
       end
@@ -166,11 +197,20 @@ describe HoundConfig do
     context "when the setting is unconfigured" do
       it "returns false" do
         commit = stub_commit(".hound.yml" => "")
-        hound_config = HoundConfig.new(commit)
+        hound_config = build_hound_config(commit)
 
         expect(hound_config.fail_on_violations?).to eq false
       end
     end
+  end
+
+  def build_hound_config(commit, owner = owner_stub)
+    HoundConfig.new(commit: commit, owner: owner)
+  end
+
+  def owner_stub(hound_config = "")
+    config = YAML.safe_load(hound_config) || {}
+    instance_double("Owner", hound_config_content: config)
   end
 
   def be_enabled_for(linter_name)

@@ -50,7 +50,7 @@ class CompleteBuild
   end
 
   def hound_config
-    HoundConfig.new(pull_request.head_commit)
+    HoundConfig.new(commit: pull_request.head_commit, owner: build.repo.owner)
   end
 
   def commit_status
