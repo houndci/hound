@@ -46,7 +46,7 @@ RSpec.describe ConfigContent do
     end
 
     context "when there is no file path" do
-      it "is an empty hash" do
+      it "returns an empty hash" do
         commit = instance_double("Commit")
         parser = ->(_) {}
         config_content = ConfigContent.new(
@@ -106,6 +106,23 @@ RSpec.describe ConfigContent do
           ConfigContent::ContentError,
           %{"config-file.txt" must be a Hash},
         )
+      end
+    end
+
+    context "when the parsed YAML config is blank" do
+      it "returns empty hash" do
+        file_path = ".rubocop.yml"
+        parser = ->(content) { Config::Parser.yaml(content) }
+        commit = instance_double("Commit", file_content: "")
+        config_content = ConfigContent.new(
+          commit: commit,
+          file_path: file_path,
+          parser: parser,
+        )
+
+        result = config_content.load
+
+        expect(result).to eq({})
       end
     end
   end
