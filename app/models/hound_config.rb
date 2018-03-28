@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 class HoundConfig
+  CONFIG_FILE = ".hound.yml"
   LINTERS = {
     Linter::CoffeeScript => { default: true },
     Linter::Credo => { default: false },
@@ -19,17 +20,17 @@ class HoundConfig
     Linter::Swift => { default: true },
     Linter::Tslint => { default: false },
   }.freeze
-  CONFIG_FILE = ".hound.yml"
 
-  attr_reader_initialize :commit
+  attr_initialize [:commit!, :owner!]
+  attr_reader :commit
+  attr_private :owner
 
   def content
-    @_content ||= default_config.deep_merge(resolved_conflicts_config)
+    @_content ||= default_config.deep_merge(merged_config)
   end
 
   def linter_enabled?(name)
-    key = name.downcase
-    config = options_for(key)
+    config = options_for(name)
 
     !!config["enabled"]
   end
@@ -47,16 +48,20 @@ class HoundConfig
     end
   end
 
+  def merged_config
+    owner_config.deep_merge(resolved_conflicts_config)
+  end
+
+  def resolved_conflicts_config
+    ResolveConfigConflicts.call(resolved_aliases_config)
+  end
+
   def resolved_aliases_config
     ResolveConfigAliases.call(normalized_config)
   end
 
   def normalized_config
     NormalizeConfig.call(parsed_config)
-  end
-
-  def resolved_conflicts_config
-    ResolveConfigConflicts.call(resolved_aliases_config)
   end
 
   def parsed_config
@@ -69,5 +74,9 @@ class HoundConfig
 
   def options_for(name)
     content.fetch(name, {})
+  end
+
+  def owner_config
+    owner.hound_config_content
   end
 end

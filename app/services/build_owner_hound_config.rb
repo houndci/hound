@@ -11,9 +11,9 @@ class BuildOwnerHoundConfig
   def call
     if owner.has_config_repo? && config_repo_reachable?
       commit = Commit.new(config_repo.name, LATEST_SHA, github)
-      HoundConfig.new(commit)
+      HoundConfig.new(commit: commit, owner: MissingOwner.new)
     else
-      HoundConfig.new(EmptyCommit.new)
+      HoundConfig.new(commit: EmptyCommit.new, owner: MissingOwner.new)
     end
   end
 

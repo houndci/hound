@@ -1,9 +1,10 @@
 module LinterHelper
   def build_linter(build = build(:build), extra_files = {})
-    head_commit = double("Commit", file_content: "{}")
+    head_commit = instance_double("Commit", file_content: "{}")
     stub_commit_to_return_hound_config(head_commit)
     stub_commit_to_return_extra_files(head_commit, extra_files)
-    described_class.new hound_config: HoundConfig.new(head_commit), build: build
+    hound_config = HoundConfig.new(commit: head_commit, owner: MissingOwner.new)
+    described_class.new(hound_config: hound_config, build: build)
   end
 
   def raw_hound_config

@@ -164,10 +164,15 @@ describe CompleteBuild do
           messages: [violation_message],
         )
       end
+      repo = instance_double(
+        "Repo",
+        subscription: false,
+        owner: MissingOwner.new,
+      )
       default_attributes = {
         completed?: true,
         review_errors: [],
-        repo: instance_double("Repo", subscription: false),
+        repo: repo,
         repo_name: "foo/bar",
         commit_sha: "abc123",
         violations: violations,

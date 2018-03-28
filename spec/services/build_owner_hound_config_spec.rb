@@ -77,6 +77,6 @@ describe BuildOwnerHoundConfig do
   end
 
   def default_hound_config
-    HoundConfig.new(EmptyCommit.new).content
+    HoundConfig.new(commit: EmptyCommit.new, owner: MissingOwner.new).content
   end
 end

@@ -25,6 +25,9 @@ class StyleChecker
   end
 
   def hound_config
-    @_hound_config ||= HoundConfig.new(pull_request.head_commit)
+    @_hound_config ||= HoundConfig.new(
+      commit: pull_request.head_commit,
+      owner: build.repo.owner,
+    )
   end
 end
