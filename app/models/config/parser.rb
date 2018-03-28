@@ -1,7 +1,11 @@
 module Config
   class Parser
     def self.yaml(content)
-      YAML.safe_load(content, [Regexp, Symbol])
+      if content.present?
+        YAML.safe_load(content, [Regexp, Symbol])
+      else
+        {}
+      end
     end
 
     def self.json(content)
@@ -14,10 +18,6 @@ module Config
 
     def self.ini(content)
       IniFile.new(content: content).to_h
-    end
-
-    def self.raw(content)
-      content
     end
   end
 end
