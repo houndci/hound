@@ -29,8 +29,8 @@ describe ResolveConfigConflicts do
       it "raises Config::ParserError" do
         config = { "sass_lint" => nil }
 
-        expect { resolved_config = ResolveConfigConflicts.call(config) }.to(
-          raise_error(Config::ParserError, /Missing options/)
+        expect { ResolveConfigConflicts.call(config) }.to(
+          raise_error(Config::ParserError, /Missing options/),
         )
       end
     end

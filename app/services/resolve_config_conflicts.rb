@@ -21,7 +21,7 @@ class ResolveConfigConflicts
       else
         raise Config::ParserError.new(
           "Missing options or invalid config format",
-          linter_name: linter
+          linter_name: linter,
         )
       end
       resolved_config
