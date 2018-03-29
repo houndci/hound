@@ -13,16 +13,16 @@ class ResolveConfigConflicts
 
   def call
     @config.reduce({}) do |resolved_config, (linter, options)|
-      if options
+      if options.nil?
+        raise Config::ParserError.new(
+          "Missing configuration options or invalid format",
+          linter_name: linter,
+        )
+      else
         if CONFLICTS.has_key?(linter) && options["enabled"] == true
           resolved_config[CONFLICTS[linter]] = { "enabled" => false }
         end
         resolved_config[linter] = options
-      else
-        raise Config::ParserError.new(
-          "Missing options or invalid config format",
-          linter_name: linter,
-        )
       end
       resolved_config
     end
