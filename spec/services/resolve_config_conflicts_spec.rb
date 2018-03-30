@@ -30,7 +30,7 @@ describe ResolveConfigConflicts do
         config = { "sass_lint" => nil }
 
         expect { ResolveConfigConflicts.call(config) }.to(
-          raise_error(Config::ParserError, /Missing/),
+          raise_error(Config::ParserError, /Invalid/),
         )
       end
     end

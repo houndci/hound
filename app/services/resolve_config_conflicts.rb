@@ -15,7 +15,7 @@ class ResolveConfigConflicts
     @config.reduce({}) do |resolved_config, (linter, options)|
       if options.nil?
         raise Config::ParserError.new(
-          "Missing configuration options or invalid format",
+          "Invalid #{linter} config or options are missing.",
           linter_name: linter,
         )
       else

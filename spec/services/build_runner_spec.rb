@@ -152,7 +152,7 @@ describe BuildRunner do
         expect(github_api).to have_received(:create_error_status).with(
           repo.name,
           payload.head_sha,
-          I18n.t(:config_error_status, linter_name: "rubocop"),
+          '"config/rubocop.yml" must be a Hash',
           config_url,
         )
       end
