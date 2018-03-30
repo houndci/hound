@@ -229,9 +229,6 @@ Once linting is complete, resulting violations should be posted to the outbound
 * `patch` - The patch content from GitHub for the file being reviewed. This is
   provided by the inbound queue.
 
-If the given `config` is invalid, the invalid file should be posted to the
-outbound `ReportInvalidConfigJob` queue:
-
 * `commit_sha` - The git commit SHA of the code snippet. This is provided by the
   inbound queue.
 * `linter_name` - The name of the linter that received an invalid config file.
