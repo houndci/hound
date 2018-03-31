@@ -143,7 +143,7 @@ class GitHubApi
       repo,
       sha,
       state,
-      context: "hound",
+      context: "Hound",
       description: description,
       target_url: target_url
     )
