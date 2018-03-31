@@ -30,7 +30,10 @@ describe ResolveConfigConflicts do
         config = { "sass_lint" => nil }
 
         expect { ResolveConfigConflicts.call(config) }.to(
-          raise_error(Config::ParserError, /Invalid/),
+          raise_error(
+            Config::ParserError,
+            "sass_lint options in your .hound.yml are invalid"
+          )
         )
       end
     end
