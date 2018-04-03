@@ -96,6 +96,7 @@ class BuildRunner
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       linter_name: exception.linter_name,
+      message: exception.message,
     )
   end
 

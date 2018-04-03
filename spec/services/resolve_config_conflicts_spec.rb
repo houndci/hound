@@ -1,4 +1,5 @@
 require "app/services/resolve_config_conflicts"
+require "app/models/config/parser_error"
 
 describe ResolveConfigConflicts do
   describe "#call" do
@@ -21,6 +22,19 @@ describe ResolveConfigConflicts do
 
         expect(resolved_config["scss"]).to eq("enabled" => false)
         expect(resolved_config["sass_lint"]).to eq("enabled" => true)
+      end
+    end
+
+    context "given nil config options" do
+      it "raises Config::ParserError" do
+        config = { "sass_lint" => nil }
+
+        expect { ResolveConfigConflicts.call(config) }.to(
+          raise_error(
+            Config::ParserError,
+            "sass_lint options in your .hound.yml are invalid",
+          )
+        )
       end
     end
   end

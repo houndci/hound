@@ -104,7 +104,7 @@ RSpec.describe ConfigContent do
           ).load
         end.to raise_error(
           ConfigContent::ContentError,
-          %{"config-file.txt" must be a Hash},
+          %{"config-file.txt" format is invalid},
         )
       end
     end
