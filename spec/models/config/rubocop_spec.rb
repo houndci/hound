@@ -154,7 +154,7 @@ describe Config::Rubocop do
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            %r("config/.+\..+" must be a Hash),
+            %r("config/.+\..+" format is invalid),
           )
         end
       end

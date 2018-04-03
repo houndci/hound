@@ -33,7 +33,7 @@ class ConfigContent
 
   def parse
     if incorrect_format?
-      raise_error %{"#{file_path}" must be valid YAML}
+      raise_error %{"#{file_path}" format is invalid}
     else
       parsed_content
     end
