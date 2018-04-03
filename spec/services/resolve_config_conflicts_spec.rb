@@ -32,7 +32,7 @@ describe ResolveConfigConflicts do
         expect { ResolveConfigConflicts.call(config) }.to(
           raise_error(
             Config::ParserError,
-            "sass_lint options in your .hound.yml are invalid"
+            "sass_lint options in your .hound.yml are invalid",
           )
         )
       end
