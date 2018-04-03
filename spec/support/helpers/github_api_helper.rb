@@ -185,7 +185,7 @@ module GitHubApiHelper
 
   def status_request_body(description, state, target_url)
     {
-      context: "hound",
+      context: "Hound",
       description: description,
       state: state,
       target_url: target_url,
