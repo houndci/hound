@@ -42,8 +42,8 @@ module Config
     end
 
     def rescue_and_raise_parse_error
-      yield if block_given?
-    rescue StandardError
+      yield
+    rescue Config::ParserError
       raise_parse_error("#{file_path} format is invalid")
     end
 
