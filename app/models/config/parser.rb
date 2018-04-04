@@ -6,8 +6,8 @@ module Config
       else
         {}
       end
-    rescue Psych::SyntaxError => error
-      raise Config::ParserError.new(error.message, linter_name: nil)
+    rescue Psych::SyntaxError
+      raise Config::ParserError
     end
 
     def self.json(content)
@@ -16,14 +16,14 @@ module Config
       else
         {}
       end
-    rescue JSON::ParserError => error
-      raise Config::ParserError.new(error.message, linter_name: nil)
+    rescue JSON::ParserError
+      raise Config::ParserError
     end
 
     def self.ini(content)
       IniFile.new(content: content).to_h
-    rescue IniFile::Error => error
-      raise Config::ParserError.new(error.message, linter_name: nil)
+    rescue IniFile::Error
+      raise Config::ParserError
     end
   end
 end

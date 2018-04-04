@@ -2,6 +2,7 @@ require "spec_helper"
 require "app/models/config_content"
 require "app/models/config_content/remote"
 require "app/models/config/parser"
+require "app/models/config/parser_error"
 require "faraday"
 require "json"
 
@@ -85,7 +86,7 @@ RSpec.describe ConfigContent do
             file_path: file_path,
             parser: parser,
           ).load
-        end.to raise_error(ConfigContent::ContentError)
+        end.to raise_error(Config::ParserError)
       end
     end
 
@@ -102,10 +103,7 @@ RSpec.describe ConfigContent do
             file_path: file_path,
             parser: parser,
           ).load
-        end.to raise_error(
-          ConfigContent::ContentError,
-          %{"config-file.txt" format is invalid},
-        )
+        end.to raise_error(Config::ParserError)
       end
     end
 

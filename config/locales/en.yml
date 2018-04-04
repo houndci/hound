@@ -18,9 +18,6 @@ en:
     zero: "No violations found. Woof!"
     one: "1 violation found."
     other: "%{count} violations found."
-  config_error_status:
-    "Error parsing config for: %{linter_name}. Click \"details\" for
-    assistance."
   hound_error_status: "We've encountered an error while reviewing your code."
 
   account:

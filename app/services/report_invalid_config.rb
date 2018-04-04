@@ -1,10 +1,9 @@
 class ReportInvalidConfig
   static_facade :call
 
-  def initialize(pull_request_number:, commit_sha:, linter_name:, message: "")
+  def initialize(pull_request_number:, commit_sha:, message:)
     @pull_request_number = pull_request_number
     @commit_sha = commit_sha
-    @linter_name = linter_name
     @message = message
   end
 
@@ -14,11 +13,7 @@ class ReportInvalidConfig
 
   private
 
-  attr_reader :pull_request_number, :commit_sha, :linter_name
-
-  def message
-    @message.presence || I18n.t(:config_error_status, linter_name: linter_name)
-  end
+  attr_reader :pull_request_number, :commit_sha, :message
 
   def commit_status
     @commit_status ||= CommitStatus.new(
