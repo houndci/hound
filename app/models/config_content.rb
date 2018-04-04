@@ -33,7 +33,7 @@ class ConfigContent
 
   def parse
     if incorrect_format?
-      raise_error %{"#{file_path}" format is invalid}
+      raise_parse_error
     else
       parsed_content
     end
@@ -41,12 +41,12 @@ class ConfigContent
 
   def parsed_content
     @_parsed_content ||= parser.call(content)
-  rescue Psych::Exception => exception
-    raise_error exception.message
+  rescue Psych::Exception
+    raise_parse_error
   end
 
-  def raise_error(message)
-    raise ContentError, message
+  def raise_parse_error
+    raise Config::ParserError
   end
 
   def remote_content

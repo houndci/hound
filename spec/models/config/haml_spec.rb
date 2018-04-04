@@ -57,7 +57,7 @@ describe Config::Haml do
 
           expect { config.content }.to raise_error(
             Config::ParserError,
-            %r("config/.+\..+" format is invalid),
+            "config/linter-config.any format is invalid",
           )
         end
       end
@@ -70,10 +70,7 @@ describe Config::Haml do
           EOS
           config = build_config(raw_config)
 
-          expect { config.content }.to raise_error(
-            Config::ParserError,
-            /Tried to load unspecified class: Object/,
-          )
+          expect { config.content }.to raise_error(Config::ParserError)
         end
       end
     end

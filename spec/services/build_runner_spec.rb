@@ -152,7 +152,7 @@ describe BuildRunner do
         expect(github_api).to have_received(:create_error_status).with(
           repo.name,
           payload.head_sha,
-          '"config/rubocop.yml" format is invalid',
+          "config/rubocop.yml format is invalid",
           config_url,
         )
       end

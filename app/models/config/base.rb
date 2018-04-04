@@ -9,6 +9,8 @@ module Config
       @content ||= owner_config.deep_merge(load)
     rescue ConfigContent::ContentError => exception
       raise_parse_error(exception.message)
+    rescue Config::ParserError
+      raise_parse_error("#{file_path} format is invalid")
     end
 
     def serialize(data = content)
@@ -40,7 +42,7 @@ module Config
     end
 
     def raise_parse_error(message)
-      raise Config::ParserError.new(message, linter_name: linter_name)
+      raise Config::ParserError, message
     end
 
     def file_path

@@ -2,6 +2,7 @@ require "app/models/config/base"
 require "app/models/config/jshint"
 require "app/models/config/parser"
 require "app/models/config/serializer"
+require "app/models/config/parser_error"
 require "app/models/config_content"
 require "app/models/missing_owner"
 
@@ -25,6 +26,20 @@ describe Config::Jshint do
         config = build_config("")
 
         expect(config.content).to eq({})
+      end
+    end
+
+    context "when configuration is invalid JSON" do
+      it "raises Config::ParserError" do
+        raw_config = <<~JSON
+          esversion: 6
+        JSON
+
+        config = build_config(raw_config)
+
+        expect { config.content }.to(
+          raise_error(Config::ParserError),
+        )
       end
     end
   end

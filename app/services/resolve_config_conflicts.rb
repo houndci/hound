@@ -14,9 +14,9 @@ class ResolveConfigConflicts
   def call
     @config.reduce({}) do |resolved_config, (linter, options)|
       if options.nil?
-        raise Config::ParserError.new(
+        raise(
+          ConfigContent::ContentError,
           "#{linter} options in your .hound.yml are invalid",
-          linter_name: linter,
         )
       else
         if CONFLICTS.has_key?(linter) && options["enabled"] == true

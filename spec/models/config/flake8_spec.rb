@@ -64,6 +64,26 @@ describe Config::Flake8 do
         expect(config.content).to eq({})
       end
     end
+
+    context "when configuration is invalid" do
+      it "raises Config::ParserError" do
+        raw_config = <<~CONFIG
+          [flake8]
+          exclude =
+            .git,
+            __pycache__,
+            docs,
+            migrations
+            tests
+            management
+        CONFIG
+        config = build_config(raw_config)
+
+        expect { config.content }.to raise_error(
+          Config::ParserError
+        )
+      end
+    end
   end
 
   describe "#serialize" do

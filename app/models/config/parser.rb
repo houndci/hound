@@ -6,6 +6,8 @@ module Config
       else
         {}
       end
+    rescue Psych::SyntaxError
+      raise Config::ParserError
     end
 
     def self.json(content)
@@ -14,10 +16,14 @@ module Config
       else
         {}
       end
+    rescue JSON::ParserError
+      raise Config::ParserError
     end
 
     def self.ini(content)
       IniFile.new(content: content).to_h
+    rescue IniFile::Error
+      raise Config::ParserError
     end
   end
 end
