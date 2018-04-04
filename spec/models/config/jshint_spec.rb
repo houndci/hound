@@ -38,7 +38,7 @@ describe Config::Jshint do
         config = build_config(raw_config)
 
         expect { config.content }.to(
-          raise_error(Config::ParserError)
+          raise_error(Config::ParserError),
         )
       end
     end

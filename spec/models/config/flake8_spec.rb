@@ -67,20 +67,20 @@ describe Config::Flake8 do
 
     context "when configuration is invalid" do
       it "raises Config::ParserError" do
-        raw_config = <<~EOS
-[flake8]
-exclude =
-  .git,
-  __pycache__,
-  docs,
-  migrations
-  tests
-  management
-        EOS
+        raw_config = <<~CONFIG
+          [flake8]
+          exclude =
+            .git,
+            __pycache__,
+            docs,
+            migrations
+            tests
+            management
+        CONFIG
         config = build_config(raw_config)
 
         expect { config.content }.to(
-          raise_error(Config::ParserError)
+          raise_error(Config::ParserError),
         )
       end
     end
