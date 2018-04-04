@@ -16,7 +16,7 @@ class ResolveConfigConflicts
       if options.nil?
         raise(
           ConfigContent::ContentError,
-          "#{linter} options in your .hound.yml are invalid"
+          "#{linter} options in your .hound.yml are invalid",
         )
       else
         if CONFLICTS.has_key?(linter) && options["enabled"] == true
