@@ -70,6 +70,8 @@ class HoundConfig
 
   def parse(file_content)
     Config::Parser.yaml(file_content) || {}
+  rescue StandardError
+    raise Config::ParserError.new("#{CONFIG_FILE} format is invalid")
   end
 
   def options_for(name)
