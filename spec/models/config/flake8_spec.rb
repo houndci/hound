@@ -79,8 +79,8 @@ describe Config::Flake8 do
         CONFIG
         config = build_config(raw_config)
 
-        expect { config.content }.to(
-          raise_error(Config::ParserError),
+        expect { config.content }.to raise_error(
+          Config::ParserError
         )
       end
     end
