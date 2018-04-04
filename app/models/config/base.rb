@@ -7,9 +7,7 @@ module Config
 
     def content
       @content ||= owner_config.deep_merge(load)
-    rescue ConfigContent::ContentError => exception
-      raise_parse_error(exception.message)
-    rescue Config::ParserError
+    rescue ConfigContent::ContentError, Config::ParserError
       raise_parse_error("#{file_path} format is invalid")
     end
 
