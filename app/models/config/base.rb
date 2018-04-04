@@ -39,6 +39,12 @@ module Config
       Parser.yaml(content)
     end
 
+    def rescue_and_raise_parse_error
+      yield if block_given?
+    rescue StandardError
+      raise_parse_error("#{file_path} format is invalid")
+    end
+
     def raise_parse_error(message)
       raise Config::ParserError.new(message, linter_name: linter_name)
     end

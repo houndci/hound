@@ -7,7 +7,9 @@ module Config
     private
 
     def parse(content)
-      Parser.json(content)
+      rescue_and_raise_parse_error do
+        Parser.json(content)
+      end
     end
   end
 end
