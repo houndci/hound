@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  FREE_MARKETPLACE_PLAN_ID = 1061
+
   protect_from_forgery
 
   before_action :force_https
@@ -31,7 +33,15 @@ class ApplicationController < ActionController::Base
 
   def authenticate
     unless signed_in?
-      redirect_to root_path
+      if params[:marketplace_listing_plan_id]
+        if params[:marketplace_listing_plan_id] == FREE_MARKETPLACE_PLAN_ID.to_s
+          redirect_to github_oauth_path
+        else
+          redirect_to github_oauth_path(full_access: true)
+        end
+      else
+        redirect_to root_path
+      end
     end
   end
 
@@ -49,6 +59,14 @@ class ApplicationController < ActionController::Base
 
   def masquerading?
     session[:masqueraded_user_id]
+  end
+
+  def github_oauth_path(full_access: false)
+    if full_access
+      "/auth/github?access=full"
+    else
+      "/auth/github"
+    end
   end
 
   protected
