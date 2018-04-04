@@ -6,7 +6,7 @@ class BuildRunner
     if repo && relevant_pull_request?
       review_pull_request
     end
-  rescue Config::ParserError => exception
+  rescue Config::ParserError, ConfigContent::ContentError => exception
     report_config_file_as_invalid(exception)
   rescue Octokit::NotFound, Octokit::Unauthorized
     remove_current_user_membership
