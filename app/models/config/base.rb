@@ -36,7 +36,9 @@ module Config
     end
 
     def parse(content)
-      Parser.yaml(content)
+      rescue_and_raise_parse_error do
+        Parser.yaml(content)
+      end
     end
 
     def rescue_and_raise_parse_error
