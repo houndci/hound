@@ -7,8 +7,10 @@ module Config
     private
 
     def parse(file_content)
-      content = SanitizeIniFile.call(file_content)
-      Parser.ini(content)
+      rescue_and_raise_parse_error do
+        content = SanitizeIniFile.call(file_content)
+        Parser.ini(content)
+      end
     end
   end
 end
