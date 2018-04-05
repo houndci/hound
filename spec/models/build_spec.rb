@@ -19,25 +19,6 @@ describe Build do
     end
   end
 
-  describe "#user_token" do
-    context "when user is associated with a build" do
-      it "returns the user's token" do
-        user = build(:user, token: "sometoken")
-        build = build(:build, user: user)
-
-        expect(build.user_token).to eq user.token
-      end
-    end
-
-    context "when user is not associated" do
-      it "returns the houndci's token" do
-        build = build(:build)
-
-        expect(build.user_token).to eq Hound::GITHUB_TOKEN
-      end
-    end
-  end
-
   describe "#review_errors" do
     it "returns a list of unique linter errors" do
       file_review1 = create(:file_review, error: "invalid config\n some file1")

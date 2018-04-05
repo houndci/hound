@@ -8,14 +8,8 @@ class Build < ApplicationRecord
 
   validates :repo, presence: true
 
-  delegate :name, to: :repo, prefix: true
-
   def completed?
     file_reviews.where(completed_at: nil).empty?
-  end
-
-  def user_token
-    (user && user.token) || Hound::GITHUB_TOKEN
   end
 
   def review_errors

@@ -1,22 +1,18 @@
 require "rails_helper"
 
-describe CommitStatus do
+RSpec.describe CommitStatus do
   describe "#set_pending" do
     it "sets the pending status on GitHubApi" do
       github_api = stubbed_github_api(:create_pending_status)
-      repo_name = "houndci/hound"
       sha = "abc123"
-      token = "token"
-      commit_status = CommitStatus.new(
-        repo_name: repo_name,
-        sha: sha,
-        token: token,
-      )
+      user = instance_double("User", token: "some-token")
+      repo = instance_double("Repo", name: "houndci/hound")
+      commit_status = CommitStatus.new(repo: repo, sha: sha, user: user)
 
       commit_status.set_pending
 
       expect(github_api).to have_received(:create_pending_status).with(
-        repo_name,
+        repo.name,
         sha,
         I18n.t(:pending_status),
       )
@@ -26,20 +22,16 @@ describe CommitStatus do
   describe "#set_success" do
     it "sets the create success status on GitHubApi" do
       github_api = stubbed_github_api(:create_success_status)
-      repo_name = "houndci/hound"
       sha = "abc123"
-      token = "token"
       violation_count = 5
-      commit_status = CommitStatus.new(
-        repo_name: repo_name,
-        sha: sha,
-        token: token,
-      )
+      user = instance_double("User", token: "some-token")
+      repo = instance_double("Repo", name: "houndci/hound")
+      commit_status = CommitStatus.new(repo: repo, sha: sha, user: user)
 
       commit_status.set_success(violation_count)
 
       expect(github_api).to have_received(:create_success_status).with(
-        repo_name,
+        repo.name,
         sha,
         I18n.t(:complete_status, count: violation_count),
       )
@@ -49,20 +41,16 @@ describe CommitStatus do
   describe "#set_failure" do
     it "sets the error status for GitHubApi" do
       github_api = stubbed_github_api(:create_error_status)
-      repo_name = "houndci/hound"
       sha = "abc123"
-      token = "token"
       violation_count = 5
-      commit_status = CommitStatus.new(
-        repo_name: repo_name,
-        sha: sha,
-        token: token,
-      )
+      user = instance_double("User", token: "some-token")
+      repo = instance_double("Repo", name: "houndci/hound")
+      commit_status = CommitStatus.new(repo: repo, sha: sha, user: user)
 
       commit_status.set_failure(violation_count)
 
       expect(github_api).to have_received(:create_error_status).with(
-        repo_name,
+        repo.name,
         sha,
         I18n.t(:complete_status, count: violation_count),
         nil,
@@ -75,13 +63,10 @@ describe CommitStatus do
       github_api = stubbed_github_api(:create_error_status)
       repo_name = "houndci/hound"
       sha = "abc123"
-      token = "token"
       message = "invalid config"
-      commit_status = CommitStatus.new(
-        repo_name: repo_name,
-        sha: sha,
-        token: token,
-      )
+      user = instance_double("User", token: "some-token")
+      repo = instance_double("Repo", name: "houndci/hound")
+      commit_status = CommitStatus.new(repo: repo, sha: sha, user: user)
 
       commit_status.set_config_error(message)
 
@@ -97,19 +82,15 @@ describe CommitStatus do
   describe "#set_internal_error" do
     it "sets the error status for GitHubApi" do
       github_api = stubbed_github_api(:create_error_status)
-      repo_name = "houndci/hound"
       sha = "abc123"
-      token = "token"
-      commit_status = CommitStatus.new(
-        repo_name: repo_name,
-        sha: sha,
-        token: token,
-      )
+      user = instance_double("User", token: "some-token")
+      repo = instance_double("Repo", name: "houndci/hound")
+      commit_status = CommitStatus.new(repo: repo, sha: sha, user: user)
 
       commit_status.set_internal_error
 
       expect(github_api).to have_received(:create_error_status).with(
-        repo_name,
+        repo.name,
         sha,
         I18n.t(:hound_error_status),
         nil,

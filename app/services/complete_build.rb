@@ -1,10 +1,9 @@
 class CompleteBuild
   static_facade :call
 
-  def initialize(pull_request:, build:, token:)
+  def initialize(pull_request:, build:)
     @build = build
     @pull_request = pull_request
-    @token = token
     @commenting_policy = CommentingPolicy.new(pull_request)
   end
 
@@ -23,7 +22,7 @@ class CompleteBuild
 
   private
 
-  attr_reader :build, :commenting_policy, :token, :pull_request
+  attr_reader :build, :commenting_policy, :pull_request
 
   def priority_violations
     build.violations.take(Hound::MAX_COMMENTS)
@@ -54,10 +53,6 @@ class CompleteBuild
   end
 
   def commit_status
-    CommitStatus.new(
-      repo_name: build.repo_name,
-      sha: build.commit_sha,
-      token: token,
-    )
+    CommitStatus.new(repo: build.repo, sha: build.commit_sha, user: build.user)
   end
 end

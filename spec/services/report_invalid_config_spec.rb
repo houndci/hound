@@ -5,7 +5,7 @@ describe ReportInvalidConfig do
     context "given a custom message" do
       it "reports the file as an invalid config file to GitHub" do
         commit_status = stubbed_commit_status(:set_config_error)
-        stubbed_build(repo_name: "houndci/hound")
+        stubbed_build
         pull_request_number = "42"
         commit_sha = "abc123"
         message = "Invalid ruby file, woff"
@@ -37,13 +37,10 @@ describe ReportInvalidConfig do
   end
 
   def stubbed_build(methods = {})
-    build = double("Build", user_token: "sekkrit")
+    repo = instance_double("Repo", name: "foo/bar")
+    default_build_methods = { repo: repo, user: nil }
+    build = instance_double("Build", default_build_methods.merge(methods))
     allow(Build).to receive(:find_by!).and_return(build)
-
-    methods.each do |method_name, return_value|
-      allow(build).to receive(method_name).and_return(return_value)
-    end
-
     build
   end
 end

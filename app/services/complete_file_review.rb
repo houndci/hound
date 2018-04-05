@@ -8,11 +8,7 @@ class CompleteFileReview
   def call
     complete_file_review
 
-    CompleteBuild.call(
-      pull_request: pull_request,
-      build: build,
-      token: build.user_token,
-    )
+    CompleteBuild.call(pull_request: pull_request, build: build)
   end
 
   private

@@ -11,11 +11,7 @@ describe CompleteBuild do
           pull_request = stub_pull_request([existing_comment])
           stubbed_github_api
 
-          CompleteBuild.call(
-            pull_request: pull_request,
-            build: build,
-            token: "abc123",
-          )
+          CompleteBuild.call(pull_request: pull_request, build: build)
 
           expect(pull_request).to have_received(:make_comments) do |arg|
             expect(arg.flat_map(&:messages)).to match_array ["bar"]
@@ -31,7 +27,7 @@ describe CompleteBuild do
             run_service(build)
 
             expect(github_api).to have_received(:create_success_status).with(
-              build.repo_name,
+              build.repo.name,
               build.commit_sha,
               "1 violation found.",
             )
@@ -47,7 +43,7 @@ describe CompleteBuild do
             run_service(build)
 
             expect(github_api).to have_received(:create_error_status).with(
-              build.repo_name,
+              build.repo.name,
               build.commit_sha,
               "1 violation found.",
               nil,
@@ -62,11 +58,7 @@ describe CompleteBuild do
           pull_request = stub_pull_request
           github_api = stubbed_github_api
 
-          CompleteBuild.call(
-            pull_request: pull_request,
-            build: build,
-            token: "abc123",
-          )
+          CompleteBuild.call(pull_request: pull_request, build: build)
 
           expect(pull_request).not_to have_received(:make_comments)
           expect(github_api).not_to have_received(:create_success_status)
@@ -83,7 +75,7 @@ describe CompleteBuild do
         run_service(build)
 
         expect(github_api).to have_received(:create_success_status).with(
-          build.repo_name,
+          build.repo.name,
           build.commit_sha,
           I18n.t(:complete_status, count: 0),
         )
@@ -95,11 +87,7 @@ describe CompleteBuild do
         pull_request = stub_pull_request([])
         stubbed_github_api
 
-        CompleteBuild.call(
-          pull_request: pull_request,
-          build: build,
-          token: "abc123",
-        )
+        CompleteBuild.call(pull_request: pull_request, build: build)
 
         expect(pull_request).not_to have_received(:make_comments)
       end
@@ -111,11 +99,7 @@ describe CompleteBuild do
         pull_request = stub_pull_request
         stubbed_github_api
 
-        CompleteBuild.call(
-          pull_request: pull_request,
-          build: build,
-          token: "abc123",
-        )
+        CompleteBuild.call(pull_request: pull_request, build: build)
 
         expect(pull_request).to have_received(:make_comments).
           with([], ["cannot parse config"])
@@ -168,15 +152,16 @@ describe CompleteBuild do
         "Repo",
         subscription: false,
         owner: MissingOwner.new,
+        name: "foo/bar",
       )
       default_attributes = {
         completed?: true,
         review_errors: [],
         repo: repo,
-        repo_name: "foo/bar",
         commit_sha: "abc123",
         violations: violations,
         violations_count: violations.size,
+        user: nil,
       }
       instance_double("Build", default_attributes.merge(attributes))
     end
@@ -196,11 +181,7 @@ describe CompleteBuild do
     end
 
     def run_service(build)
-      CompleteBuild.call(
-        pull_request: stub_pull_request,
-        build: build,
-        token: "abc123",
-      )
+      CompleteBuild.call(pull_request: stub_pull_request, build: build)
     end
   end
 end
