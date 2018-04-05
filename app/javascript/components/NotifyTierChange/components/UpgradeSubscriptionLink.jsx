@@ -67,7 +67,7 @@ export default class UpgradeSubscriptionLink extends React.Component {
           "I cannot upgrade and activate my repo. Please help!"
         );
       } else {
-        alert("Oh no, upgrading and activating the repo failed. Please contact us!");
+        alert("Oh no, upgrading and activating a repo failed. Please contact us!");
       }
     }
   }
