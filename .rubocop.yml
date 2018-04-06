@@ -299,8 +299,10 @@ Style/SymbolProc:
   IgnoredMethods:
   - respond_to
 Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
   Enabled: true
 Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
   Enabled: true
 Style/TrailingCommaInArguments:
   Description: Checks for trailing comma in parameter lists and literals.
