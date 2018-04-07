@@ -183,10 +183,10 @@ as well as any default configuration they might use:
     * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/credo)
 1. Go
     * [Golint](https://github.com/golang/lint)
-    * [houndci/go](https://github.com/houndci/go)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/golint)
 1. Markdown
     * [Remark](https://github.com/wooorm/remark)
-    * [houndci/remark](https://github.com/houndci/remark)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/remark)
 1. Swift
     * [SwiftLint](https://github.com/realm/SwiftLint)
     * [houndci/swift](https://github.com/houndci/swift)

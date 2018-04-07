@@ -1,7 +1,7 @@
 require "app/models/linter/base"
 require "app/models/linter/coffee_script"
 require "app/models/linter/eslint"
-require "app/models/linter/go"
+require "app/models/linter/golint"
 require "app/models/linter/haml"
 require "app/models/linter/jshint"
 require "app/models/linter/flake8"
