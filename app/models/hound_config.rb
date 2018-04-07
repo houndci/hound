@@ -7,7 +7,7 @@ class HoundConfig
     Linter::Eslint => { default: false },
     Linter::Flake8 => { default: false },
     Linter::Flog => { default: false },
-    Linter::Go => { default: true },
+    Linter::Golint => { default: true },
     Linter::Haml => { default: true },
     Linter::Jshint => { default: true },
     Linter::Reek => { default: false },

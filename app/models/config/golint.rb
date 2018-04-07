@@ -1,4 +1,4 @@
 module Config
-  class Go < Base
+  class Golint < Base
   end
 end

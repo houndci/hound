@@ -1,5 +1,5 @@
 module Linter
-  class Go < Base
+  class Golint < Base
     FILE_REGEXP = /.+\.go\z/
 
     def file_included?(commit_file)
@@ -13,6 +13,10 @@ module Linter
 
       path_components.include?("vendor") ||
         path_components.take(2) == ["Godeps", "_workspace"]
+    end
+
+    def job_class
+      LintersJob
     end
   end
 end

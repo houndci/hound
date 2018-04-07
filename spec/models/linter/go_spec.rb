@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::Go do
+describe Linter::Golint do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.go) }
     let(:not_lintable_files) { %w(foo.rb) }
@@ -26,10 +26,10 @@ describe Linter::Go do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        GoReviewJob,
+        LintersJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "go",
+        linter_name: "golint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
