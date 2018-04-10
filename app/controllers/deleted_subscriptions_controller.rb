@@ -5,7 +5,7 @@ class DeletedSubscriptionsController < ApplicationController
     payload = request.body.read
     signature = request.env["HTTP_STRIPE_SIGNATURE"]
 
-    event = Stripe::Webhook.construct_event(
+    Stripe::Webhook.construct_event(
       payload,
       signature,
       ENV.fetch("GITHUB_WEBHOOK_SECRET"),
