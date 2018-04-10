@@ -8,3 +8,10 @@ scss:
 
 jshint:
   config_file: .jshintrc
+
+reek:
+  enabled: true
+  config_file: .reek
+
+flog:
+  enabled: true
