@@ -191,6 +191,9 @@ as well as any default configuration they might use:
     * [SwiftLint](https://github.com/realm/SwiftLint)
     * [houndci/swift](https://github.com/houndci/swift)
     * [default config](https://raw.githubusercontent.com/houndci/swift/master/config/default.yml)
+1. Shell scripts
+    * [ShellCheck](https://github.com/koalaman/shellcheck)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/shellcheck)
 
 ### Writing a Linter
 
