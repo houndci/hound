@@ -41,7 +41,7 @@ gem "nokogiri", ">= 1.8.2"
 group :staging, :production do
   gem "rack-timeout"
   gem "rails_12factor"
-  gem "sentry-raven", ">= 0.12.2"
+  gem "sentry-raven"
 end
 
 group :development, :test do

@@ -315,7 +315,7 @@ GEM
     selenium-webdriver (3.9.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
-    sentry-raven (2.2.0)
+    sentry-raven (2.7.2)
       faraday (>= 0.7.6, < 1.0)
     sexp_processor (4.10.0)
     shoulda-matchers (2.6.2)
@@ -408,7 +408,7 @@ DEPENDENCIES
   rspec-rails (>= 3.4)
   sass-rails
   selenium-webdriver
-  sentry-raven (>= 0.12.2)
+  sentry-raven
   shoulda-matchers
   sinatra (~> 2.0)
   stripe
