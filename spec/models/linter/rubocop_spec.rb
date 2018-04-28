@@ -6,6 +6,16 @@ describe Linter::Rubocop do
     let(:not_lintable_files) { %w(foo.js) }
   end
 
+  describe ".can_lint?" do
+    it "returns true for Gemfile" do
+      expect(described_class.can_lint?("Gemfile")).to be(true)
+    end
+
+    it "returns false for Gemfile.lock" do
+      expect(described_class.can_lint?("Gemfile.lock")).to be(false)
+    end
+  end
+
   describe "#file_review" do
     it "returns a saved and incomplete file review" do
       linter = build_linter
