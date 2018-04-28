@@ -1,6 +1,6 @@
 module Linter
   class Rubocop < Base
-    FILE_REGEXP = /.+(\.rb|\.rake)\z/
+    FILE_REGEXP = /.+(\.rb|\.rake)|Gemfile\z/
 
     private
 
