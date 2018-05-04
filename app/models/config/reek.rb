@@ -1,7 +1,7 @@
 module Config
   class Reek < Base
-    def content
-      ""
+    def serialize
+      Serializer.yaml(content)
     end
   end
 end
