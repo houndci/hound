@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911205516) do
+ActiveRecord::Schema.define(version: 20180506031748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,17 +114,18 @@ ActiveRecord::Schema.define(version: 20170911205516) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
-    t.string   "username",           limit: 255,                 null: false
-    t.string   "remember_token",     limit: 255,                 null: false
-    t.boolean  "refreshing_repos",               default: false
-    t.string   "email",              limit: 255
-    t.string   "stripe_customer_id", limit: 255
-    t.string   "token"
-    t.string   "utm_source"
-    t.string   "token_scopes"
-    t.index ["remember_token"], name: "index_users_on_remember_token", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "username", limit: 255, null: false
+    t.string "remember_token", limit: 255, null: false
+    t.boolean "refreshing_repos", default: false
+    t.string "email", limit: 255
+    t.string "stripe_customer_id", limit: 255
+    t.string "token"
+    t.string "utm_source"
+    t.string "token_scopes"
+    t.boolean "marketplace", default: false
+    t.index ["remember_token"], name: "index_users_on_remember_token"
   end
 
   create_table "violations", force: :cascade do |t|
