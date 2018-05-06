@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :capture_campaign_params
   before_action :authenticate
 
-  helper_method :current_user, :signed_in?, :masquerading?
+  helper_method :current_user, :signed_in?, :masquerading?, :account_path
 
   private
 
@@ -66,6 +66,14 @@ class ApplicationController < ActionController::Base
       "/auth/github?access=full"
     else
       "/auth/github"
+    end
+  end
+
+  def account_path
+    if current_user && current_user.marketplace?
+      "https://github.com/marketplace/hound"
+    else
+      super
     end
   end
 
