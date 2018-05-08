@@ -8,7 +8,7 @@ require "faraday"
 require "yaml"
 
 class Config::Test < Config::Base
-  def serialize(content)
+  def serialize
     ensure_correct_type(content).to_yaml
   end
 

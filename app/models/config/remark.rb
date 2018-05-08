@@ -1,7 +1,7 @@
 module Config
   class Remark < Base
-    def serialize(data = content)
-      Serializer.json(data)
+    def serialize
+      Serializer.json(content)
     end
   end
 end

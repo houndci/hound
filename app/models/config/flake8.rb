@@ -1,7 +1,7 @@
 module Config
   class Flake8 < Base
-    def serialize(data = content)
-      Serializer.ini(data)
+    def serialize
+      Serializer.ini(content)
     end
 
     private

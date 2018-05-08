@@ -8,8 +8,8 @@ module Config
       end
     end
 
-    def serialize(data = content)
-      Serializer.yaml(data)
+    def serialize
+      Serializer.yaml(content)
     end
 
     private

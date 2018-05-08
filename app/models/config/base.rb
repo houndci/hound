@@ -13,8 +13,8 @@ module Config
       raise_parse_error("#{file_path} format is invalid")
     end
 
-    def serialize(data = content)
-      data
+    def serialize
+      content
     end
 
     def linter_name
