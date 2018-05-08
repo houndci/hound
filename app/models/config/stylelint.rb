@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Config
   class Stylelint < Base
-    def serialize(data = content)
-      Serializer.json(data)
+    def serialize
+      Serializer.json(content)
     end
 
     private

@@ -1,7 +1,7 @@
 module Config
   class Jshint < Base
-    def serialize(data = content)
-      Serializer.json(data)
+    def serialize
+      Serializer.json(content)
     end
 
     private
