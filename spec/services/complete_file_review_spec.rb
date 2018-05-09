@@ -29,7 +29,6 @@ describe CompleteFileReview do
       expect(CompleteBuild).to have_received(:call).with(
         pull_request: pull_request,
         build: build,
-        token: Hound::GITHUB_TOKEN,
       )
       expect(Payload).to have_received(:new).with(build.payload)
       expect(PullRequest).
@@ -58,7 +57,6 @@ describe CompleteFileReview do
         expect(CompleteBuild).to have_received(:call).with(
           pull_request: pull_request,
           build: correct_build,
-          token: Hound::GITHUB_TOKEN,
         )
       end
     end

@@ -85,9 +85,9 @@ class BuildRunner
 
   def commit_status
     @commit_status ||= CommitStatus.new(
-      repo_name: payload.full_repo_name,
+      repo: repo,
       sha: payload.head_sha,
-      token: user_token.token,
+      user: user_token.user,
     )
   end
 
