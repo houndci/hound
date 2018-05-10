@@ -13,29 +13,17 @@ class GitHubEventsController < ApplicationController
 
         case event.fetch("action")
         when "purchased"
-          owner = Owner.upsert(
-            github_id: event["marketplace_purchase"]["account"]["id"],
-            name: event["marketplace_purchase"]["account"]["login"],
-            organization: event["marketplace_purchase"]["account"]["type"] == GitHubApi::ORGANIZATION_TYPE,
-          )
+          owner = upsert_owner(event)
           owner.update!(
             marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"]
           )
         when "changed"
-          owner = Owner.upsert(
-            github_id: event["marketplace_purchase"]["account"]["id"],
-            name: event["marketplace_purchase"]["account"]["login"],
-            organization: event["marketplace_purchase"]["account"]["type"] == GitHubApi::ORGANIZATION_TYPE,
-          )
+          owner = upsert_owner(event)
           owner.update!(
             marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"]
           )
         when "cancelled"
-          owner = Owner.upsert(
-            github_id: event["marketplace_purchase"]["account"]["id"],
-            name: event["marketplace_purchase"]["account"]["login"],
-            organization: event["marketplace_purchase"]["account"]["type"] == GitHubApi::ORGANIZATION_TYPE,
-          )
+          owner = upsert_owner(event)
           owner.update!(
             marketplace_plan_id: nil
           )
@@ -62,5 +50,13 @@ class GitHubEventsController < ApplicationController
     )
 
     Rack::Utils.secure_compare("sha1=#{sha}", signature)
+  end
+
+  def upsert_owner(event)
+    Owner.upsert(
+      github_id: event["marketplace_purchase"]["account"]["id"],
+      name: event["marketplace_purchase"]["account"]["login"],
+      organization: event["marketplace_purchase"]["account"]["type"] == GitHubApi::ORGANIZATION_TYPE,
+    )
   end
 end
