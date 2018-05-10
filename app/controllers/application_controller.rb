@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  FREE_MARKETPLACE_PLAN_ID = 1061
+  FREE_MARKETPLACE_PLAN_ID = MarketplacePlan::PLANS.first[:id]
 
   protect_from_forgery
 
