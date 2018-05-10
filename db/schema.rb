@@ -115,27 +115,27 @@ ActiveRecord::Schema.define(version: 20180510051449) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "username", limit: 255, null: false
-    t.string "remember_token", limit: 255, null: false
-    t.boolean "refreshing_repos", default: false
-    t.string "email", limit: 255
-    t.string "stripe_customer_id", limit: 255
-    t.string "token"
-    t.string "utm_source"
-    t.string "token_scopes"
-    t.index ["remember_token"], name: "index_users_on_remember_token"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "username",           limit: 255,                 null: false
+    t.string   "remember_token",     limit: 255,                 null: false
+    t.boolean  "refreshing_repos",               default: false
+    t.string   "email",              limit: 255
+    t.string   "stripe_customer_id", limit: 255
+    t.string   "token"
+    t.string   "utm_source"
+    t.string   "token_scopes"
+    t.index ["remember_token"], name: "index_users_on_remember_token", using: :btree
   end
 
   create_table "violations", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "patch_position"
-    t.integer "line_number"
-    t.text "messages", default: [], null: false, array: true
-    t.integer "file_review_id", null: false
-    t.index ["file_review_id"], name: "index_violations_on_file_review_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "patch_position"
+    t.integer  "line_number"
+    t.text     "messages",       default: [], null: false, array: true
+    t.integer  "file_review_id",              null: false
+    t.index ["file_review_id"], name: "index_violations_on_file_review_id", using: :btree
   end
 
   add_foreign_key "file_reviews", "builds"
