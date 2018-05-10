@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
   end
 
   def account_path
-    if current_user && current_user.marketplace?
+    if current_user && current_user.has_marketplace_repos?
       "https://github.com/marketplace/hound"
     else
       super

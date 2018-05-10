@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180506031748) do
+ActiveRecord::Schema.define(version: 20180510051449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,16 +73,17 @@ ActiveRecord::Schema.define(version: 20180506031748) do
   end
 
   create_table "owners", force: :cascade do |t|
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.integer  "github_id",                      null: false
-    t.string   "name",                           null: false
-    t.boolean  "organization",   default: false, null: false
-    t.boolean  "config_enabled", default: false, null: false
-    t.string   "config_repo"
-    t.boolean  "whitelisted",    default: false, null: false
-    t.index ["github_id"], name: "index_owners_on_github_id", unique: true, using: :btree
-    t.index ["name"], name: "index_owners_on_name", unique: true, using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "github_id", null: false
+    t.string "name", null: false
+    t.boolean "organization", default: false, null: false
+    t.boolean "config_enabled", default: false, null: false
+    t.string "config_repo"
+    t.boolean "whitelisted", default: false, null: false
+    t.integer "marketplace_plan_id"
+    t.index ["github_id"], name: "index_owners_on_github_id", unique: true
+    t.index ["name"], name: "index_owners_on_name", unique: true
   end
 
   create_table "repos", force: :cascade do |t|

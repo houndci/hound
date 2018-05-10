@@ -5,10 +5,21 @@ class SubscriptionsController < ApplicationController
   before_action :update_email
 
   def create
-    if current_user.plan_upgrade?
-      render json: {}, status: :payment_required
+    if repo.owner.marketplace?
+      if repo.owner.plan_upgrade?
+        render(
+          json: { upgrade_url: repo.owner.upgrade_url },
+          status: :unauthorized
+        )
+      else
+        activate
+      end
     else
-      activate_and_create_subscription
+      if current_user.plan_upgrade?
+        render json: {}, status: :payment_required
+      else
+        activate_and_create_subscription
+      end
     end
   end
 
@@ -66,6 +77,10 @@ class SubscriptionsController < ApplicationController
     if current_user.email.blank?
       current_user.update(email: params[:email])
     end
+  end
+
+  def activate
+    activator.activate || render_error("There was an issue activating the repo")
   end
 
   def activate_and_create_subscription

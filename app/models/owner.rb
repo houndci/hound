@@ -32,10 +32,26 @@ class Owner < ApplicationRecord
     hound_config.content
   end
 
+  def marketplace?
+    marketplace_plan_id.present?
+  end
+
+  def plan_upgrade?
+    plan_selector.upgrade?
+  end
+
+  def upgrade_url
+    plan_selector.upgrade_url
+  end
+
   private
 
   def hound_config
     @_hound_config ||= BuildOwnerHoundConfig.call(self)
+  end
+
+  def plan_selector
+    @_plan_selector ||= MarketplacePlanSelector.new(self)
   end
 
   def self.capture_exception(exception, name, github_id)

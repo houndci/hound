@@ -21,7 +21,7 @@ Houndapp::Application.routes.draw do
   resources :owners, only: [:update]
   resources :plans, only: [:index]
   resources :deleted_subscriptions, only: [:create]
-  resources :marketplace_events, only: [:create]
+  resources :github_events, only: [:create]
 
   resources :repos, only: [:index] do
     with_options(defaults: { format: :json }) do
