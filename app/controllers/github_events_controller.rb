@@ -11,19 +11,15 @@ class GitHubEventsController < ApplicationController
       if verified_github_request?(request_body, signature)
         event = JSON.parse(request_body)
 
-        case event.fetch("action")
-        when "purchased"
-          owner = upsert_owner(event)
-          owner.update!(
-            marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"],
-          )
-        when "changed"
-          owner = upsert_owner(event)
+        action = event.fetch("action")
+        owner = upsert_owner(event)
+
+        case action
+        when "purchased", "changed"
           owner.update!(
             marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"],
           )
         when "cancelled"
-          owner = upsert_owner(event)
           owner.update!(
             marketplace_plan_id: nil,
           )

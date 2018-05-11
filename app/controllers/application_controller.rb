@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   FREE_MARKETPLACE_PLAN_ID = MarketplacePlan::PLANS.first[:id]
+  MARKETPLACE_LISTING_URL = "https://github.com/marketplace/hound".freeze
 
   protect_from_forgery
 
@@ -61,22 +62,6 @@ class ApplicationController < ActionController::Base
     session[:masqueraded_user_id]
   end
 
-  def github_oauth_path(full_access: false)
-    if full_access
-      "/auth/github?access=full"
-    else
-      "/auth/github"
-    end
-  end
-
-  def account_path
-    if current_user && current_user.has_marketplace_repos?
-      "https://github.com/marketplace/hound"
-    else
-      super
-    end
-  end
-
   protected
 
   def verified_request?
@@ -88,6 +73,22 @@ class ApplicationController < ActionController::Base
       User.find_by(id: session[:masqueraded_user_id])
     else
       User.find_by(remember_token: session[:remember_token])
+    end
+  end
+
+  def github_oauth_path(full_access: false)
+    if full_access
+      "/auth/github?access=full"
+    else
+      "/auth/github"
+    end
+  end
+
+  def account_path
+    if current_user && current_user.has_marketplace_repos?
+      MARKETPLACE_LISTING_URL
+    else
+      super
     end
   end
 end
