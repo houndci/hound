@@ -2,35 +2,29 @@ class GitHubEventsController < ApplicationController
   skip_before_action :authenticate, only: :create
   skip_before_action :verify_authenticity_token, only: :create
 
+  before_action :verify_github_request
+
   def create
-    case request.headers["X-GitHub-Event"]
+    case event_type
     when "marketplace_purchase"
-      request_body = request.raw_post
-      signature = request.headers["X-Hub-Signature"]
+      event = JSON.parse(request_body)
+      action = event.fetch("action")
+      owner = upsert_owner(event)
 
-      if verified_github_request?(request_body, signature)
-        event = JSON.parse(request_body)
-
-        action = event.fetch("action")
-        owner = upsert_owner(event)
-
-        case action
-        when "purchased", "changed"
-          owner.update!(
-            marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"],
-          )
-        when "cancelled"
-          owner.update!(
-            marketplace_plan_id: nil,
-          )
-        else
-          raise "Unknown GitHub Marketplace action (#{event["action"]})"
-        end
+      case action
+      when "purchased", "changed"
+        owner.update!(
+          marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"],
+        )
+      when "cancelled"
+        owner.update!(
+          marketplace_plan_id: nil,
+        )
       else
-        raise "Could not verify GitHub request (#{request.headers["X-GitHub-Delivery"]})"
+        raise "Unknown GitHub Marketplace action (#{action})"
       end
     else
-      raise "Unknown GitHub event (#{request.headers["X-GitHub-Event"]})"
+      raise "Unknown GitHub event (#{event_type})"
     end
 
     head :ok
@@ -38,14 +32,32 @@ class GitHubEventsController < ApplicationController
 
   private
 
-  def verified_github_request?(request_body, signature)
+  def verify_github_request
     sha = OpenSSL::HMAC.hexdigest(
       OpenSSL::Digest.new("sha1"),
       ENV.fetch("GITHUB_WEBHOOK_SECRET"),
       request_body,
     )
 
-    Rack::Utils.secure_compare("sha1=#{sha}", signature)
+    unless Rack::Utils.secure_compare("sha1=#{sha}", signature)
+      raise "Could not verify GitHub request (#{event_id})"
+    end
+  end
+
+  def request_body
+    request.raw_post
+  end
+
+  def signature
+    request.headers["X-Hub-Signature"]
+  end
+
+  def event_type
+    request.headers["X-GitHub-Event"]
+  end
+
+  def event_id
+    request.headers["X-GitHub-Delivery"]
   end
 
   def upsert_owner(event)
