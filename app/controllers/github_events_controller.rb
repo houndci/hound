@@ -15,17 +15,17 @@ class GitHubEventsController < ApplicationController
         when "purchased"
           owner = upsert_owner(event)
           owner.update!(
-            marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"]
+            marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"],
           )
         when "changed"
           owner = upsert_owner(event)
           owner.update!(
-            marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"]
+            marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"],
           )
         when "cancelled"
           owner = upsert_owner(event)
           owner.update!(
-            marketplace_plan_id: nil
+            marketplace_plan_id: nil,
           )
         else
           raise "Unknown GitHub Marketplace action (#{event["action"]})"
@@ -46,7 +46,7 @@ class GitHubEventsController < ApplicationController
     sha = OpenSSL::HMAC.hexdigest(
       OpenSSL::Digest.new("sha1"),
       ENV.fetch("GITHUB_WEBHOOK_SECRET"),
-      request_body
+      request_body,
     )
 
     Rack::Utils.secure_compare("sha1=#{sha}", signature)

@@ -4,7 +4,7 @@ class MarketplacePlan
   PLANS = [
     { id: 1061, price: 0, range: 0..0, title: "Open Source" },
     { id: 1062, price: 49, range: 1..4, title: "Chihuahua" },
-    { id: 1063, price: 149, range: 5..20, title: "Octodog" }
+    { id: 1063, price: 149, range: 5..20, title: "Octodog" },
   ].freeze
 
   attr_reader :id, :price, :title
