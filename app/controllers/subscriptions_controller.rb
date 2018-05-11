@@ -9,7 +9,7 @@ class SubscriptionsController < ApplicationController
       if repo.owner.plan_upgrade?
         render(
           json: { upgrade_url: repo.owner.upgrade_url },
-          status: :unauthorized
+          status: :forbidden
         )
       else
         activate
