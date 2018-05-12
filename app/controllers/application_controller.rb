@@ -1,11 +1,14 @@
 class ApplicationController < ActionController::Base
+  FREE_MARKETPLACE_PLAN_ID = MarketplacePlan::PLANS.first[:id]
+  MARKETPLACE_LISTING_URL = "https://github.com/marketplace/hound".freeze
+
   protect_from_forgery
 
   before_action :force_https
   before_action :capture_campaign_params
   before_action :authenticate
 
-  helper_method :current_user, :signed_in?, :masquerading?
+  helper_method :current_user, :signed_in?, :masquerading?, :account_path
 
   private
 
@@ -31,7 +34,15 @@ class ApplicationController < ActionController::Base
 
   def authenticate
     unless signed_in?
-      redirect_to root_path
+      if params[:marketplace_listing_plan_id]
+        if params[:marketplace_listing_plan_id] == FREE_MARKETPLACE_PLAN_ID.to_s
+          redirect_to github_oauth_path
+        else
+          redirect_to github_oauth_path(full_access: true)
+        end
+      else
+        redirect_to root_path
+      end
     end
   end
 
@@ -62,6 +73,22 @@ class ApplicationController < ActionController::Base
       User.find_by(id: session[:masqueraded_user_id])
     else
       User.find_by(remember_token: session[:remember_token])
+    end
+  end
+
+  def github_oauth_path(full_access: false)
+    if full_access
+      "/auth/github?access=full"
+    else
+      "/auth/github"
+    end
+  end
+
+  def account_path
+    if current_user&.has_marketplace_repos?
+      MARKETPLACE_LISTING_URL
+    else
+      super
     end
   end
 end
