@@ -31,6 +31,8 @@
         = link_to "Sass Lint", "#sass-lint", class: "docs-nav-link"
       %li
         = link_to "ShellCheck", "#shellcheck", class: "docs-nav-link"
+      %li
+        = link_to "ERB Lint", "#erblint", class: "docs-nav-link"
 
   %section.docs-content
     %article.docs-article
@@ -619,6 +621,73 @@
           "https://github.com/koalaman/shellcheck/wiki",
           new_window_options
         for information on ShellCheck codes.
+
+    %article.docs-article#erblint
+      %h2 ERB Lint
+      %p
+        Hound uses
+        = link_to "ERB Lint",
+          "https://github.com/shopify/erb-lint",
+          new_window_options
+        to review erb templates.
+
+      %p
+        To enable ERB style checking, add the following to your
+        %em.code-inline .hound.yml
+
+        %code.code-block
+          :preserve
+            erblint:
+              enabled: true
+      %p
+        To tell erb-lint to ignore certain codes, add
+        %em.code-inline .erb-lint.yml
+        file to your project (or give it another name if you like),
+        include in it codes you want ignored, and reference the file in your
+        %em.code-inline .hound.yml
+
+      %p
+        %code.code-block
+          :preserve
+            erblint:
+              enabled: true
+              config_file: .erb-lint.yml
+
+      %p
+        Example config file:
+        %code.code-block
+          :preserve
+            linters:
+              Rubocop:
+                enabled: true
+                rubocop_config:
+                  inherit_from:
+                    - .rubocop.yml
+                  Layout/InitialIndentation:
+                    Enabled: false
+                  Layout/TrailingBlankLines:
+                    Enabled: false
+                  Layout/TrailingWhitespace:
+                    Enabled: false
+                  Naming/FileName:
+                    Enabled: false
+                  Style/FrozenStringLiteralComment:
+                    Enabled: false
+                  Metrics/LineLength:
+                    Enabled: false
+                  Lint/UselessAssignment:
+                    Enabled: false
+                  Rails/OutputSafety:
+                    Enabled: false
+              FinalNewline:
+                enabled: true
+
+        See
+        = link_to "ERB Lint README",
+          "https://github.com/shopify/erb-lint",
+          new_window_options
+        for information on ERB Lint codes.
+
 
     %article.docs-article
       %h3 Didn't find what you where looking for?

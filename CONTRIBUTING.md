@@ -194,6 +194,8 @@ as well as any default configuration they might use:
 1. Shell scripts
     * [ShellCheck](https://github.com/koalaman/shellcheck)
     * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/shellcheck)
+1. ERB Lint
+    * [ERB Lint](https://github.com/Shopify/erb-lint)
 
 ### Writing a Linter
 
