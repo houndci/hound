@@ -8,12 +8,12 @@ We collect the e-mail addresses of those who sign up with Hound, aggregate infor
 
 * It is necessary to share information in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of Terms of Service, or as otherwise required by law.
 
-* We transfer information about you if thoughtbot, inc. or Hound is acquired by or merged with another company. In this event, thoughtbot, inc. will notify you before information about you is transferred and becomes subject to a different privacy policy.
+* We transfer information about you if Hound is acquired by or merged with another company. In this event, Hound Group LLC will notify you before information about you is transferred and becomes subject to a different privacy policy.
 
 Information Gathering and Usage
 -------------------------------
 
-thoughtbot, inc. uses collected information for the following general purposes: products and services provision, billing, identification and authentication, services improvement, contact, and research.
+Hound Group LLC uses collected information for the following general purposes: products and services provision, billing, identification and authentication, services improvement, contact, and research.
 
 Cookies
 -------
@@ -27,28 +27,28 @@ A cookie is a small amount of data, which often includes an anonymous unique ide
 Data Storage
 ------------
 
-thoughtbot, inc. uses third party vendors and hosting partners to provide the necessary hardware, software, networking, storage, and related technology required to run Hound. Although thoughtbot, inc. owns the code, databases, and all rights to the Hound application, you retain all rights to your data.
+Hound Group LLC uses third party vendors and hosting partners to provide the necessary hardware, software, networking, storage, and related technology required to run Hound. Although Hound Group LLC owns the code, databases, and all rights to the Hound application, you retain all rights to your data.
 
 Source Code
 -----------
 
-* thoughtbot, inc. employees do not access Hound users&#8217; private source code unless Hound users give thoughtbot, inc. employees explicit written permission to access their source code in order to provide support.
+* Hound Group LLC employees do not access Hound users&#8217; private source code unless Hound users give Hound Group LLC employees explicit written permission to access their source code in order to provide support.
 
 * Hound does not store GitHub credentials.
 
-* Hound&#8217;s [source code](https://github.com/houndci/hound) is openly available. Browse the code and [email](mailto:hound@thoughtbot.com) us with questions.
+* Hound&#8217;s [source code](https://github.com/houndci/hound) is openly available. Browse the code and [email](mailto:hello@houndci.com) us with questions.
 
 Disclosure
 ----------
 
-thoughtbot, inc. may disclose personally identifiable information under special circumstances, such as to comply with subpoenas or when your actions violate the Terms of Service.
+Hound Group LLC may disclose personally identifiable information under special circumstances, such as to comply with subpoenas or when your actions violate the Terms of Service.
 
 Changes
 -------
 
-thoughtbot, inc. may periodically update this policy. We will notify you about significant changes in the way we treat personal information by sending a notice to the primary email address specified in your Hound account or by placing a prominent notice on our site.
+Hound Group LLC may periodically update this policy. We will notify you about significant changes in the way we treat personal information by sending a notice to the primary email address specified in your Hound account or by placing a prominent notice on our site.
 
 Questions
 ---------
 
-Any questions about the Privacy Policy should be addressed to [hound@thoughtbot.com](mailto:hound@thoughtbot.com).
+Any questions about the Privacy Policy should be addressed to [hello@houndci.com](mailto:hello@houndci.com).

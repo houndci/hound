@@ -3,9 +3,9 @@
 First, thank you for contributing!
 
 We love pull requests from everyone. By participating in this project, you
-agree to abide by the thoughtbot [code of conduct].
+agree to abide by the Hound [code of conduct].
 
-[code of conduct]: https://thoughtbot.com/open-source-code-of-conduct
+[code of conduct]: https://github.com/houndci/hound/blob/master/CODE_OF_CONDUCT.md
 
 Here are a few technical guidelines to follow:
 
@@ -251,7 +251,7 @@ and production with:
 ## Contributor License Agreement
 
 If you submit a Contribution to this application's source code, you hereby grant
-to thoughtbot, inc. a worldwide, royalty-free, exclusive, perpetual and
+to Hound Group LLC a worldwide, royalty-free, exclusive, perpetual and
 irrevocable license, with the right to grant or transfer an unlimited number of
 non-exclusive licenses or sublicenses to third parties, under the Copyright
 covering the Contribution to use the Contribution by all means, including but
