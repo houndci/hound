@@ -43,8 +43,8 @@
       %p
         If this page doesn't help you find what you are looking for,
         please tweet at us
-        = link_to "@houndci", "https://twitter.com/houndci", new_window_options
-        or email us at #{mail_to "hound@thoughtbot.com"}
+        = link_to "@houndci", "https://twitter.com/share?text=@houndci &url=\"\"", new_window_options
+        or email us at #{link_to "hello@houndci.com", "javascript:window.Intercom('showNewMessage', 'I have a quick question.');"}
         and we will help you out.
 
     %article.docs-article#configuration
@@ -625,6 +625,6 @@
 
       %p
         Please tweet at us
-        = link_to "@houndci", "https://twitter.com/houndci", new_window_options
-        or email us at #{mail_to "hound@thoughtbot.com"}
+        = link_to "@houndci", "https://twitter.com/share?text=@houndci &url=\"\"", new_window_options
+        or email us at #{link_to "hello@houndci.com", "javascript:window.Intercom('showNewMessage', 'I have a quick question.');"}
         and we will help you out.

@@ -15,6 +15,7 @@ Houndapp::Application.routes.draw do
   get "/sign_out", to: "sessions#destroy"
   get "/configuration", to: "pages#configuration"
   get "/faq", to: redirect(ENV.fetch("FAQ_URL"), status: 302)
+  get "/help", to: redirect(ENV.fetch("HELP_URL"), status: 302)
 
   resource :account, only: [:show, :update]
   resources :builds, only: [:create, :index]

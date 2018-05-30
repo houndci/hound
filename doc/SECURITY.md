@@ -15,20 +15,19 @@ Vulnerability Reporting
 -----------------------
 
 For security inquiries or vulnerability reports, please email
-<security@thoughtbot.com>.
+<hello@houndci.com>.
 If you'd like, you can use our [PGP key] when reporting vulnerabilities.
 
 [PGP key]: https://thoughtbot.com/thoughtbot.asc
 
-thoughtbot
-----------
+Hound Group
+-----------
 
-Hound is operated by [thoughtbot, inc.], a [Massachusetts corporation][sec].
+Hound is operated by Hound Group LLC, a [California limited liability company][sos].
 
-[thoughtbot, inc.]: http://thoughtbot.com
-[sec]: http://corp.sec.state.ma.us/CorpWeb/CorpSearch/CorpSummary.aspx?FEIN=203438204
+[sos]: https://businesssearch.sos.ca.gov/CBS/SearchResults?SearchType=NUMBER&SearchCriteria=201806410516
 
-A small team within thoughtbot is responsible for Hound.
+A small team within Hound Group LLC is responsible for Hound.
 We can't afford to hire a third party security company to audit Hound,
 but the codebase is open source.
 We believe that transparency and this document can help keep Hound
@@ -200,7 +199,7 @@ that we use to check the style of the code in each pull request notification:
 
 * Ruby: [RuboCop](https://github.com/bbatsov/rubocop)
 * CoffeeScript: [CoffeeLint](http://www.coffeelint.org/)
-* JavaScript: 
+* JavaScript:
   * [JSHint](https://github.com/jshint/jshint)
   * [ESLint](https://github.com/eslint/eslint)
 * SCSS: [SCSS-Lint](https://github.com/brigade/scss-lint)
@@ -236,11 +235,11 @@ grep -R Commenter app
 Employee access
 ---------------
 
-All thoughtbot employees have access to change Hound's source code
+All Hound Group employees have access to change Hound's source code
 (the repo you're reading right now, which is open source)
 and to push it to GitHub.
 
-All thoughtbot employees have access to
+All Hound Group employees have access to
 Hound's staging and production Heroku applications and databases.
 They can deploy new code, or read and write to the databases.
 

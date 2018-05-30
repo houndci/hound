@@ -3,7 +3,7 @@
     = link_to "Source Code",
       "https://github.com/houndci/hound",
       class: "app-footer__nav-link"
-    = link_to "FAQ", ENV.fetch("FAQ_URL"), class: "app-footer__nav-link"
+    = link_to "Help", ENV.fetch("HELP_URL"), class: "app-footer__nav-link"
     = link_to "Terms",
       "https://github.com/houndci/hound/blob/master/doc/TERMS.md",
       class: "app-footer__nav-link"
@@ -15,16 +15,15 @@
       class: "app-footer__nav-link"
 
   %p
-    Hound is maintained by #{link_to "thoughtbot", "https://thoughtbot.com/"}.
-    Questions? Try the
-    #{link_to "FAQ", ENV.fetch("FAQ_URL")}
+    Questions? Try
+    #{link_to "Help", ENV.fetch("HELP_URL"), new_window_options}
     or tweet
-    #{link_to "@houndci", "https://twitter.com/houndci", new_window_options}.
+    #{link_to "@houndci", "https://twitter.com/share?text=@houndci &url=\"\"", new_window_options}.
 
   %p
-    Hound is Copyright &copy; #{Date.today.year} thoughtbot. It is open source
+    Hound is Copyright &copy; #{Date.today.year} Hound Group LLC. It is open source
     software and may be redistributed under the terms specified in the
     #{link_to "license", "https://github.com/houndci/hound/blob/master/LICENSE"}.
 
   %p
-    The names and logos for Hound are trademarks of thoughtbot.
+    The names and logos for Hound are trademarks of Hound Group LLC.
