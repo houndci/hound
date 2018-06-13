@@ -19,6 +19,7 @@ en:
     one: "1 violation found."
     other: "%{count} violations found."
   hound_error_status: "We've encountered an error while reviewing your code."
+  past_due_status: "We're having trouble processing your subscription payment."
 
   account:
     billable_email:

@@ -44,6 +44,16 @@ class Owner < ApplicationRecord
     plan_selector.upgrade_url
   end
 
+  def past_due?
+    stripe_subscription && stripe_subscription.status != "active"
+  end
+
+  def most_recent_invoice
+    if stripe_subscription_id
+      Stripe::Invoice.list(subscription: stripe_subscription_id).first
+    end
+  end
+
   private
 
   def hound_config
@@ -52,6 +62,13 @@ class Owner < ApplicationRecord
 
   def plan_selector
     @_plan_selector ||= MarketplacePlanSelector.new(self)
+  end
+
+  # set manually when Stripe customer is unpaid
+  def stripe_subscription
+    if stripe_subscription_id
+      Stripe::Subscription.retrieve(stripe_subscription_id)
+    end
   end
 
   def self.capture_exception(exception, name, github_id)
