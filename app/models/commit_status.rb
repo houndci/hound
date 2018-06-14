@@ -33,18 +33,14 @@ class CommitStatus
   end
 
   def set_past_due_status(invoice_url)
-    create_failure_status(
-      full_repo_name: repo_name,
-      sha: sha,
-      description: I18n.t(:past_due_status),
-      url: invoice_url
-    )
+    message = I18n.t(:past_due_status)
+    create_error_status(repo_name, sha, message, invoice_url)
   end
 
   private
 
-  def create_error_status(repo_name, sha, message, configuration_url = nil)
-    github.create_error_status(repo_name, sha, message, configuration_url)
+  def create_error_status(repo_name, sha, message, url = nil)
+    github.create_error_status(repo_name, sha, message, url)
   rescue Octokit::NotFound
     # noop
   end

@@ -108,16 +108,6 @@ class GitHubApi
     )
   end
 
-  def create_failure_status(full_repo_name:, sha:, description:, url: nil)
-    create_status(
-      repo: full_repo_name,
-      sha: sha,
-      state: "failure",
-      description: description,
-      target_url: url
-    )
-  end
-
   def accept_invitation(repo_name)
     repo_invitation = find_invitation_for_repo(repo_name)
 
