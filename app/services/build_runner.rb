@@ -29,14 +29,12 @@ class BuildRunner
 
     if repo.private? && owner.past_due?
       commit_status.set_past_due_status(
-        owner.most_recent_invoice.hosted_invoice_url
+        owner.most_recent_invoice.hosted_invoice_url,
       )
     else
       build = create_build
       review_files(build)
-      if build.file_reviews.empty?
-        set_no_violations_status
-      end
+      set_no_violations_status if build.file_reviews.empty?
     end
   end
 
