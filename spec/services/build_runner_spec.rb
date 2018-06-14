@@ -229,20 +229,22 @@ describe BuildRunner do
     end
 
     context "when status cannot be updated" do
-      it "does not error" do
+      it "removes the user and re-raises the exception" do
         status_not_found = "POST https://api.github.com/repos/foo/bar/" \
           "statuses/123abc: 404 - Not Found // See: https://dev.github.com"
-        repo = create(:repo, :active)
+        user = create(:user, token: "123abc")
+        repo = create(:repo, :active, users: [user])
         build_runner = make_build_runner(repo: repo)
         github_api = stubbed_github_api
         stubbed_pull_request_with_file("foo.rb", "puts 5 * 6")
         allow(github_api).to receive(:create_pending_status).
           and_raise(Octokit::NotFound.new(message: status_not_found))
 
-        expect { build_runner.call }.not_to raise_error
+        expect { build_runner.call }.to raise_error Octokit::NotFound
 
-        expect(repo.builds.size).to eq 1
-        expect(repo.builds.map(&:file_reviews).size).to eq 1
+        repo.reload
+        expect(repo.users).to eq []
+        expect(repo.builds.size).to eq 0
       end
     end
 
