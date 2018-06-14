@@ -22,7 +22,7 @@ class CommitStatus
     create_error_status(
       repo_name: repo_name,
       sha: sha,
-      message: I18n.t(:complete_status, count: violation_count)
+      message: I18n.t(:complete_status, count: violation_count),
     )
   end
 
@@ -31,7 +31,7 @@ class CommitStatus
       repo_name: repo_name,
       sha: sha,
       message: message,
-      url: configuration_url
+      url: configuration_url,
     )
   end
 
@@ -39,7 +39,7 @@ class CommitStatus
     create_error_status(
       repo_name: repo_name,
       sha: sha,
-      message: I18n.t(:hound_error_status)
+      message: I18n.t(:hound_error_status),
     )
   end
 
@@ -48,7 +48,7 @@ class CommitStatus
       repo_name: repo_name,
       sha: sha,
       message: I18n.t(:past_due_status),
-      url: invoice_url
+      url: invoice_url,
     )
   end
 
