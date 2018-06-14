@@ -27,7 +27,7 @@ class BuildRunner
     commit_status.set_pending
     owner = upsert_owner
 
-    if owner.past_due?
+    if repo.private? && owner.past_due?
       commit_status.set_past_due_status(
         owner.most_recent_invoice.hosted_invoice_url
       )
