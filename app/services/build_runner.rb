@@ -34,7 +34,9 @@ class BuildRunner
     else
       build = create_build
       review_files(build)
-      set_no_violations_status if build.file_reviews.empty?
+      if build.file_reviews.empty?
+        set_no_violations_status
+      end
     end
   end
 
