@@ -25,11 +25,18 @@ class BuildRunner
   def review_pull_request
     track_subscribed_build_started
     commit_status.set_pending
-    upsert_owner
-    build = create_build
-    review_files(build)
-    if build.file_reviews.empty?
-      set_no_violations_status
+    owner = upsert_owner
+
+    if repo.private? && owner.past_due?
+      commit_status.set_past_due_status(
+        owner.most_recent_invoice.hosted_invoice_url,
+      )
+    else
+      build = create_build
+      review_files(build)
+      if build.file_reviews.empty?
+        set_no_violations_status
+      end
     end
   end
 
@@ -75,12 +82,13 @@ class BuildRunner
   end
 
   def upsert_owner
-    owner = Owner.upsert(
+    Owner.upsert(
       github_id: payload.repository_owner_id,
       name: payload.repository_owner_name,
       organization: payload.repository_owner_is_organization?
-    )
-    repo.update(owner: owner)
+    ).tap do |owner|
+      repo.update(owner: owner)
+    end
   end
 
   def commit_status

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180510051449) do
+ActiveRecord::Schema.define(version: 20180613230247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20180510051449) do
     t.string "config_repo"
     t.boolean "whitelisted", default: false, null: false
     t.integer "marketplace_plan_id"
+    t.string "stripe_subscription_id"
     t.index ["github_id"], name: "index_owners_on_github_id", unique: true
     t.index ["name"], name: "index_owners_on_name", unique: true
   end

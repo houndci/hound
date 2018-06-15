@@ -19,23 +19,43 @@ class CommitStatus
   end
 
   def set_failure(violation_count)
-    message = I18n.t(:complete_status, count: violation_count)
-    create_error_status(repo_name, sha, message)
+    create_error_status(
+      repo_name: repo_name,
+      sha: sha,
+      message: I18n.t(:complete_status, count: violation_count),
+    )
   end
 
   def set_config_error(message)
-    create_error_status(repo_name, sha, message, configuration_url)
+    create_error_status(
+      repo_name: repo_name,
+      sha: sha,
+      message: message,
+      url: configuration_url,
+    )
   end
 
   def set_internal_error
-    message = I18n.t(:hound_error_status)
-    create_error_status(repo_name, sha, message)
+    create_error_status(
+      repo_name: repo_name,
+      sha: sha,
+      message: I18n.t(:hound_error_status),
+    )
+  end
+
+  def set_past_due_status(invoice_url)
+    create_error_status(
+      repo_name: repo_name,
+      sha: sha,
+      message: I18n.t(:past_due_status),
+      url: invoice_url,
+    )
   end
 
   private
 
-  def create_error_status(repo_name, sha, message, configuration_url = nil)
-    github.create_error_status(repo_name, sha, message, configuration_url)
+  def create_error_status(repo_name:, sha:, message:, url: nil)
+    github.create_error_status(repo_name, sha, message, url)
   rescue Octokit::NotFound
     # noop
   end
