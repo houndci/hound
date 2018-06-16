@@ -16,6 +16,7 @@ gem "high_voltage"
 gem "inifile"
 gem "jquery-rails", ">= 4.2.0"
 gem "neat", "~> 1.9"
+gem "nokogiri", ">= 1.8.2"
 gem "octokit"
 gem "omniauth-github"
 gem "paranoia", "~> 2.2"
@@ -36,7 +37,6 @@ gem "thor", "0.19.1"
 gem "uglifier", ">= 2.7.2"
 gem "webpacker", "~> 3.0"
 gem "webpacker-react", "~> 0.3.1"
-gem "nokogiri", ">= 1.8.2"
 
 group :staging, :production do
   gem "rack-timeout"
@@ -54,9 +54,9 @@ end
 
 group :test do
   gem "capybara", ">= 2.4.0"
-  gem "selenium-webdriver"
   gem "factory_girl_rails"
   gem "launchy"
+  gem "selenium-webdriver"
   gem "shoulda-matchers"
   gem "webmock"
 end

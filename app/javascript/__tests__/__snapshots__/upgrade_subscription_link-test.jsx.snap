@@ -1,8 +1,11 @@
-exports[`test renders appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders appropriately 1`] = `
 <a
   className="repo-toggle tier-change-accept"
   href="javascript:void(0);"
-  onClick={[Function]}>
+  onClick={[Function]}
+>
   Upgrade
 </a>
 `;

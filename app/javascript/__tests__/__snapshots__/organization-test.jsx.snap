@@ -1,11 +1,16 @@
-exports[`test renders an organization with ID appropriately (no repo processing) 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders an organization with ID appropriately (no repo processing) 1`] = `
 <div
   className="organization"
-  data-org-name="Test org">
+  data-org-name="Test org"
+>
   <header
-    className="organization-header">
+    className="organization-header"
+  >
     <h2
-      className="organization-header-title">
+      className="organization-header-title"
+    >
       Test org
     </h2>
     <OrganizationConfiguration
@@ -16,14 +21,16 @@ exports[`test renders an organization with ID appropriately (no repo processing)
             "name": "Test repo",
           },
         ]
-      } />
+      }
+    />
   </header>
   <section
-    className="repo_listing">
+    className="repo_listing"
+  >
     <RepoList
       filterTerm=""
       isProcessingId={null}
-      onRepoClicked={[Function]}
+      onRepoClicked={[MockFunction]}
       repos={
         Array [
           Object {
@@ -31,7 +38,8 @@ exports[`test renders an organization with ID appropriately (no repo processing)
             "name": "Test repo",
           },
         ]
-      } />
+      }
+    />
   </section>
 </div>
 `;

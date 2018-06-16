@@ -1,24 +1,31 @@
-exports[`test filters a list of repos appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`filters a list of repos appropriately 1`] = `
 <ul
-  className="repos">
+  className="repos"
+>
   <Repo
     isProcessingId={null}
-    onRepoClicked={[Function]}
+    key="666"
+    onRepoClicked={[MockFunction]}
     repo={
       Object {
         "id": 666,
         "name": "Hydra/deathray",
       }
-    } />
+    }
+  />
 </ul>
 `;
 
-exports[`test renders a list of repos appropriately 1`] = `
+exports[`renders a list of repos appropriately 1`] = `
 <ul
-  className="repos">
+  className="repos"
+>
   <Repo
     isProcessingId={null}
-    onRepoClicked={[Function]}
+    key="1"
+    onRepoClicked={[MockFunction]}
     repo={
       Object {
         "id": 1,
@@ -27,16 +34,19 @@ exports[`test renders a list of repos appropriately 1`] = `
           "id": 1,
         },
       }
-    } />
+    }
+  />
 </ul>
 `;
 
-exports[`test renders a list of repos appropriately 2`] = `
+exports[`renders a list of repos appropriately 2`] = `
 <ul
-  className="repos">
+  className="repos"
+>
   <Repo
     isProcessingId={null}
-    onRepoClicked={[Function]}
+    key="1"
+    onRepoClicked={[MockFunction]}
     repo={
       Object {
         "id": 1,
@@ -45,6 +55,7 @@ exports[`test renders a list of repos appropriately 2`] = `
           "id": 1,
         },
       }
-    } />
+    }
+  />
 </ul>
 `;

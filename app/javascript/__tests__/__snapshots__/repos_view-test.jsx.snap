@@ -1,4 +1,6 @@
-exports[`test renders appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders appropriately 1`] = `
 <OrganizationsList
   filterTerm=""
   isProcessingId={null}
@@ -21,5 +23,6 @@ exports[`test renders appropriately 1`] = `
         },
       },
     ]
-  } />
+  }
+/>
 `;

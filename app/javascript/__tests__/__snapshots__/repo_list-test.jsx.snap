@@ -1,8 +1,10 @@
-exports[`test renders a list of repos appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a list of repos appropriately 1`] = `
 <PopulatedRepoList
   filterTerm=""
   isProcessingId={null}
-  onRepoClicked={[Function]}
+  onRepoClicked={[MockFunction]}
   repos={
     Array [
       Object {
@@ -13,5 +15,6 @@ exports[`test renders a list of repos appropriately 1`] = `
         },
       },
     ]
-  } />
+  }
+/>
 `;

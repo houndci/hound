@@ -1,27 +1,35 @@
-exports[`test renders appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders appropriately 1`] = `
 <article
-  className="account-details">
+  className="account-details"
+>
   <h3>
     Update account settings
   </h3>
   <form>
     <div
-      className="form-group">
+      className="form-group"
+    >
       <label>
         Email address for receipts
       </label>
       <input
         id="email_address"
         onChange={[Function]}
-        type="email" />
+        type="email"
+      />
       <UpdateAccountEmailMessage
-        addressChanged={null} />
+        addressChanged={null}
+      />
     </div>
     <div
-      className="form-actions">
+      className="form-actions"
+    >
       <button
         className="repo-toggle"
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         Update Email
       </button>
     </div>
@@ -29,30 +37,36 @@ exports[`test renders appropriately 1`] = `
 </article>
 `;
 
-exports[`test renders appropriately on address change 1`] = `
+exports[`renders appropriately on address change 1`] = `
 <article
-  className="account-details">
+  className="account-details"
+>
   <h3>
     Update account settings
   </h3>
   <form>
     <div
-      className="form-group">
+      className="form-group"
+    >
       <label>
         Email address for receipts
       </label>
       <input
         id="email_address"
         onChange={[Function]}
-        type="email" />
+        type="email"
+      />
       <UpdateAccountEmailMessage
-        addressChanged={null} />
+        addressChanged={null}
+      />
     </div>
     <div
-      className="form-actions">
+      className="form-actions"
+    >
       <button
         className="repo-toggle"
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         Update Email
       </button>
     </div>

@@ -8,7 +8,7 @@
     "test:coverage": "jest --coverage app/javascript/__tests__/*-test.jsx"
   },
   "dependencies": {
-    "@rails/webpacker": "^3.0.1",
+    "@rails/webpacker": "^3.5.3",
     "babel-core": "^6.25.0",
     "babel-loader": "7.x",
     "babel-plugin-react-transform": "^2.0.0",
@@ -43,11 +43,11 @@
     "lodash": "^4.17.4",
     "object-assign-shim": "^1.0.0",
     "path-complete-extname": "^0.1.0",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.1",
     "rails-erb-loader": "^5.1.0",
-    "react": "^15.6.1",
+    "react": "^16.4.1",
     "react-addons-update": "^15.6.0",
-    "react-dom": "^15.6.1",
+    "react-dom": "^16.4.1",
     "resolve-url-loader": "^2.1.0",
     "url-loader": "^0.5.7",
     "webpack": "^3.4.1",
@@ -57,21 +57,22 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.1.0",
-    "babel-jest": "^20.0.3",
-    "enzyme": "^2.9.1",
-    "enzyme-to-json": "^1.4.4",
+    "babel-jest": "^23.0.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
     "eslint": "^3.10.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^17.0.3",
-    "jest-enzyme": "^2.0.0",
+    "jest": "^23.1.0",
+    "jest-enzyme": "^6.0.1",
     "react-test-renderer": "^15.6.1",
     "react-transform-hmr": "^1.0.2",
     "sinon": "^1.17.6",
-    "webpack-dev-server": "^2.7.1"
+    "webpack-dev-server": "^2.11.1"
   },
   "repository": {
     "type": "git",
@@ -84,7 +85,7 @@
     "setupFiles": [
       "./app/javascript/__tests__/jestsetup.js"
     ],
-    "setupTestFrameworkScriptFile": "node_modules/jest-enzyme/lib/index.js",
+    "setupTestFrameworkScriptFile": "<rootDir>app/javascript/__tests__/jestsetup.js",
     "unmockedModulePathPatterns": [
       "react",
       "enzyme",

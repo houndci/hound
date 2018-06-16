@@ -1,22 +1,30 @@
-exports[`test renders appropriately with Show Private button (not syncing) 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders appropriately with Show Private button (not syncing) 1`] = `
 <div
-  className="repo-tools">
+  className="repo-tools"
+>
   <RepoToolsSearch
-    onSearchInput={[Function]} />
+    onSearchInput={[Function]}
+  />
   <RepoToolsPrivate />
   <RepoToolsRefresh
     isSyncing={false}
-    onRefreshClicked={[Function]} />
+    onRefreshClicked={[Function]}
+  />
 </div>
 `;
 
-exports[`test renders appropriately without Show Private button (not syncing) 1`] = `
+exports[`renders appropriately without Show Private button (not syncing) 1`] = `
 <div
-  className="repo-tools">
+  className="repo-tools"
+>
   <RepoToolsSearch
-    onSearchInput={[Function]} />
+    onSearchInput={[Function]}
+  />
   <RepoToolsRefresh
     isSyncing={false}
-    onRefreshClicked={[Function]} />
+    onRefreshClicked={[Function]}
+  />
 </div>
 `;

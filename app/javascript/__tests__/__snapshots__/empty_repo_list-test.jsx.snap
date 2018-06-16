@@ -1,4 +1,7 @@
-exports[`test renders an empty unordered list 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders an empty unordered list 1`] = `
 <ul
-  className="repos" />
+  className="repos"
+/>
 `;
