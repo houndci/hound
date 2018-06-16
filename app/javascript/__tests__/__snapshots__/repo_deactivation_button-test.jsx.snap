@@ -1,28 +1,33 @@
-exports[`test renders a button appropriately for admin repos  1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a button appropriately for admin repos  1`] = `
 <button
   className="repo-toggle"
   disabled={null}
   onClick={[Function]}
   onMouseOut={[Function]}
-  onMouseOver={[Function]}>
+  onMouseOver={[Function]}
+>
   Active
 </button>
 `;
 
-exports[`test renders a button appropriately for non-admin repos  1`] = `
+exports[`renders a button appropriately for non-admin repos  1`] = `
 <div
-  className="repo-restricted">
+  className="repo-restricted"
+>
   Only repo admins can activate
 </div>
 `;
 
-exports[`test renders a disabled button appropriately for admin repos 1`] = `
+exports[`renders a disabled button appropriately for admin repos 1`] = `
 <button
   className="repo-toggle"
   disabled="disabled"
   onClick={[Function]}
   onMouseOut={[Function]}
-  onMouseOver={[Function]}>
+  onMouseOver={[Function]}
+>
   Active
 </button>
 `;

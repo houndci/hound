@@ -57,7 +57,6 @@ it('renders appropriately (neither current nor new plan)', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-
 it('renders appropriately (bulk)', () => {
   const plan = {
     name: "Bulk",

@@ -1,12 +1,17 @@
-exports[`test renders appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders appropriately 1`] = `
 <div
-  className="repo-tools-private">
+  className="repo-tools-private"
+>
   <form
     action="/auth/github?access=full"
-    method="post">
+    method="post"
+  >
     <button
       className="repo-tools-private-button"
-      type="submit">
+      type="submit"
+    >
       <span>
         Include private repos
       </span>

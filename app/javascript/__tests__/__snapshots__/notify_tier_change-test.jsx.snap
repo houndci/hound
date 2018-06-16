@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`NotifyTierChange snapshots renders plans appropriately (Chihuahua -> Labrador) 1`] = `
 <App
   authenticity_token="csrf_token"
@@ -24,7 +26,8 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Chihuahua -> La
     ]
   }
   repo_id={1}
-  repo_name="Test repo" />
+  repo_name="Test repo"
+/>
 `;
 
 exports[`NotifyTierChange snapshots renders plans appropriately (Labrador -> Great Dane) 1`] = `
@@ -53,5 +56,6 @@ exports[`NotifyTierChange snapshots renders plans appropriately (Labrador -> Gre
     ]
   }
   repo_id={1}
-  repo_name="Test repo" />
+  repo_name="Test repo"
+/>
 `;

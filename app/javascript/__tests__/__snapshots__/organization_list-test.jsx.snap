@@ -1,11 +1,15 @@
-exports[`test renders a list of organizations appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a list of organizations appropriately 1`] = `
 <section
-  className="organizations">
+  className="organizations"
+>
   <Organization
     filterTerm=""
     isProcessingId={null}
+    key="1"
     name="Test org"
-    onRepoClicked={[Function]}
+    onRepoClicked={[MockFunction]}
     ownerId={1}
     repos={
       Array [
@@ -17,6 +21,7 @@ exports[`test renders a list of organizations appropriately 1`] = `
           },
         },
       ]
-    } />
+    }
+  />
 </section>
 `;

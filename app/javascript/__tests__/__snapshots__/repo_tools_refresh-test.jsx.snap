@@ -1,22 +1,28 @@
-exports[`test renders appropriately (when syncing) 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders appropriately (when syncing) 1`] = `
 <div
-  className="repo-tools-refresh">
+  className="repo-tools-refresh"
+>
   <button
     className="repo-tools-refresh-button"
     disabled="disabled"
-    onClick={[Function]}>
+    onClick={[MockFunction]}
+  >
     <span />
   </button>
 </div>
 `;
 
-exports[`test renders appropriately 1`] = `
+exports[`renders appropriately 1`] = `
 <div
-  className="repo-tools-refresh">
+  className="repo-tools-refresh"
+>
   <button
     className="repo-tools-refresh-button"
     disabled={null}
-    onClick={[Function]}>
+    onClick={[MockFunction]}
+  >
     <span />
   </button>
 </div>

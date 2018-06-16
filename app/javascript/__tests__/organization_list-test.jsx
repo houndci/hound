@@ -53,7 +53,7 @@ it("filters a list of organizations appropriately", () => {
       isProcessingId={null}
     />
   );
-  const organizationsFound = wrapper.find(Organization).nodes;
+  const organizationsFound = wrapper.find(Organization).getElements();
   expect(organizationsFound.length).toBe(3);
 
   expect(organizationsFound[0].props.name).toBe("Test org 1");
@@ -90,7 +90,7 @@ it("filters a list of organizations appropriately", () => {
       isProcessingId={null}
     />
   );
-  const organizationsFound = wrapper.find(Organization).nodes;
+  const organizationsFound = wrapper.find(Organization).getElements();
   expect(organizationsFound.length).toBe(3);
 
   expect(organizationsFound[0].props.name).toBe("S.H.I.E.L.D.");

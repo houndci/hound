@@ -1,11 +1,17 @@
-exports[`test renders appropriately 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders appropriately 1`] = `
 <div
-  className="repos-syncing">
+  className="repos-syncing"
+>
   <div
-    className="dot" />
+    className="dot"
+  />
   <div
-    className="dot" />
+    className="dot"
+  />
   <div
-    className="dot" />
+    className="dot"
+  />
 </div>
 `;
