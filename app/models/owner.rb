@@ -48,9 +48,12 @@ class Owner < ApplicationRecord
     stripe_subscription && stripe_subscription.status != "active"
   end
 
-  def most_recent_invoice
+  def recent_invoice_url
     if stripe_subscription_id
-      Stripe::Invoice.list(subscription: stripe_subscription_id).first
+      Stripe::Invoice.
+        list(subscription: stripe_subscription_id).
+        detect(&:hosted_invoice_url).
+        try(:hosted_invoice_url)
     end
   end
 
