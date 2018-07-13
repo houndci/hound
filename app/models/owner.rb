@@ -52,6 +52,7 @@ class Owner < ApplicationRecord
     if stripe_subscription_id
       Stripe::Invoice.
         list(subscription: stripe_subscription_id).
+        sort_by { |invoice| -invoice.date }.
         detect(&:hosted_invoice_url).
         try(:hosted_invoice_url)
     end
