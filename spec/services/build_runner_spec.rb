@@ -313,7 +313,7 @@ describe BuildRunner do
     end
 
     def configuration_url
-      Rails.application.routes.url_helpers.configuration_url(host: ENV["HOST"])
+      ENV.fetch("DOCS_URL")
     end
   end
 
@@ -378,6 +378,6 @@ describe BuildRunner do
   end
 
   def config_url
-    Rails.application.routes.url_helpers.configuration_url(host: Hound::HOST)
+    ENV.fetch("DOCS_URL")
   end
 end
