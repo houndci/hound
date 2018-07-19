@@ -311,10 +311,6 @@ describe BuildRunner do
           with(filename).and_return(contents)
       end
     end
-
-    def configuration_url
-      ENV.fetch("DOCS_URL")
-    end
   end
 
   describe "#set_internal_error" do
