@@ -63,7 +63,7 @@ class CommitStatus
   attr_reader :repo_name, :sha, :token
 
   def configuration_url
-    Rails.application.routes.url_helpers.configuration_url(host: Hound::HOST)
+    ENV.fetch("DOCS_URL")
   end
 
   def github
