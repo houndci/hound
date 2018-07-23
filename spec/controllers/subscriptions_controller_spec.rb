@@ -111,6 +111,38 @@ describe SubscriptionsController, "#create" do
   end
 
   describe "#update" do
+    context "when the subscription can be created" do
+      it "returns 'Created'" do
+        repo = instance_double(
+          "Repo",
+          id: 123,
+          as_json: { active: true },
+          name: "TEST_REPO_NAME",
+          private?: true,
+          subscription: double
+        )
+        repo_activator = instance_double(
+          "RepoActivator",
+          activate: true,
+          errors: []
+        )
+        repos = class_double(Repo, find_by: repo)
+        user = instance_double(
+          "User",
+          email: "TEST_USER_EMAIL",
+          repos: repos,
+          token: "TEST_USER_TOKEN",
+          username: "jimtom",
+        )
+        allow(RepoActivator).to receive(:new).and_return(repo_activator)
+        allow(User).to receive(:find_by).and_return(user)
+
+        put :update, params: { repo_id: 1 }
+
+        expect(response).to have_http_status(:created)
+      end
+    end
+
     context "when the subscription cannot be created" do
       it "returns 'Bad Gateway'" do
         repo = instance_double(
@@ -124,6 +156,7 @@ describe SubscriptionsController, "#create" do
           "RepoActivator",
           activate: false,
           deactivate: true,
+          errors: []
         )
         repos = class_double(Repo, find_by: repo)
         user = instance_double(
@@ -139,6 +172,38 @@ describe SubscriptionsController, "#create" do
         put :update, params: { repo_id: 1 }
 
         expect(response).to have_http_status(:bad_gateway)
+      end
+
+      it "returns first activation error" do
+        repo = instance_double(
+          "Repo",
+          id: 123,
+          as_json: { active: true },
+          name: "TEST_REPO_NAME",
+          private?: true,
+        )
+        repo_activator = instance_double(
+          "RepoActivator",
+          activate: false,
+          deactivate: true,
+          errors: ["Wat"]
+        )
+        repos = class_double(Repo, find_by: repo)
+        user = instance_double(
+          "User",
+          email: "TEST_USER_EMAIL",
+          repos: repos,
+          token: "TEST_USER_TOKEN",
+          username: "jimtom",
+        )
+        allow(RepoActivator).to receive(:new).and_return(repo_activator)
+        allow(User).to receive(:find_by).and_return(user)
+
+        put :update, params: { repo_id: 1 }
+
+        expect(JSON.parse(response.body)["errors"].first).to(
+          eq repo_activator.errors.first
+        )
       end
     end
   end
