@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 class CommentingPolicy
-  pattr_initialize :pull_request
+  COMMENT_LINE_DELIMITER = "<br>"
+
+  pattr_initialize :comments
 
   def comment_on?(violation)
     unreported_violation_messages(violation).any?
@@ -14,11 +18,11 @@ class CommentingPolicy
   def existing_violation_messages(violation)
     previous_comments_on_line(violation).
       map(&:body).
-      flat_map { |body| body.split(PullRequest::COMMENT_LINE_DELIMITER) }
+      flat_map { |body| body.split(COMMENT_LINE_DELIMITER) }
   end
 
   def previous_comments_on_line(violation)
-    pull_request.comments.select do |comment|
+    comments.select do |comment|
       matches_location?(violation, comment)
     end
   end

@@ -28,9 +28,7 @@ class BuildRunner
     owner = upsert_owner
 
     if repo.private? && owner.past_due?
-      commit_status.set_past_due_status(
-        owner.recent_invoice_url,
-      )
+      commit_status.set_past_due_status(owner.recent_invoice_url)
     else
       build = create_build
       review_files(build)

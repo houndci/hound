@@ -45,56 +45,6 @@ describe PullRequest do
     end
   end
 
-  describe "#comments" do
-    it "returns comments on pull request" do
-      filename = "spec/models/linter_spec.rb"
-      comment = double(:comment, position: 7, path: filename)
-      github = double(:github, pull_request_comments: [comment])
-      pull_request = pull_request_stub(github)
-
-      comments = pull_request.comments
-
-      expect(comments.size).to eq(1)
-      expect(comments).to match_array([comment])
-    end
-  end
-
-  describe "#make_comments" do
-    it "posts a review with comments to GitHub as the Hound user" do
-      payload = payload_stub
-      github = instance_double("GitHubApi", create_pull_request_review: nil)
-      pull_request = pull_request_stub(github, payload)
-      violation = violation_stub
-      review_errors = ["invalid config", "foo\n  bar"]
-
-      pull_request.make_comments([violation], review_errors)
-
-      expect(github).to have_received(:create_pull_request_review).with(
-        "org/repo",
-        payload.pull_request_number,
-        [
-          {
-            path: violation.filename,
-            position: violation.patch_position,
-            body: violation.messages.join,
-          },
-        ],
-        <<~EOS.chomp
-          Some files could not be reviewed due to errors:
-          <details>
-          <summary>invalid config</summary>
-          <pre>invalid config</pre>
-          </details>
-          <details>
-          <summary>foo</summary>
-          <pre>foo
-            bar</pre>
-          </details>
-        EOS
-      )
-    end
-  end
-
   describe "#commit_files" do
     it "does not include removed files" do
       added_github_file = double(
@@ -127,15 +77,6 @@ describe PullRequest do
         [added_github_file.filename, modified_github_file.filename]
       )
     end
-  end
-
-  def violation_stub(options = {})
-    defaults =  {
-      messages: ["A comment"],
-      filename: "test.rb",
-      patch_position: 123,
-    }
-    double("Violation", defaults.merge(options))
   end
 
   def payload_stub(options = {})
