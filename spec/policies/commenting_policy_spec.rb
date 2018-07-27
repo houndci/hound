@@ -1,13 +1,10 @@
-require "attr_extras"
-require "rails_helper"
 require "app/policies/commenting_policy"
 
-describe CommentingPolicy do
+RSpec.describe CommentingPolicy do
   describe "#comment_on?" do
     context "when line with violation has not been previously commented on" do
       it "returns true" do
-        pull_request = stub_pull_request
-        commenting_policy = CommentingPolicy.new(pull_request)
+        commenting_policy = CommentingPolicy.new([])
 
         result = commenting_policy.comment_on?(stub_violation)
 
@@ -27,8 +24,7 @@ describe CommentingPolicy do
             position: violation.patch_position,
             path: violation.filename,
           )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
+          commenting_policy = CommentingPolicy.new([comment])
 
           result = commenting_policy.comment_on?(stub_violation)
 
@@ -45,8 +41,7 @@ describe CommentingPolicy do
             oritinal_position: violation.patch_position,
             path: "bar.rb",
           )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
+          commenting_policy = CommentingPolicy.new([comment])
 
           result = commenting_policy.comment_on?(violation)
 
@@ -62,8 +57,7 @@ describe CommentingPolicy do
             position: violation.patch_position,
             path: violation.filename,
           )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
+          commenting_policy = CommentingPolicy.new([comment])
 
           result = commenting_policy.comment_on?(violation)
 
@@ -80,8 +74,7 @@ describe CommentingPolicy do
             original_position: violation.patch_position + 3,
             path: violation.filename,
           )
-          pull_request = stub_pull_request(comments: [comment])
-          commenting_policy = CommentingPolicy.new(pull_request)
+          commenting_policy = CommentingPolicy.new([comment])
 
           result = commenting_policy.comment_on?(violation)
 
@@ -92,9 +85,7 @@ describe CommentingPolicy do
   end
 
   def stub_comment(options = {})
-    defaults = {
-      user: double("GitHubUser", login: Hound::GITHUB_USERNAME),
-    }
+    defaults = { user: double("GitHubUser", login: "houndci-bot") }
     double("GitHubComment", defaults.merge(options))
   end
 
@@ -105,10 +96,5 @@ describe CommentingPolicy do
       patch_position: 1,
     }
     instance_double("Violation", defaults.merge(options))
-  end
-
-  def stub_pull_request(options = {})
-    defaults = { opened?: true, comments: [] }
-    instance_double("PullRequest", defaults.merge(options))
   end
 end

@@ -1,27 +1,9 @@
 require "rails_helper"
 
-describe CompleteBuild do
+RSpec.describe CompleteBuild do
   describe ".call" do
     context "when build has violations" do
       context "when the build is complete" do
-        it "makes comments only for new violations and repects max limit" do
-          stub_const("Hound::MAX_COMMENTS", 2)
-          build = stub_build(["foo", "bar", "baz"])
-          existing_comment = build_comment("foo")
-          pull_request = stub_pull_request([existing_comment])
-          stubbed_github_api
-
-          CompleteBuild.call(
-            pull_request: pull_request,
-            build: build,
-            token: "abc123",
-          )
-
-          expect(pull_request).to have_received(:make_comments) do |arg|
-            expect(arg.flat_map(&:messages)).to match_array ["bar"]
-          end
-        end
-
         context "when fail on violations is disabled" do
           it "sets GitHub status to complete" do
             stubbed_hound_config(fail_on_violations?: false)
@@ -68,40 +50,26 @@ describe CompleteBuild do
             token: "abc123",
           )
 
-          expect(pull_request).not_to have_received(:make_comments)
+          expect(github_api).not_to have_received(:create_pull_request_review)
           expect(github_api).not_to have_received(:create_success_status)
         end
       end
     end
 
     context "when build does not have violations" do
-      it "sets GitHub status to complete" do
+      it "sets GitHub status to complete without comments" do
         build = stub_build([])
         stubbed_hound_config(fail_on_violations?: false)
         github_api = stubbed_github_api
 
         run_service(build)
 
+        expect(github_api).not_to have_received(:create_pull_request_review)
         expect(github_api).to have_received(:create_success_status).with(
           build.repo_name,
           build.commit_sha,
           I18n.t(:complete_status, count: 0),
         )
-      end
-
-      it "does not send a PR review" do
-        stub_const("Hound::MAX_COMMENTS", 2)
-        build = stub_build([])
-        pull_request = stub_pull_request([])
-        stubbed_github_api
-
-        CompleteBuild.call(
-          pull_request: pull_request,
-          build: build,
-          token: "abc123",
-        )
-
-        expect(pull_request).not_to have_received(:make_comments)
       end
     end
 
@@ -109,16 +77,16 @@ describe CompleteBuild do
       it "adds a comment to pull request review" do
         build = stub_build([], review_errors: ["cannot parse config"])
         pull_request = stub_pull_request
-        stubbed_github_api
+        github_api = stubbed_github_api
 
-        CompleteBuild.call(
-          pull_request: pull_request,
-          build: build,
-          token: "abc123",
+        run_service(build)
+
+        expect(github_api).to have_received(:create_pull_request_review).with(
+          build.repo_name,
+          build.pull_request_number,
+          [],
+          include("cannot parse config"),
         )
-
-        expect(pull_request).to have_received(:make_comments).
-          with([], ["cannot parse config"])
       end
     end
 
@@ -142,6 +110,8 @@ describe CompleteBuild do
         "GitHubApi",
         create_success_status: nil,
         create_error_status: nil,
+        create_pull_request_review: nil,
+        pull_request_comments: [],
       )
       allow(GitHubApi).to receive(:new).and_return(github_api)
 
@@ -175,6 +145,7 @@ describe CompleteBuild do
         repo: repo,
         repo_name: "foo/bar",
         commit_sha: "abc123",
+        pull_request_number: 321,
         violations: violations,
         violations_count: violations.size,
       }
@@ -183,16 +154,7 @@ describe CompleteBuild do
 
     def stub_pull_request(comments = [])
       head_commit = instance_double("Commit", file_content: "")
-      instance_double(
-        "PullRequest",
-        head_commit: head_commit,
-        comments: comments,
-        make_comments: nil,
-      )
-    end
-
-    def build_comment(body)
-      OpenStruct.new(path: "app/anything.rb", position: 1, body: body)
+      instance_double("PullRequest", head_commit: head_commit)
     end
 
     def run_service(build)
