@@ -8,8 +8,8 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 
   provider(
     :github,
-    ENV['GITHUB_CLIENT_ID'],
-    ENV['GITHUB_CLIENT_SECRET'],
+    Hound::GITHUB_CLIENT_ID,
+    Hound::GITHUB_CLIENT_SECRET,
     setup: setup,
     provider_ignores_state: true,
   )

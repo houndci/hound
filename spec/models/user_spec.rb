@@ -121,48 +121,6 @@ describe User do
     end
   end
 
-  describe '#has_repos_with_missing_information?' do
-    context 'with repo without organization info' do
-      it 'returns true' do
-        user = create(:user)
-        repo = create(:repo, in_organization: nil)
-        user.repos << repo
-
-        expect(user).to have_repos_with_missing_information
-      end
-    end
-
-    context 'with repo without privacy info' do
-      it 'return true' do
-        user = create(:user)
-        repo = create(:repo, private: nil)
-        user.repos << repo
-
-        expect(user).to have_repos_with_missing_information
-      end
-    end
-
-    context 'with repo without organization and privacy info' do
-      it 'returns true' do
-        user = create(:user)
-        repo = create(:repo, in_organization: nil, private: nil)
-        user.repos << repo
-
-        expect(user).to have_repos_with_missing_information
-      end
-    end
-
-    context 'with repo with organization and privacy info' do
-      it 'returns false' do
-        user = create(:user)
-        repo = create(:repo, in_organization: true, private: true)
-        user.repos << repo
-
-        expect(user).not_to have_repos_with_missing_information
-      end
-    end
-  end
-
   describe "#has_access_to_private_repos?" do
     context "when token scopes include repo" do
       it "returns true" do

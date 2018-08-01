@@ -12,14 +12,18 @@ describe RepoSynchronization do
       expect(user.reload.repos.first).to be_private
     end
 
-    it "saves organization flag" do
+    it "replaces existing repos" do
       stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
-      user = create(:user)
+      membership = create(:membership)
+      user = membership.user
       synchronization = RepoSynchronization.new(user)
 
       synchronization.start
 
-      expect(user.reload.repos.first).to be_in_organization
+      user.reload
+      expect(user.repos.size).to eq(1)
+      expect(user.repos.first.name).to eq "user/newrepo"
+      expect(user.repos.first.github_id).to eq 456
     end
 
     context "when there is an 'ActiveRecord::RecordNotUnique' exception" do
@@ -66,20 +70,6 @@ describe RepoSynchronization do
 
         expect(user.memberships.first).not_to be_admin
       end
-    end
-
-    it "replaces existing repos" do
-      stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
-      membership = create(:membership)
-      user = membership.user
-      synchronization = RepoSynchronization.new(user)
-
-      synchronization.start
-
-      user.reload
-      expect(user.repos.size).to eq(1)
-      expect(user.repos.first.name).to eq "user/newrepo"
-      expect(user.repos.first.github_id).to eq 456
     end
 
     context "when repo was renamed to an existing repo" do
@@ -160,12 +150,37 @@ describe RepoSynchronization do
       end
     end
 
+    context "when user has an installation" do
+      it "saves the installation id on the repo" do
+        user = create(:user, installation_ids: ["101"])
+        synchronization = RepoSynchronization.new(user)
+        stub_github_api_installation_repos(repo_name: "foo/bar")
+
+        synchronization.start
+
+        expect(Repo.count).to eq 1
+        expect(Repo.first).to have_attributes(installation_id: 101)
+      end
+    end
+
+    def stub_github_api_installation_repos(repo_name:)
+      repo = build_github_repo(id: 123, name: repo_name)
+      app_token = instance_double("AppToken", generate: "some-app-token")
+      api = instance_double(
+        "GitHubApi",
+        create_installation_token: "some-token",
+        installation_repos: [repo],
+      )
+      allow(AppToken).to receive(:new).and_return(app_token)
+      allow(GitHubApi).to receive(:new).and_return(api)
+    end
+
     def stub_github_api_repos(repo_name:, repo_id:, owner_id: 1, admin: false)
       repo = build_github_repo(id: repo_id, name: repo_name)
       repo[:owner][:id] = owner_id
       repo[:permissions][:admin] = admin
 
-      api = double("GitHubApi", repos: [repo])
+      api = instance_double("GitHubApi", repos: [repo])
       allow(GitHubApi).to receive(:new).and_return(api)
 
       repo

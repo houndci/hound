@@ -5,7 +5,7 @@ require "base64"
 
 class GitHubApi
   ORGANIZATION_TYPE = "Organization"
-  PREVIEW_API_HEADER = "application/vnd.github.black-cat-preview+json"
+  PREVIEW_API_HEADER = "application/vnd.github.machine-man-preview+json"
 
   attr_reader :file_cache, :token
 
@@ -16,6 +16,19 @@ class GitHubApi
 
   def scopes
     client.scopes(token).join(",")
+  end
+
+  def create_installation_token(installation_id)
+    client.create_app_installation_access_token(installation_id)[:token]
+  end
+
+  def installation_repos
+    client.list_app_installation_repositories[:repositories]
+  end
+
+  def plan_for_account(github_id)
+    response = client.plan_for_account(github_id)
+    response&.marketplace_purchase&.plan
   end
 
   def repos
@@ -64,7 +77,6 @@ class GitHubApi
   def create_pull_request_review(repo_name, pr_number, comments, body)
     client.post(
       "#{Octokit::Repository.path(repo_name)}/pulls/#{pr_number}/reviews",
-      accept: PREVIEW_API_HEADER,
       event: "COMMENT",
       body: body,
       comments: comments,
@@ -135,7 +147,7 @@ class GitHubApi
   private
 
   def client
-    @_client ||= Octokit::Client.new(access_token: token, auto_paginate: true)
+    @_client ||= Octokit::Client.new(bearer_token: token, auto_paginate: true)
   end
 
   def create_status(repo:, sha:, state:, description:, target_url: nil)

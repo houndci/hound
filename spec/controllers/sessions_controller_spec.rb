@@ -10,12 +10,17 @@ describe SessionsController do
           token: "letmein",
         )
         allow(GitHubApi).to receive(:new).and_return(stub_github_api)
+        session[:installation_id] = "101"
 
-        expect { post :create }.to change { User.count }.by(1)
-        user = User.last
-        expect(user.username).to eq "jimtom"
-        expect(user.email).to eq "jimtom@example.com"
-        expect(user.token).to eq "letmein"
+        post :create
+
+        expect(User.count).to eq 1
+        expect(User.first).to have_attributes(
+          username: "jimtom",
+          email: "jimtom@example.com",
+          token: "letmein",
+          installation_ids: [101],
+        )
       end
     end
 
@@ -32,13 +37,20 @@ describe SessionsController do
     end
 
     context "with existing user" do
-      it "updates the token and email" do
-        user = create(:user, username: "jim", email: "j@foo.com", token: "bar")
+      it "updates email, token and installation_ids" do
+        user = create(
+          :user,
+          username: "jim",
+          email: "j@foo.com",
+          token: "bar",
+          installation_ids: ["1001", "1002"],
+        )
         request.env["omniauth.auth"] = stub_oauth(
           username: user.username,
           email: "jim@example.com",
           token: "letmein",
         )
+        session[:installation_id] = "1005"
         allow(GitHubApi).to receive(:new).and_return(stub_github_api)
 
         post :create
@@ -46,6 +58,11 @@ describe SessionsController do
         user.reload
         expect(user.email).to eq "jim@example.com"
         expect(user.token).to eq "letmein"
+        expect(user.reload).to have_attributes(
+          email: "jim@example.com",
+          token: "letmein",
+          installation_ids: [1001, 1002, 1005],
+        )
       end
     end
   end

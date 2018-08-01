@@ -1,6 +1,7 @@
 require "spec_helper"
 require "attr_extras"
 require "app/models/payload"
+require "app/models/config/parser"
 require "lib/github_api"
 
 describe Payload do
@@ -187,21 +188,21 @@ describe Payload do
 
       expect(payload.build_data).to eq(
         {
-          "number" => 2,
+          "number" => 1,
           "action" => "opened",
           "pull_request" => {
             "changed_files" => 1,
             "head" => {
-              "sha" => "498b81cd038f8a3ac02f035a8537b7ddcff38a81",
+              "sha" => "34c5c7793cb3b279e22454cb6750c80560547b3a",
             }
           },
           "repository" => {
-            "id" => 2937493,
-            "full_name" => "salbertson/life",
+            "id" => 135493233,
+            "full_name" => "Codertocat/Hello-World",
             "private" => false,
             "owner" => {
-              "id" => 154463,
-              "login" => "salbertson",
+              "id" => 21031067,
+              "login" => "Codertocat",
               "type" => "User"
             }
           }

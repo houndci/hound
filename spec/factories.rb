@@ -45,7 +45,6 @@ FactoryGirl.define do
     trait(:inactive) { active false }
     trait(:in_private_org) do
       active true
-      in_organization true
       private true
     end
     trait(:private) { private true }
@@ -55,7 +54,6 @@ FactoryGirl.define do
     owner
 
     private false
-    in_organization false
   end
 
   factory :user do

@@ -24,17 +24,23 @@ class SessionsController < ApplicationController
   end
 
   def find_user
-    if user = User.where(username: username).first
-      Analytics.new(user).track_signed_in
-    end
+    User.find_by(username: username).tap do |user|
+      if user
+        Analytics.new(user).track_signed_in
 
-    user
+        if session[:installation_id]
+          ids = user.installation_ids | [session[:installation_id].to_i]
+          user.update(installation_ids: ids, repos: [])
+        end
+      end
+    end
   end
 
   def create_user
     user = User.create!(
       username: username,
       email: github_email,
+      installation_ids: [session[:installation_id]].compact,
       utm_source: session[:campaign_params].try(:[], :utm_source),
     )
     flash[:signed_up] = true
@@ -47,6 +53,7 @@ class SessionsController < ApplicationController
 
   def destroy_session
     session[:remember_token] = nil
+    session[:installation_id] = nil
   end
 
   def github

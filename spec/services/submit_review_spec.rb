@@ -1,13 +1,9 @@
-require "app/services/submit_review"
-require "app/policies/commenting_policy"
-require "app/models/review_body"
-require "lib/github_api"
+require "rails_helper"
 
 RSpec.describe SubmitReview do
   describe ".call" do
     it "posts a review with max comments to GitHub" do
       stub_const("Hound::MAX_COMMENTS", 2)
-      stub_const("Hound::GITHUB_TOKEN", "some-token")
       violation1 = stub_violation("foo comment")
       violation2 = stub_violation("bar comment")
       violation3 = stub_violation("baz comment")
@@ -51,8 +47,6 @@ RSpec.describe SubmitReview do
 
     context "with existing violations" do
       it "makes comments only for new violations" do
-        stub_const("Hound::MAX_COMMENTS", 5)
-        stub_const("Hound::GITHUB_TOKEN", "some-token")
         violation1 = stub_violation("foo")
         violation2 = stub_violation("bar")
         build = stub_build(violations: [violation1, violation2])
@@ -72,6 +66,19 @@ RSpec.describe SubmitReview do
         )
       end
     end
+
+    context "without installation id" do
+      it "uses Hound's github token to submit review" do
+        violation = stub_violation("foo")
+        repo = instance_double("Repo", installation_id: nil, name: "org/repo")
+        build = stub_build(violations: [violation], repo: repo)
+        stub_github
+
+        described_class.call(build)
+
+        expect(GitHubApi).to have_received(:new).with(Hound::GITHUB_TOKEN)
+      end
+    end
   end
 
   def stub_violation(message)
@@ -87,9 +94,14 @@ RSpec.describe SubmitReview do
     double("GitHubComment", path: filename, position: 1, body: body)
   end
 
-  def stub_build(violations:, review_errors: [])
+  def stub_repo
+    instance_double("Repo", installation_id: 505, name: "org/repo")
+  end
+
+  def stub_build(violations:, review_errors: [], repo: stub_repo)
     instance_double(
       "Build",
+      repo: repo,
       repo_name: "org/repo",
       pull_request_number: 55,
       violations: violations,
@@ -102,6 +114,7 @@ RSpec.describe SubmitReview do
       "GitHubApi",
       pull_request_comments: comments,
       create_pull_request_review: nil,
+      create_installation_token: "gh-installation-token",
     )
     allow(GitHubApi).to receive(:new).and_return(github)
     github

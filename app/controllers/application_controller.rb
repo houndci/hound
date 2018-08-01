@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
-  FREE_MARKETPLACE_PLAN_ID = MarketplacePlan::PLANS.first[:id]
-  MARKETPLACE_LISTING_URL = "https://github.com/marketplace/hound".freeze
+  MARKETPLACE_LISTING_URL = "https://github.com/marketplace/hound"
 
   protect_from_forgery
 
@@ -10,13 +11,17 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :signed_in?, :masquerading?, :account_path
 
+  protected
+
+  def verified_request?
+    super || valid_authenticity_token?(session, request.headers["X-XSRF-TOKEN"])
+  end
+
   private
 
   def force_https
-    if Hound::HTTPS_ENABLED
-      if !request.ssl? && force_https?
-        redirect_to protocol: "https://", status: :moved_permanently
-      end
+    if Hound::HTTPS_ENABLED && !request.ssl? && force_https?
+      redirect_to protocol: "https://", status: :moved_permanently
     end
   end
 
@@ -33,16 +38,9 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
+    session[:installation_id] = params[:installation_id]
     unless signed_in?
-      if params[:marketplace_listing_plan_id]
-        if params[:marketplace_listing_plan_id] == FREE_MARKETPLACE_PLAN_ID.to_s
-          redirect_to github_oauth_path
-        else
-          redirect_to github_oauth_path(full_access: true)
-        end
-      else
-        redirect_to root_path
-      end
+      redirect_to "/auth/github"
     end
   end
 
@@ -62,25 +60,11 @@ class ApplicationController < ActionController::Base
     session[:masqueraded_user_id]
   end
 
-  protected
-
-  def verified_request?
-    super || valid_authenticity_token?(session, request.headers["X-XSRF-TOKEN"])
-  end
-
   def find_user_or_masqerade
     if masquerading?
       User.find_by(id: session[:masqueraded_user_id])
     else
       User.find_by(remember_token: session[:remember_token])
-    end
-  end
-
-  def github_oauth_path(full_access: false)
-    if full_access
-      "/auth/github?access=full"
-    else
-      "/auth/github"
     end
   end
 

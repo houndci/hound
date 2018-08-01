@@ -32,16 +32,12 @@ class Owner < ApplicationRecord
     hound_config.content
   end
 
-  def marketplace?
-    marketplace_plan_id.present?
-  end
-
   def plan_upgrade?
-    plan_selector.upgrade?
+    marketplace_plan.upgrade?
   end
 
   def upgrade_url
-    plan_selector.upgrade_url
+    marketplace_plan.upgrade_url
   end
 
   def past_due?
@@ -64,8 +60,8 @@ class Owner < ApplicationRecord
     @_hound_config ||= BuildOwnerHoundConfig.call(self)
   end
 
-  def plan_selector
-    @_plan_selector ||= MarketplacePlanSelector.new(self)
+  def marketplace_plan
+    @_marketplace_plan ||= MarketplacePlan.new(self)
   end
 
   # set manually when Stripe customer is unpaid
