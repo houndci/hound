@@ -4,7 +4,7 @@ module GitHubApiHelper
       :put,
       "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
     ).with(
-      headers: { "Authorization" => "token #{user_token}" }
+      headers: { "Authorization" => "Bearer #{user_token}" },
     ).to_return(
       status: 204,
     )
@@ -15,7 +15,7 @@ module GitHubApiHelper
       :delete,
       "https://api.github.com/repos/#{repo_name}/collaborators/#{username}"
     ).with(
-      headers: { "Authorization" => "token #{user_token}" }
+      headers: { "Authorization" => "Bearer #{user_token}" },
     ).to_return(
       status: 204,
     )
@@ -27,7 +27,7 @@ module GitHubApiHelper
       "https://api.github.com/repos/#{full_repo_name}/hooks"
     ).with(
       body: %({"name":"web","config":{"url":"#{callback_endpoint}"},"events":["pull_request"],"active":true}),
-      headers: { "Authorization" => "token #{token}" }
+      headers: { "Authorization" => "Bearer #{token}" },
     ).to_return(
       status: 200,
       body: read_fixture("github_hook_creation_response.json"),
@@ -41,7 +41,7 @@ module GitHubApiHelper
       "https://api.github.com/repos/#{full_repo_name}/hooks"
     ).with(
       body: %({"name":"web","config":{"url":"#{callback_endpoint}"},"events":["pull_request"],"active":true}),
-      headers: { "Authorization" => "token #{hound_token}" }
+      headers: { "Authorization" => "Bearer #{hound_token}" },
     ).to_return(
       status: 422,
       body: read_fixture("failed_hook.json"),
@@ -52,7 +52,7 @@ module GitHubApiHelper
   def stub_hook_removal_request(full_repo_name, hook_id)
     url = "https://api.github.com/repos/#{full_repo_name}/hooks/#{hook_id}"
     stub_request(:delete, url).
-      with(headers: { 'Authorization' => /^token \w+$/ }).
+      with(headers: { "Authorization" => /^Bearer \w+$/ }).
       to_return(status: 204)
   end
 
@@ -61,7 +61,7 @@ module GitHubApiHelper
       :get,
       "https://api.github.com/repos/#{full_repo_name}/pulls/#{pull_request_number}/files?per_page=100"
     ).with(
-      headers: { "Authorization" => "token #{hound_token}" }
+      headers: { "Authorization" => "Bearer #{hound_token}" },
     ).to_return(
       status: 200,
       body: read_fixture("pull_request_files.json"),
@@ -85,45 +85,31 @@ module GitHubApiHelper
 
   def stub_repos_requests(token)
     repos_url = "https://api.github.com/user/repos"
+    headers = { "Content-Type" => "application/json; charset=utf-8" }
 
-    stub_request(
-      :get,
-      "#{repos_url}?per_page=100"
-    ).with(
-      headers: { "Authorization" => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: read_fixture("github_repos_response_for_jimtom.json"),
-      headers: {
-        "Link" => %(<#{repos_url}?page=2&per_page=100>; rel="next"),
-        "Content-Type" => "application/json; charset=utf-8",
-      }
-    )
+    stub_request(:get, "#{repos_url}?per_page=100").
+      with(headers: { "Authorization" => "Bearer #{token}" }).
+      to_return(
+        status: 200,
+        body: read_fixture("github_repos_response_for_jimtom.json"),
+        headers: headers.merge(
+          "Link" => %(<#{repos_url}?page=2&per_page=100>; rel="next"),
+        ),
+      )
 
-    stub_request(
-      :get,
-      "#{repos_url}?page=2&per_page=100"
-    ).with(
-      headers: { "Authorization" => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: read_fixture("github_repos_response_for_jimtom_page2.json"),
-      headers: {
-        "Link" => %(<#{repos_url}?page=3&per_page=100>; rel="next"),
-        "Content-Type" => "application/json; charset=utf-8",
-      }
-    )
+    stub_request(:get, "#{repos_url}?page=2&per_page=100").
+      with(headers: { "Authorization" => "Bearer #{token}" }).
+      to_return(
+        status: 200,
+        body: read_fixture("github_repos_response_for_jimtom_page2.json"),
+        headers: headers.merge(
+          "Link" => %(<#{repos_url}?page=3&per_page=100>; rel="next"),
+        ),
+      )
 
-    stub_request(
-      :get,
-      "#{repos_url}?page=3&per_page=100"
-    ).with(
-      headers: { "Authorization" => "token #{token}" }
-    ).to_return(
-      status: 200,
-      body: '[]',
-      headers: { 'Content-Type' => 'application/json; charset=utf-8' }
-    )
+    stub_request(:get, "#{repos_url}?page=3&per_page=100").
+      with(headers: { "Authorization" => "Bearer #{token}" }).
+      to_return(status: 200, body: "[]", headers: headers)
   end
 
   def stub_review_request(repo_name, pr_number, comments, body)
@@ -146,7 +132,7 @@ module GitHubApiHelper
     headers = { "Content-Type" => "application/json; charset=utf-8" }
 
     stub_request(:get, "#{url}?per_page=100").
-      with(headers: { "Authorization" => "token #{hound_token}" }).
+      with(headers: { "Authorization" => "Bearer #{hound_token}" }).
       to_return(status: 200, body: comments_body, headers: headers.merge(
         "Link" => %(<#{url}?page=2&per_page=100>; rel="next"),
       ))
@@ -159,7 +145,7 @@ module GitHubApiHelper
       :post,
       "https://api.github.com/repos/#{repo_name}/statuses/#{sha}",
     ).with(
-      headers: { "Authorization" => "token #{hound_token}" },
+      headers: { "Authorization" => "Bearer #{hound_token}" },
       body: status_request_body(description, state, target_url),
     ).to_return(status_request_return_value)
   end

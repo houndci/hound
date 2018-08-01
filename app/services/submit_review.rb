@@ -50,6 +50,15 @@ class SubmitReview
   end
 
   def github
-    @_github ||= GitHubApi.new(Hound::GITHUB_TOKEN)
+    @_github ||= GitHubApi.new(github_token)
+  end
+
+  def github_token
+    if build.repo.installation_id
+      app = GitHubApi.new(AppToken.new.generate)
+      app.create_installation_token(build.repo.installation_id)
+    else
+      Hound::GITHUB_TOKEN
+    end
   end
 end

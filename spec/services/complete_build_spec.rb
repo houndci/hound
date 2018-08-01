@@ -110,6 +110,7 @@ RSpec.describe CompleteBuild do
         "GitHubApi",
         create_success_status: nil,
         create_error_status: nil,
+        create_installation_token: "foo",
         create_pull_request_review: nil,
         pull_request_comments: [],
       )
@@ -136,6 +137,7 @@ RSpec.describe CompleteBuild do
       end
       repo = instance_double(
         "Repo",
+        installation_id: 111,
         subscription: false,
         owner: MissingOwner.new,
       )

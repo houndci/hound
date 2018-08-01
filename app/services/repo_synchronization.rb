@@ -1,54 +1,53 @@
 class RepoSynchronization
   pattr_initialize :user
-  attr_reader :user
 
   def start
     user.repos.clear
-    repos = api.repos
 
     Repo.transaction do
       repos.each do |resource|
-        begin
-          create_user_membership_from!(resource)
-        rescue ActiveRecord::RecordNotUnique
-          next
-        end
+        create_user_membership_from(resource)
+      rescue ActiveRecord::RecordNotUnique
+        next
       end
     end
   end
 
   private
 
-  def create_user_membership_from!(resource)
-    attributes = repo_attributes(resource.to_hash)
-    repo = Repo.find_or_create_with(attributes)
-    user.memberships.create!(
-      repo: repo,
-      admin: resource.to_hash[:permissions][:admin],
-    )
+  def repos
+    if user.installation_ids.any?
+      user.installation_ids.flat_map do |installation_id|
+        installation_repos(installation_id).map do |repo|
+          repo.to_hash.merge(installation_id: installation_id)
+        end
+      end
+    else
+      oauth.repos
+    end
   end
 
-  def api
-    @api ||= GitHubApi.new(user.token)
+  def create_user_membership_from(resource)
+    repo = CreateRepo.call(resource)
+    admin = repo.installation_id.present? || resource[:permissions][:admin]
+    user.memberships.create!(repo: repo, admin: admin)
   end
 
-  def repo_attributes(attributes)
-    owner = upsert_owner(attributes[:owner])
-
-    {
-      private: attributes[:private],
-      github_id: attributes[:id],
-      name: attributes[:full_name],
-      in_organization: attributes[:owner][:type] == GitHubApi::ORGANIZATION_TYPE,
-      owner: owner,
-    }
+  def oauth
+    GitHubApi.new(user.token)
   end
 
-  def upsert_owner(owner_attributes)
-    Owner.upsert(
-      github_id: owner_attributes[:id],
-      name: owner_attributes[:login],
-      organization: owner_attributes[:type] == GitHubApi::ORGANIZATION_TYPE
-    )
+  def installation(installation_id)
+    app = GitHubApi.new(AppToken.new.generate)
+    token = app.create_installation_token(installation_id)
+    GitHubApi.new(token)
+  end
+
+  def installation_repos(installation_id)
+    installation(installation_id).installation_repos
+  rescue Octokit::NotFound => exception
+    Raven.user_context(username: user.username)
+    Raven.capture_exception(exception)
+    []
   end
 end

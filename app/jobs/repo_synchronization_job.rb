@@ -4,6 +4,6 @@ class RepoSynchronizationJob < ApplicationJob
   def perform(user)
     synchronization = RepoSynchronization.new(user)
     synchronization.start
-    user.update_attribute(:refreshing_repos, false)
+    user.update(refreshing_repos: false)
   end
 end

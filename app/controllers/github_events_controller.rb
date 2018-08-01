@@ -5,27 +5,7 @@ class GitHubEventsController < ApplicationController
   before_action :verify_github_request
 
   def create
-    case event_type
-    when "marketplace_purchase"
-      event = JSON.parse(request_body)
-      action = event.fetch("action")
-      owner = upsert_owner(event)
-
-      case action
-      when "purchased", "changed"
-        owner.update!(
-          marketplace_plan_id: event["marketplace_purchase"]["plan"]["id"],
-        )
-      when "cancelled"
-        owner.update!(
-          marketplace_plan_id: nil,
-        )
-      else
-        raise "Unknown GitHub Marketplace action (#{action})"
-      end
-    else
-      raise "Unknown GitHub event (#{event_type})"
-    end
+    GitHubEvent.new(type: event_type, body: JSON.parse(request_body)).process
 
     head :ok
   end
@@ -58,13 +38,5 @@ class GitHubEventsController < ApplicationController
 
   def event_id
     request.headers["X-GitHub-Delivery"]
-  end
-
-  def upsert_owner(event)
-    Owner.upsert(
-      github_id: event["marketplace_purchase"]["account"]["id"],
-      name: event["marketplace_purchase"]["account"]["login"],
-      organization: event["marketplace_purchase"]["account"]["type"] == GitHubApi::ORGANIZATION_TYPE,
-    )
   end
 end

@@ -47,7 +47,7 @@ describe GitHubApi do
         expect(contents).to eq "filecontent"
         expect(same_contents).to eq contents
         expect(Octokit::Client).to have_received(:new).with(
-          access_token: token,
+          bearer_token: token,
           auto_paginate: true,
         )
         expect(client).to have_received(:contents).with(

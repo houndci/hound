@@ -1,6 +1,28 @@
 require "rails_helper"
 
 describe SubscriptionsController, "#create" do
+  context "when repo has an installation id" do
+    it "redirects to the GitHub upgrade url" do
+      repo = create(:repo, installation_id: 123)
+      membership = create(:membership, repo: repo)
+      upgrade_url = "example.com/marketplace/plan"
+      marketplace_plan = instance_double(
+        "MarketplacePlan",
+        upgrade?: true,
+        upgrade_url: upgrade_url,
+      )
+      allow(MarketplacePlan).to receive(:new).and_return(marketplace_plan)
+      stub_sign_in(membership.user)
+
+      post :create, params: { repo_id: repo.id }, format: :json
+
+      expect(response).to be_forbidden
+      expect(JSON.parse(response.body)).to eq(
+        "upgrade_url" => upgrade_url,
+      )
+    end
+  end
+
   context "when subscription succeeds" do
     it "subscribes the user to the repo" do
       repo = create(:repo, private: true)

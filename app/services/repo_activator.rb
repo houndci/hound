@@ -9,11 +9,14 @@ class RepoActivator
 
   def activate
     change_repository_state_quietly do
-      if repo.private?
-        add_hound_to_repo
+      if repo.installation_id
+        repo.activate
+      else
+        if repo.private?
+          add_hound_to_repo
+        end
+        create_webhook && repo.activate
       end
-
-      create_webhook && repo.activate
     end
   end
 
@@ -38,7 +41,8 @@ class RepoActivator
   end
 
   def skip_github?
-    repo.subscription.present? && missing_membership?
+    repo.installation_id ||
+      (repo.subscription.present? && missing_membership?)
   end
 
   def missing_membership?

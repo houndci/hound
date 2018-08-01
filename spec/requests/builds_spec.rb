@@ -37,15 +37,15 @@ RSpec.describe "POST /builds" do
           body: new_violation1[:message],
           path: "path/to/test_github_file.rb",
           position: new_violation1[:line],
-          pr_number: "2",
-          repo: "life",
+          pr_number: "1",
+          repo: "Hello-World",
         },
         {
           body: new_violation2[:message],
           path: "path/to/test_github_file.rb",
           position: new_violation2[:line],
-          pr_number: "2",
-          repo: "life",
+          pr_number: "1",
+          repo: "Hello-World",
         },
       ]
     end
