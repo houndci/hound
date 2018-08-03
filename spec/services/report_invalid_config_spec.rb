@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe ReportInvalidConfig do
+RSpec.describe ReportInvalidConfig do
   describe ".call" do
     context "given a custom message" do
       it "reports the file as an invalid config file to GitHub" do
@@ -37,7 +37,7 @@ describe ReportInvalidConfig do
   end
 
   def stubbed_build(methods = {})
-    build = double("Build", user_token: "sekkrit")
+    build = instance_double("Build", github_token: "foo")
     allow(Build).to receive(:find_by!).and_return(build)
 
     methods.each do |method_name, return_value|

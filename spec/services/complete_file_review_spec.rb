@@ -1,12 +1,10 @@
 require "rails_helper"
 
-describe CompleteFileReview do
+RSpec.describe CompleteFileReview do
   describe ".call" do
     it "completes FileReview with violations" do
       file_review = create_file_review
-      stub_build_report_run
-      stub_pull_request
-      stub_payload
+      allow(CompleteBuild).to receive(:call)
 
       CompleteFileReview.call(attributes)
 
@@ -19,21 +17,11 @@ describe CompleteFileReview do
 
     it "runs completes the build" do
       file_review = create_file_review
-      build = file_review.build
-      stub_build_report_run
-      pull_request = stub_pull_request
-      payload = stub_payload
+      allow(CompleteBuild).to receive(:call)
 
       CompleteFileReview.call(attributes)
 
-      expect(CompleteBuild).to have_received(:call).with(
-        pull_request: pull_request,
-        build: build,
-        token: Hound::GITHUB_TOKEN,
-      )
-      expect(Payload).to have_received(:new).with(build.payload)
-      expect(PullRequest).
-        to(have_received(:new).with(payload, Hound::GITHUB_TOKEN))
+      expect(CompleteBuild).to have_received(:call).with(file_review.build)
     end
 
     context "when there are two builds with the same commit_sha" do
@@ -49,17 +37,23 @@ describe CompleteFileReview do
           build: correct_build,
           filename: attributes.fetch("filename"),
         )
-        stub_build_report_run
-        pull_request = stub_pull_request
-        stub_payload
+        allow(CompleteBuild).to receive(:call)
 
         CompleteFileReview.call(attributes)
 
-        expect(CompleteBuild).to have_received(:call).with(
-          pull_request: pull_request,
-          build: correct_build,
-          token: Hound::GITHUB_TOKEN,
-        )
+        expect(CompleteBuild).to have_received(:call).with(correct_build)
+      end
+    end
+
+    context "when one of the file reviews is not complete" do
+      it "does not complete build" do
+        file_review = create_file_review
+        create(:file_review, build: file_review.build)
+        allow(CompleteBuild).to receive(:call)
+
+        described_class.call(attributes)
+
+        expect(CompleteBuild).not_to have_received(:call)
       end
     end
   end
@@ -82,23 +76,5 @@ describe CompleteFileReview do
       pull_request_number: attributes.fetch("pull_request_number"),
     )
     create(:file_review, build: build, filename: attributes.fetch("filename"))
-  end
-
-  def stub_build_report_run
-    allow(CompleteBuild).to receive(:call)
-  end
-
-  def stub_pull_request
-    pull_request = double("PullRequest")
-    allow(PullRequest).to receive(:new).and_return(pull_request)
-
-    pull_request
-  end
-
-  def stub_payload
-    payload = double("Payload")
-    allow(Payload).to receive(:new).and_return(payload)
-
-    payload
   end
 end

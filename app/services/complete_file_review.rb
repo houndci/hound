@@ -8,11 +8,9 @@ class CompleteFileReview
   def call
     complete_file_review
 
-    CompleteBuild.call(
-      pull_request: pull_request,
-      build: build,
-      token: build.user_token,
-    )
+    if build.completed?
+      CompleteBuild.call(build)
+    end
   end
 
   private
@@ -37,14 +35,6 @@ class CompleteFileReview
   def increment_build_violations_count
     count = file_review.violations.map(&:messages_count).sum
     file_review.build.increment!(:violations_count, count)
-  end
-
-  def pull_request
-    PullRequest.new(payload, Hound::GITHUB_TOKEN)
-  end
-
-  def payload
-    Payload.new(build.payload)
   end
 
   def build
@@ -73,7 +63,7 @@ class CompleteFileReview
   end
 
   def commit_file
-    @commit_sha ||= CommitFile.new(
+    @_commit_file ||= CommitFile.new(
       patch: attributes.fetch("patch"),
       filename: nil,
       commit: nil,

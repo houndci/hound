@@ -1,13 +1,22 @@
-class UserToken
+class GitHubAuth
   attr_private_initialize :repo
 
   def token
-    user.token
+    @_token ||= begin
+      if repo.installation_id
+        app = GitHubApi.new(AppToken.new.generate)
+        app.create_installation_token(repo.installation_id)
+      else
+        user.token
+      end
+    end
   end
 
   def user
-    @_user ||= users_with_token.shuffle.detect(-> { hound_user }) do |user|
-      can_reach_repository?(user)
+    if repo.installation_id.nil?
+      @_user ||= users_with_token.shuffle.detect(-> { hound_user }) do |user|
+        can_reach_repository?(user)
+      end
     end
   end
 
