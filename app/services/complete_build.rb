@@ -1,23 +1,14 @@
 class CompleteBuild
   static_facade :call
-
-  def initialize(pull_request:, build:, token:)
-    @build = build
-    @pull_request = pull_request
-    @token = token
-  end
+  pattr_initialize :build
 
   def call
-    if build.completed?
-      SubmitReview.call(build)
-      set_commit_status
-      track_subscribed_build_completed
-    end
+    SubmitReview.call(build)
+    set_commit_status
+    track_subscribed_build_completed
   end
 
   private
-
-  attr_reader :build, :token, :pull_request
 
   def track_subscribed_build_completed
     if build.repo.subscription
@@ -40,14 +31,22 @@ class CompleteBuild
   end
 
   def hound_config
-    HoundConfig.new(commit: pull_request.head_commit, owner: build.repo.owner)
+    HoundConfig.new(commit: commit, owner: build.repo.owner)
+  end
+
+  def commit
+    Commit.new(
+      build.repo_name,
+      build.commit_sha,
+      GitHubApi.new(build.github_token),
+    )
   end
 
   def commit_status
     CommitStatus.new(
       repo_name: build.repo_name,
       sha: build.commit_sha,
-      token: token,
+      token: build.github_token,
     )
   end
 end

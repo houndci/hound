@@ -3,55 +3,36 @@ require "rails_helper"
 RSpec.describe CompleteBuild do
   describe ".call" do
     context "when build has violations" do
-      context "when the build is complete" do
-        context "when fail on violations is disabled" do
-          it "sets GitHub status to complete" do
-            stubbed_hound_config(fail_on_violations?: false)
-            build = stub_build(["foo"])
-            github_api = stubbed_github_api
+      context "when fail on violations is disabled" do
+        it "sets GitHub status to complete" do
+          stubbed_hound_config(fail_on_violations?: false)
+          build = stub_build(["foo"])
+          github_api = stubbed_github_api
 
-            run_service(build)
+          described_class.call(build)
 
-            expect(github_api).to have_received(:create_success_status).with(
-              build.repo_name,
-              build.commit_sha,
-              "1 violation found.",
-            )
-          end
-        end
-
-        context "when fail on violations is enabled" do
-          it "sets GitHub status to failed" do
-            build = stub_build(["foo"])
-            stubbed_hound_config(fail_on_violations?: true)
-            github_api = stubbed_github_api
-
-            run_service(build)
-
-            expect(github_api).to have_received(:create_error_status).with(
-              build.repo_name,
-              build.commit_sha,
-              "1 violation found.",
-              nil,
-            )
-          end
+          expect(github_api).to have_received(:create_success_status).with(
+            build.repo_name,
+            build.commit_sha,
+            "1 violation found.",
+          )
         end
       end
 
-      context "when the build is not complete" do
-        it "does not comment and does not set success status" do
-          build = stub_build(["foo"], completed?: false)
-          pull_request = stub_pull_request
+      context "when fail on violations is enabled" do
+        it "sets GitHub status to failed" do
+          build = stub_build(["foo"])
+          stubbed_hound_config(fail_on_violations?: true)
           github_api = stubbed_github_api
 
-          CompleteBuild.call(
-            pull_request: pull_request,
-            build: build,
-            token: "abc123",
-          )
+          described_class.call(build)
 
-          expect(github_api).not_to have_received(:create_pull_request_review)
-          expect(github_api).not_to have_received(:create_success_status)
+          expect(github_api).to have_received(:create_error_status).with(
+            build.repo_name,
+            build.commit_sha,
+            "1 violation found.",
+            nil,
+          )
         end
       end
     end
@@ -62,7 +43,7 @@ RSpec.describe CompleteBuild do
         stubbed_hound_config(fail_on_violations?: false)
         github_api = stubbed_github_api
 
-        run_service(build)
+        described_class.call(build)
 
         expect(github_api).not_to have_received(:create_pull_request_review)
         expect(github_api).to have_received(:create_success_status).with(
@@ -76,10 +57,9 @@ RSpec.describe CompleteBuild do
     context "when build has file review errors" do
       it "adds a comment to pull request review" do
         build = stub_build([], review_errors: ["cannot parse config"])
-        pull_request = stub_pull_request
         github_api = stubbed_github_api
 
-        run_service(build)
+        described_class.call(build)
 
         expect(github_api).to have_received(:create_pull_request_review).with(
           build.repo_name,
@@ -97,7 +77,7 @@ RSpec.describe CompleteBuild do
         create(:subscription, repo: repo)
         stubbed_github_api
 
-        run_service(build)
+        described_class.call(build)
 
         expect(analytics).to have_tracked("Build Completed").
           for_user(repo.subscription.user).
@@ -108,6 +88,7 @@ RSpec.describe CompleteBuild do
     def stubbed_github_api
       github_api = instance_double(
         "GitHubApi",
+        file_contents: double(content: ""),
         create_success_status: nil,
         create_error_status: nil,
         create_installation_token: "foo",
@@ -143,6 +124,7 @@ RSpec.describe CompleteBuild do
       )
       default_attributes = {
         completed?: true,
+        github_token: "abc123",
         review_errors: [],
         repo: repo,
         repo_name: "foo/bar",
@@ -152,19 +134,6 @@ RSpec.describe CompleteBuild do
         violations_count: violations.size,
       }
       instance_double("Build", default_attributes.merge(attributes))
-    end
-
-    def stub_pull_request(comments = [])
-      head_commit = instance_double("Commit", file_content: "")
-      instance_double("PullRequest", head_commit: head_commit)
-    end
-
-    def run_service(build)
-      CompleteBuild.call(
-        pull_request: stub_pull_request,
-        build: build,
-        token: "abc123",
-      )
     end
   end
 end

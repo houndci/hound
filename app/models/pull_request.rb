@@ -17,7 +17,7 @@ class PullRequest
   end
 
   def head_commit
-    @head_commit ||= Commit.new(repo_name, payload.head_sha, user_github)
+    @head_commit ||= Commit.new(repo_name, payload.head_sha, github_api)
   end
 
   private
@@ -33,15 +33,15 @@ class PullRequest
   end
 
   def modified_github_files
-    github_files = user_github.pull_request_files(repo_name, number)
+    github_files = github_api.pull_request_files(repo_name, number)
 
     github_files.select do |github_file|
       github_file.status != FILE_REMOVED_STATUS
     end
   end
 
-  def user_github
-    @user_github ||= GitHubApi.new(token)
+  def github_api
+    @_github_api ||= GitHubApi.new(token)
   end
 
   def number

@@ -14,8 +14,8 @@ class Build < ApplicationRecord
     file_reviews.where(completed_at: nil).empty?
   end
 
-  def user_token
-    (user && user.token) || Hound::GITHUB_TOKEN
+  def github_token
+    @_github_token ||= GitHubAuth.new(repo).token
   end
 
   def review_errors

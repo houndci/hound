@@ -551,6 +551,9 @@ Style/IfWithSemicolon:
   Description: Do not use if x; .... Use the ternary operator instead.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-semicolon-ifs
   Enabled: false
+Style/IfUnlessModifier:
+  Description: Favor modifier if/unless usage when you have a single-line body.
+  Enabled: false
 Style/InfiniteLoop:
   Description: Use Kernel#loop for infinite loops.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#infinite-loop

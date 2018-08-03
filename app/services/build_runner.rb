@@ -51,20 +51,22 @@ class BuildRunner
       pull_request_number: payload.pull_request_number,
       commit_sha: payload.head_sha,
       payload: payload.build_data.to_json,
-      user: user_token.user,
+      user: github_auth.user,
     )
   end
 
   def remove_current_user_membership
-    repo.remove_membership(user_token.user)
+    if github_auth.user
+      repo.remove_membership(github_auth.user)
+    end
   end
 
   def pull_request
-    @pull_request ||= PullRequest.new(payload, user_token.token)
+    @_pull_request ||= PullRequest.new(payload, github_auth.token)
   end
 
-  def user_token
-    @user_token ||= UserToken.new(repo)
+  def github_auth
+    @_github_auth ||= GitHubAuth.new(repo)
   end
 
   def repo
@@ -93,7 +95,7 @@ class BuildRunner
     @commit_status ||= CommitStatus.new(
       repo_name: payload.full_repo_name,
       sha: payload.head_sha,
-      token: user_token.token,
+      token: github_auth.token,
     )
   end
 

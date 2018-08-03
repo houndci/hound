@@ -22,11 +22,11 @@ class BuildOwnerHoundConfig
   attr_reader :owner
 
   def github
-    @_github ||= GitHubApi.new(user_token)
+    @_github ||= GitHubApi.new(github_token)
   end
 
-  def user_token
-    UserToken.new(config_repo).token
+  def github_token
+    GitHubAuth.new(config_repo).token
   end
 
   def config_repo_reachable?
