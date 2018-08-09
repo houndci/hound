@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :redirect_marketplace_users
   before_action :validate_billable_email, only: :update
 
   def show
@@ -30,5 +31,11 @@ class AccountsController < ApplicationController
 
   def new_billable_email
     params[:billable_email]
+  end
+
+  def redirect_marketplace_users
+    if current_user.has_marketplace_repos?
+      redirect_to MARKETPLACE_LISTING_URL
+    end
   end
 end
