@@ -20,7 +20,7 @@ class Home
   end
 
   def plans
-    Plan.all
+    plan_selector.all
   end
 
   def private_repos
@@ -29,5 +29,9 @@ class Home
 
   def open_source_repos
     plans.select(&:open_source?)
+  end
+
+  def plan_selector
+    PlanSelector.new(user)
   end
 end

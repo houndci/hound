@@ -21,6 +21,10 @@ class PlanSelector
     current_plan != next_plan
   end
 
+  def all
+    plans.all
+  end
+
   private
 
   attr_reader :user
@@ -30,18 +34,18 @@ class PlanSelector
   end
 
   def find_plan(count)
-    plan_class.find_by(count: count)
+    plans.find_by(count: count)
   end
 
   def repos
     user.subscribed_repos
   end
 
-  def plan_class
+  def plans
     if user.marketplace_subscriber?
       GitHubPlan
     else
-      Plan
+      StripePlan
     end
   end
 end

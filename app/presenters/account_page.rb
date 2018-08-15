@@ -20,7 +20,9 @@ class AccountPage
   end
 
   def plans
-    plan_class.all.map do |plan|
+    plan_selector = PlanSelector.new(user)
+
+    plan_selector.all.map do |plan|
       PlanPresenter.new(plan: plan, user: user)
     end
   end
@@ -55,13 +57,5 @@ class AccountPage
 
   def subscribed_repos
     user.subscribed_repos
-  end
-
-  def plan_class
-    if user.marketplace_subscriber?
-      GitHubPlan
-    else
-      Plan
-    end
   end
 end

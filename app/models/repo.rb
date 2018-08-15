@@ -34,7 +34,7 @@ class Repo < ApplicationRecord
   end
 
   def plan
-    Plan.new(self)
+    StripePlan.new(self)
   end
 
   def stripe_subscription_id

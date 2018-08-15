@@ -32,10 +32,4 @@ class GitHubPlan < Plan
     @title = title
     @slug = slug
   end
-
-  private
-
-  def self.plans
-    PLANS
-  end
 end

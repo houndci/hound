@@ -3,7 +3,7 @@ class PlansController < ApplicationController
 
   def index
     @plans = ActiveModel::ArraySerializer.new(
-      plan_class.all,
+      plan_selector.all,
       each_serializer: PlanSerializer,
       scope: current_user,
     )
@@ -17,12 +17,8 @@ class PlansController < ApplicationController
     params.permit(:repo_id)
   end
 
-  def plan_class
-    if current_user.marketplace_subscriber?
-      GitHubPlan
-    else
-      Plan
-    end
+  def plan_selector
+    PlanSelector.new(current_user)
   end
 
   def marketplace_upgrade_url
