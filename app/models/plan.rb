@@ -18,11 +18,11 @@ class Plan
   end
 
   def self.all
-    PLANS.map { |plan| new(plan) }
+    plans.map { |plan| new(plan) }
   end
 
   def self.find_by(count:)
-    found = PLANS.detect { |plan| plan.fetch(:range).include?(count) }
+    found = plans.detect { |plan| plan.fetch(:range).include?(count) }
     new(found)
   end
 
@@ -41,4 +41,8 @@ class Plan
   private
 
   attr_reader :range
+
+  def self.plans
+    PLANS
+  end
 end

@@ -30,10 +30,18 @@ class PlanSelector
   end
 
   def find_plan(count)
-    Plan.find_by(count: count)
+    plan_class.find_by(count: count)
   end
 
   def repos
     user.subscribed_repos
+  end
+
+  def plan_class
+    if user.marketplace_subscriber?
+      GitHubPlan
+    else
+      Plan
+    end
   end
 end
