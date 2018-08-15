@@ -47,7 +47,7 @@ RSpec.describe AccountPage do
     it "returns all of the presentable, available plans" do
       presenter = instance_double("PlanPresenter")
       plan = instance_double("Plan")
-      user = instance_double("User")
+      user = instance_double("User", marketplace_subscriber?: false)
       page = AccountPage.new(user)
       allow(Plan).to receive(:all).once.with(no_args).and_return([plan])
       allow(PlanPresenter).to receive(:new).once.with(
