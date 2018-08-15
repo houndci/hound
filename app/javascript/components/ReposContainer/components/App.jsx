@@ -131,17 +131,13 @@ export default class App extends React.Component {
   }
 
   onSubscriptionError(repo, error) {
-    if (error.status === 402 || error.status === 403) {
-      document.location.href = error.responseJSON.upgrade_url || `/plans?repo_id=${repo.id}`;
+    if (window.Intercom) {
+      window.Intercom(
+        "showNewMessage",
+        "I cannot activate my repo. Please help!"
+      );
     } else {
-      if (window.Intercom) {
-        window.Intercom(
-          "showNewMessage",
-          "I cannot activate my repo. Please help!"
-        );
-      } else {
-        alert("Oh no, activating a repo failed. Please contact us!");
-      }
+      alert("Oh no, activating a repo failed. Please contact us!");
     }
   }
 

@@ -24,10 +24,6 @@ class MarketplacePlan
     @owner = owner
   end
 
-  def upgrade?
-    owner.active_private_repos_count >= current_plan.repos
-  end
-
   def current_plan
     @_current_plan ||= PLANS.
       detect { |plan| marketplace_plan.id == plan.id } || PLANS.first
