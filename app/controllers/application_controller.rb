@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  MARKETPLACE_LISTING_URL = "https://github.com/marketplace/hound"
-
   protect_from_forgery
 
   before_action :force_https
@@ -65,14 +63,6 @@ class ApplicationController < ActionController::Base
       User.find_by(id: session[:masqueraded_user_id])
     else
       User.find_by(remember_token: session[:remember_token])
-    end
-  end
-
-  def account_path
-    if current_user&.has_marketplace_repos?
-      MARKETPLACE_LISTING_URL
-    else
-      super
     end
   end
 end
