@@ -75,6 +75,12 @@ export default class UpgradeSubscriptionLink extends React.Component {
   handleClick() {
     this.setState({ disabled: true });
 
+    if (this.props.marketplaceUpgradeUrl) {
+      // should we do this in a new tab/window?
+      // improve this flow so we end up back at houndci.com
+      window.location = this.props.marketplaceUpgradeUrl;
+    }
+
     const { repoId, userHasCard } = this.props;
 
     if (userHasCard) {

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  # MARKETPLACE_URL = "https://www.github.com/marketplace/hound"
-
   protect_from_forgery
 
   before_action :force_https
