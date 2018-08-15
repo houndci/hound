@@ -52,10 +52,6 @@ class Owner < ApplicationRecord
     @_hound_config ||= BuildOwnerHoundConfig.call(self)
   end
 
-  def marketplace_plan
-    @_marketplace_plan ||= MarketplacePlan.new(self)
-  end
-
   # set manually when Stripe customer is unpaid
   def stripe_subscription
     if stripe_subscription_id

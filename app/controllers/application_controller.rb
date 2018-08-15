@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  # MARKETPLACE_URL = "https://www.github.com/marketplace/hound"
+
   protect_from_forgery
 
   before_action :force_https
   before_action :capture_campaign_params
   before_action :authenticate
 
-  helper_method :current_user, :signed_in?, :masquerading?, :account_path
+  helper_method :current_user, :signed_in?, :masquerading?
 
   protected
 
@@ -65,4 +67,13 @@ class ApplicationController < ActionController::Base
       User.find_by(remember_token: session[:remember_token])
     end
   end
+
+  # def marketplace_upgrade_url
+  #   "#{MARKETPLACE_URL}/order/#{next_plan.slug}?account=#{owner.name}"
+  # end
+
+  # def marketplace_downgrade_url
+  #   "#{MARKETPLACE_URL}/order/#{previous_plan.slug}?account=" +
+  #     owner.name
+  # end
 end
