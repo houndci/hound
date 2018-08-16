@@ -22,7 +22,7 @@ class PlanSelector
   end
 
   def all
-    plans.all
+    plans.map { |plan| plan_type.new(plan) }
   end
 
   private
@@ -34,7 +34,8 @@ class PlanSelector
   end
 
   def find_plan(count)
-    plans.find_by(count: count)
+    found = plans.detect { |plan| plan.fetch(:range).include?(count) }
+    plan_type.new(found)
   end
 
   def repos
@@ -42,6 +43,10 @@ class PlanSelector
   end
 
   def plans
+    plan_type::PLANS
+  end
+
+  def plan_type
     if user.marketplace_subscriber?
       GitHubPlan
     else

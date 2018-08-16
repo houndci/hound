@@ -10,15 +10,6 @@ class Plan
     @title = title
   end
 
-  def self.all
-    PLANS.map { |plan| new(plan) }
-  end
-
-  def self.find_by(count:)
-    found = PLANS.detect { |plan| plan.fetch(:range).include?(count) }
-    new(found)
-  end
-
   def ==(other)
     id == other.id
   end
