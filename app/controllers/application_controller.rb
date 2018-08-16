@@ -65,13 +65,4 @@ class ApplicationController < ActionController::Base
       User.find_by(remember_token: session[:remember_token])
     end
   end
-
-  # def marketplace_upgrade_url
-  #   "#{MARKETPLACE_URL}/order/#{next_plan.slug}?account=#{owner.name}"
-  # end
-
-  # def marketplace_downgrade_url
-  #   "#{MARKETPLACE_URL}/order/#{previous_plan.slug}?account=" +
-  #     owner.name
-  # end
 end
