@@ -1,6 +1,7 @@
 require "active_model/serialization"
 
 require "app/models/plan"
+require "app/models/stripe_plan"
 require "app/models/github_plan"
 require "app/models/plan_selector"
 
@@ -14,7 +15,7 @@ RSpec.describe PlanSelector do
       )
       plan_selector = PlanSelector.new(user)
 
-      expect(plan_selector.current_plan).to eq Plan.new(Plan::PLANS[1])
+      expect(plan_selector.current_plan).to eq StripePlan.new(StripePlan::PLANS[1])
     end
   end
 
@@ -69,7 +70,7 @@ RSpec.describe PlanSelector do
         )
         plan_selector = PlanSelector.new(user)
 
-        expect(plan_selector.next_plan).to eq Plan.new(Plan::PLANS[1])
+        expect(plan_selector.next_plan).to eq StripePlan.new(StripePlan::PLANS[1])
       end
     end
   end
@@ -83,7 +84,7 @@ RSpec.describe PlanSelector do
       )
       plan_selector = PlanSelector.new(user)
 
-      expect(plan_selector.previous_plan).to eq Plan.new(Plan::PLANS[2])
+      expect(plan_selector.previous_plan).to eq StripePlan.new(StripePlan::PLANS[2])
     end
   end
 end

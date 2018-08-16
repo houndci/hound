@@ -47,7 +47,7 @@ class PlanSelector
   end
 
   def plan_type
-    if user.marketplace_subscriber?
+    if user&.marketplace_subscriber?
       GitHubPlan
     else
       StripePlan

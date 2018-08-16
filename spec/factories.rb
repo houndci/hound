@@ -76,7 +76,7 @@ FactoryGirl.define do
     sequence(:stripe_subscription_id) { |n| "stripesubscription#{n}" }
 
     association :repo, :active, :private
-    price Plan::PLANS[1][:price]
+    price StripePlan::PLANS[1][:price]
     user
   end
 
