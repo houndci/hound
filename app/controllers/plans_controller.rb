@@ -1,5 +1,8 @@
 class PlansController < ApplicationController
-  MARKETPLACE_URL = "https://www.github.com/marketplace/hound"
+  MARKETPLACE_URL = ENV.fetch(
+    "MARKETPLACE_URL",
+    "https://www.github.com/marketplace/hound"
+  )
 
   def index
     @plans = ActiveModel::ArraySerializer.new(
