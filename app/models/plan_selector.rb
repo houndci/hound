@@ -31,11 +31,11 @@ class PlanSelector
   end
 
   def all
-    plans.map { |plan| plan_type.new(plan) }
+    plans
   end
 
   def marketplace_plan?
-    marketplace_plan_id.present? || marketplace_subscriber?
+    marketplace_plan_id.present? #|| marketplace_subscriber?
   end
 
   private
