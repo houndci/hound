@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe SubscriptionsController, "#create" do
   context "when subscription succeeds" do
-    context "when repo doesn't have an installation_id" do
+    context "with Stripe subscription" do
       it "subscribes the user to the repo" do
         repo = create(:repo, private: true)
         membership = create(:membership, repo: repo)
@@ -30,11 +30,11 @@ describe SubscriptionsController, "#create" do
       end
     end
 
-    context "when repo does have an installation_id" do
+    context "with GitHub subscription" do
       it "subscribes the user to the repo" do
-        repo = create(:repo, private: true, installation_id: 123)
+        repo = create(:repo, private: true)
+        repo.owner.update!(marketplace_plan_id: GitHubPlan::PLANS.last[:id])
         membership = create(:membership, repo: repo)
-        create(:subscription, repo: repo, user: membership.user)
         activator = double(:repo_activator, activate: true)
         allow(RepoActivator).to receive(:new).and_return(activator)
         allow(RepoSubscriber).to receive(:subscribe)

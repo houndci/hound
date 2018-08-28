@@ -19,7 +19,7 @@ class PlanSelector
   end
 
   def upgrade?
-    current_plan != next_plan
+    current_plan != next_plan && current_plan.allowance < next_plan.allowance
   end
 
   def next_plan
@@ -74,7 +74,7 @@ class PlanSelector
     if marketplace_plan?
       repo.owner.active_private_repos_count
     else
-      user.subscribed_repos.count
+      user.subscribed_repos.size
     end
   end
 end
