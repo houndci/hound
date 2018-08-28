@@ -19,7 +19,7 @@ class PlanSelector
   end
 
   def upgrade?
-    current_plan != next_plan && current_plan.allowance < next_plan.allowance
+    !!(next_plan && next_plan.allowance > current_plan.allowance)
   end
 
   def next_plan

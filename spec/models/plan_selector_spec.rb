@@ -64,7 +64,7 @@ RSpec.describe PlanSelector do
         { current_plan: 1, repos: 4, expected: true },
         { current_plan: 2, repos: 5, expected: false },
         { current_plan: 2, repos: 19, expected: false },
-        { current_plan: 2, repos: 20, expected: true },
+        { current_plan: 2, repos: 20, expected: false },
       ].each do |test_data|
         context "when account has #{test_data[:repos]} private repos" do
           it "returns #{test_data[:expected]}" do
