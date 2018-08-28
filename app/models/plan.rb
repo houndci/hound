@@ -1,7 +1,7 @@
 class Plan
   include ActiveModel::Serialization
 
-  attr_reader :id, :price, :title
+  attr_reader :id, :price, :title, :range
 
   def initialize(id:, range:, price:, title:)
     @id = id
@@ -11,7 +11,7 @@ class Plan
   end
 
   def ==(other)
-    id == other.id
+    other && id == other.id
   end
 
   def allowance
@@ -21,8 +21,4 @@ class Plan
   def open_source?
     price.zero?
   end
-
-  private
-
-  attr_reader :range
 end

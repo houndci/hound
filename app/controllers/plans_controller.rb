@@ -21,11 +21,12 @@ class PlansController < ApplicationController
   end
 
   def plan_selector
-    PlanSelector.new(current_user)
+    PlanSelector.new(current_user, repo: repo)
   end
 
   def marketplace_upgrade_url
-    if current_user.marketplace_subscriber?
+    # Should we include this in the serialized plans instead?
+    if plan_selector.marketplace_plan?
       # Should we include the username or org name for upgrading on Marketplace?
       "#{MARKETPLACE_URL}/order/#{current_user.next_plan.slug}?account=#{repo.owner.name}"
     end

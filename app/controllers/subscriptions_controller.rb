@@ -5,10 +5,15 @@ class SubscriptionsController < ApplicationController
   before_action :update_email
 
   def create
-    if current_user.plan_upgrade?
+    plan_selector = PlanSelector.new(current_user, repo: repo)
+
+    # base upgrade logic on repo owner for Marketplace user?
+    # repo.owner
+    if plan_selector.upgrade?
       render json: {}, status: :payment_required
     else
-      if repo.installation_id
+      # marketplace id or installation id?
+      if plan_selector.marketplace_plan?
         activate
       else
         activate_and_create_subscription

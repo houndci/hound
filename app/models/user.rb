@@ -13,10 +13,6 @@ class User < ApplicationRecord
 
   delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
 
-  def plan_upgrade?
-    plan_selector.upgrade?
-  end
-
   def current_plan_price
     current_plan.price
   end
@@ -35,10 +31,6 @@ class User < ApplicationRecord
 
   def active_repos
     repos.active
-  end
-
-  def marketplace_subscriber?
-    repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil }).any?
   end
 
   def billable_email

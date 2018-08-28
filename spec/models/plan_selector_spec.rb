@@ -11,7 +11,6 @@ RSpec.describe PlanSelector do
       user = instance_double(
         "User",
         subscribed_repos: [double],
-        marketplace_subscriber?: false
       )
       plan_selector = PlanSelector.new(user)
 
@@ -20,42 +19,67 @@ RSpec.describe PlanSelector do
   end
 
   describe "#upgrade?" do
-    context "when the next plan is different to the current plan" do
-      it "returns true" do
-        user = instance_double(
-          "User",
-          subscribed_repos: Array.new(4) { double },
-          marketplace_subscriber?: false,
-        )
-        plan_selector = PlanSelector.new(user)
+    context "user is a Stripe subscriber" do
+      context "when the next plan is different to the current plan" do
+        it "returns true" do
+          user = instance_double(
+            "User",
+            subscribed_repos: Array.new(4) { double },
+          )
+          plan_selector = PlanSelector.new(user)
 
-        expect(plan_selector).to be_upgrade
+          expect(plan_selector).to be_upgrade
+        end
+      end
+
+      context "when the user has no repos" do
+        it "returns true" do
+          user = instance_double(
+            "User",
+            subscribed_repos: [],
+          )
+          plan_selector = PlanSelector.new(user)
+
+          expect(plan_selector).to be_upgrade
+        end
+      end
+
+      context "when the next plan is not the same as the current plan" do
+        it "returns false" do
+          user = instance_double(
+            "User",
+            subscribed_repos: Array.new(3) { double },
+          )
+          plan_selector = PlanSelector.new(user)
+
+          expect(plan_selector).not_to be_upgrade
+        end
       end
     end
 
-    context "when the user has no repos" do
-      it "returns true" do
-        user = instance_double(
-          "User",
-          subscribed_repos: [],
-          marketplace_subscriber?: false,
-        )
-        plan_selector = PlanSelector.new(user)
+    context "user is a GitHub Marketplace subscriber" do
+      [
+        { current_plan: 0, repos: 0, expected: true },
+        { current_plan: 1, repos: 3, expected: false },
+        { current_plan: 1, repos: 4, expected: true },
+        { current_plan: 2, repos: 5, expected: false },
+        { current_plan: 2, repos: 19, expected: false },
+        { current_plan: 2, repos: 20, expected: true },
+      ].each do |test_data|
+        context "when account has #{test_data[:repos]} private repos" do
+          it "returns #{test_data[:expected]}" do
+            current_plan = GitHubPlan::PLANS[test_data[:current_plan]]
+            owner = instance_double(
+              "Owner",
+              marketplace_plan_id: current_plan[:id],
+              active_private_repos_count: test_data[:repos],
+            )
+            repo = instance_double("Repo", owner: owner)
+            plan_selector = described_class.new(double, repo: repo)
 
-        expect(plan_selector).to be_upgrade
-      end
-    end
-
-    context "when the next plan is not the same as the current plan" do
-      it "returns false" do
-        user = instance_double(
-          "User",
-          subscribed_repos: Array.new(3) { double },
-          marketplace_subscriber?: false,
-        )
-        plan_selector = PlanSelector.new(user)
-
-        expect(plan_selector).not_to be_upgrade
+            expect(plan_selector.upgrade?).to eq(test_data[:expected])
+          end
+        end
       end
     end
   end
@@ -66,7 +90,6 @@ RSpec.describe PlanSelector do
         user = instance_double(
           "User",
           subscribed_repos: [],
-          marketplace_subscriber?: false,
         )
         plan_selector = PlanSelector.new(user)
 
@@ -80,7 +103,6 @@ RSpec.describe PlanSelector do
       user = instance_double(
         "User",
         subscribed_repos: Array.new(10) { double },
-        marketplace_subscriber?: false,
       )
       plan_selector = PlanSelector.new(user)
 
