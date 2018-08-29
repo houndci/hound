@@ -35,7 +35,7 @@ class PlanSelector
   end
 
   def marketplace_plan?
-    marketplace_plan_id.present? #|| marketplace_subscriber?
+    marketplace_plan_id.present? || marketplace_subscriber?
   end
 
   private
@@ -61,9 +61,20 @@ class PlanSelector
   end
 
   def marketplace_plan_id
+    owner_marketplace_plan_id || first_user_marketplace_plan_id
+  end
+
+  def owner_marketplace_plan_id
     repo&.owner&.marketplace_plan_id
   end
 
+  def first_user_marketplace_plan_id
+    user.repos.joins(:owner).where.not(
+      owners: { marketplace_plan_id: nil }
+    ).first.owner.marketplace_plan_id
+  end
+
+  # Is this only needed for the account page?
   def marketplace_subscriber?
     user.repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil }).any?
   end
