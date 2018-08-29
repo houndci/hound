@@ -78,7 +78,11 @@ class SubscriptionsController < ApplicationController
   end
 
   def activate
-    activator.activate || render_error("There was an issue activating the repo")
+    if activator.activate
+      render json: repo, status: :created
+    else
+      render_error("There was an issue activating the repo")
+    end
   end
 
   def activate_and_create_subscription
