@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   before_create :generate_remember_token
 
+  # Maybe we shouldn't delegate through User anymore?
   delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
 
   def current_plan_price

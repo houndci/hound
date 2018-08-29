@@ -5,6 +5,7 @@ class PlansController < ApplicationController
   )
 
   def index
+    # Do we need to add logic for Marketplace here too? Where is this used?
     @plans = ActiveModel::ArraySerializer.new(
       plan_selector.all,
       each_serializer: PlanSerializer,
@@ -12,6 +13,9 @@ class PlansController < ApplicationController
     )
     @repo = repo
     @marketplace_upgrade_url = marketplace_upgrade_url
+
+    # Should we be finding the current owner's plan based on repo and
+    # basing upgrade/downgrade on that?
   end
 
   private
