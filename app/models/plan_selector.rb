@@ -82,7 +82,7 @@ class PlanSelector
   # marketplace quotas are based on repo owner
   # stripe quotas are based on user
   def active_repo_count
-    if marketplace_plan?
+    if marketplace_plan? && repo
       repo.owner.active_private_repos_count
     else
       user.subscribed_repos.size
