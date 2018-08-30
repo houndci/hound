@@ -19,7 +19,7 @@ describe SubscriptionsController, "#create" do
             card_token: "cardtoken",
             email: "jimtom@example.com",
           },
-          format: :json
+          format: :json,
         )
 
         expect(activator).to have_received(:activate)
@@ -47,7 +47,7 @@ describe SubscriptionsController, "#create" do
             card_token: "cardtoken",
             email: "jimtom@example.com",
           },
-          format: :json
+          format: :json,
         )
 
         expect(activator).to have_received(:activate)
@@ -73,7 +73,7 @@ describe SubscriptionsController, "#create" do
           card_token: "cardtoken",
           email: "jimtom@example.com",
         },
-        format: :json
+        format: :json,
       )
 
       expect(user.reload.email).to eq "jimtom@example.com"
@@ -160,7 +160,7 @@ describe SubscriptionsController, "#destroy" do
           repo_id: repo.id,
           card_token: "cardtoken",
         },
-        format: :json
+        format: :json,
       )
 
       expect(response.status).to eq(409)
@@ -188,7 +188,7 @@ describe SubscriptionsController, "#destroy" do
           repo_id: repo.id,
           card_token: "cardtoken",
         },
-        format: :json
+        format: :json,
       )
 
       expect(activator).to have_received(:deactivate)

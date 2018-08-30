@@ -11,13 +11,10 @@ class SubscriptionsController < ApplicationController
     # repo.owner
     if plan_selector.upgrade?
       render json: {}, status: :payment_required
+    elsif plan_selector.marketplace_plan?
+      activate
     else
-      # marketplace id or installation id?
-      if plan_selector.marketplace_plan?
-        activate
-      else
-        activate_and_create_subscription
-      end
+      activate_and_create_subscription
     end
   end
 

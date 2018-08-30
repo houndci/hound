@@ -50,7 +50,9 @@ RSpec.describe AccountPage do
       user = instance_double("User")
       page = AccountPage.new(user)
       plan_selector = instance_double("PlanSelector", all: [plan])
-      allow(PlanSelector).to receive(:new).once.with(user).and_return(plan_selector)
+      allow(PlanSelector).to(
+        receive(:new).once.with(user).and_return(plan_selector)
+      )
       allow(PlanPresenter).to receive(:new).once.with(
         plan: plan,
         user: user,

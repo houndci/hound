@@ -30,21 +30,21 @@ class GitHubPlan < Plan
       price: 0,
       range: 0..0,
       title: "Hound",
-      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAx"
+      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAx",
     },
     {
       id: 1502,
       price: 49,
       range: 1..4,
       title: "Chihuahua",
-      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAy"
+      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAy",
     },
     {
       id: 1503,
       price: 149,
       range: 5..20,
       title: "Octodog",
-      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAz"
+      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAz",
     },
   ].freeze
 
