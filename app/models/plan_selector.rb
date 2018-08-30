@@ -49,10 +49,10 @@ class PlanSelector
   end
 
   def plans
-    plan_type::PLANS.map { |plan| plan_type.new(plan) }
+    plan_class::PLANS.map { |plan| plan_class.new(plan) }
   end
 
-  def plan_type
+  def plan_class
     if marketplace_plan?
       GitHubPlan
     else
