@@ -1,12 +1,12 @@
 require "spec_helper"
 require "app/models/config/base"
-require "app/models/config/swift"
+require "app/models/config/swiftlint"
 require "app/models/config/parser"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
 
-describe Config::Swift do
+describe Config::Swiftlint do
   describe "#content" do
     context "when an owner is provided" do
       it "merges the configuration into the owner's configuration" do

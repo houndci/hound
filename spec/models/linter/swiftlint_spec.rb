@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::Swift do
+describe Linter::Swiftlint do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.swift) }
     let(:not_lintable_files) { %w(foo.c) }
@@ -27,10 +27,10 @@ describe Linter::Swift do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        SwiftReviewJob,
+        LintersJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "swift",
+        linter_name: "swiftlint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
@@ -40,12 +40,12 @@ describe Linter::Swift do
   end
 
   def stub_swift_config(config = {})
-    stubbed_swift_config = double(
-      "SwiftConfig",
+    stubbed_swift_config = instance_double(
+      "Config::Swiftlint",
       content: config,
       serialize: config.to_s,
     )
-    allow(Config::Swift).to receive(:new).and_return(stubbed_swift_config)
+    allow(Config::Swiftlint).to receive(:new).and_return(stubbed_swift_config)
 
     stubbed_swift_config
   end
