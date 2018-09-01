@@ -18,7 +18,7 @@ class HoundConfig
     Linter::Shellcheck => { default: false },
     Linter::SlimLint => { default: false },
     Linter::Stylelint => { default: false },
-    Linter::Swift => { default: true },
+    Linter::Swiftlint => { default: true },
     Linter::Tslint => { default: false },
   }.freeze
 

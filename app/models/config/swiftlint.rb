@@ -1,5 +1,5 @@
 module Config
-  class Swift < Base
+  class Swiftlint < Base
     def serialize
       Serializer.yaml(content)
     end

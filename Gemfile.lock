@@ -294,7 +294,7 @@ GEM
     rspec-support (3.5.0)
     ruby_parser (3.10.1)
       sexp_processor (~> 4.9)
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     rufus-scheduler (3.3.1)
       tzinfo
     safe_yaml (1.0.4)
