@@ -71,9 +71,7 @@ class PlanSelector
   def first_user_marketplace_plan_id
     first_repo_with_marketplace_owner = repos_with_marketplace_owner.first
 
-    if first_repo_with_marketplace_owner
-      first_repo_with_marketplace_owner.owner.marketplace_plan_id
-    end
+    first_repo_with_marketplace_owner&.owner.marketplace_plan_id
   end
 
   # Is this only needed for the account page?
