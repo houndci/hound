@@ -15,7 +15,8 @@ class RepoSerializer < ActiveModel::Serializer
     if object.public? || owner.whitelisted?
       0
     else
-      scope.next_plan_price * 100
+      plan_selector = PlanSelector.new(user: scope, repo: object)
+      plan_selector.next_plan.price * 100
     end
   end
 

@@ -26,7 +26,7 @@ class Analytics
       properties: {
         name: repo.name,
         private: repo.private,
-        revenue: lost_revenue,
+        revenue: lost_revenue(repo),
       }
     )
   end
@@ -62,11 +62,13 @@ class Analytics
     }.merge(options))
   end
 
-  def lost_revenue
-    if user.current_plan == user.next_plan
+  def lost_revenue(repo)
+    plan_selector = PlanSelector.new(user: user, repo: repo)
+
+    if plan_selector.current_plan == plan_selector.next_plan
       0
     else
-      user.current_plan_price - user.next_plan_price
+      plan_selector.current_plan.price - plan_selector.next_plan.price
     end
   end
 end
