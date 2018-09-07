@@ -7,7 +7,7 @@ class PlansController < ApplicationController
   def index
     # Do we need to add logic for Marketplace here too? Where is this used?
     @plans = ActiveModel::ArraySerializer.new(
-      plan_selector.all,
+      plan_selector.plans,
       each_serializer: PlanSerializer,
       scope: current_user,
     )

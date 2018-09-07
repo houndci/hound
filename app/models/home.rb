@@ -20,7 +20,7 @@ class Home
   end
 
   def plans
-    plan_selector.all
+    plan_selector.plans
   end
 
   def private_repos

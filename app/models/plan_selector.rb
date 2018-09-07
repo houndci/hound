@@ -30,12 +30,12 @@ class PlanSelector
     find_plan_by_active_repo_count(active_repo_count.pred)
   end
 
-  def all
-    plans
-  end
-
   def marketplace_plan?
     marketplace_plan_id.present? || marketplace_subscriber?
+  end
+
+  def plans
+    plan_class::PLANS.map { |plan| plan_class.new(plan) }
   end
 
   private
@@ -46,10 +46,6 @@ class PlanSelector
     plans.detect do |plan|
       plan.range.include? active_repo_count
     end
-  end
-
-  def plans
-    plan_class::PLANS.map { |plan| plan_class.new(plan) }
   end
 
   def plan_class
