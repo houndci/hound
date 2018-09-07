@@ -69,14 +69,20 @@ class PlanSelector
   end
 
   def first_user_marketplace_plan_id
-    user.repos.joins(:owner).where.not(
-      owners: { marketplace_plan_id: nil }
-    ).first.owner.marketplace_plan_id
+    first_repo_with_marketplace_owner = repos_with_marketplace_owner.first
+
+    if first_repo_with_marketplace_owner
+      first_repo_with_marketplace_owner.owner.marketplace_plan_id
+    end
   end
 
   # Is this only needed for the account page?
   def marketplace_subscriber?
-    user.repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil }).any?
+    repos_with_marketplace_owner.any?
+  end
+
+  def repos_with_marketplace_owner
+    user.repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil })
   end
 
   # marketplace quotas are based on repo owner
