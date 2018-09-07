@@ -49,7 +49,7 @@ RSpec.describe AccountPage do
       plan = instance_double("StripePlan")
       user = instance_double("User", first_enabled_private_repo: nil)
       page = AccountPage.new(user)
-      plan_selector = instance_double("PlanSelector", all: [plan])
+      plan_selector = instance_double("PlanSelector", plans: [plan])
       allow(PlanSelector).to(
         receive(:new).once.with(user: user, repo: nil).and_return(plan_selector)
       )
