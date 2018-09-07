@@ -14,7 +14,7 @@ RSpec.describe Home do
       presenter = instance_double("PlanPresenter")
       private_plan = instance_double("StripePlan", open_source?: false)
       plans = [open_source_plan, private_plan]
-      user = instance_double("User", first_enabled_private_repo: nil)
+      user = instance_double("User")
       home = Home.new(user)
       plan_selector = instance_double("PlanSelector", plans: plans)
       allow(PlanSelector).to receive(:new).and_return(plan_selector)
@@ -27,7 +27,6 @@ RSpec.describe Home do
       )
       expect(PlanSelector).to have_received(:new).once.with(
         user: user,
-        repo: nil
       )
     end
   end
@@ -38,11 +37,7 @@ RSpec.describe Home do
       presenter = instance_double("PlanPresenter")
       private_plan = instance_double("StripePlan", open_source?: false)
       plans = [open_source_plan, private_plan]
-      repo = double
-      user = instance_double(
-        "User",
-        first_enabled_private_repo: repo
-      )
+      user = instance_double("User")
       home = Home.new(user)
       plan_selector = instance_double("PlanSelector", plans: plans)
       allow(PlanSelector).to receive(:new).and_return(plan_selector)
@@ -55,7 +50,6 @@ RSpec.describe Home do
       )
       expect(PlanSelector).to have_received(:new).once.with(
         user: user,
-        repo: repo
       )
     end
   end

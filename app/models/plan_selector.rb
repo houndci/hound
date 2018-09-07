@@ -1,9 +1,9 @@
 class PlanSelector
   BULK_ID = "bulk".freeze
 
-  def initialize(user:, repo:)
+  def initialize(user:, repo: nil)
     @user = user
-    @repo = repo
+    @repo = repo || user.repos.active.first || user.repos.first
   end
 
   def current_plan

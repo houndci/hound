@@ -73,10 +73,6 @@ class User < ApplicationRecord
     stripe_customer_id.present?
   end
 
-  def first_enabled_private_repo
-    subscribed_repos.where(private: true).first
-  end
-
   private
 
   def crypt
@@ -89,10 +85,7 @@ class User < ApplicationRecord
   end
 
   def plan_selector
-    @_plan_selector ||= PlanSelector.new(
-      user: self,
-      repo: first_enabled_private_repo
-    )
+    @_plan_selector ||= PlanSelector.new(user: self)
   end
 
   def generate_remember_token
