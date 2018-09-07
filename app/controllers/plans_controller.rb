@@ -7,7 +7,6 @@ class PlansController < ApplicationController
   helper_method :plan_selector
 
   def index
-    # Do we need to add logic for Marketplace here too? Where is this used?
     @plans = ActiveModel::ArraySerializer.new(
       plan_selector.plans,
       each_serializer: PlanSerializer,
@@ -15,9 +14,6 @@ class PlansController < ApplicationController
     )
     @repo = repo
     @marketplace_upgrade_url = marketplace_upgrade_url
-
-    # Should we be finding the current owner's plan based on repo and
-    # basing upgrade/downgrade on that?
   end
 
   private
@@ -33,7 +29,6 @@ class PlansController < ApplicationController
   def marketplace_upgrade_url
     # Should we include this in the serialized plans instead?
     if plan_selector.marketplace_plan?
-      # Should we include the username or org name for upgrading on Marketplace?
       "#{MARKETPLACE_URL}/order/#{plan_selector.next_plan.slug}?account=#{repo.owner.name}"
     end
   end

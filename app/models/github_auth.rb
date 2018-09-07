@@ -13,7 +13,6 @@ class GitHubAuth
   end
 
   def user
-    # unless repo.installation_id ??
     if repo.installation_id.nil?
       @_user ||= users_with_token.shuffle.detect(-> { hound_user }) do |user|
         can_reach_repository?(user)
