@@ -82,7 +82,11 @@ class PlanSelector
   end
 
   def repos_with_marketplace_owner
-    user.repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil })
+    if user
+      user.repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil })
+    else
+      []
+    end
   end
 
   # marketplace quotas are based on repo owner
