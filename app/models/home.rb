@@ -32,6 +32,6 @@ class Home
   end
 
   def plan_selector
-    PlanSelector.new(user: user, repo: user.first_enabled_private_repo)
+    PlanSelector.new(user: user, repo: user&.first_enabled_private_repo)
   end
 end
