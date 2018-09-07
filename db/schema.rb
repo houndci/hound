@@ -104,7 +104,6 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["owner_id"], name: "index_repos_on_owner_id"
   end
 
-  # should we create subscription records for Marketplace repos?
   create_table "subscriptions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -73,6 +73,18 @@ class User < ApplicationRecord
     stripe_customer_id.present?
   end
 
+  def subscribed_repos
+    if plan_selector.marketplace_plan?
+      first_available_repo.owner.repos.active.where(private: true)
+    else
+      super
+    end
+  end
+
+  def first_available_repo
+    repos.active.first || repos.first
+  end
+
   private
 
   def crypt

@@ -41,7 +41,7 @@ class PlanSelector
   attr_reader :user
 
   def repo
-    @repo || user.repos.active.first || user.repos.first
+    @repo || user.first_available_repo
   end
 
   def find_plan_by_active_repo_count(active_repo_count)
@@ -63,10 +63,6 @@ class PlanSelector
   end
 
   def active_repo_count
-    if marketplace_plan?
-      repo.owner.active_private_repos_count
-    else
-      user.subscribed_repos.size
-    end
+    user.subscribed_repos.size
   end
 end
