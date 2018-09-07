@@ -47,7 +47,7 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: [],
-            repos: double.as_null_object
+            first_available_repo: double.as_null_object
           )
           plan_selector = PlanSelector.new(user: user, repo: nil)
 
@@ -87,10 +87,13 @@ RSpec.describe PlanSelector do
             owner = instance_double(
               "Owner",
               marketplace_plan_id: current_plan[:id],
-              active_private_repos_count: test_data[:repos],
             )
             repo = instance_double("Repo", owner: owner)
-            plan_selector = described_class.new(user: double, repo: repo)
+            user = instance_double(
+              "User",
+              subscribed_repos: double(size: test_data[:repos]),
+            )
+            plan_selector = described_class.new(user: user, repo: repo)
 
             expect(plan_selector.upgrade?).to eq(test_data[:expected])
           end
@@ -105,7 +108,7 @@ RSpec.describe PlanSelector do
         user = instance_double(
           "User",
           subscribed_repos: [],
-          repos: double.as_null_object
+          first_available_repo: double.as_null_object
         )
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
