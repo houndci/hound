@@ -75,6 +75,7 @@ class User < ApplicationRecord
 
   def subscribed_repos
     if plan_selector.marketplace_plan?
+      # This assumes a user manages one Marketplace purchase.
       first_available_repo.owner.repos.active.where(private: true)
     else
       super
