@@ -12,7 +12,11 @@ RSpec.describe PlanSelector do
         "User",
         subscribed_repos: [double],
       )
-      plan_selector = PlanSelector.new(user)
+      repo = instance_double(
+        "Repo",
+        owner: double.as_null_object
+      )
+      plan_selector = PlanSelector.new(user: user, repo: repo)
 
       expect(plan_selector.current_plan).to(
         eq StripePlan.new(StripePlan::PLANS[1])
@@ -28,7 +32,11 @@ RSpec.describe PlanSelector do
             "User",
             subscribed_repos: Array.new(4) { double },
           )
-          plan_selector = PlanSelector.new(user)
+          repo = instance_double(
+            "Repo",
+            owner: double.as_null_object
+          )
+          plan_selector = PlanSelector.new(user: user, repo: repo)
 
           expect(plan_selector).to be_upgrade
         end
@@ -40,7 +48,7 @@ RSpec.describe PlanSelector do
             "User",
             subscribed_repos: [],
           )
-          plan_selector = PlanSelector.new(user)
+          plan_selector = PlanSelector.new(user: user, repo: nil)
 
           expect(plan_selector).to be_upgrade
         end
@@ -52,7 +60,11 @@ RSpec.describe PlanSelector do
             "User",
             subscribed_repos: Array.new(3) { double },
           )
-          plan_selector = PlanSelector.new(user)
+          repo = instance_double(
+            "Repo",
+            owner: double.as_null_object
+          )
+          plan_selector = PlanSelector.new(user: user, repo: repo)
 
           expect(plan_selector).not_to be_upgrade
         end
@@ -77,7 +89,7 @@ RSpec.describe PlanSelector do
               active_private_repos_count: test_data[:repos],
             )
             repo = instance_double("Repo", owner: owner)
-            plan_selector = described_class.new(double, repo: repo)
+            plan_selector = described_class.new(user: double, repo: repo)
 
             expect(plan_selector.upgrade?).to eq(test_data[:expected])
           end
@@ -93,7 +105,7 @@ RSpec.describe PlanSelector do
           "User",
           subscribed_repos: [],
         )
-        plan_selector = PlanSelector.new(user)
+        plan_selector = PlanSelector.new(user: user, repo: nil)
 
         expect(plan_selector.next_plan).to(
           eq StripePlan.new(StripePlan::PLANS[1])
@@ -108,7 +120,11 @@ RSpec.describe PlanSelector do
         "User",
         subscribed_repos: Array.new(10) { double },
       )
-      plan_selector = PlanSelector.new(user)
+      repo = instance_double(
+        "Repo",
+        owner: double.as_null_object
+      )
+      plan_selector = PlanSelector.new(user: user, repo: repo)
 
       expect(plan_selector.previous_plan).to(
         eq StripePlan.new(StripePlan::PLANS[2])

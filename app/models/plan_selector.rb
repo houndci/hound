@@ -1,7 +1,7 @@
 class PlanSelector
   BULK_ID = "bulk".freeze
 
-  def initialize(user, repo: nil)
+  def initialize(user:, repo:)
     @user = user
     @repo = repo
   end
@@ -12,9 +12,7 @@ class PlanSelector
         plan.id == marketplace_plan_id
       end
     else
-      plans.detect do |plan|
-        plan.range.include? active_repo_count
-      end
+      find_plan_by_active_repo_count(active_repo_count)
     end
   end
 
@@ -31,7 +29,7 @@ class PlanSelector
   end
 
   def marketplace_plan?
-    marketplace_plan_id.present? || marketplace_subscriber?
+    marketplace_plan_id.present?
   end
 
   def plans
@@ -57,36 +55,11 @@ class PlanSelector
   end
 
   def marketplace_plan_id
-    owner_marketplace_plan_id || first_user_marketplace_plan_id
-  end
-
-  def owner_marketplace_plan_id
     repo&.owner&.marketplace_plan_id
   end
 
-  def first_user_marketplace_plan_id
-    first_repo_with_marketplace_owner = repos_with_marketplace_owner.first
-
-    first_repo_with_marketplace_owner&.owner.marketplace_plan_id
-  end
-
-  # Is this only needed for the account page?
-  def marketplace_subscriber?
-    repos_with_marketplace_owner.any?
-  end
-
-  def repos_with_marketplace_owner
-    if user
-      user.repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil })
-    else
-      []
-    end
-  end
-
-  # marketplace quotas are based on repo owner
-  # stripe quotas are based on user
   def active_repo_count
-    if marketplace_plan? && repo
+    if marketplace_plan?
       repo.owner.active_private_repos_count
     else
       user.subscribed_repos.size
