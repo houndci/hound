@@ -15,12 +15,12 @@ export default class RepoTools extends React.Component {
 
     return (
       <div className="repo-tools">
-        <RepoToolsSearch onSearchInput={onSearchInput} />
-        {showPrivateButton ? <RepoToolsPrivate /> : null}
+        {showPrivateButton && <RepoToolsPrivate />}
         <RepoToolsRefresh
           isSyncing={isSyncing}
           onRefreshClicked={onRefreshClicked}
         />
+        <RepoToolsSearch onSearchInput={onSearchInput} />
       </div>
     );
   }
