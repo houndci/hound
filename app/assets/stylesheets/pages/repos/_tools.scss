@@ -1,23 +1,19 @@
 .repo-tools {
   background: $white;
-  display: table;
-  padding: 0 0 2em;
+  display: flex;
+  flex-wrap: wrap;
   vertical-align: middle;
-  width: 100%;
+
+  @include media($small-screen-only) {
+    flex-direction: column;
+  }
 }
 
 .repo-tools-search {
-  @include span-columns(5 of 12, table);
-  padding-right: 1em;
+  flex-basis: 100%;
+  margin: 0.5em 0;
   position: relative;
   vertical-align: top;
-
-  @include media($small-screen-only) {
-    display: block;
-    margin-bottom: 1em;
-    padding: 0;
-    width: 100%;
-  }
 }
 
 .repo-search-tools-input {
@@ -55,23 +51,16 @@
 
 .repo-tools-refresh,
 .repo-tools-private {
+  flex-grow: 1;
+  flex-shrink: 0;
   vertical-align: top;
 }
 
 .repo-tools-private {
-  @include span-columns(4 of 12, table);
-  padding-right: 1em;
+  margin-right: 0.5em;
 
-  @include media($medium-screen-down) {
-    display: none;
-  }
-}
-
-.repo-tools-refresh {
-  @include span-columns(3 of 12, table);
   @include media($small-screen-only) {
-    display: block;
-    width: 100%;
+    margin: 0 0 0.5em;
   }
 }
 
