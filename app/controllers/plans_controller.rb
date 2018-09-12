@@ -23,7 +23,7 @@ class PlansController < ApplicationController
   end
 
   def plan_selector
-    @plan_selector ||= PlanSelector.new(user: current_user, repo: repo)
+    @_plan_selector ||= PlanSelector.new(user: current_user, repo: repo)
   end
 
   def marketplace_upgrade_url
@@ -34,6 +34,6 @@ class PlansController < ApplicationController
   end
 
   def repo
-    @repo ||= Repo.find(plan_params[:repo_id])
+    @_repo ||= Repo.find(plan_params[:repo_id])
   end
 end

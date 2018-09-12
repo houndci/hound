@@ -8,9 +8,7 @@ class PlanSelector
 
   def current_plan
     if marketplace_plan?
-      plans.detect do |plan|
-        plan.id == marketplace_plan_id
-      end
+      plans.detect { |plan| plan.id == marketplace_plan_id }
     else
       find_plan_by_active_repo_count(active_repo_count)
     end

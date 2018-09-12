@@ -83,7 +83,7 @@ class User < ApplicationRecord
   end
 
   def first_available_repo
-    repos.active.first || repos.first
+    repos.order(:active).first
   end
 
   private
