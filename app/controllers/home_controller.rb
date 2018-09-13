@@ -4,12 +4,16 @@ class HomeController < ApplicationController
   before_action :redirect_to_repos, if: :signed_in?
 
   def index
-    @home = Home.new(current_user)
+    @home = Home.new(current_user || guest)
   end
 
   private
 
   def redirect_to_repos
     redirect_to repos_path
+  end
+
+  def guest
+    User.new
   end
 end

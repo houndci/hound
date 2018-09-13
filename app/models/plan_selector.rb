@@ -3,7 +3,7 @@ class PlanSelector
 
   def initialize(user:, repo: nil)
     @user = user
-    @repo = repo || user&.first_available_repo
+    @repo = repo || user.first_available_repo
   end
 
   def current_plan
