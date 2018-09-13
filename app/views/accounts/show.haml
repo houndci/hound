@@ -61,8 +61,9 @@
           )
 
     %article.active-private-repos
+      %h3 Active Private Repos
+
       - if @account_page.repos.any?
-        %h3 Active Private Repos
         %table
           %thead
             %tr
@@ -79,3 +80,7 @@
                   = repo.builds.count
                 %td.violations-caught
                   = repo.total_violations
+      - else
+        None yet, go to your
+        = link_to "repos", repos_path
+        and enable Hound!
