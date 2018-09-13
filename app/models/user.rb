@@ -85,6 +85,10 @@ class User < ApplicationRecord
     repos.order(:active).first
   end
 
+  def marketplace_user?
+    plan_selector.marketplace_plan?
+  end
+
   private
 
   def crypt

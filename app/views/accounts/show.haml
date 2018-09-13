@@ -53,7 +53,7 @@
                     precision: 0,
                   )
 
-    - if current_user.card_exists?
+    - if current_user.card_exists? && !current_user.marketplace_user?
       = javascript_pack_tag "update_account_email"
       = react_component("UpdateAccountEmail",
           billable_email: @account_page.billable_email,
