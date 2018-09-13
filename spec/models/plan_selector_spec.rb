@@ -14,13 +14,12 @@ RSpec.describe PlanSelector do
       )
       repo = instance_double(
         "Repo",
-        owner: double.as_null_object
+        owner: double.as_null_object,
       )
       plan_selector = PlanSelector.new(user: user, repo: repo)
 
-      expect(plan_selector.current_plan).to(
-        eq StripePlan.new(StripePlan::PLANS[1])
-      )
+      expect(plan_selector.current_plan).
+        to eq StripePlan.new(StripePlan::PLANS[1])
     end
   end
 
@@ -34,7 +33,7 @@ RSpec.describe PlanSelector do
           )
           repo = instance_double(
             "Repo",
-            owner: double.as_null_object
+            owner: double.as_null_object,
           )
           plan_selector = PlanSelector.new(user: user, repo: repo)
 
@@ -47,7 +46,7 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: [],
-            first_available_repo: double.as_null_object
+            first_available_repo: double.as_null_object,
           )
           plan_selector = PlanSelector.new(user: user, repo: nil)
 
@@ -63,7 +62,7 @@ RSpec.describe PlanSelector do
           )
           repo = instance_double(
             "Repo",
-            owner: double.as_null_object
+            owner: double.as_null_object,
           )
           plan_selector = PlanSelector.new(user: user, repo: repo)
 
@@ -108,13 +107,12 @@ RSpec.describe PlanSelector do
         user = instance_double(
           "User",
           subscribed_repos: [],
-          first_available_repo: double.as_null_object
+          first_available_repo: double.as_null_object,
         )
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
-        expect(plan_selector.next_plan).to(
-          eq StripePlan.new(StripePlan::PLANS[1])
-        )
+        expect(plan_selector.next_plan).
+          to eq StripePlan.new(StripePlan::PLANS[1])
       end
     end
   end
@@ -127,13 +125,12 @@ RSpec.describe PlanSelector do
       )
       repo = instance_double(
         "Repo",
-        owner: double.as_null_object
+        owner: double.as_null_object,
       )
       plan_selector = PlanSelector.new(user: user, repo: repo)
 
-      expect(plan_selector.previous_plan).to(
-        eq StripePlan.new(StripePlan::PLANS[2])
-      )
+      expect(plan_selector.previous_plan).
+        to eq StripePlan.new(StripePlan::PLANS[2])
     end
   end
 end
