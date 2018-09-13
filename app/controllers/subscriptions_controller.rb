@@ -17,7 +17,6 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-    # Do we need Marketplace logic here too? Just #activate?
     activate_and_create_subscription
   end
 

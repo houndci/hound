@@ -27,7 +27,6 @@ class PlansController < ApplicationController
   end
 
   def marketplace_upgrade_url
-    # Should we include this in the serialized plans instead?
     if plan_selector.marketplace_plan?
       "#{MARKETPLACE_URL}/order/#{plan_selector.next_plan.slug}?account=#{repo.owner.name}"
     end

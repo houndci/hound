@@ -1,50 +1,25 @@
 class GitHubPlan < Plan
-  # PLANS = [
-  #   {
-  #     id: 1061,
-  #     price: 0,
-  #     range: 0..0,
-  #     title: "Hound",
-  #     slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xMDYx"
-  #   },
-  #   {
-  #     id: 1062,
-  #     price: 49,
-  #     range: 1..4,
-  #     title: "Chihuahua",
-  #     slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xMDYy"
-  #   },
-  #   {
-  #     id: 1063,
-  #     price: 149,
-  #     range: 5..20,
-  #     title: "Octodog",
-  #     slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xMDYz"
-  #   },
-  # ].freeze
-
-  # staging
   PLANS = [
     {
-      id: 1501,
+      id: 1061,
       price: 0,
       range: 0..0,
       title: "Hound",
-      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAx",
+      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xMDYx"
     },
     {
-      id: 1502,
+      id: 1062,
       price: 49,
       range: 1..4,
       title: "Chihuahua",
-      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAy",
+      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xMDYy"
     },
     {
-      id: 1503,
+      id: 1063,
       price: 149,
       range: 5..20,
       title: "Octodog",
-      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xNTAz",
+      slug: "MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW4xMDYz"
     },
   ].freeze
 
