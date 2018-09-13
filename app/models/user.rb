@@ -11,7 +11,6 @@ class User < ApplicationRecord
 
   before_create :generate_remember_token
 
-  # Use PlanSelector whenever possible!
   delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
 
   def next_plan_price

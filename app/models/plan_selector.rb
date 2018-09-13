@@ -2,8 +2,8 @@ class PlanSelector
   BULK_ID = "bulk".freeze
 
   def initialize(user:, repo: nil)
-    @user = user || User.new
-    @repo = repo
+    @user = user
+    @repo = repo || user.first_available_repo
   end
 
   def current_plan
@@ -36,11 +36,7 @@ class PlanSelector
 
   private
 
-  attr_reader :user
-
-  def repo
-    @repo || user.first_available_repo
-  end
+  attr_reader :user, :repo
 
   def find_plan_by_active_repo_count(active_repo_count)
     plans.detect do |plan|
