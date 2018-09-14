@@ -131,8 +131,8 @@ export default class App extends React.Component {
   }
 
   onSubscriptionError(repo, error) {
-    if (error.status === 402 || error.status === 403) {
-      document.location.href = error.responseJSON.upgrade_url || `/plans?repo_id=${repo.id}`;
+    if (error.status === 402) {
+      document.location.href = `/plans?repo_id=${repo.id}`;
     } else {
       if (window.Intercom) {
         window.Intercom(

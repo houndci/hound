@@ -1,53 +1,60 @@
 require "rails_helper"
 
 describe SubscriptionsController, "#create" do
-  context "when repo has an installation id" do
-    it "redirects to the GitHub upgrade url" do
-      repo = create(:repo, installation_id: 123)
-      membership = create(:membership, repo: repo)
-      upgrade_url = "example.com/marketplace/plan"
-      marketplace_plan = instance_double(
-        "MarketplacePlan",
-        upgrade?: true,
-        upgrade_url: upgrade_url,
-      )
-      allow(MarketplacePlan).to receive(:new).and_return(marketplace_plan)
-      stub_sign_in(membership.user)
-
-      post :create, params: { repo_id: repo.id }, format: :json
-
-      expect(response).to be_forbidden
-      expect(JSON.parse(response.body)).to eq(
-        "upgrade_url" => upgrade_url,
-      )
-    end
-  end
-
   context "when subscription succeeds" do
-    it "subscribes the user to the repo" do
-      repo = create(:repo, private: true)
-      membership = create(:membership, repo: repo)
-      create(:subscription, repo: repo, user: membership.user)
-      activator = double(:repo_activator, activate: true)
-      allow(RepoActivator).to receive(:new).and_return(activator)
-      allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-      stub_sign_in(membership.user)
+    context "with Stripe subscription" do
+      it "subscribes the user to the repo" do
+        repo = create(:repo, private: true)
+        membership = create(:membership, repo: repo)
+        create(:subscription, repo: repo, user: membership.user)
+        activator = double(:repo_activator, activate: true)
+        allow(RepoActivator).to receive(:new).and_return(activator)
+        allow(RepoSubscriber).to receive(:subscribe).and_return(true)
+        stub_sign_in(membership.user)
 
-      post(
-        :create,
-        params: {
-          repo_id: repo.id,
-          card_token: "cardtoken",
-          email: "jimtom@example.com",
-        },
-        format: :json
-      )
+        post(
+          :create,
+          params: {
+            repo_id: repo.id,
+            card_token: "cardtoken",
+            email: "jimtom@example.com",
+          },
+          format: :json,
+        )
 
-      expect(activator).to have_received(:activate)
-      expect(RepoActivator).to have_received(:new).
-        with(repo: repo, github_token: membership.user.token)
-      expect(RepoSubscriber).to have_received(:subscribe).
-        with(repo, membership.user, "cardtoken")
+        expect(activator).to have_received(:activate)
+        expect(RepoActivator).to have_received(:new).
+          with(repo: repo, github_token: membership.user.token)
+        expect(RepoSubscriber).to have_received(:subscribe).
+          with(repo, membership.user, "cardtoken")
+      end
+    end
+
+    context "with GitHub subscription" do
+      it "subscribes the user to the repo" do
+        repo = create(:repo, private: true)
+        repo.owner.update!(marketplace_plan_id: GitHubPlan::PLANS.last[:id])
+        membership = create(:membership, repo: repo)
+        activator = double(:repo_activator, activate: true)
+        allow(RepoActivator).to receive(:new).and_return(activator)
+        allow(RepoSubscriber).to receive(:subscribe)
+        stub_sign_in(membership.user)
+
+        post(
+          :create,
+          params: {
+            repo_id: repo.id,
+            card_token: "cardtoken",
+            email: "jimtom@example.com",
+          },
+          format: :json,
+        )
+
+        expect(activator).to have_received(:activate)
+        expect(RepoActivator).to have_received(:new).
+          with(repo: repo, github_token: membership.user.token)
+        expect(RepoSubscriber).not_to have_received(:subscribe)
+      end
     end
 
     it "updates the current user's email address" do
@@ -66,7 +73,7 @@ describe SubscriptionsController, "#create" do
           card_token: "cardtoken",
           email: "jimtom@example.com",
         },
-        format: :json
+        format: :json,
       )
 
       expect(user.reload.email).to eq "jimtom@example.com"
@@ -153,7 +160,7 @@ describe SubscriptionsController, "#destroy" do
           repo_id: repo.id,
           card_token: "cardtoken",
         },
-        format: :json
+        format: :json,
       )
 
       expect(response.status).to eq(409)
@@ -181,7 +188,7 @@ describe SubscriptionsController, "#destroy" do
           repo_id: repo.id,
           card_token: "cardtoken",
         },
-        format: :json
+        format: :json,
       )
 
       expect(activator).to have_received(:deactivate)

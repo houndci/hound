@@ -13,14 +13,6 @@ class User < ApplicationRecord
 
   delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
 
-  def plan_upgrade?
-    plan_selector.upgrade?
-  end
-
-  def current_plan_price
-    current_plan.price
-  end
-
   def next_plan_price
     next_plan.price
   end
@@ -35,10 +27,6 @@ class User < ApplicationRecord
 
   def active_repos
     repos.active
-  end
-
-  def has_marketplace_repos?
-    repos.joins(:owner).where.not(owners: { marketplace_plan_id: nil }).any?
   end
 
   def billable_email
@@ -84,6 +72,23 @@ class User < ApplicationRecord
     stripe_customer_id.present?
   end
 
+  def subscribed_repos
+    if plan_selector.marketplace_plan?
+      # This assumes a user manages one Marketplace purchase.
+      first_available_repo.owner.repos.active.where(private: true)
+    else
+      super
+    end
+  end
+
+  def first_available_repo
+    repos.order(:active).first
+  end
+
+  def marketplace_user?
+    plan_selector.marketplace_plan?
+  end
+
   private
 
   def crypt
@@ -96,7 +101,7 @@ class User < ApplicationRecord
   end
 
   def plan_selector
-    @_plan_selector ||= PlanSelector.new(self)
+    @_plan_selector ||= PlanSelector.new(user: self)
   end
 
   def generate_remember_token

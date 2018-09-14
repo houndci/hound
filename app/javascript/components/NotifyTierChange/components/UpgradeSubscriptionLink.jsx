@@ -73,16 +73,21 @@ export default class UpgradeSubscriptionLink extends React.Component {
   }
 
   handleClick() {
-    this.setState({ disabled: true });
-
-    const { repoId, userHasCard } = this.props;
-
-    if (userHasCard) {
-      Ajax.upgradeSubscription(repoId).fail(
-        (response) => this.handleFailedUpgrade(response.responseJSON)
-      );
+    if (this.props.marketplaceUpgradeUrl) {
+      // improve this flow so we end up back at houndci.com
+      window.open(this.props.marketplaceUpgradeUrl, '_blank');
     } else {
-      this.showCreditCardForm();
+      this.setState({ disabled: true });
+
+      const { repoId, userHasCard } = this.props;
+
+      if (userHasCard) {
+        Ajax.upgradeSubscription(repoId).fail(
+          (response) => this.handleFailedUpgrade(response.responseJSON)
+        );
+      } else {
+        this.showCreditCardForm();
+      }
     }
   }
 

@@ -33,10 +33,6 @@ class Repo < ApplicationRecord
     update(active: false)
   end
 
-  def plan
-    Plan.new(self)
-  end
-
   def stripe_subscription_id
     if subscription
       subscription.stripe_subscription_id

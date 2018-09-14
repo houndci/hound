@@ -17,51 +17,53 @@
         )
 
   .account-content
-    %article.billing-breakdown
-      = javascript_pack_tag "update_account_credit_card"
-      = react_component("UpdateAccountCreditCard",
-          stripe_customer_id_present: current_user.card_exists?,
-        )
-      %table.itemized-receipt
-        %thead
-          %tr
-            %th Plan
-            %th Allowance
-            %th Remaining
-            %th Subtotal
-        %tbody
-          %tr
-            %td
-              = @account_page.plan
-            %td
-              = @account_page.allowance
-            %td
-              = @account_page.remaining
-            %td
-              = number_to_currency(@account_page.total_monthly_cost,
-                  precision: 0,
-                )
-
-      %table.monthly-total
-        %thead
-          %tr
-            %th
-              %label Total Monthly Cost:
-            %th.total-amount
-              %label
+    - unless current_user.marketplace_user?
+      %article.billing-breakdown
+        = javascript_pack_tag "update_account_credit_card"
+        = react_component("UpdateAccountCreditCard",
+            stripe_customer_id_present: current_user.card_exists?,
+          )
+        %table.itemized-receipt
+          %thead
+            %tr
+              %th Plan
+              %th Allowance
+              %th Remaining
+              %th Subtotal
+          %tbody
+            %tr
+              %td
+                = @account_page.plan
+              %td
+                = @account_page.allowance
+              %td
+                = @account_page.remaining
+              %td
                 = number_to_currency(@account_page.total_monthly_cost,
                     precision: 0,
                   )
 
-    - if current_user.card_exists?
-      = javascript_pack_tag "update_account_email"
-      = react_component("UpdateAccountEmail",
-          billable_email: @account_page.billable_email,
-        )
+        %table.monthly-total
+          %thead
+            %tr
+              %th
+                %label Total Monthly Cost:
+              %th.total-amount
+                %label
+                  = number_to_currency(@account_page.total_monthly_cost,
+                      precision: 0,
+                    )
+
+      - if current_user.card_exists?
+        = javascript_pack_tag "update_account_email"
+        = react_component("UpdateAccountEmail",
+            billable_email: @account_page.billable_email,
+          )
 
     %article.active-private-repos
+      %h3 Active Private Repos
+
       - if @account_page.repos.any?
-        %h3 Active Private Repos
         %table
           %thead
             %tr
@@ -78,3 +80,7 @@
                   = repo.builds.count
                 %td.violations-caught
                   = repo.total_violations
+      - else
+        None yet, go to your
+        = link_to "repos", repos_path
+        and enable Hound!

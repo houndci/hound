@@ -65,7 +65,7 @@ RSpec.describe PlanPresenter do
 
   describe "#open_source?" do
     it "returns the plan's open source state" do
-      plan = instance_double("Plan", open_source?: true)
+      plan = instance_double("StripePlan", open_source?: true)
       user = instance_double("User")
       presenter = PlanPresenter.new(plan: plan, user: user)
 
@@ -86,7 +86,7 @@ RSpec.describe PlanPresenter do
   describe "#to_partial_path" do
     context "when the plan is for open source repos" do
       it "returns 'plans/open_source'" do
-        plan = instance_double("Plan", open_source?: true)
+        plan = instance_double("StripePlan", open_source?: true)
         user = instance_double("User")
         presenter = PlanPresenter.new(plan: plan, user: user)
 
@@ -96,7 +96,7 @@ RSpec.describe PlanPresenter do
 
     context "when the plan is for private repos" do
       it "returns 'plans/private'" do
-        plan = instance_double("Plan", open_source?: false)
+        plan = instance_double("StripePlan", open_source?: false)
         user = instance_double("User")
         presenter = PlanPresenter.new(plan: plan, user: user)
 

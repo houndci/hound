@@ -20,7 +20,9 @@ class AccountPage
   end
 
   def plans
-    Plan.all.map do |plan|
+    plan_selector = PlanSelector.new(user: user)
+
+    plan_selector.plans.map do |plan|
       PlanPresenter.new(plan: plan, user: user)
     end
   end

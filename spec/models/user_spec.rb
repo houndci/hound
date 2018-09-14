@@ -10,7 +10,7 @@ describe User do
     it "returns the current plan" do
       user = User.new
 
-      expect(user.current_plan).to eq Plan.new(Plan::PLANS[0])
+      expect(user.current_plan).to eq StripePlan.new(StripePlan::PLANS[0])
     end
   end
 
@@ -18,7 +18,7 @@ describe User do
     it "returns the next plan" do
       user = User.new
 
-      expect(user.next_plan).to eq Plan.new(Plan::PLANS[1])
+      expect(user.next_plan).to eq StripePlan.new(StripePlan::PLANS[1])
     end
   end
 
@@ -26,7 +26,7 @@ describe User do
     it "returns the current plan's allowance" do
       user = User.new(subscribed_repos: Array.new(5) { Repo.new })
 
-      expect(user.plan_max).to eq Plan::PLANS[2][:range].max
+      expect(user.plan_max).to eq StripePlan::PLANS[2][:range].max
     end
   end
 

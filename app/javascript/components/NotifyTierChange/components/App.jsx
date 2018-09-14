@@ -69,6 +69,7 @@ export default class App extends React.Component {
       repo_id,
       repo_name,
       user_has_card,
+      marketplace_upgrade_url,
     } = this.props;
 
     const tierUsage = this.getTierUsage();
@@ -98,6 +99,7 @@ export default class App extends React.Component {
             nextTier={next_tier}
             repoId={repo_id}
             userHasCard={user_has_card}
+            marketplaceUpgradeUrl={marketplace_upgrade_url}
           />
           <a className="tier-change-cancel" href="/repos">Cancel</a>
         </div>

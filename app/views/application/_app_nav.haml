@@ -6,6 +6,9 @@
         %use{ "xlink:href" => "/images/icons.svg#hound" }
 
     .app-nav__app-items
+      - if signed_in?
+        = link_to "Repos", repos_path, class: "app-nav__item"
+
       = link_to "Docs", ENV.fetch("DOCS_URL"), class: "app-nav__item"
       = link_to "Help", ENV.fetch("HELP_URL"), class: "app-nav__item"
 

@@ -32,14 +32,6 @@ class Owner < ApplicationRecord
     hound_config.content
   end
 
-  def plan_upgrade?
-    marketplace_plan.upgrade?
-  end
-
-  def upgrade_url
-    marketplace_plan.upgrade_url
-  end
-
   def past_due?
     stripe_subscription && stripe_subscription.status != "active"
   end
@@ -58,10 +50,6 @@ class Owner < ApplicationRecord
 
   def hound_config
     @_hound_config ||= BuildOwnerHoundConfig.call(self)
-  end
-
-  def marketplace_plan
-    @_marketplace_plan ||= MarketplacePlan.new(self)
   end
 
   # set manually when Stripe customer is unpaid

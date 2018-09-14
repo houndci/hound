@@ -6,7 +6,7 @@ describe PaymentGatewaySubscription do
       plan_id = "tier1"
       repo_id = 1
       stripe_subscription = MockStripeSubscription.new(repo_ids: ["1"])
-      next_plan = instance_double("Plan", id: plan_id)
+      next_plan = instance_double("StripePlan", id: plan_id)
       user = instance_double("User", next_plan: next_plan)
       subscription = PaymentGatewaySubscription.new(
         stripe_subscription: stripe_subscription,
@@ -26,7 +26,7 @@ describe PaymentGatewaySubscription do
       plan_id = "basic"
       repo_id = 1
       stripe_subscription = MockStripeSubscription.new(repo_ids: [repo_id])
-      plan = instance_double("Plan", id: plan_id)
+      plan = instance_double("StripePlan", id: plan_id)
       user = instance_double("User", previous_plan: plan)
       subscription = PaymentGatewaySubscription.new(
         stripe_subscription: stripe_subscription,

@@ -1,39 +1,9 @@
 require "active_model/serialization"
 
 require "app/models/plan"
+require "app/models/stripe_plan"
 
-RSpec.describe Plan do
-  describe ".all" do
-    it "returns all of the plans" do
-      plans = Plan.all
-
-      expect(plans.count).to eq 4
-
-      [
-        [0, "basic", 0, "Hound"],
-        [4, "tier1", 49, "Chihuahua"],
-        [10, "tier2", 99, "Labrador"],
-        [30, "tier3", 249, "Great Dane"],
-      ].each_with_index do |(allowance, id, price, title), index|
-        expect(plans[index].allowance).to eq allowance
-        expect(plans[index].id).to eq id
-        expect(plans[index].price).to eq price
-        expect(plans[index].title).to eq title
-      end
-    end
-  end
-
-  describe ".find_by" do
-    it "returns the plan where the count is in range" do
-      plan = Plan.find_by(count: 7)
-
-      expect(plan.allowance).to eq 10
-      expect(plan.id).to eq "tier2"
-      expect(plan.price).to eq 99
-      expect(plan.title).to eq "Labrador"
-    end
-  end
-
+RSpec.describe StripePlan do
   describe "#==" do
     context "when the plans have the same identifiers" do
       it "returns true" do
@@ -42,13 +12,13 @@ RSpec.describe Plan do
         price = 49
         range = 1..allowance
         title = "Chihuahua"
-        plan1 = Plan.new(
+        plan1 = StripePlan.new(
           id: id,
           price: price,
           range: range,
           title: title,
         )
-        plan2 = Plan.new(
+        plan2 = StripePlan.new(
           id: id,
           price: price,
           range: range,
@@ -66,13 +36,13 @@ RSpec.describe Plan do
         price = 49
         range = 1..allowance
         title = "Chihuahua"
-        plan1 = Plan.new(
+        plan1 = StripePlan.new(
           id: id,
           price: price,
           range: range,
           title: title,
         )
-        plan2 = Plan.new(
+        plan2 = StripePlan.new(
           id: "tier2",
           price: price,
           range: range,
@@ -91,7 +61,7 @@ RSpec.describe Plan do
       price = 49
       range = 1..allowance
       title = "Chihuahua"
-      plan = Plan.new(id: id, price: price, range: range, title: title)
+      plan = StripePlan.new(id: id, price: price, range: range, title: title)
 
       expect(plan.allowance).to eq allowance
     end
@@ -104,7 +74,7 @@ RSpec.describe Plan do
       price = 49
       range = 1..allowance
       title = "Chihuahua"
-      plan = Plan.new(id: id, price: price, range: range, title: title)
+      plan = StripePlan.new(id: id, price: price, range: range, title: title)
 
       expect(plan.id).to eq id
     end
@@ -112,7 +82,7 @@ RSpec.describe Plan do
 
   describe "#open_source?" do
     it "returns true" do
-      plan = Plan.new(
+      plan = StripePlan.new(
         id: "basic",
         price: 0,
         range: 0..0,
@@ -124,7 +94,7 @@ RSpec.describe Plan do
 
     context "when the price is positive" do
       it "returns false" do
-        plan = Plan.new(
+        plan = StripePlan.new(
           id: "tier1",
           price: 49,
           range: 1..4,
@@ -143,7 +113,7 @@ RSpec.describe Plan do
       price = 49
       range = 1..allowance
       title = "Chihuahua"
-      plan = Plan.new(id: id, price: price, range: range, title: title)
+      plan = StripePlan.new(id: id, price: price, range: range, title: title)
 
       expect(plan.price).to eq price
     end
@@ -156,7 +126,7 @@ RSpec.describe Plan do
       price = 49
       range = 1..allowance
       title = "Chihuahua"
-      plan = Plan.new(id: id, price: price, range: range, title: title)
+      plan = StripePlan.new(id: id, price: price, range: range, title: title)
 
       expect(plan.title).to eq title
     end
