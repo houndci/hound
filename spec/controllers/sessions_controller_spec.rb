@@ -19,7 +19,6 @@ describe SessionsController do
           username: "jimtom",
           email: "jimtom@example.com",
           token: "letmein",
-          installation_ids: [101],
         )
       end
     end
@@ -37,20 +36,13 @@ describe SessionsController do
     end
 
     context "with existing user" do
-      it "updates email, token and installation_ids" do
-        user = create(
-          :user,
-          username: "jim",
-          email: "j@foo.com",
-          token: "bar",
-          installation_ids: ["1001", "1002"],
-        )
+      it "updates email and token" do
+        user = create(:user, username: "jim", email: "j@foo.com", token: "bar")
         request.env["omniauth.auth"] = stub_oauth(
           username: user.username,
           email: "jim@example.com",
           token: "letmein",
         )
-        session[:installation_id] = "1005"
         allow(GitHubApi).to receive(:new).and_return(stub_github_api)
 
         post :create
@@ -61,7 +53,6 @@ describe SessionsController do
         expect(user.reload).to have_attributes(
           email: "jim@example.com",
           token: "letmein",
-          installation_ids: [1001, 1002, 1005],
         )
       end
     end

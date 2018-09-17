@@ -9,11 +9,11 @@ class SessionsController < ApplicationController
       update_scopes
     end
 
-    redirect_to repos_path
+    redirect_to setup_path
   end
 
   def destroy
-    destroy_session
+    reset_session
     redirect_to root_path
   end
 
@@ -27,11 +27,6 @@ class SessionsController < ApplicationController
     User.find_by(username: username).tap do |user|
       if user
         Analytics.new(user).track_signed_in
-
-        if session[:installation_id]
-          ids = user.installation_ids | [session[:installation_id].to_i]
-          user.update(installation_ids: ids, repos: [])
-        end
       end
     end
   end
@@ -40,7 +35,6 @@ class SessionsController < ApplicationController
     user = User.create!(
       username: username,
       email: github_email,
-      installation_ids: [session[:installation_id]].compact,
       utm_source: session[:campaign_params].try(:[], :utm_source),
     )
     flash[:signed_up] = true
@@ -49,11 +43,6 @@ class SessionsController < ApplicationController
 
   def create_session
     session[:remember_token] = user.remember_token
-  end
-
-  def destroy_session
-    session[:remember_token] = nil
-    session[:installation_id] = nil
   end
 
   def github
