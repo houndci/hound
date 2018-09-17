@@ -10,11 +10,7 @@ export default class OrganizationConfiguration extends React.Component {
   constructor(props) {
     super(props);
 
-    let repo = "";
-
-    if (props.repo) {
-      repo = props.repo;
-    }
+    const repo = props.repo || "";
 
     this.state = {
       configUpdated: false,
@@ -64,7 +60,7 @@ export default class OrganizationConfiguration extends React.Component {
             onChange={event => this.handleChange(event)}
             value={this.state.repo}
           >
-            {this.renderRepoOptions()}
+            {this.renderRepoOptions(this.state.repo)}
           </select>
           <div className="inline-flash--success config-enabled">
             {this.state.configUpdated &&
@@ -77,12 +73,16 @@ export default class OrganizationConfiguration extends React.Component {
     }
   }
 
-  renderRepoOptions() {
-    return this.props.repos.map(repo =>
-      <option key={repo.id} value={repo.name}>
-        {repo.name}
-      </option>
-    );
+  renderRepoOptions(selectedRepoName) {
+    const repoNames = this.props.repos.map(repo => repo.name);
+    const buildOption = (name) =>
+      <option key={name} value={name}>{name}</option>;
+
+    if (repoNames.includes(selectedRepoName)) {
+      return repoNames.map(buildOption);
+    } else {
+      return [selectedRepoName].concat(repoNames).map(buildOption);
+    }
   }
 
   render() {
