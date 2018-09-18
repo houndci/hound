@@ -73,12 +73,12 @@ which runs on [Heroku].
 Our app passes your GitHub token from memory in
 [`RepoSyncsController`] to our [Redis] database,
 as part of scheduling a background job ([`RepoSynchronizationJob`]).
-The Redis database is hosted by [Redis to Go].
+The Redis database is hosted by [Heroku Redis Addon].
 
 [`RepoSyncsController`]: ../app/controllers/repo_syncs_controller.rb
 [`RepoSynchronizationJob`]: ../app/jobs/repo_synchronization_job.rb
 [Redis]: http://redis.io/
-[Redis to Go]: http://redistogo.com
+[Heroku Redis Addon]: https://elements.heroku.com/addons/heroku-redis
 
 As part of this process,
 we temporarily store your GitHub token in the Redis database
