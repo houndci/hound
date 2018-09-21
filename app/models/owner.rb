@@ -12,8 +12,12 @@ class Owner < ApplicationRecord
     raise exception
   end
 
+  def active_private_repos
+    repos.active.where(private: true)
+  end
+
   def active_private_repos_count
-    repos.active.where(private: true).count
+    active_private_repos.count
   end
 
   def has_config_repo?
