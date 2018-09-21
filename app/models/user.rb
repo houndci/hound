@@ -50,8 +50,10 @@ class User < ApplicationRecord
   end
 
   def has_access_to_private_repos?
-    if token_scopes
-      token_scopes.split(",").include? "repo"
+    if token_scopes && token_scopes.split(",").include?("repo")
+      true
+    elsif installation_ids.any?
+      true
     else
       false
     end
