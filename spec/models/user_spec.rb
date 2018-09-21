@@ -134,7 +134,7 @@ describe User do
       it "returns true" do
         user = User.new(
           token_scopes: "public_repo,user:email",
-          installation_ids: [123]
+          installation_ids: [123],
         )
 
         expect(user).to have_access_to_private_repos
