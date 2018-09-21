@@ -54,7 +54,6 @@ RSpec.describe GitHubEvent do
         owner = create(:owner, github_id: 123456, name: "salbertson")
         public_repo = create(:repo, :active, owner: owner)
         private_repo = create(:repo, :active, :private, owner: owner)
-
         body = JSON.parse(read_fixture("github_marketplace_cancellation.json"))
         event = described_class.new(
           type: GitHubEvent::CANCELLATION,
