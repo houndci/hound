@@ -24,9 +24,42 @@ class SubmitReview
   end
 
   def new_violations
-    @_new_violations ||= build.violations.select do |violation|
+    @_new_violations ||= consolidated_violations.select do |violation|
       commenting_policy.comment_on?(violation)
     end
+  end
+
+  def consolidated_violations
+    violation_message_totals = Hash.new {|hash, key| hash[key] = 0}
+
+    build.violations.each do |violation|
+      violation.messages.each do |message|
+        violation_message_totals[message] += 1
+      end
+    end
+
+    similar_messages = []
+
+    build.violations.each do |violation|
+      consolidated_messages = violation.messages.select do |message|
+        if violation_message_totals[message] < Hound::MAX_COMMENTS ||
+            similar_messages.exclude?(message)
+
+          similar_messages << message
+        end
+      end
+
+      consolidated_messages = consolidated_messages.map do |message|
+        if violation_message_totals[message] < Hound::MAX_COMMENTS
+          message
+        else
+          "#{message} (Hound found #{violation_message_totals[message]} similar #{"case".pluralize(violation_message_totals[message])})"
+        end
+      end
+      violation.messages = consolidated_messages
+    end
+
+    build.violations
   end
 
   def build_comment(violation)
