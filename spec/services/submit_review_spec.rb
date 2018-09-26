@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe SubmitReview do
   describe ".call" do
-    it "posts a review with max comments to GitHub" do
+    it "posts a review to GitHub" do
       stub_const("Hound::MAX_COMMENTS", 2)
       violation1 = stub_violation("foo comment")
       violation2 = stub_violation("bar comment")
@@ -28,6 +28,11 @@ RSpec.describe SubmitReview do
             path: violation2.filename,
             position: violation2.patch_position,
             body: violation2.messages.join,
+          },
+          {
+            path: violation3.filename,
+            position: violation3.patch_position,
+            body: violation3.messages.join,
           },
         ],
         <<~TEXT.chomp

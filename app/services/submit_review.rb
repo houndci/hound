@@ -24,13 +24,9 @@ class SubmitReview
   end
 
   def new_violations
-    @_new_violations ||= priority_violations.select do |violation|
+    @_new_violations ||= build.violations.select do |violation|
       commenting_policy.comment_on?(violation)
     end
-  end
-
-  def priority_violations
-    build.violations.take(Hound::MAX_COMMENTS)
   end
 
   def build_comment(violation)
