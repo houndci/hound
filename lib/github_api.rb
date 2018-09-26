@@ -26,9 +26,11 @@ class GitHubApi
     client.list_app_installation_repositories[:repositories]
   end
 
-  def plan_for_account(github_id)
-    response = client.plan_for_account(github_id)
-    response&.marketplace_purchase&.plan
+  def accounts_for_plan(plan_id)
+    client.list_accounts_for_plan(plan_id)
+  rescue Octokit::NotFound => error
+    Raven.capture_exception(error)
+    []
   end
 
   def repos
