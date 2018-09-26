@@ -68,18 +68,12 @@
           %thead
             %tr
               %th Repository
-              %th Reviews given
-              %th Violations caught
           %tbody
             - @account_page.repos.each do |repo|
               %tr.repo
                 %td
                   %span.repo-name
                     = repo.name
-                %td.reviews-given
-                  = repo.builds.count
-                %td.violations-caught
-                  = repo.total_violations
       - else
         None yet, go to your
         = link_to "repos", repos_path
