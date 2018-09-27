@@ -167,6 +167,40 @@ describe HoundConfig do
     end
   end
 
+  describe "#linter_version" do
+    context "when version is specified" do
+      it "returns version" do
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
+            rubocop:
+              version: 1.2.3
+          EOS
+        )
+        hound_config = build_hound_config(commit)
+
+        version = hound_config.linter_version("rubocop")
+
+        expect(version).to eq("1.2.3")
+      end
+    end
+
+    context "when version is not specified" do
+      it "returns nothing" do
+        commit = stub_commit(
+          ".hound.yml" => <<~EOS
+            rubocop:
+              enabled: true
+          EOS
+        )
+        hound_config = build_hound_config(commit)
+
+        version = hound_config.linter_version("rubocop")
+
+        expect(version).to be_blank
+      end
+    end
+  end
+
   describe "#fail_on_violations?" do
     context "when the setting is turned on" do
       it "returns true" do
