@@ -1,4 +1,17 @@
-%h1
-  The change you wanted was rejected.
-%p
-  Maybe you tried to change something you didn't have access to.
+%div{ style: "text-align: center" }
+  = image_tag "madi"
+
+  %h1
+    Oh dang, the change you wanted was rejected.
+
+  %p
+    Maybe you tried to change something you didn't have access to?
+
+  %p
+    Feel free to
+    %a{ href: "https://github.com/houndci/hound/issues", target: :blank }
+      open an issue
+    on GitHub if you have questions or
+    %a{ href: "https://twitter.com/share?text=@houndci &url=\"\"", target: :blank }
+      reach out
+    on twitter.

@@ -1,15 +1,17 @@
-%h1
-  Something went wrong!
+%div{ style: "text-align: center" }
+  = image_tag "madi"
 
-%h2
-  We've been notified of this problem.
+  %h1
+    Woops, something went wrong.
 
-%p
-  Feel free to
-  %a{ href: "https://github.com/houndci/hound/issues" }
-    open an issue on GitHub
-  to help us track down the error.
+  %h2
+    We are on it! We've been notified of the issue.
 
-%p
-  You can also reach out to us
-  %a{ href: "https://twitter.com/houndci/" } on twitter.
+  %p
+    Feel free to
+    %a{ href: "https://github.com/houndci/hound/issues", target: :blank }
+      open an issue
+    on GitHub to help us track down the problem or
+    %a{ href: "https://twitter.com/share?text=@houndci &url=\"\"", target: :blank }
+      reach out
+    on twitter.
