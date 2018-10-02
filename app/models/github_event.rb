@@ -41,11 +41,7 @@ class GitHubEvent
         marketplace_plan_id: body["marketplace_purchase"]["plan"]["id"],
       )
     when "cancelled"
-      owner = Owner.find_by!(
-        github_id: body["marketplace_purchase"]["account"]["id"],
-      )
-      owner.active_private_repos.each(&:deactivate)
-
+      owner.active_private_repos.update_all(active: false)
       owner.update!(marketplace_plan_id: nil)
     else
       raise "Unknown GitHub Marketplace action (#{action})"
