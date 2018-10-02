@@ -3,7 +3,6 @@
 class GitHubEvent
   PURCHASE = "marketplace_purchase"
   PULL_REQUEST = "pull_request"
-  CANCELLATION = "cancelled"
 
   def initialize(type:, body:)
     @body = body
@@ -17,11 +16,6 @@ class GitHubEvent
       update_purchase
     when PULL_REQUEST
       run_build
-    when CANCELLATION
-      owner = Owner.find_by!(
-        github_id: body["marketplace_purchase"]["account"]["id"],
-      )
-      owner.active_private_repos.each(&:deactivate)
     else
       Rails.logger.info("Unhandled GitHub event: #{type} -- #{action}")
     end
@@ -47,6 +41,11 @@ class GitHubEvent
         marketplace_plan_id: body["marketplace_purchase"]["plan"]["id"],
       )
     when "cancelled"
+      owner = Owner.find_by!(
+        github_id: body["marketplace_purchase"]["account"]["id"],
+      )
+      owner.active_private_repos.each(&:deactivate)
+
       owner.update!(marketplace_plan_id: nil)
     else
       raise "Unknown GitHub Marketplace action (#{action})"
