@@ -119,22 +119,6 @@ feature "Account" do
     end
   end
 
-  scenario "user sees paid repo usage" do
-    user = create(:user)
-    paid_repo = create(:repo, users: [user])
-    create(:build, repo: paid_repo)
-    create(:build, repo: paid_repo, violations_count: 3)
-    create(:build, repo: paid_repo, violations_count: 2)
-    create(:subscription, repo: paid_repo, user: user)
-
-    sign_in_as(user)
-
-    visit account_path
-
-    expect(find("td.reviews-given")).to have_text("3")
-    expect(find("td.violations-caught")).to have_text("5")
-  end
-
   scenario "user updates their email address", :js do
     email_address = "somebody.else@example.com"
     stub_customer_find_request
