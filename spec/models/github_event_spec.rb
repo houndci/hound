@@ -71,5 +71,45 @@ RSpec.describe GitHubEvent do
         expect(private_repo.reload).not_to be_active
       end
     end
+
+    context "for an App uninstall" do
+      it "disables the repos controlled by the installation" do
+        owner = create(:owner, github_id: 1, name: "octocat")
+        repo = create(:repo, :active, owner: owner, installation_id: 2)
+        body = JSON.parse(read_fixture("github_app_uninstall.json"))
+        event = described_class.new(
+          type: GitHubEvent::INSTALLATION,
+          body: body,
+        )
+
+        event.process
+
+        expect(repo.reload).not_to be_active
+      end
+
+      it "removes the installation id from repos" do
+        owner = create(:owner, github_id: 1, name: "octocat")
+        repo = create(:repo, :active, owner: owner, installation_id: 2)
+        body = JSON.parse(read_fixture("github_app_uninstall.json"))
+        event = described_class.new(
+          type: GitHubEvent::INSTALLATION,
+          body: body,
+        )
+
+        event.process
+
+        expect(repo.reload.installation_id).to be_nil
+      end
+
+      it "removes the installation id from user"
+    end
+
+    context "when repos are added to an installation" do
+      it "add installation id to the repos"
+    end
+
+    context "when repos are removed from an installation" do
+      it "removes installation id from the repos"
+    end
   end
 end
