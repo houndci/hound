@@ -26,6 +26,8 @@ class GitHubEvent
       owner.active_private_repos.each(&:deactivate)
     when INSTALLATION
       update_installation
+    when INSTALLATION_REPOSITORIES
+      update_installation
     else
       Rails.logger.info("Unhandled GitHub event: #{type} -- #{action}")
     end
@@ -63,6 +65,17 @@ class GitHubEvent
     when "deleted"
       repos = Repo.where(installation_id: body["installation"]["id"])
       repos.update_all(active: false, installation_id: nil)
+    when "removed"
+      repos = Repo.where(
+        installation_id: body["installation"]["id"],
+        github_id: body["repositories_removed"].map { |repo| repo["id"] }
+      )
+      repos.update_all(active: false, installation_id: nil)
+    when "added"
+      repos = Repo.where(
+        github_id: body["repositories_added"].map { |repo| repo["id"] }
+      )
+      repos.update_all(installation_id: body["installation"]["id"])
     end
   end
 
