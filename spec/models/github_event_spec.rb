@@ -20,7 +20,7 @@ RSpec.describe GitHubEvent do
           }
           event = described_class.new(
             type: GitHubEvent::MARKETPLACE_PURCHASE,
-            body: body
+            body: body,
           )
 
           event.process
@@ -58,7 +58,7 @@ RSpec.describe GitHubEvent do
         public_repo = create(:repo, :active, owner: owner)
         private_repo = create(:repo, :active, :private, owner: owner)
         body = JSON.parse(
-          read_fixture("github_marketplace_purchase_cancelled.json")
+          read_fixture("github_marketplace_purchase_cancelled.json"),
         )
         event = described_class.new(
           type: GitHubEvent::MARKETPLACE_PURCHASE,
