@@ -114,7 +114,9 @@ RSpec.describe GitHubEvent do
           owner: owner,
           installation_id: nil,
         )
-        body = JSON.parse(read_fixture("github_installation_repositories_added.json"))
+        body = JSON.parse(
+          read_fixture("github_installation_repositories_added.json")
+        )
         event = described_class.new(
           type: GitHubEvent::INSTALLATION_REPOSITORIES,
           body: body,
@@ -137,7 +139,9 @@ RSpec.describe GitHubEvent do
           owner: owner,
           installation_id: 2,
         )
-        body = JSON.parse(read_fixture("github_installation_repositories_removed.json"))
+        body = JSON.parse(
+          read_fixture("github_installation_repositories_removed.json")
+        )
         event = described_class.new(
           type: GitHubEvent::INSTALLATION_REPOSITORIES,
           body: body,
@@ -159,7 +163,9 @@ RSpec.describe GitHubEvent do
           owner: owner,
           installation_id: 2,
         )
-        body = JSON.parse(read_fixture("github_installation_repositories_removed.json"))
+        body = JSON.parse(
+          read_fixture("github_installation_repositories_removed.json"),
+        )
         event = described_class.new(
           type: GitHubEvent::INSTALLATION_REPOSITORIES,
           body: body,

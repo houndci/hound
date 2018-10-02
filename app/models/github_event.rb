@@ -68,12 +68,12 @@ class GitHubEvent
     when "removed"
       repos = Repo.where(
         installation_id: body["installation"]["id"],
-        github_id: body["repositories_removed"].map { |repo| repo["id"] }
+        github_id: body["repositories_removed"].map { |repo| repo["id"] },
       )
       repos.update_all(active: false, installation_id: nil)
     when "added"
       repos = Repo.where(
-        github_id: body["repositories_added"].map { |repo| repo["id"] }
+        github_id: body["repositories_added"].map { |repo| repo["id"] },
       )
       repos.update_all(installation_id: body["installation"]["id"])
     end
