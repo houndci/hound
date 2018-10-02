@@ -18,7 +18,10 @@ RSpec.describe GitHubEvent do
               },
             },
           }
-          event = described_class.new(type: GitHubEvent::MARKETPLACE_PURCHASE, body: body)
+          event = described_class.new(
+            type: GitHubEvent::MARKETPLACE_PURCHASE,
+            body: body
+          )
 
           event.process
 
