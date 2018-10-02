@@ -115,7 +115,7 @@ RSpec.describe GitHubEvent do
           installation_id: nil,
         )
         body = JSON.parse(
-          read_fixture("github_installation_repositories_added.json")
+          read_fixture("github_installation_repositories_added.json"),
         )
         event = described_class.new(
           type: GitHubEvent::INSTALLATION_REPOSITORIES,
@@ -140,7 +140,7 @@ RSpec.describe GitHubEvent do
           installation_id: 2,
         )
         body = JSON.parse(
-          read_fixture("github_installation_repositories_removed.json")
+          read_fixture("github_installation_repositories_removed.json"),
         )
         event = described_class.new(
           type: GitHubEvent::INSTALLATION_REPOSITORIES,
