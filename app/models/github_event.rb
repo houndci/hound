@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GitHubEvent
-  PURCHASE = "marketplace_purchase"
+  MARKETPLACE_PURCHASE = "marketplace_purchase"
   PULL_REQUEST = "pull_request"
 
   def initialize(type:, body:)
@@ -12,7 +12,7 @@ class GitHubEvent
   def process
     Rails.logger.info("Received GitHub event: #{type} -- #{action}")
     case type
-    when PURCHASE
+    when MARKETPLACE_PURCHASE
       update_purchase
     when PULL_REQUEST
       run_build
@@ -41,7 +41,7 @@ class GitHubEvent
         marketplace_plan_id: body["marketplace_purchase"]["plan"]["id"],
       )
     when "cancelled"
-      owner.active_private_repos.update_all(active: false)
+      owner.repos.update_all(active: false)
       owner.update!(marketplace_plan_id: nil)
     else
       raise "Unknown GitHub Marketplace action (#{action})"
