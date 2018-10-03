@@ -5,6 +5,6 @@ feature "Error Pages" do
     visit "/404"
 
     expect(page.status_code).to eq 404
-    expect(page).to have_content("The page you were looking for doesn't exist")
+    expect(page).to have_content("Oh no, this page doesn't exist")
   end
 end
