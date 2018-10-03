@@ -2,8 +2,7 @@ require "rails_helper"
 
 RSpec.describe SubmitReview do
   describe ".call" do
-    it "posts a review with max comments to GitHub" do
-      stub_const("Hound::MAX_COMMENTS", 2)
+    it "posts a review to GitHub" do
       violation1 = stub_violation("foo comment")
       violation2 = stub_violation("bar comment")
       violation3 = stub_violation("baz comment")
@@ -29,6 +28,11 @@ RSpec.describe SubmitReview do
             position: violation2.patch_position,
             body: violation2.messages.join,
           },
+          {
+            path: violation3.filename,
+            position: violation3.patch_position,
+            body: violation3.messages.join,
+          },
         ],
         <<~TEXT.chomp
           Some files could not be reviewed due to errors:
@@ -42,6 +46,38 @@ RSpec.describe SubmitReview do
             bar</pre>
           </details>
         TEXT
+      )
+    end
+
+    it "posts a consolidated review to GitHub" do
+      stub_const("Hound::MAX_COMMENTS", 2)
+      violation1 = stub_violation("foo comment")
+      violation2 = stub_violation("bar comment")
+      violation3 = stub_violation("bar comment")
+      violation4 = stub_violation("bar comment")
+      build = stub_build(
+        violations: [violation1, violation2, violation3, violation4],
+      )
+      github = stub_github
+
+      described_class.call(build)
+
+      expect(github).to have_received(:create_pull_request_review).with(
+        build.repo_name,
+        build.pull_request_number,
+        [
+          {
+            path: violation1.filename,
+            position: violation1.patch_position,
+            body: violation1.messages.join,
+          },
+          {
+            path: violation2.filename,
+            position: violation2.patch_position,
+            body: violation2.messages.join,
+          },
+        ],
+        ""
       )
     end
 
@@ -82,8 +118,7 @@ RSpec.describe SubmitReview do
   end
 
   def stub_violation(message)
-    instance_double(
-      "Violation",
+    OpenStruct.new(
       filename: "test.rb",
       messages: [message],
       patch_position: 1,

@@ -109,8 +109,7 @@ RSpec.describe CompleteBuild do
 
     def stub_build(violation_messages, attributes = {})
       violations = violation_messages.map do |violation_message|
-        instance_double(
-          "Violation",
+        OpenStruct.new(
           filename: "app/anything.rb",
           patch_position: 1,
           messages: [violation_message],
