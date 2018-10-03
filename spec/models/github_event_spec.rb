@@ -18,7 +18,10 @@ RSpec.describe GitHubEvent do
               },
             },
           }
-          event = described_class.new(type: GitHubEvent::PURCHASE, body: body)
+          event = described_class.new(
+            type: GitHubEvent::MARKETPLACE_PURCHASE,
+            body: body,
+          )
 
           event.process
 
@@ -50,19 +53,21 @@ RSpec.describe GitHubEvent do
     end
 
     context "for a cancellation" do
-      it "disables the owner's active private repos" do
+      it "deactivates the owner's repos" do
         owner = create(:owner, github_id: 123456, name: "salbertson")
         public_repo = create(:repo, :active, owner: owner)
         private_repo = create(:repo, :active, :private, owner: owner)
-        body = JSON.parse(read_fixture("github_marketplace_cancellation.json"))
+        body = JSON.parse(
+          read_fixture("github_marketplace_purchase_cancelled.json"),
+        )
         event = described_class.new(
-          type: GitHubEvent::CANCELLATION,
+          type: GitHubEvent::MARKETPLACE_PURCHASE,
           body: body,
         )
 
         event.process
 
-        expect(public_repo.reload).to be_active
+        expect(public_repo.reload).not_to be_active
         expect(private_repo.reload).not_to be_active
       end
     end
