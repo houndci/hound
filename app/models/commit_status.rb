@@ -8,22 +8,14 @@ class CommitStatus
   def set_pending
     github.create_pending_status(repo_name, sha, I18n.t(:pending_status))
   rescue Octokit::NotFound
-    notify_sentry(
-      "Failed to set pending status",
-      repo_name: repo_name,
-      sha: sha
-    )
+    notify_sentry("Failed to set pending status")
   end
 
   def set_success(violation_count)
     message = I18n.t(:complete_status, count: violation_count)
     github.create_success_status(repo_name, sha, message)
   rescue Octokit::NotFound
-    notify_sentry(
-      "Failed to set success status",
-      repo_name: repo_name,
-      sha: sha
-    )
+    notify_sentry("Failed to set success status")
   end
 
   def set_failure(violation_count)
@@ -67,8 +59,6 @@ class CommitStatus
   rescue Octokit::NotFound
     notify_sentry(
       "Failed to set error status",
-      repo_name: repo_name,
-      sha: sha,
       message: message,
       url: url
     )
@@ -84,7 +74,13 @@ class CommitStatus
     @github ||= GitHubApi.new(token)
   end
 
-  def notify_sentry(message, metadata)
-    Raven.capture_message(message, extra: metadata)
+  def notify_sentry(message, metadata = {})
+    Raven.capture_message(
+      message,
+      extra: {
+        repo_name: repo_name,
+        sha: sha,
+      }.merge(metadata)
+    )
   end
 end
