@@ -80,7 +80,7 @@ class CommitStatus
       extra: {
         repo_name: repo_name,
         sha: sha,
-      }.merge(metadata)
+      }.merge(metadata),
     )
   end
 end

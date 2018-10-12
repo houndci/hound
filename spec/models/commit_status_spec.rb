@@ -35,7 +35,7 @@ describe CommitStatus do
         github_api = double("GitHubApi")
         allow(GitHubApi).to receive(:new).and_return(github_api)
         allow(github_api).to(
-          receive(:create_pending_status).and_raise(Octokit::NotFound)
+          receive(:create_pending_status).and_raise(Octokit::NotFound),
         )
 
         expect(Raven).to(
@@ -43,7 +43,7 @@ describe CommitStatus do
             "Failed to set pending status",
             extra: {
               repo_name: repo_name,
-              sha: sha
+              sha: sha,
             }
           )
         )
@@ -112,7 +112,7 @@ describe CommitStatus do
         github_api = double("GitHubApi")
         allow(GitHubApi).to receive(:new).and_return(github_api)
         allow(github_api).to(
-          receive(:create_error_status).and_raise(Octokit::NotFound)
+          receive(:create_error_status).and_raise(Octokit::NotFound),
         )
 
         expect(Raven).to(
@@ -122,7 +122,7 @@ describe CommitStatus do
               repo_name: repo_name,
               sha: sha,
               message: "1 violation found.",
-              url: nil
+              url: nil,
             }
           )
         )
