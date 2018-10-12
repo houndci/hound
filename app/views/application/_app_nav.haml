@@ -44,7 +44,7 @@
           = link_to t("sign_out"), sign_out_path, class: "app-nav__item"
 
       - else
-        = link_to "/auth/github", class: "button " do
+        = link_to "/auth/github", class: "button auth" do
           %svg.icon.button__icon{ "aria-hidden" => "true" }
             %use{ "xlink:href" => "/images/icons.svg#github" }
           = t("authenticate")
