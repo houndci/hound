@@ -21,6 +21,36 @@ describe CommitStatus do
         I18n.t(:pending_status),
       )
     end
+
+    context "when status update fails" do
+      it "notifies Sentry" do
+        repo_name = "houndci/hound"
+        sha = "abc123"
+        token = "token"
+        commit_status = CommitStatus.new(
+          repo_name: repo_name,
+          sha: sha,
+          token: token,
+        )
+        github_api = double("GitHubApi")
+        allow(GitHubApi).to receive(:new).and_return(github_api)
+        allow(github_api).to(
+          receive(:create_pending_status).and_raise(Octokit::NotFound),
+        )
+
+        expect(Raven).to(
+          receive(:capture_message).with(
+            "Failed to set pending status",
+            extra: {
+              repo_name: repo_name,
+              sha: sha,
+            }
+          )
+        )
+
+        commit_status.set_pending
+      end
+    end
   end
 
   describe "#set_success" do
@@ -67,6 +97,38 @@ describe CommitStatus do
         I18n.t(:complete_status, count: violation_count),
         nil,
       )
+    end
+
+    context "when status update fails" do
+      it "notifies Sentry" do
+        repo_name = "houndci/hound"
+        sha = "abc123"
+        token = "token"
+        commit_status = CommitStatus.new(
+          repo_name: repo_name,
+          sha: sha,
+          token: token,
+        )
+        github_api = double("GitHubApi")
+        allow(GitHubApi).to receive(:new).and_return(github_api)
+        allow(github_api).to(
+          receive(:create_error_status).and_raise(Octokit::NotFound),
+        )
+
+        expect(Raven).to(
+          receive(:capture_message).with(
+            "Failed to set error status",
+            extra: {
+              repo_name: repo_name,
+              sha: sha,
+              message: "1 violation found.",
+              url: nil,
+            }
+          )
+        )
+
+        commit_status.set_failure(1)
+      end
     end
   end
 
