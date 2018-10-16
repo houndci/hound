@@ -10,7 +10,7 @@ class PlanSelector
     if marketplace_plan?
       plans.detect { |plan| plan.id == marketplace_plan_id }
     else
-      find_plan_by_active_repo_count(active_repo_count)
+      find_plan_by_active_repo_count
     end
   end
 
@@ -38,7 +38,7 @@ class PlanSelector
 
   attr_reader :user, :repo
 
-  def find_plan_by_active_repo_count(active_repo_count)
+  def find_plan_by_active_repo_count
     plans.detect do |plan|
       plan.range.include? active_repo_count
     end
