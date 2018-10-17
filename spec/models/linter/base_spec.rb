@@ -1,8 +1,4 @@
-require "spec_helper"
-require "app/models/linter/base"
-require "app/models/config/base"
-require "app/models/config/unsupported"
-require "app/services/build_config"
+require "rails_helper"
 
 module Linter
   class Test < Base
@@ -10,10 +6,62 @@ module Linter
   end
 end
 
+class TestReviewJob; end
+
 describe Linter::Test do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.yes) }
     let(:not_lintable_files) { %w(foo.no bar.nope) }
+  end
+
+  describe "#file_review" do
+    context "when a linter version is not configured" do
+      it "enqueues a job without the linter version" do
+        build = double(
+          "Build",
+          repo: double("Repo", owner: double("Owner")),
+          commit_sha: "abc123",
+          pull_request_number: 123
+        )
+        hound_config = double("HoundConfig", linter_version: nil)
+        linter = build_linter(build: build, hound_config: hound_config)
+        commit_file = build_commit_file(filename: "wat.txt")
+        build_config = double("BuildConfig", serialize: "config")
+        allow(BuildConfig).to receive(:call).and_return(build_config)
+        allow(FileReview).to receive(:create!)
+
+        expect(Resque).to receive(:enqueue).with(
+          TestReviewJob,
+          hash_excluding(:linter_version)
+        )
+
+        linter.file_review(commit_file)
+      end
+    end
+
+    context "when a linter version is configured" do
+      it "enqueues a job with the linter version" do
+        build = double(
+          "Build",
+          repo: double("Repo", owner: double("Owner")),
+          commit_sha: "abc123",
+          pull_request_number: 123
+        )
+        hound_config = double("HoundConfig", linter_version: 1.0)
+        linter = build_linter(build: build, hound_config: hound_config)
+        commit_file = build_commit_file(filename: "wat.txt")
+        build_config = double("BuildConfig", serialize: "config")
+        allow(BuildConfig).to receive(:call).and_return(build_config)
+        allow(FileReview).to receive(:create!)
+
+        expect(Resque).to receive(:enqueue).with(
+          TestReviewJob,
+          hash_including(linter_version: 1.0)
+        )
+
+        linter.file_review(commit_file)
+      end
+    end
   end
 
   describe "#file_included?" do

@@ -47,7 +47,11 @@ module Linter
         linter_name: name,
         patch: commit_file.patch,
         pull_request_number: build.pull_request_number,
-      }
+      }.tap do |attributes|
+        if version.present?
+          attributes[:linter_version] = version
+        end
+      end
     end
 
     def enqueue_job(attributes)
@@ -72,6 +76,10 @@ module Linter
         name: name,
         owner: owner,
       )
+    end
+
+    def version
+      hound_config.linter_version(name)
     end
   end
 end
