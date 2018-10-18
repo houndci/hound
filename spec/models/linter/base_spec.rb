@@ -23,7 +23,7 @@ describe Linter::Test do
         commit_file = build_commit_file(filename: "wat.txt")
         build_config = instance_double(
           "Config::Unsupported",
-          serialize: "config"
+          serialize: "config",
         )
         allow(BuildConfig).to receive(:call).and_return(build_config)
         allow(Resque).to receive(:enqueue)
@@ -45,7 +45,7 @@ describe Linter::Test do
         commit_file = build_commit_file(filename: "wat.txt")
         build_config = instance_double(
           "Config::Unsupported",
-          serialize: "config"
+          serialize: "config",
         )
         allow(BuildConfig).to receive(:call).and_return(build_config)
         allow(Resque).to receive(:enqueue)

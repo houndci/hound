@@ -171,10 +171,10 @@ describe HoundConfig do
     context "when version is specified" do
       it "returns version" do
         commit = stub_commit(
-          ".hound.yml" => <<~EOS
+          ".hound.yml" => <<~CONFIG
             rubocop:
               version: 1.2.3
-          EOS
+          CONFIG
         )
         hound_config = build_hound_config(commit)
 
@@ -187,10 +187,10 @@ describe HoundConfig do
     context "when version is not specified" do
       it "returns nothing" do
         commit = stub_commit(
-          ".hound.yml" => <<~EOS
+          ".hound.yml" => <<~CONFIG
             rubocop:
               enabled: true
-          EOS
+          CONFIG
         )
         hound_config = build_hound_config(commit)
 
