@@ -25,7 +25,7 @@ describe Build do
         user = create(:user, token: "sometoken")
         repo = create(:repo, users: [user])
         build = create(:build, repo: repo)
-        github_api = instance_double("GitHubApi", repository?: true)
+        github_api = instance_double("GitHubApi", statuses: [])
         allow(GitHubApi).to receive(:new).and_return(github_api)
 
         expect(build.github_token).to eq user.token
@@ -37,10 +37,12 @@ describe Build do
         user = create(:user, token: "sometoken")
         repo = create(:repo, users: [user])
         build = create(:build, repo: repo)
-        github_api = instance_double("GitHubApi", repository?: false)
+        github_api = instance_double("GitHubApi")
+        allow(github_api).to receive(:statuses).and_raise(Octokit::NotFound)
         allow(GitHubApi).to receive(:new).and_return(github_api)
 
         expect(build.github_token).to eq Hound::GITHUB_TOKEN
+        expect(repo.reload.users).to eq []
       end
     end
   end

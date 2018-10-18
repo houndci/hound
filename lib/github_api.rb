@@ -9,6 +9,8 @@ class GitHubApi
 
   attr_reader :file_cache, :token
 
+  delegate :statuses, to: :client
+
   def initialize(token)
     @token = token
     @file_cache = {}

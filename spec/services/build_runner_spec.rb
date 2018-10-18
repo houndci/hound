@@ -166,7 +166,7 @@ describe BuildRunner do
         user.repos += [reachable_repo, unreachable_repo]
         build_runner = make_build_runner(repo: unreachable_repo)
         github_api = stubbed_github_api
-        allow(github_api).to receive(:repository?).and_return(false)
+        allow(github_api).to receive(:statuses).and_raise(Octokit::NotFound)
         stubbed_pull_request_with_file("test.rb", "")
 
         build_runner.call
@@ -358,7 +358,7 @@ describe BuildRunner do
       create_pending_status: nil,
       create_success_status: nil,
       create_error_status: nil,
-      repository?: true,
+      statuses: [],
     )
     allow(GitHubApi).to receive(:new).and_return(github_api)
 

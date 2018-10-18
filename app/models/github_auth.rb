@@ -15,20 +15,19 @@ class GitHubAuth
   def user
     if repo.installation_id.nil?
       @_user ||= users_with_token.shuffle.detect(-> { hound_user }) do |user|
-        can_reach_repository?(user)
+        has_pr_status_permissions?(user)
       end
     end
   end
 
   private
 
-  def can_reach_repository?(user)
-    if GitHubApi.new(user.token).repository?(repo.name)
-      true
-    else
-      repo.remove_membership(user)
-      false
-    end
+  def has_pr_status_permissions?(user)
+    GitHubApi.new(user.token).statuses(repo.name, "master")
+    true
+  rescue Octokit::NotFound
+    repo.remove_membership(user)
+    false
   end
 
   def hound_user

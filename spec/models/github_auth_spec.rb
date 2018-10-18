@@ -25,8 +25,10 @@ RSpec.describe GitHubAuth do
           users = double(shuffle: [user_with_bad_token, user_with_good_token])
           repo = stub_repo(users_with_token: users)
           github_token = described_class.new(repo)
-          stub_github("abc123", repository?: false)
-          stub_github("def456", repository?: true)
+          stub_github("def456", statuses: [])
+          unreachable_repo = stub_github("abc123")
+          allow(unreachable_repo).to receive(:statuses).
+            and_raise(Octokit::NotFound)
 
           expect(github_token.token).to eq user_with_good_token.token
           expect(repo).to have_received(:remove_membership).
@@ -99,7 +101,7 @@ RSpec.describe GitHubAuth do
   end
 
   def stub_github(token, options = {})
-    default_options = { repository?: true }
+    default_options = { statuses: [] }
     github_stub = instance_double("GitHubApi", default_options.merge(options))
     allow(GitHubApi).to receive(:new).with(token).and_return(github_stub)
     github_stub
