@@ -47,11 +47,8 @@ module Linter
         linter_name: name,
         patch: commit_file.patch,
         pull_request_number: build.pull_request_number,
-      }.tap do |attributes|
-        if version.present?
-          attributes[:linter_version] = version
-        end
-      end
+        linter_version: version,
+      }
     end
 
     def enqueue_job(attributes)

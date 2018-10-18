@@ -17,49 +17,45 @@ describe Linter::Test do
   describe "#file_review" do
     context "when a linter version is not configured" do
       it "enqueues a job without the linter version" do
-        build = double(
-          "Build",
-          repo: double("Repo", owner: double("Owner")),
-          commit_sha: "abc123",
-          pull_request_number: 123
-        )
-        hound_config = double("HoundConfig", linter_version: nil)
+        build = build(:build, commit_sha: "abc123", pull_request_number: 123)
+        hound_config = instance_double("HoundConfig", linter_version: nil)
         linter = build_linter(build: build, hound_config: hound_config)
         commit_file = build_commit_file(filename: "wat.txt")
-        build_config = double("BuildConfig", serialize: "config")
-        allow(BuildConfig).to receive(:call).and_return(build_config)
-        allow(FileReview).to receive(:create!)
-
-        expect(Resque).to receive(:enqueue).with(
-          TestReviewJob,
-          hash_excluding(:linter_version)
+        build_config = instance_double(
+          "Config::Unsupported",
+          serialize: "config"
         )
+        allow(BuildConfig).to receive(:call).and_return(build_config)
+        allow(Resque).to receive(:enqueue)
 
         linter.file_review(commit_file)
+
+        expect(Resque).to have_received(:enqueue).with(
+          TestReviewJob,
+          hash_including(linter_version: nil),
+        )
       end
     end
 
     context "when a linter version is configured" do
       it "enqueues a job with the linter version" do
-        build = double(
-          "Build",
-          repo: double("Repo", owner: double("Owner")),
-          commit_sha: "abc123",
-          pull_request_number: 123
-        )
-        hound_config = double("HoundConfig", linter_version: 1.0)
+        build = build(:build, commit_sha: "abc123", pull_request_number: 123)
+        hound_config = instance_double("HoundConfig", linter_version: 1.0)
         linter = build_linter(build: build, hound_config: hound_config)
         commit_file = build_commit_file(filename: "wat.txt")
-        build_config = double("BuildConfig", serialize: "config")
-        allow(BuildConfig).to receive(:call).and_return(build_config)
-        allow(FileReview).to receive(:create!)
-
-        expect(Resque).to receive(:enqueue).with(
-          TestReviewJob,
-          hash_including(linter_version: 1.0)
+        build_config = instance_double(
+          "Config::Unsupported",
+          serialize: "config"
         )
+        allow(BuildConfig).to receive(:call).and_return(build_config)
+        allow(Resque).to receive(:enqueue)
 
         linter.file_review(commit_file)
+
+        expect(Resque).to have_received(:enqueue).with(
+          TestReviewJob,
+          hash_including(linter_version: 1.0),
+        )
       end
     end
   end
