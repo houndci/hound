@@ -39,6 +39,7 @@ describe Linter::Flake8 do
             patch: commit_file.patch,
             content: commit_file.content,
             config: "config",
+            linter_version: nil,
           ],
         }
       )
