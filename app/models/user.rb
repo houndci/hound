@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  puts "WWWWWWWWWWWWWWWWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT!!!!!!!!!!!!!!!!!!!1"
+  puts "WAT"             
 
   include ActiveModel::ForbiddenAttributesProtection
 
