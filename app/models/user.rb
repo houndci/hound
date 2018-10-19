@@ -25,7 +25,7 @@ class User < ApplicationRecord
     username
   end
 
-  def active_repos
+  def active_repos         
     repos.active
   end
 
