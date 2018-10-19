@@ -71,5 +71,114 @@ RSpec.describe GitHubEvent do
         expect(private_repo.reload).not_to be_active
       end
     end
+
+    context "for an App uninstall" do
+      it "deactivates the repos and removes installation_id" do
+        owner = create(:owner, github_id: 1, name: "octocat")
+        repo = create(:repo, :active, owner: owner, installation_id: 2)
+        body = JSON.parse(read_fixture("github_app_uninstall.json"))
+        event = described_class.new(
+          type: GitHubEvent::INSTALLATION,
+          body: body,
+        )
+
+        event.process
+
+        expect(repo.reload).to have_attributes(
+          active: false,
+          installation_id: nil,
+        )
+      end
+
+      it "removes the installation id from user" do
+        owner = create(:owner, github_id: 1, name: "octocat")
+        repo = create(:repo, :active, owner: owner, installation_id: 2)
+        user = create(:user, installation_ids: [2, 345])
+        create(:membership, user: user, repo: repo)
+        body = JSON.parse(read_fixture("github_app_uninstall.json"))
+        event = described_class.new(
+          type: GitHubEvent::INSTALLATION,
+          body: body,
+        )
+
+        event.process
+
+        expect(user.reload.installation_ids).to eq [345]
+      end
+    end
+
+    context "when repos are added to an installation" do
+      it "adds installation id to the repos" do
+        owner = create(:owner, github_id: 1, name: "octocat")
+        repo = create(
+          :repo,
+          :active,
+          github_id: 1296269,
+          owner: owner,
+          installation_id: nil,
+        )
+        body = JSON.parse(
+          read_fixture("github_installation_repositories_added.json"),
+        )
+        event = described_class.new(
+          type: GitHubEvent::INSTALLATION_REPOSITORIES,
+          body: body,
+        )
+
+        event.process
+
+        expect(repo.reload.installation_id).to eq 2
+      end
+    end
+
+    context "when repos are removed from an installation" do
+      it "deactivates the removed repos" do
+        owner = create(:owner, github_id: 1, name: "octocat")
+        repo = create(:repo, :active, owner: owner, installation_id: 2)
+        removed_repo = create(
+          :repo,
+          :active,
+          github_id: 1296269,
+          owner: owner,
+          installation_id: 2,
+        )
+        body = JSON.parse(
+          read_fixture("github_installation_repositories_removed.json"),
+        )
+        event = described_class.new(
+          type: GitHubEvent::INSTALLATION_REPOSITORIES,
+          body: body,
+        )
+
+        event.process
+
+        expect(removed_repo.reload).not_to be_active
+        expect(repo.reload).to be_active
+      end
+
+      it "removes the installation id" do
+        owner = create(:owner, github_id: 1, name: "octocat")
+        repo = create(:repo, :active, owner: owner, installation_id: 2)
+        removed_repo = create(
+          :repo,
+          :active,
+          github_id: 1296269,
+          owner: owner,
+          installation_id: 2,
+        )
+        body = JSON.parse(
+          read_fixture("github_installation_repositories_removed.json"),
+        )
+        event = described_class.new(
+          type: GitHubEvent::INSTALLATION_REPOSITORIES,
+          body: body,
+        )
+
+        event.process
+
+        expect(removed_repo.reload.installation_id).to be_nil
+        expect(repo.reload.installation_id).to eq 2
+      end
+    end
   end
 end
