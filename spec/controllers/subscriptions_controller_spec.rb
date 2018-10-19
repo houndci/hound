@@ -119,12 +119,12 @@ describe SubscriptionsController, "#create" do
           as_json: { active: true },
           name: "TEST_REPO_NAME",
           private?: true,
-          subscription: double
+          subscription: double,
         )
         repo_activator = instance_double(
           "RepoActivator",
           activate: true,
-          errors: []
+          errors: [],
         )
         repos = class_double(Repo, find_by: repo)
         user = instance_double(
@@ -156,7 +156,7 @@ describe SubscriptionsController, "#create" do
           "RepoActivator",
           activate: false,
           deactivate: true,
-          errors: []
+          errors: [],
         )
         repos = class_double(Repo, find_by: repo)
         user = instance_double(
@@ -186,7 +186,7 @@ describe SubscriptionsController, "#create" do
           "RepoActivator",
           activate: false,
           deactivate: true,
-          errors: ["Wat"]
+          errors: ["Wat"],
         )
         repos = class_double(Repo, find_by: repo)
         user = instance_double(
@@ -202,7 +202,7 @@ describe SubscriptionsController, "#create" do
         put :update, params: { repo_id: 1 }
 
         expect(JSON.parse(response.body)["errors"].first).to(
-          eq repo_activator.errors.first
+          eq(repo_activator.errors.first),
         )
       end
     end

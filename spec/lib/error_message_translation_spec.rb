@@ -42,7 +42,7 @@ describe ErrorMessageTranslation do
         result = ErrorMessageTranslation.from_error_response(error)
 
         expect(result).to(
-          eq "You need to add at least one more seat to GitHub before enabling Hound. https://help.github.com/articles/adding-seats-to-your-organization"
+          eq("Please add a GitHub seat to enable Hound. https://help.github.com/articles/adding-seats-to-your-organization"),
         )
       end
     end
@@ -59,12 +59,12 @@ describe ErrorMessageTranslation do
   end
 
   def octokit_422_error_message
-<<-ERROR
-Octokit::UnprocessableEntity: PUT https://api.github.com/repos/safeguardingmonitor/platform/collaborators/houndci-bot: 422 - Validation Failed
-Error summary:
-  resource: Repository
-  code: custom
-  message: You must purchase at least one more seat to add this user as a collaborator. // See: https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator
-ERROR
+    <<~ERROR
+      Octokit::UnprocessableEntity: PUT https://api.github.com/repos/safeguardingmonitor/platform/collaborators/houndci-bot: 422 - Validation Failed
+      Error summary:
+        resource: Repository
+        code: custom
+        message: You must purchase at least one more seat to add this user as a collaborator. // See: https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator
+    ERROR
   end
 end
