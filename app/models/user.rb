@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  puts "WWWWWWWWWWWWWWWWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATTTTTTTTTTTTTTTTTTTT"
+
   include ActiveModel::ForbiddenAttributesProtection
 
   has_many :memberships, dependent: :destroy
