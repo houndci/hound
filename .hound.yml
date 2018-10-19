@@ -1,13 +1,14 @@
 fail_on_violations: true
 
-ruby:
+rubocop:
   config_file: .rubocop.yml
+  version: 0.59.2
 
 scss:
   config_file: .scss-lint.yml
 
-jshint:
-  config_file: .jshintrc
+eslint:
+  version: 5.7.0
 
 reek:
   enabled: true
