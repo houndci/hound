@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111!!!!!"
+
   include ActiveModel::ForbiddenAttributesProtection
 
   has_many :memberships, dependent: :destroy
@@ -13,7 +15,7 @@ class User < ApplicationRecord
 
   delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
 
-  def next_plan_price
+  def next_plan_price           
     next_plan.price
   end
 
