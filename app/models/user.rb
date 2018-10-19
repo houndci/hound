@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  puts "WAT"             
-
   include ActiveModel::ForbiddenAttributesProtection
 
   has_many :memberships, dependent: :destroy
@@ -8,6 +6,8 @@ class User < ApplicationRecord
   has_many :builds, through: :repos
   has_many :subscriptions
   has_many :subscribed_repos, through: :subscriptions, source: :repo
+
+  puts "WAT"             
 
   validates :username, presence: true
 

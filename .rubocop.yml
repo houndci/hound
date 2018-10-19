@@ -1,11 +1,8 @@
 AllCops:
-  Include:
-  - "**/*.rake"
-  - "**/Gemfile"
-  - "**/Rakefile"
   Exclude:
   - "vendor/**/*"
   - "db/**/*"
+  - "bin/*"
   DisplayCopNames: false
   StyleGuideCopsOnly: false
 Naming/AccessorMethodName:
