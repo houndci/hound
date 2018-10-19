@@ -47,6 +47,7 @@ module Linter
         linter_name: name,
         patch: commit_file.patch,
         pull_request_number: build.pull_request_number,
+        linter_version: version,
       }
     end
 
@@ -72,6 +73,10 @@ module Linter
         name: name,
         owner: owner,
       )
+    end
+
+    def version
+      hound_config.linter_version(name)
     end
   end
 end

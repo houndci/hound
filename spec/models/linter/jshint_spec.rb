@@ -72,6 +72,7 @@ describe Linter::Jshint do
           linter_name: "jshint",
           patch: commit_file.patch,
           pull_request_number: build.pull_request_number,
+          linter_version: nil,
         )
       end
     end
@@ -95,6 +96,7 @@ describe Linter::Jshint do
           linter_name: "jshint",
           patch: commit_file.patch,
           pull_request_number: build.pull_request_number,
+          linter_version: nil,
         )
       end
     end

@@ -36,6 +36,12 @@ class HoundConfig
     !!config["enabled"]
   end
 
+  def linter_version(name)
+    config = options_for(name)
+
+    config["version"]
+  end
+
   def fail_on_violations?
     !!content["fail_on_violations"]
   end

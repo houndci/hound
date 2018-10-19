@@ -35,6 +35,7 @@ RSpec.describe Linter::SassLint do
         patch: commit_file.patch,
         content: commit_file.content,
         config: "{}",
+        linter_version: nil,
       )
     end
   end
