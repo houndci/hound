@@ -86,7 +86,7 @@ RSpec.describe GitHubEvent do
 
         expect(repo.reload).to have_attributes(
           active: false,
-          installation_id: nil
+          installation_id: nil,
         )
       end
 

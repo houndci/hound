@@ -64,10 +64,11 @@ class GitHubEvent
       repos = Repo.where(installation_id: body["installation"]["id"])
       repos.update_all(active: false, installation_id: nil)
 
-      User.where(
+      users = User.where(
         "? = ANY(installation_ids)",
-        body["installation"]["id"]
-      ).find_each do |user|
+        body["installation"]["id"],
+      )
+      users.find_each do |user|
         user.installation_ids.delete(body["installation"]["id"])
         user.save!
       end
