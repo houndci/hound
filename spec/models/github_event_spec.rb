@@ -73,7 +73,7 @@ RSpec.describe GitHubEvent do
     end
 
     context "for an App uninstall" do
-      it "deactivates the repos controlled by the installation" do
+      it "deactivates the repos and removes installation_id" do
         owner = create(:owner, github_id: 1, name: "octocat")
         repo = create(:repo, :active, owner: owner, installation_id: 2)
         body = JSON.parse(read_fixture("github_app_uninstall.json"))
@@ -84,12 +84,17 @@ RSpec.describe GitHubEvent do
 
         event.process
 
-        expect(repo.reload).not_to be_active
+        expect(repo.reload).to have_attributes(
+          active: false,
+          installation_id: nil
+        )
       end
 
-      it "removes the installation id from repos" do
+      it "removes the installation id from user" do
         owner = create(:owner, github_id: 1, name: "octocat")
         repo = create(:repo, :active, owner: owner, installation_id: 2)
+        user = create(:user, installation_ids: [2, 345])
+        create(:membership, user: user, repo: repo)
         body = JSON.parse(read_fixture("github_app_uninstall.json"))
         event = described_class.new(
           type: GitHubEvent::INSTALLATION,
@@ -98,10 +103,8 @@ RSpec.describe GitHubEvent do
 
         event.process
 
-        expect(repo.reload.installation_id).to be_nil
+        expect(user.reload.installation_ids).to eq [345]
       end
-
-      it "removes the installation id from user"
     end
 
     context "when repos are added to an installation" do

@@ -24,9 +24,7 @@ class GitHubEvent
         github_id: body["marketplace_purchase"]["account"]["id"],
       )
       owner.active_private_repos.each(&:deactivate)
-    when INSTALLATION
-      update_installation
-    when INSTALLATION_REPOSITORIES
+    when INSTALLATION, INSTALLATION_REPOSITORIES
       update_installation
     else
       Rails.logger.info("Unhandled GitHub event: #{type} -- #{action}")
@@ -65,6 +63,14 @@ class GitHubEvent
     when "deleted"
       repos = Repo.where(installation_id: body["installation"]["id"])
       repos.update_all(active: false, installation_id: nil)
+
+      User.where(
+        "? = ANY(installation_ids)",
+        body["installation"]["id"]
+      ).find_each do |user|
+        user.installation_ids.delete(body["installation"]["id"])
+        user.save!
+      end
     when "removed"
       repos = Repo.where(
         installation_id: body["installation"]["id"],
