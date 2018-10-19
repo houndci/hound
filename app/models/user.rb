@@ -7,8 +7,6 @@ class User < ApplicationRecord
   has_many :subscriptions
   has_many :subscribed_repos, through: :subscriptions, source: :repo
 
-  puts "WAT"             
-
   validates :username, presence: true
 
   before_create :generate_remember_token
