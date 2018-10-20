@@ -2,7 +2,7 @@
 class HoundConfig
   CONFIG_FILE = ".hound.yml"
   LINTERS = {
-    Linter::CoffeeScript => { default: true },
+    Linter::Coffeelint => { default: true },
     Linter::Credo => { default: false },
     Linter::Eslint => { default: false },
     Linter::Flake8 => { default: false },

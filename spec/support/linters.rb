@@ -1,5 +1,5 @@
 require "app/models/linter/base"
-require "app/models/linter/coffee_script"
+require "app/models/linter/coffeelint"
 require "app/models/linter/credo"
 require "app/models/linter/eslint"
 require "app/models/linter/flake8"

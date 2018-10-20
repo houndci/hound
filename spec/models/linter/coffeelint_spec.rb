@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::CoffeeScript do
+RSpec.describe Linter::Coffeelint do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.coffee foo.coffee.erb foo.coffee.js) }
     let(:not_lintable_files) { %w(foo.js) }
@@ -27,10 +27,10 @@ describe Linter::CoffeeScript do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        CoffeelintReviewJob,
+        LintersJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "coffee_script",
+        linter_name: "coffeelint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
@@ -42,11 +42,11 @@ describe Linter::CoffeeScript do
 
   def stub_coffeelint_config(config = {})
     stubbed_config = instance_double(
-      Config::CoffeeScript,
+      Config::Coffeelint,
       content: config,
       serialize: Config::Serializer.json(config),
     )
-    allow(Config::CoffeeScript).to receive(:new).and_return(stubbed_config)
+    allow(Config::Coffeelint).to receive(:new).and_return(stubbed_config)
 
     stubbed_config
   end

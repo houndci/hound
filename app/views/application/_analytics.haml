@@ -18,10 +18,7 @@
     var links = document.getElementsByClassName("auth");
 
     for (var i = 0; i < links.length; i++) {
-      window.analytics.trackLink(
-        links[i],
-        "Clicked Sign In"
-      );
+      window.analytics.trackLink(links[i], "Clicked Sign In");
     }
 
 - if flash[:signed_up]

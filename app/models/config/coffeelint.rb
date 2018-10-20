@@ -1,5 +1,5 @@
 module Config
-  class CoffeeScript < Base
+  class Coffeelint < Base
     def serialize
       Serializer.json(content)
     end

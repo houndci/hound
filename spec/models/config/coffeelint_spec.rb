@@ -1,15 +1,15 @@
 require "spec_helper"
 require "app/models/config/base"
-require "app/models/config/coffee_script"
+require "app/models/config/coffeelint"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config_content"
 require "app/models/config/json_with_comments"
 require "app/models/missing_owner"
 
-describe Config::CoffeeScript do
+RSpec.describe Config::Coffeelint do
   describe "#content" do
-    context "with a modern coffeescript config" do
+    context "with a modern coffeelint config" do
       it "returns the content from GitHub as a hash" do
         raw_config = <<~EOS
           { "arrow_spacing": { "level": "error" } }
@@ -24,7 +24,7 @@ describe Config::CoffeeScript do
       end
     end
 
-    context "with a legacy coffeescript config" do
+    context "with a legacy coffeelint config" do
       it "returns the content from GitHub as a hash" do
         raw_config = <<~EOS
           { "arrow_spacing": { "level": "error" } }

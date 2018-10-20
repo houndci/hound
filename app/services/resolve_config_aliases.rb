@@ -1,6 +1,7 @@
 class ResolveConfigAliases
   ALIASES = {
-    "coffeescript" => "coffee_script",
+    "coffeescript" => "coffeelint",
+    "coffee_script" => "coffeelint",
     "go" => "golint",
     "java_script" => "jshint",
     "javascript" => "jshint",

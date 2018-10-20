@@ -123,13 +123,13 @@ describe HoundConfig do
       it "converts them and returns true" do
         commit = stub_commit(
           ".hound.yml" => <<~EOS
-            coffeescript:
+            sass-lint:
               enabled: true
           EOS
         )
         hound_config = build_hound_config(commit)
 
-        expect(hound_config).to be_enabled_for("coffee_script")
+        expect(hound_config).to be_enabled_for("sass_lint")
       end
     end
 
