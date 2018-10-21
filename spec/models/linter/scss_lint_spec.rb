@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::Scss do
+describe Linter::ScssLint do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.scss) }
     let(:not_lintable_files) { %w(foo.css) }
@@ -27,10 +27,10 @@ describe Linter::Scss do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        ScssReviewJob,
+        LintersJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "scss",
+        linter_name: "scss_lint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
@@ -41,12 +41,12 @@ describe Linter::Scss do
   end
 
   def stub_scss_config(config = {})
-    stubbed_scss_config = double(
-      "ScssConfig",
+    stubbed_scss_config = instance_double(
+      "Config::ScssLint",
       content: config,
       serialize: config.to_s,
     )
-    allow(Config::Scss).to receive(:new).and_return(stubbed_scss_config)
+    allow(Config::ScssLint).to receive(:new).and_return(stubbed_scss_config)
 
     stubbed_scss_config
   end

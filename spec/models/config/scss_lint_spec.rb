@@ -1,12 +1,12 @@
 require "spec_helper"
 require "app/models/config/base"
-require "app/models/config/scss"
+require "app/models/config/scss_lint"
 require "app/models/config/parser"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
 
-describe Config::Scss do
+describe Config::ScssLint do
   describe "#content" do
     context "when an owner is provided" do
       it "merges the configuration into the owner's configuration" do
