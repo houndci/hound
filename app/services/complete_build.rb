@@ -38,15 +38,15 @@ class CompleteBuild
     Commit.new(
       build.repo_name,
       build.commit_sha,
-      GitHubApi.new(build.github_token),
+      GitHubApi.new(build.github_auth.token),
     )
   end
 
   def commit_status
     CommitStatus.new(
-      repo_name: build.repo_name,
+      repo: build.repo,
       sha: build.commit_sha,
-      token: build.github_token,
+      github_auth: build.github_auth,
     )
   end
 end

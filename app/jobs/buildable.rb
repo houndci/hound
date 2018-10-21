@@ -13,9 +13,9 @@ module Buildable
     repo = Repo.active.find_by(github_id: payload.github_repo_id)
     github_auth = GitHubAuth.new(repo)
     commit_status = CommitStatus.new(
-      repo_name: payload.full_repo_name,
+      repo: repo,
       sha: payload.head_sha,
-      token: github_auth.token,
+      github_auth: github_auth,
     )
     commit_status.set_internal_error
   end

@@ -89,9 +89,9 @@ class StartBuild
 
   def commit_status
     @commit_status ||= CommitStatus.new(
-      repo_name: payload.full_repo_name,
+      repo: repo,
       sha: payload.head_sha,
-      token: github_auth.token,
+      github_auth: github_auth,
     )
   end
 
