@@ -1,5 +1,5 @@
 module Config
-  class Haml < Base
+  class HamlLint < Base
     def serialize
       Serializer.yaml(content)
     end
