@@ -41,13 +41,13 @@ RSpec.describe GitHubEvent do
             type: GitHubEvent::PULL_REQUEST,
             body: body,
           )
-          allow(BuildRunner).to receive(:call)
+          allow(StartBuild).to receive(:call)
 
           run_background_jobs_immediately do
             event.process
           end
 
-          expect(BuildRunner).to have_received(:call)
+          expect(StartBuild).to have_received(:call)
         end
       end
     end

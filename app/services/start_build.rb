@@ -1,4 +1,4 @@
-class BuildRunner
+class StartBuild
   static_facade :call
   pattr_initialize :payload
 
@@ -14,10 +14,6 @@ class BuildRunner
   rescue StandardError
     set_internal_error
     raise
-  end
-
-  def set_internal_error
-    commit_status.set_internal_error
   end
 
   private
@@ -109,5 +105,9 @@ class BuildRunner
 
   def set_no_violations_status
     commit_status.set_success(0)
+  end
+
+  def set_internal_error
+    commit_status.set_internal_error
   end
 end
