@@ -3,6 +3,8 @@ class ResolveConfigAliases
     "coffeescript" => "coffeelint",
     "coffee_script" => "coffeelint",
     "go" => "golint",
+    "haml" => "haml_lint",
+    "haml-lint" => "haml_lint",
     "java_script" => "jshint",
     "javascript" => "jshint",
     "python" => "flake8",

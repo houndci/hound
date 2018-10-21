@@ -1,12 +1,12 @@
 require "app/models/config/base"
-require "app/models/config/haml"
+require "app/models/config/haml_lint"
 require "app/models/config/parser"
 require "app/models/config/parser_error"
 require "app/models/config/serializer"
 require "app/models/config_content"
 require "app/models/missing_owner"
 
-describe Config::Haml do
+describe Config::HamlLint do
   describe "#content" do
     context "when an owner is provided" do
       it "merges the configuration into the owner's configuration" do

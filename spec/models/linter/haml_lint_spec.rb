@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::Haml do
+describe Linter::HamlLint do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(foo.haml) }
     let(:not_lintable_files) { %w(foo.rb) }
@@ -27,10 +27,10 @@ describe Linter::Haml do
       linter.file_review(commit_file)
 
       expect(Resque).to have_received(:enqueue).with(
-        HamlReviewJob,
+        LintersJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "haml",
+        linter_name: "haml_lint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
@@ -43,12 +43,12 @@ describe Linter::Haml do
   private
 
   def stub_haml_config(config = {})
-    stubbed_haml_config = double(
-      "HamlConfig",
+    stubbed_haml_config = instance_double(
+      "Config::HamlLint",
       content: config,
       serialize: config.to_s,
     )
-    allow(Config::Haml).to receive(:new).and_return(stubbed_haml_config)
+    allow(Config::HamlLint).to receive(:new).and_return(stubbed_haml_config)
 
     stubbed_haml_config
   end
