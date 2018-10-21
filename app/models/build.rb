@@ -14,8 +14,8 @@ class Build < ApplicationRecord
     file_reviews.where(completed_at: nil).empty?
   end
 
-  def github_token
-    @_github_token ||= GitHubAuth.new(repo).token
+  def github_auth
+    @_github_auth ||= GitHubAuth.new(repo)
   end
 
   def review_errors

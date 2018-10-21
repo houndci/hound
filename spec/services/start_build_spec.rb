@@ -229,20 +229,19 @@ RSpec.describe StartBuild do
     end
 
     context "when status cannot be updated" do
-      it "does not error" do
-        status_not_found = "POST https://api.github.com/repos/foo/bar/" \
-          "statuses/123abc: 404 - Not Found // See: https://dev.github.com"
-        repo = create(:repo, :active)
+      it "removes the user's repo membership" do
+        user = create(:user, token: "mytoken")
+        repo = create(:repo, :active, users: [user])
         service = make_service(repo: repo)
         github_api = stubbed_github_api
         stubbed_pull_request_with_file("foo.rb", "puts 5 * 6")
         allow(github_api).to receive(:create_pending_status).
-          and_raise(Octokit::NotFound.new(message: status_not_found))
+          and_raise(Octokit::NotFound)
 
-        expect { service.call }.not_to raise_error
+        expect { service.call }.to raise_error(Octokit::NotFound)
 
-        expect(repo.builds.size).to eq 1
-        expect(repo.builds.map(&:file_reviews).size).to eq 1
+        expect(repo.reload.users).to eq []
+        expect(repo.builds.size).to eq 0
       end
     end
 

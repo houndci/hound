@@ -19,29 +19,12 @@ describe Build do
     end
   end
 
-  describe "#github_token" do
-    context "when user's can reach the repo" do
-      it "returns the user's token" do
-        user = create(:user, token: "sometoken")
-        repo = create(:repo, users: [user])
-        build = create(:build, repo: repo)
-        github_api = instance_double("GitHubApi", repository?: true)
-        allow(GitHubApi).to receive(:new).and_return(github_api)
+  describe "#github_auth" do
+    it "returns the GitHubAuth object" do
+      repo = create(:repo)
+      build = create(:build, repo: repo)
 
-        expect(build.github_token).to eq user.token
-      end
-    end
-
-    context "when user's cannot reach the repo" do
-      it "returns the houndci's token" do
-        user = create(:user, token: "sometoken")
-        repo = create(:repo, users: [user])
-        build = create(:build, repo: repo)
-        github_api = instance_double("GitHubApi", repository?: false)
-        allow(GitHubApi).to receive(:new).and_return(github_api)
-
-        expect(build.github_token).to eq Hound::GITHUB_TOKEN
-      end
+      expect(build.github_auth).to be_a GitHubAuth
     end
   end
 

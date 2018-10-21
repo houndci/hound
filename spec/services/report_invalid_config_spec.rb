@@ -37,7 +37,8 @@ RSpec.describe ReportInvalidConfig do
   end
 
   def stubbed_build(methods = {})
-    build = instance_double("Build", github_token: "foo")
+    github_auth = instance_double("GitHubAuth")
+    build = instance_double("Build", github_auth: github_auth, repo: nil)
     allow(Build).to receive(:find_by!).and_return(build)
 
     methods.each do |method_name, return_value|

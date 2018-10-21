@@ -118,16 +118,18 @@ RSpec.describe CompleteBuild do
       end
       repo = instance_double(
         "Repo",
+        name: "foo/bar",
         installation_id: 111,
         subscription: false,
         owner: MissingOwner.new,
       )
+      github_auth = instance_double("GitHubAuth", token: "token")
       default_attributes = {
         completed?: true,
-        github_token: "abc123",
+        github_auth: github_auth,
         review_errors: [],
+        repo_name: repo.name,
         repo: repo,
-        repo_name: "foo/bar",
         commit_sha: "abc123",
         pull_request_number: 321,
         violations: violations,

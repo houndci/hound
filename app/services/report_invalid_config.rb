@@ -17,9 +17,9 @@ class ReportInvalidConfig
 
   def commit_status
     @commit_status ||= CommitStatus.new(
-      repo_name: build.repo_name,
+      repo: build.repo,
       sha: commit_sha,
-      token: build.github_token,
+      github_auth: build.github_auth,
     )
   end
 
