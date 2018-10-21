@@ -16,14 +16,12 @@ Vulnerability Reporting
 
 For security inquiries or vulnerability reports, please email
 <hello@houndci.com>.
-If you'd like, you can use our [PGP key] when reporting vulnerabilities.
-
-[PGP key]: https://thoughtbot.com/thoughtbot.asc
 
 Hound Group
 -----------
 
-Hound is operated by Hound Group LLC, a [California limited liability company][sos].
+Hound is operated by Hound Group LLC,
+a [California limited liability company][sos].
 
 [sos]: https://businesssearch.sos.ca.gov/CBS/SearchResults?SearchType=NUMBER&SearchCriteria=201806410516
 
@@ -48,7 +46,8 @@ and that you can revoke our access at any time.
 
 Your GitHub token is needed in order to fetch file content, comments, repo
 information and update Pull Request status. This token is encrypted and encoded
-using `ActiveSupport::MessageEncryptor` and stored in our Postgres database on Heroku.
+using `ActiveSupport::MessageEncryptor` and stored in our Postgres database
+on Heroku.
 `ActiveSupport::MessageEncryptor` [uses `aes-256-cbc`][message-encryptor]
 for encryption and base64 for encoding.
 
@@ -60,8 +59,7 @@ grep -R omniauth app
 grep -R token app
 ```
 
-[message-encryptor]:
-https://github.com/rails/rails/blob/2af7338bdf32790a28e388a99dada84db0af1b5f/activesupport/lib/active_support/message_encryptor.rb#L35
+[message-encryptor]: https://github.com/rails/rails/blob/2af7338bdf32790a28e388a99dada84db0af1b5f/activesupport/lib/active_support/message_encryptor.rb#L35
 
 What happens when Hound refreshes your GitHub repositories
 ----------------------------------------------------------
@@ -108,14 +106,13 @@ through the [`SubscriptionsController`].
 
 [`SubscriptionsController`]: ../app/controllers/subscriptions_controller.rb
 
-We use your GitHub token to add the [@houndci] GitHub user to your repository
-via the [GitHub collaborator API][api1]. @houndci will be added to a team that
-has access to the enabled repository. If an existing team cannot be found, we'll
-create a "Services" team with *push* access to the enabled repository. This is
-necessary for @houndci to see pull requests, make comments, and update pull
-request statuses.
+We use your GitHub token to add the [@houndci-bot] GitHub user to your repo
+via the [GitHub collaborator API][api1]. @houndci-bot is added as a collaborator
+to the enabled repository. This is necessary in order for us to be able to make
+comments as @houndci-bot and to update pull request statuses, or to read file
+contents if no other valid token is found for the enabled repository.
 
-[@houndci]: https://github.com/houndci
+[@houndci-bot]: https://github.com/houndci-bot
 [api1]: https://developer.github.com/v3/repos/collaborators/#add-collaborator
 
 We also create a webhook on your repository via the [GitHub webhook API][api2].
@@ -174,28 +171,29 @@ It contains metadata about the pull request such as repo, user, and commit.
 
 [`BuildsController`]: ../app/controllers/builds_controller.rb
 
-The payload is stored in Redis so that
-[`BuildRunner`] can check style on it in a background job.
+The payload is stored in Redis so that [`StartBuild`] can prepare configuration
+and file contents for each enabled linter, then send the files off for review
+via Resque (uses Redis) to the `linters` service.
 
-[`BuildRunner`]: ../app/services/build_runner.rb
+[`StartBuild`]: ../app/services/start_build.rb
 
-`BuildRunner` pulls the payload out of Redis
-and back into Ruby memory on Heroku.
-Using the information from the payload,
-it makes a new HTTP request to GitHub's API to get
-the pull request's patch and file contents.
+`StartBuild` pulls the payload out of Redis and into Ruby memory on Heroku.
+Using the information from the payload, it makes a HTTP requests to GitHub's
+REST API to get the pull request's patch and file contents.
 Hound never fetches a complete version of your codebase.
 
 In Ruby memory,
-`BuildRunner` passes your pull request's contents to [`StyleChecker`],
+`StartBuild` passes your pull request's contents to [`StyleChecker`],
 which loops through the changed files and delegates to the appropriate
-[`StyleGuide`] Ruby classes based on file extension (`.rb`, `.js`, etc.).
+[`Linter`] Ruby classes based on file extension (`.rb`, `.js`, etc.).
 
 [`StyleChecker`]: ../app/models/style_checker.rb
-[`StyleGuide`]: ../app/models/style_guide
+[`Linter`]: ../app/models/linter/
 
-The `StyleGuide` classes wrap the language-specific open source libraries
-that we use to check the style of the code in each pull request notification:
+The `Linter` classes schedule a job on a queue with all the necessary
+information (configuration file, file contents to review, and metadata).
+The job is then picked up by `linters` service, which will actually do the
+linting using specific open source libraries, like:
 
 * Ruby: [RuboCop](https://github.com/bbatsov/rubocop)
 * CoffeeScript: [CoffeeLint](http://www.coffeelint.org/)
@@ -205,23 +203,24 @@ that we use to check the style of the code in each pull request notification:
 * SCSS: [SCSS-Lint](https://github.com/brigade/scss-lint)
 * Go: [golint](https://github.com/golang/lint)
 
-Those libraries find style violations
-and pass them back up through `StyleGuide` and `BuildRunner`.
-The violations are collected in the [`Violations`] class,
-which is passed to [`Commenter`],
-which uses the [GitHub commenting API][comment-api]
+Those libraries find code violations
+and pass them back up through Resque for [`CompleteBuild`] to finish.
+The violations are collected in the [`Violation`] classes, and also stored in
+our PostgreSQL database. [`SubmitReview`] fetches them, converts them to a
+format that fits GitHub comments, and submits the PR review to GitHub,
 to comment about the violations on the pull request.
 
-[`Violations`]: ../app/models/violations.rb
+[`CompleteBuild`]: ../app/services/complete_build.rb
+[`SubmitReview`]: ../app/services/submit_review.rb
+[`Violation`]: ../app/models/violation.rb
 [`Commenter`]: ../app/services/commenter.rb
 [comment-api]: https://developer.github.com/v3/pulls/comments/
 
-`BuildRunner` also saves the violations,
-the pull request number,
-and the commit SHA in the `builds` table of our Postgres database.
-This saves the line number and a reference line number to GitHub's patch.
-We do not save any of your code in Postgres, or Redis.
-It only lives in the memory of the Ruby process.
+`CompleteFileReview` saves each violation, the line number, and patch position,
+in the `violations` table of our Postgres database.
+We do not save any of your code in Postgres.
+We do store the contents of the files to review temporarily in Resque, and it
+gets cleared out as soon as the job is processed.
 
 To browse the portions of the codebase related to
 receiving and processing pull request notifications,
@@ -229,7 +228,8 @@ try `grep`ing for the following terms:
 
 ```bash
 grep -R StyleChecker app
-grep -R Commenter app
+grep -R CompleteFileReview app
+grep -R SubmitReview app
 ```
 
 Employee access
