@@ -1,8 +1,8 @@
 class ResolveConfigConflicts
   CONFLICTS = {
     "eslint" => "jshint",
-    "stylelint" => "scss",
-    "sass_lint" => "scss",
+    "stylelint" => "scss_lint",
+    "sass_lint" => "scss_lint",
   }.freeze
 
   static_facade :call

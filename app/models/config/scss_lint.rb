@@ -1,5 +1,5 @@
 module Config
-  class Scss < Base
+  class ScssLint < Base
     def serialize
       Serializer.yaml(content)
     end
