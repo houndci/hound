@@ -12,7 +12,7 @@ RSpec.describe StartBuild do
           full_repo_name: repo.name,
         )
         service = described_class.new(payload)
-        stubbed_style_checker(violations: [build(:violation)])
+        stub_review_files(violations: [build(:violation)])
         stubbed_github_api
 
         service.call
@@ -32,7 +32,7 @@ RSpec.describe StartBuild do
         payload = stubbed_payload(github_repo_id: repo.github_id)
         service = described_class.new(payload)
         stubbed_pull_request
-        stubbed_style_checker(violations: [build(:violation)])
+        stub_review_files(violations: [build(:violation)])
         stubbed_github_api
 
         service.call
@@ -53,7 +53,7 @@ RSpec.describe StartBuild do
           build(:violation),
           build(:violation, messages: ["wrong", "bad"]),
         ]
-        stubbed_style_checker(violations: violations)
+        stub_review_files(violations: violations)
         github_api = stubbed_github_api
 
         service.call
@@ -75,7 +75,7 @@ RSpec.describe StartBuild do
           repository_owner_is_organization?: true,
         )
         service = described_class.new(payload)
-        stubbed_style_checker(violations: [build(:violation)])
+        stub_review_files(violations: [build(:violation)])
         stubbed_github_api
 
         service.call
@@ -122,7 +122,7 @@ RSpec.describe StartBuild do
           full_repo_name: repo.name,
         )
         service = described_class.new(payload)
-        stubbed_style_checker(violations: [build(:violation)])
+        stub_review_files(violations: [build(:violation)])
         stubbed_pull_request
         stubbed_github_api
 
@@ -245,15 +245,15 @@ RSpec.describe StartBuild do
       end
     end
 
-    def stubbed_style_checker(violations: [])
+    def stub_review_files(violations: [])
       file_review = build(:file_review, :completed, violations: violations)
-      style_checker = double("StyleChecker", review_files: nil)
-      allow(StyleChecker).to receive(:new) do |*args|
+      review_files = instance_double("ReviewFiles", call: nil)
+      allow(ReviewFiles).to receive(:new) do |*args|
         build = args[1]
         build.file_reviews << file_review
-      end.and_return(style_checker)
+      end.and_return(review_files)
 
-      style_checker
+      review_files
     end
 
     def stubbed_pull_request(files = [double("CommitFile")])

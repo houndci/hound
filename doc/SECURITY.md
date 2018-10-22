@@ -183,11 +183,11 @@ REST API to get the pull request's patch and file contents.
 Hound never fetches a complete version of your codebase.
 
 In Ruby memory,
-`StartBuild` passes your pull request's contents to [`StyleChecker`],
+`StartBuild` passes your pull request's contents to [`ReviewFiles`],
 which loops through the changed files and delegates to the appropriate
 [`Linter`] Ruby classes based on file extension (`.rb`, `.js`, etc.).
 
-[`StyleChecker`]: ../app/models/style_checker.rb
+[`ReviewFiles`]: ../app/services/review_files.rb
 [`Linter`]: ../app/models/linter/
 
 The `Linter` classes schedule a job on a queue with all the necessary
@@ -227,7 +227,7 @@ receiving and processing pull request notifications,
 try `grep`ing for the following terms:
 
 ```bash
-grep -R StyleChecker app
+grep -R ReviewFiles app
 grep -R CompleteFileReview app
 grep -R SubmitReview app
 ```

@@ -1,7 +1,7 @@
-class StyleChecker
+class ReviewFiles
   pattr_initialize :pull_request, :build
 
-  def review_files
+  def call
     pull_request.commit_files.each { |commit_file| review_file(commit_file) }
   end
 
