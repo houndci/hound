@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe StyleChecker do
-  describe "#review_files" do
+RSpec.describe ReviewFiles do
+  describe "#call" do
     it "returns a collection of incomplete file reviews" do
       stylish_commit_file = stub_commit_file("good.rb", "def good; end")
       violated_commit_file = stub_commit_file("bad.rb", "def bad(a ); a; end  ")
@@ -54,7 +54,7 @@ describe StyleChecker do
     repo = build(:repo, owner: build(:owner, config_enabled: false))
     build = build(:build, repo: repo)
 
-    StyleChecker.new(pull_request, build).review_files
+    described_class.new(pull_request, build).call
 
     build.file_reviews
   end
@@ -64,7 +64,8 @@ describe StyleChecker do
       :build,
       repo: build(:repo, owner: build(:owner, config_enabled: false)),
     )
-    StyleChecker.new(pull_request, build).review_files
+
+    described_class.new(pull_request, build).call
 
     build.violations.flat_map(&:messages)
   end

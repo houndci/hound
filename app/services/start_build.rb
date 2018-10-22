@@ -39,7 +39,7 @@ class StartBuild
   end
 
   def review_files(build)
-    StyleChecker.new(pull_request, build).review_files
+    ReviewFiles.new(pull_request, build).call
   end
 
   def create_build
