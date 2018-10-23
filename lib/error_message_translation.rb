@@ -7,6 +7,8 @@ module ErrorMessageTranslation
 
     if matches.present? && matches.captures[0] == FORBIDDEN_ERROR_CODE
       matches.captures[1]
+    elsif error.message.include? "You must purchase at least one more seat"
+      "Please add a GitHub seat to enable Hound. https://help.github.com/articles/adding-seats-to-your-organization"
     end
   end
 end
