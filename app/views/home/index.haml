@@ -7,10 +7,10 @@
     .clearfix
       .home-hero
         %h1.home-hero-heading
-          Code review tool for GitHub pull requests
+          Automated code review for GitHub pull requests
         %p.home-hero-subheading
-          Hound comments on style violations in GitHub pull requests, allowing
-          you and your team to better review and maintain a clean codebase.
+          Hound comments on code quality and style issues, allowing you and your
+          team to better review and maintain a clean codebase.
 
         .home-hero-cta
           = link_to "/auth/github",
@@ -20,62 +20,30 @@
             = t("authenticate")
 
     .home-languages
-      %h2.home-heading--small.home-languages-heading Currently style checking
+      %h2.home-heading--small.home-languages-heading Enjoyed by
 
       .clearfix
         %ul.home-languages-list
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/coffeescript.svg", alt: ""
-            %p.home-languages-list-item-heading CoffeeScript
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/elixir.svg", alt: ""
-            %p.home-languages-list-item-heading Elixir
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/go.svg", alt: ""
-            %p.home-languages-list-item-heading Go
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/haml.svg", alt: ""
-            %p.home-languages-list-item-heading Haml
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/javascript.svg", alt: ""
-            %p.home-languages-list-item-heading JavaScript
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/python.svg", alt: ""
-            %p.home-languages-list-item-heading Python
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/ruby.svg", alt: ""
-            %p.home-languages-list-item-heading Ruby
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/sass.svg", alt: ""
-            %p.home-languages-list-item-heading Sass
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/swift.svg", alt: ""
-            %p.home-languages-list-item-heading Swift
-          %li.home-languages-list-item
-            .home-languages-list-item-logo
-              = image_tag "languages/typescript.svg", alt: ""
-            %p.home-languages-list-item-heading TypeScript
+          = render partial: "company", collection: @companies.shuffle.first(16), as: :company
+
+    .home-languages
+      %h2.home-heading--small.home-languages-heading Currently supported
+
+      .clearfix
+        %ul.home-languages-list
+          = render partial: "language", collection: @languages, as: :language
 
 %section.home-importance
   .section-content
     %h2.home-heading--large.home-importance-heading.section-title
-      Why does style matter?
+      Why does code quality matter?
 
     .clearfix
       %article.home-importance-item
         .home-importance-text
           %p.home-heading--small Convention
           %p
-            Defining and sticking with a style guide helps reduce the amount of
+            Defining and sticking with a consistent style helps reduce the amount of
             decisions that developers need to make when writing code, helping to
             keep their focus on logic, not semantics and formatting.
 
@@ -113,8 +81,8 @@
         %h2.home-heading--large
           Save time, get better reviews.
         %p
-          Automated style checking with Hound gives developers more time to
-          give the kind of code review that humans are best at giving.
+          Automated code review with Hound gives developers more time to
+          give the kind of review that humans are best at giving.
 
       = image_tag "home-page/review_example.png", class: "value-image"
 

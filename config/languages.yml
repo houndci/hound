@@ -1,0 +1,30 @@
+-
+  name: JavaScript
+  logo: languages/javascript.svg
+-
+  name: Ruby
+  logo: languages/ruby.svg
+-
+  name: Python
+  logo: languages/python.svg
+-
+  name: Swift
+  logo: languages/swift.svg
+-
+  name: Sass
+  logo: languages/sass.svg
+-
+  name: Go
+  logo: languages/go.svg
+-
+  name: Elixir
+  logo: languages/elixir.svg
+-
+  name: TypeScript
+  logo: languages/typescript.svg
+-
+  name: CoffeeScript
+  logo: languages/coffeescript.svg
+-
+  name: Haml
+  logo: languages/haml.svg

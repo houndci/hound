@@ -5,6 +5,8 @@ class HomeController < ApplicationController
 
   def index
     @home = Home.new(current_user || guest)
+    @companies = YAML.safe_load(File.read("config/companies.yml"))
+    @languages = YAML.safe_load(File.read("config/languages.yml"))
   end
 
   private

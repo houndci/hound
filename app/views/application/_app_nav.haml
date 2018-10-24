@@ -8,14 +8,12 @@
     .app-nav__app-items
       - if signed_in?
         = link_to "Repos", repos_path, class: "app-nav__item"
-
-      = link_to "Docs", ENV.fetch("DOCS_URL"), class: "app-nav__item"
-      = link_to "Help", ENV.fetch("HELP_URL"), class: "app-nav__item"
-
-      - unless signed_in?
+      - else
         = link_to "Pricing",
           root_path(anchor: "pricing"),
           class: "app-nav__item"
+
+      = link_to "Help", ENV.fetch("HELP_URL"), class: "app-nav__item"
 
     .app-nav__user-items
       - if signed_in?
