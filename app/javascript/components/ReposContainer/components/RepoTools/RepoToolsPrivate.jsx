@@ -6,7 +6,7 @@ export default class RepoToolsPrivate extends React.Component {
 
     return (
       <div className="repo-tools-private">
-        <form method="post" action="/auth/github?access=full">
+        <form method="get" action="https://github.com/apps/hound/installations/new">
           <button
             className="repo-tools-private-button"
             type="submit"
