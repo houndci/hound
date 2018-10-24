@@ -9,7 +9,7 @@
         %h1.home-hero-heading
           Code review tool for GitHub pull requests
         %p.home-hero-subheading
-          Hound comments on style violations in GitHub pull requests, allowing
+          Hound helps find common issues in GitHub pull requests, allowing
           you and your team to better review and maintain a clean codebase.
 
         .home-hero-cta
@@ -20,62 +20,69 @@
             = t("authenticate")
 
     .home-languages
-      %h2.home-heading--small.home-languages-heading Currently style checking
+      %h2.home-heading--small.home-languages-heading Enjoyed by
+
+      .clearfix
+        %ul.home-languages-list
+          = render partial: "company", collection: @companies.shuffle.first(16), as: :company
+
+    .home-languages
+      %h2.home-heading--small.home-languages-heading Currently reviewing
 
       .clearfix
         %ul.home-languages-list
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/coffeescript.svg", alt: ""
+              = image_tag "languages/coffeescript.svg", alt: "CoffeeScript"
             %p.home-languages-list-item-heading CoffeeScript
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/elixir.svg", alt: ""
+              = image_tag "languages/elixir.svg", alt: "Elixir"
             %p.home-languages-list-item-heading Elixir
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/go.svg", alt: ""
+              = image_tag "languages/go.svg", alt: "Go"
             %p.home-languages-list-item-heading Go
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/haml.svg", alt: ""
+              = image_tag "languages/haml.svg", alt: "Haml"
             %p.home-languages-list-item-heading Haml
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/javascript.svg", alt: ""
+              = image_tag "languages/javascript.svg", alt: "JavaScript"
             %p.home-languages-list-item-heading JavaScript
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/python.svg", alt: ""
+              = image_tag "languages/python.svg", alt: "Python"
             %p.home-languages-list-item-heading Python
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/ruby.svg", alt: ""
+              = image_tag "languages/ruby.svg", alt: "Ruby"
             %p.home-languages-list-item-heading Ruby
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/sass.svg", alt: ""
+              = image_tag "languages/sass.svg", alt: "Sass"
             %p.home-languages-list-item-heading Sass
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/swift.svg", alt: ""
+              = image_tag "languages/swift.svg", alt: "Swift"
             %p.home-languages-list-item-heading Swift
           %li.home-languages-list-item
             .home-languages-list-item-logo
-              = image_tag "languages/typescript.svg", alt: ""
+              = image_tag "languages/typescript.svg", alt: "TypeScript"
             %p.home-languages-list-item-heading TypeScript
 
 %section.home-importance
   .section-content
     %h2.home-heading--large.home-importance-heading.section-title
-      Why does style matter?
+      Why does code quality matter?
 
     .clearfix
       %article.home-importance-item
         .home-importance-text
           %p.home-heading--small Convention
           %p
-            Defining and sticking with a style guide helps reduce the amount of
+            Defining and sticking with a consistent style helps reduce the amount of
             decisions that developers need to make when writing code, helping to
             keep their focus on logic, not semantics and formatting.
 
