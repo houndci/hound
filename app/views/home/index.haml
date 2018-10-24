@@ -105,7 +105,7 @@
   .section-content#pricing
     .section-title
       %h2.home-pricing-heading.home-heading--large
-        Pricing.
+        Pricing
 
     %article.plans
       .clearfix
@@ -118,6 +118,13 @@
           Open Source
 
         = render(partial: @home.open_source_plans, as: :plan)
+
+    .home-hero-cta
+      = link_to "/auth/github",
+        class: "button button--primary button--large auth" do
+        %svg.icon.button__icon{ "aria-hidden" => "true" }
+          %use{ "xlink:href" => "/images/icons.svg#github" }
+        Get started with GitHub
 
 %section.home-security
   .section-content
