@@ -1,4 +1,4 @@
-class CompletedFileReviewJob
+class CompletedFileReviewJob < ApplicationJob
   @queue = :high
 
   # The following parameters are required for this job to run.
