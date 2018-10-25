@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include ActiveModel::ForbiddenAttributesProtection
+  include ActiveModel::ForbiddenAttributesProtection   
 
   has_many :memberships, dependent: :destroy
   has_many :repos, through: :memberships
