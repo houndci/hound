@@ -10,8 +10,8 @@ class ResolveConfigAliases
     "python" => "flake8",
     "ruby" => "rubocop",
     "sass-lint" => "sass_lint",
-    "scss-lint" => "scss",
-    "scss_lint" => "scss",
+    "scss-lint" => "scss_lint",
+    "scss" => "scss_lint",
   }.freeze
 
   static_facade :call
