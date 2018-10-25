@@ -8,10 +8,17 @@ describe ResolveConfigAliases do
           "javascript" => { "enabled" => false },
           "ruby" => { "enabled" => true },
           "flog" => { "enabled" => false },
+          "scss" => { "enabled" => true },
         }
 
-        expect(ResolveConfigAliases.call(config).keys).
-          to match_array(["jshint", "rubocop", "flog"])
+        actual = ResolveConfigAliases.call(config)
+
+        expect(actual).to eql(
+          "jshint" => { "enabled" => false },
+          "rubocop" => { "enabled" => true },
+          "flog" => { "enabled" => false },
+          "scss_lint" => { "enabled" => true },
+        )
       end
     end
   end
