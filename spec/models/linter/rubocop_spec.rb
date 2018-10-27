@@ -1,8 +1,8 @@
 require "rails_helper"
 
-describe Linter::Rubocop do
+RSpec.describe Linter::Rubocop do
   it_behaves_like "a linter" do
-    let(:lintable_files) { %w(foo.rb foo.rake) }
+    let(:lintable_files) { %w(foo.rb foo.rake Rakefile Gemfile foo.jbuilder) }
     let(:not_lintable_files) { %w(foo.js) }
   end
 
