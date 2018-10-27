@@ -2,6 +2,10 @@ module Config
   class Rubocop < Base
     def content
       if legacy?
+        Raven.capture_message(
+          "Legacy Hound config detected",
+          extra: { repo_name: hound_config.commit.repo_name },
+        )
         hound_config.content
       else
         super

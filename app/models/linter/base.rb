@@ -1,12 +1,12 @@
 module Linter
   class Base
-    def self.can_lint?(filename)
-      self::FILE_REGEXP === filename
-    end
-
     def initialize(hound_config:, build:)
       @hound_config = hound_config
       @build = build
+    end
+
+    def self.can_lint?(filename)
+      self::FILE_REGEXP === filename
     end
 
     def file_review(commit_file)

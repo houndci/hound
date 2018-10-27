@@ -20,6 +20,7 @@ describe Config::Rubocop do
       it "returns the HoundConfig's content as a hash" do
         hound_config = instance_double(
           "HoundConfig",
+          commit: instance_double("Commit", repo_name: "foo/bar"),
           content: { "LineLength" => { "Max" => 90 } },
         )
         config = Config::Rubocop.new(hound_config)
