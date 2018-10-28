@@ -14,9 +14,5 @@ module Linter
       path_components.include?("vendor") ||
         path_components.take(2) == ["Godeps", "_workspace"]
     end
-
-    def job_class
-      LintersJob
-    end
   end
 end

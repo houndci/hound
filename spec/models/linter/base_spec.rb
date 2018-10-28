@@ -6,7 +6,6 @@ module Linter
   end
 end
 
-class TestReviewJob; end
 
 describe Linter::Test do
   it_behaves_like "a linter" do
@@ -31,7 +30,7 @@ describe Linter::Test do
         linter.file_review(commit_file)
 
         expect(Resque).to have_received(:enqueue).with(
-          TestReviewJob,
+          LintersJob,
           hash_including(linter_version: nil),
         )
       end
@@ -53,7 +52,7 @@ describe Linter::Test do
         linter.file_review(commit_file)
 
         expect(Resque).to have_received(:enqueue).with(
-          TestReviewJob,
+          LintersJob,
           hash_including(linter_version: 1.0),
         )
       end
