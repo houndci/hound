@@ -8,10 +8,6 @@ module Linter
       ignore_file.file_included?(commit_file.filename)
     end
 
-    def job_class
-      LintersJob
-    end
-
     private
 
     def ignore_file

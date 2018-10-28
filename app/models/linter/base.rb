@@ -55,12 +55,8 @@ module Linter
       Resque.enqueue(job_class, attributes)
     end
 
-    def job_name
-      "#{name.classify}ReviewJob"
-    end
-
     def job_class
-      job_name.constantize
+      LintersJob
     end
 
     def owner
