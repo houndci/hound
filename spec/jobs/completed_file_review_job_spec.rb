@@ -24,7 +24,7 @@ describe CompletedFileReviewJob do
           and_raise(ActiveRecord::RecordNotFound)
 
         expect_any_instance_of(CompletedFileReviewJob).to(
-          receive(:retry_job).with(wait: 30.seconds)
+          receive(:retry_job).with(wait: 30.seconds),
         )
 
         CompletedFileReviewJob.perform_now(attributes)
