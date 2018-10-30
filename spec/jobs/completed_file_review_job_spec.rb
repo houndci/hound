@@ -23,9 +23,8 @@ describe CompletedFileReviewJob do
         allow(CompleteFileReview).to receive(:call).
           and_raise(ActiveRecord::RecordNotFound)
 
-        expect_any_instance_of(CompletedFileReviewJob).to(
-          receive(:retry_job).with(wait: 30.seconds),
-        )
+        expect_any_instance_of(CompletedFileReviewJob).
+          to(receive(:retry_job).with(wait: 30.seconds))
 
         CompletedFileReviewJob.perform_now(attributes)
       end
@@ -34,11 +33,11 @@ describe CompletedFileReviewJob do
 
   let(:attributes) do
     {
-      "filename" => "test.scss",
-      "commit_sha" => "abc123",
-      "pull_request_number" => 123,
-      "patch" => File.read("spec/support/fixtures/patch.diff"),
-      "violations" => ["line" => 14, "message" => "woohoo"],
+      filename: "test.scss",
+      commit_sha: "abc123",
+      pull_request_number: 123,
+      patch: File.read("spec/support/fixtures/patch.diff"),
+      violations: ["line" => 14, "message" => "woohoo"],
     }
   end
 end

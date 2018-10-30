@@ -64,13 +64,13 @@ RSpec.describe "POST /builds" do
   def stub_review_job(klass, violations:, error:)
     allow(klass).to receive(:perform) do |attributes|
       CompleteFileReview.call(
-        "commit_sha" => attributes.fetch("commit_sha"),
-        "filename" => attributes.fetch("filename"),
-        "linter_name" => attributes.fetch("linter_name"),
-        "patch" => attributes.fetch("patch"),
-        "pull_request_number" => attributes.fetch("pull_request_number"),
-        "violations" => violations.map(&:stringify_keys),
-        "error" => error,
+        commit_sha: attributes.fetch("commit_sha"),
+        filename:  attributes.fetch("filename"),
+        linter_name:  attributes.fetch("linter_name"),
+        patch:  attributes.fetch("patch"),
+        pull_request_number:  attributes.fetch("pull_request_number"),
+        violations:  violations.map(&:stringify_keys),
+        error:  error,
       )
     end
   end

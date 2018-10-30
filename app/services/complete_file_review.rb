@@ -2,7 +2,7 @@ class CompleteFileReview
   static_facade :call
 
   def initialize(attributes)
-    @attributes = ActiveSupport::HashWithIndifferentAccess.new(attributes)
+    @attributes = attributes
   end
 
   def call
@@ -19,14 +19,14 @@ class CompleteFileReview
 
   def complete_file_review
     build_file_review_violations
-    file_review.error = attributes["error"]
+    file_review.error = attributes[:error]
     file_review.complete
     file_review.save!
     increment_build_violations_count
   end
 
   def build_file_review_violations
-    attributes.fetch("violations").each do |violation|
+    attributes.fetch(:violations).each do |violation|
       line = commit_file.line_at(violation.fetch("line"))
       file_review.build_violation(line, violation.fetch("message"))
     end
@@ -39,8 +39,8 @@ class CompleteFileReview
 
   def build
     @build ||= Build.find_by!(
-      pull_request_number: attributes.fetch("pull_request_number"),
-      commit_sha: attributes.fetch("commit_sha"),
+      pull_request_number: attributes.fetch(:pull_request_number),
+      commit_sha: attributes.fetch(:commit_sha),
     )
   end
 
@@ -49,9 +49,9 @@ class CompleteFileReview
   end
 
   def file_review_properties
-    if attributes.has_key?("linter_name")
+    if attributes.has_key?(:linter_name)
       legacy_file_review_search_properties.merge(
-        linter_name: attributes.fetch("linter_name"),
+        linter_name: attributes.fetch(:linter_name),
       )
     else
       legacy_file_review_search_properties
@@ -59,12 +59,12 @@ class CompleteFileReview
   end
 
   def legacy_file_review_search_properties
-    { filename: attributes.fetch("filename") }
+    { filename: attributes.fetch(:filename) }
   end
 
   def commit_file
     @_commit_file ||= CommitFile.new(
-      patch: attributes.fetch("patch"),
+      patch: attributes.fetch(:patch),
       filename: nil,
       commit: nil,
     )
