@@ -2,7 +2,7 @@ class CompleteFileReview
   static_facade :call
 
   def initialize(attributes)
-    @attributes = attributes
+    @attributes = ActiveSupport::HashWithIndifferentAccess.new(attributes)
   end
 
   def call
