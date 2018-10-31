@@ -12,7 +12,7 @@ RSpec.describe CompleteFileReview do
       expect(file_review).to be_completed
       expect(file_review.violations.size).to eq 1
       expect(file_review.build.violations_count).to eq 1
-      expect(file_review.error).to eq attributes["error"]
+      expect(file_review.error).to eq attributes[:error]
     end
 
     it "runs completes the build" do
@@ -35,7 +35,7 @@ RSpec.describe CompleteFileReview do
         create(
           :file_review,
           build: correct_build,
-          filename: attributes.fetch("filename"),
+          filename: attributes.fetch(:filename),
         )
         allow(CompleteBuild).to receive(:call)
 
@@ -60,21 +60,21 @@ RSpec.describe CompleteFileReview do
 
   def attributes
     {
-      "filename" => "test.scss",
-      "commit_sha" => "abc123",
-      "pull_request_number" => 123,
-      "patch" => File.read("spec/support/fixtures/patch.diff"),
-      "violations" => ["line" => 14, "message" => "woohoo"],
-      "error" => "Your linter config is invalid",
+      filename: "test.scss",
+      commit_sha: "abc123",
+      pull_request_number: 123,
+      patch: File.read("spec/support/fixtures/patch.diff"),
+      violations: [line: 14, message: "woohoo"],
+      error: "Your linter config is invalid",
     }
   end
 
   def create_file_review
     build = build(
       :build,
-      commit_sha: attributes.fetch("commit_sha"),
-      pull_request_number: attributes.fetch("pull_request_number"),
+      commit_sha: attributes.fetch(:commit_sha),
+      pull_request_number: attributes.fetch(:pull_request_number),
     )
-    create(:file_review, build: build, filename: attributes.fetch("filename"))
+    create(:file_review, build: build, filename: attributes.fetch(:filename))
   end
 end
