@@ -63,7 +63,7 @@ class PaymentGatewayCustomer
           amount: subscription.plan_amount,
           user_id: user.id,
           username: user.username,
-        }
+        },
       )
     end
   end
