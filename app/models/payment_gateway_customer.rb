@@ -56,15 +56,7 @@ class PaymentGatewayCustomer
       stripe_subscription: customer.subscriptions.create(options),
       user: user,
     ).tap do |subscription|
-      Analytics.new(user).track(
-        event: "Purchase",
-        properties: {
-          plan: subscription.plan_name,
-          amount: subscription.plan_amount,
-          user_id: user.id,
-          username: user.username,
-        },
-      )
+      Analytics.new(user).track_purchase(subscription)
     end
   end
 

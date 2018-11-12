@@ -51,6 +51,16 @@ class Analytics
     )
   end
 
+  def track_purchase(subscription)
+    track(
+      event: "Purchase",
+      properties: {
+        plan: subscription.plan_name,
+        amount: subscription.plan_amount,
+      }
+    )
+  end
+
   private
 
   attr_reader :user
