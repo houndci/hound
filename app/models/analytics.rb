@@ -57,7 +57,7 @@ class Analytics
       properties: {
         plan: subscription.plan_name,
         amount: subscription.plan_amount,
-      }
+      },
     )
   end
 
