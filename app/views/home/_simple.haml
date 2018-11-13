@@ -17,7 +17,7 @@
 
       .clearfix
         %ul.home-languages-list
-          = render partial: "company", collection: @companies.shuffle.first(16), as: :company
+          = render partial: "company", collection: companies.shuffle.first(16), as: :company
 
   .section-content
     %article.value-section
@@ -41,12 +41,12 @@
         %h3.plan-category
           Private Repos
 
-        = render(partial: @home.private_plans, as: :plan)
+        = render(partial: home.private_plans, as: :plan)
 
         %h3.plan-category.open-source
           Open Source
 
-        = render(partial: @home.open_source_plans, as: :plan)
+        = render(partial: home.open_source_plans, as: :plan)
 
     .home-hero-cta
       = link_to "/auth/github",
