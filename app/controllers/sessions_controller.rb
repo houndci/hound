@@ -9,6 +9,8 @@ class SessionsController < ApplicationController
       update_scopes
     end
 
+    ab_finished(:home)
+
     redirect_to setup_path
   end
 

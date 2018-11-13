@@ -9,6 +9,7 @@ Houndapp::Application.routes.draw do
   end
 
   mount Resque::Server, at: "/queue"
+  mount Split::Dashboard, at: "/split"
 
   get "/auth/github/callback", to: "sessions#create"
   get "/sign_out", to: "sessions#destroy"
