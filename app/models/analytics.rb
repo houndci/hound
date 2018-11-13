@@ -51,12 +51,11 @@ class Analytics
     )
   end
 
-  def track_purchase(subscription)
+  def track_purchase(stripe_subscription)
     track(
       event: "Purchase",
       properties: {
-        plan: subscription.plan_name,
-        amount: subscription.plan_amount,
+        subscription: stripe_subscription.id,
       },
     )
   end
