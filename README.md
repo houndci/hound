@@ -1,6 +1,6 @@
 # Hound
 
-[![Build Status](https://circleci.com/gh/houndci/hound.svg?style=svg)](https://circleci.com/gh/houndci/hound)
+[![Build Status](https://circleci.com/gh/houndci/hound.svg?style=shield)](https://circleci.com/gh/houndci/hound)
 [![codebeat](https://codebeat.co/badges/4d0a821d-1f2c-4e68-90ec-597e533802a4)](https://codebeat.co/projects/github-com-thoughtbot-hound)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
