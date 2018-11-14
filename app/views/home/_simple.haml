@@ -1,0 +1,56 @@
+%section
+  .section-content
+    .clearfix
+      .home-hero
+        %h1.home-hero-heading
+          Automated code review for GitHub pull requests
+
+        .home-hero-cta
+          = link_to "/auth/github",
+            class: "button button--primary button--large auth" do
+            %svg.icon.button__icon{ "aria-hidden" => "true" }
+              %use{ "xlink:href" => "/images/icons.svg#github" }
+            = t("authenticate")
+
+    .home-languages
+      %h2.home-heading--small.home-languages-heading Enjoyed by
+
+      .clearfix
+        %ul.home-languages-list
+          = render partial: "company", collection: companies.shuffle.first(16), as: :company
+
+  .section-content
+    %article.value-section
+      .value-text
+        %h2.home-heading--large
+          How it works.
+        %p
+          Hound integrates with your existing workflow by reviewing and commenting
+          on code the moment a GitHub pull request is opened or updated.
+
+      = image_tag "home-page/hound_flow.png", class: "value-image"
+
+%section.home-pricing
+  .section-content#pricing
+    .section-title
+      %h2.home-pricing-heading.home-heading--large
+        Pricing
+
+    %article.plans
+      .clearfix
+        %h3.plan-category
+          Private Repos
+
+        = render(partial: home.private_plans, as: :plan)
+
+        %h3.plan-category.open-source
+          Open Source
+
+        = render(partial: home.open_source_plans, as: :plan)
+
+    .home-hero-cta
+      = link_to "/auth/github",
+        class: "button button--primary button--large auth" do
+        %svg.icon.button__icon{ "aria-hidden" => "true" }
+          %use{ "xlink:href" => "/images/icons.svg#github" }
+        Get started with GitHub
