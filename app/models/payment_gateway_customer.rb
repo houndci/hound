@@ -55,7 +55,9 @@ class PaymentGatewayCustomer
     PaymentGatewaySubscription.new(
       stripe_subscription: customer.subscriptions.create(options),
       user: user,
-    )
+    ).tap do |subscription|
+      Analytics.new(user).track_purchase(subscription.stripe_subscription)
+    end
   end
 
   def default_card

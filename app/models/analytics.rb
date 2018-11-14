@@ -51,6 +51,15 @@ class Analytics
     )
   end
 
+  def track_purchase(stripe_subscription)
+    track(
+      event: "Purchase",
+      properties: {
+        subscription: stripe_subscription.id,
+      },
+    )
+  end
+
   private
 
   attr_reader :user
