@@ -9,37 +9,20 @@ require "app/models/missing_owner"
 
 RSpec.describe Config::Coffeelint do
   describe "#content" do
-    context "with a modern coffeelint config" do
-      it "returns the content from GitHub as a hash" do
-        raw_config = <<~EOS
-          { "arrow_spacing": { "level": "error" } }
-        EOS
-        config = build_config(raw_config)
+    it "returns the content from GitHub as a hash" do
+      raw_config = <<~JSON
+        { "arrow_spacing": { "level": "error" } }
+      JSON
+      config = build_config(raw_config)
 
-        result = config.content
+      result = config.content
 
-        expect(result).to eq(
-          "arrow_spacing" => { "level" => "error" },
-        )
-      end
+      expect(result).to eq(
+        "arrow_spacing" => { "level" => "error" },
+      )
     end
 
-    context "with a legacy coffeelint config" do
-      it "returns the content from GitHub as a hash" do
-        raw_config = <<~EOS
-          { "arrow_spacing": { "level": "error" } }
-        EOS
-        config = build_config(raw_config)
-
-        result = config.content
-
-        expect(result).to eq(
-          "arrow_spacing" => { "level" => "error" },
-        )
-      end
-    end
-
-    context "config with comments and trailing commas" do
+    context "when config has comments and trailing commas" do
       it "returns the content from GitHub as a hash" do
         raw_config = <<~EOS
           {

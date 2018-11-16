@@ -49,17 +49,7 @@ class CompleteFileReview
   end
 
   def file_review_properties
-    if attributes.has_key?(:linter_name)
-      legacy_file_review_search_properties.merge(
-        linter_name: attributes.fetch(:linter_name),
-      )
-    else
-      legacy_file_review_search_properties
-    end
-  end
-
-  def legacy_file_review_search_properties
-    { filename: attributes.fetch(:filename) }
+    attributes.slice(:filename, :linter_name)
   end
 
   def commit_file
