@@ -1,54 +1,28 @@
 require "rails_helper"
 
-describe Config::Rubocop do
+RSpec.describe Config::Rubocop do
   describe "#content" do
-    it "dumps the config content to yaml" do
+    it "returns the content from GitHub as a hash" do
       raw_config = <<~EOS
         Style/Encoding:
           Enabled: true
       EOS
       config = build_config(raw_config)
 
-      expect(config.content.to_yaml).to eq <<~YML
-        ---
-        Style/Encoding:
-          Enabled: true
-      YML
+      expect(config.content).to eq("Style/Encoding" => { "Enabled" => true })
     end
 
-    context "when the hound config is a legacy config" do
-      it "returns the HoundConfig's content as a hash" do
-        hound_config = instance_double(
-          "HoundConfig",
-          commit: instance_double("Commit", repo_name: "foo/bar"),
-          content: { "LineLength" => { "Max" => 90 } },
-        )
-        config = Config::Rubocop.new(hound_config)
-
-        expect(config.content).to eq("LineLength" => { "Max" => 90 })
-      end
-    end
-
-    context "when the hound config is not a legacy config" do
-      it "returns the content from GitHub as a hash" do
+    context "when an owner is present" do
+      it "returns the config merged with the owner's config as a hash" do
         raw_config = '{ "LineLength": { "Max": 90 } }'
-        config = build_config(raw_config)
+        owner_config = { "Metrics/ClassLength" => { "Max" => 100 } }
+        owner = instance_double("Owner", config_content: owner_config)
+        config = build_config(raw_config, owner)
 
-        expect(config.content).to eq("LineLength" => { "Max" => 90 })
-      end
-
-      context "and an owner is present" do
-        it "returns the config merged with the owner's config as a hash" do
-          raw_config = '{ "LineLength": { "Max": 90 } }'
-          owner_config = { "Metrics/ClassLength" => { "Max" => 100 } }
-          owner = instance_double("Owner", config_content: owner_config)
-          config = build_config(raw_config, owner)
-
-          expect(config.content).to eq(
-            "LineLength" => { "Max" => 90 },
-            "Metrics/ClassLength" => { "Max" => 100 },
-          )
-        end
+        expect(config.content).to eq(
+          "LineLength" => { "Max" => 90 },
+          "Metrics/ClassLength" => { "Max" => 100 },
+        )
       end
     end
 

@@ -1,17 +1,5 @@
 module Config
   class Rubocop < Base
-    def content
-      if legacy?
-        Raven.capture_message(
-          "Legacy Hound config detected",
-          extra: { repo_name: hound_config.commit.repo_name },
-        )
-        hound_config.content
-      else
-        super
-      end
-    end
-
     def serialize
       Serializer.yaml(content)
     end
@@ -38,18 +26,6 @@ module Config
       parse(content)
     rescue Psych::Exception => exception
       raise_parse_error(exception.message)
-    end
-
-    def legacy?
-      (configured_languages & all_linter_names).empty?
-    end
-
-    def all_linter_names
-      HoundConfig::LINTERS.keys.map { |klass| klass.name.demodulize.underscore }
-    end
-
-    def configured_languages
-      hound_config.content.keys
     end
   end
 end
