@@ -9,10 +9,3 @@ scss:
 
 eslint:
   version: 5.7.0
-
-reek:
-  enabled: true
-  config_file: .reek
-
-flog:
-  enabled: true

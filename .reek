@@ -1,9 +1,0 @@
-detectors:
-  IrresponsibleModule:
-    enabled: false
-
-  DuplicateMethodCall:
-    enabled: false
-
-  UtilityFunction:
-    public_methods_only: true
