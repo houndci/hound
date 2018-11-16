@@ -11,6 +11,7 @@ class HoundConfig
     Linter::HamlLint => { default: true },
     Linter::Jshint => { default: true },
     Linter::Reek => { default: false },
+    Linter::Phpcs => { default: false },
     Linter::Remark => { default: false },
     Linter::Rubocop => { default: true },
     Linter::SassLint => { default: false },
