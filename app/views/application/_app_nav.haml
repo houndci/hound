@@ -13,7 +13,9 @@
           root_path(anchor: "pricing"),
           class: "app-nav__item"
 
-      = link_to "Help", ENV.fetch("HELP_URL"), class: "app-nav__item"
+      = link_to "Help",
+        ENV.fetch("HELP_URL"),
+        new_window_options(class: "app-nav__item")
 
     .app-nav__user-items
       - if signed_in?
