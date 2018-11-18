@@ -8,8 +8,20 @@ This codebase is the Rails app for
 [Hound](http://houndci.com),
 a hosted service
 that reviews GitHub pull requests
-for CoffeeScript, Go, HAML, JavaScript, Ruby, SCSS, and Swift
-style guide violations.
+for style guide violations.
+
+Supported languages:
+- JavaScript
+- TypeScript
+- CoffeeScript
+- Go
+- Ruby
+- Elixir
+- Swift
+- SCSS
+- HAML
+- Markdown
+- Bash 
 
 If you have questions about the service,
 see [Help] or email [hello@houndci.com].
