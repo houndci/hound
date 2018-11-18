@@ -2,17 +2,19 @@
   %nav.app-footer__nav
     = link_to "Source Code",
       "https://github.com/houndci/hound",
-      class: "app-footer__nav-link"
-    = link_to "Help", ENV.fetch("HELP_URL"), class: "app-footer__nav-link"
+      new_window_options(class: "app-footer__nav-link")
+    = link_to "Help",
+      ENV.fetch("HELP_URL"),
+      new_window_options(class: "app-footer__nav-link")
     = link_to "Terms",
       "https://github.com/houndci/hound/blob/master/doc/TERMS.md",
-      class: "app-footer__nav-link"
+      new_window_options(class: "app-footer__nav-link")
     = link_to "Privacy",
       "https://github.com/houndci/hound/blob/master/doc/PRIVACY.md",
-      class: "app-footer__nav-link"
+      new_window_options(class: "app-footer__nav-link")
     = link_to "Security",
       "https://github.com/houndci/hound/blob/master/doc/SECURITY.md",
-      class: "app-footer__nav-link"
+      new_window_options(class: "app-footer__nav-link")
 
   %p
     Questions? Try
