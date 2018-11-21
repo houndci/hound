@@ -5,9 +5,13 @@ class ApplicationController < ActionController::Base
 
   before_action :force_https
   before_action :capture_campaign_params
-  before_action :authenticate
+  before_action :authenticate, except: :update_billing
 
   helper_method :current_user, :signed_in?, :masquerading?
+
+  def update_billing
+    render layout: false
+  end
 
   protected
 
