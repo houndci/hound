@@ -1,5 +1,5 @@
 module Linter
-  class Erblint < Base
+  class ErbLint < Base
     FILE_REGEXP = /.+\.erb\z/
   end
 end

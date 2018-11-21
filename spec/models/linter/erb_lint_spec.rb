@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe Linter::Erblint do
+describe Linter::ErbLint do
   it_behaves_like "a linter" do
     let(:lintable_files) { %w(app/foo.erb public/bar.html.erb) }
     let(:not_lintable_files) { %w(foo.html foo.rb) }
@@ -29,7 +29,7 @@ describe Linter::Erblint do
         LintersJob,
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
-        linter_name: "erblint",
+        linter_name: "erb_lint",
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
