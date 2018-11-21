@@ -2,6 +2,7 @@ class ResolveConfigAliases
   ALIASES = {
     "coffeescript" => "coffeelint",
     "coffee_script" => "coffeelint",
+    "erblint" => "erb_lint",
     "go" => "golint",
     "haml" => "haml_lint",
     "haml-lint" => "haml_lint",

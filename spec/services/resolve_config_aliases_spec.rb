@@ -9,6 +9,7 @@ describe ResolveConfigAliases do
           "ruby" => { "enabled" => true },
           "flog" => { "enabled" => false },
           "scss" => { "enabled" => true },
+          "erblint" => { "enabled" => true },
         }
 
         actual = ResolveConfigAliases.call(config)
@@ -18,6 +19,7 @@ describe ResolveConfigAliases do
           "rubocop" => { "enabled" => true },
           "flog" => { "enabled" => false },
           "scss_lint" => { "enabled" => true },
+          "erb_lint" => { "enabled" => true },
         )
       end
     end

@@ -1,5 +1,5 @@
 module Config
-  class Erblint < Base
+  class ErbLint < Base
     def serialize
       Serializer.yaml(content)
     end

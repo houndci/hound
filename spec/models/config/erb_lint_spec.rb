@@ -3,9 +3,9 @@ require "app/models/config_content"
 require "app/models/config/parser"
 require "app/models/config/serializer"
 require "app/models/config/base"
-require "app/models/config/erblint"
+require "app/models/config/erb_lint"
 
-RSpec.describe Config::Erblint do
+RSpec.describe Config::ErbLint do
   describe "#content" do
     it "returns merged configuration" do
       raw_config = <<~YAML

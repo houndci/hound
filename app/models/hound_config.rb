@@ -4,7 +4,7 @@ class HoundConfig
   LINTERS = {
     Linter::Coffeelint => { default: true },
     Linter::Credo => { default: false },
-    Linter::Erblint => { default: false },
+    Linter::ErbLint => { default: false },
     Linter::Eslint => { default: false },
     Linter::Flake8 => { default: false },
     Linter::Flog => { default: false },
