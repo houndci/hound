@@ -18,6 +18,7 @@ Houndapp::Application.routes.draw do
   get "/documentation", to: redirect(ENV.fetch("DOCS_URL"), status: 302)
   get "/faq", to: redirect(ENV.fetch("FAQ_URL"), status: 302)
   get "/help", to: redirect(ENV.fetch("HELP_URL"), status: 302)
+  get "/update_billing", to: "application#update_billing"
 
   resource :account, only: [:show, :update]
   resources :builds, only: [:create, :index]
