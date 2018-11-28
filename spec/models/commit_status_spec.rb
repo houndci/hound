@@ -26,7 +26,12 @@ RSpec.describe CommitStatus do
       it "removes the user from repo and notifies Sentry" do
         sha = "abc123"
         user = create(:user, token: "token")
-        repo = create(:repo, name: "houndci/hound", users: [user], private: true)
+        repo = create(
+          :repo,
+          name: "houndci/hound",
+          users: [user],
+          private: true
+        )
         github_auth = GitHubAuth.new(repo)
         commit_status = CommitStatus.new(
           repo: repo,
@@ -103,7 +108,12 @@ RSpec.describe CommitStatus do
     context "when status update fails" do
       it "removes the user from repo and notifies Sentry" do
         user = create(:user, token: "token")
-        repo = create(:repo, name: "houndci/hound", users: [user], private: false)
+        repo = create(
+          :repo,
+          name: "houndci/hound",
+          users: [user],
+          private: false
+        )
         github_auth = GitHubAuth.new(repo)
         sha = "abc123"
         commit_status = CommitStatus.new(
