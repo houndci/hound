@@ -34,6 +34,14 @@ describe Retryable do
       end
     end
 
+    class StatusErrorJob < ParentJob
+      def perform
+        raise "POST https://api.github.com/repos/foo/bar/statuses/abcd12345: "\
+          "404 - Not Found // See: https://developer.github.com/v3/repos/"\
+          "statuses/#create-a-status"
+      end
+    end
+
     class RetryableFailingJob < ParentJob
     end
 
@@ -52,7 +60,8 @@ describe Retryable do
       allow(Retryable).to receive(:retry_delay).and_return(nil)
       allow(Retryable).to receive(:retry_attempts).and_return(2)
 
-      expect { RetryableFailingJob.perform_later }.to raise_error(RuntimeError)
+      expect { RetryableFailingJob.perform_later }.
+        to raise_error("max attempts")
 
       expect(RetryableFailingJob.counter).to eq(2)
     end
@@ -75,6 +84,13 @@ describe Retryable do
       job.perform_now
 
       expect(job).to have_received(:retry_job).with(wait: 10)
+    end
+
+    it "does not raise status erros" do
+      allow(Retryable).to receive(:retry_attempts).and_return(2)
+      allow(Retryable).to receive(:retry_delay).and_return(nil)
+
+      expect { StatusErrorJob.perform_later }.not_to raise_error
     end
 
     context "when `after_retry_exhausted` exists" do
