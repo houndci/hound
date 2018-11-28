@@ -26,7 +26,7 @@ RSpec.describe CommitStatus do
       it "removes the user from repo and notifies Sentry" do
         sha = "abc123"
         user = create(:user, token: "token")
-        repo = create(:repo, name: "houndci/hound", users: [user])
+        repo = create(:repo, name: "houndci/hound", users: [user], private: true)
         github_auth = GitHubAuth.new(repo)
         commit_status = CommitStatus.new(
           repo: repo,
@@ -44,7 +44,7 @@ RSpec.describe CommitStatus do
         expect(GitHubApi).to have_received(:new).with(user.token).twice
         expect(repo.reload.users).to eq []
         expect(Raven).to have_received(:capture_message).with(
-          "Failed to set pending status",
+          "Failed to set pending status (private repo)",
           extra: {
             repo_name: repo.name,
             sha: sha,
@@ -103,7 +103,7 @@ RSpec.describe CommitStatus do
     context "when status update fails" do
       it "removes the user from repo and notifies Sentry" do
         user = create(:user, token: "token")
-        repo = create(:repo, name: "houndci/hound", users: [user])
+        repo = create(:repo, name: "houndci/hound", users: [user], private: false)
         github_auth = GitHubAuth.new(repo)
         sha = "abc123"
         commit_status = CommitStatus.new(
@@ -121,7 +121,7 @@ RSpec.describe CommitStatus do
           to raise_error(Octokit::NotFound)
 
         expect(Raven).to have_received(:capture_message).with(
-          "Failed to set error status",
+          "Failed to set error status (public repo)",
           extra: {
             repo_name: repo.name,
             sha: sha,

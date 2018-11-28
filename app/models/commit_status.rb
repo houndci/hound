@@ -63,6 +63,12 @@ class CommitStatus
   end
 
   def notify_sentry(message, metadata = {})
+    if repo.private?
+      message << " (private repo)"
+    else
+      message << " (public repo)"
+    end
+
     Raven.capture_message(
       message,
       extra: {
