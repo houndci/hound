@@ -30,7 +30,7 @@ RSpec.describe CommitStatus do
           :repo,
           name: "houndci/hound",
           users: [user],
-          private: true
+          private: true,
         )
         github_auth = GitHubAuth.new(repo)
         commit_status = CommitStatus.new(
@@ -112,7 +112,7 @@ RSpec.describe CommitStatus do
           :repo,
           name: "houndci/hound",
           users: [user],
-          private: false
+          private: false,
         )
         github_auth = GitHubAuth.new(repo)
         sha = "abc123"
