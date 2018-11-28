@@ -9,6 +9,14 @@ module Buildable
   end
 
   def after_retry_exhausted
+    unless $! && $!.message.match?(%r{/statuses/\w+: 404 - Not Found})
+      set_error_status
+    end
+  end
+
+  private
+
+  def set_error_status
     payload = Payload.new(*arguments)
     repo = Repo.active.find_by(github_id: payload.github_repo_id)
     github_auth = GitHubAuth.new(repo)
@@ -19,8 +27,6 @@ module Buildable
     )
     commit_status.set_internal_error
   end
-
-  private
 
   def blacklisted?(payload)
     BlacklistedPullRequest.where(

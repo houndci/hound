@@ -7,10 +7,12 @@ module Retryable
     rescue_from(StandardError) do |exception|
       if attempts >= Retryable.retry_attempts
         after_retry_attempts
-        raise exception
+        unless exception.message.match?(%r{/statuses/\w+: 404 - Not Found})
+          raise exception
+        end
+      else
+        retry_job wait: Retryable.retry_delay
       end
-
-      retry_job wait: Retryable.retry_delay
     end
   end
 
