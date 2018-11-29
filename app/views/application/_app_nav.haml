@@ -1,6 +1,6 @@
 %nav.app-nav{ role: "navigation" }
   .app-nav__container
-    = link_to repos_path, class: "line-height-zero" do
+    = link_to signed_in? ? repos_path : root_path, class: "line-height-zero" do
       %svg.logo.app-nav__logo{ role: "img" }
         %title Hound
         %use{ "xlink:href" => "/images/icons.svg#hound" }
@@ -8,14 +8,22 @@
     .app-nav__app-items
       - if signed_in?
         = link_to "Repos", repos_path, class: "app-nav__item"
+
+        = link_to "Help",
+          ENV.fetch("HELP_URL"),
+          new_window_options(class: "app-nav__item")
       - else
+        = link_to "How it works",
+          root_path(anchor: "how-it-works"),
+          class: "app-nav__item"
+
         = link_to "Pricing",
           root_path(anchor: "pricing"),
           class: "app-nav__item"
 
-      = link_to "Help",
-        ENV.fetch("HELP_URL"),
-        new_window_options(class: "app-nav__item")
+        = link_to "Get started",
+          "/auth/github",
+          class: "app-nav__item auth"
 
     .app-nav__user-items
       - if signed_in?
