@@ -1,15 +1,9 @@
 %nav.app-nav{ role: "navigation" }
   .app-nav__container
-    - if signed_in?
-      = link_to repos_path, class: "line-height-zero" do
-        %svg.logo.app-nav__logo{ role: "img" }
-          %title Hound
-          %use{ "xlink:href" => "/images/icons.svg#hound" }
-    - else
-      = link_to root_path, class: "line-height-zero" do
-        %svg.logo.app-nav__logo{ role: "img" }
-          %title Hound
-          %use{ "xlink:href" => "/images/icons.svg#hound" }
+    = link_to signed_in? ? repos_path : root_path, class: "line-height-zero" do
+      %svg.logo.app-nav__logo{ role: "img" }
+        %title Hound
+        %use{ "xlink:href" => "/images/icons.svg#hound" }
 
     .app-nav__app-items
       - if signed_in?
