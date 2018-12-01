@@ -20,8 +20,9 @@ Supported languages:
 - Swift
 - SCSS
 - HAML
+- ERB
 - Markdown
-- Bash 
+- Bash
 
 If you have questions about the service,
 see [Help] or email [hello@houndci.com].
