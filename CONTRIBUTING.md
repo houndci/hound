@@ -178,6 +178,9 @@ as well as any default configuration they might use:
     * [HAML-Lint](https://github.com/brigade/haml-lint)
     * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/haml_lint)
     * [default config](https://raw.githubusercontent.com/houndci/linters/master/config/haml.yml)
+1. ERB
+    * [ERB Lint](https://github.com/Shopify/erb-lint)
+    * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/erb_lint)
 1. Elixir
     * [Credo](https://github.com/rrrene/credo)
     * [houndci/linters](https://github.com/houndci/linters/tree/master/lib/linters/credo)
