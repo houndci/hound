@@ -39,6 +39,7 @@ gem "thor", "0.19.1"
 gem "uglifier", ">= 2.7.2"
 gem "webpacker", "~> 3.0"
 gem "webpacker-react", "~> 0.3.1"
+gem "sidekiq"
 
 group :staging, :production do
   gem "rack-timeout"

@@ -1,3 +1,14 @@
+require "sidekiq/web"
+ Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+  ActiveSupport::SecurityUtils.secure_compare(
+    ::Digest::SHA256.hexdigest(username),
+    ::Digest::SHA256.hexdigest(ENV["SIDEKIQ_USERNAME"])
+  ) & ActiveSupport::SecurityUtils.secure_compare(
+    ::Digest::SHA256.hexdigest(password),
+    ::Digest::SHA256.hexdigest(ENV["SIDEKIQ_PASSWORD"])
+  )
+end
+
 Houndapp::Application.routes.draw do
   namespace :admin do
     DashboardManifest::DASHBOARDS.each do |dashboard_resource|
@@ -8,7 +19,7 @@ Houndapp::Application.routes.draw do
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 
-  mount Resque::Server, at: "/queue"
+  mount Sidekiq::Web, at: "/queue"
   mount Split::Dashboard, at: "/split"
 
   get "/auth/github/callback", to: "sessions#create"
