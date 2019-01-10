@@ -415,6 +415,7 @@ DEPENDENCIES
   rails-assets-normalize-css!
   rails_12factor
   record_tag_helper
+  redis-namespace
   resque (>= 1.27.4)
   resque-scheduler
   resque-sentry
