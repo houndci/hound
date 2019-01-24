@@ -140,7 +140,7 @@ describe RepoSubscriber do
     end
 
     context "when repo subscription fails to create" do
-      it "deleted the stripe subscription" do
+      it "doesn't raise and returns falsy" do
         repo = create(:repo)
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
@@ -152,13 +152,11 @@ describe RepoSubscriber do
           plan: user.next_plan.id,
           repo_ids: repo.id,
         )
-        stripe_delete_request = stub_subscription_delete_request
         allow(repo).to receive(:create_subscription!).and_raise(StandardError)
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
         expect(result).to be_falsy
-        expect(stripe_delete_request).to have_been_requested
       end
     end
 
