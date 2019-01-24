@@ -29,22 +29,19 @@ class RepoSubscriber
 
   def create_subscription
     plan_selector = PlanSelector.new(user: user, repo: repo)
-
     payment_gateway_subscription = stripe_customer.find_or_create_subscription(
       plan: plan_selector.current_plan.id,
       repo_id: repo.id,
     )
-
-    payment_gateway_subscription.subscribe(repo.id)
 
     repo.create_subscription!(
       user_id: user.id,
       stripe_subscription_id: payment_gateway_subscription.id,
       price: plan_selector.next_plan.price,
     )
+    payment_gateway_subscription.subscribe(repo.id)
   rescue => error
     report_exception(error)
-    payment_gateway_subscription.try(:delete)
     nil
   end
 
