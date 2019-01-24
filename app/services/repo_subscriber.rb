@@ -44,7 +44,6 @@ class RepoSubscriber
     )
   rescue => error
     report_exception(error)
-    payment_gateway_subscription.try(:delete)
     nil
   end
 
