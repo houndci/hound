@@ -35,13 +35,13 @@ class RepoSubscriber
       repo_id: repo.id,
     )
 
+    payment_gateway_subscription.subscribe(repo.id)
+
     repo.create_subscription!(
       user_id: user.id,
       stripe_subscription_id: payment_gateway_subscription.id,
       price: plan_selector.next_plan.price,
     )
-
-    payment_gateway_subscription.subscribe(repo.id)
   rescue => error
     report_exception(error)
     nil
