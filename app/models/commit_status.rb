@@ -10,7 +10,6 @@ class CommitStatus
   rescue Octokit::NotFound
     notify_sentry("Failed to set pending status")
     remove_user_from_repo
-    raise
   end
 
   def set_success(violation_count)
@@ -19,7 +18,6 @@ class CommitStatus
   rescue Octokit::NotFound
     notify_sentry("Failed to set success status")
     remove_user_from_repo
-    raise
   end
 
   def set_failure(violation_count)
