@@ -11,18 +11,20 @@ that reviews GitHub pull requests
 for style guide violations.
 
 Supported languages:
-- JavaScript
-- TypeScript
-- CoffeeScript
-- Go
-- Ruby
-- Elixir
-- Swift
-- SCSS
-- HAML
-- ERB
-- Markdown
 - Bash
+- Elixir
+- Go
+- HAML
+- JavaScript
+  - CoffeeScript
+  - TypeScript
+- Markdown
+- PHP
+- Python
+- Ruby
+  - ERB
+- Sass / SCSS
+- Swift
 
 If you have questions about the service,
 see [Help] or email [hello@houndci.com].
