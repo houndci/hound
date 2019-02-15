@@ -11,6 +11,8 @@ class CompletedFileReviewJob < ApplicationJob
   def perform(attributes)
     CompleteFileReview.call(attributes)
   rescue ActiveRecord::RecordNotFound
-    retry_job(wait: 30.seconds)
+    if attempts < Retryable.retry_attempts
+      retry_job(wait: 30.seconds)
+    end
   end
 end
