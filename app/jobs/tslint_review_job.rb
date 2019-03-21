@@ -1,3 +1,3 @@
-class TslintReviewJob
-  @queue = :tslint_review
+class TslintReviewJob < ApplicationJob
+  sidekiq_options queue: :tslint_review
 end

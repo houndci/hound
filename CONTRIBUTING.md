@@ -37,7 +37,7 @@ Here are a few technical guidelines to follow:
 1. On the confirmation screen, copy the `Client ID` and `Client Secret` to
    `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in the `.env.local` file.
 
-1. Run `foreman start`. Foreman will start the web server and the resque
+1. Run `foreman start`. Foreman will start the web server and the Sidekiq
    background job queue. **NOTE**: `rails server` will not load the appropriate
    environment variables and you'll get a "Missing `secret_key_base` for
    'development' environment" error. Similarly, `heroku local` and `forego start`
@@ -96,7 +96,7 @@ ngrok authtoken <your-token>
 1. On the confirmation screen, copy the generated token to `HOUND_GITHUB_TOKEN`
    in the `.env.local` file. Also update `HOUND_GITHUB_USERNAME` to be your username.
 
-1. Run `foreman start`. Foreman will start the web server and the resque
+1. Run `foreman start`. Foreman will start the web server and the Sidekiq
    background job queue. **NOTE**: `rails server` will not load the appropriate
    environment variables and you'll get a "Missing `secret_key_base` for
    'development' environment" error. Similarly, `heroku local` and `forego start`
@@ -201,7 +201,7 @@ as well as any default configuration they might use:
 ### Writing a Linter
 
 Linters check code snippets for style violations. They operate by polling a
-Resque queue.
+Sidekiq queue.
 
 Linter jobs are created with the following arguments:
 

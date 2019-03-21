@@ -18,9 +18,8 @@ RSpec.configure do |config|
   end
 
   def run_background_jobs_immediately
-    inline = Resque.inline
-    Resque.inline = true
-    yield
-    Resque.inline = inline
+    Sidekiq::Testing.inline! do
+      yield
+    end
   end
 end

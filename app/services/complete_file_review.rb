@@ -2,7 +2,7 @@ class CompleteFileReview
   static_facade :call
 
   def initialize(attributes)
-    @attributes = attributes
+    @attributes = attributes.deep_symbolize_keys
   end
 
   def call

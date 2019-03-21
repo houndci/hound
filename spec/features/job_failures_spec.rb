@@ -1,17 +1,8 @@
 require "rails_helper"
 
-feature "Job failures" do
-  QUEUE_NAME = "test-job-failures".freeze
-
-  around :each do |example|
-    previous_backend = Resque::Failure.backend
-    Resque::Failure.backend = Resque::Failure::Redis
-    cleanup_test_failures
-
-    example.call
-
-    cleanup_test_failures
-    Resque::Failure.backend = previous_backend
+RSpec.feature "Job failures" do
+  before :each do
+    Sidekiq::DeadSet.new.clear
   end
 
   scenario "Admin views all failures" do
@@ -22,8 +13,8 @@ feature "Job failures" do
     sign_in_as(user)
     visit admin_job_failures_path
 
-    expect(table_row(1)).to have_failures("Foo error 0, 2")
-    expect(table_row(2)).to have_failures("Bar error 1")
+    expect(table_row(1)).to have_failures("2 Foo error")
+    expect(table_row(2)).to have_failures("1 Bar error")
   end
 
   scenario "Cannot access as a non-admin user" do
@@ -44,24 +35,22 @@ feature "Job failures" do
 
     sign_in_as(user)
     visit admin_job_failures_path
-    find("tr:nth-of-type(1) a").click
+    find("tr:nth-of-type(1) input[type=submit]").click
 
-    expect(table_row(1)).to have_failures("Bar error 0")
+    expect(table_row(1)).to have_failures("1 Bar error")
     expect(page).not_to have_text("Foo error")
   end
 
   def populate_failures(messages)
-    messages.each do |message|
-      Resque::Failure.create(
-        exception: StandardError.new(message),
-        payload: {},
-        queue: QUEUE_NAME,
-      )
+    dead_set = Sidekiq::DeadSet.new
+    messages.each_with_index do |message, index|
+      job = {
+        jid: index.to_s,
+        error_message: message,
+        failed_at: Time.current.to_i,
+      }
+      dead_set.schedule(Time.current, job)
     end
-  end
-
-  def cleanup_test_failures
-    Resque::Failure.remove_queue(QUEUE_NAME)
   end
 
   def have_failures(text)

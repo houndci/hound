@@ -1,12 +1,8 @@
 require "rails_helper"
 
 describe AcceptGitHubInvitationJob do
-  it "is retryable" do
-    expect(AcceptGitHubInvitationJob.new).to be_a(Retryable)
-  end
-
-  it "queue_as high" do
-    expect(AcceptGitHubInvitationJob.new.queue_name).to eq("high")
+  it "queues as high" do
+    expect(AcceptGitHubInvitationJob.queue).to eq(:high)
   end
 
   describe "#perform" do

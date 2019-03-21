@@ -19,29 +19,23 @@ describe Linter::Flake8 do
     end
 
     it "schedules a review job" do
-      allow(Resque).to receive(:push)
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
       stub_flake8_config("config")
       commit_file = build_commit_file
+      allow(LintersJob).to receive(:perform_async)
 
       linter.file_review(commit_file)
 
-      expect(Resque).to have_received(:push).with(
-        "linters",
-        {
-          class: "LintersJob",
-          args: [
-            filename: commit_file.filename,
-            commit_sha: build.commit_sha,
-            linter_name: "flake8",
-            pull_request_number: build.pull_request_number,
-            patch: commit_file.patch,
-            content: commit_file.content,
-            config: "config",
-            linter_version: nil,
-          ],
-        }
+      expect(LintersJob).to have_received(:perform_async).with(
+        filename: commit_file.filename,
+        commit_sha: build.commit_sha,
+        linter_name: "flake8",
+        pull_request_number: build.pull_request_number,
+        patch: commit_file.patch,
+        content: commit_file.content,
+        config: "config",
+        linter_version: nil,
       )
     end
   end

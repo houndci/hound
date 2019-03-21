@@ -9,7 +9,7 @@ class BuildsController < ApplicationController
 
   def create
     if payload.pull_request?
-      build_job_class.perform_later(payload.build_data)
+      build_job_class.perform_async(payload.build_data)
     end
     head :ok
   end

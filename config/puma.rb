@@ -11,7 +11,4 @@ on_worker_boot do
   # Worker specific setup for Rails 4.1+
   # See: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
   ActiveRecord::Base.establish_connection
-
-  # Reconnect resque's redis after worker boots
-  Resque.redis = ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379")
 end
