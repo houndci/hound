@@ -5,12 +5,11 @@ describe RepoSyncsController, "#create" do
     it "will not enqueues repo sync job" do
       user = create(:user, refreshing_repos: true)
       stub_sign_in(user)
-      allow(RepoSynchronizationJob).to receive(:perform_later)
+      allow(RepoSynchronizationJob).to receive(:perform_async)
 
       post :create
 
-      expect(RepoSynchronizationJob).
-        not_to have_received(:perform_later).with(user)
+      expect(RepoSynchronizationJob).not_to have_received(:perform_async)
     end
   end
 
@@ -18,13 +17,13 @@ describe RepoSyncsController, "#create" do
     it "sets user to refreshing repos true and enqueues repo sync job" do
       user = create(:user)
       stub_sign_in(user)
-      allow(RepoSynchronizationJob).to receive(:perform_later)
+      allow(RepoSynchronizationJob).to receive(:perform_async)
 
       post :create
 
       expect(user.reload).to be_refreshing_repos
       expect(RepoSynchronizationJob).
-        to have_received(:perform_later).with(user)
+        to have_received(:perform_async).with(user.id)
     end
   end
 end

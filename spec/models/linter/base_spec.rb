@@ -25,12 +25,11 @@ describe Linter::Test do
           serialize: "config",
         )
         allow(BuildConfig).to receive(:call).and_return(build_config)
-        allow(Resque).to receive(:enqueue)
+        allow(LintersJob).to receive(:perform_async)
 
         linter.file_review(commit_file)
 
-        expect(Resque).to have_received(:enqueue).with(
-          LintersJob,
+        expect(LintersJob).to have_received(:perform_async).with(
           hash_including(linter_version: nil),
         )
       end
@@ -47,12 +46,11 @@ describe Linter::Test do
           serialize: "config",
         )
         allow(BuildConfig).to receive(:call).and_return(build_config)
-        allow(Resque).to receive(:enqueue)
+        allow(LintersJob).to receive(:perform_async)
 
         linter.file_review(commit_file)
 
-        expect(Resque).to have_received(:enqueue).with(
-          LintersJob,
+        expect(LintersJob).to have_received(:perform_async).with(
           hash_including(linter_version: 1.0),
         )
       end

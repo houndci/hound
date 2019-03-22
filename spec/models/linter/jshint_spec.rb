@@ -59,12 +59,11 @@ describe Linter::Jshint do
         build = create(:build)
         linter = build_linter(build, stub_config_files(config))
         commit_file = build_commit_file(filename: "lib/a.js")
-        allow(Resque).to receive(:enqueue)
+        allow(JshintReviewJob).to receive(:perform_async)
 
         linter.file_review(commit_file)
 
-        expect(Resque).to have_received(:enqueue).with(
-          JshintReviewJob,
+        expect(JshintReviewJob).to have_received(:perform_async).with(
           commit_sha: build.commit_sha,
           config: '{"browser":true}',
           content: commit_file.content,
@@ -83,12 +82,11 @@ describe Linter::Jshint do
         linter = build_linter(build, stub_config_files('{"asi": true}'))
         commit_file = build_commit_file(filename: "lib/a.js")
         stub_owner_config('{"asi": false, "maxlen": 50}')
-        allow(Resque).to receive(:enqueue)
+        allow(JshintReviewJob).to receive(:perform_async)
 
         linter.file_review(commit_file)
 
-        expect(Resque).to have_received(:enqueue).with(
-          JshintReviewJob,
+        expect(JshintReviewJob).to have_received(:perform_async).with(
           commit_sha: build.commit_sha,
           config: '{"asi":true,"maxlen":50}',
           content: commit_file.content,

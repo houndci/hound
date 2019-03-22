@@ -52,7 +52,7 @@ module Linter
     end
 
     def enqueue_job(attributes)
-      Resque.enqueue(job_class, attributes)
+      job_class.perform_async(attributes)
     end
 
     def job_class

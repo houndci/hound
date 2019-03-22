@@ -10,20 +10,28 @@
     %thead
       %tr
         %th.cell-label.cell-label--string.cell-label--false{ scope: "col" }
-          Error message
+          Job
         %th.cell-label.cell-label--string.cell-label--false{ scope: "col" }
-          Failure indexes
+          Count
+        %th.cell-label.cell-label--string.cell-label--false{ scope: "col" }
+          Message
+        %th.cell-label.cell-label--string.cell-label--false{ scope: "col" }
+          Last at
         %th{ scope: "col" }
 
     %tbody
       - resources.each do |error_message, job_failures|
         %tr
           %td.cell-data.cell-data--string
+            = job_failures.first.job_class
+          %td.cell-data.cell-data--array
+            = job_failures.size
+          %td.cell-data.cell-data--array
             = error_message
           %td.cell-data.cell-data--array
-            = job_failures.map(&:index).join(", ")
+            = latest_failed_at(job_failures)
           %td
-            = link_to "Remove",
-              admin_job_failure_path(job_failures.map(&:index).join(",")),
-              method: :delete,
-              class: "text-color-red"
+            = button_to "Remove",
+              admin_job_failure_path(id: "none"),
+              params: { ids: job_failures.map(&:id) },
+              method: :delete

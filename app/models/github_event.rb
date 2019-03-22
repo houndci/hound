@@ -38,7 +38,7 @@ class GitHubEvent
   def run_build
     case action
     when "opened", "reopened", "synchronize"
-      build_job_class.perform_later(payload.build_data)
+      build_job_class.perform_async(payload.build_data)
     end
   end
 

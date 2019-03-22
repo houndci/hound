@@ -28,11 +28,9 @@ gem "rails", "~> 5.1.6"
 gem "rails-assets-normalize-css", source: "https://rails-assets.org"
 gem "record_tag_helper"
 gem "redis-namespace"
-gem "resque", ">= 1.27.4"
-gem "resque-scheduler"
-gem "resque-sentry"
 gem "rest-client", ">= 2.0.1"
 gem "sass-rails"
+gem "sentry-raven"
 gem "sidekiq"
 gem "sinatra", "~> 2.0"
 gem "split", require: "split/dashboard"
@@ -45,7 +43,6 @@ gem "webpacker-react", "~> 0.3.1"
 group :staging, :production do
   gem "rack-timeout"
   gem "rails_12factor"
-  gem "sentry-raven", ">= 0.12.2"
 end
 
 group :development, :test do

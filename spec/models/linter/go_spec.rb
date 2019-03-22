@@ -21,12 +21,11 @@ describe Linter::Golint do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       linter = build_linter(build)
       commit_file = build_commit_file(filename: "a.go")
-      allow(Resque).to receive(:enqueue)
+      allow(LintersJob).to receive(:perform_async)
 
       linter.file_review(commit_file)
 
-      expect(Resque).to have_received(:enqueue).with(
-        LintersJob,
+      expect(LintersJob).to have_received(:perform_async).with(
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
         linter_name: "golint",

@@ -1,4 +1,3 @@
-# frozen_string_literal: true
-class ReekReviewJob
-  @queue = :reek_review
+class ReekReviewJob < ApplicationJob
+  sidekiq_options queue: :reek_review
 end

@@ -5,7 +5,7 @@ feature "User rebuilds a pull request" do
     user = create(:user, token_scopes: "public_repo,user:email")
     repo = create(:membership, user: user).repo
     build = create(:build, repo: repo)
-    allow(SmallBuildJob).to receive(:perform_later)
+    allow(SmallBuildJob).to receive(:perform_async)
 
     sign_in_as(user)
     visit builds_path

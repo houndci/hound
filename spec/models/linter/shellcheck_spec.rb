@@ -20,13 +20,12 @@ describe Linter::Shellcheck do
     it "schedules a review job" do
       build = build(:build, commit_sha: "foo", pull_request_number: 123)
       commit_file = build_commit_file(filename: "lib/a.sh")
-      allow(Resque).to receive(:enqueue)
+      allow(LintersJob).to receive(:perform_async)
       linter = build_linter(build)
 
       linter.file_review(commit_file)
 
-      expect(Resque).to have_received(:enqueue).with(
-        LintersJob,
+      expect(LintersJob).to have_received(:perform_async).with(
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
         linter_name: "shellcheck",

@@ -74,13 +74,13 @@ describe RepoActivator do
           repo = create(:repo, :in_private_org)
           api = stub_github_api
           activator = build_activator(repo: repo)
-          allow(AcceptGitHubInvitationJob).to receive(:perform_later)
+          allow(AcceptGitHubInvitationJob).to receive(:perform_async)
 
           activator.activate
 
           expect(api).to have_received(:add_collaborator).
             with(repo.name, Hound::GITHUB_USERNAME)
-          expect(AcceptGitHubInvitationJob).to have_received(:perform_later).
+          expect(AcceptGitHubInvitationJob).to have_received(:perform_async).
             with(repo.name)
         end
 
@@ -142,12 +142,12 @@ describe RepoActivator do
         activator = build_activator(repo: repo)
         github_api = stub_github_api(add_collaborator: true)
         allow(GitHubApi).to receive(:new).and_return(github_api)
-        allow(AcceptGitHubInvitationJob).to receive(:perform_later)
+        allow(AcceptGitHubInvitationJob).to receive(:perform_async)
 
         result = activator.activate
 
         expect(result).to eq true
-        expect(AcceptGitHubInvitationJob).to have_received(:perform_later).
+        expect(AcceptGitHubInvitationJob).to have_received(:perform_async).
           with(repo.name)
       end
     end
@@ -371,6 +371,7 @@ describe RepoActivator do
 
   def stub_github_api(options = {})
     default_options = {
+      repository?: true,
       remove_hook: true,
       add_collaborator: true,
       remove_collaborator: true,

@@ -13,11 +13,11 @@ describe RebuildPullRequest do
           pull_request_number: 42,
         )
         rebuilder = RebuildPullRequest.new(repo: repo, pull_request_number: 42)
-        allow(SmallBuildJob).to receive(:perform_later)
+        allow(SmallBuildJob).to receive(:perform_async)
 
         rebuilder.call
 
-        expect(SmallBuildJob).to have_received(:perform_later).with(payload)
+        expect(SmallBuildJob).to have_received(:perform_async).with(payload)
       end
     end
 
@@ -32,11 +32,11 @@ describe RebuildPullRequest do
           pull_request_number: 42,
         )
         rebuilder = RebuildPullRequest.new(repo: repo, pull_request_number: 100)
-        allow(SmallBuildJob).to receive(:perform_later)
+        allow(SmallBuildJob).to receive(:perform_async)
 
         rebuilder.call
 
-        expect(SmallBuildJob).not_to have_received(:perform_later)
+        expect(SmallBuildJob).not_to have_received(:perform_async)
       end
     end
   end

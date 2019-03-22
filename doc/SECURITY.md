@@ -80,7 +80,7 @@ The Redis database is hosted by [Heroku Redis Addon].
 
 As part of this process,
 we temporarily store your GitHub token in the Redis database
-when enqueueing a Resque job to fetch a list of your repos.
+when enqueueing a Sidekiq job to fetch a list of your repos.
 
 [Ruby on Rails]: http://rubyonrails.org
 [Heroku]: https://www.heroku.com
@@ -173,7 +173,7 @@ It contains metadata about the pull request such as repo, user, and commit.
 
 The payload is stored in Redis so that [`StartBuild`] can prepare configuration
 and file contents for each enabled linter, then send the files off for review
-via Resque (uses Redis) to the `linters` service.
+via Sidekiq (uses Redis) to the `linters` service.
 
 [`StartBuild`]: ../app/services/start_build.rb
 
@@ -204,7 +204,7 @@ linting using specific open source libraries, like:
 * Go: [golint](https://github.com/golang/lint)
 
 Those libraries find code violations
-and pass them back up through Resque for [`CompleteBuild`] to finish.
+and pass them back up through Sidekiq for [`CompleteBuild`] to finish.
 The violations are collected in the [`Violation`] classes, and also stored in
 our PostgreSQL database. [`SubmitReview`] fetches them, converts them to a
 format that fits GitHub comments, and submits the PR review to GitHub,
@@ -219,7 +219,7 @@ to comment about the violations on the pull request.
 `CompleteFileReview` saves each violation, the line number, and patch position,
 in the `violations` table of our Postgres database.
 We do not save any of your code in Postgres.
-We do store the contents of the files to review temporarily in Resque, and it
+We do store the contents of the files to review temporarily in Sidekiq, and it
 gets cleared out as soon as the job is processed.
 
 To browse the portions of the codebase related to

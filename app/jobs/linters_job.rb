@@ -1,3 +1,3 @@
-class LintersJob
-  @queue = :linters
+class LintersJob < ApplicationJob
+  sidekiq_options queue: :linters
 end

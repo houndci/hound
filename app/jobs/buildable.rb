@@ -1,16 +1,20 @@
 module Buildable
+  extend ActiveSupport::Concern
+
+  included do
+    sidekiq_retries_exhausted do |job|
+      unless job["error_message"].match?(%r{/statuses/\w+: 404 - Not Found})
+        set_error_status
+      end
+    end
+  end
+
   def perform(payload_data)
     payload = Payload.new(payload_data)
 
     unless blacklisted?(payload)
       UpdateRepoStatus.call(payload)
       StartBuild.call(payload)
-    end
-  end
-
-  def after_retry_exhausted
-    unless $! && $!.message.match?(%r{/statuses/\w+: 404 - Not Found})
-      set_error_status
     end
   end
 
