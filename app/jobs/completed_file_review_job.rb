@@ -1,5 +1,5 @@
 class CompletedFileReviewJob < ApplicationJob
-  sidekiq_options queue: :high
+  sidekiq_options queue: :medium
 
   # The following parameters are required for this job to run;
   # - filename

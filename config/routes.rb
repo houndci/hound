@@ -17,7 +17,7 @@ Houndapp::Application.routes.draw do
     root controller: DashboardManifest::ROOT_DASHBOARD, action: :index
   end
 
-  mount Sidekiq::Web, at: "/sidekiq"
+  mount Sidekiq::Web, at: "/jobs"
   mount Split::Dashboard, at: "/split"
 
   get "/auth/github/callback", to: "sessions#create"
