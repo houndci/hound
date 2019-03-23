@@ -5,11 +5,5 @@ module Linter
     def file_included?(commit_file)
       commit_file.filename !~ /^(spec|test)\//
     end
-
-    private
-
-    def job_class
-      FlogReviewJob
-    end
   end
 end

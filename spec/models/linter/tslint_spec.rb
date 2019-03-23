@@ -22,11 +22,11 @@ describe Linter::Tslint do
       stub_tslint_config(content: {})
       commit_file = build_commit_file(filename: "lib/a.ts")
       linter = build_linter(build)
-      allow(TslintReviewJob).to receive(:perform_async)
+      allow(LintersJob).to receive(:perform_async)
 
       linter.file_review(commit_file)
 
-      expect(TslintReviewJob).to have_received(:perform_async).with(
+      expect(LintersJob).to have_received(:perform_async).with(
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
         linter_name: "tslint",

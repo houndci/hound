@@ -52,11 +52,7 @@ module Linter
     end
 
     def enqueue_job(attributes)
-      job_class.perform_async(attributes)
-    end
-
-    def job_class
-      LintersJob
+      LintersJob.perform_async(attributes)
     end
 
     def owner

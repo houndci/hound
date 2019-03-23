@@ -22,11 +22,11 @@ describe Linter::Eslint do
       stub_eslint_config(content: {})
       commit_file = build_commit_file(filename: "lib/a.js")
       linter = build_linter(build)
-      allow(EslintReviewJob).to receive(:perform_async)
+      allow(LintersJob).to receive(:perform_async)
 
       linter.file_review(commit_file)
 
-      expect(EslintReviewJob).to have_received(:perform_async).with(
+      expect(LintersJob).to have_received(:perform_async).with(
         filename: commit_file.filename,
         commit_sha: build.commit_sha,
         linter_name: "eslint",
