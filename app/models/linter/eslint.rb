@@ -9,10 +9,6 @@ module Linter
 
     private
 
-    def job_class
-      EslintReviewJob
-    end
-
     def ignore_file
       @_ignore_file ||= IgnoreFile.new(name, hound_config, IGNORE_FILENAME)
     end

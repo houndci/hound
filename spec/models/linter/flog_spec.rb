@@ -58,13 +58,13 @@ RSpec.describe Linter::Flog do
     it "schedules a file review" do
       commit_file = build_commit_file(filename: "lib/foo.rb")
       linter = build_linter
-      allow(FlogReviewJob).to receive(:perform_async)
+      allow(LintersJob).to receive(:perform_async)
 
       result = linter.file_review(commit_file)
 
       expect(result).to be_persisted
       expect(result).not_to be_completed
-      expect(FlogReviewJob).to have_received(:perform_async)
+      expect(LintersJob).to have_received(:perform_async)
     end
   end
 
