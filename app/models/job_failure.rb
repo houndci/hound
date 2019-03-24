@@ -17,10 +17,16 @@ class JobFailure < OpenStruct
     self["error_message"]
   end
 
-  def self.all
-    Sidekiq::DeadSet.new.map do |failure|
-      JobFailure.new(failure.item)
-    end
+  def self.grouped
+    Sidekiq::DeadSet.new.
+      map { |failure| JobFailure.new(failure.item) }.
+      group_by do |job|
+        if job.error_message.match?(%r{/statuses/\w+: 404 - Not Found})
+          job.error_message[/.+?\/statuses\//]
+        else
+          job.error_message
+        end
+      end
   end
 
   def self.remove(ids)
