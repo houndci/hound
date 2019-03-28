@@ -39,6 +39,7 @@ gem "webpacker-react", "~> 0.3.1"
 group :staging, :production do
   gem "rack-timeout"
   gem "rails_12factor"
+  gem "scout_apm"
 end
 
 group :development, :test do

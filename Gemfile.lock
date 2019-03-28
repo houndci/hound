@@ -288,6 +288,7 @@ GEM
     sawyer (0.8.1)
       addressable (>= 2.3.5, < 2.6)
       faraday (~> 0.8, < 1.0)
+    scout_apm (2.4.24)
     selectize-rails (0.12.4)
     selenium-webdriver (3.12.0)
       childprocess (~> 0.5)
@@ -388,6 +389,7 @@ DEPENDENCIES
   record_tag_helper
   rspec-rails (>= 3.4)
   sass-rails
+  scout_apm
   selenium-webdriver
   sentry-raven
   shoulda-matchers
