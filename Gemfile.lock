@@ -79,13 +79,6 @@ GEM
       xpath (~> 2.0)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    coffee-rails (4.2.1)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0, < 5.2.x)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.12.2)
     columnize (0.8.9)
     commander (4.4.3)
       highline (~> 1.7.2)
@@ -130,7 +123,7 @@ GEM
       haml (>= 4.0.6, < 6.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
-    hashdiff (0.3.6)
+    hashdiff (0.3.8)
     hashie (3.4.6)
     high_voltage (3.0.0)
     highline (1.7.8)
@@ -256,8 +249,6 @@ GEM
     record_tag_helper (1.0.0)
       actionview (~> 5.x)
     redis (3.3.3)
-    redis-namespace (1.5.3)
-      redis (~> 3.0, >= 3.0.4)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -282,7 +273,7 @@ GEM
     ruby_parser (3.10.1)
       sexp_processor (~> 4.9)
     rubyzip (1.2.2)
-    safe_yaml (1.0.4)
+    safe_yaml (1.0.5)
     sass (3.5.5)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -342,7 +333,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
-    webmock (3.0.1)
+    webmock (3.5.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -371,7 +362,6 @@ DEPENDENCIES
   bundler-audit
   byebug
   capybara (>= 2.4.0)
-  coffee-rails
   dotenv-rails
   email_validator
   factory_girl_rails
@@ -396,8 +386,6 @@ DEPENDENCIES
   rails-assets-normalize-css!
   rails_12factor
   record_tag_helper
-  redis-namespace
-  rest-client (>= 2.0.1)
   rspec-rails (>= 3.4)
   sass-rails
   selenium-webdriver
@@ -407,14 +395,13 @@ DEPENDENCIES
   sinatra (~> 2.0)
   split
   stripe
-  thor (= 0.19.1)
   uglifier (>= 2.7.2)
   webmock
   webpacker (~> 3.0)
   webpacker-react (~> 0.3.1)
 
 RUBY VERSION
-   ruby 2.5.1p57
+   ruby 2.6.2p47
 
 BUNDLED WITH
    1.17.3
