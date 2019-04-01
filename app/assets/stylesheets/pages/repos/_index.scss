@@ -83,3 +83,11 @@
     opacity: 0.5;
   }
 }
+
+.no-repos-message {
+  @include content-frame;
+  color: $medium-font-color;
+  font-size: 1.5em;
+  margin-top: 0.6em;
+  text-align: center;
+}

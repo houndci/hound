@@ -5,7 +5,6 @@ en:
         active_private_repos_count: Active private repos
 
   sync_repos: "Refresh repo list"
-  include_private_repos: "Include private repos"
   syncing_repos: "Loading..."
   authenticate: "Sign In with GitHub"
   sign_out: "Sign Out"
@@ -26,23 +25,29 @@ en:
       invalid: "Email is invalid"
 
   onboarding:
-    title: "Let's keep that code in style:"
-    step_one_title: "Activate Hound on a repo."
-    step_one_alt_title: "Hound is active on %{count} of your repos!"
+    title: "Let's keep that code in check:"
+    step_one_title: "Add GitHub repos."
     step_one_desc:
-      "Hound watches for pull requests on all active repos.
-      Activating public repos is free; private repos are priced by tier."
-    step_one_link: "Details"
-    step_two_title: "Open a GitHub pull request on the active repo."
+      "Click \"Add GitHub repos\" below and choose repos for Hound to review."
+    step_two_title: "Activate Hound on a repo."
+    step_two_alt_title: "Hound is activated on %{count} of your repos!"
     step_two_desc:
-      "Hound will review all GitHub pull requests that are
-      opened on an activated repo for violations of your style
-      guide."
-    step_three_title: "Hound comments on your pull request."
+      "Activating a repo tells Hound to listen for pull request activity. Activating public repos is free! Private repos are priced
+      by tier."
+    account_link: "Details"
+    step_three_title: "Open a GitHub pull request on your repo."
     step_three_desc:
-      "If Hound finds any violations of your style guide it will
-      comment inline on the violation in your GitHub pull
-      request."
+      "Hound reviews code in your GitHub pull requests. If Hound finds any
+      issues it will comment inline on your pull request."
+
+  banner:
+    github_app:
+      title: "Don't see your repo in the list?"
+      description_html:
+        'We are switching to our new <a href="https://github.com/apps/hound">GitHub App</a>!
+        It allows for finer grained permissions and better security.
+        If you are missing a repo in the list below, just install the GitHub
+        app on it by clicking on the "Add GitHub repos" button.'
 
   plans:
     open_source:

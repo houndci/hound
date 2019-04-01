@@ -1,13 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders appropriately 1`] = `
+exports[`Repos Container component renders appropriately 1`] = `
 <div>
   <RepoTools
+    hasRepos={false}
     isSyncing={true}
-    onPrivateClicked={[Function]}
     onRefreshClicked={[Function]}
     onSearchInput={[Function]}
-    showPrivateButton={true}
   />
   <ReposView
     filterTerm={null}

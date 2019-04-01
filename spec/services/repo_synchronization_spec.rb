@@ -1,9 +1,9 @@
 require "rails_helper"
 
-describe RepoSynchronization do
+RSpec.describe RepoSynchronization do
   describe "#start" do
     it "saves privacy flag" do
-      stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
+      stub_github_api(repo_id: 456, repo_name: "user/newrepo")
       user = create(:user)
       synchronization = RepoSynchronization.new(user)
 
@@ -13,7 +13,7 @@ describe RepoSynchronization do
     end
 
     it "replaces existing repos" do
-      stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
+      stub_github_api(repo_id: 456, repo_name: "user/newrepo")
       membership = create(:membership)
       user = membership.user
       synchronization = RepoSynchronization.new(user)
@@ -27,48 +27,14 @@ describe RepoSynchronization do
     end
 
     context "when there is an 'ActiveRecord::RecordNotUnique' exception" do
-      it "finishes the synchronization" do
-        repo = stub_github_api_repos(repo_id: 456, repo_name: "user/newrepo")
+      it "handles the exception" do
+        stub_github_api(repo_id: 456, repo_name: "user/newrepo")
         user = create(:user)
         synchronization = RepoSynchronization.new(user)
-        allow(synchronization).to receive(:repo_attributes).
+        allow(CreateRepo).to receive(:call).
           and_raise(ActiveRecord::RecordNotUnique)
 
-        result = synchronization.start
-
-        expect(result).to eq [repo]
-      end
-    end
-
-    context "when the user is a repo admin" do
-      it "the memberships admin flag is true" do
-        stub_github_api_repos(
-          repo_id: 456,
-          repo_name: "user/newrepo",
-          admin: true,
-        )
-        user = create(:user)
-        synchronization = RepoSynchronization.new(user)
-
-        synchronization.start
-
-        expect(user.memberships.first).to be_admin
-      end
-    end
-
-    context "when the user is not a repo admin" do
-      it "the membership admin flag is false" do
-        stub_github_api_repos(
-          repo_id: 456,
-          repo_name: "user/newrepo",
-          admin: false,
-        )
-        user = create(:user)
-        synchronization = RepoSynchronization.new(user)
-
-        synchronization.start
-
-        expect(user.memberships.first).not_to be_admin
+        expect { synchronization.start }.not_to raise_error
       end
     end
 
@@ -81,16 +47,24 @@ describe RepoSynchronization do
         create(:membership, user: user, repo: repo2)
         github_repo1 = build_github_repo(id: repo1.github_id, name: "backup")
         github_repo2 = build_github_repo(id: repo2.github_id, name: "site")
-        api = instance_double("GitHubApi", repos: [github_repo1, github_repo2])
-        allow(GitHubApi).to receive(:new).and_return(api)
+        api = stub_github_api(repo_id: nil, repo_name: nil)
+        allow(api).to receive(:installation_repos).
+          and_return([github_repo1, github_repo2])
         synchronization = RepoSynchronization.new(user)
 
         synchronization.start
 
-        user.reload
-        expect(user.repos.pluck(:id, :name)).to match_array [
-          [repo1.id, "backup"],
-          [repo2.id, "site"],
+        expect(user.reload.repos).to match_array [
+          an_object_having_attributes(
+            id: repo1.id,
+            github_id: repo1.github_id,
+            name: github_repo1[:full_name],
+          ),
+          an_object_having_attributes(
+            id: repo2.id,
+            github_id: repo2.github_id,
+            name: github_repo2[:full_name],
+          ),
         ]
       end
     end
@@ -99,7 +73,7 @@ describe RepoSynchronization do
       it "creates another membership" do
         first_membership = create(:membership)
         repo = first_membership.repo
-        stub_github_api_repos(repo_id: repo.github_id, repo_name: repo.name)
+        stub_github_api(repo_id: repo.github_id, repo_name: repo.name)
         second_user = create(:user)
         synchronization = RepoSynchronization.new(second_user)
 
@@ -115,7 +89,7 @@ describe RepoSynchronization do
           user = create(:user)
           owner_github_id = 1234
           repo_github_id = 321
-          stub_github_api_repos(
+          stub_github_api(
             repo_id: repo_github_id,
             repo_name: "foo/bar",
             owner_id: owner_github_id,
@@ -135,7 +109,7 @@ describe RepoSynchronization do
           owner = create(:owner)
           user = create(:user)
           repo_github_id = 321
-          stub_github_api_repos(
+          stub_github_api(
             repo_id: repo_github_id,
             repo_name: "foo/bar",
             owner_id: owner.github_id,
@@ -150,54 +124,27 @@ describe RepoSynchronization do
       end
     end
 
-    context "when user has an installation" do
-      it "saves the installation id on the repo" do
-        user = create(:user, installation_ids: ["101"])
-        synchronization = RepoSynchronization.new(user)
-        stub_github_api_installation_repos(repo_name: "foo/bar")
-
-        synchronization.start
-
-        expect(Repo.count).to eq 1
-        expect(Repo.first).to have_attributes(installation_id: 101)
-      end
-    end
-
-    def stub_github_api_installation_repos(repo_name:)
-      repo = build_github_repo(id: 123, name: repo_name)
-      app_token = instance_double("AppToken", generate: "some-app-token")
+    def stub_github_api(repo_name:, repo_id:, owner_id: 123)
+      repo = build_github_repo(id: repo_id, name: repo_name, owner_id: owner_id)
       api = instance_double(
         "GitHubApi",
-        create_installation_token: "some-token",
         installation_repos: [repo],
+        user_installations: [OpenStruct.new(id: 10001)],
+        create_installation_token: "some-token",
       )
-      allow(AppToken).to receive(:new).and_return(app_token)
       allow(GitHubApi).to receive(:new).and_return(api)
+      api
     end
 
-    def stub_github_api_repos(repo_name:, repo_id:, owner_id: 1, admin: false)
-      repo = build_github_repo(id: repo_id, name: repo_name)
-      repo[:owner][:id] = owner_id
-      repo[:permissions][:admin] = admin
-
-      api = instance_double("GitHubApi", repos: [repo])
-      allow(GitHubApi).to receive(:new).and_return(api)
-
-      repo
-    end
-
-    def build_github_repo(id:, name:)
+    def build_github_repo(id:, name:, owner_id: 123)
       {
         full_name: name,
         id: id,
         private: true,
         owner: {
-          id: 123,
+          id: owner_id,
           login: "thoughtbot",
           type: "Organization",
-        },
-        permissions: {
-          admin: false,
         },
       }
     end

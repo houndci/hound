@@ -2,6 +2,7 @@ module AuthenticationHelper
   def stub_sign_in(user)
     user.update(token: "letmein")
     session[:remember_token] = user.remember_token
+    session[:signed_in_with_app] = true
   end
 
   def sign_in_as(user, token = "letmein")

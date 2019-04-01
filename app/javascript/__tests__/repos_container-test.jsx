@@ -1,42 +1,28 @@
 import ReposContainer from '../components/ReposContainer/components/App';
 import * as Ajax from '../modules/Ajax';
 
-it('renders appropriately', () => {
-  const wrapper = shallow(
-    <ReposContainer
-      authenticity_token={"csrf_token"}
-      has_private_access={false}
-      userHasCard={false}
-    />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
+describe('Repos Container component', () => {
+  it('renders appropriately', () => {
+    const wrapper = shallow(<ReposContainer />);
 
-it('sets the filterTerm appropriately on text input', () => {
-  const wrapper = mount(
-    <ReposContainer
-      authenticity_token={"csrf_token"}
-      has_private_access={false}
-      userHasCard={false}
-    />
-  );
-  const textInput = wrapper.find('.repo-search-tools-input');
-  textInput.simulate('change', {target: {value: "new text"}});
+    expect(wrapper).toMatchSnapshot();
+  });
 
-  expect(wrapper.state('filterTerm')).toBe('new text');
-});
+  it('sets the filterTerm appropriately on text input', () => {
+    const wrapper = mount(<ReposContainer />);
+    wrapper.setState({ repos: [{ id: 1, name: 'foo/bar' }] });
+    const textInput = wrapper.find('.repo-search-tools-input');
 
-it('fetches repos and organizations on mount', () => {
-  let stub = sinon.stub(ReposContainer.prototype, 'fetchReposAndOrgs');
+    textInput.simulate('change', {target: {value: "new text"}});
 
-  const wrapper = mount(
-    <ReposContainer
-      authenticity_token={"csrf_token"}
-      has_private_access={false}
-      userHasCard={false}
-    />
-  );
+    expect(wrapper.state('filterTerm')).toBe('new text');
+  });
 
-  expect(stub.callCount).toBe(1);
-  stub.restore();
+  it('fetches repos on mount', () => {
+    const spy = jest.spyOn(ReposContainer.prototype, 'fetchRepos');
+
+    const wrapper = shallow(<ReposContainer />);
+
+    expect(spy).toHaveBeenCalled()
+  });
 });

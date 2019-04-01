@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest app/javascript/__tests__/*-test.jsx",
-    "test:watch": "jest --watch app/javascript/__tests__/*-test.jsx",
-    "test:coverage": "jest --coverage app/javascript/__tests__/*-test.jsx"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@rails/webpacker": "^3.5.3",
@@ -72,28 +72,12 @@
     "react-test-renderer": "^15.6.1",
     "react-transform-hmr": "^1.0.2",
     "sinon": "^1.17.6",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/houndci/hound.git"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^.+\\.(css|scss)$": "identity-obj-proxy"
-    },
-    "setupFiles": [
-      "./app/javascript/__tests__/jestsetup.js"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>app/javascript/__tests__/jestsetup.js",
-    "unmockedModulePathPatterns": [
-      "react",
-      "enzyme",
-      "jasmine-enzyme"
-    ],
-    "snapshotSerializers": [
-      "<rootDir>/node_modules/enzyme-to-json/serializer"
-    ]
   },
   "babel": {
     "presets": [

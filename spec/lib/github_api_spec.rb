@@ -18,18 +18,6 @@ describe GitHubApi do
     end
   end
 
-  describe "#scopes" do
-    it "returns scopes as a string" do
-      token = "token"
-      api = GitHubApi.new(token)
-      stub_scopes_request(token: token, scopes: "repo,user:email")
-
-      scopes = api.scopes
-
-      expect(scopes).to eq "repo,user:email"
-    end
-  end
-
   describe "#file_contents" do
     context "used multiple times with same arguments" do
       it "requests file content once" do

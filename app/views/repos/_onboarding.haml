@@ -2,19 +2,20 @@
   .inner-wrapper.clearfix
     %h1= t("onboarding.title")
     %ol.onboarding-steps
-      %li.step
-        - if current_user.has_active_repos?
-          %strong
-            = t("onboarding.step_one_alt_title",
-              count: current_user.repos.active.count )
-        - else
-          %strong= t("onboarding.step_one_title")
+      %li.step{ class: ("current-step" if current_user.repos.none?) }
+        %strong= t("onboarding.step_one_title")
         %p
           = t("onboarding.step_one_desc")
-          = link_to(t("onboarding.step_one_link"), account_path)
-      %li.step.current-step
-        %strong= t("onboarding.step_two_title")
-        %p= t("onboarding.step_two_desc")
-      %li.step
+      %li.step{ class: ("current-step" unless has_active_repos?(current_user)) }
+        - if has_active_repos?(current_user)
+          %strong
+            = t "onboarding.step_two_alt_title",
+              count: current_user.repos.active.count
+        - else
+          %strong= t("onboarding.step_two_title")
+        %p
+          = t("onboarding.step_two_desc")
+          = link_to(t("onboarding.account_link"), account_path)
+      %li.step{ class: ("current-step" if has_no_builds?(current_user)) }
         %strong= t("onboarding.step_three_title")
         %p= t("onboarding.step_three_desc")

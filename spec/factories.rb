@@ -59,7 +59,6 @@ FactoryGirl.define do
   factory :user do
     username { generate(:github_name) }
 
-    trait(:with_github_scopes) { token_scopes "public_repo,user:email" }
     trait(:stripe) { stripe_customer_id "cus_2e3fqARc1uHtCv" }
   end
 

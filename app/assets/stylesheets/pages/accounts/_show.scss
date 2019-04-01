@@ -1,5 +1,5 @@
 .account-section {
-  @extend %content-frame;
+  @include content-frame;
   display: table;
   position: relative;
   width: 100%;

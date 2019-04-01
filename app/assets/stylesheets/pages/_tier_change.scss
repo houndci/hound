@@ -1,5 +1,5 @@
 .tier-change-container {
-  @extend %content-frame;
+  @include content-frame;
   position: relative;
 }
 

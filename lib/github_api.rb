@@ -5,7 +5,7 @@ require "base64"
 
 class GitHubApi
   ORGANIZATION_TYPE = "Organization"
-  PREVIEW_API_HEADER = "application/vnd.github.machine-man-preview+json"
+  PREVIEW_HEADER = "application/vnd.github.machine-man-preview+json"
 
   attr_reader :file_cache, :token
 
@@ -14,16 +14,20 @@ class GitHubApi
     @file_cache = {}
   end
 
-  def scopes
-    client.scopes(token).join(",")
+  def user_installations
+    client.find_user_installations(preview_options)[:installations]
   end
 
   def create_installation_token(installation_id)
-    client.create_app_installation_access_token(installation_id)[:token]
+    response = client.create_app_installation_access_token(
+      installation_id,
+      preview_options,
+    )
+    response[:token]
   end
 
   def installation_repos
-    client.list_app_installation_repositories[:repositories]
+    client.list_app_installation_repositories(preview_options)[:repositories]
   end
 
   def accounts_for_plan(plan_id)
@@ -178,5 +182,9 @@ class GitHubApi
       accept: "application/vnd.github.swamp-thing-preview",
     )
     response == ""
+  end
+
+  def preview_options
+    { accept: PREVIEW_HEADER }
   end
 end

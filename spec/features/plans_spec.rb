@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Plans" do
+RSpec.feature "Plans" do
   scenario "shows all available plans", :js do
     user = create(:user)
     repo = create(:repo)
@@ -39,7 +39,7 @@ feature "Plans" do
   end
 
   scenario "user upgrades their subscription", :js do
-    user = create(:user, :with_github_scopes, :stripe)
+    user = create(:user, :stripe)
     create_subscriptions_to_fill_tier(user)
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)

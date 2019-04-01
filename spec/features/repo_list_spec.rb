@@ -2,10 +2,10 @@ require "rails_helper"
 
 RSpec.feature "Repo list", js: true do
   let(:username) { ENV.fetch("HOUND_GITHUB_USERNAME") }
-  let(:user) { create(:user, token_scopes: "public_repo,user:email") }
+  let(:user) { create(:user) }
 
   scenario "user views list of repos" do
-    user = create(:user, token_scopes: "public_repo,user:email")
+    user = create(:user)
     org = create(:owner, name: "thoughtbot")
     restricted_repo = create(:repo, name: "#{user.username}/inaccessible-repo")
     activatable_repo = create(:repo, owner: org, name: "#{org.name}/my-repo")

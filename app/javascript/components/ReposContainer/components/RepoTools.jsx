@@ -2,25 +2,26 @@ import React from 'react';
 
 import RepoToolsSearch from './RepoTools/RepoToolsSearch';
 import RepoToolsRefresh from './RepoTools/RepoToolsRefresh';
-import RepoToolsPrivate from './RepoTools/RepoToolsPrivate';
+import RepoToolsAdd from './RepoTools/RepoToolsAdd';
 
 export default class RepoTools extends React.Component {
   render() {
     const {
-      onSearchInput,
-      showPrivateButton,
+      appName,
+      hasRepos,
       isSyncing,
+      onSearchInput,
       onRefreshClicked,
     } = this.props;
 
     return (
       <div className="repo-tools">
-        {showPrivateButton && <RepoToolsPrivate />}
+        <RepoToolsAdd appName={appName} />
         <RepoToolsRefresh
           isSyncing={isSyncing}
           onRefreshClicked={onRefreshClicked}
         />
-        <RepoToolsSearch onSearchInput={onSearchInput} />
+        {hasRepos && <RepoToolsSearch onSearchInput={onSearchInput} />}
       </div>
     );
   }
