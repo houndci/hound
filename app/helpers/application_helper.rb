@@ -5,10 +5,7 @@ module ApplicationHelper
   end
 
   def display_onboarding?
-    Build.
-      joins(repo: :memberships).
-      where(memberships: { user_id: current_user.id }).
-      empty?
+    !current_user.has_active_repos? || current_user.builds.none?
   end
 
   def new_window_options(options = {})

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "User activates a repo", :js do
   scenario "that is whitelisted" do
-    user = create(:user, :with_github_scopes)
+    user = create(:user)
     repo = create(:repo, :private, name: "foo/bar")
     create(:owner, whitelisted: true, repos: [repo])
     create(:membership, :admin, repo: repo, user: user)
@@ -16,7 +16,7 @@ RSpec.feature "User activates a repo", :js do
   end
 
   scenario "user upgrades from free plan" do
-    user = create(:user, :with_github_scopes, :stripe)
+    user = create(:user, :stripe)
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)
     current_plan = user.current_plan.id
@@ -32,7 +32,7 @@ RSpec.feature "User activates a repo", :js do
   end
 
   scenario "user upgrades within a plan" do
-    user = create(:user, :with_github_scopes, :stripe)
+    user = create(:user, :stripe)
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)
     create(:subscription, user: user)

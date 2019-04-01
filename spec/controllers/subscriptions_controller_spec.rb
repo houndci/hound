@@ -113,31 +113,18 @@ describe SubscriptionsController, "#create" do
   describe "#update" do
     context "when the subscription can be created" do
       it "returns 'Created'" do
-        repo = instance_double(
-          "Repo",
-          id: 123,
-          as_json: { active: true },
-          name: "TEST_REPO_NAME",
-          private?: true,
-          subscription: double,
-        )
+        repo = create(:repo, name: "foo/bar", private: true)
+        user = create(:user, repos: [repo])
+        create(:subscription, repo: repo, user: user)
         repo_activator = instance_double(
           "RepoActivator",
           activate: true,
           errors: [],
         )
-        repos = class_double(Repo, find_by: repo)
-        user = instance_double(
-          "User",
-          email: "TEST_USER_EMAIL",
-          repos: repos,
-          token: "TEST_USER_TOKEN",
-          username: "jimtom",
-        )
         allow(RepoActivator).to receive(:new).and_return(repo_activator)
-        allow(User).to receive(:find_by).and_return(user)
+        stub_sign_in(user)
 
-        put :update, params: { repo_id: 1 }
+        put :update, params: { repo_id: repo.id }
 
         expect(response).to have_http_status(:created)
       end
@@ -145,61 +132,35 @@ describe SubscriptionsController, "#create" do
 
     context "when the subscription cannot be created" do
       it "returns 'Bad Gateway'" do
-        repo = instance_double(
-          "Repo",
-          id: 123,
-          as_json: { active: true },
-          name: "TEST_REPO_NAME",
-          private?: true,
-        )
+        repo = create(:repo, name: "foo/bar", private: true)
+        user = create(:user, repos: [repo])
         repo_activator = instance_double(
           "RepoActivator",
           activate: false,
           deactivate: true,
           errors: [],
         )
-        repos = class_double(Repo, find_by: repo)
-        user = instance_double(
-          "User",
-          email: "TEST_USER_EMAIL",
-          repos: repos,
-          token: "TEST_USER_TOKEN",
-          username: "jimtom",
-        )
         allow(RepoActivator).to receive(:new).and_return(repo_activator)
-        allow(User).to receive(:find_by).and_return(user)
+        stub_sign_in(user)
 
-        put :update, params: { repo_id: 1 }
+        put :update, params: { repo_id: repo.id }
 
         expect(response).to have_http_status(:bad_gateway)
       end
 
       it "returns first activation error" do
-        repo = instance_double(
-          "Repo",
-          id: 123,
-          as_json: { active: true },
-          name: "TEST_REPO_NAME",
-          private?: true,
-        )
+        repo = create(:repo, name: "foo/bar", private: true)
+        user = create(:user, repos: [repo])
         repo_activator = instance_double(
           "RepoActivator",
           activate: false,
           deactivate: true,
           errors: ["Wat"],
         )
-        repos = class_double(Repo, find_by: repo)
-        user = instance_double(
-          "User",
-          email: "TEST_USER_EMAIL",
-          repos: repos,
-          token: "TEST_USER_TOKEN",
-          username: "jimtom",
-        )
         allow(RepoActivator).to receive(:new).and_return(repo_activator)
-        allow(User).to receive(:find_by).and_return(user)
+        stub_sign_in(user)
 
-        put :update, params: { repo_id: 1 }
+        put :update, params: { repo_id: repo.id }
 
         expect(JSON.parse(response.body)["errors"].first).to(
           eq(repo_activator.errors.first),

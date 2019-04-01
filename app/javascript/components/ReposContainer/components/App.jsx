@@ -29,37 +29,32 @@ export default class App extends React.Component {
       }
     });
     this.setState({isSyncing: true});
-    this.fetchReposAndOrgs();
+    this.fetchRepos({ syncOnEmpty: true });
   }
 
-  fetchReposAndOrgs() {
+  fetchRepos({ syncOnEmpty }) {
     $.ajax({
       url: "/repos.json",
       type: "GET",
       dataType: "json",
-      success: (data) => this.onFetchReposAndOrgsSuccess(data),
-      error: () => {
-        alert("Your repos failed to load.");
-      }
+      success: (data) => this.onFetchReposSuccess(data, syncOnEmpty),
+      error: () => alert("Your repos failed to load.")
     });
   }
 
-  onFetchReposAndOrgsSuccess(data) {
-    if (data.length === 0) {
+  onFetchReposSuccess(data, syncOnEmpty) {
+    if (syncOnEmpty && data.length === 0) {
       this.onRefreshClicked();
     } else {
-      this.setState({repos: data});
+      const organizations = data.map(repo => (
+        repo.owner || { name: this.orgName(repo.name) }
+      ));
 
-      const organizations = data.map( repo => {
-        return (repo.owner || {
-          name: this.orgName(repo.name)
-        });
-      });
       this.setState({
-        organizations: _.uniqWith(organizations, _.isEqual)
+        isSyncing: false,
+        organizations: _.uniqWith(organizations, _.isEqual),
+        repos: data,
       });
-
-      this.setState({isSyncing: false});
     }
   }
 
@@ -208,7 +203,7 @@ export default class App extends React.Component {
       if (data.refreshing_repos) {
         setTimeout(() => this.handleSync(), 1000);
       } else {
-        this.fetchReposAndOrgs();
+        this.fetchRepos({ syncOnEmpty: false });
       }
     });
   }
@@ -226,10 +221,6 @@ export default class App extends React.Component {
         alert("Your repos failed to sync.");
       }
     });
-  }
-
-  onPrivateClicked(event) {
-    $.post("/auth/github?access=full");
   }
 
   onSearchInput(event) {
@@ -256,16 +247,14 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { has_private_access } = this.props;
-
     return (
       <div>
         <RepoTools
-          showPrivateButton={!has_private_access}
-          onSearchInput={(event) => this.onSearchInput(event)}
-          onRefreshClicked={(event) => this.onRefreshClicked(event)}
-          onPrivateClicked={(event) => this.onPrivateClicked(event)}
+          appName={this.props.appName}
+          hasRepos={!_.isEmpty(this.state.repos)}
           isSyncing={this.state.isSyncing}
+          onRefreshClicked={(event) => this.onRefreshClicked(event)}
+          onSearchInput={(event) => this.onSearchInput(event)}
         />
         <ReposView
           isSyncing={this.state.isSyncing}

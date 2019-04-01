@@ -8,6 +8,39 @@ class FakeGitHub < Sinatra::Base
     status 204
   end
 
+  get "/user/installations" do
+    content_type :json
+    {
+      installations: [
+        {
+          id: 1,
+          account: { login: "houndci" },
+        },
+      ],
+    }.to_json
+  end
+
+  post "/app/installations/:installation_id/access_tokens" do
+    content_type :json
+    status 201
+    { token: SecureRandom.hex }.to_json
+  end
+
+  get "/installation/repositories" do
+    content_type :json
+    {
+      repositories: [
+        {
+          full_name: "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME",
+          id: 1,
+          owner: { id: 1, login: "TEST_GITHUB_LOGIN" },
+          permissions: { admin: true },
+          private: false,
+        },
+      ],
+    }.to_json
+  end
+
   put "/repos/:owner/:repo/collaborators/:username" do
     status 204
   end
@@ -71,23 +104,6 @@ class FakeGitHub < Sinatra::Base
   post "/repos/:owner/:repo/statuses/:sha" do
     content_type :json
     status 201
-  end
-
-  get "/user" do
-    headers "X-OAuth-Scopes" => "public_repo,user:email"
-  end
-
-  get "/user/repos" do
-    content_type :json
-    [
-      {
-        full_name: "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME",
-        id: 1,
-        owner: { id: 1, login: "TEST_GITHUB_LOGIN" },
-        permissions: { admin: true },
-        private: false,
-      },
-    ].to_json
   end
 
   private

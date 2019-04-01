@@ -46,7 +46,9 @@ class ApplicationController < ActionController::Base
   end
 
   def signed_in?
-    current_user.present? && current_user.token.present?
+    current_user.present? &&
+      current_user.token.present? &&
+      session[:signed_in_with_app]
   end
 
   def current_user

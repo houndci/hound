@@ -9,7 +9,6 @@ describe SessionsController do
           email: "jimtom@example.com",
           token: "letmein",
         )
-        allow(GitHubApi).to receive(:new).and_return(stub_github_api)
         session[:installation_id] = "101"
 
         post :create
@@ -43,7 +42,6 @@ describe SessionsController do
           email: "jim@example.com",
           token: "letmein",
         )
-        allow(GitHubApi).to receive(:new).and_return(stub_github_api)
 
         post :create
 
@@ -56,9 +54,5 @@ describe SessionsController do
         )
       end
     end
-  end
-
-  def stub_github_api
-    instance_double("GitHubApi", scopes: "public_repo,user:email")
   end
 end

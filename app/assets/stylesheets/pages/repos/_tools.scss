@@ -50,13 +50,13 @@
 }
 
 .repo-tools-refresh,
-.repo-tools-private {
+.repo-tools-add {
   flex-grow: 1;
   flex-shrink: 0;
   vertical-align: top;
 }
 
-.repo-tools-private {
+.repo-tools-add {
   margin-right: 0.5em;
 
   @include media($small-screen-only) {
@@ -65,19 +65,20 @@
 }
 
 .repo-tools-refresh-button,
-.repo-tools-private-button {
+.repo-tools-add-button {
   background-color: $base-background-color;
   border: 2px solid $base-border-color;
   border-radius: 3px;
   color: $base-font-color;
+  cursor: pointer;
   font-size: 1em;
   font-weight: $font-weight-regular;
   height: 60px;
+  line-height: 2;
   margin: 0;
   padding: 0.8em 1em;
   text-align: center;
   transition: $base-transition;
-  vertical-align: middle;
   width: 100%;
 
   &:hover {

@@ -29,7 +29,3 @@ if ! grep -qs 'STRIPE' .env.local; then
   heroku config:get STRIPE_API_KEY --remote staging --shell >> .env.local
   heroku config:get STRIPE_PUBLISHABLE_KEY --remote staging --shell >> .env.local
 fi
-
-# GitHub
-printf 'Generate a token at https://github.com/settings/tokens/new\n'
-printf 'Select user:email and repo scopes\n'

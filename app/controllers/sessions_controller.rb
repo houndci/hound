@@ -3,12 +3,7 @@ class SessionsController < ApplicationController
 
   def create
     create_session
-
-    if github_token
-      update_user
-      update_scopes
-    end
-
+    update_user
     ab_finished(:home)
 
     redirect_to setup_path
@@ -16,6 +11,7 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
+
     redirect_to root_path
   end
 
@@ -43,12 +39,17 @@ class SessionsController < ApplicationController
     user
   end
 
-  def create_session
-    session[:remember_token] = user.remember_token
+  def update_user
+    if github_token
+      user.update!(email: github_email, token: github_token)
+    else
+      user.update!(email: github_email)
+    end
   end
 
-  def github
-    GitHubApi.new(github_token)
+  def create_session
+    session[:remember_token] = user.remember_token
+    session[:signed_in_with_app] = true
   end
 
   def username
@@ -61,24 +62,5 @@ class SessionsController < ApplicationController
 
   def github_token
     request.env["omniauth.auth"]["credentials"]["token"]
-  end
-
-  def scopes_changed?
-    user.token_scopes != token_scopes
-  end
-
-  def token_scopes
-    @token_scopes ||= github.scopes
-  end
-
-  def update_user
-    user.update!(token: github_token, email: github_email)
-  end
-
-  def update_scopes
-    if scopes_changed?
-      user.update!(token_scopes: token_scopes)
-      user.repos.clear
-    end
   end
 end

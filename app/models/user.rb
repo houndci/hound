@@ -49,10 +49,6 @@ class User < ApplicationRecord
     end
   end
 
-  def has_access_to_private_repos?
-    token_scopes&.split(",")&.include?("repo") || installation_ids.any?
-  end
-
   def payment_gateway_subscription
     @_payment_gateway_subscription ||= payment_gateway_customer.subscription
   end

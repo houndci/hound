@@ -4,11 +4,12 @@
 
 - if display_onboarding?
   = render 'onboarding'
+- else
+  = render 'github_app'
 
 %section.organization-list{ 'organization-list' => '' }
 
-= javascript_pack_tag("repos_container")
-= react_component("ReposContainer",
-  has_private_access: current_user.has_access_to_private_repos?,
-  userHasCard: current_user.card_exists?,
-)
+= javascript_pack_tag "repos_container"
+= react_component "ReposContainer",
+  appName: ENV.fetch("GITHUB_APP_NAME"),
+  userHasCard: current_user.card_exists?

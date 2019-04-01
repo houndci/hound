@@ -69,20 +69,6 @@ module GitHubApiHelper
     )
   end
 
-  def stub_scopes_request(token: "token", scopes: "public_repo,user:email")
-    stub_request(:get, "https://api.github.com/user").
-      with(
-        headers: {
-          "Accept" => "application/vnd.github.v3+json",
-          "Authorization" => "token #{token}",
-          "Content-Type" => "application/json",
-        }
-      ).
-      to_return(
-        status: 200, body: "", headers: { "X-OAuth-Scopes" => scopes }
-      )
-  end
-
   def stub_repos_requests(token)
     repos_url = "https://api.github.com/user/repos"
     headers = { "Content-Type" => "application/json; charset=utf-8" }

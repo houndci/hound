@@ -6,7 +6,7 @@ class AppToken
 
   def generate
     issue_time = Time.now.to_i
-    expiration_time = issue_time + (10 * 60)
+    expiration_time = issue_time + (10 * 60 - 10)
     payload = {
       iat: issue_time,
       exp: expiration_time,

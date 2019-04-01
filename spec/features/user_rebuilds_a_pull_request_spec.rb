@@ -2,7 +2,7 @@ require "rails_helper"
 
 feature "User rebuilds a pull request" do
   scenario "from the builds page" do
-    user = create(:user, token_scopes: "public_repo,user:email")
+    user = create(:user)
     repo = create(:membership, user: user).repo
     build = create(:build, repo: repo)
     allow(SmallBuildJob).to receive(:perform_async)
