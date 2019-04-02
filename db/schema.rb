@@ -14,23 +14,22 @@ ActiveRecord::Schema.define(version: 20180620003423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
-  create_table "blacklisted_pull_requests", force: :cascade do |t|
+  create_table "blacklisted_pull_requests", id: :serial, force: :cascade do |t|
     t.string "full_repo_name", null: false
     t.integer "pull_request_number", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "builds", force: :cascade do |t|
+  create_table "builds", id: :serial, force: :cascade do |t|
     t.text "violations_archive"
     t.integer "repo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "uuid", limit: 255, null: false
+    t.string "uuid", null: false
     t.integer "pull_request_number"
-    t.string "commit_sha", limit: 255
+    t.string "commit_sha"
     t.text "payload"
     t.integer "user_id"
     t.integer "violations_count", default: 0, null: false
@@ -39,7 +38,7 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["uuid"], name: "index_builds_on_uuid", unique: true
   end
 
-  create_table "bulk_customers", force: :cascade do |t|
+  create_table "bulk_customers", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "org", null: false
@@ -51,7 +50,7 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["org"], name: "index_bulk_customers_on_org", unique: true
   end
 
-  create_table "file_reviews", force: :cascade do |t|
+  create_table "file_reviews", id: :serial, force: :cascade do |t|
     t.integer "build_id", null: false
     t.datetime "completed_at"
     t.datetime "created_at", null: false
@@ -62,7 +61,7 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["build_id"], name: "index_file_reviews_on_build_id"
   end
 
-  create_table "memberships", force: :cascade do |t|
+  create_table "memberships", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "repo_id", null: false
     t.datetime "created_at", null: false
@@ -72,7 +71,7 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["user_id", "repo_id"], name: "index_memberships_on_user_id_and_repo_id", unique: true
   end
 
-  create_table "owners", force: :cascade do |t|
+  create_table "owners", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "github_id", null: false
@@ -87,11 +86,11 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["name"], name: "index_owners_on_name", unique: true
   end
 
-  create_table "repos", force: :cascade do |t|
+  create_table "repos", id: :serial, force: :cascade do |t|
     t.integer "github_id", null: false
     t.boolean "active", default: false, null: false
     t.integer "hook_id"
-    t.string "name", limit: 255, null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "private"
@@ -104,26 +103,26 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["owner_id"], name: "index_repos_on_owner_id"
   end
 
-  create_table "subscriptions", force: :cascade do |t|
+  create_table "subscriptions", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.integer "repo_id", null: false
-    t.string "stripe_subscription_id", limit: 255, null: false
+    t.string "stripe_subscription_id", null: false
     t.datetime "deleted_at"
     t.decimal "price", precision: 8, scale: 2, default: "0.0", null: false
     t.index ["repo_id"], name: "index_subscriptions_on_repo_id", unique: true, where: "(deleted_at IS NULL)"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "username", limit: 255, null: false
-    t.string "remember_token", limit: 255, null: false
+    t.string "username", null: false
+    t.string "remember_token", null: false
     t.boolean "refreshing_repos", default: false
-    t.string "email", limit: 255
-    t.string "stripe_customer_id", limit: 255
+    t.string "email"
+    t.string "stripe_customer_id"
     t.string "token"
     t.string "utm_source"
     t.string "token_scopes"
@@ -131,7 +130,7 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
 
-  create_table "violations", force: :cascade do |t|
+  create_table "violations", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "patch_position"
