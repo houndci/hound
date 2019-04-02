@@ -13,3 +13,5 @@ public/packs-test
 /public/packs
 /public/packs-test
 /node_modules
+
+.DS_Store
