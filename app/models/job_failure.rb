@@ -6,7 +6,7 @@ class JobFailure < OpenStruct
   end
 
   def job_class
-    self["wrapped"]
+    self["class"]
   end
 
   def failed_at
