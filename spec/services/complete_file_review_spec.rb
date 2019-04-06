@@ -11,7 +11,6 @@ RSpec.describe CompleteFileReview do
       file_review.reload
       expect(file_review).to be_completed
       expect(file_review.violations.size).to eq 1
-      expect(file_review.build.violations_count).to eq 1
       expect(file_review.error).to eq attributes[:error]
     end
 

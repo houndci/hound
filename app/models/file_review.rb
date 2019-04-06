@@ -1,6 +1,6 @@
 class FileReview < ApplicationRecord
   belongs_to :build
-  has_many :violations
+  has_many :violations, dependent: :destroy
 
   def build_violation(line, message)
     if line.changed?

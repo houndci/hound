@@ -8,7 +8,7 @@ class BuildsController < ApplicationController
   end
 
   def create
-    if payload.pull_request?
+    if payload.pull_request? && repo.installation_id.nil?
       build_job_class.perform_async(payload.build_data)
     end
     head :ok
@@ -40,5 +40,9 @@ class BuildsController < ApplicationController
 
   def recent_builds_by_repo
     RecentBuildsByRepoQuery.call(user: current_user)
+  end
+
+  def repo
+    Repo.find_by!(github_id: payload.github_repo_id)
   end
 end

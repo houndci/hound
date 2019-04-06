@@ -5,6 +5,7 @@ class RebuildsController < ApplicationController
       pull_request_number: pull_request_number,
     )
     flash[:notice] = t(".success")
+
     redirect_to builds_path
   end
 

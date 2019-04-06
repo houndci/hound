@@ -22,7 +22,6 @@ class CompleteFileReview
     file_review.error = attributes[:error]
     file_review.complete
     file_review.save!
-    increment_build_violations_count
   end
 
   def build_file_review_violations
@@ -30,11 +29,6 @@ class CompleteFileReview
       line = commit_file.line_at(violation.fetch(:line))
       file_review.build_violation(line, violation.fetch(:message))
     end
-  end
-
-  def increment_build_violations_count
-    count = file_review.violations.map(&:messages_count).sum
-    file_review.build.increment!(:violations_count, count)
   end
 
   def build

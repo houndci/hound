@@ -3,6 +3,7 @@ class CompleteBuild
   pattr_initialize :build
 
   def call
+    build.update(violations_count: build.violations.sum(&:messages_count))
     SubmitReview.call(build)
     set_commit_status
     track_subscribed_build_completed
