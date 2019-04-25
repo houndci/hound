@@ -4,6 +4,10 @@ module Config
       @content ||= load_content
     end
 
+    def serialize
+      content
+    end
+
     private
 
     def load_content

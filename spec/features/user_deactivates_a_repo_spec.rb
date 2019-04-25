@@ -17,9 +17,9 @@ feature "user deactivates a repo", js: true do
           retrieve_subscription: gateway_subscription,
           email: user.email,
         )
-        allow(PaymentGatewayCustomer).to receive(:new).and_return(
-          payment_gateway_customer
-        )
+        allow(PaymentGatewayCustomer).
+          to receive(:new).
+          and_return(payment_gateway_customer)
 
         sign_in_as(user, token)
         find(".repo-toggle").click
@@ -28,7 +28,8 @@ feature "user deactivates a repo", js: true do
 
         visit current_path
 
-        expect(page).not_to have_selector(".repo")
+        expect(page).not_to have_css(".repos-syncing")
+        expect(page).not_to have_text(repo.name)
       end
     end
   end

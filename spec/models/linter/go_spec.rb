@@ -32,7 +32,7 @@ describe Linter::Golint do
         pull_request_number: build.pull_request_number,
         patch: commit_file.patch,
         content: commit_file.content,
-        config: {},
+        config: "",
         linter_version: nil,
       )
     end

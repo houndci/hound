@@ -14,7 +14,7 @@ module Config
     end
 
     def serialize
-      content
+      raise NotImplementedError, "implement ##{method} in your config class"
     end
 
     def linter_name
