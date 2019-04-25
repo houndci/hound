@@ -1,5 +1,5 @@
 module Config
-  class Golint < Base
+  class Flog < Base
     def serialize
       ""
     end
