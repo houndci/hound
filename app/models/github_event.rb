@@ -6,6 +6,8 @@ class GitHubEvent
   CANCELLATION = "cancelled"
   INSTALLATION = "installation"
   INSTALLATION_REPOSITORIES = "installation_repositories"
+  CHECK_SUITE = "check_suite"
+  CHECK_SUITE = "check_run"
 
   def initialize(type:, body:)
     @body = body
@@ -26,6 +28,33 @@ class GitHubEvent
       owner.active_private_repos.each(&:deactivate)
     when INSTALLATION, INSTALLATION_REPOSITORIES
       update_installation
+    when CHECK_SUITE
+      if body["action"] == "requested"
+        # create a check run
+        repo = Repo.find_by!(github_id: body["repository"]["id"])
+        token = GitHubAuth.new(repo).token
+        api = GitHubApi.new(token)
+        api.send(:client).create_check_run(
+          body["repository"]["full_name"],
+          "Hound",
+          body["check_suite"]["head_sha"]
+        )
+      end
+    when CHECK_RUN
+      if body["action"] == "created"
+        # update check run with build info
+        # repo = Repo.find_by!(github_id: body["repository"]["id"])
+        # token = GitHubAuth.new(repo).token
+        # api = GitHubApi.new(token)
+        # api.send(:client).update_check_run(
+        #   body["repository"]["full_name"],
+        #   body["check_run"]["id"],
+        #   name: "Hound",
+        # )
+
+
+        # api.send(:client).update_check_run("salbertson/sidekiq_toolbelt", 112179565, name: "Hound", status: "completed", conclusion: "neutral", completed_at: Time.now.utc.iso8601, output: {title: "Hound", summary: "Hound Summary\n-There were a few issues", text: "RuboCop version 0.123", annotations: [{path: "README.md", start_line: 1, end_line: 1, annotation_level: "notice", message: "Don't do that"}]}, actions: [{label: "Fix this", description: "Do some magic", identifier: "fix_rubocop_notices"}])
+      end
     else
       Rails.logger.info("Unhandled GitHub event: #{type} -- #{action}")
     end

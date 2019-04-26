@@ -4,7 +4,7 @@ class CompleteBuild
 
   def call
     SubmitReview.call(build)
-    set_commit_status
+    set_commit_status # probably don't want to do this if using Checks
     track_subscribed_build_completed
   end
 
