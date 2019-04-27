@@ -15,7 +15,7 @@ en:
   pending_status: "Hound is busy sniffing around..."
   cannot_activate_repo: "Only repo admins can activate"
   complete_status:
-    zero: "No violations found. Woof!"
+    zero: "Smells good to me. Woof!"
     one: "1 violation found."
     other: "%{count} violations found."
   hound_error_status: "We've encountered an error while reviewing your code."
