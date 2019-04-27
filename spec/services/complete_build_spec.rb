@@ -113,6 +113,7 @@ RSpec.describe CompleteBuild do
           "Violation",
           filename: "app/anything.rb",
           patch_position: 1,
+          messages_count: 1,
           messages: [violation_message],
         )
       end
@@ -134,6 +135,7 @@ RSpec.describe CompleteBuild do
         pull_request_number: 321,
         violations: violations,
         violations_count: violations.size,
+        update: true,
       }
       instance_double("Build", default_attributes.merge(attributes))
     end

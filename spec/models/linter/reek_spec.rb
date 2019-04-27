@@ -10,13 +10,13 @@ RSpec.describe Linter::Reek do
     it "schedules a file review" do
       commit_file = build_commit_file(filename: "lib/foo.rb")
       linter = build_linter
-      allow(Resque).to receive(:enqueue)
+      allow(LintersJob).to receive(:perform_async)
 
       result = linter.file_review(commit_file)
 
       expect(result).to be_persisted
       expect(result).not_to be_completed
-      expect(Resque).to have_received(:enqueue)
+      expect(LintersJob).to have_received(:perform_async)
     end
   end
 

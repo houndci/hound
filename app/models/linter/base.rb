@@ -52,11 +52,7 @@ module Linter
     end
 
     def enqueue_job(attributes)
-      Resque.enqueue(job_class, attributes)
-    end
-
-    def job_class
-      LintersJob
+      LintersJob.perform_async(attributes)
     end
 
     def owner

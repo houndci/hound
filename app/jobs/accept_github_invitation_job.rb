@@ -1,5 +1,5 @@
 class AcceptGitHubInvitationJob < ApplicationJob
-  queue_as :high
+  sidekiq_options queue: :high
 
   def perform(repo_name)
     unless hound_github.repository?(repo_name)

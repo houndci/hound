@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Repo list", js: true do
+RSpec.feature "Repo list", js: true do
   let(:username) { ENV.fetch("HOUND_GITHUB_USERNAME") }
   let(:user) { create(:user, token_scopes: "public_repo,user:email") }
 

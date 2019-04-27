@@ -182,11 +182,11 @@ RSpec.describe StartBuild do
         stubbed_github_api
         stubbed_pull_request_with_file("test.scss", "")
         force_fail_build_creation
-        allow(Resque).to receive(:enqueue)
+        allow(LintersJob).to receive(:perform_async)
 
         expect { service.call }.
           to raise_error ActiveRecord::StatementInvalid
-        expect(Resque).not_to have_received(:enqueue)
+        expect(LintersJob).not_to have_received(:perform_async)
       end
 
       it "updates commit status with error to avoid hanging build" do

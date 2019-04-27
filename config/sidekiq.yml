@@ -1,0 +1,7 @@
+:timeout: <%= ENV.fetch("JOB_TIMEOUT", 120).to_i %>
+:concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY", 2).to_i %>
+:max_retries: <%= ENV.fetch("JOB_RETRY_ATTEMPTS", 5).to_i %>
+:queues:
+  - ["high", 10]
+  - ["medium", 2]
+  - ["low", 1]

@@ -1,15 +1,38 @@
 class JobFailure < OpenStruct
-  FIRST_INDEX = 0
   extend ActiveModel::Naming
 
-  def self.all
-    failures = Resque::Failure.all(FIRST_INDEX, Resque::Failure.count)
-    [failures].flatten.map.with_index do |failure, index|
-      JobFailure.new(failure.merge("index" => index))
-    end
+  def id
+    self["jid"]
   end
 
-  def self.remove(indexes)
-    indexes.reverse.each { |index| Resque::Failure.remove(index) }
+  def job_class
+    self["class"]
+  end
+
+  def failed_at
+    self["failed_at"]
+  end
+
+  def error_message
+    self["error_message"]
+  end
+
+  def self.grouped
+    Sidekiq::DeadSet.new.
+      map { |failure| JobFailure.new(failure.item) }.
+      group_by do |job|
+        if job.error_message.match?(%r{/statuses/\w+: 404 - Not Found})
+          job.error_message[/.+?\/statuses\//]
+        else
+          job.error_message
+        end
+      end
+  end
+
+  def self.remove(ids)
+    dead_set = Sidekiq::DeadSet.new
+    ids.each do |id|
+      dead_set.find_job(id).delete
+    end
   end
 end

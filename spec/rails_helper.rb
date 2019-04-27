@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] ||= "test"
 
 require "config/environment"
 require "rspec/rails"
+require "sidekiq/testing"
 
 ActiveRecord::Migration.maintain_test_schema!
 
@@ -25,7 +26,6 @@ RSpec.configure do |config|
   config.include HttpsHelper
   config.include OauthHelper
   config.include FactoryGirl::Syntax::Methods
-  ActiveJob::Base.queue_adapter = :resque
 end
 
 OmniAuth.configure do |config|

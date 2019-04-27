@@ -1,15 +1,11 @@
 require "rails_helper"
 
-describe SmallBuildJob do
-  it 'is retryable' do
-    expect(SmallBuildJob.new).to be_a(Retryable)
+RSpec.describe SmallBuildJob do
+  it "queues as medium" do
+    expect(SmallBuildJob.queue).to eq(:medium)
   end
 
-  it "queue_as medium" do
-    expect(SmallBuildJob.new.queue_name).to eq("medium")
-  end
-
-  it 'is buildable' do
+  it "is buildable" do
     expect(SmallBuildJob.new).to be_a(Buildable)
   end
 end
