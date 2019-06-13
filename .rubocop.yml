@@ -540,10 +540,6 @@ Style/EvenOdd:
   Description: Favor the use of Fixnum#even? && Fixnum#odd?
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#predicate-methods
   Enabled: false
-Style/FlipFlop:
-  Description: Checks for flip flops
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-flip-flops
-  Enabled: false
 Style/IfWithSemicolon:
   Description: Do not use if x; .... Use the ternary operator instead.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-semicolon-ifs
@@ -745,7 +741,7 @@ Layout/EmptyLinesAroundModuleBody:
   SupportedStyles:
   - empty_lines
   - no_empty_lines
-Layout/FirstParameterIndentation:
+Layout/IndentFirstArgument:
   Description: Checks the indentation of the first parameter in a method call.
   Enabled: true
   EnforcedStyle: special_for_inner_method_call_in_parentheses
@@ -758,7 +754,7 @@ Layout/IndentationWidth:
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#spaces-indentation
   Enabled: true
   Width: 2
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   Description: Checks the indentation of the first key in a hash literal.
   Enabled: true
   EnforcedStyle: special_inside_parentheses
@@ -803,10 +799,6 @@ Layout/SpaceBeforeBlockBraces:
   SupportedStyles:
   - space
   - no_space
-Layout/SpaceBeforeFirstArg:
-  Description: Put a space between a method name and the first argument in a method
-    call without parentheses.
-  Enabled: true
 Layout/SpaceInsideBlockBraces:
   Description: Checks that block braces have or don't have surrounding space. For
     blocks taking parameters, checks that the left brace has or doesn't have trailing
@@ -818,6 +810,12 @@ Layout/SpaceInsideBlockBraces:
   - no_space
   EnforcedStyleForEmptyBraces: no_space
   SpaceBeforeBlockParameters: true
+Layout/SpaceInsideArrayLiteralBrackets:
+  Description: No spaces after [ or before ].
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-spaces-braces
+  Enabled: true
+Layout/SpaceInsideReferenceBrackets:
+  Enabled: true
 Layout/SpaceInsideHashLiteralBraces:
   Description: Use spaces inside hash literal braces - or don't.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#spaces-operators
@@ -845,9 +843,6 @@ Layout/AlignArray:
 Layout/BlockEndNewline:
   Description: Put end statement of multiline block on its own line.
   Enabled: true
-Layout/CommentIndentation:
-  Description: Indentation of comments.
-  Enabled: true
 Layout/ElseAlignment:
   Description: Align elses and elsifs correctly.
   Enabled: true
@@ -867,7 +862,7 @@ Layout/EndOfLine:
 Layout/IndentationConsistency:
   Description: Keep indentation straight.
   Enabled: true
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   Description: Checks the indentation of the first element in an array literal.
   Enabled: true
 Layout/LeadingCommentSpace:
@@ -888,9 +883,6 @@ Layout/SpaceAfterColon:
 Layout/SpaceAfterComma:
   Description: Use spaces after commas.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#spaces-operators
-  Enabled: true
-Layout/SpaceAroundKeyword:
-  Description: Use spaces after if/elsif/unless/while/until/case/when.
   Enabled: true
 Layout/SpaceAfterMethodName:
   Description: Do not put a space between a method name and the opening parenthesis
@@ -920,10 +912,6 @@ Layout/SpaceAroundOperators:
   Enabled: true
 Layout/SpaceAroundKeyword:
   Description: Put a space before the modifier keyword.
-  Enabled: true
-Layout/SpaceInsideBrackets:
-  Description: No spaces after [ or before ].
-  StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-spaces-braces
   Enabled: true
 Layout/SpaceInsideParens:
   Description: No spaces after ( or before ).
@@ -983,11 +971,15 @@ Lint/EnsureReturn:
   Description: Do not use return in an ensure block.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-return-ensure
   Enabled: true
+Lint/FlipFlop:
+  Description: Checks for flip flops
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-flip-flops
+  Enabled: false
 Lint/HandleExceptions:
   Description: Don't suppress exception.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#dont-hide-exceptions
   Enabled: false
-Lint/LiteralInCondition:
+Lint/LiteralAsCondition:
   Description: Checks of literals used in conditions.
   Enabled: false
 Lint/LiteralInInterpolation:
