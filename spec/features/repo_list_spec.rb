@@ -39,12 +39,12 @@ RSpec.feature "Repo list", js: true do
   end
 
   scenario "user does not see onboarding" do
-    build = create(:build)
-    build.repo.users << user
+    repo = create(:repo, :active, users: [user])
+    create(:build, repo: repo)
 
     sign_in_as(user)
 
-    expect(page).to_not have_content I18n.t("onboarding.title")
+    expect(page).to_not have_text I18n.t("onboarding.title")
   end
 
   scenario "user filters list" do
