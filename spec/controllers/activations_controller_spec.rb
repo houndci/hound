@@ -22,7 +22,6 @@ RSpec.describe ActivationsController do
 
       it "returns successful response" do
         post :create, params: { repo_id: repo.id }, format: :json
-  
         expect(response).to have_http_status(:created)
         expect(response.body).to eq expected_repo_json
         expect(activator).to have_received(:activate)
@@ -30,7 +29,7 @@ RSpec.describe ActivationsController do
           with(repo: repo, github_token: membership.user.token)
       end
     end
-  
+
     context "when activation fails" do
       context "due to 403 Forbidden from GitHub and RepoActivator errors present" do
         let(:error_message) { "You must be an admin to add a team membership" }
@@ -49,7 +48,6 @@ RSpec.describe ActivationsController do
 
         it "returns error response" do
           post :create, params: { repo_id: repo.id }, format: :json
-  
           expect(response.code).to eq "502"
           expect(JSON.parse(response.body)["errors"]).to match_array(error_message)
           expect(activator).to have_received(:activate)
@@ -80,7 +78,7 @@ RSpec.describe ActivationsController do
           )
       end
     end
-  
+
     context "when repo is not public" do
       let(:user) { create(:user) }
       let(:repo) { create(:repo, private: true) }
