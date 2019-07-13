@@ -68,13 +68,13 @@ RSpec.describe ActivationsController do
 
       it "tracks failed activation" do
         post :create, params: { repo_id: repo.id }, format: :json
-  
+
         expect(analytics).to have_tracked("Repo Activation Failed").
           for_user(membership.user).
           with(
             properties: {
               name: repo.name,
-              private: false
+              private: false,
             }
           )
       end
