@@ -1,11 +1,11 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe ActivationsController do
   let!(:membership) { create(:membership) }
   let!(:repo) { membership.repo }
 
-  describe 'POST #create' do
-    context 'when activation succeeds' do
+  describe "POST #create" do
+    context "when activation succeeds" do
       let(:expected_repo_json) do
         RepoSerializer.new(
           repo,
@@ -13,14 +13,14 @@ RSpec.describe ActivationsController do
           scope: membership.user,
         ).to_json
       end
-      let(:activator) { double('RepoActivator', activate: true, errors: []) }
+      let(:activator) { double("RepoActivator", activate: true, errors: []) }
 
       before do
         allow(RepoActivator).to receive(:new).and_return(activator)
         stub_sign_in(membership.user)
       end
 
-      it 'returns successful response' do
+      it "returns successful response" do
         post :create, params: { repo_id: repo.id }, format: :json
   
         expect(response).to have_http_status(:created)
@@ -31,14 +31,14 @@ RSpec.describe ActivationsController do
       end
     end
   
-    context 'when activation fails' do
-      context 'due to 403 Forbidden from GitHub and RepoActivator errors present' do
-        let(:error_message) { 'You must be an admin to add a team membership' }
+    context "when activation fails" do
+      context "due to 403 Forbidden from GitHub and RepoActivator errors present" do
+        let(:error_message) { "You must be an admin to add a team membership" }
         let(:activator) do
           double(
-            'RepoActivator',
+            "RepoActivator",
             activate: false,
-            errors: [error_message]
+            errors: [error_message],
           )
         end
 
@@ -47,11 +47,11 @@ RSpec.describe ActivationsController do
           allow(RepoActivator).to receive(:new).and_return(activator)
         end
 
-        it 'returns error response' do
+        it "returns error response" do
           post :create, params: { repo_id: repo.id }, format: :json
   
-          expect(response.code).to eq '502'
-          expect(JSON.parse(response.body)['errors']).to match_array(error_message)
+          expect(response.code).to eq "502"
+          expect(JSON.parse(response.body)["errors"]).to match_array(error_message)
           expect(activator).to have_received(:activate)
           expect(RepoActivator).to have_received(:new).
             with(repo: repo, github_token: membership.user.token)
@@ -59,18 +59,18 @@ RSpec.describe ActivationsController do
       end
     end
 
-    context 'due to 403 Forbidden from GitHub and RepoActivator errors not present' do
-      let!(:activator) { double('RepoActivator', activate: false, errors: []) }
+    context "due to 403 Forbidden from GitHub and RepoActivator errors not present" do
+      let!(:activator) { double("RepoActivator", activate: false, errors: []) }
 
       before do
         allow(RepoActivator).to receive(:new).and_return(activator)
         stub_sign_in(membership.user)
       end
 
-      it 'tracks failed activation' do
+      it "tracks failed activation" do
         post :create, params: { repo_id: repo.id }, format: :json
   
-        expect(analytics).to have_tracked('Repo Activation Failed').
+        expect(analytics).to have_tracked("Repo Activation Failed").
           for_user(membership.user).
           with(
             properties: {
@@ -81,10 +81,10 @@ RSpec.describe ActivationsController do
       end
     end
   
-    context 'when repo is not public' do
+    context "when repo is not public" do
       let(:user) { create(:user) }
       let(:repo) { create(:repo, private: true) }
-      let(:activator) { double('RepoActivator', activate: false) }
+      let(:activator) { double("RepoActivator", activate: false) }
 
       before do
         user.repos << repo
@@ -92,7 +92,7 @@ RSpec.describe ActivationsController do
         stub_sign_in(user)
       end
 
-      it 'does not activate' do
+      it "does not activate" do
         expect { post :create, params: { repo_id: repo.id }, format: :json }.
           to raise_error(ActivationsController::CannotActivatePaidRepo)
         expect(activator).not_to have_received(:activate)
