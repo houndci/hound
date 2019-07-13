@@ -75,7 +75,7 @@ RSpec.describe ActivationsController do
             properties: {
               name: repo.name,
               private: false,
-            }
+            },
           )
       end
     end
