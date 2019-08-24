@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe Linter::Eslint do
   it_behaves_like "a linter" do
-    let(:lintable_files) { %w(foo.es6 foo.js foo.jsx foo.vue) }
+    let(:lintable_files) { %w(foo.es6 foo.js foo.jsx foo.vue foo.ts foo.tsx) }
     let(:not_lintable_files) { %w(foo.js.coffee) }
   end
 
