@@ -1,6 +1,6 @@
 module Linter
   class Eslint < Base
-    FILE_REGEXP = /.+(\.js|\.es6|\.jsx|\.vue)\z/
+    FILE_REGEXP = /.+(\.js|\.es6|\.jsx|\.vue|\.ts|\.tsx)\z/
     IGNORE_FILENAME = ".eslintignore".freeze
 
     def file_included?(commit_file)
