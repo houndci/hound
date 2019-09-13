@@ -37,7 +37,7 @@ describe "GET /masqerades?username=:username" do
 
   def sign_in_as(user)
     stub_oauth(username: user.username, email: user.email, token: user.token)
-    get "/auth/github"
+    post "/auth/github"
     follow_redirect!
   end
 end

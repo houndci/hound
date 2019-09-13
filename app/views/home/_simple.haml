@@ -7,6 +7,7 @@
 
         .home-hero-cta
           = link_to "/auth/github",
+            method: :post,
             class: "button button--primary button--large auth" do
             %svg.icon.button__icon{ "aria-hidden" => "true" }
               %use{ "xlink:href" => "/images/icons.svg#github" }
@@ -50,6 +51,7 @@
 
     .home-hero-cta
       = link_to "/auth/github",
+        method: :post,
         class: "button button--primary button--large auth" do
         %svg.icon.button__icon{ "aria-hidden" => "true" }
           %use{ "xlink:href" => "/images/icons.svg#github" }
