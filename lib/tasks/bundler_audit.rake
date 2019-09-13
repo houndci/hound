@@ -4,9 +4,8 @@ if Rails.env.development? || Rails.env.test?
   namespace :bundler do
     desc "Updates the ruby-advisory-db and runs audit"
     task :audit do
-      %w(update check).each do |command|
-        Bundler::Audit::CLI.start [command]
-      end
+      Bundler::Audit::CLI.start ["update"]
+      Bundler::Audit::CLI.start ["check", "--ignore", "CVE-2015-9284"]
     end
   end
 end

@@ -23,6 +23,7 @@
 
         = link_to "Get started",
           "/auth/github",
+          method: :post,
           class: "app-nav__item auth"
 
     .app-nav__user-items
@@ -52,7 +53,7 @@
           = link_to t("sign_out"), sign_out_path, class: "app-nav__item"
 
       - else
-        = link_to "/auth/github", class: "button auth" do
+        = link_to "/auth/github", method: :post, class: "button auth" do
           %svg.icon.button__icon{ "aria-hidden" => "true" }
             %use{ "xlink:href" => "/images/icons.svg#github" }
           = t("authenticate")
