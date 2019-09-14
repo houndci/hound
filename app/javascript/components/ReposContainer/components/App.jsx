@@ -22,7 +22,7 @@ export default class App extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     $.ajaxSetup({
       headers: {
         "X-XSRF-Token": getCSRFfromHead()

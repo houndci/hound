@@ -33,8 +33,8 @@ gem "sinatra", "~> 2.0"
 gem "split", require: "split/dashboard"
 gem "stripe"
 gem "uglifier", ">= 2.7.2"
-gem "webpacker", "~> 3.0"
-gem "webpacker-react", "~> 0.3.1"
+gem "webpacker"
+gem "webpacker-react", "~> 1.0.0.beta.1"
 
 group :staging, :production do
   gem "rack-timeout"
@@ -50,7 +50,7 @@ group :development, :test do
 end
 
 group :test do
-  gem "capybara", ">= 2.4.0"
+  gem "capybara"
   gem "factory_girl_rails"
   gem "launchy"
   gem "selenium-webdriver"

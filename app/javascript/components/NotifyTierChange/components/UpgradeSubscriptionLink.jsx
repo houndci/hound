@@ -11,7 +11,7 @@ export default class UpgradeSubscriptionLink extends React.Component {
     this.state = { disabled: false };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     $.ajaxSetup({
       headers: {
         "X-XSRF-Token": getCSRFfromHead()
@@ -72,7 +72,9 @@ export default class UpgradeSubscriptionLink extends React.Component {
     }
   }
 
-  handleClick() {
+  handleClick = (e) => {
+    e.preventDefault();
+
     if (this.props.marketplaceUpgradeUrl) {
       // improve this flow so we end up back at houndci.com
       window.open(this.props.marketplaceUpgradeUrl, '_blank');
@@ -94,13 +96,13 @@ export default class UpgradeSubscriptionLink extends React.Component {
   render() {
     return(
       <a
+        href=""
         className={
           this.state.disabled ?
             "repo-toggle tier-change-accept disabled" :
             "repo-toggle tier-change-accept"
         }
-        href="javascript:void(0);"
-        onClick={() => this.handleClick()}
+        onClick={this.handleClick}
       >Upgrade</a>
     );
   }
