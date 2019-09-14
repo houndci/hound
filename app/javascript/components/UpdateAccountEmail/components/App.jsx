@@ -14,7 +14,7 @@ export default class UpdateAccountEmail extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     $.ajaxSetup({
       headers: {
         "X-XSRF-Token": getCSRFfromHead()

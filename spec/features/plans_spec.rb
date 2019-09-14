@@ -51,7 +51,6 @@ RSpec.feature "Plans" do
     sign_in_as(user)
     visit plans_path(repo_id: repo.id)
     click_on "Upgrade"
-
     wait_until_path_is(repos_path, "Timeout waiting for Upgrade to redirect")
 
     expect(page).to have_text "Private Repos 5 / 10"

@@ -3,7 +3,7 @@
 exports[`renders appropriately 1`] = `
 <a
   className="repo-toggle tier-change-accept"
-  href="javascript:void(0);"
+  href=""
   onClick={[Function]}
 >
   Upgrade

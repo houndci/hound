@@ -1,4 +1,4 @@
-import ReposContainer from 'components/ReposContainer';
 import WebpackerReact from 'webpacker-react';
+import ReposContainer from '../components/ReposContainer';
 
 WebpackerReact.setup({ReposContainer});
