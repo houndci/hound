@@ -10,3 +10,4 @@ scss:
 eslint:
   enabled: true
   version: 5.7.0
+  config_file: .eslintrc
