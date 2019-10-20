@@ -14,7 +14,7 @@ Supported languages:
 - Bash
 - Elixir
 - Go
-- HAML
+- HTML
 - JavaScript
   - CoffeeScript
   - TypeScript
