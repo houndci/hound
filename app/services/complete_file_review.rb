@@ -27,7 +27,13 @@ class CompleteFileReview
   def build_file_review_violations
     attributes.fetch(:violations).each do |violation|
       line = commit_file.line_at(violation.fetch(:line))
-      file_review.build_violation(line, violation.fetch(:message))
+
+      # we need to make sure all jobs are complete before relying on source
+      file_review.build_violation(
+        line,
+        violation.fetch(:message),
+        violation.fetch(:source)
+      )
     end
   end
 

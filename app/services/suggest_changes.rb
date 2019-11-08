@@ -1,21 +1,20 @@
 class SuggestChanges
   static_facade :call
 
-
   def initialize(violation)
     @violation = violation
     @suggestion = ""
   end
 
   def call
-    messages = violation.messages.join(CommentingPolicy::COMMENT_LINE_DELIMITER)
-
     violation.messages.each do |message|
       apply_suggestion(message)
     end
 
+    messages = violation.messages.join(CommentingPolicy::COMMENT_LINE_DELIMITER)
+
     if suggestion.present?
-      messages + "\n<br>\n```suggestion\n#{suggestion}\n```"
+      messages + "<br>```suggestion\n#{suggestion}\n```"
     else
       messages
     end

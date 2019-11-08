@@ -12,13 +12,14 @@ describe FileReview do
         file_review = FileReview.new
         violation_message = "violation found!"
 
-        file_review.build_violation(line, violation_message)
+        file_review.build_violation(line, violation_message, "debugger")
         violation = file_review.violations.first
 
         expect(file_review.violations.size).to eq 1
         expect(violation.patch_position).to eq line.patch_position
         expect(violation.line_number).to eq line.number
         expect(violation.messages).to eq [violation_message]
+        expect(violation.source).to eq "debugger"
       end
     end
 
@@ -27,7 +28,7 @@ describe FileReview do
         line = build_line(changed: false)
         file_review = FileReview.new
 
-        file_review.build_violation(line, "hello")
+        file_review.build_violation(line, "hello", "debugger")
 
         expect(file_review.violations).to be_empty
       end
@@ -40,8 +41,8 @@ describe FileReview do
         line = build_line
         file_review = FileReview.new
 
-        file_review.build_violation(line, first_violation_message)
-        file_review.build_violation(line, other_violation_message)
+        file_review.build_violation(line, first_violation_message, "debugger")
+        file_review.build_violation(line, other_violation_message, "debugger")
         violation = file_review.violations.first
 
         expect(file_review.violations.size).to eq 1

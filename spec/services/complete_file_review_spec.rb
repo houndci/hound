@@ -63,7 +63,7 @@ RSpec.describe CompleteFileReview do
       commit_sha: "abc123",
       pull_request_number: 123,
       patch: File.read("spec/support/fixtures/patch.diff"),
-      violations: [line: 14, message: "woohoo"],
+      violations: [line: 14, message: "woohoo", source: "debugger"],
       error: "Your linter config is invalid",
     }
   end

@@ -8,7 +8,8 @@ RSpec.describe SuggestChanges do
       violation = instance_double(
         "Violation",
         messages: [
-          "Missing semicolon semi"
+          "Missing semicolon semi",
+          "Something else",
         ],
         source: "console.log('wat')"
       )
@@ -17,9 +18,7 @@ RSpec.describe SuggestChanges do
       result = suggest_changes.call
 
       expect(result).to eq <<~COMMENT.chomp
-        Missing semicolon semi
-        <br>
-        ```suggestion
+        Missing semicolon semi<br>Something else<br>```suggestion
         console.log('wat');
         ```
       COMMENT

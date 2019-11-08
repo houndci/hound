@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 2019_12_12_043041) do
     t.integer "line_number"
     t.text "messages", default: [], null: false, array: true
     t.integer "file_review_id", null: false
+    t.string "source"
     t.index ["file_review_id"], name: "index_violations_on_file_review_id"
   end
 
