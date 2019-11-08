@@ -27,8 +27,10 @@ class SuggestChanges
 
   def apply_suggestion(message)
     case message
-    when "Missing semicolon semi"
+    when /Missing semicolon/
       self.suggestion = violation.source << ";"
+    when /A space is required after ','/
+      self.suggestion = violation.source.gsub(/(,)([^ ])/, ', \2')
     end
   end
 end
