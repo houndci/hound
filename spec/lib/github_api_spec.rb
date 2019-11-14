@@ -47,64 +47,6 @@ describe GitHubApi do
     end
   end
 
-  describe "#create_hook" do
-    context "when hook does not exist" do
-      it "creates pull request web hook" do
-        callback_endpoint = "http://example.com"
-        token = "something"
-        api = GitHubApi.new(token)
-        request = stub_hook_creation_request(
-          repo_name,
-          callback_endpoint,
-          token
-        )
-
-        api.create_hook(repo_name, callback_endpoint)
-
-        expect(request).to have_been_requested
-      end
-
-      it "yields hook" do
-        callback_endpoint = "http://example.com"
-        token = "something"
-        api = GitHubApi.new(token)
-        request = stub_hook_creation_request(
-          repo_name,
-          callback_endpoint,
-          token
-        )
-        yielded = false
-
-        api.create_hook(repo_name, callback_endpoint) do
-          yielded = true
-        end
-
-        expect(request).to have_been_requested
-        expect(yielded).to be_truthy
-      end
-    end
-
-    context "when hook already exists" do
-      it "does not raise" do
-        callback_endpoint = "http://example.com"
-        stub_failed_hook_creation_request(repo_name, callback_endpoint)
-        api = GitHubApi.new(Hound::GITHUB_TOKEN)
-
-        expect do
-          api.create_hook(repo_name, callback_endpoint)
-        end.not_to raise_error
-      end
-
-      it "returns true" do
-        callback_endpoint = "http://example.com"
-        stub_failed_hook_creation_request(repo_name, callback_endpoint)
-        api = GitHubApi.new(Hound::GITHUB_TOKEN)
-
-        expect(api.create_hook(repo_name, callback_endpoint)).to eq true
-      end
-    end
-  end
-
   describe "#remove_hook" do
     it "removes pull request web hook" do
       hook_id = "123"
@@ -236,18 +178,6 @@ describe GitHubApi do
       )
 
       api.create_error_status("test/repo", "sha", "description")
-
-      expect(request).to have_been_requested
-    end
-  end
-
-  describe "#add_collaborator" do
-    it "makes a request to GitHub" do
-      username = "houndci"
-      api = GitHubApi.new(token)
-      request = stub_add_collaborator_request(username, repo_name, token)
-
-      api.add_collaborator(repo_name, username)
 
       expect(request).to have_been_requested
     end

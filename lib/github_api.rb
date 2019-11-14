@@ -45,27 +45,6 @@ class GitHubApi
     client.repository(repo_name)
   end
 
-  def create_hook(full_repo_name, callback_endpoint)
-    hook = client.create_hook(
-      full_repo_name,
-      "web",
-      { url: callback_endpoint },
-      { events: ["pull_request"], active: true }
-    )
-
-    if block_given?
-      yield hook
-    else
-      hook
-    end
-  rescue Octokit::UnprocessableEntity => error
-    if error.message.include? "Hook already exists"
-      true
-    else
-      raise
-    end
-  end
-
   def remove_hook(full_github_name, hook_id)
     response = client.remove_hook(full_github_name, hook_id)
 
@@ -126,20 +105,6 @@ class GitHubApi
     )
   end
 
-  def accept_invitation(repo_name)
-    repo_invitation = find_invitation_for_repo(repo_name)
-
-    if repo_invitation
-      accept_repository_invitation(repo_invitation)
-    else
-      raise "Invitation for Hound to #{repo_name} not found"
-    end
-  end
-
-  def add_collaborator(repo_name, username)
-    client.add_collaborator(repo_name, username)
-  end
-
   def remove_collaborator(repo_name, username)
     client.remove_collaborator(repo_name, username)
   end
@@ -165,23 +130,6 @@ class GitHubApi
       description: description,
       target_url: target_url
     )
-  end
-
-  def find_invitation_for_repo(repo_name)
-    invitations = client.user_repository_invitations(
-      accept: "application/vnd.github.swamp-thing-preview",
-    )
-    invitations.detect do |invitation|
-      invitation.repository.full_name == repo_name
-    end
-  end
-
-  def accept_repository_invitation(invitation)
-    response = client.accept_repository_invitation(
-      invitation.id,
-      accept: "application/vnd.github.swamp-thing-preview",
-    )
-    response == ""
   end
 
   def preview_options

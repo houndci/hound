@@ -5,7 +5,7 @@ class DeactivationsController < ApplicationController
   before_action :check_for_subscription
 
   def create
-    if activator.deactivate
+    if deactivate_repo
       analytics.track_repo_deactivated(repo)
       render json: repo, status: :created
     else
@@ -15,8 +15,8 @@ class DeactivationsController < ApplicationController
 
   private
 
-  def activator
-    RepoActivator.new(repo: repo, github_token: github_token)
+  def deactivate_repo
+    DeactivateRepo.call(repo: repo, github_token: github_token)
   end
 
   def repo

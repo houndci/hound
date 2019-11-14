@@ -5,8 +5,8 @@ describe DeactivationsController, "#create" do
     it "returns successful response" do
       membership = create(:membership)
       repo = membership.repo
-      activator = double(:repo_activator, deactivate: true)
-      allow(RepoActivator).to receive(:new).and_return(activator)
+      deactivate_repo = instance_double("DeactivateRepo", call: true)
+      allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)
       stub_sign_in(membership.user)
       expected_repo_json = RepoSerializer.new(
         repo,
@@ -18,8 +18,8 @@ describe DeactivationsController, "#create" do
 
       expect(response).to have_http_status(:created)
       expect(response.body).to eq expected_repo_json
-      expect(activator).to have_received(:deactivate)
-      expect(RepoActivator).to have_received(:new).
+      expect(deactivate_repo).to have_received(:call)
+      expect(DeactivateRepo).to have_received(:new).
         with(repo: repo, github_token: membership.user.token)
       expect(analytics).to have_tracked("Repo Deactivated").
         for_user(membership.user).
@@ -37,15 +37,15 @@ describe DeactivationsController, "#create" do
     it "returns error response" do
       membership = create(:membership)
       repo = membership.repo
-      activator = double(:repo_activator, deactivate: false)
-      allow(RepoActivator).to receive(:new).and_return(activator)
+      deactivate_repo = instance_double("DeactivateRepo", call: false)
+      allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)
       stub_sign_in(membership.user)
 
       post :create, params: { repo_id: repo.id }, format: :json
 
       expect(response.code).to eq "502"
-      expect(activator).to have_received(:deactivate)
-      expect(RepoActivator).to have_received(:new).
+      expect(deactivate_repo).to have_received(:call)
+      expect(DeactivateRepo).to have_received(:new).
         with(repo: repo, github_token: membership.user.token)
     end
   end
@@ -68,8 +68,8 @@ describe DeactivationsController, "#create" do
     it "returns successful response" do
       user = create(:user)
       repo = create(:repo, private: true, users: [user])
-      activator = double(:repo_activator, deactivate: true)
-      allow(RepoActivator).to receive(:new).and_return(activator)
+      deactivate_repo = instance_double("DeactivateRepo", call: true)
+      allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)
       stub_sign_in(user)
 
       post :create, params: { repo_id: repo.id }, format: :json

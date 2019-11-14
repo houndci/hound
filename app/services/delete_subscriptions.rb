@@ -24,9 +24,10 @@ class DeleteSubscriptions
   attr_reader :params
 
   def deactivate_repo(subscription)
-    RepoActivator.
-      new(repo: subscription.repo, github_token: subscription.user.token).
-      deactivate
+    DeactivateRepo.call(
+      repo: subscription.repo,
+      github_token: subscription.user.token,
+    )
   end
 
   def subscriptions
