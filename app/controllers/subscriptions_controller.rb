@@ -10,7 +10,9 @@ class SubscriptionsController < ApplicationController
     if plan_selector.upgrade?
       render json: {}, status: :payment_required
     elsif plan_selector.marketplace_plan?
-      activate
+      repo.activate
+
+      render json: repo, status: :created
     else
       activate_and_create_subscription
     end
@@ -21,7 +23,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def destroy
-    if activator.deactivate
+    if deactivate_repo
       if delete_subscription
         analytics.track_repo_deactivated(repo)
 
@@ -36,8 +38,8 @@ class SubscriptionsController < ApplicationController
 
   private
 
-  def activator
-    RepoActivator.new(repo: repo, github_token: github_token)
+  def deactivate_repo
+    DeactivateRepo.call(repo: repo, github_token: github_token)
   end
 
   def repo
@@ -72,26 +74,15 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-  def activate
-    if activator.activate
+  def activate_and_create_subscription
+    repo.activate
+
+    if create_subscription
       render json: repo, status: :created
     else
-      render_error("There was an issue activating the repo")
-    end
-  end
+      deactivate_repo
 
-  def activate_and_create_subscription
-    if activator.activate
-      if create_subscription
-        render json: repo, status: :created
-      else
-        activator.deactivate
-        render_error("There was an issue creating the subscription")
-      end
-    else
-      render_error(
-        activator.errors.first.presence || "There was an issue activating the repo",
-      )
+      render_error("There was an issue creating the subscription")
     end
   end
 
