@@ -43,17 +43,6 @@
                     precision: 0,
                   )
 
-        %table.monthly-total
-          %thead
-            %tr
-              %th
-                %label Total Monthly Cost:
-              %th.total-amount
-                %label
-                  = number_to_currency(@account_page.total_monthly_cost,
-                      precision: 0,
-                    )
-
       - if current_user.card_exists?
         = javascript_pack_tag "update_account_email"
         = react_component("UpdateAccountEmail",
