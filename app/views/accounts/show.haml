@@ -23,25 +23,43 @@
         = react_component("UpdateAccountCreditCard",
             stripe_customer_id_present: current_user.card_exists?,
           )
-        %table.itemized-receipt
-          %thead
-            %tr
-              %th Plan
-              %th Allowance
-              %th Remaining
-              %th Subtotal
-          %tbody
-            %tr
-              %td
-                = @account_page.plan
-              %td
-                = @account_page.allowance
-              %td
-                = @account_page.remaining
-              %td
-                = number_to_currency(@account_page.total_monthly_cost,
-                    precision: 0,
-                  )
+        - if current_user.whitelisted?
+          %table.itemized-receipt
+            %thead
+              %tr
+                %th Plan
+                %th Reviews in the last month
+                %th Price
+            %tbody
+              %tr
+                %td
+                  = @account_page.plan
+                %td
+                  = @account_page.recent_builds
+                %td
+                  = number_to_currency(@account_page.total_monthly_cost,
+                      precision: 0,
+                    )
+        - else
+          %table.itemized-receipt
+            %thead
+              %tr
+                %th Plan
+                %th Allowance
+                %th Remaining
+                %th Price
+            %tbody
+              %tr
+                %td
+                  = @account_page.plan
+                %td
+                  = @account_page.allowance
+                %td
+                  = @account_page.remaining
+                %td
+                  = number_to_currency(@account_page.total_monthly_cost,
+                      precision: 0,
+                    )
 
       - if current_user.card_exists?
         = javascript_pack_tag "update_account_email"

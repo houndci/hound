@@ -50,6 +50,10 @@ class Owner < ApplicationRecord
     end
   end
 
+  def recent_builds
+    Build.where("created_at > ?", 1.month.ago).where(repo_id: repo_ids)
+  end
+
   private
 
   def hound_config

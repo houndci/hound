@@ -39,6 +39,10 @@ class AccountPage
     monthly_line_item.subtotal_in_dollars
   end
 
+  def recent_builds
+    user.owner.recent_builds.count
+  end
+
   private
 
   attr_reader :user
