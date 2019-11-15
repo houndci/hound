@@ -59,22 +59,3 @@
         = react_component("UpdateAccountEmail",
             billable_email: @account_page.billable_email,
           )
-
-    %article.active-private-repos
-      %h3 Active Private Repos
-
-      - if @account_page.repos.any?
-        %table
-          %thead
-            %tr
-              %th Repository
-          %tbody
-            - @account_page.repos.each do |repo|
-              %tr.repo
-                %td
-                  %span.repo-name
-                    = repo.name
-      - else
-        None yet, go to your
-        = link_to "repos", repos_path
-        and enable Hound!

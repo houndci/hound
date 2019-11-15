@@ -31,10 +31,6 @@ class AccountPage
     allowance - repo_count
   end
 
-  def repos
-    subscribed_repos.order(:name)
-  end
-
   def subscription
     user.payment_gateway_subscription
   end
