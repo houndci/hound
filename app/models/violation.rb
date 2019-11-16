@@ -14,4 +14,23 @@ class Violation < ApplicationRecord
   def messages
     self[:messages].uniq
   end
+
+  def source=(value)
+    encrypted_source = crypt.encrypt_and_sign(value)
+    write_attribute(:source, encrypted_source)
+  end
+
+  def source
+    encrypted_source = read_attribute(:source)
+    unless encrypted_source.nil?
+      crypt.decrypt_and_verify(encrypted_source)
+    end
+  end
+
+  private
+
+  def crypt
+    secret_key_base = Rails.application.secrets.secret_key_base
+    ActiveSupport::MessageEncryptor.new(secret_key_base[0, 32], secret_key_base)
+  end
 end
