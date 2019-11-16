@@ -48,9 +48,9 @@ RSpec.describe SuggestChanges do
         violation = instance_double(
           "Violation",
           messages: [
-            "A space is required after ',' comma-spacing"
+            "A space is required after ',' comma-spacing",
           ],
-          source: "function wat(one,two, three) {"
+          source: "function wat(one,two, three) {",
         )
         suggest_changes = described_class.new(violation)
 

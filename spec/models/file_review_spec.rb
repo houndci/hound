@@ -44,12 +44,12 @@ describe FileReview do
         file_review.build_violation(
           line,
           first_violation_message,
-          "foo = bar(1, 2)"
+          "foo = bar(1, 2)",
         )
         file_review.build_violation(
           line,
           other_violation_message,
-          "foo = bar(1, 2)"
+          "foo = bar(1, 2)",
         )
         violation = file_review.violations.first
 
