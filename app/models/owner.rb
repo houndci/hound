@@ -50,6 +50,7 @@ class Owner < ApplicationRecord
     end
   end
 
+  # test please
   def recent_builds
     Build.where("created_at > ?", 1.month.ago).where(repo_id: repo_ids)
   end
