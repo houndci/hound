@@ -1,16 +1,16 @@
-%div{ class: "plan plan-vertical #{current ? 'current' : ''}" }
+.plan.plan-vertical{ class: current && 'current' }
   - if current
     .plan-marker__wrapper
       %span.plan-marker.plan-marker--current Current Plan
-  .plan-divider
-    %h5.plan-title= name
-    .plan-allowance
-      - if allowance.positive?
-        Up to
-        %strong= allowance
-        Repos
-      - else
-        Unlimited Public Repos
+  %h5.plan-title= name
+  .plan-allowance
+    - if allowance.positive?
+      Up to
+      %strong= number_with_delimiter(allowance)
+      = current_user.metered_plan? ? "Reviews" : "Repos"
+    - else
+      Unlimited Public
+      = current_user.metered_plan? ? "Repo Reviews" : "Repos"
   .plan-price
     = number_to_currency(price, precision: 0)
     %small month

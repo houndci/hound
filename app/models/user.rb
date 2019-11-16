@@ -12,6 +12,7 @@ class User < ApplicationRecord
   before_create :generate_remember_token
 
   delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
+  delegate :metered_plan?, to: :owner
 
   def next_plan_price
     next_plan.price
@@ -79,11 +80,6 @@ class User < ApplicationRecord
 
   def marketplace_user?
     plan_selector.marketplace_plan?
-  end
-
-  # test please
-  def whitelisted?
-    owner.whitelisted?
   end
 
   def owner

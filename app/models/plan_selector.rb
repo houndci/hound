@@ -47,6 +47,8 @@ class PlanSelector
   def plan_class
     if marketplace_plan?
       GitHubPlan
+    elsif user.metered_plan?
+      MeteredStripePlan
     else
       StripePlan
     end

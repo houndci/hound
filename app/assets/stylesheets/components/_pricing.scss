@@ -94,7 +94,9 @@
   border-bottom: 1px dotted;
   border-color: $base-border-color;
   border-radius: 0;
+  margin-bottom: $base-spacing;
   margin-left: 0.5em;
+  padding-bottom: $small-spacing;
   padding-left: 0;
   padding-top: 0;
   position: static;
@@ -112,22 +114,19 @@
     }
   }
 
-  .plan-divider {
-    float: left;
-  }
-
-  .plan-title,
-  .plan-allowance {
+  .plan-title {
     font-size: 1.2em;
+    margin-bottom: 0.2em;
   }
 
   .plan-allowance {
-    margin-bottom: 0;
+    font-size: 1.1em;
+    margin-bottom: $xsmall-spacing;
   }
 
   .plan-price {
     color: $base-font-color;
-    float: right;
+    text-align: right;
     font-size: 1.8em;
   }
 }

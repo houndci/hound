@@ -23,7 +23,7 @@
         = react_component("UpdateAccountCreditCard",
             stripe_customer_id_present: current_user.card_exists?,
           )
-        - if current_user.whitelisted?
+        - if current_user.metered_plan?
           %table.itemized-receipt
             %thead
               %tr

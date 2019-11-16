@@ -54,6 +54,10 @@ class Owner < ApplicationRecord
     Build.where("created_at > ?", 1.month.ago).where(repo_id: repo_ids)
   end
 
+  def metered_plan?
+    whitelisted?
+  end
+
   private
 
   def hound_config
