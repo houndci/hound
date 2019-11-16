@@ -39,11 +39,11 @@ class User < ApplicationRecord
 
   def token=(value)
     encrypted_token = crypt.encrypt_and_sign(value)
-    write_attribute(:token, encrypted_token)
+    self[:token] = encrypted_token
   end
 
   def token
-    encrypted_token = read_attribute(:token)
+    encrypted_token = self[:token]
     unless encrypted_token.nil?
       crypt.decrypt_and_verify(encrypted_token)
     end

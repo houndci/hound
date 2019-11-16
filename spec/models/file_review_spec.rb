@@ -41,8 +41,16 @@ describe FileReview do
         line = build_line
         file_review = FileReview.new
 
-        file_review.build_violation(line, first_violation_message, "foo = bar(1, 2)")
-        file_review.build_violation(line, other_violation_message, "foo = bar(1, 2)")
+        file_review.build_violation(
+          line,
+          first_violation_message,
+          "foo = bar(1, 2)"
+        )
+        file_review.build_violation(
+          line,
+          other_violation_message,
+          "foo = bar(1, 2)"
+        )
         violation = file_review.violations.first
 
         expect(file_review.violations.size).to eq 1

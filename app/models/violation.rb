@@ -17,11 +17,11 @@ class Violation < ApplicationRecord
 
   def source=(value)
     encrypted_source = crypt.encrypt_and_sign(value)
-    write_attribute(:source, encrypted_source)
+    self[:source] = encrypted_source
   end
 
   def source
-    encrypted_source = read_attribute(:source)
+    encrypted_source = self[:source]
     unless encrypted_source.nil?
       crypt.decrypt_and_verify(encrypted_source)
     end

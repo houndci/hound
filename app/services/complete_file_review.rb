@@ -31,7 +31,7 @@ class CompleteFileReview
       file_review.build_violation(
         line,
         violation.fetch(:message),
-        violation.fetch(:source)
+        violation.fetch(:source),
       )
     end
   end

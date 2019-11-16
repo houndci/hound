@@ -9,9 +9,9 @@ RSpec.describe SuggestChanges do
         violation = instance_double(
           "Violation",
           messages: [
-            "Put a comma after the last parameter of a multiline method call."
+            "Put a comma after the last parameter of a multiline method call.",
           ],
-          source: "    violation.fetch(:source)"
+          source: "    violation.fetch(:source)",
         )
         suggest_changes = described_class.new(violation)
 
@@ -31,7 +31,7 @@ RSpec.describe SuggestChanges do
             "Missing semicolon semi",
             "Something else",
           ],
-          source: "  console.log('wat')"
+          source: "  console.log('wat')",
         )
         suggest_changes = described_class.new(violation)
 
@@ -72,7 +72,7 @@ RSpec.describe SuggestChanges do
             "Layout/TrailingWhitespace: Trailing whitespace detected.",
             "Put a comma after the last parameter of a multiline method call.",
           ],
-          source: "    violation.fetch(:source) "
+          source: "    violation.fetch(:source) ",
         )
         suggest_changes = described_class.new(violation)
 
