@@ -16,8 +16,7 @@ class Violation < ApplicationRecord
   end
 
   def source=(value)
-    encrypted_source = crypt.encrypt_and_sign(value)
-    self[:source] = encrypted_source
+    self[:source] = crypt.encrypt_and_sign(value)
   end
 
   def source

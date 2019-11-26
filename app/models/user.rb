@@ -38,8 +38,7 @@ class User < ApplicationRecord
   end
 
   def token=(value)
-    encrypted_token = crypt.encrypt_and_sign(value)
-    self[:token] = encrypted_token
+    self[:token] = crypt.encrypt_and_sign(value)
   end
 
   def token
