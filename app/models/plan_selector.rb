@@ -10,7 +10,7 @@ class PlanSelector
     if marketplace_plan?
       plans.detect { |plan| plan.id == marketplace_plan_id }
     elsif metered_plan?
-      plans.detect { |plan| plan.id == user.payment_gateway_subscription.id }
+      plans.detect { |plan| plan.id == user.payment_gateway_subscription.plan }
     else
       find_plan_by_active_repo_count(active_repo_count)
     end
