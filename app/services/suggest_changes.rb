@@ -10,7 +10,7 @@ class SuggestChanges
   def call
     violation.messages.each do |message|
       apply_suggestion(message)
-      break unless suggestion.empty?
+      break if suggestion.present?
     end
 
     messages = violation.messages.join(CommentingPolicy::COMMENT_LINE_DELIMITER)
