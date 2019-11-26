@@ -35,7 +35,7 @@
                 %td
                   = @account_page.plan
                 %td
-                  = @account_page.recent_builds
+                  = number_with_delimiter(@account_page.recent_builds)
                 %td
                   = number_to_currency(@account_page.total_monthly_cost,
                       precision: 0,

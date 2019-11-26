@@ -31,10 +31,10 @@
         - if current_user.subscriptions.count > 0
           - if current_user.metered_plan?
             .allowance{ "data-role" => "allowance-container" }
-              Recent Reviews
+              Monthly Reviews
               %strong
                 %span{ "data-role" => "subscribed-repo-count" }
-                  #{current_user.recent_builds.count}
+                  #{number_with_delimiter(current_user.recent_builds.count)}
           - else
             .allowance{ "data-role" => "allowance-container" }
               Private Repos
