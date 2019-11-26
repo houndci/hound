@@ -12,7 +12,6 @@ class User < ApplicationRecord
   before_create :generate_remember_token
 
   delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
-  delegate :metered_plan?, to: :owner
 
   def next_plan_price
     next_plan.price
@@ -68,7 +67,7 @@ class User < ApplicationRecord
   def subscribed_repos
     if plan_selector.marketplace_plan?
       # This assumes a user manages one Marketplace purchase.
-      owner.repos.active.where(private: true)
+      first_available_repo.owner.repos.active.where(private: true)
     else
       super
     end
@@ -82,8 +81,12 @@ class User < ApplicationRecord
     plan_selector.marketplace_plan?
   end
 
-  def owner
-    first_available_repo.owner
+  def metered_plan?
+    first_available_repo&.owner&.metered_plan?
+  end
+
+  def recent_builds
+    first_available_repo.owner.recent_builds
   end
 
   private
