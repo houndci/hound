@@ -43,10 +43,7 @@ class User < ApplicationRecord
   end
 
   def token
-    encrypted_token = self[:token]
-    unless encrypted_token.nil?
-      crypt.decrypt_and_verify(encrypted_token)
-    end
+    crypt.decrypt_and_verify(self[:token]) if self[:token]
   end
 
   def payment_gateway_subscription

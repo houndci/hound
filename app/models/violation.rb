@@ -21,10 +21,7 @@ class Violation < ApplicationRecord
   end
 
   def source
-    encrypted_source = self[:source]
-    unless encrypted_source.nil?
-      crypt.decrypt_and_verify(encrypted_source)
-    end
+    crypt.decrypt_and_verify(self[:source]) if self[:source]
   end
 
   private
