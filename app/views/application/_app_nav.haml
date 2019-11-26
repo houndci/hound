@@ -31,7 +31,7 @@
         - if current_user.subscriptions.count > 0
           - if current_user.metered_plan?
             .allowance{ "data-role" => "allowance-container" }
-              Monthly Reviews
+              Recent Reviews
               %strong
                 %span{ "data-role" => "subscribed-repo-count" }
                   #{number_with_delimiter(current_user.recent_builds.count)}
