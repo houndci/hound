@@ -218,10 +218,11 @@ to comment about the violations on the pull request.
 
 `CompleteFileReview` saves each violation, the line number, and patch position,
 in the `violations` table of our Postgres database.
-We store single lines of your code in Postgres, which is encrypted and encoded
-similar to tokens using `ActiveSupport::MessageEncryptor`.
-We also store the contents of the files to review temporarily in Sidekiq, but
-that is removed as soon as the job is processed.
+We also store single lines of code that are used to report violations and
+suggested changes. The data is encrypted and encoded similar to tokens using
+`ActiveSupport::MessageEncryptor`. We also store the contents of the files to
+review temporarily in Redis, but that is removed as soon as the Sidekiq job is
+processed.
 
 To browse the portions of the codebase related to
 receiving and processing pull request notifications,
