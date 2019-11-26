@@ -29,14 +29,21 @@
     .app-nav__user-items
       - if signed_in?
         - if current_user.subscriptions.count > 0
-          .allowance{ "data-role" => "allowance-container" }
-            Private Repos
-            %strong
-              %span{ "data-role" => "subscribed-repo-count" }
-                #{current_user.subscribed_repos.count}
-              \/
-              %span{ "data-role" => "tier-allowance" }
-                #{current_user.plan_max}
+          - if current_user.metered_plan?
+            .allowance{ "data-role" => "allowance-container" }
+              Recent Reviews
+              %strong
+                %span{ "data-role" => "subscribed-repo-count" }
+                  #{current_user.recent_builds.count}
+          - else
+            .allowance{ "data-role" => "allowance-container" }
+              Private Repos
+              %strong
+                %span{ "data-role" => "subscribed-repo-count" }
+                  #{current_user.subscribed_repos.count}
+                \/
+                %span{ "data-role" => "tier-allowance" }
+                  #{current_user.plan_max}
 
         = link_to account_path, class: "app-nav__item app-nav__account-link" do
           - if current_user.email.present?
