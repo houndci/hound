@@ -8,6 +8,10 @@ class SubmitReview
     if new_violations.any? || build.review_errors.any?
       comments = new_violations.map { |violation| build_comment(violation) }
 
+      if build.repo.installation_id
+        remove_resolved_violations
+      end
+
       send_review(comments)
     end
   end
@@ -21,6 +25,12 @@ class SubmitReview
       comments,
       ReviewBody.new(build.review_errors).to_s,
     )
+  end
+
+  def remove_resolved_violations
+    commenting_policy.outdated_comments(build.violations).each do |comment|
+      github.delete_pull_request_comment(build.repo_name, comment)
+    end
   end
 
   def new_violations

@@ -11,17 +11,19 @@ RSpec.describe "POST /builds" do
   let(:pr_number) { parsed_payload["number"] }
 
   context "with violations" do
-    it "makes a new comment and cleans up resolved one" do
-      existing_comment_violation = { line: 5, message: "Line is too long." }
+    it "comments on newly found violations" do
+      existing_violation_comment = {
+        body: "Line is too long.",
+        position: 5,
+        path: "path/to/test_github_file.rb",
+      }
+      existing_violation = { line: 5, message: "Line is too long." }
       new_violation1 = { line: 3, message: "Trailing whitespace detected." }
       new_violation2 = { line: 9, message: "Avoid empty else-clauses." }
-      violations = [new_violation1, existing_comment_violation, new_violation2]
+      violations = [new_violation1, existing_violation, new_violation2]
       create(:repo, :active, github_id: repo_id, name: repo_name)
-      stub_review_job(
-        LintersJob,
-        violations: violations,
-        error: "invalid config syntax",
-      )
+      stub_review_job(violations: violations, error: "invalid config syntax")
+      FakeGitHub.comments = [existing_violation_comment]
 
       post builds_path, params: { payload: payload }
 
@@ -33,6 +35,7 @@ RSpec.describe "POST /builds" do
         </details>
       EOS
       expect(FakeGitHub.comments).to match_array [
+        existing_violation_comment,
         {
           body: new_violation1[:message],
           path: "path/to/test_github_file.rb",
@@ -61,8 +64,8 @@ RSpec.describe "POST /builds" do
     end
   end
 
-  def stub_review_job(klass, violations:, error:)
-    allow(klass).to receive(:perform_async) do |attributes|
+  def stub_review_job(violations:, error:)
+    allow(LintersJob).to receive(:perform_async) do |attributes|
       CompleteFileReview.call(
         commit_sha: attributes.fetch(:commit_sha),
         filename:  attributes.fetch(:filename),

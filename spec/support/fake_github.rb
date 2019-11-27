@@ -66,16 +66,12 @@ class FakeGitHub < Sinatra::Base
 
   get "/repos/:owner/:repo/pulls/:number/comments" do
     content_type :json
-    [
-      {
-        body: "Line is too long.",
-        commit_id: "TEST_GITHUB_COMMIT_ID",
-        path: "path/to/test_github_file.rb",
-        position: 5,
-        pull_id: params[:number],
-        repo: params[:repo],
-      },
-    ].to_json
+    comments.to_json
+  end
+
+  delete "/repos/:owner/:repo/pulls/comments/:id" do
+    comments.reject! { |comment| comment[:id] == params[:id] }
+    status 204
   end
 
   post "/repos/:owner/:repo/pulls/:number/reviews" do

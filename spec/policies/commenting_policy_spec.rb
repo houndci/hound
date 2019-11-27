@@ -84,8 +84,46 @@ RSpec.describe CommentingPolicy do
     end
   end
 
+  describe "#outdated_comments" do
+    it "returns comments that no longer match any violations" do
+      violation1 = stub_violation(
+        messages: ["Missing newline"],
+        patch_position: 2,
+      )
+      violation2 = stub_violation(
+        messages: ["Missing comma"],
+        patch_position: 4,
+      )
+      matching_comment1 = stub_comment(
+        body: "Missing newline<br>Extra indentation",
+        position: violation1.patch_position,
+        original_position: violation1.patch_position,
+        path: violation1.filename,
+      )
+      matching_comment2 = stub_comment(
+        body: "Trailing whitespace detected<br>Missing comma",
+        position: violation2.patch_position,
+        original_position: violation2.patch_position,
+        path: violation2.filename,
+      )
+      outdated_comment = stub_comment(
+        body: "Missing comma",
+        position: violation2.patch_position + 1,
+        original_position: violation2.patch_position,
+        path: violation2.filename,
+      )
+      violations = [violation1, violation2]
+      comments = [matching_comment1, matching_comment2, outdated_comment]
+      commenting_policy = CommentingPolicy.new(comments)
+
+      result = commenting_policy.outdated_comments(violations)
+
+      expect(result).to eq [outdated_comment]
+    end
+  end
+
   def stub_comment(options = {})
-    defaults = { user: double("GitHubUser", login: "houndci-bot") }
+    defaults = { user: double("GitHubUser", type: "Bot") }
     double("GitHubComment", defaults.merge(options))
   end
 

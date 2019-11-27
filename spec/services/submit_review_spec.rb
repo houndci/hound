@@ -54,7 +54,11 @@ RSpec.describe SubmitReview do
           filename: violation1.filename,
           body: violation1.messages.first,
         )
-        github = stub_github(comments: [existing_comment])
+        outdated_comment = build_comment(
+          filename: violation1.filename,
+          body: "This is outdated",
+        )
+        github = stub_github(comments: [existing_comment, outdated_comment])
 
         described_class.call(build)
 
@@ -64,6 +68,10 @@ RSpec.describe SubmitReview do
           [hash_including(body: violation2.messages.first)],
           "",
         )
+        expect(github).to have_received(:delete_pull_request_comment).with(
+          build.repo_name,
+          outdated_comment,
+        )
       end
     end
 
@@ -72,11 +80,16 @@ RSpec.describe SubmitReview do
         violation = stub_violation("foo")
         repo = instance_double("Repo", installation_id: nil, name: "org/repo")
         build = stub_build(violations: [violation], repo: repo)
-        stub_github
+        outdated_comment = build_comment(
+          filename: violation.filename,
+          body: "This is outdated",
+        )
+        github = stub_github(comments: [outdated_comment])
 
         described_class.call(build)
 
         expect(GitHubApi).to have_received(:new).with(Hound::GITHUB_TOKEN)
+        expect(github).not_to have_received(:delete_pull_request_comment)
       end
     end
   end
@@ -91,7 +104,13 @@ RSpec.describe SubmitReview do
   end
 
   def build_comment(filename:, body:)
-    double("GitHubComment", path: filename, position: 1, body: body)
+    double(
+      "GitHubComment",
+      path: filename,
+      position: 1,
+      body: body,
+      user: double(type: "Bot"),
+    )
   end
 
   def stub_repo
@@ -113,6 +132,7 @@ RSpec.describe SubmitReview do
     github = instance_double(
       "GitHubApi",
       pull_request_comments: comments,
+      delete_pull_request_comment: nil,
       create_pull_request_review: nil,
       create_installation_token: "gh-installation-token",
     )
