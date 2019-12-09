@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
       utm_campaign: params[:utm_campaign],
       utm_medium: params[:utm_medium],
       utm_source: params[:utm_source],
+      gclid: params[:gclid],
     }
   end
 
