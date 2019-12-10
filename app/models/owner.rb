@@ -50,7 +50,22 @@ class Owner < ApplicationRecord
     end
   end
 
+  def recent_build_count(clear_cache: false)
+    Rails.cache.fetch(
+      "owner_#{owner.id}/recent_build_count",
+      expires_in: 1.month,
+      force: clear_cache
+    ) do
+      recent_builds.count
+    end
+  end
+
   private
+
+  def recent_builds
+    # This is expensive, use a cached version if possible
+    Build.where("created_at > ?", 1.month.ago).where(repo_id: repo_ids)
+  end
 
   def hound_config
     @_hound_config ||= BuildOwnerHoundConfig.call(self)
