@@ -52,7 +52,7 @@ class Owner < ApplicationRecord
 
   def recent_build_count(clear_cache: false)
     Rails.cache.fetch(
-      "owner_#{owner.id}/recent_build_count",
+      "owner_#{id}/recent_build_count",
       expires_in: 1.month,
       force: clear_cache
     ) do
