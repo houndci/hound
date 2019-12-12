@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180620003423) do
+ActiveRecord::Schema.define(version: 20191212043041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20180620003423) do
     t.text "payload"
     t.integer "user_id"
     t.integer "violations_count", default: 0, null: false
+    t.index "date(created_at)", name: "index_builds_on_DATE_created_at"
     t.index ["commit_sha", "pull_request_number"], name: "index_builds_on_commit_sha_and_pull_request_number"
     t.index ["repo_id"], name: "index_builds_on_repo_id"
     t.index ["uuid"], name: "index_builds_on_uuid", unique: true
