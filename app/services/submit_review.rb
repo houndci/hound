@@ -8,11 +8,11 @@ class SubmitReview
     if new_violations.any? || build.review_errors.any?
       comments = new_violations.map { |violation| build_comment(violation) }
 
-      if build.repo.installation_id
-        remove_resolved_violations
-      end
-
       send_review(comments)
+    end
+
+    if build.repo.installation_id
+      remove_resolved_violations
     end
   end
 
