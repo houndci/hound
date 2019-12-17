@@ -51,8 +51,13 @@ class Owner < ApplicationRecord
   end
 
   def recent_builds
-    # This must be cached or indexed before release
-    Build.where("created_at > ?", 1.month.ago).where(repo_id: repo_ids)
+    Build.where(
+      "DATE(created_at) > DATE(?) AND DATE(created_at) < DATE(?)",
+      1.month.ago,
+      Time.current
+    ).where(
+      repo_id: repo_ids
+    ).count
   end
 
   def metered_plan?
