@@ -9,6 +9,8 @@ class PlanSelector
   def current_plan
     if marketplace_plan?
       plans.detect { |plan| plan.id == marketplace_plan_id }
+    elsif metered_plan?
+      plans.detect { |plan| plan.id == user.payment_gateway_subscription.plan }
     else
       find_plan_by_active_repo_count(active_repo_count)
     end
@@ -47,6 +49,8 @@ class PlanSelector
   def plan_class
     if marketplace_plan?
       GitHubPlan
+    elsif metered_plan?
+      MeteredStripePlan
     else
       StripePlan
     end
@@ -58,5 +62,9 @@ class PlanSelector
 
   def active_repo_count
     user.subscribed_repos.size
+  end
+
+  def metered_plan?
+    user.metered_plan?
   end
 end

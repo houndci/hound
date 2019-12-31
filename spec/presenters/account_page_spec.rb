@@ -78,19 +78,6 @@ RSpec.describe AccountPage do
     end
   end
 
-  describe "#repos" do
-    it "returns the subscriped repos ordered by name" do
-      ordered_repos = instance_double("Repo")
-      subscribed_repos = class_double("Repo")
-      user = instance_double("User", subscribed_repos: subscribed_repos)
-      page = AccountPage.new(user)
-      allow(subscribed_repos).to receive(:order).once.with(:name).
-        and_return(ordered_repos)
-
-      expect(page.repos).to eq ordered_repos
-    end
-  end
-
   describe "#subscription" do
     it "returns the user's payment gateway subscription" do
       subscription = instance_double("PaymentGatewaySubscription")

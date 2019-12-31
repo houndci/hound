@@ -3,6 +3,7 @@ require "active_model/serialization"
 require "app/models/plan"
 require "app/models/stripe_plan"
 require "app/models/github_plan"
+require "app/models/metered_stripe_plan"
 require "app/models/plan_selector"
 
 RSpec.describe PlanSelector do
@@ -11,6 +12,7 @@ RSpec.describe PlanSelector do
       user = instance_double(
         "User",
         subscribed_repos: [double],
+        metered_plan?: false,
       )
       repo = instance_double(
         "Repo",
@@ -30,6 +32,7 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: Array.new(4) { double },
+            metered_plan?: false,
           )
           repo = instance_double(
             "Repo",
@@ -47,6 +50,7 @@ RSpec.describe PlanSelector do
             "User",
             subscribed_repos: [],
             first_available_repo: double.as_null_object,
+            metered_plan?: false,
           )
           plan_selector = PlanSelector.new(user: user, repo: nil)
 
@@ -59,6 +63,7 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: Array.new(3) { double },
+            metered_plan?: false,
           )
           repo = instance_double(
             "Repo",
@@ -108,6 +113,7 @@ RSpec.describe PlanSelector do
           "User",
           subscribed_repos: [],
           first_available_repo: double.as_null_object,
+          metered_plan?: false,
         )
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
@@ -122,6 +128,7 @@ RSpec.describe PlanSelector do
       user = instance_double(
         "User",
         subscribed_repos: Array.new(10) { double },
+        metered_plan?: false,
       )
       repo = instance_double(
         "Repo",

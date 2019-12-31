@@ -112,6 +112,8 @@ class PaymentGatewayCustomer
     def plan_name
       "basic"
     end
+
+    def id; end
   end
 
   class BlankCard

@@ -81,6 +81,14 @@ class User < ApplicationRecord
     plan_selector.marketplace_plan?
   end
 
+  def metered_plan?
+    first_available_repo&.owner&.metered_plan?
+  end
+
+  def recent_builds
+    first_available_repo.owner.recent_builds
+  end
+
   private
 
   def crypt

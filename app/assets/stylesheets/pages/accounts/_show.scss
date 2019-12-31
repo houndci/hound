@@ -31,8 +31,7 @@
     float: right;
   }
 
-  .itemized-receipt,
-  .monthly-total {
+  .itemized-receipt {
     th,
     td {
       &:last-child {
@@ -43,17 +42,6 @@
 
   .itemized-receipt {
     margin-bottom: 2em;
-  }
-
-  .monthly-total {
-    label {
-      color: $base-font-color;
-    }
-
-    .total-amount {
-      font-size: 1em;
-      padding: 1em 1.2em;
-    }
   }
 
   .billing-container {
@@ -90,11 +78,5 @@
     float: right;
     margin-top: 1.5em;
     text-align: right;
-  }
-}
-
-.active-private-repos {
-  .repo {
-    display: table-row;
   }
 }

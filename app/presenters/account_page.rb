@@ -31,16 +31,16 @@ class AccountPage
     allowance - repo_count
   end
 
-  def repos
-    subscribed_repos.order(:name)
-  end
-
   def subscription
     user.payment_gateway_subscription
   end
 
   def total_monthly_cost
     monthly_line_item.subtotal_in_dollars
+  end
+
+  def recent_builds
+    user.recent_builds.count
   end
 
   private
