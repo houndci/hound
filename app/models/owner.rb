@@ -54,9 +54,9 @@ class Owner < ApplicationRecord
     Build.where(
       "DATE(created_at) > DATE(?) AND DATE(created_at) < DATE(?)",
       1.month.ago,
-      Time.current
+      Time.current,
     ).where(
-      repo_id: repo_ids
+      repo_id: repo_ids,
     ).count
   end
 
