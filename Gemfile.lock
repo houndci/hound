@@ -210,7 +210,7 @@ GEM
     public_suffix (3.1.1)
     puma (4.3.1)
       nio4r (~> 2.0)
-    rack (2.0.7)
+    rack (2.0.8)
     rack-protection (2.0.3)
       rack
     rack-proxy (0.6.5)
