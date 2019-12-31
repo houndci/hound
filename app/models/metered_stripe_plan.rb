@@ -14,7 +14,8 @@ class MeteredStripePlan < Plan
     },
     {
       id: "plan_FXpsHlYOH8tAfo",
-      price: 49, title: "Terrier",
+      price: 49,
+      title: "Terrier",
       range: (51..300),
     },
     {
