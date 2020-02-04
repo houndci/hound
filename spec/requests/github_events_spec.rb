@@ -48,7 +48,7 @@ RSpec.describe "POST /github_events" do
       position: 3,
       pr_number: "1",
       repo: repo.name,
-      user: { type: "Bot" },
+      user: { type: "Bot", login: "hound[bot]" },
     }
   end
 

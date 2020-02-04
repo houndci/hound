@@ -123,7 +123,7 @@ RSpec.describe CommentingPolicy do
   end
 
   def stub_comment(options = {})
-    defaults = { user: double("GitHubUser", type: "Bot") }
+    defaults = { user: double("GitHubUser", type: "Bot", login: "hound[bot]") }
     double("GitHubComment", defaults.merge(options))
   end
 

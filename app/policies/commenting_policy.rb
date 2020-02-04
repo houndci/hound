@@ -11,7 +11,9 @@ class CommentingPolicy
 
   def outdated_comments(found_violations)
     comments.select do |comment|
-      comment.user.type == "Bot" && outdated_comment?(comment, found_violations)
+      comment.user.type == "Bot" &&
+        comment.user.login.start_with?("hound") &&
+        outdated_comment?(comment, found_violations)
     end
   end
 
