@@ -54,7 +54,7 @@ group :test do
   gem "capybara"
   gem "factory_girl_rails"
   gem "launchy"
-  gem "selenium-webdriver"
+  gem "selenium-webdriver", ">= 4.0.0.alpha4"
   gem "shoulda-matchers"
   gem "webmock"
 end

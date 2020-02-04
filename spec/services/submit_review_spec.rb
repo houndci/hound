@@ -109,7 +109,7 @@ RSpec.describe SubmitReview do
       path: filename,
       position: 1,
       body: body,
-      user: double(type: "Bot"),
+      user: double(login: "hound[bot]", type: "Bot"),
     )
   end
 
