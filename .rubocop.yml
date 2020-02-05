@@ -1,3 +1,5 @@
+require:
+  - rubocop-rails
 AllCops:
   Exclude:
   - "vendor/**/*"
@@ -854,6 +856,8 @@ Layout/EmptyLines:
 Layout/EmptyLinesAroundAccessModifier:
   Description: Keep blank lines around access modifiers.
   Enabled: true
+  Exclude:
+  - "spec/factories.rb"
 Layout/EmptyLinesAroundMethodBody:
   Description: Keeps track of empty lines around method bodies.
   Enabled: true

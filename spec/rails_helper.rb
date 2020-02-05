@@ -25,7 +25,14 @@ RSpec.configure do |config|
   config.include Features, type: :feature
   config.include HttpsHelper
   config.include OauthHelper
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
 
 OmniAuth.configure do |config|

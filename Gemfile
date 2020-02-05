@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.6.5"
+ruby "2.7.0"
 
 gem "active_model_serializers", "0.10.10"
 gem "administrate", "0.13.0"
@@ -9,7 +9,7 @@ gem "attr_extras"
 gem "autoprefixer-rails"
 gem "bourbon", "~> 5.0"
 gem "email_validator"
-gem "faraday"
+gem "faraday", "0.17.3"
 gem "haml-rails", "~> 2.0"
 gem "high_voltage"
 gem "inifile"
@@ -26,7 +26,6 @@ gem "pathspec"
 gem "pg"
 gem "puma"
 gem "rails", "~> 6.0.2"
-gem "sass-rails"
 gem "sentry-raven"
 gem "sidekiq"
 gem "sinatra", "~> 2.0"
@@ -52,7 +51,7 @@ end
 
 group :test do
   gem "capybara"
-  gem "factory_girl_rails"
+  gem "factory_bot_rails"
   gem "launchy"
   gem "selenium-webdriver", ">= 4.0.0.alpha4"
   gem "shoulda-matchers"
