@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.6.2"
+ruby "2.6.5"
 
 gem "active_model_serializers", "0.9.5"
 gem "administrate", "0.8.1"
