@@ -34,7 +34,7 @@
               Recent Reviews
               %strong
                 %span{ "data-role" => "subscribed-repo-count" }
-                  #{number_with_delimiter(current_user.recent_builds.count)}
+                  #{number_with_delimiter(current_user.recent_builds)}
           - else
             .allowance{ "data-role" => "allowance-container" }
               Private Repos
