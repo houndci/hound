@@ -40,7 +40,7 @@ class AccountPage
   end
 
   def recent_builds
-    user.recent_builds.count
+    user.recent_builds
   end
 
   private
