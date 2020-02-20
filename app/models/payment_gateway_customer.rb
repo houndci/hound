@@ -113,6 +113,7 @@ class PaymentGatewayCustomer
       "basic"
     end
 
+    def plan; end
     def id; end
   end
 
