@@ -65,6 +65,10 @@ Rails.application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   config.active_record.dump_schema_after_migration = false
-end
 
-Rack::Timeout.timeout = (ENV["RACK_TIMEOUT"] || 20).to_i
+  config.middleware.insert_before(
+    Rack::Runtime,
+    Rack::Timeout,
+    service_timeout: (ENV["RACK_TIMEOUT"] || 20).to_i,
+  )
+end
