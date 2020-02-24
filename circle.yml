@@ -14,7 +14,7 @@ jobs:
           POSTGRES_USER: houndci
           POSTGRES_DB: houndci-test
           POSTGRES_PASSWORD: ""
-      - image: redis:3.2.10-alpine
+      - image: redis:5.0.7-alpine
     steps:
       - checkout
 

@@ -2,7 +2,7 @@
 
 %ul.build-list
   - builds.each do |build|
-    = content_tag_for :li, build, class: "build-list-item" do
+    = content_tag :li, build, class: "build-list-item" do
       .build
         .build-meta
           %h2.build-org-repo

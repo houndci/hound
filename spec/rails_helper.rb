@@ -45,5 +45,12 @@ Capybara.register_driver :headless_chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 Capybara.javascript_driver = :headless_chrome
 Capybara.server = :puma, { Silent: true, Threads: "1:1" }

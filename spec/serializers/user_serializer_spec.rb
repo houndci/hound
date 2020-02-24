@@ -17,7 +17,7 @@ RSpec.describe UserSerializer do
       user = create(:user, subscriptions: [subscription])
       serializer = UserSerializer.new(user)
 
-      expect(serializer.plan_max).to eq 4
+      expect(serializer.object.plan_max).to eq 4
     end
   end
 end

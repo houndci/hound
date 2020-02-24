@@ -1,4 +1,4 @@
-Houndapp::Application.configure do
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb
   #
   config.eager_load = true
@@ -34,6 +34,7 @@ Houndapp::Application.configure do
 
   # See everything in the log (default is :info)
   config.log_level = :info
+  config.log_formatter = ::Logger::Formatter.new
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -63,6 +64,7 @@ Houndapp::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+  config.active_record.dump_schema_after_migration = false
 end
 
 Rack::Timeout.timeout = (ENV["RACK_TIMEOUT"] || 20).to_i
