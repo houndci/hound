@@ -9,7 +9,7 @@ feature "User rebuilds a pull request" do
 
     sign_in_as(user)
     visit builds_path
-    within "#build_#{build.id}" do
+    within ".build" do
       click_on I18n.t("builds.index.new")
     end
 

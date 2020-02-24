@@ -12,7 +12,7 @@ class RepoSerializer < ActiveModel::Serializer
   )
 
   def price_in_cents
-    if object.public? || owner.whitelisted?
+    if object.public? || object.owner.whitelisted?
       0
     else
       plan_selector = PlanSelector.new(user: scope, repo: object)

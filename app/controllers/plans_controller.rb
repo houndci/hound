@@ -7,7 +7,7 @@ class PlansController < ApplicationController
   helper_method :plan_selector
 
   def index
-    @plans = ActiveModel::ArraySerializer.new(
+    @plans = ActiveModel::Serializer::CollectionSerializer.new(
       plan_selector.plans,
       each_serializer: PlanSerializer,
       scope: current_user,

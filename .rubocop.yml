@@ -374,6 +374,8 @@ Metrics/LineLength:
   URISchemes:
   - http
   - https
+  Exclude:
+  - config/initializers/new_framework_defaults_6_0.rb
 Metrics/MethodLength:
   Description: Avoid methods longer than 15 lines of code.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#short-methods

@@ -3,10 +3,11 @@ require File.expand_path("lib/redirect_to_configuration")
 
 require "rails/all"
 
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 
 module Houndapp
   class Application < Rails::Application
+    config.load_defaults 5.0
     config.autoload_paths += %W(#{config.root}/lib)
     config.eager_load_paths += %W(#{config.root}/lib)
     config.encoding = "utf-8"
