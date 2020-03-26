@@ -34,4 +34,17 @@ describe Violation do
       expect(violation.messages_count).to eq 2
     end
   end
+
+  describe "#source" do
+    it "returns source" do
+      source = "puts 'heyo'"
+      violation = build(
+        :violation,
+        messages: ["foo", "bar"],
+        source: source
+      )
+
+      expect(violation.source).to eq source
+    end
+  end
 end
