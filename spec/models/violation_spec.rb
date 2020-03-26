@@ -41,7 +41,7 @@ describe Violation do
       violation = build(
         :violation,
         messages: ["foo", "bar"],
-        source: source
+        source: source,
       )
 
       expect(violation.source).to eq source

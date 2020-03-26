@@ -4,7 +4,11 @@ RSpec.describe "POST /github_events" do
   it "makes new and deletes outdated comments" do
     payload = File.read("spec/support/fixtures/pull_request_opened_event.json")
     parsed_payload = JSON.parse(payload)
-    new_violation = { line: 3, message: "Trailing whitespace detected." }
+    new_violation = {
+      line: 3,
+      message: "Trailing whitespace detected.",
+      source: "def wat "
+    }
     repo = create(
       :repo,
       :active,
@@ -31,7 +35,7 @@ RSpec.describe "POST /github_events" do
     GITHUB
     expect(FakeGitHub.comments).to match_array [
       {
-        body: new_violation[:message],
+        body: new_violation[:message] << "<br>```suggestion\ndef wat\n```",
         path: "path/to/test_github_file.rb",
         position: new_violation[:line],
         pr_number: "1",

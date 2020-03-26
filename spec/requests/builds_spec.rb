@@ -17,9 +17,21 @@ RSpec.describe "POST /builds" do
         position: 5,
         path: "path/to/test_github_file.rb",
       }
-      existing_violation = { line: 5, message: "Line is too long." }
-      new_violation1 = { line: 3, message: "Trailing whitespace detected." }
-      new_violation2 = { line: 9, message: "Avoid empty else-clauses." }
+      existing_violation = {
+        line: 5,
+        message: "Line is too long.",
+        source: "# nooooooooooooooooooooooooooooooooooooooooooooooooo",
+      }
+      new_violation1 = {
+        line: 3,
+        message: "Trailing whitespace detected.",
+        source: "def wat ",
+      }
+      new_violation2 = {
+        line: 9,
+        message: "Avoid empty else-clauses.",
+        source: "if true; 'yay'; else; end",
+      }
       violations = [new_violation1, existing_violation, new_violation2]
       create(:repo, :active, github_id: repo_id, name: repo_name)
       stub_review_job(violations: violations, error: "invalid config syntax")
@@ -37,7 +49,7 @@ RSpec.describe "POST /builds" do
       expect(FakeGitHub.comments).to match_array [
         existing_violation_comment,
         {
-          body: new_violation1[:message],
+          body: new_violation1[:message] << "<br>```suggestion\ndef wat\n```",
           path: "path/to/test_github_file.rb",
           position: new_violation1[:line],
           pr_number: "1",
