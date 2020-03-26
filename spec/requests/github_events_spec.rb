@@ -7,7 +7,7 @@ RSpec.describe "POST /github_events" do
     new_violation = {
       line: 3,
       message: "Trailing whitespace detected.",
-      source: "def wat "
+      source: "def wat ",
     }
     repo = create(
       :repo,
