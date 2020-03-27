@@ -33,9 +33,9 @@ class SuggestChanges
     when /A space is required after ','/
       self.suggestion = violation.source.gsub(/(,)([^ ])/, ', \2')
     when /Put a comma after the last parameter of a multiline method call/
-      self.suggestion = violation.source << ","
+      self.suggestion = violation.source + ","
     when /Missing semicolon/
-      self.suggestion = violation.source << ";"
+      self.suggestion = violation.source + ";"
     end
   end
 end
