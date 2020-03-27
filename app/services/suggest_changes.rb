@@ -3,7 +3,6 @@ class SuggestChanges
 
   def initialize(violation)
     @violation = violation
-    @messages = violation.messages
     @suggestion = ""
   end
 
@@ -24,7 +23,7 @@ class SuggestChanges
 
   private
 
-  attr_reader :violation, :messages
+  attr_reader :violation
   attr_accessor :suggestion
 
   def apply_suggestion(message)
