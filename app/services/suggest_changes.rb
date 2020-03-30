@@ -17,7 +17,7 @@ class SuggestChanges
     if suggestion.blank?
       messages
     else
-      messages + "<br>```suggestion\n#{suggestion}\n```"
+      messages + "<br>\n```suggestion\n#{suggestion}\n```"
     end
   end
 
