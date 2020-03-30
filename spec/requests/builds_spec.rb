@@ -49,7 +49,7 @@ RSpec.describe "POST /builds" do
       expect(FakeGitHub.comments).to match_array [
         existing_violation_comment,
         {
-          body: new_violation1[:message] << "<br>```suggestion\ndef wat\n```",
+          body: new_violation1[:message] << "<br>\n```suggestion\ndef wat\n```",
           path: "path/to/test_github_file.rb",
           position: new_violation1[:line],
           pr_number: "1",

@@ -35,7 +35,7 @@ RSpec.describe "POST /github_events" do
     GITHUB
     expect(FakeGitHub.comments).to match_array [
       {
-        body: new_violation[:message] << "<br>```suggestion\ndef wat\n```",
+        body: new_violation[:message] << "<br>\n```suggestion\ndef wat\n```",
         path: "path/to/test_github_file.rb",
         position: new_violation[:line],
         pr_number: "1",
