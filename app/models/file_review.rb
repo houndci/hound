@@ -2,11 +2,12 @@ class FileReview < ApplicationRecord
   belongs_to :build
   has_many :violations, dependent: :destroy
 
-  def build_violation(line, message)
+  def build_violation(line, message, source)
     if line.changed?
       violation = find_or_build_violation(line)
       violation.add_message(message)
       violation.patch_position = line.patch_position
+      violation.source = source
     end
   end
 

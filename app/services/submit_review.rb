@@ -43,7 +43,7 @@ class SubmitReview
     {
       path: violation.filename,
       position: violation.patch_position,
-      body: violation.messages.join(CommentingPolicy::COMMENT_LINE_DELIMITER),
+      body: SuggestChanges.call(violation),
     }
   end
 
