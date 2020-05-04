@@ -75,7 +75,6 @@ GEM
       sassc-rails (~> 2.1)
       selectize-rails (~> 0.6)
     analytics-ruby (2.2.8)
-    arel (9.0.0)
     attr_extras (6.2.3)
     autoprefixer-rails (9.7.6)
       execjs
@@ -287,7 +286,6 @@ GEM
     rspec-support (3.9.2)
     ruby2_keywords (0.0.2)
     ruby_parser (3.14.2)
-    ruby_parser (3.14.1)
       sexp_processor (~> 4.9)
     rubyzip (2.2.0)
     safe_yaml (1.0.5)
@@ -314,8 +312,8 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
       websocket (~> 1.0)
-    sentry-raven (2.13.0)
-      faraday (>= 0.7.6, < 1.0)
+    sentry-raven (3.0.0)
+      faraday (>= 1.0)
     sexp_processor (4.14.1)
     shoulda-matchers (4.2.0)
       activesupport (>= 4.2.0)
@@ -384,7 +382,7 @@ DEPENDENCIES
   dotenv-rails
   email_validator
   factory_bot_rails
-  faraday (= 0.17.3)
+  faraday (~> 1.0)
   foreman
   haml-rails (~> 2.0)
   high_voltage
@@ -407,7 +405,6 @@ DEPENDENCIES
   rails (~> 6.0.2)
   rails_12factor
   rspec-rails (>= 4.0.0.beta4)
-  sass-rails
   selenium-webdriver (>= 4.0.0.alpha4)
   sentry-raven
   shoulda-matchers
