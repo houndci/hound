@@ -74,7 +74,11 @@ class User < ApplicationRecord
   end
 
   def first_available_repo
-    repos.order(:active).first
+    if subscriptions.any?
+      subscriptions.first.repo
+    else
+      repos.order(:active).first
+    end
   end
 
   def marketplace_user?
