@@ -57,7 +57,7 @@ class User < ApplicationRecord
     repos.
       order("memberships.admin DESC").
       order(active: :desc).
-      order("LOWER(name) ASC")
+      order(Arel.sql("LOWER(name) ASC"))
   end
 
   def card_exists?

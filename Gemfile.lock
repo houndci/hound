@@ -114,11 +114,11 @@ GEM
     erubi (1.9.0)
     erubis (2.7.0)
     execjs (2.7.0)
-    factory_girl (4.9.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
-      railties (>= 3.0.0)
+    factory_bot (5.1.1)
+      activesupport (>= 4.2.0)
+    factory_bot_rails (5.1.1)
+      factory_bot (~> 5.1.0)
+      railties (>= 4.2.0)
     faraday (1.0.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.12.2)
@@ -294,8 +294,6 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.3.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -312,14 +310,14 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
       websocket (~> 1.0)
-    sentry-raven (1.1.0)
-      faraday (>= 0.7.6)
+    sentry-raven (3.0.0)
+      faraday (>= 1.0)
     sexp_processor (4.14.1)
     shoulda-matchers (4.2.0)
       activesupport (>= 4.2.0)
-    sidekiq (6.0.5)
+    sidekiq (6.0.4)
       connection_pool (>= 2.2.2)
-      rack (~> 2.0)
+      rack (>= 2.0.0)
       rack-protection (>= 2.0.0)
       redis (>= 4.1.0)
     simple-random (1.0.3)
@@ -381,8 +379,8 @@ DEPENDENCIES
   capybara
   dotenv-rails
   email_validator
-  factory_girl_rails
-  faraday
+  factory_bot_rails
+  faraday (~> 1.0)
   foreman
   haml-rails (~> 2.0)
   high_voltage
@@ -405,7 +403,6 @@ DEPENDENCIES
   rails (~> 6.0.2)
   rails_12factor
   rspec-rails (>= 4.0.0.beta4)
-  sass-rails
   selenium-webdriver (>= 4.0.0.alpha4)
   sentry-raven
   shoulda-matchers
@@ -419,7 +416,7 @@ DEPENDENCIES
   webpacker-react (~> 1.0.0.beta.1)
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.7.1p83
 
 BUNDLED WITH
-   1.17.3
+   2.1.4

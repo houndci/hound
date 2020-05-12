@@ -21,7 +21,7 @@ RSpec.describe PlanSelector do
       plan_selector = PlanSelector.new(user: user, repo: repo)
 
       expect(plan_selector.current_plan).
-        to eq StripePlan.new(StripePlan::PLANS[1])
+        to eq StripePlan.new(**StripePlan::PLANS[1])
     end
   end
 
@@ -118,7 +118,7 @@ RSpec.describe PlanSelector do
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
         expect(plan_selector.next_plan).
-          to eq StripePlan.new(StripePlan::PLANS[1])
+          to eq StripePlan.new(**StripePlan::PLANS[1])
       end
     end
   end

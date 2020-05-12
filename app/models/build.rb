@@ -19,7 +19,8 @@ class Build < ApplicationRecord
   end
 
   def review_errors
-    file_reviews.where.not(error: [nil, ""]).pluck("DISTINCT error").
+    file_reviews.where.not(error: [nil, ""]).
+      pluck(Arel.sql("DISTINCT error")).
       uniq { |error| error.lines.first }
   end
 
