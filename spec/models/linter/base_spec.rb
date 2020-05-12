@@ -91,6 +91,6 @@ describe Linter::Test do
       build: double("Build", repo: double("Repo")),
     }
 
-    Linter::Test.new(default_options.merge(options))
+    Linter::Test.new(**default_options.merge(options))
   end
 end

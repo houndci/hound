@@ -33,7 +33,7 @@ class PlanSelector
   end
 
   def plans
-    plan_class::PLANS.map { |plan| plan_class.new(plan) }
+    plan_class::PLANS.map { |plan| plan_class.new(**plan) }
   end
 
   private
