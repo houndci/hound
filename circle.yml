@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/hound
     docker:
-      - image: circleci/ruby:2.7.0-node-browsers
+      - image: circleci/ruby:2.7.1-node-browsers
         environment:
           RAILS_ENV: test
           CIRCLECI: true
