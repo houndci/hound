@@ -193,7 +193,6 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
-    normalize-rails (4.1.1)
     oauth2 (1.4.4)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -391,7 +390,6 @@ DEPENDENCIES
   listen
   neat (~> 1.9)
   nokogiri (>= 1.8.2)
-  normalize-rails
   octokit
   omniauth-github
   omniauth-rails_csrf_protection
