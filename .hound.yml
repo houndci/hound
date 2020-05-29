@@ -5,7 +5,11 @@ rubocop:
   version: 0.75.0
 
 scss:
-  config_file: .scss-lint.yml
+  enabled: false
+
+stylelint:
+  config_file: .stylelintrc.json
+  enabled: true
 
 eslint:
   enabled: true

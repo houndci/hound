@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "stylelint": "stylelint 'app/assets/stylesheets/**/*.scss' --formatter verbose",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
@@ -46,6 +47,7 @@
     "webpacker-react": "^1.0.0-beta.1"
   },
   "devDependencies": {
+    "@thoughtbot/stylelint-config": "2.0.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "enzyme": "^3.3.0",
@@ -62,6 +64,7 @@
     "react-test-renderer": "^16.9.0",
     "react-transform-hmr": "^1.0.2",
     "sinon": "^7.4.2",
+    "stylelint": "13.2.1",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.8.0"
   },
