@@ -21,11 +21,11 @@
   font-size: 1.8em;
   margin-bottom: $xsmall-spacing;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     font-size: 2.2em;
   }
 
-  @include media($large-screen-up) {
+  @media (min-width: $large-screen-size) {
     font-size: $font-size-large;
   }
 }

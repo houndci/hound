@@ -1,13 +1,13 @@
 .home-hero {
   padding: ($base-spacing * 2) $base-spacing $large-spacing;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     @include span-columns(10 of 12);
     @include shift(1);
     padding: $large-spacing $base-spacing ($large-spacing * 2);
   }
 
-  @include media($large-screen-up) {
+  @media (min-width: $large-screen-size) {
     @include span-columns(8 of 12);
     @include shift(2);
     padding: ($large-spacing * 1.5) 0 ($large-spacing * 2.5);
@@ -19,11 +19,11 @@
   font-size: $font-size-xxlarge;
   margin-bottom: $xsmall-spacing;
 
-  @include media($medium-screen-down) {
+  @media (max-width: $medium-screen-size) {
     font-size: $font-size-xlarge;
   }
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     font-size: $font-size-large;
   }
 }
@@ -32,7 +32,7 @@
   font-size: $font-size-base;
   margin-bottom: 0;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     font-size: $font-size-medium;
   }
 }
@@ -40,7 +40,7 @@
 .home-hero-cta {
   padding-top: $medium-spacing;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     padding-top: $large-spacing;
   }
 }

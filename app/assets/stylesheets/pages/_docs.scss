@@ -4,11 +4,11 @@
   display: flex;
   padding: $medium-spacing;
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     margin-top: 0;
   }
 
-  @include media($large-screen-up) {
+  @media (min-width: $large-screen-size) {
     flex-flow: row nowrap;
   }
 }
@@ -23,7 +23,7 @@
 }
 
 .docs-content {
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     border-left: $base-border;
     flex: 1;
     padding-left: $medium-spacing;
@@ -33,7 +33,7 @@
 .docs-nav {
   display: none;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     display: block;
     padding-right: $medium-spacing;
     width: 25%;

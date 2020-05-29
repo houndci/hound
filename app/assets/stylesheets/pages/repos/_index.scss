@@ -5,7 +5,7 @@
   display: flex;
   padding: 1em;
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     display: block;
     height: auto;
     padding: 1em 0;
@@ -32,7 +32,7 @@
   padding-bottom: 2px;
   transition: $base-transition;
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     display: block;
     font-size: 1.2em;
     font-weight: $font-weight-regular;
@@ -48,7 +48,7 @@
   text-align: right;
   vertical-align: middle;
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     display: block;
     padding: 0;
     text-align: left;
@@ -68,7 +68,7 @@
   user-select: none;
   vertical-align: middle;
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     float: left;
     padding: 0.2em 0.8em;
   }

@@ -4,7 +4,7 @@
   flex-wrap: wrap;
   vertical-align: middle;
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     flex-direction: column;
   }
 }
@@ -59,7 +59,7 @@
 .repo-tools-add {
   margin-right: 0.5em;
 
-  @include media($small-screen-only) {
+  @media (max-width: $small-screen-size) {
     margin: 0 0 0.5em;
   }
 }

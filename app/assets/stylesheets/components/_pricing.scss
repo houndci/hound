@@ -18,7 +18,7 @@
   position: relative;
   text-align: left;
 
-  @include media($medium-large-screen-only) {
+  @media (max-width: $medium-large-screen-size) {
     padding-left: $medium-spacing;
   }
 
@@ -76,7 +76,7 @@
   font-size: 2.3em;
   line-height: 1;
 
-  @include media($medium-large-screen-only) {
+  @media (max-width: $medium-large-screen-size) {
     font-size: 2.1em;
   }
 

@@ -4,11 +4,11 @@
   padding: ($base-spacing * 2) $base-spacing;
   text-align: center;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     padding: $large-spacing $base-spacing ($large-spacing * 2);
   }
 
-  @include media($large-screen-up) {
+  @media (min-width: $large-screen-size) {
     padding: $large-spacing $base-spacing ($large-spacing * 3);
   }
 }

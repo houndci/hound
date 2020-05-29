@@ -5,7 +5,7 @@
   position: relative;
   text-align: center;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     margin-bottom: $large-spacing * 3;
     max-width: 100%;
   }
@@ -18,12 +18,12 @@
     width: 100%;
     z-index: 1;
 
-    @include media($medium-screen-up) {
+    @media (min-width: $medium-screen-size) {
       left: 10%;
       width: 80%;
     }
 
-    @include media($large-screen-up) {
+    @media (min-width: $large-screen-size) {
       left: 30%;
       width: 40%;
     }
@@ -40,7 +40,7 @@
   position: relative;
   z-index: 2;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     margin-bottom: $large-spacing;
   }
 }
@@ -52,7 +52,7 @@
   margin: 0;
   width: 100%;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     @include outer-container;
     width: 75%;
   }
@@ -62,7 +62,7 @@
   margin: ($base-spacing * 2) 0;
   text-align: center;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     margin-top: 0;
     width: 25%;
   }

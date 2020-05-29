@@ -4,7 +4,7 @@
   color: $white;
   padding: $medium-spacing;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     padding: $large-spacing;
   }
 }
@@ -12,7 +12,7 @@
 .configuration-image {
   margin-bottom: $medium-spacing;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     @include span-columns(4 of 12);
     @include shift(0);
     margin-bottom: 0;
@@ -22,7 +22,7 @@
 .configuration-text {
   text-align: center;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     @include span-columns(6 of 12);
     padding-left: $column;
     text-align: left;

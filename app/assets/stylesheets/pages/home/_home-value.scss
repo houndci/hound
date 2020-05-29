@@ -1,7 +1,7 @@
 .value {
   padding: $large-spacing $base-spacing ($large-spacing * 2);
 
-  @include media($large-screen-up) {
+  @media (min-width: $large-screen-size) {
     padding: ($large-spacing * 2) 0 ($large-spacing * 3);
   }
 }
@@ -11,7 +11,7 @@
   @include shift(1);
   text-align: center;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     @include span-columns(8 of 12);
     @include shift(2);
   }
@@ -21,7 +21,7 @@
     margin-top: $large-spacing;
     padding-top: $large-spacing;
 
-    @include media($medium-screen-up) {
+    @media (min-width: $medium-screen-size) {
       margin-top: $large-spacing * 2;
       padding-top: $large-spacing * 2;
     }
@@ -31,7 +31,7 @@
 .value-text {
   margin-bottom: $large-spacing;
 
-  @include media($medium-screen-up) {
+  @media (min-width: $medium-screen-size) {
     margin-bottom: $large-spacing * 1.5;
   }
 
