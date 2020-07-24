@@ -31,3 +31,6 @@
 -
   name: Haml
   logo: languages/haml.svg
+-
+  name: Shell
+  logo: languages/shell.svg
