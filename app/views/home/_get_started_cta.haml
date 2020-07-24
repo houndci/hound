@@ -24,9 +24,8 @@
     .home-languages
       %h2.home-heading--small.home-languages-heading Currently supported
 
-      .clearfix
-        %ul.home-languages-list
-          = render partial: "language", collection: languages, as: :language
+      %ul.home-languages-list
+        = render partial: "language", collection: languages, as: :language
 
 %section.home-importance
   .section-content

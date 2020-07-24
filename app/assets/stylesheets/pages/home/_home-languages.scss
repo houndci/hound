@@ -46,37 +46,19 @@
 }
 
 .home-languages-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 0;
-  width: 100%;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
 
   @media (min-width: $medium-screen-size) {
-    @include outer-container;
+    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    margin-left: auto;
+    margin-right: auto;
     width: 75%;
   }
 }
 
-.home-languages-list-item {
-  margin: ($base-spacing * 2) 0;
-  text-align: center;
-
-  @media (min-width: $medium-screen-size) {
-    margin-top: 0;
-    width: 25%;
-  }
-}
-
 .home-languages-list-item-logo {
-  display: inline-block;
-  margin-bottom: $small-spacing;
-
-  img {
-    @include size(6.25rem);
-  }
-}
-
-.home-languages-list-item-heading {
-  margin-bottom: 0;
+  @include size(6.25rem);
 }
