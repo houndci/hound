@@ -1,5 +1,6 @@
-%li.home-languages-list-item
-  .home-languages-list-item-logo
-    = image_tag language["logo"], alt: language["name"]
-  %p.home-languages-list-item-heading
+%li
+  = image_tag language["logo"],
+    alt: language["name"],
+    class: "home-languages-list-item-logo"
+  %p
     = language["name"]
