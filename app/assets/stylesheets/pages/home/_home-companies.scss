@@ -1,0 +1,82 @@
+.home-companies {
+  margin: 0 auto $large-spacing;
+  max-width: 35rem;
+  padding: 0 $base-spacing;
+  position: relative;
+  text-align: center;
+
+  @media (min-width: $medium-screen-size) {
+    margin-bottom: $large-spacing * 3;
+    max-width: 100%;
+  }
+
+  &::before {
+    @include position(absolute, $small-spacing null null 0);
+    border-top: $base-border;
+    content: "";
+    height: 0;
+    width: 100%;
+    z-index: 1;
+
+    @media (min-width: $medium-screen-size) {
+      left: 10%;
+      width: 80%;
+    }
+
+    @media (min-width: $large-screen-size) {
+      left: 30%;
+      width: 40%;
+    }
+  }
+}
+
+.home-companies-heading {
+  background: $white;
+  display: inline-block;
+  font-family: $font-family-heading;
+  font-weight: $font-weight-book;
+  margin: 2px 0 $base-spacing;
+  padding: 0 $small-spacing;
+  position: relative;
+  z-index: 2;
+
+  @media (min-width: $medium-screen-size) {
+    margin-bottom: $large-spacing;
+  }
+}
+
+.home-companies-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+
+  @media (min-width: $medium-screen-size) {
+    @include outer-container;
+    width: 75%;
+  }
+}
+
+.home-companies-list-item {
+  margin: ($base-spacing * 2) 0;
+  text-align: center;
+
+  @media (min-width: $medium-screen-size) {
+    margin-top: 0;
+    width: 25%;
+  }
+}
+
+.home-companies-list-item-logo {
+  display: inline-block;
+  margin-bottom: $small-spacing;
+
+  img {
+    @include size(6.25rem);
+  }
+}
+
+.home-companies-list-item-heading {
+  margin-bottom: 0;
+}
