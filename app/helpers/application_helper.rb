@@ -11,4 +11,14 @@ module ApplicationHelper
   def new_window_options(options = {})
     options.merge(target: "_blank", rel: "noopener noreferrer")
   end
+
+  def svg(file_name, options = {})
+    if options[:title].present?
+      options[:aria] = true
+    else
+      options[:aria_hidden] = true
+    end
+
+    inline_svg_tag(file_name, options)
+  end
 end

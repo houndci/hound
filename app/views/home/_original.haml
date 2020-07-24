@@ -12,8 +12,7 @@
           = link_to "/auth/github",
             method: :post,
             class: "button button--primary button--large auth" do
-            %svg.icon.button__icon{ "aria-hidden" => "true" }
-              %use{ "xlink:href" => "/images/icons.svg#github" }
+            = svg "github-logomark.svg", class: "icon button__icon"
             = t("authenticate")
 
     .home-languages
@@ -120,8 +119,7 @@
       = link_to "/auth/github",
         method: :post,
         class: "button button--primary button--large auth" do
-        %svg.icon.button__icon{ "aria-hidden" => "true" }
-          %use{ "xlink:href" => "/images/icons.svg#github" }
+        = svg "github-logomark.svg", class: "icon button__icon"
         Get started with GitHub
 
 %section.home-security
