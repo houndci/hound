@@ -145,6 +145,9 @@ GEM
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     inifile (3.0.0)
+    inline_svg (1.7.1)
+      activesupport (>= 3.0)
+      nokogiri (>= 1.6)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -384,6 +387,7 @@ DEPENDENCIES
   haml-rails (~> 2.0)
   high_voltage
   inifile
+  inline_svg
   jquery-rails (>= 4.2.0)
   jwt
   launchy

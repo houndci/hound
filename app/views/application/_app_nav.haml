@@ -1,9 +1,7 @@
 %nav.app-nav{ role: "navigation" }
   .app-nav__container
     = link_to signed_in? ? repos_path : root_path, class: "line-height-zero" do
-      %svg.logo.app-nav__logo{ role: "img" }
-        %title Hound
-        %use{ "xlink:href" => "/images/icons.svg#hound" }
+      = svg "hound-logo.svg", class: "logo app-nav__logo", title: "Hound"
 
     .app-nav__app-items
       - if signed_in?
@@ -61,6 +59,5 @@
 
       - else
         = link_to "/auth/github", method: :post, class: "button auth" do
-          %svg.icon.button__icon{ "aria-hidden" => "true" }
-            %use{ "xlink:href" => "/images/icons.svg#github" }
+          = svg "github-logomark.svg", class: "icon button__icon"
           = t("authenticate")
