@@ -1,0 +1,38 @@
+<!doctype html>
+<%= tag.html lang: I18n.locale do %>
+  <head>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <%= tag.title [content_for(:page_title), "Hound"].compact.uniq.join(" - ") %>
+    <link rel="preconnect" href="https://github.com">
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "https://js.stripe.com/v2/" %>
+    <%= javascript_include_tag "https://checkout.stripe.com/checkout.js" %>
+    <%= javascript_include_tag "application" %>
+    <% if content_for? :meta_description %>
+      <%= tag.meta content: content_for(:meta_description) %>
+    <% end %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <%= tag.body class: content_for(:body_class) || "hound" do %>
+    <%= render "application/app_nav" %>
+
+    <% user_facing_flashes.each do |key, value| %>
+      <%= tag.div value, class: "flash #{key}" %>
+    <% end %>
+
+    <main class="content" role="main">
+      <%= yield %>
+    </main>
+
+    <%= render "application/footer" %>
+
+    <%= javascript_tag do %>
+      <%= yield :javascript %>
+    <% end %>
+
+    <% if analytics? %>
+      <%= render "analytics" %>
+    <% end %>
+  <% end %>
+<% end %>
