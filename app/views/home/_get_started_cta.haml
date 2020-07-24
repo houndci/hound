@@ -14,11 +14,11 @@
             class: "button button--primary button--large auth" do
             Get started for free!
 
-    .home-languages
-      %h2.home-heading--small.home-languages-heading Enjoyed by
+    .home-companies
+      %h2.home-heading--small.home-companies-heading Enjoyed by
 
       .clearfix
-        %ul.home-languages-list
+        %ul.home-companies-list
           = render partial: "company", collection: companies.shuffle.first(16), as: :company
 
     .home-languages
