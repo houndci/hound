@@ -27,6 +27,10 @@
 
       %ul.home-languages-list
         = render partial: "language", collection: languages, as: :language
+      %p.margin-top-large
+        = link_to "Read more about Hound’s supported linters",
+          "https://help.houndci.com/en/articles/2461415-supported-linters",
+          class: "button"
 
 %section.home-importance
   .section-content
