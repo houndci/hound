@@ -46,7 +46,7 @@
         = link_to account_path, class: "app-nav__item app-nav__account-link" do
           - if current_user.email.present?
             .avatar.margin-right-x-small
-              = image_tag avatar_url(current_user), alt: ""
+              = image_tag avatar_url(current_user), alt: "", size: "64"
           = current_user.username
 
         - if masquerading?
