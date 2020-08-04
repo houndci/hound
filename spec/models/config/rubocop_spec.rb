@@ -28,18 +28,18 @@ RSpec.describe Config::Rubocop do
 
     context "when the configuration uses pre-processing" do
       it "runs the config through ERB" do
-        raw_config = <<~EOS
+        raw_config = <<~CONFIG
           Style/Encoding:
             Enabled: <%= 1 + 1 == 2 %>
           <% 42 # This should be ignored and not cause an error %>
-        EOS
+        CONFIG
 
         config = build_config(raw_config)
 
         expect(config.content).to eq(
           "Style/Encoding" => {
-            "Enabled" => true
-          }
+            "Enabled" => true,
+          },
         )
       end
     end
