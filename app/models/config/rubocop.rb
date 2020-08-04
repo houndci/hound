@@ -22,6 +22,10 @@ module Config
       end
     end
 
+    def parse(content)
+      super(ERB.new(content).result)
+    end
+
     def safe_parse(content)
       parse(content)
     rescue Psych::Exception => exception
