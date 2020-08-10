@@ -4,7 +4,6 @@ class SessionsController < ApplicationController
   def create
     create_session
     update_user
-    ab_finished(:home)
 
     redirect_to setup_path
   end
