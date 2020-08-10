@@ -2,4 +2,144 @@
 - content_for :meta_description, I18n.t("home.index.description")
 - content_for :body_class, "home home-index"
 
-= render @experiment, home: @home, companies: @companies, languages: @languages
+%section
+  .section-content
+    .clearfix
+      .home-hero
+        %h1.home-hero-heading
+          Automated code review for GitHub pull requests
+        %p.home-hero-subheading
+          Hound comments on code quality and style issues, allowing you and your
+          team to better review and maintain a clean codebase.
+
+        .home-hero-cta
+          = link_to "/auth/github",
+            method: :post,
+            class: "button button--primary button--large auth" do
+            = svg "github-logomark.svg", class: "icon button__icon"
+            = t("authenticate")
+
+    .home-companies
+      %h2.home-heading--small.home-companies-heading Enjoyed by
+
+      .clearfix
+        %ul.home-companies-list
+          = render partial: "company", collection: @companies.shuffle.first(16), as: :company
+
+    .home-languages
+      %h2.home-heading--small.home-languages-heading Currently supported
+
+      %ul.home-languages-list
+        = render partial: "language", collection: @languages, as: :language
+      %p.margin-top-large
+        = link_to "Read more about Hound’s supported linters",
+          "https://help.houndci.com/en/articles/2461415-supported-linters",
+          class: "button"
+
+%section.home-importance
+  .section-content
+    %h2.home-heading--large.home-importance-heading.section-title
+      Why does code quality matter?
+
+    .clearfix
+      %article.home-importance-item
+        .home-importance-text
+          %p.home-heading--small Convention
+          %p
+            Defining and sticking with a consistent style helps reduce the amount of
+            decisions that developers need to make when writing code, helping to
+            keep their focus on logic, not semantics and formatting.
+
+      %article.home-importance-item
+        .home-importance-text
+          %p.home-heading--small Consistency
+          %p
+            When every line of code is written in the same style, the whole
+            codebase becomes easier to read, understand and de-bug. It also
+            helps prevent areas of the codebase from being “owned” by one
+            person's unique style vs. the team.
+
+      %article.home-importance-item
+        .home-importance-text
+          %p.home-heading--small Awesomeness
+          %p
+            A clean codebase is a reflection of a cohesive team. It gives the
+            impression of a team working well together towards a common goal,
+            rather than individual developers working independently.
+
+%section.value{ id: "how-it-works" }
+  .section-content
+    %article.value-section
+      .value-text
+        %h2.home-heading--large
+          How it works.
+        %p
+          Hound integrates with your existing workflow by reviewing and commenting
+          on code the moment a GitHub pull request is opened or updated.
+
+      = image_tag "home-page/hound_flow.png", class: "value-image"
+
+    %article.value-section
+      .value-text
+        %h2.home-heading--large
+          Save time, get better reviews.
+        %p
+          Automated code review with Hound gives developers more time to
+          give the kind of review that humans are best at giving.
+
+      = image_tag "home-page/review_example.png", class: "value-image"
+
+%section.configuration
+  .section-content
+    %figure.configuration-image
+      = image_tag "home-page/guides.png"
+    .configuration-text
+      %h2.home-heading--small
+        Use our guides or configure your own.
+      %p
+        Hound's default style guides build upon accepted industry standards and
+        are the result of years of utilization in software projects at
+        = link_to "thoughtbot.", "http://thoughtbot.com/", new_window_options
+        Have your own style guide or need to modify the default?
+        Hound provides the ability to customize your guides to best suit your
+        team's needs.
+
+%section.home-pricing
+  .section-content#pricing
+    .section-title
+      %h2.home-pricing-heading.home-heading--large
+        Pricing
+
+    %article.plans
+      .clearfix
+        %h3.plan-category
+          Private Repos
+
+        = render(partial: @home.private_plans, as: :plan)
+
+        %h3.plan-category.open-source
+          Open Source
+
+        = render(partial: @home.open_source_plans, as: :plan)
+
+    .home-hero-cta
+      = link_to "/auth/github",
+        method: :post,
+        class: "button button--primary button--large auth" do
+        = svg "github-logomark.svg", class: "icon button__icon"
+        Get started with GitHub
+
+%section.home-security
+  .section-content
+    %article
+      %h2.home-heading--small
+        Uncomfortable giving us access to your code?
+      %p
+        Don’t worry, we get it. Our mission is to help you maintain a clean code
+        base, nothing more. Our security documentation details what kind of
+        access we need and why.
+
+      .home-security-actions
+        = link_to "https://github.com/houndci/hound/blob/master/doc/SECURITY.md",
+          new_window_options(class: "button button--inverted") do
+          %span Read our security policy
