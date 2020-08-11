@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   end
 
   mount Sidekiq::Web, at: "/jobs"
-  mount Split::Dashboard, at: "/split"
 
   get "/auth/github/callback", to: "sessions#create"
   get "/sign_out", to: "sessions#destroy"
