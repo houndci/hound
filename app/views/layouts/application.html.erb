@@ -9,7 +9,7 @@
     <%= javascript_include_tag "https://checkout.stripe.com/checkout.js" %>
     <%= javascript_include_tag "application" %>
     <% if content_for? :meta_description %>
-      <%= tag.meta content: content_for(:meta_description) %>
+      <%= tag.meta content: content_for(:meta_description), name: "description" %>
     <% end %>
     <%= csrf_meta_tags %>
   </head>
