@@ -10,8 +10,6 @@ namespace :billing do
         and repos.private = true --and repos.active = true
       group by owners.id
       order by builds DESC
-      limit 1
-      ;
     SQL
 
     owner_results.each do |owner_result|
@@ -21,7 +19,7 @@ namespace :billing do
         join subscriptions on subscriptions.repo_id = repos.id
         where owners.name = '#{owner_result["name"]}'
           and repos.private = true
-        group by subscriptions.stripe_subscription_id;
+        group by subscriptions.stripe_subscription_id
       SQL
 
       puts "#{owner_result["name"]} (#{owner_result["builds"]} builds)"
