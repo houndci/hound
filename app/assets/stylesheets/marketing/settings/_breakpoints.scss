@@ -1,0 +1,9 @@
+$breakpoints: (
+  "small": 30em,
+  "medium": 48em,
+  "large": 60em,
+);
+
+$breakpoint-small: map-get($breakpoints, "small");
+$breakpoint-medium: map-get($breakpoints, "medium");
+$breakpoint-large: map-get($breakpoints, "large");

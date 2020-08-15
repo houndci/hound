@@ -1,0 +1,6 @@
+html {
+  @media (prefers-reduced-motion: no-preference) {
+    --transition-duration: 200ms;
+    --transition-timing: cubic-bezier(0.39, 0.575, 0.565, 1);
+  }
+}

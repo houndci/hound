@@ -1,0 +1,5 @@
+@each $name, $weight in $font-weights {
+  .u-font-weight-#{$name} {
+    font-weight: $weight;
+  }
+}

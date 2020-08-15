@@ -1,0 +1,42 @@
+$_o-grid-total-columns: 12;
+$_o-grid-column-spans: 2, 3, 4, 6, 8, 9;
+
+.o-grid {
+  --grid-gap: 1rem;
+
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat($_o-grid-total-columns, 1fr);
+
+  @media (min-width: $breakpoint-medium) {
+    --grid-gap: 1.75rem;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    --grid-gap: 2.5rem;
+  }
+}
+
+.o-grid__item {
+  grid-column: span $_o-grid-total-columns;
+}
+
+@each $_o-grid-column-span in $_o-grid-column-spans {
+  .o-grid__item--span-#{$_o-grid-column-span} {
+    grid-column: span $_o-grid-column-span;
+  }
+}
+
+@each $breakpoint, $breakpoint-value in $breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @each $_o-grid-column-span in $_o-grid-column-spans {
+      .o-grid__item--span-#{$_o-grid-column-span}\@#{$breakpoint} {
+        grid-column: span $_o-grid-column-span;
+      }
+    }
+  }
+}
+
+.o-grid--center-items {
+  place-items: center;
+}

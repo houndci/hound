@@ -1,0 +1,73 @@
+.c-page-section {
+  --page-section-block-padding: 5rem;
+
+  background-color: var(--color-background);
+  color: var(--color-text);
+  padding-bottom: var(--page-section-block-padding);
+  padding-top: var(--page-section-block-padding);
+
+  @media (min-width: $breakpoint-medium) {
+    --page-section-block-padding: 6rem;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    --page-section-block-padding: 8rem;
+  }
+}
+
+.c-page-section__header {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 44rem;
+}
+
+.c-page-section__heading {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.c-page-section__lede {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.c-page-section__content {
+  margin-top: 3rem;
+}
+
+.c-page-section--squished {
+  --page-section-block-padding: 3rem;
+
+  @media (min-width: $breakpoint-medium) {
+    --page-section-block-padding: 4rem;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    --page-section-block-padding: 5rem;
+  }
+
+  .c-page-section__heading {
+    font-size: 1.75rem;
+  }
+
+  .c-page-section__lede {
+    font-size: 1.125rem;
+  }
+}
+
+.c-page-section--primary {
+  --color-background: #{$purple};
+  --color-text: #{$white};
+  --color-text-heading: #{$white};
+  --color-text-link: var(--color-text);
+  --color-text-link-hover: var(--color-text-link);
+}
+
+.c-page-section--alternative {
+  --color-background: #{$gray};
+  --color-text: #{$white};
+  --color-text-heading: #{$white};
+  --color-text-link: var(--color-text);
+  --color-text-link-hover: var(--color-text-link);
+}

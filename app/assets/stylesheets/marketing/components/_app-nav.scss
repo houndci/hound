@@ -1,0 +1,43 @@
+$_app-nav-logo-aspect-ratio: 217 / 50;
+$_app-nav-logo-height: 2.5rem;
+$_app-nav-tweakpoint: 47em;
+
+.c-app-nav {
+  --link-text-decoration: none;
+
+  font-size: 1.125rem;
+  font-weight: $font-weight-medium;
+  padding: 2rem;
+}
+
+.c-app-nav__list {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (min-width: $_app-nav-tweakpoint) {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}
+
+.c-app-nav__action {
+  @media (min-width: $_app-nav-tweakpoint) {
+    margin-left: auto;
+  }
+}
+
+.c-app-nav__logo {
+  height: $_app-nav-logo-height;
+  width: $_app-nav-logo-height * $_app-nav-logo-aspect-ratio;
+}
+
+.c-app-nav__logo-link {
+  color: $purple;
+  display: block;
+
+  &:hover {
+    color: $purple-dark;
+  }
+}

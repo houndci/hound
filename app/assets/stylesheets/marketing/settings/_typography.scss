@@ -1,0 +1,21 @@
+$font-family-body: "Tofino", ui-sans-serif, system-ui, -apple-system, sans-serif;
+$font-family-heading: $font-family-body;
+$font-family-code: "Menlo", "Monaco", ui-monospace, monospace;
+
+$font-weights: (
+  "light": 300,
+  "normal": 400,
+  "medium": 500,
+);
+
+$font-weight-light: map-get($font-weights, "light");
+$font-weight-normal: map-get($font-weights, "normal");
+$font-weight-medium: map-get($font-weights, "medium");
+
+html {
+  --line-height-body: 1.5;
+  --line-height-heading: 1.2;
+
+  --link-text-decoration: underline;
+  --link-text-decoration-hover: none;
+}

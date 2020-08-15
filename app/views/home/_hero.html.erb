@@ -1,0 +1,18 @@
+<section class="c-page-hero">
+  <div class="o-container o-container--small">
+    <%= tag.h1 t(".heading"), class: "c-page-hero__heading" %>
+    <%= tag.p t(".lede"), class: "c-page-hero__lede" %>
+
+    <%= link_to(
+      "/auth/github",
+      class: "c-button c-button--primary c-button--large c-page-hero__cta",
+      method: :post,
+    ) do %>
+      <%= svg(
+        "github-logomark.svg",
+        class: "c-button__icon c-button__icon--start"
+      ) %>
+      <%= t("authenticate") %>
+    <% end %>
+  </div>
+</section>

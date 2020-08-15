@@ -1,0 +1,29 @@
+<section class="c-page-section">
+  <div class="o-container">
+    <div class="c-page-section__header">
+      <%= tag.h2 t(".heading"), class: "c-page-section__heading" %>
+      <%= tag.p t(".text_html"), class: "c-page-section__lede" %>
+    </div>
+
+    <div class="c-page-section__content">
+      <picture class="grid__item u-1/1 u-1/2@medium">
+        <%= tag.source(
+          srcset: image_path("home/review_example.webp"),
+          type: "image/webp",
+        ) %>
+
+        <%= tag.source(
+          srcset: image_path("home/review_example.png"),
+          type: "image/png",
+        ) %>
+
+        <%= image_tag(
+          "home/review_example.png",
+          alt: t(".image_alt"),
+          loading: "lazy",
+          size: "1812x1020",
+        ) %>
+      </picture>
+    </div>
+  </div>
+</section>

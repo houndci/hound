@@ -1,0 +1,39 @@
+<footer class="c-app-footer">
+  <ul class="o-list-bare c-app-footer__list">
+    <%= tag.li link_to(
+      t(".source_code"),
+      "https://github.com/houndci/hound",
+      new_window_options,
+    ) %>
+
+    <%= tag.li link_to(
+      t(".help"),
+      ENV.fetch("HELP_URL"),
+      new_window_options,
+    ) %>
+
+    <%= tag.li link_to(
+      t(".terms"),
+      "https://github.com/houndci/hound/blob/master/doc/TERMS.md",
+      new_window_options,
+    ) %>
+
+    <%= tag.li link_to(
+      t(".privacy"),
+      "https://github.com/houndci/hound/blob/master/doc/PRIVACY.md",
+      new_window_options,
+    ) %>
+
+    <%= tag.li link_to(
+      t(".security"),
+      "https://github.com/houndci/hound/blob/master/doc/SECURITY.md",
+      new_window_options,
+    ) %>
+  </ul>
+
+  <%= tag.p(t(
+    ".questions_html",
+    help_center_link: link_to(t(".help_center"), ENV.fetch("HELP_URL"), new_window_options),
+    twitter_link: link_to("@houndci", "https://twitter.com/share?text=@houndci", new_window_options),
+  )) %>
+</footer>

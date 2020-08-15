@@ -1,0 +1,12 @@
+<% content_for :page_title, t(".title") %>
+<% content_for :meta_description, t(".description") %>
+
+<%= render partial: "hero" %>
+<%= render partial: "companies", locals: { companies: @companies } %>
+<%= render partial: "languages", locals: { languages: @languages } %>
+<%= render partial: "code_quality" %>
+<%= render partial: "how_it_works" %>
+<%= render partial: "review" %>
+<%= render partial: "guides" %>
+<%= render partial: "pricing" %>
+<%= render partial: "security" %>
