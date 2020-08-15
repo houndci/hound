@@ -1,0 +1,15 @@
+.c-app-footer {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.c-app-footer__list {
+  --link-text-decoration: none;
+  --link-text-decoration-hover: underline;
+
+  align-items: center;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,19 @@
+.u-text-align-start {
+  text-align: left;
+
+  @supports (text-align: start) {
+    text-align: start;
+  }
+}
+
+.u-text-align-center {
+  text-align: center;
+}
+
+.u-text-align-end {
+  text-align: left;
+
+  @supports (text-align: end) {
+    text-align: end;
+  }
+}

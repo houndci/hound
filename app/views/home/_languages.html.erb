@@ -1,0 +1,25 @@
+<section class="c-page-section">
+  <div class="o-container o-container--small">
+    <div class="c-page-section__header">
+      <%= tag.h2 t(".currently_supported"), class: "c-text-partition" %>
+    </div>
+
+    <div class="c-page-section__content">
+      <ul class="o-grid o-list-bare">
+        <%= render(
+          partial: "language",
+          collection: languages,
+          as: :language,
+        ) %>
+      </ul>
+
+      <p class="u-text-align-center u-margin-top-4">
+        <%= link_to(
+          t(".supported_linters"),
+          "http://help.houndci.com/en/articles/2461415-supported-linters",
+          class: "u-font-weight-medium",
+        ) %>
+      </p>
+    </div>
+  </div>
+</section>

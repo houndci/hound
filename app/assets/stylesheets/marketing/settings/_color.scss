@@ -1,0 +1,19 @@
+$black: #000;
+$white: #fff;
+
+$gray: #6a737d;
+$gray-dark: #586069;
+
+$purple: #a873d1;
+$purple-light: #fbf8fd;
+$purple-dark: #8f62b2;
+
+html {
+  --color-background: #{$white};
+  --color-border: #dcdcdc;
+
+  --color-text: #{$gray};
+  --color-text-heading: #{$gray-dark};
+  --color-text-link: var(--color-text);
+  --color-text-link-hover: #{$purple};
+}

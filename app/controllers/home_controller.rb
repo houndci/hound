@@ -3,6 +3,8 @@ class HomeController < ApplicationController
 
   before_action :redirect_to_repos, if: :signed_in?
 
+  layout "marketing"
+
   def index
     @home = Home.new(current_user || guest)
     @companies = YAML.safe_load(File.read("config/companies.yml"))

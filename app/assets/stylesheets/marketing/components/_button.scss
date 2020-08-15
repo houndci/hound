@@ -1,0 +1,100 @@
+.c-button {
+  --button-background-color: #{$white};
+  --button-background-color-hover: #{$purple-light};
+  --button-block-size: #{$control-block-size};
+  --button-border-color: #{$gray};
+  --button-border-color-hover: #{$purple};
+  --button-font-size: 16px;
+  --button-padding-inline: 1.25em;
+  --button-text-color: var(--color-text);
+  --button-text-color-hover: #{$purple};
+
+  align-items: center;
+  appearance: none;
+  background-color: var(--button-background-color);
+  border: none;
+  border-radius: calc(var(--button-font-size) * 100);
+  box-shadow: inset 0 0 0 1px var(--button-border-color);
+  color: var(--button-text-color);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: var(--button-font-size);
+  font-weight: $font-weight-medium;
+  height: var(--button-block-size);
+  justify-content: center;
+  line-height: 1;
+  padding-left: var(--button-padding-inline);
+  padding-right: var(--button-padding-inline);
+  text-decoration: none;
+  transition-duration: var(--transition-duration);
+  transition-property: background-color, box-shadow, color;
+  transition-timing-function: var(--transition-timing);
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  @supports (block-size: 0) {
+    block-size: var(--button-block-size);
+  }
+
+  @supports (padding-inline: 0) {
+    padding-inline: var(--button-padding-inline);
+  }
+
+  &:hover {
+    background-color: var(--button-background-color-hover);
+    box-shadow: inset 0 0 0 1px var(--button-border-color-hover);
+    color: var(--button-text-color-hover);
+  }
+}
+
+.c-button--primary {
+  --button-background-color: #{$purple};
+  --button-background-color-hover: #{$purple-dark};
+  --button-border-color: transparent;
+  --button-border-color-hover: var(--button-border-color);
+  --button-text-color: #{$white};
+  --button-text-color-hover: #{$white};
+}
+
+.c-button--large {
+  --button-block-size: #{$control-block-size-large};
+  --button-font-size: 1.375rem;
+}
+
+.c-button--full-width {
+  width: 100%;
+
+  @supports (inline-size: 0) {
+    inline-size: 100%;
+  }
+}
+
+.c-button__icon {
+  height: 1em;
+  position: relative;
+  top: -0.0625em;
+  width: 1em;
+
+  @supports (block-size: 0) {
+    block-size: 1em;
+    inline-size: 1em;
+  }
+}
+
+.c-button__icon--start {
+  margin-right: 0.5em;
+
+  @supports (margin-inline-end: 0) {
+    margin-inline-end: 0.5em;
+  }
+}
+
+.c-button__icon--end {
+  margin-left: 0.5em;
+
+  @supports (margin-inline-start: 0) {
+    margin-inline-start: 0.5em;
+  }
+}

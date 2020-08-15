@@ -1,0 +1,17 @@
+<section class="c-page-section">
+  <div class="o-container o-container--small">
+    <div class="c-page-section__header">
+      <%= tag.h2 t(".enjoyed_by"), class: "c-text-partition" %>
+    </div>
+
+    <div class="c-page-section__content">
+      <ul class="o-grid o-grid--center-items o-list-bare">
+        <%= render(
+          partial: "company",
+          collection: companies.shuffle.first(16),
+          as: :company,
+        ) %>
+      </ul>
+    </div>
+  </div>
+</section>

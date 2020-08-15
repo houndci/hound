@@ -1,0 +1,43 @@
+html {
+  color: var(--color-text);
+  font-family: $font-family-body;
+  line-height: var(--line-height-body);
+}
+
+a {
+  color: var(--color-text-link);
+  text-decoration: var(--link-text-decoration);
+  text-decoration-skip-ink: auto;
+  transition-duration: var(--transition-duration);
+  transition-property: color, text-decoration;
+  transition-timing-function: var(--transition-timing);
+
+  &:hover {
+    color: var(--color-text-link-hover);
+    text-decoration: var(--link-text-decoration-hover);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-text-heading);
+  font-family: $font-family-heading;
+  font-weight: $font-weight-medium;
+  line-height: var(--line-height-heading);
+}
+
+strong {
+  font-weight: $font-weight-medium;
+}
+
+dt {
+  font-weight: $font-weight-medium;
+}
+
+code {
+  font-family: $font-family-code;
+}

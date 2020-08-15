@@ -1,0 +1,46 @@
+<section class="c-page-section">
+  <div class="o-container">
+    <div class="c-page-section__header">
+      <%= tag.h2 t(".heading"), class: "c-page-section__heading" %>
+    </div>
+
+    <div class="c-page-section__content">
+      <ol class="o-list-bare o-grid c-page-section__content">
+        <li class="o-grid__item o-grid__item--span-3@medium c-plan">
+          <p class="c-plan__title">Hound</p>
+          <p class="c-plan__allowance">Unlimited <strong>public</strong> repos</p>
+          <p class="c-plan__price"><span class="c-plan__dollar-amount">$0</span> month</p>
+        </li>
+        <li class="o-grid__item o-grid__item--span-3@medium c-plan c-plan--private">
+          <p class="c-plan__title">Chihuahua</p>
+          <p class="c-plan__allowance">Up to <strong>4 private</strong> repos</p>
+          <p class="c-plan__price"><span class="c-plan__dollar-amount">$49</span> month</p>
+        </li>
+        <li class="o-grid__item o-grid__item--span-3@medium c-plan c-plan--private">
+          <p class="c-plan__title">Labrador</p>
+          <p class="c-plan__allowance">Up to <strong>10 private</strong> repos</p>
+          <p class="c-plan__price"><span class="c-plan__dollar-amount">$99</span> month</p>
+        </li>
+        <li class="o-grid__item o-grid__item--span-3@medium c-plan c-plan--private">
+          <p class="c-plan__title">Great Dane</p>
+          <p class="c-plan__allowance">Up to <strong>30 private</strong> repos</p>
+          <p class="c-plan__price"><span class="c-plan__dollar-amount">$249</span> month</p>
+        </li>
+      </ol>
+
+      <div class="u-margin-top-4 u-text-align-center">
+        <%= link_to(
+          "/auth/github",
+          class: "c-button c-button--primary c-button--large",
+          method: :post,
+        ) do %>
+          <%= svg(
+            "github-logomark.svg",
+            class: "c-button__icon c-button__icon--start",
+          ) %>
+          <%= t("get_started") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

@@ -3,34 +3,41 @@
   <head>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <%= tag.title [content_for(:page_title), "Hound"].compact.uniq.join(" - ") %>
+    <%= tag.link(
+      as: "font",
+      crossorigin: "anonymous",
+      href: "https://font.thoughtbot.com/hound/Tofino-Regular.woff",
+      rel: "preload",
+      type: "font/woff",
+    ) %>
+    <%= tag.link(
+      as: "font",
+      crossorigin: "anonymous",
+      href: "https://font.thoughtbot.com/hound/Tofino-Medium.woff",
+      rel: "preload",
+      type: "font/woff",
+    ) %>
     <link rel="preconnect" href="https://github.com">
-    <%= stylesheet_link_tag "application", media: "all" %>
-    <%= javascript_include_tag "https://js.stripe.com/v2/" %>
-    <%= javascript_include_tag "https://checkout.stripe.com/checkout.js" %>
-    <%= javascript_include_tag "application" %>
+    <%= stylesheet_link_tag "marketing", media: "screen" %>
     <% if content_for? :meta_description %>
       <%= tag.meta content: content_for(:meta_description), name: "description" %>
     <% end %>
     <%= csrf_meta_tags %>
   </head>
 
-  <%= tag.body class: content_for(:body_class) || "hound" do %>
-    <%= render "application/app_nav" %>
+  <body>
+    <%= render "application/app_nav_marketing" %>
 
     <% user_facing_flashes.each do |key, value| %>
       <%= tag.div value, class: "flash #{key}" %>
     <% end %>
 
-    <%= tag.main yield, class: "content" %>
+    <%= tag.main yield %>
 
-    <%= render "application/footer" %>
-
-    <%= javascript_tag do %>
-      <%= yield :javascript %>
-    <% end %>
+    <%= render "application/app_footer_marketing" %>
 
     <% if analytics? %>
       <%= render "analytics" %>
     <% end %>
-  <% end %>
+  </body>
 <% end %>

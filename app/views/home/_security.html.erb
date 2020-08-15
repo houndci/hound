@@ -1,0 +1,16 @@
+<section class="c-page-section c-page-section--squished c-page-section--alternative">
+  <div class="o-container o-container--small">
+    <div class="c-page-section__header">
+      <%= tag.h2 t(".heading_html"), class: "c-page-section__heading" %>
+      <%= tag.p t(".text_html"), class: "c-page-section__lede" %>
+    </div>
+
+    <div class="c-page-section__content u-text-align-center">
+      <%= link_to(
+        t(".read_policy"),
+        "https://github.com/houndci/hound/blob/master/doc/SECURITY.md",
+        new_window_options(class: "u-font-weight-medium"),
+      ) %>
+    </div>
+  </div>
+</section>

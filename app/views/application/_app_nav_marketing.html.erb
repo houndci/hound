@@ -1,0 +1,38 @@
+<nav class="c-app-nav">
+  <ul class="o-list-bare c-app-nav__list">
+    <%= tag.li active_link_to(
+      svg(
+        "hound-logo.svg",
+        class: "c-app-nav__logo",
+        title: "Hound home",
+      ),
+      signed_in? ? repos_path : root_path,
+      class: "c-app-nav__logo-link u-line-height-0",
+    ) %>
+
+    <%= tag.li link_to(
+      "How it works",
+      root_path(anchor: "how-it-works"),
+    ) %>
+
+    <%= tag.li link_to(
+      "Pricing",
+      root_path(anchor: "pricing"),
+    ) %>
+
+    <li class="c-app-nav__action">
+      <%= link_to(
+        "/auth/github",
+        class: "c-button",
+        method: :post,
+      ) do %>
+        <%= svg(
+          "github-logomark.svg",
+          class: "c-button__icon c-button__icon--start",
+        ) %>
+
+        <%= t("authenticate") %>
+      <% end %>
+    </li>
+  </ul>
+</nav>

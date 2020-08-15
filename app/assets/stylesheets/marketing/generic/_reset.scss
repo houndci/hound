@@ -1,0 +1,23 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  line-height: inherit;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+[hidden] {
+  // stylelint-disable-next-line declaration-no-important
+  display: none !important;
+}

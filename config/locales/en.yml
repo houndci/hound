@@ -1,4 +1,14 @@
 en:
+  application:
+    app_footer_marketing:
+      help: "Help"
+      help_center: "Help Center"
+      privacy: "Privacy"
+      questions_html:
+        "Questions? Try our %{help_center_link} or tweet %{twitter_link}."
+      security: "Security"
+      source_code: "Source Code"
+      terms: "Terms"
   helpers:
     label:
       owner:
@@ -7,6 +17,7 @@ en:
   sync_repos: "Refresh repo list"
   syncing_repos: "Loading..."
   authenticate: "Sign In with GitHub"
+  get_started: "Get started with GitHub"
   sign_out: "Sign Out"
   stop_masquerading: "Stop Masquerading"
   active_repos: "Active repos"
@@ -67,9 +78,71 @@ en:
       success: "Rebuild triggered"
 
   home:
+    code_quality:
+      awesomeness_heading: "Awesomeness"
+      awesomeness_text:
+        "A clean codebase is a reflection of a cohesive team. It gives the
+        impression of a team working well together towards a common goal,
+        rather than individual developers working independently."
+      consistency_heading: "Consistency"
+      consistency_text:
+        "When every line of code is written in the same style, the whole
+        codebase becomes easier to read, understand and de-bug. It also
+        helps prevent areas of the codebase from being “owned” by one
+        person’s unique style vs. the team."
+      convention_heading: "Convention"
+      convention_text:
+        "Defining and sticking with a consistent style helps reduce the amount
+        of decisions that developers need to make when writing code, helping to
+        keep their focus on logic, not semantics and formatting."
+      heading: "Why does code quality matter?"
+    companies:
+      enjoyed_by: "Enjoyed by"
+    guides:
+      heading_html: "Use our guides or configure your&nbsp;own."
+      text_html:
+        "Hound’s default style guides build upon accepted industry standards
+        and are the result of years of utilization in software projects at
+        <a href='https://thoughtbot.com'>thoughtbot</a>. Have your own style
+        guide or need to modify the default? Hound provides the ability to
+        customize your guides to best suit your team’s needs."
+    hero:
+      heading: "Automated code review for GitHub pull requests"
+      lede:
+        "Hound comments on code quality and style issues, allowing you and
+        your team to better review and maintain a clean codebase."
+    how_it_works:
+      heading: "How it works."
+      image_alt:
+        "write code, open a pull request, Hound comments on style violations
+        fix style violations, merge"
+      text_html:
+        "Hound integrates with your existing workflow by reviewing and
+        commenting on code the moment a GitHub pull request is opened
+        or&nbsp;updated."
     index:
-      title: "GitHub Code Review Tool for JS, Ruby, Swift, and more"
       description:
         "Hound is the GitHub code review tool the thoughtbot team wanted but
         never got, so they built it. You can use it too. Now checking Ruby, JS,
         Swift, CoffeeScript, Go, Elixir and more."
+      title: "GitHub Code Review Tool for JS, Ruby, Swift, and more"
+    languages:
+      currently_supported: "Currently supported"
+      supported_linters: "Read more about Hound’s supported linters"
+    pricing:
+      heading: "Pricing"
+    review:
+      heading: "Save time, get better reviews."
+      image_alt:
+        "Hound comments on a GitHub pull request with ‘trailing whitespace
+        detected’ and the team follows up with questions and comments"
+      text_html:
+        "Automated code review with Hound gives developers more time to
+        give the kind of review that humans are best at&nbsp;giving."
+    security:
+      heading_html: "Uncomfortable giving us access to your&nbsp;code?"
+      read_policy: "Read our security policy"
+      text_html:
+        "Don’t worry, we get it. Our mission is to help you maintain a clean
+        code base, nothing more. Our security documentation details what kind
+        of access we need and&nbsp;why."

@@ -1,0 +1,34 @@
+.c-plan {
+  background-image: image-url("hatch-gray.svg");
+  background-repeat: repeat-y;
+  border: 2px solid currentColor;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.25rem 1.25rem calc(1.25rem + 10px);
+}
+
+.c-plan--private {
+  background-image: image-url("hatch-purple.svg");
+  color: $purple;
+}
+
+.c-plan__title {
+  font-size: 1.5rem;
+  font-weight: $font-weight-medium;
+  line-height: var(--line-height-heading);
+  margin-bottom: 0.25rem;
+}
+
+.c-plan__allowance {
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.c-plan__price {
+  margin-top: auto;
+}
+
+.c-plan__dollar-amount {
+  font-size: 1.5rem;
+}
