@@ -1,20 +1,6 @@
 require "rails_helper"
 
 RSpec.feature "User activates a repo", :js do
-  scenario "that is whitelisted" do
-    user = create(:user)
-    repo = create(:repo, :private, name: "foo/bar")
-    create(:owner, whitelisted: true, repos: [repo])
-    create(:membership, :admin, repo: repo, user: user)
-    stub_repository_invitations(repo.name)
-
-    sign_in_as(user, "letmein")
-    click_on "Activate"
-    find("[role=navigation]").hover
-
-    expect(page).to have_text "Active"
-  end
-
   scenario "user upgrades from free plan" do
     user = create(:user, :stripe)
     repo = create(:repo, :private)
