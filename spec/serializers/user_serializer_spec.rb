@@ -13,11 +13,10 @@ RSpec.describe UserSerializer do
 
   describe "#plan_max" do
     it "returns the number of subscriptions allowed within the current plan" do
-      subscription = create(:subscription)
-      user = create(:user, subscriptions: [subscription])
+      user = create(:user)
       serializer = UserSerializer.new(user)
 
-      expect(serializer.object.plan_max).to eq 4
+      expect(serializer.object.plan_max).to eq 0
     end
   end
 end

@@ -35,7 +35,7 @@ describe User do
       subscription = create(:subscription)
       user = subscription.user
 
-      expect(user.next_plan_price).to eq 49
+      expect(user.next_plan_price).to eq 29
     end
   end
 

@@ -2,12 +2,10 @@ require "rails_helper"
 
 describe PaymentGatewaySubscription do
   describe "#subscribe" do
-    it "sets the plan to the upgraded tier" do
-      plan_id = "tier1"
+    it "adds the repo ID to the subscription's metadata" do
       repo_id = 1
       stripe_subscription = MockStripeSubscription.new(repo_ids: ["1"])
-      next_plan = instance_double("StripePlan", id: plan_id)
-      user = instance_double("User", next_plan: next_plan)
+      user = instance_double("User")
       subscription = PaymentGatewaySubscription.new(
         stripe_subscription: stripe_subscription,
         user: user,
@@ -17,17 +15,14 @@ describe PaymentGatewaySubscription do
 
       expect(stripe_subscription).to be_saved
       expect(stripe_subscription.metadata).to eq("repo_ids" => repo_id.to_s)
-      expect(stripe_subscription.plan).to eq plan_id
     end
   end
 
   describe "#unsubscribe" do
-    it "sets the plan to the downgraded tier" do
-      plan_id = "basic"
+    it "removes the repo ID from the subscription's metadata" do
       repo_id = 1
       stripe_subscription = MockStripeSubscription.new(repo_ids: [repo_id])
-      plan = instance_double("StripePlan", id: plan_id)
-      user = instance_double("User", previous_plan: plan)
+      user = instance_double("User")
       subscription = PaymentGatewaySubscription.new(
         stripe_subscription: stripe_subscription,
         user: user,
@@ -37,7 +32,6 @@ describe PaymentGatewaySubscription do
 
       expect(stripe_subscription).to be_saved
       expect(stripe_subscription.metadata).to eq("repo_ids" => nil)
-      expect(stripe_subscription.plan).to eq plan_id
     end
   end
 

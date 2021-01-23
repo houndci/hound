@@ -18,13 +18,11 @@ class PaymentGatewaySubscription
 
   def subscribe(repo_id)
     append_repo_id_to_metadata(repo_id)
-    self.plan = user.next_plan.id
     save
   end
 
   def unsubscribe(repo_id)
     remove_repo_id_from_metadata(repo_id)
-    self.plan = downgraded_plan
     save
   end
 
@@ -48,10 +46,6 @@ class PaymentGatewaySubscription
     else
       Array(metadata["repo_id"])
     end
-  end
-
-  def downgraded_plan
-    user.previous_plan.id
   end
 
   def stripe_plan
