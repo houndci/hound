@@ -6,19 +6,9 @@ class RepoSerializer < ActiveModel::Serializer
     :github_id,
     :id,
     :owner,
-    :price_in_cents,
     :private,
     :stripe_subscription_id,
   )
-
-  def price_in_cents
-    if object.public? || object.owner.whitelisted?
-      0
-    else
-      plan_selector = PlanSelector.new(user: scope, repo: object)
-      plan_selector.next_plan.price * 100
-    end
-  end
 
   def admin
     has_admin_membership? || has_subscription?

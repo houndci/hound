@@ -59,36 +59,4 @@ describe RepoSerializer do
       end
     end
   end
-
-  describe "#price_in_cents" do
-    it "returns zero" do
-      repo = create(:repo, private: false)
-      membership = create(:membership, admin: true)
-      user = membership.user
-      serializer = RepoSerializer.new(
-        repo,
-        scope: user,
-        scope_name: :current_user,
-      )
-
-      expect(serializer.price_in_cents).to be_zero
-    end
-
-    context "when the repo is private" do
-      context "and the repo was activated" do
-        it "returns subscription price in cents" do
-          repo = create(:repo, private: true)
-          membership = create(:membership, admin: true, repo: repo)
-          user = membership.user
-          serializer = RepoSerializer.new(
-            repo,
-            scope: user,
-            scope_name: :current_user,
-          )
-
-          expect(serializer.price_in_cents).to eq(user.next_plan_price * 100)
-        end
-      end
-    end
-  end
 end

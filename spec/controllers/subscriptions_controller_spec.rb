@@ -196,7 +196,6 @@ describe SubscriptionsController do
             properties: {
               name: repo.name,
               private: true,
-              revenue: -subscribed_user.next_plan_price,
             },
           )
       end
