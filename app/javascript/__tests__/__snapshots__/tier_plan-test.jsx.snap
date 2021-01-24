@@ -86,7 +86,7 @@ exports[`renders appropriately (current plan) 1`] = `
       <strong>
         4
       </strong>
-       Repos
+       Reviews
     </div>
   </div>
   <div
@@ -121,7 +121,7 @@ exports[`renders appropriately (neither current nor new plan) 1`] = `
       <strong>
         4
       </strong>
-       Repos
+       Reviews
     </div>
   </div>
   <div
@@ -165,7 +165,7 @@ exports[`renders appropriately (new plan) 1`] = `
       <strong>
         4
       </strong>
-       Repos
+       Reviews
     </div>
   </div>
   <div
