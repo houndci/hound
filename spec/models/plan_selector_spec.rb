@@ -114,8 +114,8 @@ RSpec.describe PlanSelector do
             subscribed_repos: Array.new(1) { double },
             metered_plan?: true,
             payment_gateway_subscription: double(
-              plan: MeteredStripePlan::PLANS[0]["id"]
-            )
+              plan: MeteredStripePlan::PLANS[0]["id"],
+            ),
           )
           repo = instance_double(
             "Repo",
