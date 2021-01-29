@@ -75,7 +75,7 @@ describe SubscriptionsController do
       it "deactivates repo" do
         repo = create(:repo, private: true)
         user = create(:user, :stripe)
-        membership = create(:membership, repo: repo, user: user)
+        create(:membership, repo: repo, user: user)
         create(:subscription, repo: repo, user: user)
         deactivate_repo = instance_double("DeactivateRepo", call: nil)
         allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)

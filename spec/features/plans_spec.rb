@@ -58,10 +58,10 @@ RSpec.feature "Plans" do
     stub_customer_find_request
     stub_subscription_create_request(
       plan: MeteredStripePlan::PLANS.second.fetch(:id),
-      repo_ids: repo.id
+      repo_ids: repo.id,
     )
     stub_subscription_update_request(
-      repo_ids: repo.id
+      repo_ids: repo.id,
     )
 
     sign_in_as(user)
