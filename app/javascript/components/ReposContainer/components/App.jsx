@@ -180,7 +180,7 @@ export default class App extends React.Component {
         this.deactivateUnsubscribedRepo(repo);
       }
     } else {
-      if (repo.price_in_cents > 0) {
+      if (repo.private) {
         this.createSubscriptionWithExistingCard(repo);
       } else {
         this.activateFreeRepo(repo);
@@ -228,22 +228,15 @@ export default class App extends React.Component {
   }
 
   trackRepoActivated(repo) {
-    let eventName = null, price = null;
+    let eventName = null;
 
     if (repo.private) {
       eventName = "Private Repo Activated";
-      price = repo.price_in_cents / 100;
     } else {
       eventName = "Public Repo Activated";
-      price = 0.0;
     }
 
-    window.analytics.track(eventName, {
-      properties: {
-        name: repo.name,
-        revenue: price
-      }
-    });
+    window.analytics.track(eventName, { properties: { name: repo.name } });
   }
 
   render() {

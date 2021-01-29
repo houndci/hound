@@ -30,8 +30,7 @@ export default class Repo extends React.Component {
 
   render() {
     const { isProcessingId, repo } = this.props;
-    const { active, id, name, price_in_cents } = repo;
-    const showPrivate = price_in_cents > 0;
+    const { active, id, name } = repo;
 
     return (
       <li
@@ -46,7 +45,7 @@ export default class Repo extends React.Component {
           {name}
         </div>
 
-        { showPrivate &&
+        { repo.private &&
           <span className="badge margin-left-small">
             Private
           </span>

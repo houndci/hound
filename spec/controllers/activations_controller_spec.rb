@@ -16,7 +16,6 @@ describe ActivationsController, "#create" do
         "admin" => false,
         "github_id" => repo.github_id,
         "name" => repo.name,
-        "price_in_cents" => 0,
         "private" => false,
         "stripe_subscription_id" => nil,
         "owner" => {

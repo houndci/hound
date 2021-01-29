@@ -61,7 +61,7 @@ class Owner < ApplicationRecord
   end
 
   def metered_plan?
-    whitelisted?
+    marketplace_plan_id.blank?
   end
 
   private

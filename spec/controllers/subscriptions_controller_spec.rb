@@ -1,14 +1,61 @@
 require "rails_helper"
 
-describe SubscriptionsController, "#create" do
-  context "when subscription succeeds" do
-    context "with Stripe subscription" do
-      it "subscribes the user to the repo" do
-        repo = create(:repo, private: true)
-        membership = create(:membership, repo: repo)
-        create(:subscription, repo: repo, user: membership.user)
+describe SubscriptionsController do
+  describe "#create" do
+    context "when subscription succeeds" do
+      context "with Metered subscription" do
+        it "subscribes the user to the repo" do
+          repo = create(:repo, private: true)
+          user = create(:user, :stripe)
+          membership = create(:membership, repo: repo, user: user)
+          create(:subscription, repo: repo, user: user)
+          allow(RepoSubscriber).to receive(:subscribe).and_return(true)
+          stub_sign_in(user)
+          stub_customer_find_request_with_subscriptions
+
+          post(
+            :create,
+            params: {
+              repo_id: repo.id,
+              card_token: "cardtoken",
+              email: "jimtom@example.com",
+            },
+            format: :json,
+          )
+
+          expect(RepoSubscriber).to have_received(:subscribe).
+            with(repo, membership.user, "cardtoken")
+        end
+      end
+
+      context "with GitHub subscription" do
+        it "subscribes the user to the repo" do
+          repo = create(:repo, private: true)
+          repo.owner.update!(marketplace_plan_id: GitHubPlan::PLANS.last[:id])
+          membership = create(:membership, repo: repo)
+          allow(RepoSubscriber).to receive(:subscribe)
+          stub_sign_in(membership.user)
+
+          post(
+            :create,
+            params: {
+              repo_id: repo.id,
+              card_token: "cardtoken",
+              email: "jimtom@example.com",
+            },
+            format: :json,
+          )
+
+          expect(RepoSubscriber).not_to have_received(:subscribe)
+        end
+      end
+
+      it "updates the current user's email address" do
+        user = create(:user, email: nil)
+        repo = create(:repo)
+        user.repos << repo
         allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-        stub_sign_in(membership.user)
+        stub_sign_in(user)
 
         post(
           :create,
@@ -20,81 +67,40 @@ describe SubscriptionsController, "#create" do
           format: :json,
         )
 
-        expect(RepoSubscriber).to have_received(:subscribe).
-          with(repo, membership.user, "cardtoken")
+        expect(user.reload.email).to eq "jimtom@example.com"
       end
     end
 
-    context "with GitHub subscription" do
-      it "subscribes the user to the repo" do
+    context "when subscription fails" do
+      it "deactivates repo" do
         repo = create(:repo, private: true)
-        repo.owner.update!(marketplace_plan_id: GitHubPlan::PLANS.last[:id])
-        membership = create(:membership, repo: repo)
-        allow(RepoSubscriber).to receive(:subscribe)
-        stub_sign_in(membership.user)
+        user = create(:user, :stripe)
+        create(:membership, repo: repo, user: user)
+        create(:subscription, repo: repo, user: user)
+        deactivate_repo = instance_double("DeactivateRepo", call: nil)
+        allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)
+        allow(RepoSubscriber).to receive(:subscribe).and_return(false)
+        stub_sign_in(user)
+        stub_customer_find_request_with_subscriptions
 
-        post(
-          :create,
-          params: {
-            repo_id: repo.id,
-            card_token: "cardtoken",
-            email: "jimtom@example.com",
-          },
-          format: :json,
-        )
+        post :create, params: { repo_id: repo.id }, format: :json
 
-        expect(RepoSubscriber).not_to have_received(:subscribe)
+        expect(response.code).to eq "502"
+        expect(deactivate_repo).to have_received(:call)
       end
     end
 
-    it "updates the current user's email address" do
-      user = create(:user, email: nil)
-      repo = create(:repo)
-      user.repos << repo
-      allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-      stub_sign_in(user)
+    context "when the current plan is open source (free)" do
+      it "notifies that payment is required" do
+        membership = create(:membership)
+        repo = membership.repo
+        user = membership.user
+        stub_sign_in(user)
 
-      post(
-        :create,
-        params: {
-          repo_id: repo.id,
-          card_token: "cardtoken",
-          email: "jimtom@example.com",
-        },
-        format: :json,
-      )
+        post :create, params: { repo_id: repo.id }
 
-      expect(user.reload.email).to eq "jimtom@example.com"
-    end
-  end
-
-  context "when subscription fails" do
-    it "deactivates repo" do
-      membership = create(:membership)
-      repo = membership.repo
-      create(:subscription, repo: repo, user: membership.user)
-      deactivate_repo = instance_double("DeactivateRepo", call: nil)
-      allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)
-      allow(RepoSubscriber).to receive(:subscribe).and_return(false)
-      stub_sign_in(membership.user)
-
-      post :create, params: { repo_id: repo.id }, format: :json
-
-      expect(response.code).to eq "502"
-      expect(deactivate_repo).to have_received(:call)
-    end
-  end
-
-  context "when the current plan is full" do
-    it "notifies that payment is required" do
-      membership = create(:membership)
-      repo = membership.repo
-      user = membership.user
-      stub_sign_in(user)
-
-      post :create, params: { repo_id: repo.id }
-
-      expect(response).to have_http_status(:payment_required)
+        expect(response).to have_http_status(:payment_required)
+      end
     end
   end
 
@@ -190,7 +196,6 @@ describe SubscriptionsController, "#create" do
             properties: {
               name: repo.name,
               private: true,
-              revenue: -subscribed_user.next_plan_price,
             },
           )
       end

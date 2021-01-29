@@ -38,10 +38,6 @@ export default class App extends React.Component {
     return this.props.plans;
   }
 
-  getTierUsage() {
-    return this.getCurrentPlan().allowance;
-  }
-
   isCurrentPlan(plan) {
     return plan === this.getCurrentPlan();
   }
@@ -72,8 +68,6 @@ export default class App extends React.Component {
       marketplace_upgrade_url,
     } = this.props;
 
-    const tierUsage = this.getTierUsage();
-
     return (
       <section className="tier-change-container">
         <aside className="tier-change-plans">
@@ -83,11 +77,6 @@ export default class App extends React.Component {
         <div className="tier-change-content">
           <h1>Change of Plans</h1>
           <section className="tier-change-description">
-            <div className="allowance large">
-              Private Repos
-              <strong>{tierUsage}/{tierUsage}</strong>
-            </div>
-
             <p><strong>Activating Hound for "{repo_name}" will change the price you pay
             per month.</strong></p>
 

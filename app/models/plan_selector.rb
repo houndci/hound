@@ -17,7 +17,11 @@ class PlanSelector
   end
 
   def upgrade?
-    !!(next_plan && next_plan.allowance > current_plan.allowance)
+    if metered_plan?
+      current_plan.open_source?
+    else
+      !!(next_plan && next_plan.allowance > current_plan.allowance)
+    end
   end
 
   def next_plan

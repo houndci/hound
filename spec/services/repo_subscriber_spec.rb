@@ -14,11 +14,10 @@ describe RepoSubscriber do
           stub_customer_find_request
           update_request = stub_customer_update_request
           subscription_request = stub_subscription_create_request(
-            plan: user.current_plan.id,
+            plan: user.next_plan.id,
             repo_ids: repo.id,
           )
           subscription_update_request = stub_subscription_update_request(
-            plan: user.next_plan.id,
             repo_ids: repo.id,
           )
 
@@ -40,11 +39,10 @@ describe RepoSubscriber do
           )
           stub_customer_find_request
           subscription_request = stub_subscription_create_request(
-            plan: user.current_plan.id,
+            plan: user.next_plan.id,
             repo_ids: repo.id,
           )
           subscription_update_request = stub_subscription_update_request(
-            plan: user.next_plan.id,
             repo_ids: repo.id,
           )
           customer_update_request = stub_customer_update_request(
@@ -60,33 +58,6 @@ describe RepoSubscriber do
             to eq(stripe_subscription_id)
         end
       end
-
-      context "when a subscription exists" do
-        it "increments the Stripe subscription and updates repo subscription" do
-          repo = create(:repo, private: true)
-          user = create(
-            :user,
-            stripe_customer_id: stripe_customer_id,
-            repos: [repo],
-          )
-          stub_customer_find_request_with_subscriptions
-          subscription_update_request = stub_subscription_update_request(
-            plan: "tier1",
-            repo_ids: repo.id,
-          )
-          subscription_create_request = stub_subscription_create_request(
-            plan: "basic",
-            repo_ids: repo.id,
-          )
-
-          RepoSubscriber.subscribe(repo, user, nil)
-
-          expect(subscription_create_request).to have_been_requested
-          expect(subscription_update_request).to have_been_requested
-          expect(repo.subscription.stripe_subscription_id).
-            to eq(stripe_subscription_id)
-        end
-      end
     end
 
     context "when Stripe customer does not exist" do
@@ -95,11 +66,10 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo], stripe_customer_id: "",)
         customer_request = stub_customer_create_request(user)
         subscription_request = stub_subscription_create_request(
-          plan: user.current_plan.id,
+          plan: user.next_plan.id,
           repo_ids: repo.id,
         )
         update_request = stub_subscription_update_request(
-          plan: user.next_plan.id,
           repo_ids: repo.id,
         )
 
@@ -119,7 +89,7 @@ describe RepoSubscriber do
         repo = create(:repo)
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
-        stub_failed_subscription_create_request(user.current_plan.id)
+        stub_failed_subscription_create_request(user.next_plan.id)
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
@@ -130,7 +100,7 @@ describe RepoSubscriber do
         repo = build_stubbed(:repo)
         user = create(:user)
         stub_customer_create_request(user)
-        stub_failed_subscription_create_request(user.current_plan.id)
+        stub_failed_subscription_create_request(user.next_plan.id)
         allow(Raven).to receive(:capture_exception)
 
         RepoSubscriber.subscribe(repo, user, "cardtoken")
@@ -145,11 +115,10 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
         stub_subscription_create_request(
-          plan: user.current_plan.id,
+          plan: user.next_plan.id,
           repo_ids: repo.id,
         )
         stub_subscription_update_request(
-          plan: user.next_plan.id,
           repo_ids: repo.id,
         )
         allow(repo).to receive(:create_subscription!).and_raise(StandardError)
@@ -184,7 +153,6 @@ describe RepoSubscriber do
       stub_subscription_find_request(subscription, quantity: 2)
       stripe_delete_request = stub_subscription_delete_request
       subscription_update_request = stub_subscription_update_request(
-        plan: "basic",
         repo_ids: "",
       )
 

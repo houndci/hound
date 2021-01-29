@@ -11,11 +11,13 @@ feature "user deactivates a repo", js: true do
         gateway_subscription = instance_double(
           "PaymentGatewaySubscription",
           unsubscribe: true,
+          plan: "plan_FXpsAlar939qfx",
         )
         payment_gateway_customer = instance_double(
           "PaymentGatewayCustomer",
           retrieve_subscription: gateway_subscription,
           email: user.email,
+          subscription: gateway_subscription,
         )
         allow(PaymentGatewayCustomer).
           to receive(:new).
@@ -32,48 +34,5 @@ feature "user deactivates a repo", js: true do
         expect(page).not_to have_text(repo.name)
       end
     end
-  end
-
-  scenario "user deactivates within a plan" do
-    user = create(:user, :stripe)
-    first_subscription = create(:subscription, user: user)
-    second_subscription = create(:subscription, user: user)
-    stub_customer_find_request
-    stub_subscription_find_request(first_subscription)
-    stub_subscription_find_request(second_subscription)
-    stub_subscription_update_request(plan: "tier1", repo_ids: "")
-
-    sign_in_as(user, "letmein")
-    find(".organization:nth-of-type(1) .repo-toggle").click
-
-    expect(page).to have_text "Private Repos 1 / 4"
-  end
-
-  scenario "user downgrades to lower plan" do
-    user = create(:user, :stripe)
-    5.times do
-      subscription = create(:subscription, user: user)
-      stub_subscription_find_request(subscription)
-    end
-    stub_customer_find_request
-    stub_subscription_update_request(plan: "tier1", repo_ids: "")
-
-    sign_in_as(user, "letmein")
-    find(".organization:nth-of-type(1) .repo-toggle").click
-
-    expect(page).to have_text "Private Repos 4 / 4"
-  end
-
-  scenario "user downgrades to free tier" do
-    user = create(:user, :stripe)
-    subscription = create(:subscription, user: user)
-    stub_subscription_find_request(subscription)
-    stub_customer_find_request
-    stub_subscription_update_request(plan: "basic", repo_ids: "")
-
-    sign_in_as(user, "letmein")
-    find(".repo--active:nth-of-type(1) .repo-toggle").click
-
-    expect(page).to_not have_css(".allowance")
   end
 end

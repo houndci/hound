@@ -96,11 +96,34 @@ RSpec.describe PlanSelector do
             user = instance_double(
               "User",
               subscribed_repos: double(size: test_data[:repos]),
+              metered_plan?: false,
             )
             plan_selector = described_class.new(user: user, repo: repo)
 
             expect(plan_selector.upgrade?).to eq(test_data[:expected])
           end
+        end
+      end
+    end
+
+    context "user is a MeteredStripe subscriber" do
+      context "when the current plan is open source (free)" do
+        it "returns true" do
+          user = instance_double(
+            "User",
+            subscribed_repos: Array.new(1) { double },
+            metered_plan?: true,
+            payment_gateway_subscription: double(
+              plan: MeteredStripePlan::PLANS[0]["id"],
+            ),
+          )
+          repo = instance_double(
+            "Repo",
+            owner: double.as_null_object,
+          )
+          plan_selector = PlanSelector.new(user: user, repo: repo)
+
+          expect(plan_selector).to be_upgrade
         end
       end
     end

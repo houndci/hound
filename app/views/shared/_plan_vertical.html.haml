@@ -9,8 +9,7 @@
       %strong= number_with_delimiter(allowance)
       = current_user.metered_plan? ? "Reviews" : "Repos"
     - else
-      Unlimited Public
-      = current_user.metered_plan? ? "Repo Reviews" : "Repos"
+      Unlimited
   .plan-price
     = number_to_currency(price, precision: 0)
     %small month

@@ -37,7 +37,7 @@ export default class TierPlan extends React.Component {
 
     if (plan.allowance > 0) {
       allowance = <div className="plan-allowance">
-        Up to <strong>{plan.allowance}</strong> Repos
+        Up to <strong>{plan.allowance.toLocaleString()}</strong> Reviews
       </div>;
     } else {
       allowance = <div className="plan-allowance">

@@ -30,8 +30,14 @@ class RepoSubscriber
   def create_subscription
     plan_selector = PlanSelector.new(user: user, repo: repo)
 
+    plan = if plan_selector.current_plan.open_source?
+      plan_selector.next_plan
+    else
+      plan_selector.current_plan
+    end
+
     payment_gateway_subscription = stripe_customer.find_or_create_subscription(
-      plan: plan_selector.current_plan.id,
+      plan: plan.id,
       repo_id: repo.id,
     )
 
@@ -40,7 +46,7 @@ class RepoSubscriber
     repo.create_subscription!(
       user_id: user.id,
       stripe_subscription_id: payment_gateway_subscription.id,
-      price: plan_selector.next_plan.price,
+      price: plan.price,
     )
   rescue => error
     report_exception(error)

@@ -27,32 +27,44 @@ feature "Account" do
     visit account_path
 
     plans = page.all(".plan")
-    expect(plans.count).to eq 4
+    expect(plans.count).to eq 6
 
     within(plans[0]) do
       expect(page).to have_text("CURRENT PLAN")
 
-      expect(find(".plan-title")).to have_text "Hound"
+      expect(find(".plan-title")).to have_text "Open Source"
       expect(find(".plan-allowance")).to have_text "Unlimited"
       expect(find(".plan-price")).to have_text "$0 month"
     end
 
     within(plans[1]) do
       expect(find(".plan-title")).to have_text "Chihuahua"
-      expect(find(".plan-allowance")).to have_text "Up to 4 Repos"
-      expect(find(".plan-price")).to have_text "$49 month"
+      expect(find(".plan-allowance")).to have_text "Up to 50 Reviews"
+      expect(find(".plan-price")).to have_text "$29 month"
     end
 
     within(plans[2]) do
-      expect(find(".plan-title")).to have_text "Labrador"
-      expect(find(".plan-allowance")).to have_text "Up to 10 Repos"
-      expect(find(".plan-price")).to have_text "$99 month"
+      expect(find(".plan-title")).to have_text "Terrier"
+      expect(find(".plan-allowance")).to have_text "Up to 300 Reviews"
+      expect(find(".plan-price")).to have_text "$49 month"
     end
 
     within(plans[3]) do
+      expect(find(".plan-title")).to have_text "Labrador"
+      expect(find(".plan-allowance")).to have_text "Up to 1,000 Reviews"
+      expect(find(".plan-price")).to have_text "$99 month"
+    end
+
+    within(plans[4]) do
+      expect(find(".plan-title")).to have_text "Husky"
+      expect(find(".plan-allowance")).to have_text "Up to 3,000 Reviews"
+      expect(find(".plan-price")).to have_text "$199 month"
+    end
+
+    within(plans[5]) do
       expect(find(".plan-title")).to have_text "Great Dane"
-      expect(find(".plan-allowance")).to have_text "Up to 30 Repos"
-      expect(find(".plan-price")).to have_text "$249 month"
+      expect(find(".plan-allowance")).to have_text "Up to 10,000 Reviews"
+      expect(find(".plan-price")).to have_text "$299 month"
     end
   end
 
@@ -70,9 +82,7 @@ feature "Account" do
     visit account_path
 
     within(".itemized-receipt") do
-      expect(page).to have_text("Chihuahua")
-      expect(page).to have_text(4)
-      expect(page).to have_text(3)
+      expect(page).to have_text("Great Dane")
       expect(page).to have_text("$49")
     end
   end
@@ -91,9 +101,7 @@ feature "Account" do
     visit account_path
 
     within(".itemized-receipt") do
-      expect(page).to have_text("Chihuahua")
-      expect(page).to have_text(4)
-      expect(page).to have_text(3)
+      expect(page).to have_text("Great Dane")
       expect(page).to have_text("$250")
     end
   end
@@ -112,10 +120,8 @@ feature "Account" do
     visit account_path
 
     within(".itemized-receipt") do
-      expect(page).to have_text("Chihuahua")
-      expect(page).to have_text(4)
-      expect(page).to have_text(3)
-      expect(page).to have_text("$200")
+      expect(page).to have_text("Great Dane")
+      expect(page).to have_text("$24.50")
     end
   end
 

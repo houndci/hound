@@ -27,7 +27,6 @@ describe DeactivationsController, "#create" do
           properties: {
             name: repo.name,
             private: false,
-            revenue: -membership.user.next_plan_price,
           }
         )
     end

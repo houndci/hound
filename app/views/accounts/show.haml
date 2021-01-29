@@ -38,7 +38,7 @@
                   = number_with_delimiter(@account_page.recent_builds)
                 %td
                   = number_to_currency(@account_page.total_monthly_cost,
-                      precision: 0,
+                      precision: 2,
                     )
         - else
           %table.itemized-receipt
