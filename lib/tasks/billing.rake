@@ -2,7 +2,7 @@ namespace :billing do
   desc "Report on paying customers, their usage, and current plan(s)"
   task report: :environment do
     owner_results = Owner.connection.execute(<<~SQL)
-      select count(*) as builds, owners.name, owners.organization, owners.whitelisted, owners.marketplace_plan_id from builds
+      select count(*) as builds, owners.name, owners.organization, owners.marketplace_plan_id from builds
       join repos on repos.id = builds.repo_id
       join owners on owners.id = repos.owner_id
       where DATE(builds.created_at) > DATE(now() - interval '30 days')
@@ -24,8 +24,10 @@ namespace :billing do
 
       puts "#{owner_result["name"]}"
       puts " - #{owner_result["builds"]} builds"
-      puts " - Whitelisted? #{owner_result["whitelisted"] ? "Yes" : "No"}"
-      puts " - Marketplace? #{owner_result["marketplace_plan_id"] ? "Yes" : "No"}"
+
+      if owner_result["marketplace_plan_id"].present?
+        puts " - Marketplace!"
+      end
 
       stripe_subscription_results.each do |stripe_subscription_result|
         stripe_sub = Stripe::Subscription.retrieve(stripe_subscription_result["stripe_subscription_id"])
