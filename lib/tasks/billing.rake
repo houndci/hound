@@ -34,7 +34,9 @@ namespace :billing do
         stripe_sub = Stripe::Subscription.retrieve(stripe_subscription_result["stripe_subscription_id"])
 
         if stripe_sub.status == "active"
-          puts "* #{stripe_sub.plan.nickname} $#{stripe_sub.plan.amount / 100} (#{stripe_sub.id})"
+          puts "* #{stripe_sub.plan.nickname} $#{stripe_sub.plan.amount / 100} - #{stripe_sub.id}"
+        else
+          puts "* #{stripe_sub.plan.nickname} (inactive) $#{stripe_sub.plan.amount / 100} - #{stripe_sub.id}"
         end
       end
 
