@@ -35,8 +35,6 @@ namespace :billing do
 
         if stripe_sub.status == "active"
           puts "* #{stripe_sub.plan.nickname} $#{stripe_sub.plan.amount / 100} - #{stripe_sub.id}"
-        else
-          puts "* #{stripe_sub.plan.nickname} (INACTIVE) $#{stripe_sub.plan.amount / 100} - #{stripe_sub.id}"
         end
       end
 
