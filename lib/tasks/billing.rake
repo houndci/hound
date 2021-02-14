@@ -23,7 +23,7 @@ namespace :billing do
       SQL
 
       if owner_result["marketplace_plan_id"].present?
-        puts "#{owner_result["name"]} (marketplace)"
+        puts "#{owner_result["name"]} (MARKETPLACE)"
       else
         puts "#{owner_result["name"]}"
       end
@@ -36,7 +36,7 @@ namespace :billing do
         if stripe_sub.status == "active"
           puts "* #{stripe_sub.plan.nickname} $#{stripe_sub.plan.amount / 100} - #{stripe_sub.id}"
         else
-          puts "* #{stripe_sub.plan.nickname} (inactive) $#{stripe_sub.plan.amount / 100} - #{stripe_sub.id}"
+          puts "* #{stripe_sub.plan.nickname} (INACTIVE) $#{stripe_sub.plan.amount / 100} - #{stripe_sub.id}"
         end
       end
 
