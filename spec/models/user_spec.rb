@@ -11,7 +11,7 @@ describe User do
       user = User.new
 
       expect(user.current_plan).to(
-        eq MeteredStripePlan.new(**MeteredStripePlan::PLANS[0]),
+        eq MeteredStripePlan.new(**MeteredStripePlan::PLANS[0])
       )
     end
   end
@@ -21,7 +21,7 @@ describe User do
       user = User.new
 
       expect(user.next_plan).to(
-        eq MeteredStripePlan.new(**MeteredStripePlan::PLANS[1]),
+        eq MeteredStripePlan.new(**MeteredStripePlan::PLANS[1])
       )
     end
   end
