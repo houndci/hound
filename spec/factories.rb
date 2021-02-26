@@ -75,7 +75,7 @@ FactoryBot.define do
     sequence(:stripe_subscription_id) { |n| "stripesubscription#{n}" }
 
     association :repo, :active, :private
-    price { StripePlan::PLANS[1][:price] }
+    price { MeteredStripePlan::PLANS[1][:price] }
     user
   end
 

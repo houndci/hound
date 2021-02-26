@@ -4,7 +4,7 @@ RSpec.describe AccountPage do
   describe "#allowance" do
     it "returns the allowance of the current plan" do
       allowance = 10
-      plan = instance_double("StripePlan", allowance: allowance)
+      plan = instance_double("MeteredStripePlan", allowance: allowance)
       user = instance_double("User", current_plan: plan)
       page = AccountPage.new(user)
 
@@ -35,7 +35,7 @@ RSpec.describe AccountPage do
   describe "#plan" do
     it "returns the name of the current plan" do
       plan_name = "Chihuahua"
-      plan = instance_double("StripePlan", title: plan_name)
+      plan = instance_double("MeteredStripePlan", title: plan_name)
       user = instance_double("User", current_plan: plan)
       page = AccountPage.new(user)
 
@@ -46,7 +46,7 @@ RSpec.describe AccountPage do
   describe "#plans" do
     it "returns all of the presentable, available plans" do
       presenter = instance_double("PlanPresenter")
-      plan = instance_double("StripePlan")
+      plan = instance_double("MeteredStripePlan")
       user = instance_double("User")
       page = AccountPage.new(user)
       plan_selector = instance_double("PlanSelector", plans: [plan])
