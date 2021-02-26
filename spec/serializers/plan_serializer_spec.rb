@@ -10,7 +10,12 @@ RSpec.describe PlanSerializer do
       allowance = 0
       price = 0
       title = "Hound"
-      plan = MeteredStripePlan.new(id: "foo", title: title, range: 0..0, price: price)
+      plan = MeteredStripePlan.new(
+        id: "foo",
+        title: title,
+        range: 0..0,
+        price: price
+      )
       user = instance_double("User", current_plan: plan)
       serializer = PlanSerializer.new(plan, root: false, scope: user)
 

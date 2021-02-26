@@ -13,7 +13,7 @@ RSpec.describe PlanSelector do
         repo = instance_double(
           "Repo",
           owner: double(
-            marketplace_plan_id: GitHubPlan::PLANS.second[:id]
+            marketplace_plan_id: GitHubPlan::PLANS.second[:id],
           ).as_null_object,
         )
         plan_selector = PlanSelector.new(user: user, repo: repo)
@@ -29,7 +29,7 @@ RSpec.describe PlanSelector do
           "User",
           subscribed_repos: [double],
           payment_gateway_subscription: double(
-            plan: MeteredStripePlan::PLANS.second[:id]
+            plan: MeteredStripePlan::PLANS.second[:id],
           )
         )
         repo = instance_double(
@@ -121,7 +121,7 @@ RSpec.describe PlanSelector do
       repo = instance_double(
         "Repo",
         owner: double(
-          marketplace_plan_id: GitHubPlan::PLANS[2][:id]
+          marketplace_plan_id: GitHubPlan::PLANS[2][:id],
         ).as_null_object,
       )
       plan_selector = PlanSelector.new(user: user, repo: repo)
