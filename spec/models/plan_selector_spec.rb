@@ -1,81 +1,50 @@
 require "active_model/serialization"
 
 require "app/models/plan"
-require "app/models/stripe_plan"
 require "app/models/github_plan"
 require "app/models/metered_stripe_plan"
 require "app/models/plan_selector"
 
 RSpec.describe PlanSelector do
   describe "#current_plan" do
-    it "returns user's current plan" do
-      user = instance_double(
-        "User",
-        subscribed_repos: [double],
-        metered_plan?: false,
-      )
-      repo = instance_double(
-        "Repo",
-        owner: double.as_null_object,
-      )
-      plan_selector = PlanSelector.new(user: user, repo: repo)
+    context "marketplace plan" do
+      it "returns user's current plan" do
+        user = instance_double("User", subscribed_repos: [double])
+        repo = instance_double(
+          "Repo",
+          owner: double(
+            marketplace_plan_id: GitHubPlan::PLANS.second[:id]
+          ).as_null_object,
+        )
+        plan_selector = PlanSelector.new(user: user, repo: repo)
 
-      expect(plan_selector.current_plan).
-        to eq StripePlan.new(**StripePlan::PLANS[1])
+        expect(plan_selector.current_plan).
+          to eq GitHubPlan.new(**GitHubPlan::PLANS.second)
+      end
+    end
+
+    context "metered plan" do
+      it "returns user's current plan" do
+        user = instance_double(
+          "User",
+          subscribed_repos: [double],
+          payment_gateway_subscription: double(
+            plan: MeteredStripePlan::PLANS.second[:id]
+          )
+        )
+        repo = instance_double(
+          "Repo",
+          owner: double.as_null_object,
+        )
+        plan_selector = PlanSelector.new(user: user, repo: repo)
+
+        expect(plan_selector.current_plan).
+          to eq MeteredStripePlan.new(**MeteredStripePlan::PLANS.second)
+      end
     end
   end
 
   describe "#upgrade?" do
-    context "user is a Stripe subscriber" do
-      context "when the next plan is different to the current plan" do
-        it "returns true" do
-          user = instance_double(
-            "User",
-            subscribed_repos: Array.new(4) { double },
-            metered_plan?: false,
-          )
-          repo = instance_double(
-            "Repo",
-            owner: double.as_null_object,
-          )
-          plan_selector = PlanSelector.new(user: user, repo: repo)
-
-          expect(plan_selector).to be_upgrade
-        end
-      end
-
-      context "when the user has no repos" do
-        it "returns true" do
-          user = instance_double(
-            "User",
-            subscribed_repos: [],
-            first_available_repo: double.as_null_object,
-            metered_plan?: false,
-          )
-          plan_selector = PlanSelector.new(user: user, repo: nil)
-
-          expect(plan_selector).to be_upgrade
-        end
-      end
-
-      context "when the next plan is not the same as the current plan" do
-        it "returns false" do
-          user = instance_double(
-            "User",
-            subscribed_repos: Array.new(3) { double },
-            metered_plan?: false,
-          )
-          repo = instance_double(
-            "Repo",
-            owner: double.as_null_object,
-          )
-          plan_selector = PlanSelector.new(user: user, repo: repo)
-
-          expect(plan_selector).not_to be_upgrade
-        end
-      end
-    end
-
     context "user is a GitHub Marketplace subscriber" do
       [
         { current_plan: 0, repos: 0, expected: true },
@@ -96,7 +65,6 @@ RSpec.describe PlanSelector do
             user = instance_double(
               "User",
               subscribed_repos: double(size: test_data[:repos]),
-              metered_plan?: false,
             )
             plan_selector = described_class.new(user: user, repo: repo)
 
@@ -112,7 +80,6 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: Array.new(1) { double },
-            metered_plan?: true,
             payment_gateway_subscription: double(
               plan: MeteredStripePlan::PLANS[0]["id"],
             ),
@@ -136,12 +103,11 @@ RSpec.describe PlanSelector do
           "User",
           subscribed_repos: [],
           first_available_repo: double.as_null_object,
-          metered_plan?: false,
         )
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
         expect(plan_selector.next_plan).
-          to eq StripePlan.new(**StripePlan::PLANS[1])
+          to eq MeteredStripePlan.new(**MeteredStripePlan::PLANS[1])
       end
     end
   end
@@ -150,17 +116,18 @@ RSpec.describe PlanSelector do
     it "returns the second paid plan" do
       user = instance_double(
         "User",
-        subscribed_repos: Array.new(10) { double },
-        metered_plan?: false,
+        subscribed_repos: Array.new(5) { double },
       )
       repo = instance_double(
         "Repo",
-        owner: double.as_null_object,
+        owner: double(
+          marketplace_plan_id: GitHubPlan::PLANS[2][:id]
+        ).as_null_object,
       )
       plan_selector = PlanSelector.new(user: user, repo: repo)
 
       expect(plan_selector.previous_plan).
-        to eq StripePlan.new(StripePlan::PLANS[2])
+        to eq GitHubPlan.new(GitHubPlan::PLANS[1])
     end
   end
 end

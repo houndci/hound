@@ -9,18 +9,16 @@ class PlanSelector
   def current_plan
     if marketplace_plan?
       plans.detect { |plan| plan.id == marketplace_plan_id }
-    elsif metered_plan?
-      plans.detect { |plan| plan.id == user.payment_gateway_subscription.plan }
     else
-      find_plan_by_active_repo_count(active_repo_count)
+      plans.detect { |plan| plan.id == user.payment_gateway_subscription.plan }
     end
   end
 
   def upgrade?
-    if metered_plan?
-      current_plan.open_source?
-    else
+    if marketplace_plan?
       !!(next_plan && next_plan.allowance > current_plan.allowance)
+    else
+      current_plan.open_source?
     end
   end
 
@@ -53,10 +51,8 @@ class PlanSelector
   def plan_class
     if marketplace_plan?
       GitHubPlan
-    elsif metered_plan?
-      MeteredStripePlan
     else
-      StripePlan
+      MeteredStripePlan
     end
   end
 
@@ -66,9 +62,5 @@ class PlanSelector
 
   def active_repo_count
     user.subscribed_repos.size
-  end
-
-  def metered_plan?
-    user.metered_plan?
   end
 end

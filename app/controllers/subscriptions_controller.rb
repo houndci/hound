@@ -7,12 +7,11 @@ class SubscriptionsController < ApplicationController
   def create
     plan_selector = PlanSelector.new(user: current_user, repo: repo)
 
-    if plan_selector.upgrade?
-      render json: {}, status: :payment_required
-    elsif plan_selector.marketplace_plan?
+    if plan_selector.marketplace_plan?
       repo.activate
-
       render json: repo, status: :created
+    elsif plan_selector.upgrade?
+      render json: {}, status: :payment_required
     else
       activate_and_create_subscription
     end
