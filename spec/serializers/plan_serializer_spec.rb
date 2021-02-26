@@ -14,7 +14,7 @@ RSpec.describe PlanSerializer do
         id: "foo",
         title: title,
         range: 0..0,
-        price: price
+        price: price,
       )
       user = instance_double("User", current_plan: plan)
       serializer = PlanSerializer.new(plan, root: false, scope: user)

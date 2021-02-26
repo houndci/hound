@@ -11,7 +11,7 @@ RSpec.describe Home do
     it "returns all the presented plans that are open source" do
       open_source_plan = instance_double(
         "MeteredStripePlan",
-        open_source?: true
+        open_source?: true,
       )
       presenter = instance_double("PlanPresenter")
       private_plan = instance_double("MeteredStripePlan", open_source?: false)
@@ -37,7 +37,7 @@ RSpec.describe Home do
     it "returns all the presented plans that are not open source" do
       open_source_plan = instance_double(
         "MeteredStripePlan",
-        open_source?: true
+        open_source?: true,
       )
       presenter = instance_double("PlanPresenter")
       private_plan = instance_double("MeteredStripePlan", open_source?: false)
