@@ -36,5 +36,11 @@ class MeteredStripePlan < Plan
       title: "Great Dane",
       range: (3_001..10_000),
     },
+    {
+      id: "price_1IRPYr2QAwplLIsJv7ilvH7K",
+      price: 299 * 12,
+      title: "Great Dane (Yearly)",
+      range: (3_001..10_000),
+    },
   ].freeze
 end
