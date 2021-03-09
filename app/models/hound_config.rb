@@ -44,6 +44,12 @@ class HoundConfig
     config["version"]
   end
 
+  def suggestions?(name)
+    config = options_for(name)
+
+    config["suggestions"]
+  end
+
   def fail_on_violations?
     !!content["fail_on_violations"]
   end
