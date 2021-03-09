@@ -34,6 +34,7 @@ describe Linter::Shellcheck do
         content: commit_file.content,
         config: "--- {}\n",
         linter_version: nil,
+        suggestions: false,
       )
     end
   end

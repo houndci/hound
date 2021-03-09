@@ -36,6 +36,7 @@ RSpec.describe Linter::Phpcs do
         content: commit_file.content,
         config: raw_config,
         linter_version: nil,
+        suggestions: false,
       )
     end
   end
