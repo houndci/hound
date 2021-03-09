@@ -201,7 +201,7 @@ describe HoundConfig do
     end
   end
 
-  describe "#suggestions" do
+  describe "#suggestions?" do
     context "when suggestions are enabled" do
       it "returns true" do
         commit = stub_commit(
