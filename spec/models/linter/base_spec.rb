@@ -20,7 +20,7 @@ describe Linter::Test do
         hound_config = instance_double(
           "HoundConfig",
           linter_version: nil,
-          suggestions?: false
+          suggestions?: false,
         )
         linter = build_linter(build: build, hound_config: hound_config)
         commit_file = build_commit_file(filename: "wat.txt")
@@ -45,7 +45,7 @@ describe Linter::Test do
         hound_config = instance_double(
           "HoundConfig",
           linter_version: 1.0,
-          suggestions?: false
+          suggestions?: false,
         )
         linter = build_linter(build: build, hound_config: hound_config)
         commit_file = build_commit_file(filename: "wat.txt")
