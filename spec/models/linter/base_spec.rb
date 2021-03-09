@@ -17,7 +17,11 @@ describe Linter::Test do
     context "when a linter version is not configured" do
       it "enqueues a job without the linter version" do
         build = build(:build, commit_sha: "abc123", pull_request_number: 123)
-        hound_config = instance_double("HoundConfig", linter_version: nil)
+        hound_config = instance_double(
+          "HoundConfig",
+          linter_version: nil,
+          suggestions?: false
+        )
         linter = build_linter(build: build, hound_config: hound_config)
         commit_file = build_commit_file(filename: "wat.txt")
         build_config = instance_double(
@@ -38,7 +42,11 @@ describe Linter::Test do
     context "when a linter version is configured" do
       it "enqueues a job with the linter version" do
         build = build(:build, commit_sha: "abc123", pull_request_number: 123)
-        hound_config = instance_double("HoundConfig", linter_version: 1.0)
+        hound_config = instance_double(
+          "HoundConfig",
+          linter_version: 1.0,
+          suggestions?: false
+        )
         linter = build_linter(build: build, hound_config: hound_config)
         commit_file = build_commit_file(filename: "wat.txt")
         build_config = instance_double(

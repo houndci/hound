@@ -47,7 +47,7 @@ class HoundConfig
   def suggestions?(name)
     config = options_for(name)
 
-    config["suggestions"]
+    !!config["suggestions"]
   end
 
   def fail_on_violations?
