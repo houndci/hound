@@ -201,6 +201,56 @@ describe HoundConfig do
     end
   end
 
+  describe "#suggestions?" do
+    context "when suggestions are enabled" do
+      it "returns true" do
+        commit = stub_commit(
+          ".hound.yml" => <<~CONFIG
+            rubocop:
+              suggestions: true
+          CONFIG
+        )
+        hound_config = build_hound_config(commit)
+
+        version = hound_config.suggestions?("rubocop")
+
+        expect(version).to eq true
+      end
+    end
+
+    context "when suggestions are disabled" do
+      it "returns false" do
+        commit = stub_commit(
+          ".hound.yml" => <<~CONFIG
+            rubocop:
+              suggestions: false
+          CONFIG
+        )
+        hound_config = build_hound_config(commit)
+
+        version = hound_config.suggestions?("rubocop")
+
+        expect(version).to eq false
+      end
+    end
+
+    context "when suggestions are not configured" do
+      it "returns false" do
+        commit = stub_commit(
+          ".hound.yml" => <<~CONFIG
+            rubocop:
+              enabled: true
+          CONFIG
+        )
+        hound_config = build_hound_config(commit)
+
+        version = hound_config.suggestions?("rubocop")
+
+        expect(version).to eq false
+      end
+    end
+  end
+
   describe "#fail_on_violations?" do
     context "when the setting is turned on" do
       it "returns true" do

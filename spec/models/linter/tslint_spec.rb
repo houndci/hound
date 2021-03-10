@@ -35,6 +35,7 @@ describe Linter::Tslint do
         content: commit_file.content,
         config: "{}",
         linter_version: nil,
+        suggestions: false,
       )
     end
   end

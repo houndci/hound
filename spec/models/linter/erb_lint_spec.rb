@@ -34,6 +34,7 @@ describe Linter::ErbLint do
         content: commit_file.content,
         config: {}.to_yaml,
         linter_version: nil,
+        suggestions: false,
       )
     end
   end

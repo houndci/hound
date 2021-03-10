@@ -35,6 +35,7 @@ RSpec.describe Linter::Coffeelint do
         content: commit_file.content,
         config: "{}",
         linter_version: nil,
+        suggestions: false,
       )
     end
   end

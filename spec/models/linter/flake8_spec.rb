@@ -36,6 +36,7 @@ describe Linter::Flake8 do
         content: commit_file.content,
         config: "config",
         linter_version: nil,
+        suggestions: false,
       )
     end
   end

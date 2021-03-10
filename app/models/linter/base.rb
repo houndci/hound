@@ -48,6 +48,7 @@ module Linter
         patch: commit_file.patch,
         pull_request_number: build.pull_request_number,
         linter_version: version,
+        suggestions: suggestions?,
       }
     end
 
@@ -69,6 +70,10 @@ module Linter
 
     def version
       hound_config.linter_version(name)
+    end
+
+    def suggestions?
+      hound_config.suggestions?(name)
     end
   end
 end
