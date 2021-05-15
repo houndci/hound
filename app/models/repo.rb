@@ -39,6 +39,10 @@ class Repo < ApplicationRecord
     end
   end
 
+  def metered_plan?
+    owner.metered_plan?
+  end
+
   def total_violations
     builds.sum(:violations_count)
   end
