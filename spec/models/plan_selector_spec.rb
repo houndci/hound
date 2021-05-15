@@ -16,6 +16,7 @@ RSpec.describe PlanSelector do
       )
       repo = instance_double(
         "Repo",
+        metered_plan?: false,
         owner: double.as_null_object,
       )
       plan_selector = PlanSelector.new(user: user, repo: repo)
@@ -32,11 +33,11 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: Array.new(4) { double },
-            metered_plan?: false,
           )
           repo = instance_double(
             "Repo",
-            owner: double.as_null_object,
+            metered_plan?: false,
+            owner: double(whitelisted?: false, marketplace_plan_id: nil),
           )
           plan_selector = PlanSelector.new(user: user, repo: repo)
 
@@ -49,7 +50,7 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: [],
-            first_available_repo: double.as_null_object,
+            first_available_repo: nil,
             metered_plan?: false,
           )
           plan_selector = PlanSelector.new(user: user, repo: nil)
@@ -112,14 +113,14 @@ RSpec.describe PlanSelector do
           user = instance_double(
             "User",
             subscribed_repos: Array.new(1) { double },
-            metered_plan?: true,
             payment_gateway_subscription: double(
               plan: MeteredStripePlan::PLANS[0]["id"],
             ),
           )
           repo = instance_double(
             "Repo",
-            owner: double.as_null_object,
+            metered_plan?: true,
+            owner: double(whitelisted?: false, marketplace_plan_id: nil),
           )
           plan_selector = PlanSelector.new(user: user, repo: repo)
 
@@ -136,7 +137,6 @@ RSpec.describe PlanSelector do
           "User",
           subscribed_repos: [],
           first_available_repo: double.as_null_object,
-          metered_plan?: false,
         )
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
