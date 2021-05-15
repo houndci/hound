@@ -91,13 +91,13 @@ RSpec.describe PlanSelector do
             current_plan = GitHubPlan::PLANS[test_data[:current_plan]]
             owner = instance_double(
               "Owner",
+              whitelisted?: false,
               marketplace_plan_id: current_plan[:id],
             )
-            repo = instance_double("Repo", owner: owner)
+            repo = instance_double("Repo", owner: owner, metered_plan?: false)
             user = instance_double(
               "User",
               subscribed_repos: double(size: test_data[:repos]),
-              metered_plan?: false,
             )
             plan_selector = described_class.new(user: user, repo: repo)
 
@@ -133,10 +133,12 @@ RSpec.describe PlanSelector do
   describe "#next_plan" do
     context "when the user has no subscribed repos" do
       it "returns the first paid plan" do
+        owner = instance_double("Owner", marketplace_plan_id: nil)
+        repo = instance_double("Repo", owner: owner, metered_plan?: false)
         user = instance_double(
           "User",
           subscribed_repos: [],
-          first_available_repo: double.as_null_object,
+          first_available_repo: repo
         )
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
@@ -148,14 +150,11 @@ RSpec.describe PlanSelector do
 
   describe "#previous_plan" do
     it "returns the second paid plan" do
+      owner = instance_double("Owner", marketplace_plan_id: nil)
+      repo = instance_double("Repo", owner: owner, metered_plan?: false)
       user = instance_double(
         "User",
         subscribed_repos: Array.new(10) { double },
-        metered_plan?: false,
-      )
-      repo = instance_double(
-        "Repo",
-        owner: double.as_null_object,
       )
       plan_selector = PlanSelector.new(user: user, repo: repo)
 

@@ -24,7 +24,8 @@ describe User do
 
   describe "#plan_max" do
     it "returns the current plan's allowance" do
-      user = User.new(subscribed_repos: Array.new(5) { Repo.new })
+      owner = Owner.new(marketplace_plan_id: nil)
+      user = User.new(subscribed_repos: Array.new(5) { Repo.new(owner: owner) })
 
       expect(user.plan_max).to eq StripePlan::PLANS[2][:range].max
     end
