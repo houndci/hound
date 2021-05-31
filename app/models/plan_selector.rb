@@ -17,7 +17,9 @@ class PlanSelector
   end
 
   def upgrade?
-    if metered_plan?
+    if repo&.owner&.whitelisted?
+      false
+    elsif metered_plan?
       current_plan.open_source?
     else
       !!(next_plan && next_plan.allowance > current_plan.allowance)
@@ -69,6 +71,6 @@ class PlanSelector
   end
 
   def metered_plan?
-    user.metered_plan?
+    repo&.metered_plan?
   end
 end
