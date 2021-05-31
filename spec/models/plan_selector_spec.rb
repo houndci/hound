@@ -138,7 +138,7 @@ RSpec.describe PlanSelector do
         user = instance_double(
           "User",
           subscribed_repos: [],
-          first_available_repo: repo
+          first_available_repo: repo,
         )
         plan_selector = PlanSelector.new(user: user, repo: nil)
 
