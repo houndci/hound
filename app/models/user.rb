@@ -18,7 +18,7 @@ class User < ApplicationRecord
   end
 
   def plan_max
-    current_plan.allowance
+    current_plan&.allowance
   end
 
   def to_s
