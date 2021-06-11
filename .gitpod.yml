@@ -1,0 +1,2 @@
+tasks:
+  - init: yarn install && bundle install
