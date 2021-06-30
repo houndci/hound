@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_12_043041) do
+ActiveRecord::Schema.define(version: 2021_06_27_143936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2019_12_12_043041) do
     t.boolean "whitelisted", default: false, null: false
     t.integer "marketplace_plan_id"
     t.string "stripe_subscription_id"
+    t.string "stripe_customer_id"
     t.index ["github_id"], name: "index_owners_on_github_id", unique: true
     t.index ["name"], name: "index_owners_on_name", unique: true
   end
