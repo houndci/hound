@@ -4,6 +4,7 @@ describe UsersController do
   describe "#show" do
     it "returns current user in json" do
       user = create(:user)
+      create(:owner, name: user.username)
       stub_sign_in(user)
 
       get :show, format: :json
