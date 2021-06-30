@@ -17,7 +17,7 @@ RSpec.describe PlanPresenter do
         membership = create(:membership)
         user = membership.user
         create(:subscription, repo: membership.repo, user: user)
-        plan = MeteredStripePlan.new(MeteredStripePlan::PLANS.first)
+        plan = StripePlan::PLANS.first
         presenter = PlanPresenter.new(plan: plan, user: user)
 
         expect(presenter).to be_current
@@ -29,7 +29,7 @@ RSpec.describe PlanPresenter do
         membership = create(:membership)
         user = membership.user
         create(:subscription, repo: membership.repo, user: user)
-        plan = MeteredStripePlan.new(MeteredStripePlan::PLANS.second)
+        plan = StripePlan::PLANS.second
         presenter = PlanPresenter.new(plan: plan, user: user)
 
         expect(presenter).to_not be_current
@@ -43,7 +43,7 @@ RSpec.describe PlanPresenter do
         membership = create(:membership)
         user = membership.user
         create(:subscription, repo: membership.repo, user: user)
-        plan = MeteredStripePlan.new(MeteredStripePlan::PLANS.second)
+        plan = StripePlan::PLANS.second
         presenter = PlanPresenter.new(plan: plan, user: user)
 
         expect(presenter).to be_next
@@ -55,7 +55,7 @@ RSpec.describe PlanPresenter do
         membership = create(:membership)
         user = membership.user
         create(:subscription, repo: membership.repo, user: user)
-        plan = MeteredStripePlan.new(MeteredStripePlan::PLANS.first)
+        plan = StripePlan::PLANS.first
         presenter = PlanPresenter.new(plan: plan, user: user)
 
         expect(presenter).to_not be_next

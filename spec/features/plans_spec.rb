@@ -57,7 +57,7 @@ RSpec.feature "Plans" do
     stub_repository_invitations(repo.name)
     stub_customer_find_request
     stub_subscription_create_request(
-      plan: MeteredStripePlan::PLANS.second.fetch(:id),
+      plan: StripePlan::PLANS.second.fetch(:id),
       repo_ids: repo.id,
     )
     stub_subscription_update_request(

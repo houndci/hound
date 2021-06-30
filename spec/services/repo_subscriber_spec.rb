@@ -14,7 +14,7 @@ describe RepoSubscriber do
           stub_customer_find_request
           update_request = stub_customer_update_request
           subscription_request = stub_subscription_create_request(
-            plan: user.next_plan.id,
+            plan: StripePlan::PLANS[1][:id],
             repo_ids: repo.id,
           )
           subscription_update_request = stub_subscription_update_request(
@@ -39,7 +39,7 @@ describe RepoSubscriber do
           )
           stub_customer_find_request
           subscription_request = stub_subscription_create_request(
-            plan: user.next_plan.id,
+            plan: StripePlan::PLANS[1][:id],
             repo_ids: repo.id,
           )
           subscription_update_request = stub_subscription_update_request(
@@ -66,7 +66,7 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo], stripe_customer_id: "",)
         customer_request = stub_customer_create_request(user)
         subscription_request = stub_subscription_create_request(
-          plan: user.next_plan.id,
+          plan: StripePlan::PLANS[1][:id],
           repo_ids: repo.id,
         )
         update_request = stub_subscription_update_request(repo_ids: repo.id)
@@ -87,7 +87,9 @@ describe RepoSubscriber do
         repo = create(:repo)
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
-        stub_failed_subscription_create_request(user.next_plan.id)
+        stub_failed_subscription_create_request(
+          StripePlan::PLANS[1][:id],
+        )
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
@@ -113,12 +115,10 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
         stub_subscription_create_request(
-          plan: user.next_plan.id,
+          plan: StripePlan::PLANS[1][:id],
           repo_ids: repo.id,
         )
-        stub_subscription_update_request(
-          repo_ids: repo.id,
-        )
+        stub_subscription_update_request(repo_ids: repo.id)
         allow(repo).to receive(:create_subscription!).and_raise(StandardError)
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")

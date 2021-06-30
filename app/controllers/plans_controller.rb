@@ -1,9 +1,4 @@
 class PlansController < ApplicationController
-  MARKETPLACE_URL = ENV.fetch(
-    "MARKETPLACE_URL",
-    "https://www.github.com/marketplace/hound"
-  )
-
   helper_method :plan_selector
 
   def index
@@ -28,7 +23,7 @@ class PlansController < ApplicationController
 
   def marketplace_upgrade_url
     if plan_selector.marketplace_plan?
-      "#{MARKETPLACE_URL}/order/#{plan_selector.next_plan.slug}?account=#{repo.owner.name}"
+      plan_selector.marketplace_upgrade_url
     end
   end
 
