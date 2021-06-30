@@ -20,7 +20,10 @@ class AccountPage
   end
 
   def plans
-    plan_selector = PlanSelector.new(user: user)
+    plan_selector = PlanSelector.new(
+      user: user,
+      repo: user.first_available_repo,
+    )
 
     plan_selector.plans.map do |plan|
       PlanPresenter.new(plan: plan, user: user)

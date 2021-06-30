@@ -8,7 +8,8 @@ describe User do
 
   describe "#current_plan" do
     it "returns the current plan" do
-      user = User.new
+      user = create(:user)
+      create(:owner, name: user.username)
 
       expect(user.current_plan).to eq StripePlan.new(**StripePlan::PLANS[0])
     end
@@ -16,7 +17,8 @@ describe User do
 
   describe "#next_plan" do
     it "returns the next plan" do
-      user = User.new
+      user = create(:user)
+      create(:owner, name: user.username)
 
       expect(user.next_plan).to eq StripePlan.new(**StripePlan::PLANS[1])
     end
@@ -24,20 +26,21 @@ describe User do
 
   describe "#plan_max" do
     it "returns the current plan's allowance" do
-      owner = Owner.new(marketplace_plan_id: nil)
-      repos = Array.new(5) { Repo.new(owner: owner) }
-      user = User.new(subscribed_repos: repos)
+      user = create(:user)
+      create(:owner, :stripe, name: user.username)
+      stub_customer_find_request_with_subscriptions
 
-      expect(user.plan_max).to eq 0
+      expect(user.plan_max).to eq 50
     end
   end
 
   describe "#next_plan_price" do
     it "returns the price of the next plan" do
-      subscription = create(:subscription)
-      user = subscription.user
+      user = create(:user)
+      create(:owner, :stripe, name: user.username)
+      stub_customer_find_request_with_subscriptions
 
-      expect(user.next_plan_price).to eq 29
+      expect(user.next_plan_price).to eq 49
     end
   end
 

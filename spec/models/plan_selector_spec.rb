@@ -9,33 +9,21 @@ RSpec.describe PlanSelector do
   describe "#current_plan" do
     it "returns owner's current plan" do
       plan = StripePlan::PLANS[1]
-      payment_gateway = instance_double(
-        "PaymentGatewaySubscription",
-        plan: plan[:id],
-      )
-      owner = build_owner(payment_gateway_subscription: payment_gateway)
-      user = instance_double("User")
-      repo = instance_double("Repo", owner: owner)
-      plan_selector = PlanSelector.new(user: user, repo: repo)
+      owner = build_owner(stripe_plan_id: plan[:id])
+      plan_selector = PlanSelector.new(owner)
 
       actual = plan_selector.current_plan
 
-      expect(actual).to eq StripePlan.new(plan)
+      expect(actual).to eq StripePlan.new(**plan)
     end
   end
 
   describe "#upgrade?" do
     context "when owner is subscribed via Stripe" do
-      context "when the owner isn't subsribed to any plan" do
+      context "when the owner isn't subscribed to any plan" do
         it "returns true" do
-          payment_gateway = instance_double(
-            "PaymentGatewaySubscription",
-            plan: nil
-          )
-          owner = build_owner(payment_gateway_subscription: payment_gateway)
-          user = instance_double("User")
-          repo = instance_double("Repo", owner: owner)
-          plan_selector = PlanSelector.new(user: user, repo: repo)
+          owner = build_owner(stripe_plan_id: nil)
+          plan_selector = PlanSelector.new(owner)
 
           actual = plan_selector.upgrade?
 
@@ -46,9 +34,7 @@ RSpec.describe PlanSelector do
       context "when recent builds is greater or equal than plan allowance" do
         it "returns true" do
           owner = build_owner(recent_builds: 50)
-          repo = instance_double("Repo", owner: owner)
-          user = instance_double("User")
-          plan_selector = PlanSelector.new(user: user, repo: repo)
+          plan_selector = PlanSelector.new(owner)
 
           actual = plan_selector.upgrade?
 
@@ -59,9 +45,7 @@ RSpec.describe PlanSelector do
       context "recent builds is less than plan allowance" do
         it "returns false" do
           owner = build_owner(recent_builds: 49)
-          repo = instance_double("Repo", owner: owner)
-          user = instance_double("User")
-          plan_selector = PlanSelector.new(user: user, repo: repo)
+          plan_selector = PlanSelector.new(owner)
 
           actual = plan_selector.upgrade?
 
@@ -87,9 +71,7 @@ RSpec.describe PlanSelector do
               marketplace_plan_id: current_plan[:id],
               active_private_repos_count: test_data[:repos],
             )
-            repo = instance_double("Repo", owner: owner)
-            user = instance_double("User")
-            plan_selector = described_class.new(user: user, repo: repo)
+            plan_selector = PlanSelector.new(owner)
 
             actual = plan_selector.upgrade?
 
@@ -103,10 +85,8 @@ RSpec.describe PlanSelector do
   describe "#next_plan" do
     context "when the owner has no subscribed repos" do
       it "returns the first paid plan" do
-        owner = instance_double("Owner")
-        user = instance_double("User", first_active_private_repo: nil)
-        repo = instance_double("Repo", owner: owner)
-        plan_selector = PlanSelector.new(user: user)
+        owner = build_owner(stripe_plan_id: nil)
+        plan_selector = PlanSelector.new(owner)
 
         actual = plan_selector.next_plan
 
@@ -117,9 +97,7 @@ RSpec.describe PlanSelector do
     context "when the user has maxed out recent builds" do
       it "returns the next paid plan" do
         owner = build_owner(recent_builds: 55)
-        repo = instance_double("Repo", owner: owner)
-        user = instance_double("User", first_active_private_repo: repo)
-        plan_selector = PlanSelector.new(user: user)
+        plan_selector = PlanSelector.new(owner)
 
         actual = plan_selector.next_plan
 
@@ -129,15 +107,10 @@ RSpec.describe PlanSelector do
   end
 
   def build_owner(options = {})
-    plan = StripePlan::PLANS[1]
-    payment_gateway_subscription = instance_double(
-      "PaymentGatewaySubscription",
-      plan: plan[:id],
-    )
     default_options = {
+      stripe_plan_id: StripePlan::PLANS[1][:id],
       recent_builds: 0,
       marketplace_plan_id: nil,
-      payment_gateway_subscription: payment_gateway_subscription,
     }
 
     instance_double("Owner", default_options.merge(options))

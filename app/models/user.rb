@@ -72,12 +72,8 @@ class User < ApplicationRecord
     if subscriptions.any?
       subscriptions.first.repo
     else
-      repos.order(:active).first
+      repos.order([:private, :active]).first
     end
-  end
-
-  def first_active_private_repo
-    repos.active.where(private: true).first
   end
 
   def marketplace_user?
@@ -85,11 +81,23 @@ class User < ApplicationRecord
   end
 
   def metered_plan?
-    first_available_repo&.owner&.metered_plan?
+    owner.metered_plan?
   end
 
   def recent_builds
-    first_available_repo.owner.recent_builds
+    owner.recent_builds
+  end
+
+  def owner
+    @_owner ||= begin
+      user_as_owner = Owner.find_by(name: username)
+
+      if user_as_owner.stripe_plan_id.present?
+        user_as_owner
+      else
+        first_available_repo&.owner || user_as_owner
+      end
+    end
   end
 
   private
@@ -104,7 +112,7 @@ class User < ApplicationRecord
   end
 
   def plan_selector
-    @_plan_selector ||= PlanSelector.new(user: self)
+    @_plan_selector ||= PlanSelector.new(owner)
   end
 
   def generate_remember_token

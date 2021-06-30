@@ -5,11 +5,11 @@ class SubscriptionsController < ApplicationController
   before_action :update_email
 
   def create
-    plan_selector = PlanSelector.new(user: current_user, repo: repo)
+    plan_selector = PlanSelector.new(repo.owner)
 
     if plan_selector.paywall?
       render json: {}, status: :payment_required
-    if plan_selector.upgrade?
+    elsif plan_selector.upgrade?
       render json: {}, status: :payment_required
     else
       repo.activate

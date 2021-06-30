@@ -88,6 +88,8 @@ FactoryBot.define do
   end
 
   factory :owner do
+    trait(:stripe) { stripe_customer_id { "cus_2e3fqARc1uHtCv" } }
+
     github_id
     name { generate(:github_name) }
   end
