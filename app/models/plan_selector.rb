@@ -5,11 +5,8 @@ class PlanSelector
     "https://www.github.com/marketplace/hound"
   )
 
-  delegate :owner, to: :repo, allow_nil: true
-
-  def initialize(user:, repo: nil)
-    @user = user
-    @repo = repo || user.first_active_private_repo
+  def initialize(owner)
+    @owner = owner
   end
 
   def paywall?
@@ -24,21 +21,11 @@ class PlanSelector
     end
   end
 
-  def marketplace_plan?
-    marketplace_plan_id.present?
-  end
-
   def current_plan
     if marketplace_plan?
       plans.detect { |plan| plan.id == marketplace_plan_id }
     else
-      if owner
-        plans.detect do |plan|
-          plan.id == owner.payment_gateway_subscription.plan
-        end || free_plan
-      else
-        free_plan
-      end
+      plans.detect { |plan| plan.id == owner.stripe_plan_id } || free_plan
     end
   end
 
@@ -49,19 +36,13 @@ class PlanSelector
     end
   end
 
-  def current_marketplace_plan
-    plans.detect do |plan|
-      plan.range.include?(owner.active_private_repos_count)
-    end
-  end
-
   def plans
     @_plans ||= plan_class::PLANS.map { |plan| plan_class.new(**plan) }
   end
 
   private
 
-  attr_reader :user, :repo
+  attr_reader :owner
 
   def free_plan
     plan_class.new(**plan_class::PLANS[0])
@@ -71,11 +52,15 @@ class PlanSelector
     marketplace_plan? ? GitHubPlan : StripePlan
   end
 
-  def marketplace_plan_id
-    owner&.marketplace_plan_id
+  def marketplace_plan?
+    marketplace_plan_id.present?
   end
 
-  def marketplace_upgrade_url
-    "#{MARKETPLACE_URL}/order/#{next_plan.slug}?account=#{repo&.owner&.name}"
+  def marketplace_plan_id
+    owner.marketplace_plan_id
   end
+
+  # def marketplace_upgrade_url
+  #   "#{MARKETPLACE_URL}/order/#{next_plan.slug}?account=#{owner.name}"
+  # end
 end

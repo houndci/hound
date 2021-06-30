@@ -32,6 +32,6 @@ class Home
   end
 
   def plan_selector
-    PlanSelector.new(user: user)
+    PlanSelector.new(user.owner)
   end
 end
