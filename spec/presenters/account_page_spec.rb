@@ -47,16 +47,14 @@ RSpec.describe AccountPage do
     it "returns all of the presentable, available plans" do
       presenter = instance_double("PlanPresenter")
       plan = instance_double("StripePlan")
-      user = instance_double("User")
+      owner = instance_double("Owner")
+      user = instance_double("User", owner: owner)
       page = AccountPage.new(user)
       plan_selector = instance_double("PlanSelector", plans: [plan])
-      allow(PlanSelector).to(
-        receive(:new).once.with(user: user).and_return(plan_selector)
-      )
-      allow(PlanPresenter).to receive(:new).once.with(
-        plan: plan,
-        user: user,
-      ).and_return(presenter)
+      allow(PlanSelector).to receive(:new).once.with(owner).
+        and_return(plan_selector)
+      allow(PlanPresenter).to receive(:new).once.with(plan: plan, user: user).
+        and_return(presenter)
 
       expect(page.plans).to eq [presenter]
     end
