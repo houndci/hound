@@ -4,9 +4,9 @@ describe PaymentGatewayCustomer do
   describe "#update_card" do
     it "updates card" do
       new_card_token = "newcardtoken"
-      user = build(:user, stripe_customer_id: stripe_customer_id)
+      user = build_stubbed(:user, :stripe)
       customer = PaymentGatewayCustomer.new(user)
-      stub_customer_find_request
+      stub_customer_find_request(user.stripe_customer_id)
       update_request = stub_customer_update_request(card: new_card_token)
 
       customer.update_card(new_card_token)
@@ -18,9 +18,9 @@ describe PaymentGatewayCustomer do
   describe "#update_email" do
     it "updates customer email" do
       new_email = "new-email@example.com"
-      user = build(:user, stripe_customer_id: stripe_customer_id)
+      user = build(:user, :stripe)
       customer = PaymentGatewayCustomer.new(user)
-      stub_customer_find_request
+      stub_customer_find_request(user.stripe_customer_id)
       update_request = stub_customer_update_request(email: new_email)
 
       customer.update_email(new_email)
@@ -31,9 +31,9 @@ describe PaymentGatewayCustomer do
     context "when update request fails" do
       it "returns false" do
         new_email = "new-email@example.com"
-        user = build(:user, stripe_customer_id: stripe_customer_id)
+        user = build_stubbed(:user, :stripe)
         customer = PaymentGatewayCustomer.new(user)
-        stub_customer_find_request
+        stub_customer_find_request(user.stripe_customer_id)
         stub_failed_customer_update_request(email: new_email)
 
         customer = customer.update_email(new_email)
@@ -45,8 +45,8 @@ describe PaymentGatewayCustomer do
 
   describe "#email" do
     it "returns customer email" do
-      user = build_stubbed(:user, stripe_customer_id: stripe_customer_id)
-      stub_customer_find_request
+      user = build_stubbed(:user, :stripe)
+      stub_customer_find_request(user.stripe_customer_id)
       payment_gateway_customer = PaymentGatewayCustomer.new(user)
 
       customer = payment_gateway_customer.customer
@@ -57,11 +57,12 @@ describe PaymentGatewayCustomer do
   describe "#customer" do
     context "when stripe_customer_id is present" do
       it "retrieve customer data" do
-        user = build_stubbed(:user, stripe_customer_id: stripe_customer_id)
-        stub_customer_find_request
+        user = build_stubbed(:user, :stripe)
+        stub_customer_find_request(user.stripe_customer_id)
         payment_gateway_customer = PaymentGatewayCustomer.new(user)
 
-        expect(payment_gateway_customer.customer.id).to eq stripe_customer_id
+        expect(payment_gateway_customer.customer.id).
+          to eq user.stripe_customer_id
       end
     end
 
@@ -103,7 +104,7 @@ describe PaymentGatewayCustomer do
   describe "#subscription" do
     context "when stripe_customer_id is present" do
       it "retrieves subscription data" do
-        user = build_stubbed(:user, stripe_customer_id: stripe_customer_id)
+        user = build_stubbed(:user, :stripe)
         stub_customer_find_request_with_subscriptions
 
         payment_gateway_customer = PaymentGatewayCustomer.new(user)

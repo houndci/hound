@@ -40,6 +40,13 @@ FactoryBot.define do
     initialize_with { new(id: id, price: price, range: range, title: title) }
   end
 
+  factory :owner do
+    trait(:stripe) { stripe_customer_id { "cus_2e3fqARc1uHtCv" } }
+
+    github_id
+    name { generate(:github_name) }
+  end
+
   factory :repo do
     trait(:active) { active { true } }
     trait(:inactive) { active { false } }
@@ -57,9 +64,9 @@ FactoryBot.define do
   end
 
   factory :user do
-    username { generate(:github_name) }
-
     trait(:stripe) { stripe_customer_id { "cus_2e3fqARc1uHtCv" } }
+
+    username { generate(:github_name) }
   end
 
   factory :membership do
@@ -85,12 +92,5 @@ FactoryBot.define do
     patch_position { 1 }
     line_number { 42 }
     messages { ["Trailing whitespace detected."] }
-  end
-
-  factory :owner do
-    trait(:stripe) { stripe_customer_id { "cus_2e3fqARc1uHtCv" } }
-
-    github_id
-    name { generate(:github_name) }
   end
 end

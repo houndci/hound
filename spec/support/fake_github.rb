@@ -31,9 +31,9 @@ class FakeGitHub < Sinatra::Base
     {
       repositories: [
         {
-          full_name: "TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME",
+          full_name: "test_login/test_repo",
           id: 1,
-          owner: { id: 1, login: "TEST_GITHUB_LOGIN" },
+          owner: { id: 1, login: "test_login" },
           permissions: { admin: true },
           private: false,
         },

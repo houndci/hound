@@ -19,7 +19,6 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-    # candidate for removal?
     activate_and_create_subscription
   end
 

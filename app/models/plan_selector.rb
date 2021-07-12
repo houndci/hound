@@ -40,6 +40,10 @@ class PlanSelector
     @_plans ||= plan_class::PLANS.map { |plan| plan_class.new(**plan) }
   end
 
+  def marketplace_plan?
+    marketplace_plan_id.present?
+  end
+
   private
 
   attr_reader :owner
@@ -52,15 +56,11 @@ class PlanSelector
     marketplace_plan? ? GitHubPlan : StripePlan
   end
 
-  def marketplace_plan?
-    marketplace_plan_id.present?
-  end
-
   def marketplace_plan_id
     owner.marketplace_plan_id
   end
 
-  # def marketplace_upgrade_url
-  #   "#{MARKETPLACE_URL}/order/#{next_plan.slug}?account=#{owner.name}"
-  # end
+  def marketplace_upgrade_url
+    "#{MARKETPLACE_URL}/order/#{next_plan.slug}?account=#{owner.name}"
+  end
 end

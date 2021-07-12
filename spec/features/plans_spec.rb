@@ -55,7 +55,7 @@ RSpec.feature "Plans" do
     repo = create(:repo, :private)
     create(:membership, :admin, repo: repo, user: user)
     stub_repository_invitations(repo.name)
-    stub_customer_find_request
+    stub_customer_find_request(user.stripe_customer_id)
     stub_subscription_create_request(
       plan: StripePlan::PLANS.second.fetch(:id),
       repo_ids: repo.id,
