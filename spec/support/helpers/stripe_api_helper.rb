@@ -1,7 +1,7 @@
 module StripeApiHelper
   STRIPE_BASE_URL = "https://api.stripe.com/v1".freeze
-  STRIPE_CUSTOMER_ID = "cus_2e3fqARc1uHtCv"
-  STRIPE_SUBSCRIPTION_ID = "sub_488ZZngNkyRMiR"
+  STRIPE_CUSTOMER_ID = "cus_2e3fqARc1uHtCv".freeze
+  STRIPE_SUBSCRIPTION_ID = "sub_488ZZngNkyRMiR".freeze
 
   def stub_customer_create_request(user)
     stub_request(:post, "#{STRIPE_BASE_URL}/customers").with(

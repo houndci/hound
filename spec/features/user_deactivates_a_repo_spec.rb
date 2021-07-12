@@ -6,9 +6,9 @@ feature "user deactivates a repo", js: true do
       scenario "successfully deactivates the repo" do
         token = "letmein"
         user = create(:user)
-        owner = create(:owner, name: user.username)
         repo = create(:repo, :active, private: true)
         create(:subscription, user: user, repo: repo)
+        create(:owner, name: user.username)
         gateway_subscription = instance_double(
           "PaymentGatewaySubscription",
           unsubscribe: true,
