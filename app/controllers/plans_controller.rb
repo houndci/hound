@@ -18,7 +18,7 @@ class PlansController < ApplicationController
   end
 
   def plan_selector
-    @_plan_selector ||= PlanSelector.new(user: current_user, repo: repo)
+    @_plan_selector ||= PlanSelector.new(repo.owner)
   end
 
   def marketplace_upgrade_url

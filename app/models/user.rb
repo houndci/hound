@@ -92,7 +92,7 @@ class User < ApplicationRecord
     @_owner ||= begin
       user_as_owner = Owner.find_by(name: username)
 
-      if user_as_owner.stripe_plan_id.present?
+      if user_as_owner&.stripe_plan_id.present?
         user_as_owner
       else
         first_available_repo&.owner || user_as_owner
