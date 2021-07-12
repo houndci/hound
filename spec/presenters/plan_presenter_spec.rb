@@ -15,7 +15,7 @@ RSpec.describe PlanPresenter do
     context "when the plan matches the user's current plan" do
       it "returns true" do
         user = create(:user)
-        owner = create(:owner, name: user.username)
+        create(:owner, name: user.username)
         plan = StripePlan.new(**StripePlan::PLANS.first)
         presenter = PlanPresenter.new(plan: plan, user: user)
 
@@ -26,7 +26,7 @@ RSpec.describe PlanPresenter do
     context "when the plan does not match the user's current plan" do
       it "returns false" do
         user = create(:user)
-        owner = create(:owner, name: user.username)
+        create(:owner, name: user.username)
         plan = StripePlan.new(**StripePlan::PLANS.second)
         presenter = PlanPresenter.new(plan: plan, user: user)
 
@@ -39,7 +39,7 @@ RSpec.describe PlanPresenter do
     context "when the plan matches the user's next plan" do
       it "returns true" do
         user = create(:user)
-        owner = create(:owner, name: user.username)
+        create(:owner, name: user.username)
         plan = StripePlan.new(**StripePlan::PLANS.second)
         presenter = PlanPresenter.new(plan: plan, user: user)
 

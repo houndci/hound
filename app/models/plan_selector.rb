@@ -2,7 +2,7 @@ class PlanSelector
   BULK_ID = "bulk".freeze
   MARKETPLACE_URL = ENV.fetch(
     "MARKETPLACE_URL",
-    "https://www.github.com/marketplace/hound"
+    "https://www.github.com/marketplace/hound",
   )
 
   def initialize(owner)
