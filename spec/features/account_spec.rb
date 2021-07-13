@@ -27,7 +27,7 @@ feature "Account" do
     visit account_path
 
     plans = page.all(".plan")
-    expect(plans.count).to eq 6
+    expect(plans.count).to eq 7
 
     within(plans[0]) do
       expect(page).to have_text("CURRENT PLAN")

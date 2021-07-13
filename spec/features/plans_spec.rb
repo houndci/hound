@@ -8,7 +8,7 @@ RSpec.feature "Plans" do
 
     visit plans_path(repo_id: repo.id)
 
-    expect(page).to have_css(".plan", count: 6)
+    expect(page).to have_css(".plan", count: 7)
 
     within ".plan:nth-of-type(1)" do
       expect(page).to have_content("CURRENT PLAN")

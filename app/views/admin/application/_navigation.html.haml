@@ -1,5 +1,5 @@
 %nav.navigation{ role: "navigation" }
   - navigation_resources.each do |resource|
     = link_to display_resource_name(resource),
-      [namespace, resource.path],
+      [namespace, resource.path.to_sym],
       class: "navigation__link navigation__link--#{nav_link_state(resource)}"
