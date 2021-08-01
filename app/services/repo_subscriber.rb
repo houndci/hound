@@ -40,11 +40,10 @@ class RepoSubscriber
       plan: plan.id,
       repo_id: repo.id,
     )
-
     payment_gateway_subscription.subscribe(repo.id)
 
     repo.create_subscription!(
-      user_id: user.id,
+      user_id: stripe_user.id,
       stripe_subscription_id: payment_gateway_subscription.id,
       price: plan.price,
     )
@@ -54,10 +53,8 @@ class RepoSubscriber
   end
 
   def report_exception(error)
-    Raven.capture_exception(
-      error,
-      extra: { user_id: user.id, repo_id: repo.id }
-    )
+    options = { user_id: user.id, repo_id: repo.id }
+    Raven.capture_exception(error, extra: options)
   end
 
   def stripe_customer
@@ -65,7 +62,7 @@ class RepoSubscriber
   end
 
   def find_and_update_stripe_customer
-    if user.stripe_customer_id.present?
+    if stripe_user
       payment_gateway_customer.tap do |customer|
         if card_token.present?
           customer.update_card(card_token)
@@ -74,8 +71,19 @@ class RepoSubscriber
     end
   end
 
+  def stripe_user
+    @_stripe_user ||= if user.stripe_customer_id.present?
+      user
+    else
+      same_org_repos = repo.owner.repos.joins(:subscription)
+      if same_org_repos.any?
+        same_org_repos.first.subscription.user
+      end
+    end
+  end
+
   def payment_gateway_customer
-    @payment_gateway_customer ||= PaymentGatewayCustomer.new(user)
+    @_payment_gateway_customer ||= PaymentGatewayCustomer.new(stripe_user)
   end
 
   def create_stripe_customer
