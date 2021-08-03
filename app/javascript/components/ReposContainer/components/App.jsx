@@ -141,13 +141,13 @@ export default class App extends React.Component {
   }
 
   createSubscriptionWithExistingCard(repo) {
-    Ajax.createSubscription({
-      repo_id: repo.id
-    }).then( resp => {
-      this.activateAndTrackRepoSubscription(
-        repo, resp.stripe_subscription_id
-      );
-    }).catch(error => this.onSubscriptionError(repo, error));
+    Ajax.createSubscription({ repo_id: repo.id })
+      .then(resp => {
+        this.activateAndTrackRepoSubscription(
+          repo, resp.stripe_subscription_id
+        );
+      })
+      .catch(error => this.onSubscriptionError(repo, error));
   }
 
   activateFreeRepo(repo) {

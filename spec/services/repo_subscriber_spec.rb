@@ -4,7 +4,7 @@ describe RepoSubscriber do
   describe ".subscribe" do
     context "when Stripe customer exists" do
       context "when a subscription doesn't exist" do
-        it "creates a new Stripe subscription and repo subscription" do
+        it "creates a new Stripe and repo subscriptions" do
           repo = create(:repo, private: true)
           user = create(
             :user,
@@ -142,6 +142,30 @@ describe RepoSubscriber do
 
           expect(result).to eq subscription
         end
+      end
+    end
+
+    context "when another user has a subcription under the same account" do
+      it "creates a new repo subscription under existing Stripe customer" do
+        owner = create(:owner)
+        repo1 = create(:repo, owner: owner)
+        repo2 = create(:repo, owner: owner)
+        stripe_user = create(:user, :stripe, repos: [repo1, repo2])
+        user = create(:user, repos: [repo1, repo2])
+        create(:subscription, user: stripe_user, repo: repo1)
+        stub_customer_find_request_with_subscriptions
+        stub_subscription_create_request(
+          plan: stripe_user.current_plan.id,
+          repo_ids: repo2.id,
+        )
+        stub_subscription_update_request(repo_ids: repo2.id)
+
+        subscription = RepoSubscriber.subscribe(repo2, user, nil)
+
+        expect(subscription).to have_attributes(
+          repo_id: repo2.id,
+          user_id: stripe_user.id,
+        )
       end
     end
   end
