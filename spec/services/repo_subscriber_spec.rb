@@ -150,21 +150,21 @@ describe RepoSubscriber do
         owner = create(:owner)
         repo1 = create(:repo, owner: owner)
         repo2 = create(:repo, owner: owner)
-        stripe_user = create(:user, :stripe, repos: [repo1, repo2])
-        user = create(:user, repos: [repo1, repo2])
-        create(:subscription, user: stripe_user, repo: repo1)
+        main_stripe_user = create(:user, :stripe, repos: [repo1, repo2])
+        current_user = create(:user, :stripe, repos: [repo1, repo2])
+        create(:subscription, user: main_stripe_user, repo: repo1)
         stub_customer_find_request_with_subscriptions
         stub_subscription_create_request(
-          plan: stripe_user.current_plan.id,
+          plan: main_stripe_user.current_plan.id,
           repo_ids: repo2.id,
         )
         stub_subscription_update_request(repo_ids: repo2.id)
 
-        subscription = RepoSubscriber.subscribe(repo2, user, nil)
+        subscription = RepoSubscriber.subscribe(repo2, current_user, nil)
 
         expect(subscription).to have_attributes(
           repo_id: repo2.id,
-          user_id: stripe_user.id,
+          user_id: main_stripe_user.id,
         )
       end
     end

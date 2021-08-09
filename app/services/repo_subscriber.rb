@@ -72,13 +72,22 @@ class RepoSubscriber
   end
 
   def stripe_user
-    @_stripe_user ||= if user.stripe_customer_id.present?
-      user
-    else
-      same_org_repos = repo.owner.repos.joins(:subscription)
-      if same_org_repos.any?
-        same_org_repos.first.subscription.user
+    @_stripe_user ||= begin
+      org_paying_user = find_org_paying_user
+
+      if org_paying_user.present?
+        org_paying_user
+      elsif user.stripe_customer_id.present?
+        user
       end
+    end
+  end
+
+  def find_org_paying_user
+    same_org_repos = repo.owner.repos.joins(:subscription)
+
+    if same_org_repos.any?
+      same_org_repos.first.subscription.user
     end
   end
 
