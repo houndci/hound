@@ -73,10 +73,10 @@ class RepoSubscriber
 
   def stripe_user
     @_stripe_user ||= begin
-      org_payee = find_org_paying_user
+      org_paying_user = find_org_paying_user
 
-      if org_payee.present?
-        org_payee
+      if org_paying_user.present?
+        org_paying_user
       elsif user.stripe_customer_id.present?
         user
       end
