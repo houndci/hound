@@ -17,7 +17,7 @@ Here are a few technical guidelines to follow:
 1. Party!
 
 [issues]: https://github.com/houndci/hound/issues
-[squash]: https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature
+[squash]: https://github.com/thoughtbot/guides/tree/main/git#write-a-feature
 
 ## Configure Hound on Your Local Development Environment
 
