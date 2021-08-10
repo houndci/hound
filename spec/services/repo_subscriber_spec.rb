@@ -69,9 +69,7 @@ describe RepoSubscriber do
           plan: user.next_plan.id,
           repo_ids: repo.id,
         )
-        update_request = stub_subscription_update_request(
-          repo_ids: repo.id,
-        )
+        update_request = stub_subscription_update_request(repo_ids: repo.id)
 
         RepoSubscriber.subscribe(repo, user, "cardtoken")
 
