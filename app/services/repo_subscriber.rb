@@ -28,7 +28,7 @@ class RepoSubscriber
   private
 
   def create_subscription
-    plan_selector = PlanSelector.new(user: user, repo: repo)
+    plan_selector = PlanSelector.new(user: stripe_user || user, repo: repo)
 
     plan = if plan_selector.current_plan.open_source?
       plan_selector.next_plan
