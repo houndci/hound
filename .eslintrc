@@ -5,5 +5,8 @@
     "node": true,
     "browser": true
   },
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "extends": "eslint:recommended"
 }

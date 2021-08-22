@@ -9,7 +9,7 @@
 
 %section.organization-list{ 'organization-list' => '' }
 
-= javascript_pack_tag "repos_container"
-= react_component "ReposContainer",
+= javascript_pack_tag "app"
+= react_component "App",
   appName: ENV.fetch("GITHUB_APP_NAME"),
   userHasCard: current_user.card_exists?

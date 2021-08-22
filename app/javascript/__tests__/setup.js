@@ -4,15 +4,13 @@ global.React = React;
 import _ from 'lodash';
 global._ = _;
 
-import $ from 'jquery';
-global.$ = $;
-
 import classNames from 'classnames';
 global.classNames = classNames;
 
 import sinon from 'sinon';
 global.sinon = sinon;
 
+/* eslint-disable-next-line no-unused-vars */
 const Hound = window.Hound = global.Hound = {
   settings: {
     placeholder: "placeholder"
