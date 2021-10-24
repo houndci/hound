@@ -23,6 +23,20 @@ const createSync = () => {
   return fetch('/repo_syncs', { method: 'POST', headers: getJsonHeaders() });
 };
 
+const activateRepo = (repo) => {
+  return fetch(
+    `/repos/${repo.id}/activation`,
+    { method: 'POST', headers: getJsonHeaders() },
+  );
+}
+
+const deactivateRepo = (repo) => {
+  return fetch(`/repos/${repo.id}/deactivation`, {
+    method: 'POST',
+    headers: getJsonHeaders(),
+  });
+}
+
 const updateOwner = (id, params) => {
   return fetch(`/owners/${id}`, {
     method: 'PUT',
@@ -31,38 +45,35 @@ const updateOwner = (id, params) => {
   });
 };
 
-export function createSubscription(subscriptionOptions) {
-  return $.ajax({
-    url: `/repos/${subscriptionOptions.repo_id}/subscription.json`,
-    type: "POST",
-    data: subscriptionOptions,
-    dataType: "json"
+const createSubscription = (repoId) => {
+  return fetch(`/repos/${repoId}/subscription`, {
+    method: 'POST',
+    headers: getJsonHeaders(),
   });
 }
 
-export function deleteSubscription(repo) {
-  return $.ajax({
-    url: `/repos/${repo.id}/subscription`,
-    type: "DELETE",
-    dataType: "json"
+const deleteSubscription = (repo) => {
+  return fetch(`/repos/${repo.id}/subscription`, {
+    method: 'DELETE',
+    headers: getJsonHeaders(),
   });
 }
 
-export function deactivateRepo(repo) {
-  return $.ajax({
-    url: `/repos/${repo.id}/deactivation`,
-    type: "POST",
-    dataType: "text"
+const updateCustomerCreditCard = (stripeToken) => {
+  return fetch('/credit_card', {
+    method: 'PUT',
+    headers: getJsonHeaders(),
+    body: JSON.stringify({ card_token: stripeToken }),
   });
 }
 
-export function activateRepo(repo) {
-  return $.ajax({
-    url: `/repos/${repo.id}/activation`,
-    type: "POST",
-    dataType: "text"
+const updateCustomerEmail = (email) => {
+  return fetch('/account', {
+    method: 'PUT',
+    headers: getJsonHeaders(),
+    body: JSON.stringify({ billable_email: email }),
   });
-}
+};
 
 export function upgradeSubscription(id, params) {
   return $.ajax({
@@ -76,4 +87,15 @@ export function upgradeSubscription(id, params) {
   });
 }
 
-export { fetchRepos, fetchUser, createSync, updateOwner };
+export {
+  fetchRepos,
+  fetchUser,
+  createSync,
+  createSubscription,
+  deleteSubscription,
+  updateOwner,
+  activateRepo,
+  deactivateRepo,
+  updateCustomerCreditCard,
+  updateCustomerEmail,
+};

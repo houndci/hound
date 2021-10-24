@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
+import { ReposContext } from '../../providers/ReposProvider';
 import Configuration from './Configuration';
 import Repos from './Repos';
 
-const Organization = ({ org, repos, searchTerm }) => {
+const Organization = ({ org }) => {
   const {
     id,
     name,
     config_enabled: configEnabled,
     config_repo: configRepo,
   } = org;
+  const { repos, setRepos, searchTerm } = useContext(ReposContext);
+  const orgRepos = repos.filter((repo) => repo.owner.id === org.id);
 
   return (
     <div className="organization" data-org-name={name}>
@@ -17,14 +20,14 @@ const Organization = ({ org, repos, searchTerm }) => {
         <h2 className="organization-header-title">{name}</h2>
 
         <Configuration
-          id={id}
+          orgId={id}
           enabled={configEnabled}
           repo={configRepo}
-          repos={repos}
+          repos={orgRepos}
         />
       </header>
       <section className="repo_listing">
-        <Repos repos={repos} searchTerm={searchTerm} />
+        <Repos repos={orgRepos} searchTerm={searchTerm} setRepos={setRepos} />
       </section>
     </div>
   );

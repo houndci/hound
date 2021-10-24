@@ -7,7 +7,7 @@ import NoReposMessage from './NoReposMessage';
 import ReposSyncSpinner from './ReposSyncSpinner';
 
 const OrgList = () => {
-  const { repos, searchTerm, isSyncing } = useContext(ReposContext);
+  const { repos, isSyncing } = useContext(ReposContext);
 
   if (isSyncing) {
     return <ReposSyncSpinner/>;
@@ -15,19 +15,10 @@ const OrgList = () => {
     return <NoReposMessage/>;
   } else {
     const orgs = uniqBy(repos.map((repo) => repo.owner), 'name');
-    const getReposForOrg = (org) =>
-      repos.filter((repo) => repo.owner.id === org.id);
 
     return (
       <section className="organizations">
-        {orgs.map((org) => (
-          <Organization
-            key={org.name}
-            org={org}
-            repos={getReposForOrg(org)}
-            searchTerm={searchTerm}
-          />
-        ))}
+        {orgs.map((org) => <Organization key={org.name} org={org} />)}
       </section>
     );
   }

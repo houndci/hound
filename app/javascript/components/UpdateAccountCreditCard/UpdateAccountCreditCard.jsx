@@ -1,51 +1,32 @@
 import React from 'react';
 
-export default class UpdateAccountCreditCard extends React.Component {
-  componentDidMount() {
-    $.ajaxSetup({
-      headers: {
-        "X-XSRF-Token": getCSRFfromHead()
-      }
-    });
-  }
+import { updateCustomerCreditCard } from '../../modules/api';
 
-  updateCustomerCreditCard(stripeToken) {
-    $.ajax({
-      url: "/credit_card.json",
-      type: "PUT",
-      data: { card_token: stripeToken.id },
-      dataType: "json"
-    });
-  }
-
-  onUpdateCreditCard(event) {
+const UpdateAccountCreditCard = (props) => {
+  const onUpdateCreditCard = (event) => {
     event.preventDefault();
 
     StripeCheckout.configure({
       key: Hound.settings.stripePublishableKey,
       image: Hound.settings.iconPath,
-      token: this.updateCustomerCreditCard
+      token: (token) => updateCustomerCreditCard(token.id),
     }).open({
       email: $("input[type=email]").attr("placeholder"),
       panelLabel: "Update Card",
-      allowRememberMe: false
+      allowRememberMe: false,
     });
   }
 
-  render() {
-    if (this.props.stripe_customer_id_present) {
-      return (
-        <h3>
-          Monthly Billing
-          <a href="#" className="update-card" onClick={(event) =>this.onUpdateCreditCard(event)}>
-            Update Credit Card
-          </a>
-        </h3>
-      );
-    } else {
-      return (
-        <h3>Monthly Billing</h3>
-      );
-    }
-  }
+  return (
+    <h3>
+      Monthly Billing
+      {props.stripe_customer_id_present && (
+        <a href="#" className="update-card" onClick={onUpdateCreditCard}>
+          Update Credit Card
+        </a>
+      )}
+    </h3>
+  );
 }
+
+export default UpdateAccountCreditCard;

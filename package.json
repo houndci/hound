@@ -38,7 +38,6 @@
     "prop-types": "^15.7.2",
     "rails-erb-loader": "^5.1.0",
     "react": "^16.9.0",
-    "react-addons-update": "^15.6.0",
     "react-dom": "^16.9.0",
     "resolve-url-loader": "^3.1.0",
     "url-loader": "^2.1.0",

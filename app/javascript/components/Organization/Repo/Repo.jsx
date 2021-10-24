@@ -14,17 +14,17 @@ const Repo = ({ repo }) => {
       {repo.private && <span className="badge margin-left-small">Private</span>}
 
       <div className="repo-activation-toggle">
-        <Button repo={repo}/>
+        <Button repo={repo} setRepo={setRepo} />
       </div>
     </li>
   );
 }
 
-const Button = ({ repo }) => {
-  if (repo.active) {
-    return <DeactivationButton repo={repo} />
+const Button = (props) => {
+  if (props.repo.active) {
+    return <DeactivationButton {...props} />
   } else {
-    return <ActivationButton repo={repo} />;
+    return <ActivationButton {...props} />;
   }
 }
 

@@ -1,111 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
-import 'object-assign-shim';
 
 import { updateOwner } from '../../modules/api';
 
-class Configuration extends React.Component {
-  constructor(props) {
-    super(props);
+const Configuration = ({ orgId, enabled, repos, repo }) => {
+  const switchId = `toggle-config-${orgId}`;
+  const [configEnabled, setConfigEnabled] = useState(enabled);
+  const [selectedRepo, setSelectedRepo] = useState(repo || '');
+  const toggle = (event) => {
+    const isEnabled = !configEnabled;
+    const params = { config_enabled: isEnabled };
 
-    const repo = props.repo || "";
+    setConfigEnabled(isEnabled);
+    updateOwner(orgId, params);
+  };
 
-    this.state = {
-      configUpdated: false,
-      enabled: !!props.enabled,
-      repo
-    };
-  }
+  return (
+    <div className="organization-header-config">
+      <div className="organization-header-toggle">
+        <span className="organization-header-label">
+          Use org-wide config
+        </span>
 
-  setEnabled(enabled) {
-    this.setState({ enabled });
-    this.updateOwner({ config_enabled: enabled });
-  }
-
-  setRepo(repo) {
-    this.setState({ repo });
-    this.updateOwner({ config_repo: repo });
-  }
-
-  handleChange(event) {
-    this.setRepo(event.target.value);
-  }
-
-  toggle() {
-    const enabled = !this.state.enabled;
-    this.setEnabled(enabled);
-  }
-
-  updateOwner(options) {
-    const params = {
-      config_enabled: this.state.enabled,
-      config_repo: this.state.repo,
-      ...options,
-    };
-
-    this.setState({ configUpdated: false });
-    updateOwner(this.props.id, params).then(() =>
-      this.setState({ configUpdated: true })
-    );
-  }
-
-  renderRepoSelect() {
-    if (this.state.enabled) {
-      return (
-        <div className="organization-header-source">
-          <span className="organization-header-label">Use .hound.yml from</span>
-          <select
-            className="organization-header-select"
-            onChange={event => this.handleChange(event)}
-            value={this.state.repo}
-          >
-            <RepoOptions
-              repos={this.props.repos}
-              selectedRepo={this.state.repo}
-            />
-          </select>
-          <div className="inline-flash--success config-enabled">
-            {this.state.configUpdated &&
-              <span data-role="config-saved">&#10004;</span>}
-          </div>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  render() {
-    const switchId = `toggle-${this.props.id}`;
-
-    return (
-      <div className="organization-header-config">
-        <div className="organization-header-toggle">
-          <span className="organization-header-label">
-            Use organization-wide config
-          </span>
-
-          <input
-            id={switchId}
-            checked={this.state.enabled}
-            className="organization-header-toggle-input"
-            onChange={() => this.toggle()}
-            type="checkbox"
-            name="toggle"
-          />
-
-          <label className="toggle-switch" htmlFor={switchId} />
-        </div>
-
-        {this.renderRepoSelect()}
+        <input
+          id={switchId}
+          checked={configEnabled}
+          className="organization-header-toggle-input"
+          onChange={toggle}
+          type="checkbox"
+          name="toggle"
+        />
+        <label className="toggle-switch" htmlFor={switchId} />
       </div>
-    );
-  }
-}
 
+      {configEnabled &&
+        <RepoSelect
+          orgId={orgId}
+          repos={repos}
+          repo={selectedRepo}
+          setRepo={setSelectedRepo} />}
+    </div>
+  );
+};
+
+const RepoSelect = ({ orgId, repos, repo, setRepo }) => {
+  const [configUpdated, setConfigUpdated] = useState(false);
+  const updateRepo = (event) => {
+    const newRepo = event && event.target.value;
+    const params = { config_repo: newRepo };
+
+    setRepo(newRepo);
+    setConfigUpdated(false);
+    updateOwner(orgId, params).then(() => setConfigUpdated(true));
+  };
+
+  return (
+    <div className="organization-header-source">
+      <span className="organization-header-label">Use .hound.yml from</span>
+      <select
+        className="organization-header-select"
+        onChange={updateRepo}
+        value={repo}
+      >
+        <RepoOptions repos={repos} selectedRepo={repo} />
+      </select>
+      <div className="inline-flash--success config-enabled">
+        {configUpdated && <span data-role="config-saved">&#10004;</span>}
+      </div>
+    </div>
+  );
+};
 
 const RepoOptions = ({ repos, selectedRepo }) => {
-  let repoNames = repos.map((repo) => repo.name);
+  let repoNames = repos.map(({ name }) => name);
+
   if (!repoNames.includes(selectedRepo)) {
     repoNames = [selectedRepo, ...repoNames];
   }

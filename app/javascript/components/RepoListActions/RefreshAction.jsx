@@ -9,11 +9,12 @@ const RefreshAction = () => {
   const { syncingButtonText, syncNowButtonText } = Hound.settings;
   const { repos, setRepos, isSyncing, setIsSyncing } = useContext(ReposContext);
   const buttonText = isSyncing ? syncingButtonText : syncNowButtonText;
-  const getRepos = () => fetchRepos().then((repos) => {
-    setRepos(repos);
-    setIsSyncing(false);
-    return repos;
-  });
+  const getRepos = () => fetchRepos()
+    .then((repos) => {
+      setRepos(repos);
+      setIsSyncing(false);
+      return repos;
+    });
 
   useEffect(() => {
     setIsSyncing(true);

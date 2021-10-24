@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 
-const DeactivationButton = ({ repo }) => {
+import { deactivateRepo, deleteSubscription } from '../../../modules/api';
+
+const DeactivationButton = ({ repo, setRepo }) => {
   const { admin, id } = repo;
   const [isProcessing, setProcessing] = useState(false);
   const [buttonText, setButtonText] = useState("Active");
   const onMouseOver = () => setButtonText("Deactivate");
-  const onMouseOut = () => setButtonText("Activate");
+  const onMouseOut = () => setButtonText("Active");
 
   if (admin) {
     return (
       <button
         className="repo-toggle"
         disabled={isProcessing}
-        onClick={() => onClick(repo, setProcessing)}
+        onClick={() => onClick({ repo, setProcessing, setRepo })}
         onMouseOut={onMouseOut}
         onMouseOver={onMouseOver}
       >
@@ -28,34 +30,25 @@ const DeactivationButton = ({ repo }) => {
   }
 }
 
-const onClick = (repo, setProcessing) => {
+const onClick = ({ repo, setProcessing, setRepo }) => {
+  const deactivate = repo.stripe_subscription_id ?
+    deleteSubscription :
+    deactivateRepo;
+
   setProcessing(true);
-
-  if (repo.stripe_subscription_id) {
-    deactivateSubscribedRepo(repo).finally(() => setProcessing(false));
-  } else {
-    deactivateUnsubscribedRepo(repo).finally(() => setProcessing(false));
-  }
-}
-
-const deactivateSubscribedRepo = (repo) => {
-  return Ajax.deleteSubscription(repo)
+  deactivate(repo)
     .then(() => {
-      repo.active = false;
-      repo.stripe_subscription_id = null;
-      // commitRepoToState(repo);
-    }).catch(() => {
-      alert("Your repo could not be disabled.");
-    });
-}
-
-const deactivateUnsubscribedRepo = (repo) => {
-  return Ajax.deactivateRepo(repo)
-    .then(() => {
-      repo.active = false;
-      // commitRepoToState(repo);
-    }).catch(() => {
-      alert("Your repo could not be disabled.");
+      const updatedRepo = {
+        ...repo,
+        active: false,
+        stripe_subscription_id: null,
+      };
+      setProcessing(false);
+      setRepo(updatedRepo);
+    })
+    .catch(() => {
+      setProcessing(false);
+      alert('Your repo could not be disabled.');
     });
 }
 

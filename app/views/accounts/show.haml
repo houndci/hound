@@ -64,5 +64,5 @@
       - if current_user.card_exists?
         = javascript_pack_tag "update_account_email"
         = react_component("UpdateAccountEmail",
-            billable_email: @account_page.billable_email,
+            email: @account_page.billable_email,
           )

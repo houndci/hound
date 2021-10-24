@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-const ActivationButton = ({ repo }) => {
+import { activateRepo, createSubscription } from '../../../modules/api';
+
+const ActivationButton = ({ repo, setRepo }) => {
   const { admin, id } = repo;
   const [isProcessing, setProcessing] = useState(false);
 
@@ -8,7 +10,7 @@ const ActivationButton = ({ repo }) => {
     return (
       <button
         className="repo-toggle"
-        onClick={() => onClick(repo, setProcessing)}
+        onClick={() => onClick({ repo, setProcessing, setRepo })}
         disabled={isProcessing}
       >
         Activate
@@ -23,33 +25,37 @@ const ActivationButton = ({ repo }) => {
   }
 }
 
-const onClick = (repo, setProcessing) => {
-  setProcessing(true);
+const onClick = ({ repo, setProcessing, setRepo}) => {
+  const activateRepo = repo.private ? activatePrivateRepo : activatePublicRepo;
 
-  if (repo.private) {
-    activatePrivateRepo(repo).finally(() => setProcessing(false));
-  } else {
-    activatePublicRepo(repo).finally(() => setProcessing(false));
-  }
+  setProcessing(true);
+  activateRepo(repo)
+    .then((repo) => {
+      setProcessing(false);
+      setRepo(repo);
+    });
 };
 
 const activatePrivateRepo = (repo) => {
-  return Ajax.createSubscription({ repo_id: repo.id })
+  return createSubscription(repo.id)
     .then((resp) => {
-      repo.active = true;
-      repo.stripe_subscription_id = resp.stripe_subscription_id;
-      trackRepoActivation(repo);
-      // commitRepoToState(repo);
+      const updatedRepo = {
+        ...repo,
+        active: true,
+        stripe_subscription_id: resp.stripe_subscription_id,
+      };
+      trackRepoActivation(updatedRepo);
+      return updatedRepo;
     })
-    .catch((error) => onSubscriptionError(repo, error))
+    .catch((error) => onSubscriptionError(repo, error));
 };
 
 const activatePublicRepo = (repo) => {
-  return Ajax.activateRepo(repo)
+  return activateRepo(repo)
     .then((resp) => {
-      repo.active = true;
-      trackRepoActivation(repo);
-      // commitRepoToState(repo);
+      const updatedRepo = { ...repo, active: true };
+      trackRepoActivation(updatedRepo);
+      return updatedRepo;
     })
     .catch(handleError);
 };
