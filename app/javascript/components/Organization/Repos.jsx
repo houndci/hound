@@ -2,7 +2,7 @@ import React from 'react';
 
 import Repo from './Repo';
 
-const Repos = ({ repos, searchTerm }) => {
+const Repos = ({ repos, searchTerm = '' }) => {
   const isDisplayed = (repo) => {
     if (searchTerm === null) {
       return true;

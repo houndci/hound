@@ -2,7 +2,7 @@ import React from 'react';
 
 import { updateCustomerCreditCard } from '../../modules/api';
 
-const UpdateAccountCreditCard = (props) => {
+const UpdateAccountCreditCard = ({ isAccountOwner }) => {
   const onUpdateCreditCard = (event) => {
     event.preventDefault();
 
@@ -20,7 +20,7 @@ const UpdateAccountCreditCard = (props) => {
   return (
     <h3>
       Monthly Billing
-      {props.stripe_customer_id_present && (
+      {isAccountOwner && (
         <a href="#" className="update-card" onClick={onUpdateCreditCard}>
           Update Credit Card
         </a>

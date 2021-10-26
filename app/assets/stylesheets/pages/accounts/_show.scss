@@ -23,10 +23,6 @@
 }
 
 .billing-breakdown {
-  border-bottom: 1px dotted $base-border-color;
-  margin-bottom: 2em;
-  padding-bottom: 3em;
-
   .update-card {
     float: right;
   }
@@ -57,7 +53,6 @@
 .account-details {
   @include clearfix;
   border-bottom: 1px dotted $base-border-color;
-  margin-bottom: 2em;
   padding-bottom: 3em;
 
   input[type="text"],
@@ -75,8 +70,13 @@
   }
 
   .form-actions {
-    float: right;
-    margin-top: 1.5em;
+    float: left;
+    margin-top: 1.8em;
+    margin-left: 1em;
     text-align: right;
+  }
+
+  .updated-email-message {
+    clear: both;
   }
 }

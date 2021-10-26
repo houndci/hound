@@ -75,15 +75,11 @@ const updateCustomerEmail = (email) => {
   });
 };
 
-export function upgradeSubscription(id, params) {
-  return $.ajax({
-    url: `/repos/${id}/subscription.json`,
-    type: "PUT",
-    dataType: "json",
-    data: params,
-    success: () => {
-      document.location.href = "/repos";
-    }
+const upgradeSubscription = (id, params) => {
+  return fetch(`/repos/${id}/subscription`, {
+    method: 'PUT',
+    headers: getJsonHeaders(),
+    body: JSON.stringify(params),
   });
 }
 
@@ -98,4 +94,5 @@ export {
   deactivateRepo,
   updateCustomerCreditCard,
   updateCustomerEmail,
+  upgradeSubscription,
 };

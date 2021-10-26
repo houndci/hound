@@ -5,11 +5,10 @@
 
 = javascript_pack_tag("notify_tier_change")
 = react_component("NotifyTierChange",
-  authenticity_token: form_authenticity_token,
-  next_tier: plan_selector.next_plan,
+  nextPlan: plan_selector.next_plan,
   plans: @plans,
-  repo_id: @repo.id,
-  repo_name: @repo.name,
-  user_has_card: current_user.card_exists?,
-  marketplace_upgrade_url: @marketplace_upgrade_url,
+  repoId: @repo.id,
+  repoName: @repo.name,
+  hasCreditCard: current_user.card_exists?,
+  marketplaceUpgradeUrl: @marketplace_upgrade_url,
 )

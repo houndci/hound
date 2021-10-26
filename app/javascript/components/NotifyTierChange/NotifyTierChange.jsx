@@ -1,97 +1,55 @@
 import React from 'react';
-import _ from 'lodash';
+import { find, findIndex } from 'lodash';
 
 import UpgradeSubscriptionLink from './UpgradeSubscriptionLink';
 import TierPlan from './TierPlan';
 
-export default class NotifyTierChange extends React.Component {
-  getCurrentPlan() {
-    return this.getPlan(this.getCurrentPlanIndex());
-  }
+const NotifyTierChange = ({
+  plans,
+  repoId,
+  repoName,
+  nextPlan,
+  hasCreditCard,
+  marketplaceUpgradeUrl,
+}) => {
+  const currentPlanIndex = findIndex(plans, { current: true });
+  const currentPlan = plans[currentPlanIndex];
+  const isNewPlan = (plan) => plan === plans[currentPlanIndex + 1];
 
-  getCurrentPlanIndex() {
-    return _.findIndex(this.getPlans(), { current: true });
-  }
-
-  getCurrentPrice() {
-    return this.getCurrentPlan().price;
-  }
-
-  getExtraCharge() {
-    return this.getNewPrice() - this.getCurrentPrice();
-  }
-
-  getNewPlan() {
-    return this.getPlan(this.getCurrentPlanIndex() + 1);
-  }
-
-  getNewPrice() {
-    return this.getNewPlan().price;
-  }
-
-  getPlan(id) {
-    return this.getPlans()[id];
-  }
-
-  getPlans() {
-    return this.props.plans;
-  }
-
-  isCurrentPlan(plan) {
-    return plan === this.getCurrentPlan();
-  }
-
-  isNewPlan(plan) {
-    return plan === this.getNewPlan();
-  }
-
-  renderTierPlans() {
-    return (
-      this.getPlans().map(plan => (
-        <TierPlan
-          isCurrent={this.isCurrentPlan(plan)}
-          isNew={this.isNewPlan(plan)}
-          key={plan.name}
-          plan={plan}
-        />
-      ))
-    );
-  }
-
-  render() {
-    const {
-      next_tier,
-      repo_id,
-      repo_name,
-      user_has_card,
-      marketplace_upgrade_url,
-    } = this.props;
-
-    return (
-      <section className="tier-change-container">
-        <aside className="tier-change-plans">
-          <h3>Plans</h3>
-          {this.renderTierPlans()}
-        </aside>
-        <div className="tier-change-content">
-          <h1>Change of Plans</h1>
-          <section className="tier-change-description">
-            <p><strong>Activating Hound for "{repo_name}" will change the price you pay
-            per month.</strong></p>
-
-            <p>Upgrade to continue with your new plan.</p>
-          </section>
-
-          <UpgradeSubscriptionLink
-            authenticityToken={getCSRFfromHead()}
-            nextTier={next_tier}
-            repoId={repo_id}
-            userHasCard={user_has_card}
-            marketplaceUpgradeUrl={marketplace_upgrade_url}
+  return (
+    <section className="tier-change-container">
+      <aside className="tier-change-plans">
+        <h3>Plans</h3>
+        {plans.map((plan) => (
+          <TierPlan
+            isCurrent={plan.current}
+            isNew={isNewPlan(plan)}
+            key={plan.name}
+            plan={plan}
           />
-          <a className="tier-change-cancel" href="/repos">Cancel</a>
-        </div>
-      </section>
-    );
-  }
-}
+        ))}
+      </aside>
+      <div className="tier-change-content">
+        <h1>Change of Plans</h1>
+        <section className="tier-change-description">
+          <p>
+            <strong>
+              Activating "{repoName}" will change the price you pay per month.
+            </strong>
+          </p>
+          <p>Upgrade to continue with your new plan.</p>
+        </section>
+
+        <UpgradeSubscriptionLink
+          nextTier={nextPlan}
+          repoId={repoId}
+          userHasCard={hasCreditCard}
+          marketplaceUpgradeUrl={marketplaceUpgradeUrl}
+        />
+        <a className="tier-change-cancel" href="/repos">Cancel</a>
+      </div>
+    </section>
+  );
+};
+
+export default NotifyTierChange;

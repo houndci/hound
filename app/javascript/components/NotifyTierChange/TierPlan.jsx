@@ -1,67 +1,35 @@
-import classNames from 'classnames';
 import React from 'react';
+import classnames from 'classnames';
 
-export default class TierPlan extends React.Component {
-  getIsCurrent() {
-    return this.props.isCurrent;
-  }
+const TierPlan = ({ plan, isCurrent, isNew }) => {
+  const classNames = classnames(
+    "plan",
+    "plan-vertical",
+    { "current": isCurrent },
+    { "new": isNew }
+  );
 
-  getIsNew() {
-    return this.props.isNew;
-  }
-
-  renderCurrentPlan() {
-    if (this.getIsCurrent()) {
-      return (
+  return (
+    <div className={classNames}>
+      {isCurrent && (
         <div className="plan-marker__wrapper">
           <span className="plan-marker plan-marker--current">Current Plan</span>
         </div>
-      );
-    }
-  }
-
-  renderNewPlan() {
-    if (this.getIsNew()) {
-      return (
+      )}
+      {isNew && (
         <div className="plan-marker__wrapper">
           <span className="plan-marker plan-marker--new">New Plan</span>
         </div>
-      );
-    }
-  }
-
-  render() {
-    const plan = this.props.plan;
-
-    let allowance = null;
-
-    if (plan.allowance > 0) {
-      allowance = <div className="plan-allowance">
-        Up to <strong>{plan.allowance.toLocaleString()}</strong> Reviews
-      </div>;
-    } else {
-      allowance = <div className="plan-allowance">
-        Unlimited
-      </div>;
-    }
-
-    return(
-      <div className={
-        classNames(
-          "plan",
-          "plan-vertical",
-          { "current": this.getIsCurrent() },
-          { "new": this.getIsNew() }
-        )
-      }>
-        {this.renderCurrentPlan()}
-        {this.renderNewPlan()}
-        <div className="plan-divider">
-          <h5 className="plan-title">{plan.name}</h5>
-          {allowance}
+      )}
+      <div className="plan-divider">
+        <h5 className="plan-title">{plan.name}</h5>
+        <div className="plan-allowance">
+          Up to <strong>{plan.allowance.toLocaleString()}</strong> Reviews
         </div>
-        <div className="plan-price">${plan.price} <small>month</small></div>
       </div>
-    );
-  }
-}
+      <div className="plan-price">${plan.price} <small>month</small></div>
+    </div>
+  );
+};
+
+export default TierPlan;

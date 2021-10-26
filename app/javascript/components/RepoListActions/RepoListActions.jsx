@@ -4,12 +4,14 @@ import SearchAction from './SearchAction';
 import RefreshAction from './RefreshAction';
 import AddAction from './AddAction';
 
-const RepoListActions = ({ appName, setSearchTerm }) => (
-  <div className="repo-tools">
-    <AddAction appName={appName} />
-    <RefreshAction />
-    <SearchAction setSearchTerm={setSearchTerm} />
-  </div>
-);
+const RepoListActions = ({ appName }) => {
+  return (
+    <div className="repo-tools">
+      <AddAction appName={appName} />
+      <RefreshAction />
+      <SearchAction />
+    </div>
+  );
+}
 
 export default RepoListActions;

@@ -1,40 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import classnames from 'classnames';
 
-export default class UpgradeSubscriptionLink extends React.Component {
-  constructor(props) {
-    super(props);
+import { upgradeSubscription } from '../../modules/api';
 
-    this.state = { disabled: false };
+const UpgradeSubscriptionLink = ({
+  repoId,
+  nextTier,
+  userHasCard,
+  marketplaceUpgradeUrl,
+}) => {
+  const [isDisabled, setIsDisabled] = useState(false);
+  const upgradeWithNewCard = (token) => {
+    upgradeSubscription(repoId, { card_token: token.id })
+      .then(() => document.location.href = '/repos' );
   }
-
-  componentDidMount() {
-    $.ajaxSetup({
-      headers: {
-        "X-XSRF-Token": getCSRFfromHead()
-      }
-    });
-  }
-
-  upgradeWithNewCard(token) {
-    const { repoId } = this.props;
-    Ajax.upgradeSubscription(repoId, { card_token: token.id });
-  }
-
-  checkout() {
+  const checkout = () => {
     const { stripePublishableKey, iconPath } = Hound.settings;
 
     return StripeCheckout.configure({
       key: stripePublishableKey,
       image: iconPath,
-      token: (token) => this.upgradeWithNewCard(token),
+      token: upgradeWithNewCard,
     });
   }
-
-  showCreditCardForm() {
+  const showCreditCardForm = () => {
     const { userEmailAddress } = Hound.settings;
-    const { price, title } = this.props.nextTier;
+    const { price, title } = nextTier;
 
-    this.checkout().open({
+    checkout().open({
       name: `Upgrade to ${title}`,
       amount: price * 100,
       email: userEmailAddress,
@@ -42,21 +35,16 @@ export default class UpgradeSubscriptionLink extends React.Component {
       allowRememberMe: false
     });
   }
-
-  handleFailedUpgrade(response) {
+  const handleFailedUpgrade = (response) => {
     const subscriptionFailed = response &&
       response.errors &&
-      response.errors.includes("There was an issue creating the subscription");
+      response.errors.includes('There was an issue creating the subscription');
 
     if (subscriptionFailed) {
-      this.showCreditCardForm();
+      showCreditCardForm();
     } else {
-      this.setState({ disabled: false });
+      setIsDisabled(false);
 
-      // There's probably a more elegant way to do this
-      //
-      // Intercom doesn't seem available when component is set up
-      // to include in props
       if (window.Intercom) {
         window.Intercom(
           "showNewMessage",
@@ -68,38 +56,34 @@ export default class UpgradeSubscriptionLink extends React.Component {
     }
   }
 
-  handleClick = (e) => {
+  const onClick = (e) => {
     e.preventDefault();
 
-    if (this.props.marketplaceUpgradeUrl) {
+    if (marketplaceUpgradeUrl) {
       // improve this flow so we end up back at houndci.com
-      window.open(this.props.marketplaceUpgradeUrl, '_blank');
+      window.open(marketplaceUpgradeUrl, '_blank');
     } else {
-      this.setState({ disabled: true });
-
-      const { repoId, userHasCard } = this.props;
+      setIsDisabled(true)
 
       if (userHasCard) {
-        Ajax.upgradeSubscription(repoId).fail(
-          (response) => this.handleFailedUpgrade(response.responseJSON)
-        );
+        upgradeSubscription(repoId)
+          .then(() => document.location.href = '/repos' )
+          .catch((response) => handleFailedUpgrade(response.responseJSON));
       } else {
-        this.showCreditCardForm();
+        showCreditCardForm();
       }
     }
   }
 
-  render() {
-    return(
-      <a
-        href=""
-        className={
-          this.state.disabled ?
-            "repo-toggle tier-change-accept disabled" :
-            "repo-toggle tier-change-accept"
-        }
-        onClick={this.handleClick}
-      >Upgrade</a>
-    );
-  }
-}
+  const classNames = classnames(
+    'repo-toggle',
+    'tier-change-accept',
+    { disabled: isDisabled },
+  );
+
+  return(
+    <a href="" onClick={onClick} className={classNames}>Upgrade</a>
+  );
+};
+
+export default UpgradeSubscriptionLink;
