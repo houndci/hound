@@ -59,7 +59,7 @@ class PaymentGatewaySubscription
       metadata["repo_id"] = nil
     end
 
-    metadata["repo_ids"] = repo_ids.join(",")
+    metadata["repo_ids"] = repo_ids.join(",")[0, 499]
   end
 
   def remove_repo_id_from_metadata(repo_id)
