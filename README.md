@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/houndci/hound)
+
 # Hound
 
 [![Build Status](https://circleci.com/gh/houndci/hound.svg?style=shield)](https://circleci.com/gh/houndci/hound)
