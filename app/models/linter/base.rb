@@ -49,6 +49,7 @@ module Linter
         pull_request_number: build.pull_request_number,
         linter_version: version,
         suggestions: suggestions?,
+        debug: debug?
       }
     end
 
@@ -74,6 +75,10 @@ module Linter
 
     def suggestions?
       hound_config.suggestions?(name)
+    end
+
+    def debug?
+      hound_config.debug?(name)
     end
   end
 end

@@ -50,6 +50,12 @@ class HoundConfig
     !!config["suggestions"]
   end
 
+  def debug?(name)
+    config = options_for(name)
+
+    !!config["debug"]
+  end
+
   def fail_on_violations?
     !!content["fail_on_violations"]
   end

@@ -2,7 +2,7 @@
 class ReviewBody
   MAX_BODY_LENGTH = 65536
   SUMMARY_LENGTH = 80
-  HEADER = "Some files could not be reviewed due to errors:"
+  # HEADER = "Some files could not be reviewed due to errors:"
   DETAILS_FORMAT = "<details>\n<summary>%s</summary>\n<pre>%s</pre>\n</details>"
   FORMAT_PLACEHOLDER_CHARCTERS = 4
 
@@ -12,10 +12,7 @@ class ReviewBody
 
   def to_s
     if errors.any?
-      output = HEADER
-      room_left = MAX_BODY_LENGTH - output.size
-
-      output + build_errors(errors, room_left)
+      build_errors(errors, MAX_BODY_LENGTH)
     else
       ""
     end
