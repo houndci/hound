@@ -415,7 +415,7 @@ DEPENDENCIES
   webpacker-react (~> 1.0.0.beta.1)
 
 RUBY VERSION
-   ruby 2.7.1p83
+   ruby 2.7.4p191
 
 BUNDLED WITH
    2.1.4
