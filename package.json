@@ -15,7 +15,7 @@
     "@babel/plugin-transform-runtime": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
-    "@rails/webpacker": "^4.0.7",
+    "@rails/webpacker": "^5.4.4",
     "babel-loader": "8.0.6",
     "babel-plugin-react-transform": "^3.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
@@ -67,7 +67,7 @@
     "sinon": "^7.4.2",
     "stylelint": "13.2.1",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^4.15.0"
   },
   "repository": {
     "type": "git",
