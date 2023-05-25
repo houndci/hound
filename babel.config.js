@@ -1,9 +1,9 @@
 module.exports = function(api) {
-  var validEnv = ['development', 'test', 'production'];
-  var currentEnv = api.env();
-  var isDevelopmentEnv = api.env('development');
-  var isProductionEnv = api.env('production');
-  var isTestEnv = api.env('test');
+  var validEnv = ['development', 'test', 'production']
+  var currentEnv = api.env()
+  var isDevelopmentEnv = api.env('development')
+  var isProductionEnv = api.env('production')
+  var isTestEnv = api.env('test')
 
   if (!validEnv.includes(currentEnv)) {
     throw new Error(
@@ -12,7 +12,7 @@ module.exports = function(api) {
         '"test", and "production". Instead, received: ' +
         JSON.stringify(currentEnv) +
         '.'
-    );
+    )
   }
 
   return {
@@ -34,13 +34,6 @@ module.exports = function(api) {
           modules: false,
           exclude: ['transform-typeof-symbol']
         }
-      ],
-      [
-        '@babel/preset-react',
-        {
-          development: isDevelopmentEnv || isTestEnv,
-          useBuiltIns: true
-        }
       ]
     ].filter(Boolean),
     plugins: [
@@ -61,11 +54,21 @@ module.exports = function(api) {
         }
       ],
       [
+        '@babel/plugin-proposal-private-methods',
+        {
+          loose: true
+        }
+      ],
+      [
+        '@babel/plugin-proposal-private-property-in-object',
+        {
+          loose: true
+        }
+      ],
+      [
         '@babel/plugin-transform-runtime',
         {
-          helpers: false,
-          regenerator: true,
-          corejs: false
+          helpers: false
         }
       ],
       [
@@ -73,13 +76,7 @@ module.exports = function(api) {
         {
           async: false
         }
-      ],
-      isProductionEnv && [
-        'babel-plugin-transform-react-remove-prop-types',
-        {
-          removeImport: true
-        }
       ]
     ].filter(Boolean)
-  };
-};
+  }
+}

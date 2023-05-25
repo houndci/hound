@@ -15,7 +15,7 @@
     "@babel/plugin-transform-runtime": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
-    "@rails/webpacker": "^5.4.4",
+    "@rails/webpacker": "5.4.4",
     "babel-loader": "8.0.6",
     "babel-plugin-react-transform": "^3.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
@@ -42,7 +42,7 @@
     "react-dom": "^16.9.0",
     "resolve-url-loader": "^3.1.0",
     "url-loader": "^2.1.0",
-    "webpack": "^4.40.2",
+    "webpack": "^4.46.0",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.1.0",
     "webpacker-react": "^1.0.0-beta.1"
@@ -66,8 +66,8 @@
     "react-transform-hmr": "^1.0.2",
     "sinon": "^7.4.2",
     "stylelint": "13.2.1",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^4.15.0"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3"
   },
   "repository": {
     "type": "git",
