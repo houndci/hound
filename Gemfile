@@ -4,7 +4,7 @@ ruby "2.7.6"
 
 gem "active_link_to"
 gem "active_model_serializers", "0.10.10"
-# gem "administrate", "0.18.0"
+gem "administrate", "0.18.0"
 gem "analytics-ruby", "~> 2.2.2", require: "segment/analytics"
 gem "attr_extras"
 gem "autoprefixer-rails"
