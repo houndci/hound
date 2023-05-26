@@ -8,6 +8,9 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "dependencies": {
     "@babel/core": "*",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
