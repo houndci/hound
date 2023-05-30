@@ -14,6 +14,8 @@ class GitHubEvent
 
   def process
     Rails.logger.info("Received GitHub event: #{type} -- #{action}")
+    Rails.logger.info(ENV["REDIS_URL"])
+
     case type
     when MARKETPLACE_PURCHASE
       update_purchase
