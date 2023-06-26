@@ -11,7 +11,7 @@ class User < ApplicationRecord
 
   before_create :generate_remember_token
 
-  delegate :current_plan, :next_plan, :previous_plan, to: :plan_selector
+  delegate :current_plan, :next_plan, to: :plan_selector
 
   def next_plan_price
     next_plan.price
@@ -57,27 +57,22 @@ class User < ApplicationRecord
     repos.
       order("memberships.admin DESC").
       order(active: :desc).
-      order(Arel.sql("LOWER(name) ASC"))
+      order("LOWER(name) ASC")
   end
 
   def card_exists?
     stripe_customer_id.present?
   end
 
-  def subscribed_repos
-    if plan_selector.marketplace_plan?
-      # This assumes a user manages one Marketplace purchase.
-      first_available_repo.owner.repos.active.where(private: true)
-    else
-      super
-    end
+  def owner_ids
+    repos.distinct.pluck(:owner_id)
   end
 
   def first_available_repo
     if subscriptions.any?
       subscriptions.first.repo
     else
-      repos.order(:active).first
+      repos.order([:private, :active]).first
     end
   end
 
@@ -86,11 +81,23 @@ class User < ApplicationRecord
   end
 
   def metered_plan?
-    first_available_repo&.owner&.metered_plan?
+    owner.metered_plan?
   end
 
   def recent_builds
-    first_available_repo.owner.recent_builds
+    owner.recent_builds
+  end
+
+  def owner
+    @_owner ||= begin
+      user_as_owner = Owner.find_by(name: username)
+
+      if user_as_owner&.stripe_plan_id.present?
+        user_as_owner
+      else
+        first_available_repo&.owner || user_as_owner
+      end
+    end
   end
 
   private
@@ -105,7 +112,7 @@ class User < ApplicationRecord
   end
 
   def plan_selector
-    @_plan_selector ||= PlanSelector.new(user: self)
+    @_plan_selector ||= PlanSelector.new(owner)
   end
 
   def generate_remember_token

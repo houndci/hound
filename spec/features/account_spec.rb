@@ -1,8 +1,9 @@
 require "rails_helper"
 
 feature "Account" do
-  scenario "user without Stripe Customer ID" do
-    user = create(:user, stripe_customer_id: nil)
+  scenario "user without any repos loaded" do
+    user = create(:user)
+    create(:owner, name: user.username)
 
     sign_in_as(user)
     visit account_path
@@ -10,20 +11,11 @@ feature "Account" do
     expect(page).not_to have_text("Update Credit Card")
   end
 
-  scenario "user with Stripe Customer ID", js: true do
-    user = create(:user, stripe_customer_id: "123")
-    stub_customer_find_request(user.stripe_customer_id)
-
-    sign_in_as(user)
-    visit account_path
-
-    expect(page).to have_text("Update Credit Card")
-  end
-
   scenario "returns a list of all plans", :js do
     user = create(:user)
-    sign_in_as(user, "letmein")
+    create(:owner, name: user.username)
 
+    sign_in_as(user, "letmein")
     visit account_path
 
     plans = page.all(".plan")
@@ -68,14 +60,29 @@ feature "Account" do
     end
   end
 
-  scenario "user with a subscription views account page" do
-    user = create(:user, stripe_customer_id: stripe_customer_id)
-    create(:subscription, user: user)
+  scenario "org admin updates billing email", :js do
+    user_on_page = UserOnPage.new
+    email_address = "somebody.else@example.com"
+    user = create(:user, :stripe)
+    owner = create(:owner, :stripe, name: user.username)
+    stub_customer_find_request(owner.stripe_customer_id)
+    stub_customer_update_request(email: email_address)
 
-    responses = [individual_subscription_response]
+    sign_in_as(user)
+    visit account_path
+    user_on_page.update(email_address)
+
+    expect(user_on_page).to be_updated
+  end
+
+  scenario "org admin with Stripe subscription views account page", :js do
+    user = create(:user, :stripe) # remove stripe dependency on user
+    owner = create(:owner, :stripe)
+    repo = create(:repo, owner: owner)
+    create(:subscription, user: user, repo: repo)
     stub_customer_find_request_with_subscriptions(
-      stripe_customer_id,
-      generate_subscriptions_response(responses),
+      owner.stripe_customer_id,
+      generate_subscriptions_response(individual_subscription_response),
     )
 
     sign_in_as(user)
@@ -85,16 +92,17 @@ feature "Account" do
       expect(page).to have_text("Great Dane")
       expect(page).to have_text("$49")
     end
+    expect(page).to have_text("Update Credit Card")
   end
 
-  scenario "user with discounted-amount subscription views account page" do
-    user = create(:user, stripe_customer_id: stripe_customer_id)
-    create(:subscription, user: user)
-
-    responses = [discounted_amount_subscription_response]
+  scenario "org admin with discounted subscription views account page" do
+    user = create(:user, :stripe) # remove stripe dependency on user
+    owner = create(:owner, :stripe)
+    repo = create(:repo, owner: owner)
+    create(:subscription, user: user, repo: repo)
     stub_customer_find_request_with_subscriptions(
-      stripe_customer_id,
-      generate_subscriptions_response(responses),
+      owner.stripe_customer_id,
+      generate_subscriptions_response(discounted_amount_subscription_response),
     )
 
     sign_in_as(user)
@@ -107,13 +115,13 @@ feature "Account" do
   end
 
   scenario "user with discounted-percentage subscription views account page" do
-    user = create(:user, stripe_customer_id: stripe_customer_id)
-    create(:subscription, user: user)
-
-    responses = [discounted_percent_subscription_response]
+    user = create(:user, :stripe) # remove stripe dependency on user
+    owner = create(:owner, :stripe)
+    repo = create(:repo, owner: owner)
+    create(:subscription, user: user, repo: repo)
     stub_customer_find_request_with_subscriptions(
-      stripe_customer_id,
-      generate_subscriptions_response(responses),
+      owner.stripe_customer_id,
+      generate_subscriptions_response(discounted_percent_subscription_response),
     )
 
     sign_in_as(user)
@@ -125,38 +133,22 @@ feature "Account" do
     end
   end
 
-  scenario "user updates their email address", :js do
-    email_address = "somebody.else@example.com"
-    stub_customer_find_request
-    stub_customer_update_request(email: email_address)
-
-    sign_in_as(create(:user, :stripe))
-    visit account_path
-    user = user_on_page
-    user.update(email_address)
-
-    expect(user).to be_updated
-  end
-
   private
 
   def stub_customer_find_request_with_subscriptions(customer_id, subscriptions)
-    stub_request(:get, "#{stripe_base_url}/customers/#{customer_id}").
+    url = "#{StripeApiHelper::STRIPE_BASE_URL}/customers/#{customer_id}"
+    stub_request(:get, url).
       with(headers: { "Authorization" => "Bearer #{ENV['STRIPE_API_KEY']}" }).
       to_return(status: 200, body: merge_customer_subscriptions(subscriptions))
   end
 
-  def user_on_page
-    UserOnPage.new
-  end
-
-  def generate_subscriptions_response(subscriptions)
+  def generate_subscriptions_response(subscription)
     {
       "object" => "list",
-      "total_count" => subscriptions.length,
+      "total_count" => 1,
       "has_more" => false,
       "url" => "/v1/customers/cus_2e3fqARc1uHtCv/subscriptions",
-      "data" => subscriptions,
+      "data" => [subscription],
     }
   end
 

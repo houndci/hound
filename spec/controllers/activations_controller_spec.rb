@@ -29,6 +29,7 @@ describe ActivationsController, "#create" do
           "config_repo" => nil,
           "whitelisted" => false,
           "marketplace_plan_id" => nil,
+          "stripe_customer_id" => nil,
           "stripe_subscription_id" => nil,
         },
       )
@@ -38,8 +39,7 @@ describe ActivationsController, "#create" do
   context "when repo is not public" do
     it "does not activate" do
       repo = create(:repo, private: true)
-      user = create(:user)
-      user.repos << repo
+      user = create(:user, repos: [repo])
       stub_sign_in(user)
 
       expect { post :create, params: { repo_id: repo.id }, format: :json }.

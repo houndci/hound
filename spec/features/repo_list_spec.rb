@@ -68,7 +68,7 @@ RSpec.feature "Repo list", js: true do
 
     click_button I18n.t("sync_repos")
 
-    expect(page).to have_text("TEST_GITHUB_LOGIN/TEST_GITHUB_REPO_NAME")
+    expect(page).to have_text("test_login/test_repo")
     expect(page).not_to have_text(repo.name)
   end
 

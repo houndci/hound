@@ -4,17 +4,13 @@ describe RepoSubscriber do
   describe ".subscribe" do
     context "when Stripe customer exists" do
       context "when a subscription doesn't exist" do
-        it "creates a new Stripe and repo subscriptions" do
+        it "creates a new Stripe subscription" do
           repo = create(:repo, private: true)
-          user = create(
-            :user,
-            stripe_customer_id: stripe_customer_id,
-            repos: [repo],
-          )
-          stub_customer_find_request
+          user = create(:user, :stripe, repos: [repo])
+          stub_customer_find_request(user.stripe_customer_id)
           update_request = stub_customer_update_request
           subscription_request = stub_subscription_create_request(
-            plan: user.next_plan.id,
+            plan: StripePlan::PLANS[1][:id],
             repo_ids: repo.id,
           )
           subscription_update_request = stub_subscription_update_request(
@@ -27,19 +23,15 @@ describe RepoSubscriber do
           expect(subscription_update_request).to have_been_requested
           expect(update_request).not_to have_been_requested
           expect(repo.subscription.stripe_subscription_id).
-            to eq(stripe_subscription_id)
+            to eq(StripeApiHelper::STRIPE_SUBSCRIPTION_ID)
         end
 
         it "creates a Stripe subscription using new card" do
           repo = create(:repo, private: true)
-          user = create(
-            :user,
-            stripe_customer_id: stripe_customer_id,
-            repos: [repo],
-          )
-          stub_customer_find_request
+          user = create(:user, :stripe, repos: [repo])
+          stub_customer_find_request(user.stripe_customer_id)
           subscription_request = stub_subscription_create_request(
-            plan: user.next_plan.id,
+            plan: StripePlan::PLANS[1][:id],
             repo_ids: repo.id,
           )
           subscription_update_request = stub_subscription_update_request(
@@ -55,7 +47,7 @@ describe RepoSubscriber do
           expect(subscription_update_request).to have_been_requested
           expect(customer_update_request).to have_been_requested
           expect(repo.subscription.stripe_subscription_id).
-            to eq(stripe_subscription_id)
+            to eq(StripeApiHelper::STRIPE_SUBSCRIPTION_ID)
         end
       end
     end
@@ -66,7 +58,7 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo], stripe_customer_id: "",)
         customer_request = stub_customer_create_request(user)
         subscription_request = stub_subscription_create_request(
-          plan: user.next_plan.id,
+          plan: StripePlan::PLANS[1][:id],
           repo_ids: repo.id,
         )
         update_request = stub_subscription_update_request(repo_ids: repo.id)
@@ -77,8 +69,9 @@ describe RepoSubscriber do
         expect(subscription_request).to have_been_requested
         expect(update_request).to have_been_requested
         expect(repo.subscription.stripe_subscription_id).
-          to eq(stripe_subscription_id)
-        expect(user.stripe_customer_id).to eq stripe_customer_id
+          to eq(StripeApiHelper::STRIPE_SUBSCRIPTION_ID)
+        expect(user.stripe_customer_id).
+          to eq StripeApiHelper::STRIPE_CUSTOMER_ID
       end
     end
 
@@ -87,7 +80,9 @@ describe RepoSubscriber do
         repo = create(:repo)
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
-        stub_failed_subscription_create_request(user.next_plan.id)
+        stub_failed_subscription_create_request(
+          StripePlan::PLANS[1][:id],
+        )
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
@@ -113,12 +108,10 @@ describe RepoSubscriber do
         user = create(:user, repos: [repo])
         stub_customer_create_request(user)
         stub_subscription_create_request(
-          plan: user.next_plan.id,
+          plan: StripePlan::PLANS[1][:id],
           repo_ids: repo.id,
         )
-        stub_subscription_update_request(
-          repo_ids: repo.id,
-        )
+        stub_subscription_update_request(repo_ids: repo.id)
         allow(repo).to receive(:create_subscription!).and_raise(StandardError)
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
@@ -171,7 +164,7 @@ describe RepoSubscriber do
   describe ".unsubscribe" do
     it "downgrades the Stripe plan" do
       subscription = subscription_with_user
-      stub_customer_find_request
+      stub_customer_find_request(subscription.user.stripe_customer_id)
       stub_subscription_find_request(subscription, quantity: 2)
       stripe_delete_request = stub_subscription_delete_request
       subscription_update_request = stub_subscription_update_request(
@@ -211,11 +204,11 @@ describe RepoSubscriber do
   end
 
   def subscription_with_user
-    user = create(:user, stripe_customer_id: stripe_customer_id)
+    user = create(:user, :stripe)
     repo = create(:repo, :private, users: [user])
     create(
       :subscription,
-      stripe_subscription_id: stripe_subscription_id,
+      stripe_subscription_id: StripeApiHelper::STRIPE_SUBSCRIPTION_ID,
       user: user,
       repo: repo,
     )

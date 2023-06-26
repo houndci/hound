@@ -3,111 +3,87 @@ require "rails_helper"
 describe SubscriptionsController do
   describe "#create" do
     context "when subscription succeeds" do
-      context "with Metered subscription" do
-        it "subscribes the user to the repo" do
-          repo = create(:repo, private: true)
-          user = create(:user, :stripe)
-          membership = create(:membership, repo: repo, user: user)
-          create(:subscription, repo: repo, user: user)
-          allow(RepoSubscriber).to receive(:subscribe).and_return(true)
-          stub_sign_in(user)
+      context "with existing Stripe subscriber" do
+        it "responds with activated repo" do
+          owner = create(:owner, :stripe)
+          repo = create(:repo, owner: owner, private: true)
+          user = create(:user, repos: [repo])
           stub_customer_find_request_with_subscriptions
+          stub_sign_in(user)
 
-          post(
-            :create,
-            params: {
-              repo_id: repo.id,
-              card_token: "cardtoken",
-              email: "jimtom@example.com",
-            },
-            format: :json,
+          post :create, params: { repo_id: repo.id, card_token: "cardtoken" }
+
+          expect(response.status).to eq 201
+          expect(JSON.parse(response.body)).to match hash_including(
+            "name" => repo.name,
+            "active" => true,
+            "owner" => hash_including("name" => owner.name),
           )
-
-          expect(RepoSubscriber).to have_received(:subscribe).
-            with(repo, membership.user, "cardtoken")
         end
       end
 
-      context "with GitHub subscription" do
+      context "with GitHub Marketplace subscriber" do
         it "subscribes the user to the repo" do
-          repo = create(:repo, private: true)
-          repo.owner.update!(marketplace_plan_id: GitHubPlan::PLANS.last[:id])
-          membership = create(:membership, repo: repo)
-          allow(RepoSubscriber).to receive(:subscribe)
-          stub_sign_in(membership.user)
+          owner = create(:owner, marketplace_plan_id: GitHubPlan::PLANS[1][:id])
+          repo = create(:repo, owner: owner, private: true)
+          user = create(:user, repos: [repo])
+          stub_sign_in(user)
 
-          post(
-            :create,
-            params: {
-              repo_id: repo.id,
-              card_token: "cardtoken",
-              email: "jimtom@example.com",
-            },
-            format: :json,
+          post :create, params: { repo_id: repo.id, card_token: "cardtoken" }
+
+          expect(response.status).to eq 201
+          expect(JSON.parse(response.body)).to match hash_including(
+            "name" => repo.name,
+            "active" => true,
+            "owner" => hash_including("name" => owner.name),
           )
-
-          expect(RepoSubscriber).not_to have_received(:subscribe)
         end
       end
 
       it "updates the current user's email address" do
-        user = create(:user, email: nil)
         repo = create(:repo)
-        user.repos << repo
-        allow(RepoSubscriber).to receive(:subscribe).and_return(true)
+        user = create(:user, email: nil, repos: [repo])
         stub_sign_in(user)
 
-        post(
-          :create,
-          params: {
-            repo_id: repo.id,
-            card_token: "cardtoken",
-            email: "jimtom@example.com",
-          },
-          format: :json,
-        )
+        post :create, params: { repo_id: repo.id, email: "jimtom@example.com" }
 
         expect(user.reload.email).to eq "jimtom@example.com"
       end
     end
 
-    context "when subscription fails" do
-      it "deactivates repo" do
+    context "when repo activation requires payment" do
+      it "responds with payment_required and does not activate the repo" do
         repo = create(:repo, private: true)
-        user = create(:user, :stripe)
-        create(:membership, repo: repo, user: user)
-        create(:subscription, repo: repo, user: user)
-        deactivate_repo = instance_double("DeactivateRepo", call: nil)
-        allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)
-        allow(RepoSubscriber).to receive(:subscribe).and_return(false)
-        stub_sign_in(user)
-        stub_customer_find_request_with_subscriptions
-
-        post :create, params: { repo_id: repo.id }, format: :json
-
-        expect(response.code).to eq "502"
-        expect(deactivate_repo).to have_received(:call)
-      end
-    end
-
-    context "when the current plan is open source (free)" do
-      it "notifies that payment is required" do
-        membership = create(:membership)
-        repo = membership.repo
-        user = membership.user
+        user = create(:user, repos: [repo])
         stub_sign_in(user)
 
         post :create, params: { repo_id: repo.id }
 
         expect(response).to have_http_status(:payment_required)
+        expect(repo.reload.active).to eq false
+      end
+    end
+
+    context "when the current plan requires an upgrade" do
+      it "notifies that payment is required" do
+        owner = create(:owner, marketplace_plan_id: GitHubPlan::PLANS[0][:id])
+        repo = create(:repo, owner: owner, private: true)
+        user = create(:user, repos: [repo])
+        stub_sign_in(user)
+
+        post :create, params: { repo_id: repo.id }
+
+        expect(response).to have_http_status(:payment_required)
+        expect(repo.reload.active).to eq false
       end
     end
   end
 
+  # need to figure out what this action is for and how to simplify it
   describe "#update" do
     context "when the subscription can be created" do
       it "returns 'Created'" do
-        repo = create(:repo, name: "foo/bar", private: true)
+        repo = create(:repo, private: true)
         user = create(:user, repos: [repo])
         create(:subscription, repo: repo, user: user)
         stub_sign_in(user)
@@ -120,7 +96,7 @@ describe SubscriptionsController do
 
     context "when the subscription cannot be created" do
       it "returns an error and deactivates the repo" do
-        repo = create(:repo, name: "foo/bar", private: true)
+        repo = create(:repo, private: true)
         user = create(:user, repos: [repo])
         deactivate_repo = instance_double("DeactivateRepo", call: nil)
         allow(RepoSubscriber).to receive(:subscribe).and_return(false)
@@ -148,14 +124,7 @@ describe SubscriptionsController do
         allow(DeactivateRepo).to receive(:new).and_return(deactivate_repo)
         stub_sign_in(current_user)
 
-        delete(
-          :destroy,
-          params: {
-            repo_id: repo.id,
-            card_token: "cardtoken",
-          },
-          format: :json,
-        )
+        delete :destroy, params: { repo_id: repo.id, card_token: "cardtoken" }
 
         expect(response.status).to eq(409)
         response_body = JSON.parse(response.body)
@@ -176,14 +145,7 @@ describe SubscriptionsController do
         allow(RepoSubscriber).to receive(:unsubscribe).and_return(true)
         stub_sign_in(current_user)
 
-        delete(
-          :destroy,
-          params: {
-            repo_id: repo.id,
-            card_token: "cardtoken",
-          },
-          format: :json,
-        )
+        delete :destroy, params: { repo_id: repo.id, card_token: "cardtoken" }
 
         expect(deactivate_repo).to have_received(:call)
         expect(DeactivateRepo).to have_received(:new).
@@ -192,12 +154,7 @@ describe SubscriptionsController do
           with(repo, subscribed_user)
         expect(analytics).to have_tracked("Repo Deactivated").
           for_user(current_user).
-          with(
-            properties: {
-              name: repo.name,
-              private: true,
-            },
-          )
+          with(properties: { name: repo.name, private: true })
       end
     end
   end

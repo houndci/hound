@@ -51,17 +51,21 @@ class Owner < ApplicationRecord
   end
 
   def recent_builds
-    Build.where(
-      "DATE(created_at) > DATE(?) AND DATE(created_at) < DATE(?)",
-      1.month.ago,
-      Time.current,
-    ).where(
-      repo_id: repo_ids,
-    ).count
+    Build.
+      where(repo_id: repo_ids).
+      where(
+        "DATE(created_at) > DATE(?) AND DATE(created_at) < DATE(?)",
+        1.month.ago,
+        Time.current,
+      ).count
   end
 
   def metered_plan?
     marketplace_plan_id.blank?
+  end
+
+  def stripe_plan_id
+    @_stripe_plan_id ||= PaymentGatewayCustomer.new(self).subscription.plan
   end
 
   private

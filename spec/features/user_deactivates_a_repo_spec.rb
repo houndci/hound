@@ -2,12 +2,13 @@ require "rails_helper"
 
 feature "user deactivates a repo", js: true do
   context "when the user has a subscription" do
-    context "when the user does not have a membership" do
+    context "and the user does not have a membership to that repo" do
       scenario "successfully deactivates the repo" do
         token = "letmein"
         user = create(:user)
         repo = create(:repo, :active, private: true)
         create(:subscription, user: user, repo: repo)
+        create(:owner, name: user.username)
         gateway_subscription = instance_double(
           "PaymentGatewaySubscription",
           unsubscribe: true,
@@ -32,6 +33,7 @@ feature "user deactivates a repo", js: true do
 
         expect(page).not_to have_css(".repos-syncing")
         expect(page).not_to have_text(repo.name)
+        expect(page).not_to have_css(".active")
       end
     end
   end

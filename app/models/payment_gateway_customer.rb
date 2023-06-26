@@ -52,8 +52,9 @@ class PaymentGatewayCustomer
   private
 
   def create_subscription(options)
+    subscription = customer.subscriptions.create(options)
     PaymentGatewaySubscription.new(
-      stripe_subscription: customer.subscriptions.create(options),
+      stripe_subscription: subscription,
       user: user,
     ).tap do |subscription|
       Analytics.new(user).track_purchase(subscription.stripe_subscription)
