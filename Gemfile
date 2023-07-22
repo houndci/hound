@@ -55,5 +55,6 @@ group :test do
   gem "launchy"
   gem "selenium-webdriver", ">= 4.0.0.alpha4"
   gem "shoulda-matchers"
+  gem "webdrivers", "~> 4.4"
   gem "webmock"
 end

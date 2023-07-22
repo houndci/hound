@@ -5,6 +5,7 @@ require "active_support/core_ext"
 require "attr_extras"
 require "byebug"
 require "webmock/rspec"
+require "webdrivers"
 
 ENV["REDIS_URL"] = "redis://localhost:6379/1"
 
@@ -14,7 +15,11 @@ RSpec.configure do |config|
   config.order = "random"
   config.include GitHubApiHelper
   config.include StripeApiHelper
-  WebMock.disable_net_connect!(allow_localhost: true)
+  WebMock.disable_net_connect!(
+    allow_localhost: true,
+    # https://github.com/titusfortner/webdrivers/issues/4
+    allow: "chromedriver.storage.googleapis.com",
+  )
 
   config.define_derived_metadata do |meta|
     meta[:aggregate_failures] = true
