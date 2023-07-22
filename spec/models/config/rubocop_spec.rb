@@ -26,6 +26,24 @@ RSpec.describe Config::Rubocop do
       end
     end
 
+    context "when the configuration uses pre-processing" do
+      it "runs the config through ERB" do
+        raw_config = <<~CONFIG
+          Style/Encoding:
+            Enabled: <%= 1 + 1 == 2 %>
+          <% 42 # This should be ignored and not cause an error %>
+        CONFIG
+
+        config = build_config(raw_config)
+
+        expect(config.content).to eq(
+          "Style/Encoding" => {
+            "Enabled" => true,
+          },
+        )
+      end
+    end
+
     context "when the configuration uses `inherit_from`" do
       it "returns the merged configuration using `inherit_from`" do
         repo_config = <<~EOS
